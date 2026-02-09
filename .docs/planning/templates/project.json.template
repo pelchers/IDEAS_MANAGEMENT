@@ -5,15 +5,21 @@
   "description": "Short project summary.",
   "status": "planning",
   "tags": ["idea-management", "planning"],
-  "owner": "local-user",
+  "ownerId": "user_123",
+  "collaborators": [],
   "goals": [
-    "Define MVP scope",
-    "Create initial architecture"
+    "Define production release scope",
+    "Create architecture and implementation plan"
   ],
-  "techStack": ["electron", "react", "typescript"],
+  "techStack": ["nextjs", "electron", "typescript", "postgresql"],
   "links": {
     "repo": "",
     "docs": ""
+  },
+  "sync": {
+    "cloudProjectId": "",
+    "lastSyncedAt": null,
+    "revision": 0
   },
   "createdAt": "2026-02-09T00:00:00Z",
   "updatedAt": "2026-02-09T00:00:00Z"

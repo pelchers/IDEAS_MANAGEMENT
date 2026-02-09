@@ -1,26 +1,36 @@
 # Milestones
 
 ## Phase 0: Planning and Contracts
-- Finalize PRD, stories, and folder schema.
-- Lock JSON schemas for board/canvas/project metadata.
+- Finalize PRD, technical specification, auth/subscription model, and sync strategy.
+- Lock JSON schemas and API contracts.
 
-## Phase 1: App Shell + Project Browser
-- Electron app shell.
-- Dashboard with project list/create/open.
-- Project split-pane workspace with `project.json` binding.
+## Phase 1: Core Platform Foundation (AI + Auth First)
+- Monorepo and shared package setup.
+- Next.js web app + Electron desktop app shell with shared UI.
+- Roll-your-own authentication stack.
+- Stripe subscription and entitlement enforcement.
+- Admin override account and audit logging.
+- AI foundation:
+  - Dedicated AI chat page
+  - Workspace AI sidebar
+  - Initial tool actions (`add_idea`, `update_kanban`, `generate_tree`)
 
-## Phase 2: Kanban + Ideas
-- Kanban MVP with persistence.
-- Ideas list and promote-to-task workflow.
+## Phase 2: Project Browser and Sync Core
+- Drive-like dashboard.
+- Split-pane project workspace with `project.json` descriptors.
+- Local mirror + cloud sync queue implementation.
+- Conflict detection and recovery controls.
 
-## Phase 3: Whiteboard + Schema Planner
+## Phase 3: Kanban and Ideas
+- Full kanban interactions with persistence/sync.
+- Ideas list with promotion workflows.
+
+## Phase 4: Whiteboard, Schema, and Directory Generator
 - Whiteboard containers with drag/resize/text/image.
 - Node-based schema planner and export pipeline.
+- Directory tree planner and generator.
 
-## Phase 4: Directory Tree Generator + AI Sidebar
-- Tree template/preview/apply.
-- CLI-integrated AI sidebar with streamed output.
-
-## Phase 5: Hardening
-- Snapshot recovery, validation, performance tuning.
-- Test coverage and release packaging.
+## Phase 5: Production Hardening and Launch
+- Performance tuning for 1,000+ user scale target.
+- Security, billing, and sync reliability validation.
+- End-to-end test coverage and deployment runbooks.

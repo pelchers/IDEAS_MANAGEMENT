@@ -1,19 +1,22 @@
 # Risks and Decisions
 
 ## Key Risks
-- Canvas performance degradation with large whiteboards.
-- File corruption risk from abrupt process termination.
-- CLI sidebar security and command safety boundaries.
-- Maintaining consistency between indexed metadata and filesystem state.
+- Auth/session bugs causing unauthorized access or lockouts.
+- Subscription entitlement drift between Stripe and app state.
+- Local/cloud sync conflicts causing user confusion.
+- Canvas performance degradation on large whiteboards.
+- AI tool misuse leading to unintended file mutations.
 
 ## Mitigations
-- Virtualized rendering and selective redraw.
-- Snapshot + rollback strategy for critical files.
-- Command allowlist and path sandboxing for CLI actions.
-- Periodic integrity reconciliation jobs.
+- Defense-in-depth auth checks and regression test suites.
+- Idempotent Stripe webhook processing with reconciliation jobs.
+- Versioned sync operations + conflict-resolution UI.
+- Virtualized rendering and selective redraw for large canvases.
+- Tool allowlists, confirmations, and immutable audit logs.
 
-## Initial Decisions
-- Local-first architecture.
-- Project artifacts stored as readable files.
-- Split pane project workspace with filesystem-backed navigation.
-- Incremental delivery by feature modules.
+## Confirmed Decisions
+- Keep Electron for desktop and Next.js for web with shared domain packages.
+- Build production-grade system from initial release (not MVP-scoped).
+- Use cloud-canonical sync with local mirrored project workspaces.
+- Include AI chat (full page + sidebar) in Phase 1 foundation.
+- Enforce auth + subscription gates on both web and desktop clients.
