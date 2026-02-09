@@ -1,0 +1,20 @@
+{
+  "id": "project-001",
+  "name": "Example Project",
+  "slug": "example-project",
+  "description": "Short project summary.",
+  "status": "planning",
+  "tags": ["idea-management", "planning"],
+  "owner": "local-user",
+  "goals": [
+    "Define MVP scope",
+    "Create initial architecture"
+  ],
+  "techStack": ["electron", "react", "typescript"],
+  "links": {
+    "repo": "",
+    "docs": ""
+  },
+  "createdAt": "2026-02-09T00:00:00Z",
+  "updatedAt": "2026-02-09T00:00:00Z"
+}

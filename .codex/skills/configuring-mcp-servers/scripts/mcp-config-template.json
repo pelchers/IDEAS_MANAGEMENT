@@ -1,0 +1,64 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/config.json",
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/directory"],
+      "env": {},
+      "description": "Local filesystem access for reading/writing files"
+    },
+    "github": {
+      "command": "uvx",
+      "args": ["mcp-server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "description": "GitHub API integration for repositories, issues, and PRs"
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}",
+        "SLACK_TEAM_ID": "${SLACK_TEAM_ID}"
+      },
+      "description": "Slack workspace integration for messages and channels"
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      },
+      "description": "PostgreSQL database access for queries and schema analysis"
+    },
+    "gdrive": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-gdrive"],
+      "env": {
+        "GOOGLE_CLIENT_ID": "${GOOGLE_CLIENT_ID}",
+        "GOOGLE_CLIENT_SECRET": "${GOOGLE_CLIENT_SECRET}"
+      },
+      "description": "Google Drive integration for document access"
+    },
+    "custom-api": {
+      "url": "https://api.example.com/mcp",
+      "transport": "http",
+      "headers": {
+        "Authorization": "Bearer ${API_TOKEN}",
+        "X-API-Key": "${API_KEY}"
+      },
+      "description": "Custom HTTP API server"
+    },
+    "custom-server": {
+      "command": "node",
+      "args": ["./mcp/custom-server.js"],
+      "env": {
+        "SERVER_PORT": "3000",
+        "API_KEY": "${CUSTOM_API_KEY}"
+      },
+      "description": "Custom MCP server implementation"
+    }
+  }
+}
+

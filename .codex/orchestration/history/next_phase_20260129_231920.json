@@ -1,0 +1,10 @@
+{
+  "session": "3_PRODUCTION_BUILD",
+  "phase": "phase_1",
+  "agent": "longrunning-agent",
+  "workdir": "C:\\coding\\docs\\Hytale",
+  "fullAuto": true,
+  "autoSpawn": true,
+  "dryRun": false,
+  "prompt": "Complete phase 1 using longrunning-session workflow for 3_PRODUCTION_BUILD. Implement full Convex schema for production entities and CRUD queries/mutations."
+}

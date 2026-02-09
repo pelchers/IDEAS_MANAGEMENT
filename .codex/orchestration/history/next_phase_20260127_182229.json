@@ -1,0 +1,10 @@
+{
+  "session": "2_SITE_DESIGN_AND_BUILD",
+  "phase": "phase_7",
+  "agent": "longrunning-agent",
+  "workdir": "C:\\coding\\docs\\Hytale",
+  "fullAuto": true,
+  "autoSpawn": true,
+  "dryRun": true,
+  "prompt": "Complete phase 7 using longrunning-session workflow."
+}

@@ -1,0 +1,42 @@
+[2026-02-09T00:00:00Z] role=user
+# AGENTS.md instructions for C:\Ideas\IDEA-MANAGEMENT
+
+<INSTRUCTIONS>
+## Skills
+A skill is a set of local instructions to follow that is stored in a `SKILL.md` file. Below is the list of skills that can be used. Each entry includes a name, description, and file path so you can open the source for full instructions when using a specific skill.
+### Available skills
+- hugging-face-cli: Execute Hugging Face Hub operations using the `hf` CLI. Use when the user needs to download models/datasets/spaces, upload files to Hub repositories, create repos, manage local cache, or run compute jobs on HF infrastructure. Covers authentication, file transfers, repository creation, cache operations, and cloud compute. (file: C:/Users/pelyc/.agents/skills/hugging-face-cli/SKILL.md)
+- hugging-face-cli: Execute Hugging Face Hub operations using the `hf` CLI. Use when the user needs to download models/datasets/spaces, upload files to Hub repositories, create repos, manage local cache, or run compute jobs on HF infrastructure. Covers authentication, file transfers, repository creation, cache operations, and cloud compute. (file: C:/Users/pelyc/.codex/skills/hugging-face-cli/SKILL.md)
+- remotion-best-practices: Best practices for Remotion - Video creation in React (file: C:/Users/pelyc/.codex/skills/remotion-best-practices/SKILL.md)
+- skill-creator: Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Codex's capabilities with specialized knowledge, workflows, or tool integrations. (file: C:/Users/pelyc/.codex/skills/.system/skill-creator/SKILL.md)
+- skill-installer: Install Codex skills into $CODEX_HOME/skills from a curated list or a GitHub repo path. Use when a user asks to list installable skills, install a curated skill, or install a skill from another repo (including private repos). (file: C:/Users/pelyc/.codex/skills/.system/skill-installer/SKILL.md)
+### How to use skills
+- Discovery: The list above is the skills available in this session (name + description + file path). Skill bodies live on disk at the listed paths.
+- Trigger rules: If the user names a skill (with `$SkillName` or plain text) OR the task clearly matches a skill's description shown above, you must use that skill for that turn. Multiple mentions mean use them all. Do not carry skills across turns unless re-mentioned.
+- Missing/blocked: If a named skill isn't in the list or the path can't be read, say so briefly and continue with the best fallback.
+- How to use a skill (progressive disclosure):
+  1) After deciding to use a skill, open its `SKILL.md`. Read only enough to follow the workflow.
+  2) When `SKILL.md` references relative paths (e.g., `scripts/foo.py`), resolve them relative to the skill directory listed above first, and only consider other paths if needed.
+  3) If `SKILL.md` points to extra folders such as `references/`, load only the specific files needed for the request; don't bulk-load everything.
+  4) If `scripts/` exist, prefer running or patching them instead of retyping large code blocks.
+  5) If `assets/` or templates exist, reuse them instead of recreating from scratch.
+- Coordination and sequencing:
+  - If multiple skills apply, choose the minimal set that covers the request and state the order you'll use them.
+  - Announce which skill(s) you're using and why (one short line). If you skip an obvious skill, say why.
+- Context hygiene:
+  - Keep context small: summarize long sections instead of pasting them; only load extra files when needed.
+  - Avoid deep reference-chasing: prefer opening only files directly linked from `SKILL.md` unless you're blocked.
+  - When variants exist (frameworks, providers, domains), pick only the relevant reference file(s) and note that choice.
+- Safety and fallback: If a skill can't be applied cleanly (missing files, unclear instructions), state the issue, pick the next-best approach, and continue.
+</INSTRUCTIONS>
+
+---
+[2026-02-09T00:00:01Z] role=user
+<environment_context>
+  <cwd>C:\Ideas\IDEA-MANAGEMENT</cwd>
+  <shell>powershell</shell>
+</environment_context>
+
+---
+[2026-02-09T00:00:02Z] role=user
+I want to build a little electron app for idea management and software development planning. we will have kanban feature, a whiteboarding feature with clickable dragable expandable (by corners) containers and text fields with image inserts etc. a user dashboard. ideas list. data schema planner whileboard and node based with ai built in (harnessing cli interface side bar directly in the app. directyory tree generator. and project folders with subfolders where we actually have the whiteboard and kanban and planning files and schema generator and directory tree generator subfolders with their respective file(s) in each of them. that way each page of our app directoy links back to the project management view of each individual project. the app has a sort of google drive like interface to see projects. projects are their own folder. then you click into it and see all the subfolders in one half the page and the project overview and descriptors (linked to project json) on the right side of the screen. you can click into the default subfolders to access either their files (ex planning subfolder might just have files in it like prd trd etc. but if you click the kanban subfolder you see just the kanban file that shows the kanban board for that project. this repo is for building that app. so please make a .docs folder in this repo and a planning folder within it. we will have our prd (all these requirements and more will be listed in it. technical specification document explaining the architecture. user stories file, and more files as per the planning docs. make sure also to have a .chat-history folder in this repos root wher you have a file in it to log every single message i send to you. also initialize a .codex folder with a skill and agent that correspond to this chat saving convention. you can also have in teh planning folder and overview file that explains my goals for the app as per how i have described them above (including fucntionality organization etc. then i also want you to impor the .codex folder from C:\coding\apps\campus\.codex --- that is what we use as the basis of this codex folder. you just have to clear our the adrs subfolders since the contents you copy over to this repo are unrelated to the goals of this project. well have to recreate the orchestration files after we are done this preliminary planning in the .docs/planning folder tyou make. also after that initialize and commit to git locally all changes and provide a chat summary of every single thing you did
