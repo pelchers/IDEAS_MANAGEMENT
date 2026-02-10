@@ -5,6 +5,7 @@
 - Lock JSON schemas and API contracts.
 
 ## Phase 1: Core Platform Foundation (AI + Auth First)
+- Build web-first foundation first (API/auth/billing/AI tools), with a thin Electron spine early to validate filesystem + sync.
 - Monorepo and shared package setup.
 - Next.js web app + Electron desktop app shell with shared UI.
 - Roll-your-own authentication stack.

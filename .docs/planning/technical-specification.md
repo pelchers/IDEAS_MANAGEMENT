@@ -12,6 +12,11 @@
 - Object storage for uploaded binary assets: Cloudflare R2 (or S3-compatible)
 
 ## 2. Architecture Overview
+
+### 2.3 Build Strategy (Web-First + Early Desktop Spine)
+- Web-first for the canonical platform foundation: backend APIs, auth, subscriptions/entitlements, AI tools, audit logs, and core UI flows.
+- Desktop is validated early with a thin Electron spine (week 1-2) to prove: local folder selection, local mirror layout, sync queue plumbing, and AI sidebar calling the same server tools.
+- Both clients share domain logic and UI packages; differences are isolated behind storage/sync adapters.
 ### 2.1 Applications
 - `apps/web`: hosted web interface
 - `apps/desktop`: Electron shell with shared UI packages
@@ -101,3 +106,4 @@ Minimum local contract:
 - Unit/integration/end-to-end test suites required for protected domains.
 - Pre-release security checks (auth/session/subscription regressions).
 - Backup/restore drills for project and account data.
+
