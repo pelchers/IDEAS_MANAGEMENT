@@ -104,6 +104,9 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [ ] Directory generator preview/apply with safe writes.
 
 ## Phase 7: Production Hardening + Release
+- [ ] User story validation pass against `.docs/planning/user-stories.md` using:
+  - `.codex/agents/user-story-testing-agent.md`
+  - `.codex/skills/testing-user-stories-validation`
 - [ ] E2E test suite for:
   - auth + subscription gate
   - AI add idea -> persisted locally -> synced -> visible on web
