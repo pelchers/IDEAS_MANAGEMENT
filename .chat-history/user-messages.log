@@ -62,3 +62,11 @@ we also want to integrate users and subscriptions in the app with authentication
 make frequent commits by ther weay so we never loose track of our progress
 
 ---
+[2026-02-10T01:22:43Z] role=user
+and should web build web first approach?
+
+---
+[2026-02-10T01:22:43Z] role=user
+ok make sure thats documented. also push to a savepoint 1 - preplanning complete branch before switching back to main (main and that branch will eb in sync after you updt the docs accoridngly0. from there i will direct you to orchretrate our adr/orchestration subfolders and tasks lists and files for each of those subfolders as per the adr agent/skill spec on how to do this. ill review them and direct you to proceed thereafter
+
+---
