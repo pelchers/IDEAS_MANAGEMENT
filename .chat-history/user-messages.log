@@ -70,3 +70,7 @@ and should web build web first approach?
 ok make sure thats documented. also push to a savepoint 1 - preplanning complete branch before switching back to main (main and that branch will eb in sync after you updt the docs accoridngly0. from there i will direct you to orchretrate our adr/orchestration subfolders and tasks lists and files for each of those subfolders as per the adr agent/skill spec on how to do this. ill review them and direct you to proceed thereafter
 
 ---
+[2026-02-10T05:23:26Z] role=user
+ok now make the @orchestration\ subfolder for our initiall app build with all the required files of that subfolder and you can use pointers to the .docs planning files as needed since we have a majority of docs there. i will then review the main task list that you make as per our adr conventions and let you know what i think. we are building for production so use as much thinking and planning as necessary to get it fully mapped out. when i confirm i like it we will so savepoint 2 - orchestration for app build v1 complete (pre build) as our next savepoint branch before we start building
+
+---
