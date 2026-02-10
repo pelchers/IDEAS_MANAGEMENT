@@ -74,3 +74,7 @@ ok make sure thats documented. also push to a savepoint 1 - preplanning complete
 ok now make the @orchestration\ subfolder for our initiall app build with all the required files of that subfolder and you can use pointers to the .docs planning files as needed since we have a majority of docs there. i will then review the main task list that you make as per our adr conventions and let you know what i think. we are building for production so use as much thinking and planning as necessary to get it fully mapped out. when i confirm i like it we will so savepoint 2 - orchestration for app build v1 complete (pre build) as our next savepoint branch before we start building
 
 ---
+[2026-02-10T05:32:50Z] role=user
+alrighty. i confirm it looks good. make that savepoint then back on main use longrunning agent to start completing those phases 1 by 1 and then fully test the app works. you can import C:\coding\docs\Hytale\.codex\agents\user-story-testing-agent.md this agent firt the final testing phase (or phase where you include testing) based on user stories. make sure the phase includes that requirement. and you can import this skill to help with that - make both of those imports and updtae the tasklist prior to making that savepoint branch - commit to both main and thast savepoint rbanch. then you can proceeed. here is the skill C:\coding\docs\Hytale\.codex\skills\testing-user-stories-validation
+
+---
