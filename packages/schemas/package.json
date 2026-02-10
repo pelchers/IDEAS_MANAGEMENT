@@ -1,0 +1,16 @@
+{
+  "name": "@idea-management/schemas",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "echo \"(todo) lint\"",
+    "test": "echo \"(todo) test\""
+  },
+  "dependencies": {
+    "zod": "^4.1.5"
+  }
+}

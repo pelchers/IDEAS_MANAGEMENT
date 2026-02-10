@@ -1,0 +1,23 @@
+# deps
+node_modules/
+
+# builds
+.next/
+out/
+dist/
+build/
+release/
+
+# tooling
+.turbo/
+coverage/
+
+# env
+.env
+.env.*
+
+# logs
+*.log
+
+# misc
+.DS_Store
