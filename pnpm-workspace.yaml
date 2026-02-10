@@ -3,7 +3,11 @@ packages:
   - packages/*
 
 onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - argon2
   - electron
   - esbuild
+  - prisma
   - sharp
   - unrs-resolver
