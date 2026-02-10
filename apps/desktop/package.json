@@ -1,0 +1,37 @@
+{
+  "name": "@idea-management/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "dev": "concurrently -k -n renderer,main,preload,electron \"pnpm dev:renderer\" \"pnpm dev:watch-main\" \"pnpm dev:watch-preload\" \"pnpm dev:electron\"",
+    "dev:renderer": "vite --host",
+    "dev:watch-main": "esbuild src/main/main.ts --bundle --platform=node --external:electron --outfile=dist/main/main.js --sourcemap --watch",
+    "dev:watch-preload": "esbuild src/preload/preload.ts --bundle --platform=node --external:electron --outfile=dist/preload/preload.js --sourcemap --watch",
+    "dev:electron": "wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron dist/main/main.js",
+    "build": "pnpm build:renderer && pnpm build:main && pnpm build:preload",
+    "build:renderer": "vite build",
+    "build:main": "esbuild src/main/main.ts --bundle --platform=node --external:electron --outfile=dist/main/main.js --minify --sourcemap",
+    "build:preload": "esbuild src/preload/preload.ts --bundle --platform=node --external:electron --outfile=dist/preload/preload.js --minify --sourcemap",
+    "start": "pnpm build && electron dist/main/main.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "electron": "^37.3.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.0",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "concurrently": "^9.2.1",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.25.9",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.3",
+    "wait-on": "^8.0.5"
+  }
+}
