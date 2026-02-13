@@ -1,0 +1,122 @@
+[
+    {
+        "jobId":  "signal-brutalist-pass-1",
+        "styleId":  "signal-brutalist",
+        "pass":  1,
+        "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\signal-brutalist\\pass-1",
+        "handoffFile":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\signal-brutalist\\pass-1/validation/handoff.json",
+        "status":  "completed",
+        "mode":  "concurrent",
+        "startedAt":  "2026-02-13T04:13:31.7808997Z",
+        "endedAt":  "2026-02-13T04:13:31.8960930Z",
+        "processId":  14960
+    },
+    {
+        "jobId":  "signal-brutalist-pass-2",
+        "styleId":  "signal-brutalist",
+        "pass":  2,
+        "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\signal-brutalist\\pass-2",
+        "handoffFile":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\signal-brutalist\\pass-2/validation/handoff.json",
+        "status":  "completed",
+        "mode":  "concurrent",
+        "startedAt":  "2026-02-13T04:13:31.8761888Z",
+        "endedAt":  "2026-02-13T04:13:31.9969844Z",
+        "processId":  46888
+    },
+    {
+        "jobId":  "aurora-glass-pass-1",
+        "styleId":  "aurora-glass",
+        "pass":  1,
+        "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\aurora-glass\\pass-1",
+        "handoffFile":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\aurora-glass\\pass-1/validation/handoff.json",
+        "status":  "completed",
+        "mode":  "concurrent",
+        "startedAt":  "2026-02-13T04:13:31.9686922Z",
+        "endedAt":  "2026-02-13T04:13:32.0743906Z",
+        "processId":  44108
+    },
+    {
+        "jobId":  "aurora-glass-pass-2",
+        "styleId":  "aurora-glass",
+        "pass":  2,
+        "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\aurora-glass\\pass-2",
+        "handoffFile":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\aurora-glass\\pass-2/validation/handoff.json",
+        "status":  "completed",
+        "mode":  "concurrent",
+        "startedAt":  "2026-02-13T04:13:32.0647662Z",
+        "endedAt":  "2026-02-13T04:13:32.1638084Z",
+        "processId":  5412
+    },
+    {
+        "jobId":  "ledger-editorial-pass-1",
+        "styleId":  "ledger-editorial",
+        "pass":  1,
+        "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\ledger-editorial\\pass-1",
+        "handoffFile":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\ledger-editorial\\pass-1/validation/handoff.json",
+        "status":  "completed",
+        "mode":  "concurrent",
+        "startedAt":  "2026-02-13T04:13:32.1449588Z",
+        "endedAt":  "2026-02-13T04:13:32.2487744Z",
+        "processId":  51268
+    },
+    {
+        "jobId":  "ledger-editorial-pass-2",
+        "styleId":  "ledger-editorial",
+        "pass":  2,
+        "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\ledger-editorial\\pass-2",
+        "handoffFile":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\ledger-editorial\\pass-2/validation/handoff.json",
+        "status":  "completed",
+        "mode":  "concurrent",
+        "startedAt":  "2026-02-13T04:13:32.2215527Z",
+        "endedAt":  "2026-02-13T04:13:32.3200938Z",
+        "processId":  52704
+    },
+    {
+        "jobId":  "industrial-terminal-pass-1",
+        "styleId":  "industrial-terminal",
+        "pass":  1,
+        "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\industrial-terminal\\pass-1",
+        "handoffFile":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\industrial-terminal\\pass-1/validation/handoff.json",
+        "status":  "completed",
+        "mode":  "concurrent",
+        "startedAt":  "2026-02-13T04:13:32.3163124Z",
+        "endedAt":  "2026-02-13T04:13:32.4187154Z",
+        "processId":  48508
+    },
+    {
+        "jobId":  "industrial-terminal-pass-2",
+        "styleId":  "industrial-terminal",
+        "pass":  2,
+        "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\industrial-terminal\\pass-2",
+        "handoffFile":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\industrial-terminal\\pass-2/validation/handoff.json",
+        "status":  "completed",
+        "mode":  "concurrent",
+        "startedAt":  "2026-02-13T04:13:32.3944099Z",
+        "endedAt":  "2026-02-13T04:13:32.4935275Z",
+        "processId":  39332
+    },
+    {
+        "jobId":  "playful-clay-pass-1",
+        "styleId":  "playful-clay",
+        "pass":  1,
+        "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\playful-clay\\pass-1",
+        "handoffFile":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\playful-clay\\pass-1/validation/handoff.json",
+        "status":  "completed",
+        "mode":  "concurrent",
+        "startedAt":  "2026-02-13T04:13:32.4703168Z",
+        "endedAt":  "2026-02-13T04:13:32.5700713Z",
+        "processId":  36300
+    },
+    {
+        "jobId":  "playful-clay-pass-2",
+        "styleId":  "playful-clay",
+        "pass":  2,
+        "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\playful-clay\\pass-2",
+        "handoffFile":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\playful-clay\\pass-2/validation/handoff.json",
+        "status":  "completed",
+        "mode":  "concurrent",
+        "startedAt":  "2026-02-13T04:13:32.5589937Z",
+        "endedAt":  "2026-02-13T04:13:32.6551297Z",
+        "processId":  30616
+    }
+]

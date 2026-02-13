@@ -88,3 +88,8 @@ can you test the orchestrator ot to make sure is abel to do handoffs to the suba
 
 ---
 
+[2026-02-13T04:13:26Z] role=user
+good. now can you use that orchestrator agent and subagents to do 10 passes of the app design (web app vairant) - then i can run live server off the index.html file of those to visually see it for myself but ill also just vbe able to view the validation folders images captured with playwrite to see if i dont wanna visirt the sites generation myself
+
+---
+
