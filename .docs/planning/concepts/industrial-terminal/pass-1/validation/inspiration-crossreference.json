@@ -1,0 +1,36 @@
+{
+    "key":  "industrial-terminal/pass-1",
+    "styleId":  "industrial-terminal",
+    "pass":  1,
+    "direction":  "CRT console workflow with command-line framing, scanlines, and status telemetry.",
+    "references":  [
+                       {
+                           "name":  "Hack The Box",
+                           "url":  "https://www.hackthebox.com",
+                           "traits":  [
+                                          "terminal culture",
+                                          "security operations visual language",
+                                          "neon-on-dark contrast"
+                                      ]
+                       },
+                       {
+                           "name":  "Grafana",
+                           "url":  "https://grafana.com",
+                           "traits":  [
+                                          "monitoring density",
+                                          "dashboard cadence",
+                                          "operational paneling"
+                                      ]
+                       },
+                       {
+                           "name":  "Splunk",
+                           "url":  "https://www.splunk.com",
+                           "traits":  [
+                                          "machine data emphasis",
+                                          "alert hierarchy",
+                                          "operator feedback loops"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T05:20:57.7891793Z"
+}

@@ -18,6 +18,10 @@ Each pass includes:
 - `app.js`
 - `README.md`
 - `validation/` (visual validation output target)
+  - `validation/handoff.json`
+  - `validation/inspiration-crossreference.json`
+  - `validation/report.playwright.json`
+  - `validation/screenshots/*.png`
 
 ## Quick Review
 
@@ -39,3 +43,4 @@ Output:
 - Per-pass screenshots under `validation/screenshots/`
 - Per-pass report at `validation/report.playwright.json`
 - Aggregate report: `.docs/planning/concepts/validation-report.json`
+- Uniqueness report: `.docs/planning/concepts/uniqueness-report.json`

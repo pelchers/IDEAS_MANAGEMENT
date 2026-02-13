@@ -3,6 +3,7 @@
     "pass":  1,
     "variantSeed":  "pastel-clay-cards",
     "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\playful-clay\\pass-1",
-    "generatedAt":  "2026-02-13T04:13:32.5239042Z",
+    "template":  "Playful Clay / Pass 1",
+    "generatedAt":  "2026-02-13T05:20:57.9516775Z",
     "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }

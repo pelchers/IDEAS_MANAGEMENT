@@ -10,3 +10,6 @@ Applied principles for this subagent:
 - Prefer meaningful animations (page transitions, stagger reveals, structural motion).
 - Keep concepts production-like and functionally navigable.
 - Different passes must not converge to the same visual language.
+
+External cross-reference catalog:
+- `.codex/skills/frontend-design-subagent/references/external-inspiration-catalog.json`

@@ -4,7 +4,12 @@
 - pass: 2
 - variant-seed: floating-dock-prism
 
-This pass contains a fully navigable app ideation with views for:
+## External Inspiration Cross-Reference
+- Stripe: https://stripe.com (traits: gradient confidence, enterprise polish, high legibility)
+- Vercel: https://vercel.com (traits: clean technical aesthetic, subtle motion, dense but readable UI)
+- Arc Browser: https://arc.net (traits: distinct navigation metaphors, soft translucency, layered UI planes)
+
+## Included Views
 - dashboard
 - projects
 - project-workspace
@@ -16,6 +21,8 @@ This pass contains a fully navigable app ideation with views for:
 - ai-chat
 - settings
 
-Validation artifacts should be captured in validation/:
-- Screenshots: validation/screenshots/*.png
-- Playwright report: validation/report.playwright.json
+Validation artifacts are written to:
+- validation/handoff.json
+- validation/inspiration-crossreference.json
+- validation/report.playwright.json
+- validation/screenshots/*.png

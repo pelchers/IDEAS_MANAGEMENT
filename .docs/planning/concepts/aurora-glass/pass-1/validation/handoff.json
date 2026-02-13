@@ -3,6 +3,7 @@
     "pass":  1,
     "variantSeed":  "frosted-sidebar-aurora",
     "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\aurora-glass\\pass-1",
-    "generatedAt":  "2026-02-13T04:13:32.0279946Z",
+    "template":  "Aurora Glass / Pass 1",
+    "generatedAt":  "2026-02-13T05:20:57.4619533Z",
     "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }

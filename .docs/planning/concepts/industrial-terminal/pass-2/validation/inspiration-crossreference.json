@@ -1,0 +1,36 @@
+{
+    "key":  "industrial-terminal/pass-2",
+    "styleId":  "industrial-terminal",
+    "pass":  2,
+    "direction":  "SCADA-style wallboard with grid diagnostics, LED semantics, and industrial labels.",
+    "references":  [
+                       {
+                           "name":  "Datadog",
+                           "url":  "https://www.datadoghq.com",
+                           "traits":  [
+                                          "multi-panel observability",
+                                          "status color semantics",
+                                          "dense telemetry"
+                                      ]
+                       },
+                       {
+                           "name":  "Cloudflare Dashboard",
+                           "url":  "https://dash.cloudflare.com",
+                           "traits":  [
+                                          "ops controls",
+                                          "critical alert prominence",
+                                          "network-centric modules"
+                                      ]
+                       },
+                       {
+                           "name":  "Cisco ThousandEyes",
+                           "url":  "https://www.thousandeyes.com",
+                           "traits":  [
+                                          "network maps",
+                                          "incident triage surfaces",
+                                          "system health framing"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T05:20:57.8650648Z"
+}

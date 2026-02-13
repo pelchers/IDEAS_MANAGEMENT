@@ -1,0 +1,36 @@
+{
+    "key":  "signal-brutalist/pass-2",
+    "styleId":  "signal-brutalist",
+    "pass":  2,
+    "direction":  "Stamped tactical control surfaces with industrial form labels and rigid framing.",
+    "references":  [
+                       {
+                           "name":  "MUBI",
+                           "url":  "https://mubi.com",
+                           "traits":  [
+                                          "strong typographic hierarchy",
+                                          "minimal color palette",
+                                          "cinematic framing"
+                                      ]
+                       },
+                       {
+                           "name":  "NTS Radio",
+                           "url":  "https://www.nts.live",
+                           "traits":  [
+                                          "grid rhythm",
+                                          "utility labels",
+                                          "high-density metadata"
+                                      ]
+                       },
+                       {
+                           "name":  "Frieze",
+                           "url":  "https://www.frieze.com",
+                           "traits":  [
+                                          "editorial blocks",
+                                          "hard rules",
+                                          "display-first typography"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T05:20:57.3862284Z"
+}

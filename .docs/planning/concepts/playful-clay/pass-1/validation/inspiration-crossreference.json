@@ -1,0 +1,36 @@
+{
+    "key":  "playful-clay/pass-1",
+    "styleId":  "playful-clay",
+    "pass":  1,
+    "direction":  "Tactile pastel workbench with rounded modules, sticker UI, and upbeat personality.",
+    "references":  [
+                       {
+                           "name":  "Duolingo",
+                           "url":  "https://www.duolingo.com",
+                           "traits":  [
+                                          "friendly tone",
+                                          "high-contrast callouts",
+                                          "playful interaction language"
+                                      ]
+                       },
+                       {
+                           "name":  "Mailchimp",
+                           "url":  "https://mailchimp.com",
+                           "traits":  [
+                                          "illustrated surfaces",
+                                          "warm personality",
+                                          "expressive accents"
+                                      ]
+                       },
+                       {
+                           "name":  "Pitch",
+                           "url":  "https://pitch.com",
+                           "traits":  [
+                                          "vibrant blocks",
+                                          "interactive cards",
+                                          "presentation-like clarity"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T05:20:57.9537191Z"
+}

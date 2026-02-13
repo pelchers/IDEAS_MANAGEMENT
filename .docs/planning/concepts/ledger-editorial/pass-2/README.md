@@ -4,7 +4,12 @@
 - pass: 2
 - variant-seed: monochrome-ledger
 
-This pass contains a fully navigable app ideation with views for:
+## External Inspiration Cross-Reference
+- Medium: https://medium.com (traits: readability, typographic pacing, focus mode clarity)
+- Substack: https://substack.com (traits: newsletter structure, long-form hierarchy, content-first framing)
+- Notion: https://www.notion.so (traits: document workspace patterns, simple controls, structured side navigation)
+
+## Included Views
 - dashboard
 - projects
 - project-workspace
@@ -16,6 +21,8 @@ This pass contains a fully navigable app ideation with views for:
 - ai-chat
 - settings
 
-Validation artifacts should be captured in validation/:
-- Screenshots: validation/screenshots/*.png
-- Playwright report: validation/report.playwright.json
+Validation artifacts are written to:
+- validation/handoff.json
+- validation/inspiration-crossreference.json
+- validation/report.playwright.json
+- validation/screenshots/*.png

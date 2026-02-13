@@ -18,15 +18,18 @@ Use this skill to run multi-style frontend concept ideation with strict pass iso
 - `--pass`
 - `--output-dir`
 - `--variant-seed`
-4. Enforce that each pass produces a full app frontend ideation (multi-view navigable experience).
-5. Run Playwright visual validation after generation.
-6. Write summary index for review.
+4. Enforce each pass to use a distinct layout archetype and design language.
+5. Run uniqueness validation across all generated passes and fail on high similarity.
+6. Run Playwright visual validation after generation.
+7. Write summary index for review.
 
 ## Required Artifacts
 - Concepts: `.docs/planning/concepts/<style>/pass-<n>/`
 - Validation screenshots: `.docs/planning/concepts/<style>/pass-<n>/validation/screenshots/*.png`
 - Validation report: `.docs/planning/concepts/<style>/pass-<n>/validation/report.playwright.json`
 - Handoff manifest: `.docs/planning/concepts/<style>/pass-<n>/validation/handoff.json`
+- Inspiration cross-reference: `.docs/planning/concepts/<style>/pass-<n>/validation/inspiration-crossreference.json`
+- Uniqueness report: `.docs/planning/concepts/uniqueness-report.json`
 
 ## Scripts
 - `scripts/build-pass-jobs.ps1` builds a job manifest from style config.

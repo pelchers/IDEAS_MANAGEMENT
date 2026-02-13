@@ -35,9 +35,12 @@ Runs the frontend concept ideation loop for `.docs/planning/concepts`.
 - `--pass`
 - `--output-dir`
 - `--variant-seed`
-6. Require each pass to output a full, navigable frontend ideation for the app pages (not a landing-page-only mock).
-7. Require Playwright visual validation for each pass and capture artifacts.
-8. Emit a summary index after generation with style and pass links.
+6. Require each pass to be wholly distinct in layout structure, typography, color language, spacing rhythm, and interaction framing.
+7. Require each pass to cross-reference external style inspiration and log it in pass artifacts.
+8. Enforce pairwise uniqueness validation before Playwright validation.
+9. Require each pass to output a full, navigable frontend ideation for the app pages (not a landing-page-only mock).
+10. Require Playwright visual validation for each pass and capture artifacts.
+11. Emit a summary index after generation with style and pass links.
 
 ## Required Page Views Per Pass
 - Dashboard
@@ -52,8 +55,10 @@ Runs the frontend concept ideation loop for `.docs/planning/concepts`.
 - Settings
 
 ## Validation Contract
+- Run uniqueness checks and fail when pass similarity exceeds configured threshold.
 - Run Playwright visual checks after generation.
 - Require screenshots per pass under `validation/screenshots/`.
 - Require per-pass report at `validation/report.playwright.json`.
 - Require per-pass handoff manifest at `validation/handoff.json`.
+- Require per-pass inspiration cross-reference at `validation/inspiration-crossreference.json`.
 - Fail orchestration if validation artifacts are missing.

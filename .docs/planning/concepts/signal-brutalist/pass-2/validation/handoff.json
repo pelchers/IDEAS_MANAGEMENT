@@ -3,6 +3,7 @@
     "pass":  2,
     "variantSeed":  "stamped-editorial-brutal",
     "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\signal-brutalist\\pass-2",
-    "generatedAt":  "2026-02-13T04:13:31.9371251Z",
+    "template":  "Signal Brutalist / Pass 2",
+    "generatedAt":  "2026-02-13T05:20:57.3837177Z",
     "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }

@@ -37,12 +37,14 @@ Handles exactly one `(style-id, pass)` job.
 - Provide a fully navigable frontend ideation covering all required app views.
 - Keep implementation plain HTML/CSS/JS for concept review.
 - Ensure desktop + mobile responsiveness.
-- Ensure this pass is visually and structurally distinct from previous passes.
+- Ensure this pass is visually and structurally distinct from every other pass in typography, layout architecture, component language, spacing, and color system.
+- Cross-reference external inspiration sites from the project catalog and log applied direction for this pass.
 
 ## Playwright Requirement
 - Run pass-level visual validation and write screenshots under `validation/screenshots/`.
 - Emit a pass-level validation report at `validation/report.playwright.json`.
 - Emit the handoff manifest at `validation/handoff.json`.
+- Emit `validation/inspiration-crossreference.json` with external references and style traits used.
 
 ## Inspiration Direction
 Use the aesthetic quality bar from Anthropic's `frontend-design` skill while avoiding repeated templates.

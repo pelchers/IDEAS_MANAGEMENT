@@ -4,7 +4,12 @@
 - pass: 1
 - variant-seed: brutal-grid-heavy
 
-This pass contains a fully navigable app ideation with views for:
+## External Inspiration Cross-Reference
+- Brutalist Websites Directory: https://brutalistwebsites.com (traits: raw geometry, thick borders, anti-polish typography)
+- Awwwards Brutalism Collection: https://www.awwwards.com/websites/brutalism/ (traits: disruptive block layout, asymmetry, high contrast)
+- OFFF Festival: https://www.offf.barcelona (traits: poster-like composition, graphic impact, editorial scale)
+
+## Included Views
 - dashboard
 - projects
 - project-workspace
@@ -16,6 +21,8 @@ This pass contains a fully navigable app ideation with views for:
 - ai-chat
 - settings
 
-Validation artifacts should be captured in validation/:
-- Screenshots: validation/screenshots/*.png
-- Playwright report: validation/report.playwright.json
+Validation artifacts are written to:
+- validation/handoff.json
+- validation/inspiration-crossreference.json
+- validation/report.playwright.json
+- validation/screenshots/*.png

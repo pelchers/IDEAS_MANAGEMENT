@@ -3,6 +3,7 @@
     "pass":  1,
     "variantSeed":  "broadsheet-columns",
     "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\ledger-editorial\\pass-1",
-    "generatedAt":  "2026-02-13T04:13:32.1988563Z",
+    "template":  "Ledger Editorial / Pass 1",
+    "generatedAt":  "2026-02-13T05:20:57.6365846Z",
     "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }

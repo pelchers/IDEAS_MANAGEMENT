@@ -8,11 +8,14 @@ $cfg = Get-Content -Raw -Path $ConfigPath | ConvertFrom-Json
 $buildJobsScript = (Resolve-Path '.codex/skills/planning-frontend-design-orchestrator/scripts/build-pass-jobs.ps1').Path
 $jobsManifestPath = '.codex/skills/planning-frontend-design-orchestrator/references/pass-jobs.json'
 $generateScript = (Resolve-Path '.codex/skills/frontend-design-subagent/scripts/generate-concept.ps1').Path
+$uniquenessScript = (Resolve-Path '.codex/skills/frontend-design-subagent/scripts/validate-design-uniqueness.mjs').Path
 $validateScript = (Resolve-Path '.codex/skills/frontend-design-subagent/scripts/validate-concepts-playwright.mjs').Path
 $workspaceRoot = (Get-Location).Path
 $outputRoot = [System.IO.Path]::GetFullPath((Join-Path $workspaceRoot $cfg.outputRoot))
 $concurrency = if ($cfg.orchestration.concurrency) { [int]$cfg.orchestration.concurrency } else { 5 }
 $validationSubfolder = if ($cfg.orchestration.validationSubfolder) { $cfg.orchestration.validationSubfolder } else { 'validation' }
+$uniquenessThreshold = if ($cfg.orchestration.uniquenessThreshold) { [double]$cfg.orchestration.uniquenessThreshold } else { 0.62 }
+$requireExternalInspiration = if ($null -ne $cfg.orchestration.requireExternalInspiration) { [bool]$cfg.orchestration.requireExternalInspiration } else { $true }
 $requireValidation = if ($null -ne $cfg.orchestration.requireValidation) { [bool]$cfg.orchestration.requireValidation } else { $true }
 
 $runId = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
@@ -69,8 +72,9 @@ if ($Sequential) {
       $active = @($active | Where-Object { $_.State -eq 'Running' })
     }
     $psJob = Start-Job -Name $job.jobId -ScriptBlock {
-      param($generateScriptPath, $styleId, $pass, $variantSeed, $outputDir)
+      param($generateScriptPath, $styleId, $pass, $variantSeed, $outputDir, $workspaceRootPath)
       $ErrorActionPreference = 'Stop'
+      Set-Location $workspaceRootPath
       $startedAt = (Get-Date).ToUniversalTime().ToString('o')
       & $generateScriptPath -StyleId $styleId -Pass $pass -VariantSeed $variantSeed -OutputDir $outputDir
       $endedAt = (Get-Date).ToUniversalTime().ToString('o')
@@ -82,7 +86,7 @@ if ($Sequential) {
         endedAt = $endedAt
         pid = $PID
       }
-    } -ArgumentList $generateScript, $job.styleId, $job.pass, $job.variantSeed, $job.outputDir
+    } -ArgumentList $generateScript, $job.styleId, $job.pass, $job.variantSeed, $job.outputDir, $workspaceRoot
     $active += $psJob
     $submitted += $psJob
   }
@@ -113,6 +117,12 @@ if ($Sequential) {
 
 $results | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $runLogRoot 'handoff-results.json')
 
+Write-Output "Running uniqueness validation..."
+node $uniquenessScript --concept-root $outputRoot --threshold $uniquenessThreshold
+if ($LASTEXITCODE -ne 0) {
+  throw "Uniqueness validation failed with exit code $LASTEXITCODE"
+}
+
 if ($requireValidation) {
   Write-Output "Running Playwright validation..."
   node $validateScript --concept-root $outputRoot
@@ -132,6 +142,9 @@ foreach ($r in $results) {
   if (-not (Test-Path (Join-Path $passValidationDir 'screenshots'))) {
     throw "Missing screenshots folder: $(Join-Path $passValidationDir 'screenshots')"
   }
+  if ($requireExternalInspiration -and -not (Test-Path (Join-Path $passValidationDir 'inspiration-crossreference.json'))) {
+    throw "Missing inspiration cross-reference file: $(Join-Path $passValidationDir 'inspiration-crossreference.json')"
+  }
 }
 
 $summary = [PSCustomObject]@{
@@ -139,6 +152,8 @@ $summary = [PSCustomObject]@{
   mode = if ($Sequential) { 'sequential' } else { 'concurrent' }
   concurrency = if ($Sequential) { 1 } else { $concurrency }
   totalJobs = $results.Count
+  uniquenessThreshold = $uniquenessThreshold
+  requireExternalInspiration = $requireExternalInspiration
   validationRequired = $requireValidation
   generatedAt = (Get-Date).ToUniversalTime().ToString('o')
   results = $results

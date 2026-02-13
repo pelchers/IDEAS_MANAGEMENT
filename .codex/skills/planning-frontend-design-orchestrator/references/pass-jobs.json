@@ -8,6 +8,7 @@
         "validationDir":  ".docs/planning/concepts/signal-brutalist/pass-1/validation",
         "screenshotsDir":  ".docs/planning/concepts/signal-brutalist/pass-1/validation/screenshots",
         "handoffFile":  ".docs/planning/concepts/signal-brutalist/pass-1/validation/handoff.json",
+        "inspirationFile":  ".docs/planning/concepts/signal-brutalist/pass-1/validation/inspiration-crossreference.json",
         "flags":  [
                       "--style-id signal-brutalist",
                       "--pass 1",
@@ -24,6 +25,7 @@
         "validationDir":  ".docs/planning/concepts/signal-brutalist/pass-2/validation",
         "screenshotsDir":  ".docs/planning/concepts/signal-brutalist/pass-2/validation/screenshots",
         "handoffFile":  ".docs/planning/concepts/signal-brutalist/pass-2/validation/handoff.json",
+        "inspirationFile":  ".docs/planning/concepts/signal-brutalist/pass-2/validation/inspiration-crossreference.json",
         "flags":  [
                       "--style-id signal-brutalist",
                       "--pass 2",
@@ -40,6 +42,7 @@
         "validationDir":  ".docs/planning/concepts/aurora-glass/pass-1/validation",
         "screenshotsDir":  ".docs/planning/concepts/aurora-glass/pass-1/validation/screenshots",
         "handoffFile":  ".docs/planning/concepts/aurora-glass/pass-1/validation/handoff.json",
+        "inspirationFile":  ".docs/planning/concepts/aurora-glass/pass-1/validation/inspiration-crossreference.json",
         "flags":  [
                       "--style-id aurora-glass",
                       "--pass 1",
@@ -56,6 +59,7 @@
         "validationDir":  ".docs/planning/concepts/aurora-glass/pass-2/validation",
         "screenshotsDir":  ".docs/planning/concepts/aurora-glass/pass-2/validation/screenshots",
         "handoffFile":  ".docs/planning/concepts/aurora-glass/pass-2/validation/handoff.json",
+        "inspirationFile":  ".docs/planning/concepts/aurora-glass/pass-2/validation/inspiration-crossreference.json",
         "flags":  [
                       "--style-id aurora-glass",
                       "--pass 2",
@@ -72,6 +76,7 @@
         "validationDir":  ".docs/planning/concepts/ledger-editorial/pass-1/validation",
         "screenshotsDir":  ".docs/planning/concepts/ledger-editorial/pass-1/validation/screenshots",
         "handoffFile":  ".docs/planning/concepts/ledger-editorial/pass-1/validation/handoff.json",
+        "inspirationFile":  ".docs/planning/concepts/ledger-editorial/pass-1/validation/inspiration-crossreference.json",
         "flags":  [
                       "--style-id ledger-editorial",
                       "--pass 1",
@@ -88,6 +93,7 @@
         "validationDir":  ".docs/planning/concepts/ledger-editorial/pass-2/validation",
         "screenshotsDir":  ".docs/planning/concepts/ledger-editorial/pass-2/validation/screenshots",
         "handoffFile":  ".docs/planning/concepts/ledger-editorial/pass-2/validation/handoff.json",
+        "inspirationFile":  ".docs/planning/concepts/ledger-editorial/pass-2/validation/inspiration-crossreference.json",
         "flags":  [
                       "--style-id ledger-editorial",
                       "--pass 2",
@@ -104,6 +110,7 @@
         "validationDir":  ".docs/planning/concepts/industrial-terminal/pass-1/validation",
         "screenshotsDir":  ".docs/planning/concepts/industrial-terminal/pass-1/validation/screenshots",
         "handoffFile":  ".docs/planning/concepts/industrial-terminal/pass-1/validation/handoff.json",
+        "inspirationFile":  ".docs/planning/concepts/industrial-terminal/pass-1/validation/inspiration-crossreference.json",
         "flags":  [
                       "--style-id industrial-terminal",
                       "--pass 1",
@@ -120,6 +127,7 @@
         "validationDir":  ".docs/planning/concepts/industrial-terminal/pass-2/validation",
         "screenshotsDir":  ".docs/planning/concepts/industrial-terminal/pass-2/validation/screenshots",
         "handoffFile":  ".docs/planning/concepts/industrial-terminal/pass-2/validation/handoff.json",
+        "inspirationFile":  ".docs/planning/concepts/industrial-terminal/pass-2/validation/inspiration-crossreference.json",
         "flags":  [
                       "--style-id industrial-terminal",
                       "--pass 2",
@@ -136,6 +144,7 @@
         "validationDir":  ".docs/planning/concepts/playful-clay/pass-1/validation",
         "screenshotsDir":  ".docs/planning/concepts/playful-clay/pass-1/validation/screenshots",
         "handoffFile":  ".docs/planning/concepts/playful-clay/pass-1/validation/handoff.json",
+        "inspirationFile":  ".docs/planning/concepts/playful-clay/pass-1/validation/inspiration-crossreference.json",
         "flags":  [
                       "--style-id playful-clay",
                       "--pass 1",
@@ -152,6 +161,7 @@
         "validationDir":  ".docs/planning/concepts/playful-clay/pass-2/validation",
         "screenshotsDir":  ".docs/planning/concepts/playful-clay/pass-2/validation/screenshots",
         "handoffFile":  ".docs/planning/concepts/playful-clay/pass-2/validation/handoff.json",
+        "inspirationFile":  ".docs/planning/concepts/playful-clay/pass-2/validation/inspiration-crossreference.json",
         "flags":  [
                       "--style-id playful-clay",
                       "--pass 2",

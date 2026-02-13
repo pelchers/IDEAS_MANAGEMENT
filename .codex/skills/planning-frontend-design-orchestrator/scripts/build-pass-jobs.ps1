@@ -20,6 +20,7 @@ foreach ($style in $cfg.styles) {
       validationDir = "$outputDir/$validationSubfolder"
       screenshotsDir = "$outputDir/$screenshotsSubfolder"
       handoffFile = "$outputDir/$validationSubfolder/handoff.json"
+      inspirationFile = "$outputDir/$validationSubfolder/inspiration-crossreference.json"
       flags = @(
         "--style-id $($style.id)",
         "--pass $($variant.pass)",

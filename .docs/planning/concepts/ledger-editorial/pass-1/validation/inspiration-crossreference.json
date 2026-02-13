@@ -1,0 +1,36 @@
+{
+    "key":  "ledger-editorial/pass-1",
+    "styleId":  "ledger-editorial",
+    "pass":  1,
+    "direction":  "Broadsheet product interface with newspaper composition and serif-led storytelling.",
+    "references":  [
+                       {
+                           "name":  "The New York Times",
+                           "url":  "https://www.nytimes.com",
+                           "traits":  [
+                                          "column hierarchy",
+                                          "serif dominance",
+                                          "story-first layout"
+                                      ]
+                       },
+                       {
+                           "name":  "The Guardian",
+                           "url":  "https://www.theguardian.com/international",
+                           "traits":  [
+                                          "module stacking",
+                                          "section signposting",
+                                          "editorial cards"
+                                      ]
+                       },
+                       {
+                           "name":  "Monocle",
+                           "url":  "https://monocle.com",
+                           "traits":  [
+                                          "publication rhythm",
+                                          "restrained palette",
+                                          "classic typography"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T05:20:57.6385904Z"
+}

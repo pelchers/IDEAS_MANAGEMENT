@@ -4,7 +4,12 @@
 - pass: 1
 - variant-seed: frosted-sidebar-aurora
 
-This pass contains a fully navigable app ideation with views for:
+## External Inspiration Cross-Reference
+- Apple Vision Pro: https://www.apple.com/apple-vision-pro/ (traits: glass layering, ambient gradients, floating surfaces)
+- Linear: https://linear.app (traits: precision spacing, calm dark surfaces, minimal but premium controls)
+- Raycast: https://www.raycast.com (traits: command centricity, smooth transitions, tool-like clarity)
+
+## Included Views
 - dashboard
 - projects
 - project-workspace
@@ -16,6 +21,8 @@ This pass contains a fully navigable app ideation with views for:
 - ai-chat
 - settings
 
-Validation artifacts should be captured in validation/:
-- Screenshots: validation/screenshots/*.png
-- Playwright report: validation/report.playwright.json
+Validation artifacts are written to:
+- validation/handoff.json
+- validation/inspiration-crossreference.json
+- validation/report.playwright.json
+- validation/screenshots/*.png

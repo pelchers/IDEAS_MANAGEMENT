@@ -3,6 +3,7 @@
     "pass":  2,
     "variantSeed":  "monochrome-ledger",
     "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\ledger-editorial\\pass-2",
-    "generatedAt":  "2026-02-13T04:13:32.2725474Z",
+    "template":  "Ledger Editorial / Pass 2",
+    "generatedAt":  "2026-02-13T05:20:57.7125831Z",
     "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }

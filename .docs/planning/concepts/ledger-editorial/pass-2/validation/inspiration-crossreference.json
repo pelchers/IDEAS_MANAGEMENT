@@ -1,0 +1,36 @@
+{
+    "key":  "ledger-editorial/pass-2",
+    "styleId":  "ledger-editorial",
+    "pass":  2,
+    "direction":  "Notebook and legal-ledger hybrid with tabbed chapters and monochrome precision.",
+    "references":  [
+                       {
+                           "name":  "Medium",
+                           "url":  "https://medium.com",
+                           "traits":  [
+                                          "readability",
+                                          "typographic pacing",
+                                          "focus mode clarity"
+                                      ]
+                       },
+                       {
+                           "name":  "Substack",
+                           "url":  "https://substack.com",
+                           "traits":  [
+                                          "newsletter structure",
+                                          "long-form hierarchy",
+                                          "content-first framing"
+                                      ]
+                       },
+                       {
+                           "name":  "Notion",
+                           "url":  "https://www.notion.so",
+                           "traits":  [
+                                          "document workspace patterns",
+                                          "simple controls",
+                                          "structured side navigation"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T05:20:57.7145844Z"
+}

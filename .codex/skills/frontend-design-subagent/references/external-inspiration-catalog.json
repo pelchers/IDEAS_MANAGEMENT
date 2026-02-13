@@ -1,0 +1,202 @@
+{
+  "signal-brutalist/pass-1": {
+    "direction": "Hardware-inspired brutalist dashboard with heavy geometry and aggressive negative space.",
+    "references": [
+      {
+        "name": "Brutalist Websites Directory",
+        "url": "https://brutalistwebsites.com",
+        "traits": ["raw geometry", "thick borders", "anti-polish typography"]
+      },
+      {
+        "name": "Awwwards Brutalism Collection",
+        "url": "https://www.awwwards.com/websites/brutalism/",
+        "traits": ["disruptive block layout", "asymmetry", "high contrast"]
+      },
+      {
+        "name": "OFFF Festival",
+        "url": "https://www.offf.barcelona",
+        "traits": ["poster-like composition", "graphic impact", "editorial scale"]
+      }
+    ]
+  },
+  "signal-brutalist/pass-2": {
+    "direction": "Stamped tactical control surfaces with industrial form labels and rigid framing.",
+    "references": [
+      {
+        "name": "MUBI",
+        "url": "https://mubi.com",
+        "traits": ["strong typographic hierarchy", "minimal color palette", "cinematic framing"]
+      },
+      {
+        "name": "NTS Radio",
+        "url": "https://www.nts.live",
+        "traits": ["grid rhythm", "utility labels", "high-density metadata"]
+      },
+      {
+        "name": "Frieze",
+        "url": "https://www.frieze.com",
+        "traits": ["editorial blocks", "hard rules", "display-first typography"]
+      }
+    ]
+  },
+  "aurora-glass/pass-1": {
+    "direction": "Deep-space frosted panes and floating dock navigation with atmospheric depth.",
+    "references": [
+      {
+        "name": "Apple Vision Pro",
+        "url": "https://www.apple.com/apple-vision-pro/",
+        "traits": ["glass layering", "ambient gradients", "floating surfaces"]
+      },
+      {
+        "name": "Linear",
+        "url": "https://linear.app",
+        "traits": ["precision spacing", "calm dark surfaces", "minimal but premium controls"]
+      },
+      {
+        "name": "Raycast",
+        "url": "https://www.raycast.com",
+        "traits": ["command centricity", "smooth transitions", "tool-like clarity"]
+      }
+    ]
+  },
+  "aurora-glass/pass-2": {
+    "direction": "Prismatic control room with radial focus, translucent rails, and luminous cards.",
+    "references": [
+      {
+        "name": "Stripe",
+        "url": "https://stripe.com",
+        "traits": ["gradient confidence", "enterprise polish", "high legibility"]
+      },
+      {
+        "name": "Vercel",
+        "url": "https://vercel.com",
+        "traits": ["clean technical aesthetic", "subtle motion", "dense but readable UI"]
+      },
+      {
+        "name": "Arc Browser",
+        "url": "https://arc.net",
+        "traits": ["distinct navigation metaphors", "soft translucency", "layered UI planes"]
+      }
+    ]
+  },
+  "ledger-editorial/pass-1": {
+    "direction": "Broadsheet product interface with newspaper composition and serif-led storytelling.",
+    "references": [
+      {
+        "name": "The New York Times",
+        "url": "https://www.nytimes.com",
+        "traits": ["column hierarchy", "serif dominance", "story-first layout"]
+      },
+      {
+        "name": "The Guardian",
+        "url": "https://www.theguardian.com/international",
+        "traits": ["module stacking", "section signposting", "editorial cards"]
+      },
+      {
+        "name": "Monocle",
+        "url": "https://monocle.com",
+        "traits": ["publication rhythm", "restrained palette", "classic typography"]
+      }
+    ]
+  },
+  "ledger-editorial/pass-2": {
+    "direction": "Notebook and legal-ledger hybrid with tabbed chapters and monochrome precision.",
+    "references": [
+      {
+        "name": "Medium",
+        "url": "https://medium.com",
+        "traits": ["readability", "typographic pacing", "focus mode clarity"]
+      },
+      {
+        "name": "Substack",
+        "url": "https://substack.com",
+        "traits": ["newsletter structure", "long-form hierarchy", "content-first framing"]
+      },
+      {
+        "name": "Notion",
+        "url": "https://www.notion.so",
+        "traits": ["document workspace patterns", "simple controls", "structured side navigation"]
+      }
+    ]
+  },
+  "industrial-terminal/pass-1": {
+    "direction": "CRT console workflow with command-line framing, scanlines, and status telemetry.",
+    "references": [
+      {
+        "name": "Hack The Box",
+        "url": "https://www.hackthebox.com",
+        "traits": ["terminal culture", "security operations visual language", "neon-on-dark contrast"]
+      },
+      {
+        "name": "Grafana",
+        "url": "https://grafana.com",
+        "traits": ["monitoring density", "dashboard cadence", "operational paneling"]
+      },
+      {
+        "name": "Splunk",
+        "url": "https://www.splunk.com",
+        "traits": ["machine data emphasis", "alert hierarchy", "operator feedback loops"]
+      }
+    ]
+  },
+  "industrial-terminal/pass-2": {
+    "direction": "SCADA-style wallboard with grid diagnostics, LED semantics, and industrial labels.",
+    "references": [
+      {
+        "name": "Datadog",
+        "url": "https://www.datadoghq.com",
+        "traits": ["multi-panel observability", "status color semantics", "dense telemetry"]
+      },
+      {
+        "name": "Cloudflare Dashboard",
+        "url": "https://dash.cloudflare.com",
+        "traits": ["ops controls", "critical alert prominence", "network-centric modules"]
+      },
+      {
+        "name": "Cisco ThousandEyes",
+        "url": "https://www.thousandeyes.com",
+        "traits": ["network maps", "incident triage surfaces", "system health framing"]
+      }
+    ]
+  },
+  "playful-clay/pass-1": {
+    "direction": "Tactile pastel workbench with rounded modules, sticker UI, and upbeat personality.",
+    "references": [
+      {
+        "name": "Duolingo",
+        "url": "https://www.duolingo.com",
+        "traits": ["friendly tone", "high-contrast callouts", "playful interaction language"]
+      },
+      {
+        "name": "Mailchimp",
+        "url": "https://mailchimp.com",
+        "traits": ["illustrated surfaces", "warm personality", "expressive accents"]
+      },
+      {
+        "name": "Pitch",
+        "url": "https://pitch.com",
+        "traits": ["vibrant blocks", "interactive cards", "presentation-like clarity"]
+      }
+    ]
+  },
+  "playful-clay/pass-2": {
+    "direction": "Comic-panel app shell with halftone textures, bold outlines, and speech-bubble controls.",
+    "references": [
+      {
+        "name": "Discord",
+        "url": "https://discord.com",
+        "traits": ["community energy", "expressive iconography", "dense interaction surfaces"]
+      },
+      {
+        "name": "Canva",
+        "url": "https://www.canva.com",
+        "traits": ["creative tooling cues", "visual blocks", "friendly affordances"]
+      },
+      {
+        "name": "Figma",
+        "url": "https://www.figma.com",
+        "traits": ["tool-heavy workspace", "multi-pane composition", "collaborative metaphors"]
+      }
+    ]
+  }
+}

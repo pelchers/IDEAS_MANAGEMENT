@@ -1,0 +1,36 @@
+{
+    "key":  "aurora-glass/pass-2",
+    "styleId":  "aurora-glass",
+    "pass":  2,
+    "direction":  "Prismatic control room with radial focus, translucent rails, and luminous cards.",
+    "references":  [
+                       {
+                           "name":  "Stripe",
+                           "url":  "https://stripe.com",
+                           "traits":  [
+                                          "gradient confidence",
+                                          "enterprise polish",
+                                          "high legibility"
+                                      ]
+                       },
+                       {
+                           "name":  "Vercel",
+                           "url":  "https://vercel.com",
+                           "traits":  [
+                                          "clean technical aesthetic",
+                                          "subtle motion",
+                                          "dense but readable UI"
+                                      ]
+                       },
+                       {
+                           "name":  "Arc Browser",
+                           "url":  "https://arc.net",
+                           "traits":  [
+                                          "distinct navigation metaphors",
+                                          "soft translucency",
+                                          "layered UI planes"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T05:20:57.5587755Z"
+}

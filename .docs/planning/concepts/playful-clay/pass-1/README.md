@@ -4,7 +4,12 @@
 - pass: 1
 - variant-seed: pastel-clay-cards
 
-This pass contains a fully navigable app ideation with views for:
+## External Inspiration Cross-Reference
+- Duolingo: https://www.duolingo.com (traits: friendly tone, high-contrast callouts, playful interaction language)
+- Mailchimp: https://mailchimp.com (traits: illustrated surfaces, warm personality, expressive accents)
+- Pitch: https://pitch.com (traits: vibrant blocks, interactive cards, presentation-like clarity)
+
+## Included Views
 - dashboard
 - projects
 - project-workspace
@@ -16,6 +21,8 @@ This pass contains a fully navigable app ideation with views for:
 - ai-chat
 - settings
 
-Validation artifacts should be captured in validation/:
-- Screenshots: validation/screenshots/*.png
-- Playwright report: validation/report.playwright.json
+Validation artifacts are written to:
+- validation/handoff.json
+- validation/inspiration-crossreference.json
+- validation/report.playwright.json
+- validation/screenshots/*.png

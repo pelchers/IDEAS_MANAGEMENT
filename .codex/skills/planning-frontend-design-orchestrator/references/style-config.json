@@ -5,7 +5,9 @@
     "concurrency": 5,
     "validationSubfolder": "validation",
     "screenshotsSubfolder": "validation/screenshots",
-    "requireValidation": true
+    "requireValidation": true,
+    "requireExternalInspiration": true,
+    "uniquenessThreshold": 0.62
   },
   "passesPerStyle": 2,
   "requiredViews": [

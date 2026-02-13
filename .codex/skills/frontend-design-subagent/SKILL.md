@@ -16,10 +16,11 @@ Use this skill for one pass only. Do not blend with other pass outputs.
 ## Hard Requirements
 1. Generate a fully navigable app frontend ideation (not a landing page).
 2. Include views for dashboard, projects, project workspace, kanban, whiteboard, schema planner, directory tree, ideas, AI chat, and settings.
-3. Keep each pass visually and structurally distinct from every other pass.
+3. Keep each pass wholly distinct from every other pass in layout, type, color language, spacing rhythm, and component shape language.
 4. Use plain HTML/CSS/JS to keep review friction low.
 5. Include responsive behavior for desktop and mobile.
-6. Include Playwright visual validation artifacts.
+6. Cross-reference external style inspiration from the catalog and record applied traits.
+7. Include Playwright visual validation artifacts.
 
 ## Files
 - `index.html`
@@ -27,11 +28,13 @@ Use this skill for one pass only. Do not blend with other pass outputs.
 - `app.js`
 - `README.md`
 - `validation/handoff.json`
+- `validation/inspiration-crossreference.json`
 - `validation/screenshots/*.png`
 - `validation/report.playwright.json`
 
 ## Scripts
 - `scripts/generate-concept.ps1` creates one concept pass.
+- `scripts/validate-design-uniqueness.mjs` enforces pairwise pass distinction.
 - `scripts/validate-concepts-playwright.mjs` captures screenshots for visual review.
 
 ## Inspiration

@@ -1,0 +1,36 @@
+{
+    "key":  "aurora-glass/pass-1",
+    "styleId":  "aurora-glass",
+    "pass":  1,
+    "direction":  "Deep-space frosted panes and floating dock navigation with atmospheric depth.",
+    "references":  [
+                       {
+                           "name":  "Apple Vision Pro",
+                           "url":  "https://www.apple.com/apple-vision-pro/",
+                           "traits":  [
+                                          "glass layering",
+                                          "ambient gradients",
+                                          "floating surfaces"
+                                      ]
+                       },
+                       {
+                           "name":  "Linear",
+                           "url":  "https://linear.app",
+                           "traits":  [
+                                          "precision spacing",
+                                          "calm dark surfaces",
+                                          "minimal but premium controls"
+                                      ]
+                       },
+                       {
+                           "name":  "Raycast",
+                           "url":  "https://www.raycast.com",
+                           "traits":  [
+                                          "command centricity",
+                                          "smooth transitions",
+                                          "tool-like clarity"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T05:20:57.4629574Z"
+}

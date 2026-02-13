@@ -4,7 +4,12 @@
 - pass: 1
 - variant-seed: green-vector-console
 
-This pass contains a fully navigable app ideation with views for:
+## External Inspiration Cross-Reference
+- Hack The Box: https://www.hackthebox.com (traits: terminal culture, security operations visual language, neon-on-dark contrast)
+- Grafana: https://grafana.com (traits: monitoring density, dashboard cadence, operational paneling)
+- Splunk: https://www.splunk.com (traits: machine data emphasis, alert hierarchy, operator feedback loops)
+
+## Included Views
 - dashboard
 - projects
 - project-workspace
@@ -16,6 +21,8 @@ This pass contains a fully navigable app ideation with views for:
 - ai-chat
 - settings
 
-Validation artifacts should be captured in validation/:
-- Screenshots: validation/screenshots/*.png
-- Playwright report: validation/report.playwright.json
+Validation artifacts are written to:
+- validation/handoff.json
+- validation/inspiration-crossreference.json
+- validation/report.playwright.json
+- validation/screenshots/*.png

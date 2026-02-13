@@ -4,7 +4,12 @@
 - pass: 2
 - variant-seed: comic-motion-bubbles
 
-This pass contains a fully navigable app ideation with views for:
+## External Inspiration Cross-Reference
+- Discord: https://discord.com (traits: community energy, expressive iconography, dense interaction surfaces)
+- Canva: https://www.canva.com (traits: creative tooling cues, visual blocks, friendly affordances)
+- Figma: https://www.figma.com (traits: tool-heavy workspace, multi-pane composition, collaborative metaphors)
+
+## Included Views
 - dashboard
 - projects
 - project-workspace
@@ -16,6 +21,8 @@ This pass contains a fully navigable app ideation with views for:
 - ai-chat
 - settings
 
-Validation artifacts should be captured in validation/:
-- Screenshots: validation/screenshots/*.png
-- Playwright report: validation/report.playwright.json
+Validation artifacts are written to:
+- validation/handoff.json
+- validation/inspiration-crossreference.json
+- validation/report.playwright.json
+- validation/screenshots/*.png

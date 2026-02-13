@@ -1,170 +1,334 @@
 param(
-  [Parameter(Mandatory=$true)][string]$StyleId,
-  [Parameter(Mandatory=$true)][int]$Pass,
-  [Parameter(Mandatory=$true)][string]$VariantSeed,
-  [Parameter(Mandatory=$true)][string]$OutputDir
+  [Parameter(Mandatory = $true)][string]$StyleId,
+  [Parameter(Mandatory = $true)][int]$Pass,
+  [Parameter(Mandatory = $true)][string]$VariantSeed,
+  [Parameter(Mandatory = $true)][string]$OutputDir
 )
 
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = "Stop"
+
 New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
-$validationDir = Join-Path $OutputDir 'validation'
-$screenshotsDir = Join-Path $validationDir 'screenshots'
+$validationDir = Join-Path $OutputDir "validation"
+$screenshotsDir = Join-Path $validationDir "screenshots"
 New-Item -ItemType Directory -Force -Path $validationDir | Out-Null
 New-Item -ItemType Directory -Force -Path $screenshotsDir | Out-Null
 
-$themes = @{
-  'signal-brutalist/pass-1'   = @{ title='Signal Brutalist / Pass 1';   tag='Raw Geometric Ops';        bg='#f6f1e7'; surface='#ffffff'; text='#0c0c0c'; muted='#4d4d4d'; border='#111111'; accent='#ff4f00'; accent2='#0a84ff'; body='"IBM Plex Sans", sans-serif'; heading='"Bebas Neue", "Arial Black", sans-serif'; mono='"IBM Plex Mono", monospace'; shell='shell-brutal-grid'; nav='side'; }
-  'signal-brutalist/pass-2'   = @{ title='Signal Brutalist / Pass 2';   tag='Stamped Tactical';         bg='#fffdf8'; surface='#fff8e6'; text='#151515'; muted='#535353'; border='#1d1d1d'; accent='#d72638'; accent2='#204ecf'; body='"Space Grotesk", sans-serif'; heading='"Archivo Black", Impact, sans-serif'; mono='"JetBrains Mono", monospace'; shell='shell-brutal-stamp'; nav='side'; }
-  'aurora-glass/pass-1'       = @{ title='Aurora Glass / Pass 1';       tag='Frosted Spectrum';         bg='#091b2b'; surface='rgba(255,255,255,0.15)'; text='#ecf7ff'; muted='#b7d7ea'; border='rgba(255,255,255,0.28)'; accent='#6df1ff'; accent2='#7ee787'; body='"Manrope", sans-serif'; heading='"Sora", sans-serif'; mono='"IBM Plex Mono", monospace'; shell='shell-glass-sidebar'; nav='side'; }
-  'aurora-glass/pass-2'       = @{ title='Aurora Glass / Pass 2';       tag='Prism Dock';               bg='#0a1020'; surface='rgba(255,255,255,0.12)'; text='#f3f8ff'; muted='#c2d2f8'; border='rgba(152,176,255,0.4)'; accent='#50e3c2'; accent2='#6ea8ff'; body='"DM Sans", sans-serif'; heading='"Syne", sans-serif'; mono='"Fira Code", monospace'; shell='shell-glass-dock'; nav='dock'; }
-  'ledger-editorial/pass-1'   = @{ title='Ledger Editorial / Pass 1';   tag='Broadsheet Desk';          bg='#f2ece2'; surface='#fffdfa'; text='#1e1a17'; muted='#6d645d'; border='#322a25'; accent='#9c4a21'; accent2='#2f5e8c'; body='"Source Serif 4", Georgia, serif'; heading='"Playfair Display", Georgia, serif'; mono='"Courier Prime", monospace'; shell='shell-editorial-columns'; nav='side'; }
-  'ledger-editorial/pass-2'   = @{ title='Ledger Editorial / Pass 2';   tag='Monochrome Ledger';        bg='#f5f5f5'; surface='#ffffff'; text='#111111'; muted='#555555'; border='#1f1f1f'; accent='#000000'; accent2='#3d3d3d'; body='"Work Sans", sans-serif'; heading='"Cormorant Garamond", serif'; mono='"IBM Plex Mono", monospace'; shell='shell-editorial-mono'; nav='top'; }
-  'industrial-terminal/pass-1'= @{ title='Industrial Terminal / Pass 1';tag='Green Vector Console';     bg='#050a05'; surface='#0d140d'; text='#7dff8f'; muted='#4fa35a'; border='#1f5f2a'; accent='#3dff72'; accent2='#36d4ff'; body='"IBM Plex Mono", monospace'; heading='"JetBrains Mono", monospace'; mono='"JetBrains Mono", monospace'; shell='shell-terminal-green'; nav='rail'; }
-  'industrial-terminal/pass-2'= @{ title='Industrial Terminal / Pass 2';tag='Amber Rack Ops';           bg='#120d08'; surface='#1d140d'; text='#ffd18a'; muted='#c18a4a'; border='#7a4b1f'; accent='#ff9f40'; accent2='#5db0ff'; body='"Rajdhani", sans-serif'; heading='"Share Tech Mono", monospace'; mono='"Share Tech Mono", monospace'; shell='shell-terminal-amber'; nav='rail'; }
-  'playful-clay/pass-1'       = @{ title='Playful Clay / Pass 1';       tag='Pastel Tactile Studio';    bg='#f6f0ff'; surface='#ffffff'; text='#281b3a'; muted='#6f5f87'; border='#c8b3ea'; accent='#ff6b6b'; accent2='#4ecdc4'; body='"Nunito", sans-serif'; heading='"Baloo 2", sans-serif'; mono='"Space Mono", monospace'; shell='shell-clay-soft'; nav='top'; }
-  'playful-clay/pass-2'       = @{ title='Playful Clay / Pass 2';       tag='Comic Motion Bubbles';     bg='#fff8eb'; surface='#ffffff'; text='#2d2142'; muted='#7f6a9a'; border='#bfa6ea'; accent='#ff7f50'; accent2='#00b4d8'; body='"Quicksand", sans-serif'; heading='"Fredoka", sans-serif'; mono='"DM Mono", monospace'; shell='shell-clay-comic'; nav='top'; }
+$key = "$StyleId/pass-$Pass"
+
+$templates = @{
+  "signal-brutalist/pass-1" = @{
+    title = "Signal Brutalist / Pass 1"; layoutMode = "brutal-grid"; sectionMode = "brutal-grid";
+    bodyClass = "brutal-grid"; navClass = "blk-nav-btn"; sectionClass = "blk-card";
+    colors = @{ bg = "#f2ead9"; text = "#111111"; surface = "#ffffff"; accent = "#ff4d00"; accent2 = "#0066ff"; border = "#111111" };
+  };
+  "signal-brutalist/pass-2" = @{
+    title = "Signal Brutalist / Pass 2"; layoutMode = "brutal-stamp"; sectionMode = "brutal-stamp";
+    bodyClass = "stamp-core"; navClass = "stamp-tab"; sectionClass = "stamp-card";
+    colors = @{ bg = "#fffaf0"; text = "#161616"; surface = "#ffffff"; accent = "#d72638"; accent2 = "#2552d8"; border = "#131313" };
+  };
+  "aurora-glass/pass-1" = @{
+    title = "Aurora Glass / Pass 1"; layoutMode = "glass-dock"; sectionMode = "glass-dock";
+    bodyClass = "aurora-night"; navClass = "gls-dock-btn"; sectionClass = "gls-pane";
+    colors = @{ bg = "#091224"; text = "#ecf7ff"; surface = "rgba(255,255,255,0.08)"; accent = "#53d8ff"; accent2 = "#7d7dff"; border = "rgba(149,220,255,0.5)" };
+  };
+  "aurora-glass/pass-2" = @{
+    title = "Aurora Glass / Pass 2"; layoutMode = "glass-orbit"; sectionMode = "glass-orbit";
+    bodyClass = "prism-orbit"; navClass = "prm-rail-btn"; sectionClass = "prm-node";
+    colors = @{ bg = "#edf5ff"; text = "#1a2340"; surface = "rgba(255,255,255,0.8)"; accent = "#6794ff"; accent2 = "#bd7aff"; border = "#98abd4" };
+  };
+  "ledger-editorial/pass-1" = @{
+    title = "Ledger Editorial / Pass 1"; layoutMode = "editorial-broadsheet"; sectionMode = "editorial-broadsheet";
+    bodyClass = "broadsheet"; navClass = "news-toc-btn"; sectionClass = "news-story";
+    colors = @{ bg = "#f1eadf"; text = "#1b1715"; surface = "#fffdf8"; accent = "#7d5938"; accent2 = "#2f5f88"; border = "#2b241f" };
+  };
+  "ledger-editorial/pass-2" = @{
+    title = "Ledger Editorial / Pass 2"; layoutMode = "editorial-ledger"; sectionMode = "editorial-ledger";
+    bodyClass = "legal-notebook"; navClass = "notebook-tab"; sectionClass = "note-page";
+    colors = @{ bg = "#f7f7f7"; text = "#131313"; surface = "#ffffff"; accent = "#111111"; accent2 = "#d86060"; border = "#1f1f1f" };
+  };
+  "industrial-terminal/pass-1" = @{
+    title = "Industrial Terminal / Pass 1"; layoutMode = "terminal-crt"; sectionMode = "terminal-crt";
+    bodyClass = "crt-room"; navClass = "crt-cmd"; sectionClass = "crt-screen";
+    colors = @{ bg = "#020702"; text = "#76ff90"; surface = "#071007"; accent = "#2f8f42"; accent2 = "#8affac"; border = "#1f5e2d" };
+  };
+  "industrial-terminal/pass-2" = @{
+    title = "Industrial Terminal / Pass 2"; layoutMode = "terminal-scada"; sectionMode = "terminal-scada";
+    bodyClass = "scada-wall"; navClass = "scada-switch"; sectionClass = "scada-module";
+    colors = @{ bg = "#16100a"; text = "#ffd79a"; surface = "#23180f"; accent = "#ffb567"; accent2 = "#67b9ff"; border = "#6b421f" };
+  };
+  "playful-clay/pass-1" = @{
+    title = "Playful Clay / Pass 1"; layoutMode = "clay-studio"; sectionMode = "clay-studio";
+    bodyClass = "clay-board"; navClass = "clay-chip"; sectionClass = "clay-blob";
+    colors = @{ bg = "#fff5fb"; text = "#2f2155"; surface = "#ffffff"; accent = "#ff7f90"; accent2 = "#7454d1"; border = "#d8c6ff" };
+  };
+  "playful-clay/pass-2" = @{
+    title = "Playful Clay / Pass 2"; layoutMode = "clay-comic"; sectionMode = "clay-comic";
+    bodyClass = "comic-shell"; navClass = "comic-bubble"; sectionClass = "comic-panel";
+    colors = @{ bg = "#fff6df"; text = "#23193c"; surface = "#ffffff"; accent = "#ff7a59"; accent2 = "#3f2f74"; border = "#23193c" };
+  };
 }
 
-$key = "$StyleId/pass-$Pass"
-if (-not $themes.ContainsKey($key)) { throw "Unknown style/pass: $key" }
-$t = $themes[$key]
+if (-not $templates.ContainsKey($key)) {
+  throw "Unknown style/pass: $key"
+}
+
+$t = $templates[$key]
+
+$views = @(
+  @{ id = "dashboard"; title = "Dashboard"; desc = "Cross-project velocity, risk, and delivery state." },
+  @{ id = "projects"; title = "Projects"; desc = "Drive-style browser for project directories and metadata." },
+  @{ id = "project-workspace"; title = "Project Workspace"; desc = "File tree and descriptor model from project.json." },
+  @{ id = "kanban"; title = "Kanban"; desc = "Backlog, in-progress, blocked, and done lanes." },
+  @{ id = "whiteboard"; title = "Whiteboard"; desc = "Container-rich ideation board with media inserts." },
+  @{ id = "schema-planner"; title = "Schema Planner"; desc = "Entity relationship and migration planning." },
+  @{ id = "directory-tree"; title = "Directory Tree"; desc = "Scaffold generation and folder governance." },
+  @{ id = "ideas"; title = "Ideas"; desc = "Capture queue with prioritization and linking." },
+  @{ id = "ai-chat"; title = "AI Chat"; desc = "Actionable assistant with project-wide file context." },
+  @{ id = "settings"; title = "Settings"; desc = "Authentication, subscription, and environment controls." }
+)
+
+function Get-NavButtons {
+  param([string]$ClassName, [string]$Prefix)
+  return ($views | ForEach-Object -Begin { $i = 0 } -Process {
+    $i++
+    "<button class='$ClassName' data-view='$($_.id)'><span>$Prefix$('{0:d2}' -f $i)</span>$($_.title)</button>"
+  }) -join "`n"
+}
+
+function Get-Sections {
+  param([string]$Mode, [string]$ClassName)
+  switch ($Mode) {
+    "brutal-grid" {
+      return ($views | ForEach-Object -Begin { $i = 0 } -Process {
+        $i++
+        "<article class='$ClassName' data-page='$($_.id)'><header><span class='blk-index'>$('{0:d2}' -f $i)</span><h2>$($_.title)</h2></header><p>$($_.desc)</p><div class='blk-rail'>MODULE $($_.id.ToUpper().Replace('-','_'))</div></article>"
+      }) -join "`n"
+    }
+    "brutal-stamp" {
+      return ($views | ForEach-Object {
+        "<section class='$ClassName' data-page='$($_.id)'><div class='stamp-head'><span>$($_.id.Replace('-',' '))</span><h2>$($_.title)</h2></div><p>$($_.desc)</p><ul><li>Requirement framing</li><li>Workflow impact</li><li>Integration hooks</li></ul></section>"
+      }) -join "`n"
+    }
+    "glass-dock" {
+      return ($views | ForEach-Object {
+        "<article class='$ClassName' data-page='$($_.id)'><h2>$($_.title)</h2><p>$($_.desc)</p><div class='gls-meta'>Synchronized project context and cross-tool continuity.</div></article>"
+      }) -join "`n"
+    }
+    "glass-orbit" {
+      return ($views | ForEach-Object -Begin { $i = 0 } -Process {
+        $i++
+        $lane = (($i - 1) % 3) + 1
+        $n = (($i - 1) % 5) + 1
+        "<section class='$ClassName n$n' data-page='$($_.id)'><h2>$($_.title)</h2><p>$($_.desc)</p><small>Prismatic lane $lane</small></section>"
+      }) -join "`n"
+    }
+    "editorial-broadsheet" {
+      return ($views | ForEach-Object -Begin { $i = 0 } -Process {
+        $i++
+        "<article class='$ClassName' data-page='$($_.id)'><p class='kicker'>Section $i</p><h2>$($_.title)</h2><p>$($_.desc)</p><div class='pull'>`"Execution detail follows planning discipline.`"</div></article>"
+      }) -join "`n"
+    }
+    "editorial-ledger" {
+      return ($views | ForEach-Object {
+        "<section class='$ClassName' data-page='$($_.id)'><h2>$($_.title)</h2><p>$($_.desc)</p><ol><li>Intent</li><li>Constraints</li><li>Definition of done</li></ol></section>"
+      }) -join "`n"
+    }
+    "terminal-crt" {
+      return ($views | ForEach-Object {
+        "<section class='$ClassName' data-page='$($_.id)'><h2>> $($_.title.ToUpper())</h2><p>$($_.desc)</p><pre>status: ONLINE`nlatency: 21ms`nsync: nominal</pre></section>"
+      }) -join "`n"
+    }
+    "terminal-scada" {
+      return ($views | ForEach-Object -Begin { $i = 10 } -Process {
+        $i++
+        $n = (($i - 11) % 4) + 1
+        "<article class='$ClassName m$n' data-page='$($_.id)'><h2>$($_.title)</h2><p>$($_.desc)</p><div class='scada-foot'>sector $i</div></article>"
+      }) -join "`n"
+    }
+    "clay-studio" {
+      return ($views | ForEach-Object -Begin { $i = 0 } -Process {
+        $i++
+        $b = (($i - 1) % 5) + 1
+        $spark = (($i - 1) % 4) + 1
+        "<section class='$ClassName b$b' data-page='$($_.id)'><h2>$($_.title)</h2><p>$($_.desc)</p><div class='clay-tag'>spark $spark</div></section>"
+      }) -join "`n"
+    }
+    "clay-comic" {
+      return ($views | ForEach-Object -Begin { $i = 101 } -Process {
+        $i++
+        $p = (($i - 102) % 6) + 1
+        "<article class='$ClassName p$p' data-page='$($_.id)'><h2>$($_.title)</h2><p>$($_.desc)</p><footer>Issue #$i</footer></article>"
+      }) -join "`n"
+    }
+    default { throw "Unsupported section mode: $Mode" }
+  }
+}
+
+$nav = Get-NavButtons -ClassName $t.navClass -Prefix "N-"
+$sections = Get-Sections -Mode $t.sectionMode -ClassName $t.sectionClass
+
+$fontLink = "<link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Baloo+2:wght@400;700&family=Bebas+Neue&family=Bricolage+Grotesque:wght@400;600;800&family=Chivo+Mono:wght@400;700&family=Cormorant+Garamond:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fira+Code:wght@400;500&family=Fredoka:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&family=Instrument+Serif&family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Nunito:wght@400;700&family=Oswald:wght@400;600&family=Outfit:wght@400;600;700&family=Playfair+Display:wght@500;700&family=Quicksand:wght@400;600;700&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&family=Source+Serif+4:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@500;700&family=VT323&display=swap' rel='stylesheet'>"
+
+function Get-Layout {
+  param([string]$Mode, [string]$Title, [string]$Seed, [string]$NavButtons, [string]$Sections, [string]$BodyClass)
+  switch ($Mode) {
+    "brutal-grid" {
+      return "<body class='$BodyClass' data-theme-root><div class='paper-noise'></div><section class='blk-shell'><aside class='blk-nav'><h1>Signal Grid Ops</h1><p>Poster-scale command surface for project planning.</p><nav>$NavButtons</nav></aside><main class='blk-stage'><div class='blk-hero'><p>Variant Seed: $Seed</p><h2>Hard-edge layout with uncompromising hierarchy</h2></div><section class='blk-panels'>$Sections</section></main></section></body>"
+    }
+    "brutal-stamp" {
+      return "<body class='$BodyClass' data-theme-root><header class='stamp-top'><h1>Stamped Tactical Ops</h1><p>Variant Seed: $Seed</p></header><nav class='stamp-bar'>$NavButtons</nav><main class='stamp-grid'>$Sections</main></body>"
+    }
+    "glass-dock" {
+      return "<body class='$BodyClass' data-theme-root><div class='aurora-cloud a'></div><div class='aurora-cloud b'></div><main class='gls-shell'><header><h1>Aurora Dock Suite</h1><p>$Seed</p></header><section class='gls-window'>$Sections</section></main><nav class='gls-dock'>$NavButtons</nav></body>"
+    }
+    "glass-orbit" {
+      return "<body class='$BodyClass' data-theme-root><div class='prm-halo'></div><aside class='prm-rail'>$NavButtons</aside><main class='prm-center'><header><h1>Prism Orbital Console</h1><p>Variant Seed: $Seed</p></header><div class='prm-orbit'>$Sections</div></main></body>"
+    }
+    "editorial-broadsheet" {
+      return "<body class='$BodyClass' data-theme-root><header class='news-masthead'><h1>Project Ledger Times</h1><p>$Seed</p></header><section class='news-layout'><nav class='news-toc'>$NavButtons</nav><main class='news-copy'>$Sections</main><aside class='news-brief'><h3>Edition Notes</h3><p>A publication-centric product shell tuned for planning depth.</p></aside></section></body>"
+    }
+    "editorial-ledger" {
+      return "<body class='$BodyClass' data-theme-root><div class='spine'></div><main class='note-shell'><header><h1>Monochrome Notebook Ops</h1><p>$Seed</p></header><nav class='note-tabs'>$NavButtons</nav><section class='note-sheet'>$Sections</section></main></body>"
+    }
+    "terminal-crt" {
+      return "<body class='$BodyClass' data-theme-root><div class='scanlines'></div><section class='crt-shell'><aside class='crt-console'><h1>Vector Command Core</h1><p>$Seed</p>$NavButtons</aside><main class='crt-output'>$Sections</main></section></body>"
+    }
+    "terminal-scada" {
+      return "<body class='$BodyClass' data-theme-root><header><h1>Rack Operations Wallboard</h1><p>$Seed</p></header><section class='scada-layout'><nav class='scada-switches'>$NavButtons</nav><main class='scada-grid'>$Sections</main></section></body>"
+    }
+    "clay-studio" {
+      return "<body class='$BodyClass' data-theme-root><header><h1>Tactile Studio Board</h1><p>$Seed</p></header><nav class='clay-rack'>$NavButtons</nav><main class='clay-canvas'>$Sections</main></body>"
+    }
+    "clay-comic" {
+      return "<body class='$BodyClass' data-theme-root><header><h1>Comic Motion Workspace</h1><p>$Seed</p></header><nav class='comic-nav'>$NavButtons</nav><section class='comic-grid'>$Sections</section></body>"
+    }
+    default { throw "Unsupported layout mode: $Mode" }
+  }
+}
+
+$bodyMarkup = Get-Layout -Mode $t.layoutMode -Title $t.title -Seed $VariantSeed -NavButtons $nav -Sections $sections -BodyClass $t.bodyClass
+
+$html = "<!doctype html><html lang='en'><head><meta charset='UTF-8' /><meta name='viewport' content='width=device-width, initial-scale=1.0' /><title>$($t.title)</title>$fontLink<link rel='stylesheet' href='./style.css' /></head>$bodyMarkup<script src='./app.js'></script></html>"
+
+$cssBase = @"
+:root{--bg:$($t.colors.bg);--text:$($t.colors.text);--surface:$($t.colors.surface);--accent:$($t.colors.accent);--accent2:$($t.colors.accent2);--border:$($t.colors.border)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+button{font:inherit}
+[data-page]{display:none}
+[data-page].active{display:block}
+"@
+
+switch ($t.layoutMode) {
+  "brutal-grid" {
+    $cssLayout = @"
+.brutal-grid{background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif}.paper-noise{position:fixed;inset:0;background-image:radial-gradient(rgba(0,0,0,.06) 1px,transparent 1px);background-size:4px 4px;pointer-events:none}.blk-shell{display:grid;grid-template-columns:320px 1fr;min-height:100vh}.blk-nav{border-right:4px solid var(--border);padding:20px;background:#fff7e6}.blk-nav-btn{border:3px solid var(--border);background:#fff;padding:10px 12px;text-align:left;font-weight:700;font-family:"IBM Plex Mono",monospace;display:grid;gap:4px;cursor:pointer}.blk-nav-btn.active{transform:translate(-6px,-4px);box-shadow:6px 4px 0 var(--accent)}.blk-stage{padding:22px;display:grid;gap:16px}.blk-hero{border:4px solid var(--border);padding:18px;background:linear-gradient(130deg,#fff 0%,#ffe8cf 100%)}.blk-panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.blk-card{border:4px solid var(--border);padding:14px;background:#fff;box-shadow:10px 10px 0 var(--accent2)}.blk-index{font-family:"Anton",sans-serif;font-size:1.8rem;color:var(--accent)}@media (max-width:1024px){.blk-shell{grid-template-columns:1fr}.blk-nav{border-right:none;border-bottom:2px solid var(--border)}.blk-panels{grid-template-columns:1fr}}
+"@
+  }
+  "brutal-stamp" {
+    $cssLayout = @"
+.stamp-core{background:var(--bg);color:var(--text);font-family:"Chivo Mono",monospace}.stamp-top{display:flex;justify-content:space-between;align-items:end;padding:22px;border-bottom:4px double var(--border);background:#fff}.stamp-bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-bottom:2px solid var(--border)}.stamp-tab{border:none;border-right:2px solid var(--border);background:#fff;padding:12px 10px;text-align:left;font-family:"Space Grotesk",sans-serif;font-weight:700;display:grid;gap:4px;cursor:pointer}.stamp-tab strong{font-size:.75rem;color:var(--accent)}.stamp-tab.active{background:var(--border);color:#fff}.stamp-grid{padding:18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.stamp-card{border:3px solid var(--border);background:#fff;padding:14px}.stamp-head{display:flex;justify-content:space-between;align-items:start;gap:8px}@media (max-width:1024px){.stamp-bar{grid-template-columns:repeat(2,minmax(0,1fr))}.stamp-grid{grid-template-columns:1fr}}
+"@
+  }
+  "glass-dock" {
+    $cssLayout = @"
+.aurora-night{background:radial-gradient(circle at 10% 20%,#13253a 0%,#070b18 60%,#05060f 100%);color:var(--text);font-family:"Manrope",sans-serif;overflow-x:hidden}.aurora-cloud{position:fixed;border-radius:999px;filter:blur(50px);opacity:.45;pointer-events:none}.aurora-cloud.a{width:35vw;height:35vw;left:-8vw;top:-9vw;background:var(--accent)}.aurora-cloud.b{width:30vw;height:30vw;right:-6vw;bottom:-8vw;background:var(--accent2)}.gls-shell{max-width:1180px;margin:0 auto;padding:28px 18px 170px;position:relative;z-index:1}.gls-window{margin-top:18px;border:1px solid var(--border);backdrop-filter:blur(22px);background:var(--surface);border-radius:22px;padding:20px;min-height:420px}.gls-pane{background:rgba(13,28,48,.62);border:1px solid var(--border);border-radius:18px;padding:16px}.gls-dock{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;width:min(1200px,calc(100% - 24px));background:rgba(9,20,36,.78);border:1px solid var(--border);border-radius:20px;padding:10px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;backdrop-filter:blur(12px)}.gls-dock-btn{border:1px solid var(--border);border-radius:12px;background:rgba(29,53,88,.45);color:var(--text);padding:10px 8px;font-size:.78rem;cursor:pointer}.gls-dock-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#041018;font-weight:700}@media (max-width:1024px){.gls-dock{position:static;transform:none;width:auto;grid-template-columns:repeat(2,minmax(0,1fr));margin:0 10px 12px}}
+"@
+  }
+  "glass-orbit" {
+    $cssLayout = @"
+.prism-orbit{background:linear-gradient(135deg,#edf5ff 0%,#dae6ff 52%,#fde9ff 100%);font-family:"DM Sans",sans-serif;color:var(--text);display:grid;grid-template-columns:240px 1fr}.prm-halo{position:fixed;width:48vw;height:48vw;left:50%;top:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,#7fd8ff55 0%,#b689ff33 42%,transparent 70%);pointer-events:none}.prm-rail{padding:18px;border-right:1px solid var(--border);background:#ffffffbb;backdrop-filter:blur(10px);display:grid;gap:8px;align-content:start}.prm-rail-btn{display:flex;gap:10px;align-items:center;border:1px solid var(--border);background:#f6f8ff;border-radius:10px;padding:8px 10px;cursor:pointer;font-weight:600;color:#24325a}.prm-rail-btn.active{background:#2e3e72;color:#f2f6ff;border-color:#2e3e72}.prm-center{padding:20px 24px;position:relative;z-index:1}.prm-orbit{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}.prm-node{padding:16px;border-radius:18px;border:1px solid var(--border);background:#ffffffb8;backdrop-filter:blur(8px)}.prm-node.active{grid-column:span 8}@media (max-width:1024px){.prism-orbit{grid-template-columns:1fr}.prm-rail{border-right:none;border-bottom:2px solid var(--border);grid-template-columns:repeat(2,minmax(0,1fr))}.prm-node.active{grid-column:span 12}}
+"@
+  }
+  "editorial-broadsheet" {
+    $cssLayout = @"
+.broadsheet{background:var(--bg);color:var(--text);font-family:"Source Serif 4",serif}.news-masthead{display:flex;justify-content:space-between;align-items:baseline;padding:18px 20px;border-bottom:3px solid var(--border);background:#fffaf2}.news-layout{display:grid;grid-template-columns:220px 1fr 260px;gap:14px;padding:16px}.news-toc{display:grid;gap:8px;align-content:start}.news-toc-btn{border:1px solid var(--border);background:#fffdf8;padding:10px;text-align:left;font-family:"Newsreader",serif;cursor:pointer}.news-toc-btn.active{background:#1f1a17;color:#fffdf8}.news-copy{columns:2;column-gap:16px}.news-story{break-inside:avoid;border:1px solid #3a312c;background:#fffdf8;padding:12px;margin-bottom:14px}@media (max-width:1024px){.news-layout{grid-template-columns:1fr}.news-copy{columns:1}}
+"@
+  }
+  "editorial-ledger" {
+    $cssLayout = @"
+.legal-notebook{background:repeating-linear-gradient(#f7f7f7 0 34px,#ededed 34px 35px);font-family:"Newsreader",serif;color:var(--text);display:grid;grid-template-columns:80px 1fr}.spine{background:linear-gradient(#1c1c1c,#373737);box-shadow:inset -6px 0 0 #555}.note-shell{padding:20px 24px}.note-shell header{display:flex;justify-content:space-between;align-items:end;border-bottom:2px solid var(--border);padding-bottom:8px}.note-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}.notebook-tab{background:#fff;border:1px solid var(--border);padding:10px 12px;text-align:left;font-family:"IBM Plex Sans",sans-serif;font-weight:600;cursor:pointer}.notebook-tab.active{background:#111;color:#fff}.note-sheet{border:2px solid var(--border);background:#fff;padding:14px;min-height:380px;position:relative}.note-sheet::before{content:"";position:absolute;left:16px;top:0;bottom:0;width:2px;background:var(--accent2)}.note-page{padding-left:26px}@media (max-width:1024px){.legal-notebook{grid-template-columns:1fr}.spine{display:none}.note-tabs{grid-template-columns:1fr}}
+"@
+  }
+  "terminal-crt" {
+    $cssLayout = @"
+.crt-room{background:var(--bg);color:var(--text);font-family:"VT323",monospace}.scanlines{position:fixed;inset:0;pointer-events:none;background:linear-gradient(rgba(0,0,0,.22) 50%,transparent 50%);background-size:100% 4px;opacity:.5}.crt-shell{display:grid;grid-template-columns:300px 1fr;min-height:100vh;position:relative;z-index:1}.crt-console{border-right:1px solid var(--border);padding:18px;background:#081208}.crt-cmd{display:block;width:100%;margin-bottom:8px;border:1px solid var(--accent);background:#0d1f0e;color:var(--accent2);text-align:left;padding:8px 10px;font-size:1.15rem;cursor:pointer}.crt-cmd.active{background:var(--accent2);color:#042408}.crt-output{padding:18px;display:grid;gap:12px}.crt-screen{border:1px solid var(--accent);background:var(--surface);padding:12px}@media (max-width:1024px){.crt-shell{grid-template-columns:1fr}.crt-console{border-right:none;border-bottom:2px solid var(--border)}}
+"@
+  }
+  "terminal-scada" {
+    $cssLayout = @"
+.scada-wall{background:var(--bg);color:var(--text);font-family:"Rajdhani",sans-serif}.scada-wall>header{display:flex;justify-content:space-between;align-items:end;padding:16px 20px;border-bottom:2px solid var(--border);background:#1f1610}.scada-layout{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 82px)}.scada-switches{padding:14px;border-right:2px solid var(--border);display:grid;gap:8px;align-content:start;background:#19120d}.scada-switch{border:1px solid var(--border);background:#281b12;color:var(--text);padding:9px 10px;text-align:left;font-weight:700;cursor:pointer}.scada-switch.active{background:var(--accent);color:#281807}.scada-grid{padding:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.scada-module{border:2px solid var(--border);padding:12px;background:var(--surface)}@media (max-width:1024px){.scada-layout{grid-template-columns:1fr}.scada-switches{border-right:none;border-bottom:2px solid var(--border);grid-template-columns:repeat(2,minmax(0,1fr))}.scada-grid{grid-template-columns:1fr}}
+"@
+  }
+  "clay-studio" {
+    $cssLayout = @"
+.clay-board{background:linear-gradient(180deg,#fff5fb 0%,#f2f6ff 52%,#f0fff7 100%);font-family:"Nunito",sans-serif;color:var(--text)}.clay-board>header{display:flex;justify-content:space-between;align-items:end;padding:18px 20px}.clay-rack{display:flex;flex-wrap:wrap;gap:8px;padding:0 20px 16px}.clay-chip{border:none;border-radius:999px;background:#fff;box-shadow:0 8px 14px rgba(73,59,143,.15);padding:10px 14px;font-weight:700;color:#3d2c63;cursor:pointer}.clay-chip.active{background:var(--accent);color:#fff}.clay-canvas{padding:10px 20px 24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.clay-blob{padding:16px;border-radius:28px;background:#fff;border:2px solid var(--border);box-shadow:0 14px 24px rgba(92,74,177,.18)}@media (max-width:1024px){.clay-canvas{grid-template-columns:1fr}}
+"@
+  }
+  "clay-comic" {
+    $cssLayout = @"
+.comic-shell{background:var(--bg);color:var(--text);font-family:"Quicksand",sans-serif;background-image:radial-gradient(circle,#00000022 1px,transparent 1px);background-size:10px 10px}.comic-shell>header{display:flex;justify-content:space-between;align-items:end;padding:18px 20px;border-bottom:4px solid var(--border);background:#ffe9ac}.comic-nav{display:flex;flex-wrap:wrap;gap:10px;padding:14px 20px}.comic-bubble{border:3px solid var(--border);border-radius:999px;background:#fff;padding:8px 12px;font-weight:700;cursor:pointer;box-shadow:4px 4px 0 var(--border)}.comic-bubble.active{background:var(--accent);color:#fff}.comic-grid{padding:8px 20px 24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.comic-panel{border:4px solid var(--border);border-radius:16px;padding:12px;box-shadow:8px 8px 0 var(--border)}.p1{background:#ffd3d9}.p2{background:#cff5ff}.p3{background:#dcffd8}.p4{background:#ffe9bf}.p5{background:#e3dbff}.p6{background:#fff}@media (max-width:1024px){.comic-grid{grid-template-columns:1fr}}
+"@
+  }
+  default {
+    throw "Unsupported layout mode for css: $($t.layoutMode)"
+  }
+}
+
+$css = $cssBase + "`n" + $cssLayout
+
+$js = @"
+(() => {
+  const buttons = Array.from(document.querySelectorAll("button[data-view]"));
+  const pages = Array.from(document.querySelectorAll("[data-page]"));
+  function activate(id) {
+    buttons.forEach((btn) => btn.classList.toggle("active", btn.dataset.view === id));
+    pages.forEach((page) => page.classList.toggle("active", page.dataset.page === id));
+    const root = document.querySelector("[data-theme-root]") || document.body;
+    root.setAttribute("data-active-view", id);
+    const url = new URL(window.location.href);
+    url.hash = id;
+    history.replaceState({}, "", url);
+  }
+  buttons.forEach((btn) => btn.addEventListener("click", () => activate(btn.dataset.view)));
+  activate(window.location.hash ? window.location.hash.slice(1) : "dashboard");
+})();
+"@
+
+$catalogPath = ".codex/skills/frontend-design-subagent/references/external-inspiration-catalog.json"
+if (-not (Test-Path $catalogPath)) {
+  throw "Missing inspiration catalog: $catalogPath"
+}
+$catalogObj = Get-Content -Raw -Path $catalogPath | ConvertFrom-Json
+$catalog = @{}
+$catalogObj.PSObject.Properties | ForEach-Object {
+  $catalog[$_.Name] = $_.Value
+}
+if (-not $catalog.ContainsKey($key)) {
+  throw "Missing inspiration cross-reference entry for $key"
+}
+$inspiration = $catalog[$key]
 
 $handoff = [PSCustomObject]@{
   styleId = $StyleId
   pass = $Pass
   variantSeed = $VariantSeed
   outputDir = $OutputDir
-  generatedAt = (Get-Date).ToUniversalTime().ToString('o')
-  script = '.codex/skills/frontend-design-subagent/scripts/generate-concept.ps1'
+  template = $t.title
+  generatedAt = (Get-Date).ToUniversalTime().ToString("o")
+  script = ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }
-$handoff | ConvertTo-Json -Depth 4 | Set-Content -Path (Join-Path $validationDir 'handoff.json')
+$inspirationLog = [PSCustomObject]@{
+  key = $key
+  styleId = $StyleId
+  pass = $Pass
+  direction = $inspiration.direction
+  references = $inspiration.references
+  appliedAt = (Get-Date).ToUniversalTime().ToString("o")
+}
 
-$views = @(
-  @{ id='dashboard'; title='Dashboard'; desc='Cross-project velocity, risk, and delivery state.' },
-  @{ id='projects'; title='Projects'; desc='Drive-style browser for project directories and metadata.' },
-  @{ id='project-workspace'; title='Project Workspace'; desc='File tree + descriptors from project.json.' },
-  @{ id='kanban'; title='Kanban'; desc='Backlog, in-progress, blocked, and done swimlanes.' },
-  @{ id='whiteboard'; title='Whiteboard'; desc='Container-rich visual ideation surface.' },
-  @{ id='schema-planner'; title='Schema Planner'; desc='Entity and relationship planning workspace.' },
-  @{ id='directory-tree'; title='Directory Tree'; desc='Scaffold preview and generation controls.' },
-  @{ id='ideas'; title='Ideas'; desc='Capture queue and prioritization board.' },
-  @{ id='ai-chat'; title='AI Chat'; desc='Assistant interface with file-writing actions.' },
-  @{ id='settings'; title='Settings'; desc='Auth, billing, and feature preferences.' }
-)
-
-$navButtons = ($views | ForEach-Object { "<button class='nav-item' data-view='$($_.id)'>$($_.title)</button>" }) -join "`n"
-$sections = ($views | ForEach-Object {
-@"
-<section class='view' id='view-$($_.id)' data-view='$($_.id)'>
-  <header class='view-head'>
-    <h2>$($_.title)</h2>
-    <p>$($_.desc)</p>
-  </header>
-  <div class='view-grid'>
-    <article class='panel'>
-      <h3>Primary Surface</h3>
-      <p>Variant seed: <strong>$VariantSeed</strong></p>
-      <ul>
-        <li>Navigable application-style structure</li>
-        <li>Responsive desktop/mobile layout logic</li>
-        <li>Distinct aesthetic direction for this pass</li>
-      </ul>
-    </article>
-    <article class='panel'>
-      <h3>Execution Notes</h3>
-      <p>This concept is <strong>$StyleId pass $Pass</strong>.</p>
-      <div class='chip-row'>
-        <span class='chip'>Production-style frontend</span>
-        <span class='chip'>No auth gating in concept mode</span>
-        <span class='chip'>Playwright validation required</span>
-      </div>
-    </article>
-  </div>
-</section>
-"@
+$readmeRefs = ($inspiration.references | ForEach-Object {
+  "- $($_.name): $($_.url) (traits: $([string]::Join(', ', $_.traits)))"
 }) -join "`n"
-
-$fontLink = "<link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Archivo+Black&family=Baloo+2:wght@400;700&family=Bebas+Neue&family=Cormorant+Garamond:wght@500;700&family=Courier+Prime:wght@400;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Fira+Code:wght@400;500&family=Fredoka:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;600;700&family=Nunito:wght@400;700&family=Playfair+Display:wght@500;700&family=Quicksand:wght@400;600;700&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&family=Sora:wght@400;600;700&family=Source+Serif+4:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@500;700&family=Work+Sans:wght@400;600;700&display=swap' rel='stylesheet'>"
-
-$html = @"
-<!doctype html>
-<html lang='en'>
-<head>
-<meta charset='UTF-8' />
-<meta name='viewport' content='width=device-width, initial-scale=1.0' />
-<title>$($t.title)</title>
-$fontLink
-<link rel='stylesheet' href='./style.css' />
-</head>
-<body class='$($t.shell) nav-$($t.nav)'>
-<div class='ambient a'></div><div class='ambient b'></div>
-<div class='app-shell'>
-  <aside class='nav-shell'>
-    <div class='brand'><div class='brand-top'>$($t.tag)</div><h1>Idea Management</h1><p>Full app frontend ideation for visual review before implementation.</p></div>
-    <nav class='nav'>$navButtons</nav>
-  </aside>
-  <main class='content'>
-    <section class='hero'>
-      <div><h2>$($t.title)</h2><p>All core pages are navigable via this pass interface.</p></div>
-      <div class='hero-meta'><span>style=$StyleId</span><span>pass=$Pass</span><span>seed=$VariantSeed</span></div>
-    </section>
-    $sections
-  </main>
-</div>
-<script src='./app.js'></script>
-</body>
-</html>
-"@
-
-$css = @"
-:root { --bg:$($t.bg); --surface:$($t.surface); --text:$($t.text); --muted:$($t.muted); --border:$($t.border); --accent:$($t.accent); --accent2:$($t.accent2); --body:$($t.body); --heading:$($t.heading); --mono:$($t.mono); }
-*{box-sizing:border-box} html,body{margin:0;min-height:100%}
-body{font-family:var(--body);background:var(--bg);color:var(--text);overflow-x:hidden}
-.ambient{position:fixed;filter:blur(42px);opacity:.35;pointer-events:none;z-index:0}.ambient.a{width:30vw;height:30vw;top:-8vw;right:-8vw;background:var(--accent)}.ambient.b{width:26vw;height:26vw;bottom:-8vw;left:-8vw;background:var(--accent2)}
-.app-shell{position:relative;z-index:1;display:grid;grid-template-columns:300px 1fr;min-height:100vh}
-.nav-shell{border-right:2px solid var(--border);padding:20px;background:color-mix(in srgb,var(--surface) 84%,transparent);backdrop-filter:blur(8px)}
-.brand-top{display:inline-block;padding:4px 8px;border:1px solid var(--border);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
-.brand h1{font-family:var(--heading);margin:8px 0;font-size:clamp(1.6rem,2vw,2.4rem)} .brand p{color:var(--muted);margin:0}
-.nav{margin-top:16px;display:grid;gap:8px}
-.nav-item{border:1px solid var(--border);background:color-mix(in srgb,var(--surface) 75%,transparent);color:var(--text);padding:10px 12px;text-align:left;border-radius:12px;font-family:var(--mono);font-size:12px;cursor:pointer;transition:.2s}
-.nav-item:hover{transform:translateX(2px);border-color:var(--accent)} .nav-item.active{background:color-mix(in srgb,var(--accent) 18%,var(--surface));border-color:var(--accent)}
-.content{padding:24px}
-.hero,.view{border:2px solid var(--border);border-radius:16px;padding:16px;background:color-mix(in srgb,var(--surface) 88%,transparent)}
-.hero{display:flex;justify-content:space-between;gap:16px;align-items:start}
-.hero h2{margin:0 0 8px;font-family:var(--heading);font-size:clamp(1.4rem,2.4vw,2.6rem)} .hero p{margin:0;color:var(--muted)}
-.hero-meta{display:grid;gap:8px} .hero-meta span{font-family:var(--mono);font-size:11px;border:1px dashed var(--border);padding:6px 8px;border-radius:10px}
-.view{display:none;margin-top:16px;animation:fade .35s ease}.view.active{display:block}
-.view-head h2{margin:0;font-family:var(--heading)} .view-head p{margin:8px 0 0;color:var(--muted)}
-.view-grid{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.panel{border:1px solid var(--border);border-radius:12px;padding:12px;background:color-mix(in srgb,var(--surface) 94%,transparent)}
-.panel h3{margin:0 0 8px;font-family:var(--heading)} .panel p,.panel li{color:var(--muted)}
-.chip-row{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid var(--border);padding:4px 8px;border-radius:999px;font-family:var(--mono);font-size:11px;background:color-mix(in srgb,var(--accent2) 14%,transparent)}
-.shell-brutal-grid .hero,.shell-brutal-grid .view,.shell-brutal-grid .panel{border-radius:0;box-shadow:8px 8px 0 var(--border);border-width:3px}
-.shell-brutal-stamp .panel{border-style:dashed}.shell-brutal-stamp .hero{transform:rotate(-.25deg)}
-.shell-glass-sidebar .hero,.shell-glass-sidebar .view,.shell-glass-sidebar .panel{backdrop-filter:blur(14px);box-shadow:0 18px 40px rgba(0,0,0,.26)}
-.nav-dock .app-shell{grid-template-columns:1fr}.nav-dock .nav-shell{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;top:auto;height:auto;width:min(1200px,calc(100% - 24px));display:grid;grid-template-columns:240px 1fr;border:1px solid var(--border);border-radius:18px;z-index:9}.nav-dock .nav{grid-template-columns:repeat(5,minmax(0,1fr))}.nav-dock .nav-item{text-align:center}.nav-dock .content{padding-bottom:180px}
-.shell-editorial-columns .view-grid{grid-template-columns:2fr 1fr}.shell-editorial-mono .hero,.shell-editorial-mono .view,.shell-editorial-mono .panel{border-radius:4px}
-.nav-rail .app-shell{grid-template-columns:92px 1fr}.nav-rail .brand p,.nav-rail .brand h1{display:none}.nav-rail .nav-shell{padding:14px}.nav-rail .nav-item{writing-mode:vertical-rl;text-orientation:mixed;min-height:84px;text-align:center}
-.shell-terminal-green .hero,.shell-terminal-green .view,.shell-terminal-green .panel,.shell-terminal-amber .hero,.shell-terminal-amber .view,.shell-terminal-amber .panel{border-style:dotted}
-.shell-clay-soft .hero,.shell-clay-soft .view,.shell-clay-soft .panel{box-shadow:0 12px 20px rgba(66,37,122,.15);border-color:color-mix(in srgb,var(--border) 70%,transparent)}
-.shell-clay-comic .hero,.shell-clay-comic .view,.shell-clay-comic .panel{border-width:3px;border-radius:24px}.shell-clay-comic .nav-item{border-radius:999px}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@media (max-width:1024px){.app-shell{grid-template-columns:1fr}.nav-shell{border-right:0;border-bottom:2px solid var(--border)}.view-grid{grid-template-columns:1fr}.nav-dock .nav-shell{position:static;transform:none;width:auto;border-radius:0;grid-template-columns:1fr}.nav-dock .nav{grid-template-columns:repeat(2,minmax(0,1fr))}.nav-dock .content{padding-bottom:24px}.nav-rail .app-shell{grid-template-columns:1fr}.nav-rail .nav-item{writing-mode:horizontal-tb;min-height:auto;text-align:left}}
-"@
-
-$js = @"
-(function(){
-  const buttons = Array.from(document.querySelectorAll('.nav-item'));
-  const views = Array.from(document.querySelectorAll('.view'));
-  function activate(id){
-    buttons.forEach((b)=>b.classList.toggle('active', b.dataset.view===id));
-    views.forEach((v)=>v.classList.toggle('active', v.dataset.view===id));
-    const u = new URL(window.location.href); u.hash = id; history.replaceState({},'',u);
-  }
-  buttons.forEach((b)=>b.addEventListener('click',()=>activate(b.dataset.view)));
-  activate(window.location.hash ? window.location.hash.slice(1) : 'dashboard');
-})();
-"@
 
 $readme = @"
 # $($t.title)
@@ -173,7 +337,10 @@ $readme = @"
 - pass: $Pass
 - variant-seed: $VariantSeed
 
-This pass contains a fully navigable app ideation with views for:
+## External Inspiration Cross-Reference
+$readmeRefs
+
+## Included Views
 - dashboard
 - projects
 - project-workspace
@@ -185,13 +352,18 @@ This pass contains a fully navigable app ideation with views for:
 - ai-chat
 - settings
 
-Validation artifacts should be captured in validation/:
-- Screenshots: validation/screenshots/*.png
-- Playwright report: validation/report.playwright.json
+Validation artifacts are written to:
+- validation/handoff.json
+- validation/inspiration-crossreference.json
+- validation/report.playwright.json
+- validation/screenshots/*.png
 "@
 
-Set-Content -Path (Join-Path $OutputDir 'index.html') -Value $html
-Set-Content -Path (Join-Path $OutputDir 'style.css') -Value $css
-Set-Content -Path (Join-Path $OutputDir 'app.js') -Value $js
-Set-Content -Path (Join-Path $OutputDir 'README.md') -Value $readme
+Set-Content -Path (Join-Path $OutputDir "index.html") -Value $html
+Set-Content -Path (Join-Path $OutputDir "style.css") -Value $css
+Set-Content -Path (Join-Path $OutputDir "app.js") -Value $js
+Set-Content -Path (Join-Path $OutputDir "README.md") -Value $readme
+Set-Content -Path (Join-Path $validationDir "handoff.json") -Value ($handoff | ConvertTo-Json -Depth 6)
+Set-Content -Path (Join-Path $validationDir "inspiration-crossreference.json") -Value ($inspirationLog | ConvertTo-Json -Depth 8)
+
 Write-Output "Generated $OutputDir"
