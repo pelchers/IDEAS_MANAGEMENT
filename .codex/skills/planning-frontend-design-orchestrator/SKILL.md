@@ -13,7 +13,7 @@ Use this skill to run multi-style frontend concept ideation with strict pass iso
 ## Workflow
 1. Read the style config.
 2. Build one job per `(style, pass)`.
-3. Dispatch each job independently to `frontend-design-subagent` with flags:
+3. Dispatch each job independently and concurrently to `frontend-design-subagent` with flags:
 - `--style-id`
 - `--pass`
 - `--output-dir`
@@ -24,12 +24,13 @@ Use this skill to run multi-style frontend concept ideation with strict pass iso
 
 ## Required Artifacts
 - Concepts: `.docs/planning/concepts/<style>/pass-<n>/`
-- Validation screenshots: `.docs/planning/concepts/<style>/pass-<n>/validation/playwright/`
-- Validation report: `.docs/planning/concepts/<style>/pass-<n>/validation/playwright/report.json`
+- Validation screenshots: `.docs/planning/concepts/<style>/pass-<n>/validation/screenshots/*.png`
+- Validation report: `.docs/planning/concepts/<style>/pass-<n>/validation/report.playwright.json`
+- Handoff manifest: `.docs/planning/concepts/<style>/pass-<n>/validation/handoff.json`
 
 ## Scripts
 - `scripts/build-pass-jobs.ps1` builds a job manifest from style config.
-- `scripts/run-local-orchestration.ps1` local fallback generator for all passes.
+- `scripts/run-local-orchestration.ps1` local fallback orchestrator with concurrent isolated job dispatch and validation checks.
 
 ## Notes
 - Keep style config editable so style families and pass count can be changed without rewriting orchestration logic.

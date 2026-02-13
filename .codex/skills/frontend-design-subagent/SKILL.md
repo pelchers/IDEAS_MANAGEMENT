@@ -26,7 +26,9 @@ Use this skill for one pass only. Do not blend with other pass outputs.
 - `style.css`
 - `app.js`
 - `README.md`
-- `validation/playwright/` outputs
+- `validation/handoff.json`
+- `validation/screenshots/*.png`
+- `validation/report.playwright.json`
 
 ## Scripts
 - `scripts/generate-concept.ps1` creates one concept pass.

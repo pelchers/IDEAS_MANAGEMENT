@@ -7,7 +7,10 @@ param(
 
 $ErrorActionPreference = 'Stop'
 New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
-New-Item -ItemType Directory -Force -Path (Join-Path $OutputDir 'validation/playwright') | Out-Null
+$validationDir = Join-Path $OutputDir 'validation'
+$screenshotsDir = Join-Path $validationDir 'screenshots'
+New-Item -ItemType Directory -Force -Path $validationDir | Out-Null
+New-Item -ItemType Directory -Force -Path $screenshotsDir | Out-Null
 
 $themes = @{
   'signal-brutalist/pass-1'   = @{ title='Signal Brutalist / Pass 1';   tag='Raw Geometric Ops';        bg='#f6f1e7'; surface='#ffffff'; text='#0c0c0c'; muted='#4d4d4d'; border='#111111'; accent='#ff4f00'; accent2='#0a84ff'; body='"IBM Plex Sans", sans-serif'; heading='"Bebas Neue", "Arial Black", sans-serif'; mono='"IBM Plex Mono", monospace'; shell='shell-brutal-grid'; nav='side'; }
@@ -25,6 +28,16 @@ $themes = @{
 $key = "$StyleId/pass-$Pass"
 if (-not $themes.ContainsKey($key)) { throw "Unknown style/pass: $key" }
 $t = $themes[$key]
+
+$handoff = [PSCustomObject]@{
+  styleId = $StyleId
+  pass = $Pass
+  variantSeed = $VariantSeed
+  outputDir = $OutputDir
+  generatedAt = (Get-Date).ToUniversalTime().ToString('o')
+  script = '.codex/skills/frontend-design-subagent/scripts/generate-concept.ps1'
+}
+$handoff | ConvertTo-Json -Depth 4 | Set-Content -Path (Join-Path $validationDir 'handoff.json')
 
 $views = @(
   @{ id='dashboard'; title='Dashboard'; desc='Cross-project velocity, risk, and delivery state.' },
@@ -172,7 +185,9 @@ This pass contains a fully navigable app ideation with views for:
 - ai-chat
 - settings
 
-Validation artifacts should be captured in `validation/playwright/`.
+Validation artifacts should be captured in `validation/`:
+- Screenshots: `validation/screenshots/*.png`
+- Playwright report: `validation/report.playwright.json`
 "@
 
 Set-Content -Path (Join-Path $OutputDir 'index.html') -Value $html

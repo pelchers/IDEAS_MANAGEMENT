@@ -17,7 +17,7 @@ Each pass includes:
 - `style.css`
 - `app.js`
 - `README.md`
-- `validation/playwright/` (visual validation output target)
+- `validation/` (visual validation output target)
 
 ## Quick Review
 
@@ -36,6 +36,6 @@ node .codex/skills/frontend-design-subagent/scripts/validate-concepts-playwright
 ```
 
 Output:
-- Per-pass screenshots and `report.json` under `validation/playwright/`
+- Per-pass screenshots under `validation/screenshots/`
+- Per-pass report at `validation/report.playwright.json`
 - Aggregate report: `.docs/planning/concepts/validation-report.json`
-

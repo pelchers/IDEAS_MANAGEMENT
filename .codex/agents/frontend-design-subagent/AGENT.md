@@ -40,8 +40,9 @@ Handles exactly one `(style-id, pass)` job.
 - Ensure this pass is visually and structurally distinct from previous passes.
 
 ## Playwright Requirement
-- Run pass-level visual validation and write screenshots under `validation/playwright/`.
-- Emit a pass-level validation report.
+- Run pass-level visual validation and write screenshots under `validation/screenshots/`.
+- Emit a pass-level validation report at `validation/report.playwright.json`.
+- Emit the handoff manifest at `validation/handoff.json`.
 
 ## Inspiration Direction
 Use the aesthetic quality bar from Anthropic's `frontend-design` skill while avoiding repeated templates.

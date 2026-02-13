@@ -18,6 +18,13 @@ async function exists(p) {
 }
 
 const conceptRoot = path.resolve(arg("--concept-root", ".docs/planning/concepts"));
+const configPath = path.resolve(
+  arg(
+    "--config",
+    ".codex/skills/planning-frontend-design-orchestrator/references/style-config.json"
+  )
+);
+
 if (!(await exists(conceptRoot))) {
   console.error(`Concept root not found: ${conceptRoot}`);
   process.exit(1);
@@ -31,11 +38,7 @@ try {
   process.exit(2);
 }
 
-const browser = await chromium.launch({ headless: true });
-const context = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
-const page = await context.newPage();
-
-const requiredViews = [
+let requiredViews = [
   "dashboard",
   "projects",
   "project-workspace",
@@ -47,6 +50,21 @@ const requiredViews = [
   "ai-chat",
   "settings"
 ];
+
+if (await exists(configPath)) {
+  try {
+    const config = JSON.parse(await fs.readFile(configPath, "utf8"));
+    if (Array.isArray(config.requiredViews) && config.requiredViews.length > 0) {
+      requiredViews = config.requiredViews;
+    }
+  } catch (error) {
+    console.warn(`Failed to read requiredViews from config: ${error.message}`);
+  }
+}
+
+const browser = await chromium.launch({ headless: true });
+const context = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
+const page = await context.newPage();
 
 const styles = (await fs.readdir(conceptRoot, { withFileTypes: true })).filter((d) => d.isDirectory());
 const aggregate = [];
@@ -62,29 +80,40 @@ for (const style of styles) {
     const indexPath = path.join(passPath, "index.html");
     if (!(await exists(indexPath))) continue;
 
-    const outDir = path.join(passPath, "validation", "playwright");
-    await fs.mkdir(outDir, { recursive: true });
+    const validationDir = path.join(passPath, "validation");
+    const screenshotsDir = path.join(validationDir, "screenshots");
+    await fs.mkdir(screenshotsDir, { recursive: true });
 
     const fileUrl = `file:///${indexPath.replace(/\\/g, "/")}`;
     await page.goto(fileUrl);
 
     const screenshots = [];
     for (const view of requiredViews) {
-      await page.click(`button[data-view='${view}']`);
+      const selector = `button[data-view='${view}']`;
+      const button = page.locator(selector);
+      if ((await button.count()) === 0) {
+        throw new Error(`Missing nav button for view '${view}' in ${style.name}/${pass.name}`);
+      }
+      await button.first().click();
       await page.waitForTimeout(120);
-      const shot = path.join(outDir, `${view}.png`);
-      await page.screenshot({ path: shot, fullPage: true });
-      screenshots.push(path.basename(shot));
+      const shotPath = path.join(screenshotsDir, `${view}.png`);
+      await page.screenshot({ path: shotPath, fullPage: true });
+      screenshots.push(path.relative(passPath, shotPath).replace(/\\/g, "/"));
     }
 
     const report = {
       style: style.name,
       pass: pass.name,
+      requiredViews,
       screenshots,
       timestamp: new Date().toISOString()
     };
 
-    await fs.writeFile(path.join(outDir, "report.json"), JSON.stringify(report, null, 2), "utf8");
+    await fs.writeFile(
+      path.join(validationDir, "report.playwright.json"),
+      JSON.stringify(report, null, 2),
+      "utf8"
+    );
     aggregate.push(report);
   }
 }
