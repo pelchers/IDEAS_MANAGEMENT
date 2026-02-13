@@ -1,5 +1,5 @@
 ---
-skill_name: using-claude-hooks
+name: using-claude-hooks
 description: Implement and use Claude Code hooks for automation, validation, and workflow enhancement
 category: development-workflow
 tags: [hooks, automation, validation, workflow, claude-code]

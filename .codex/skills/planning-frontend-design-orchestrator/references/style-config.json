@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "outputRoot": ".docs/planning/concepts",
+  "passesPerStyle": 2,
+  "requiredViews": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "styles": [
+    {
+      "id": "signal-brutalist",
+      "label": "Signal Brutalist",
+      "notes": "High-contrast geometric raw blocks with assertive typography.",
+      "passVariants": [
+        { "pass": 1, "variantSeed": "brutal-grid-heavy" },
+        { "pass": 2, "variantSeed": "stamped-editorial-brutal" }
+      ]
+    },
+    {
+      "id": "aurora-glass",
+      "label": "Aurora Glass",
+      "notes": "Layered translucent panes and atmospheric gradients.",
+      "passVariants": [
+        { "pass": 1, "variantSeed": "frosted-sidebar-aurora" },
+        { "pass": 2, "variantSeed": "floating-dock-prism" }
+      ]
+    },
+    {
+      "id": "ledger-editorial",
+      "label": "Ledger Editorial",
+      "notes": "Publication-grade layout with serif hierarchy and structured reading flow.",
+      "passVariants": [
+        { "pass": 1, "variantSeed": "broadsheet-columns" },
+        { "pass": 2, "variantSeed": "monochrome-ledger" }
+      ]
+    },
+    {
+      "id": "industrial-terminal",
+      "label": "Industrial Terminal",
+      "notes": "Operational control-room aesthetic with machine-grade paneling.",
+      "passVariants": [
+        { "pass": 1, "variantSeed": "green-vector-console" },
+        { "pass": 2, "variantSeed": "amber-rack-ops" }
+      ]
+    },
+    {
+      "id": "playful-clay",
+      "label": "Playful Clay",
+      "notes": "Soft tactile surfaces, bold color cues, and friendly visual rhythm.",
+      "passVariants": [
+        { "pass": 1, "variantSeed": "pastel-clay-cards" },
+        { "pass": 2, "variantSeed": "comic-motion-bubbles" }
+      ]
+    }
+  ]
+}

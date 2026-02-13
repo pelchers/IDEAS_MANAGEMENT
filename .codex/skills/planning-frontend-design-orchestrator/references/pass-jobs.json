@@ -1,0 +1,132 @@
+[
+  {
+    "styleId": "signal-brutalist",
+    "styleLabel": "Signal Brutalist",
+    "pass": 1,
+    "variantSeed": "brutal-grid-heavy",
+    "outputDir": ".docs/planning/concepts/signal-brutalist/pass-1",
+    "flags": [
+      "--style-id signal-brutalist",
+      "--pass 1",
+      "--output-dir .docs/planning/concepts/signal-brutalist/pass-1",
+      "--variant-seed brutal-grid-heavy"
+    ]
+  },
+  {
+    "styleId": "signal-brutalist",
+    "styleLabel": "Signal Brutalist",
+    "pass": 2,
+    "variantSeed": "stamped-editorial-brutal",
+    "outputDir": ".docs/planning/concepts/signal-brutalist/pass-2",
+    "flags": [
+      "--style-id signal-brutalist",
+      "--pass 2",
+      "--output-dir .docs/planning/concepts/signal-brutalist/pass-2",
+      "--variant-seed stamped-editorial-brutal"
+    ]
+  },
+  {
+    "styleId": "aurora-glass",
+    "styleLabel": "Aurora Glass",
+    "pass": 1,
+    "variantSeed": "frosted-sidebar-aurora",
+    "outputDir": ".docs/planning/concepts/aurora-glass/pass-1",
+    "flags": [
+      "--style-id aurora-glass",
+      "--pass 1",
+      "--output-dir .docs/planning/concepts/aurora-glass/pass-1",
+      "--variant-seed frosted-sidebar-aurora"
+    ]
+  },
+  {
+    "styleId": "aurora-glass",
+    "styleLabel": "Aurora Glass",
+    "pass": 2,
+    "variantSeed": "floating-dock-prism",
+    "outputDir": ".docs/planning/concepts/aurora-glass/pass-2",
+    "flags": [
+      "--style-id aurora-glass",
+      "--pass 2",
+      "--output-dir .docs/planning/concepts/aurora-glass/pass-2",
+      "--variant-seed floating-dock-prism"
+    ]
+  },
+  {
+    "styleId": "ledger-editorial",
+    "styleLabel": "Ledger Editorial",
+    "pass": 1,
+    "variantSeed": "broadsheet-columns",
+    "outputDir": ".docs/planning/concepts/ledger-editorial/pass-1",
+    "flags": [
+      "--style-id ledger-editorial",
+      "--pass 1",
+      "--output-dir .docs/planning/concepts/ledger-editorial/pass-1",
+      "--variant-seed broadsheet-columns"
+    ]
+  },
+  {
+    "styleId": "ledger-editorial",
+    "styleLabel": "Ledger Editorial",
+    "pass": 2,
+    "variantSeed": "monochrome-ledger",
+    "outputDir": ".docs/planning/concepts/ledger-editorial/pass-2",
+    "flags": [
+      "--style-id ledger-editorial",
+      "--pass 2",
+      "--output-dir .docs/planning/concepts/ledger-editorial/pass-2",
+      "--variant-seed monochrome-ledger"
+    ]
+  },
+  {
+    "styleId": "industrial-terminal",
+    "styleLabel": "Industrial Terminal",
+    "pass": 1,
+    "variantSeed": "green-vector-console",
+    "outputDir": ".docs/planning/concepts/industrial-terminal/pass-1",
+    "flags": [
+      "--style-id industrial-terminal",
+      "--pass 1",
+      "--output-dir .docs/planning/concepts/industrial-terminal/pass-1",
+      "--variant-seed green-vector-console"
+    ]
+  },
+  {
+    "styleId": "industrial-terminal",
+    "styleLabel": "Industrial Terminal",
+    "pass": 2,
+    "variantSeed": "amber-rack-ops",
+    "outputDir": ".docs/planning/concepts/industrial-terminal/pass-2",
+    "flags": [
+      "--style-id industrial-terminal",
+      "--pass 2",
+      "--output-dir .docs/planning/concepts/industrial-terminal/pass-2",
+      "--variant-seed amber-rack-ops"
+    ]
+  },
+  {
+    "styleId": "playful-clay",
+    "styleLabel": "Playful Clay",
+    "pass": 1,
+    "variantSeed": "pastel-clay-cards",
+    "outputDir": ".docs/planning/concepts/playful-clay/pass-1",
+    "flags": [
+      "--style-id playful-clay",
+      "--pass 1",
+      "--output-dir .docs/planning/concepts/playful-clay/pass-1",
+      "--variant-seed pastel-clay-cards"
+    ]
+  },
+  {
+    "styleId": "playful-clay",
+    "styleLabel": "Playful Clay",
+    "pass": 2,
+    "variantSeed": "comic-motion-bubbles",
+    "outputDir": ".docs/planning/concepts/playful-clay/pass-2",
+    "flags": [
+      "--style-id playful-clay",
+      "--pass 2",
+      "--output-dir .docs/planning/concepts/playful-clay/pass-2",
+      "--variant-seed comic-motion-bubbles"
+    ]
+  }
+]
