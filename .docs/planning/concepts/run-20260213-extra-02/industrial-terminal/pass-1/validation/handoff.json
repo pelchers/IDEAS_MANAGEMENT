@@ -1,0 +1,29 @@
+{
+  "styleId": "industrial-terminal",
+  "pass": 1,
+  "variantSeed": "crt-command-console-v2",
+  "runSeed": "20260213T064949Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-02\\industrial-terminal\\pass-1",
+  "template": "Industrial Terminal / Pass 1",
+  "visualProfile": "noir-ink",
+  "motionProfile": "monolith",
+  "motionSeed": 9886,
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "downloaded": true,
+      "file": "assets/background-primary.jpg",
+      "source": "https://picsum.photos/seed/industrial-terminal-1-noir-ink-20260213T064949Z-primary/1920/1200"
+    },
+    {
+      "downloaded": true,
+      "file": "assets/background-secondary.jpg",
+      "source": "https://picsum.photos/seed/industrial-terminal-1-noir-ink-20260213T064949Z-secondary/1400/1000"
+    }
+  ],
+  "generatedAt": "2026-02-13T06:49:54.5333344Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

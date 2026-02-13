@@ -6,17 +6,29 @@
       {
         "name": "Brutalist Websites Directory",
         "url": "https://brutalistwebsites.com",
-        "traits": ["raw geometry", "hard borders", "anti-polish typography"]
-      },
-      {
-        "name": "Awwwards Brutalism Collection",
-        "url": "https://www.awwwards.com/websites/brutalism/",
-        "traits": ["disruptive composition", "graphic imbalance", "deliberate visual friction"]
+        "traits": [
+          "raw geometry",
+          "hard borders",
+          "anti-polish typography"
+        ]
       },
       {
         "name": "OFFF Festival",
         "url": "https://www.offf.barcelona",
-        "traits": ["poster language", "display type dominance", "graphic intensity"]
+        "traits": [
+          "poster language",
+          "display type dominance",
+          "graphic intensity"
+        ]
+      },
+      {
+        "traits": [
+          "radical composition",
+          "high-contrast typography",
+          "graphic confrontation"
+        ],
+        "url": "https://www.awwwards.com/websites/brutalism/",
+        "name": "Awwwards Brutalism"
       }
     ]
   },
@@ -27,17 +39,38 @@
       {
         "name": "MUBI",
         "url": "https://mubi.com",
-        "traits": ["strong display hierarchy", "discipline in whitespace", "cinematic framing"]
+        "traits": [
+          "strong display hierarchy",
+          "discipline in whitespace",
+          "cinematic framing"
+        ]
       },
       {
         "name": "NTS Radio",
         "url": "https://www.nts.live",
-        "traits": ["data-dense rhythm", "utility metadata styling", "hard-edged modules"]
+        "traits": [
+          "data-dense rhythm",
+          "utility metadata styling",
+          "hard-edged modules"
+        ]
       },
       {
         "name": "Frieze",
         "url": "https://www.frieze.com",
-        "traits": ["editorial segmentation", "high-contrast type", "publication-grade blocks"]
+        "traits": [
+          "editorial segmentation",
+          "high-contrast type",
+          "publication-grade blocks"
+        ]
+      },
+      {
+        "traits": [
+          "display-led hierarchy",
+          "word-as-interface",
+          "editorial tension"
+        ],
+        "url": "https://www.awwwards.com/websites/typography/",
+        "name": "Awwwards Typography"
       }
     ]
   },
@@ -48,17 +81,38 @@
       {
         "name": "Apple Vision Pro",
         "url": "https://www.apple.com/apple-vision-pro/",
-        "traits": ["spatial translucency", "floating surfaces", "ambient depth"]
+        "traits": [
+          "spatial translucency",
+          "floating surfaces",
+          "ambient depth"
+        ]
       },
       {
         "name": "Linear",
         "url": "https://linear.app",
-        "traits": ["precision spacing", "calm premium UI", "high signal density"]
+        "traits": [
+          "precision spacing",
+          "calm premium UI",
+          "high signal density"
+        ]
       },
       {
         "name": "Raycast",
         "url": "https://www.raycast.com",
-        "traits": ["command-first workflows", "tool clarity", "purposeful polish"]
+        "traits": [
+          "command-first workflows",
+          "tool clarity",
+          "purposeful polish"
+        ]
+      },
+      {
+        "traits": [
+          "premium polish",
+          "immersive transitions",
+          "high craft"
+        ],
+        "url": "https://www.awwwards.com/websites/sites_of_the_day/",
+        "name": "Awwwards Sites Of The Day"
       }
     ]
   },
@@ -69,17 +123,38 @@
       {
         "name": "Stripe",
         "url": "https://stripe.com",
-        "traits": ["gradient confidence", "enterprise polish", "high-clarity modules"]
+        "traits": [
+          "gradient confidence",
+          "enterprise polish",
+          "high-clarity modules"
+        ]
       },
       {
         "name": "Vercel",
         "url": "https://vercel.com",
-        "traits": ["clean technical minimalism", "tight spacing", "dense readable control surfaces"]
+        "traits": [
+          "clean technical minimalism",
+          "tight spacing",
+          "dense readable control surfaces"
+        ]
       },
       {
         "name": "Arc Browser",
         "url": "https://arc.net",
-        "traits": ["distinct navigation metaphors", "layered paneling", "soft translucency"]
+        "traits": [
+          "distinct navigation metaphors",
+          "layered paneling",
+          "soft translucency"
+        ]
+      },
+      {
+        "traits": [
+          "motion storytelling",
+          "kinetic transitions",
+          "fluid interaction"
+        ],
+        "url": "https://www.awwwards.com/websites/animation/",
+        "name": "Awwwards Animation"
       }
     ]
   },
@@ -90,17 +165,38 @@
       {
         "name": "The New York Times",
         "url": "https://www.nytimes.com",
-        "traits": ["column hierarchy", "story-first structure", "serif authority"]
+        "traits": [
+          "column hierarchy",
+          "story-first structure",
+          "serif authority"
+        ]
       },
       {
         "name": "The Guardian",
         "url": "https://www.theguardian.com/international",
-        "traits": ["modular editorial blocks", "sectioned narrative flow", "publication cadence"]
+        "traits": [
+          "modular editorial blocks",
+          "sectioned narrative flow",
+          "publication cadence"
+        ]
       },
       {
         "name": "Monocle",
         "url": "https://monocle.com",
-        "traits": ["restrained palette", "print-like rhythm", "careful typographic pacing"]
+        "traits": [
+          "restrained palette",
+          "print-like rhythm",
+          "careful typographic pacing"
+        ]
+      },
+      {
+        "traits": [
+          "narrative pacing",
+          "structured composition",
+          "type confidence"
+        ],
+        "url": "https://www.awwwards.com/websites/nominees/",
+        "name": "Awwwards Nominees"
       }
     ]
   },
@@ -111,17 +207,38 @@
       {
         "name": "Medium",
         "url": "https://medium.com",
-        "traits": ["long-form readability", "typographic pacing", "low-friction content focus"]
+        "traits": [
+          "long-form readability",
+          "typographic pacing",
+          "low-friction content focus"
+        ]
       },
       {
         "name": "Substack",
         "url": "https://substack.com",
-        "traits": ["newsletter structure", "content framing", "minimal chrome"]
+        "traits": [
+          "newsletter structure",
+          "content framing",
+          "minimal chrome"
+        ]
       },
       {
         "name": "Notion",
         "url": "https://www.notion.so",
-        "traits": ["document workflows", "simple controls", "structured panel organization"]
+        "traits": [
+          "document workflows",
+          "simple controls",
+          "structured panel organization"
+        ]
+      },
+      {
+        "traits": [
+          "restraint",
+          "grid clarity",
+          "content-first hierarchy"
+        ],
+        "url": "https://www.awwwards.com/websites/minimal/",
+        "name": "Awwwards Minimal"
       }
     ]
   },
@@ -132,17 +249,38 @@
       {
         "name": "Hack The Box",
         "url": "https://www.hackthebox.com",
-        "traits": ["terminal culture", "security operations language", "neon-on-dark emphasis"]
+        "traits": [
+          "terminal culture",
+          "security operations language",
+          "neon-on-dark emphasis"
+        ]
       },
       {
         "name": "Grafana",
         "url": "https://grafana.com",
-        "traits": ["monitoring density", "dashboard repetition", "operator-first cues"]
+        "traits": [
+          "monitoring density",
+          "dashboard repetition",
+          "operator-first cues"
+        ]
       },
       {
         "name": "Splunk",
         "url": "https://www.splunk.com",
-        "traits": ["machine-data framing", "alert salience", "observability semantics"]
+        "traits": [
+          "machine-data framing",
+          "alert salience",
+          "observability semantics"
+        ]
+      },
+      {
+        "traits": [
+          "tech-forward visual systems",
+          "data-rich interfaces",
+          "signal emphasis"
+        ],
+        "url": "https://www.awwwards.com/websites/technology/",
+        "name": "Awwwards Technology"
       }
     ]
   },
@@ -153,17 +291,38 @@
       {
         "name": "Datadog",
         "url": "https://www.datadoghq.com",
-        "traits": ["multi-panel observability", "status color semantics", "telemetry density"]
+        "traits": [
+          "multi-panel observability",
+          "status color semantics",
+          "telemetry density"
+        ]
       },
       {
         "name": "Cloudflare Dashboard",
         "url": "https://dash.cloudflare.com",
-        "traits": ["ops controls", "critical signal prominence", "network-centric modules"]
+        "traits": [
+          "ops controls",
+          "critical signal prominence",
+          "network-centric modules"
+        ]
       },
       {
         "name": "Cisco ThousandEyes",
         "url": "https://www.thousandeyes.com",
-        "traits": ["network diagnostics", "incident triage flows", "system health framing"]
+        "traits": [
+          "network diagnostics",
+          "incident triage flows",
+          "system health framing"
+        ]
+      },
+      {
+        "traits": [
+          "application ergonomics",
+          "utility-first interaction",
+          "panel architecture"
+        ],
+        "url": "https://www.awwwards.com/websites/web-apps/",
+        "name": "Awwwards Web Apps"
       }
     ]
   },
@@ -174,17 +333,38 @@
       {
         "name": "Duolingo",
         "url": "https://www.duolingo.com",
-        "traits": ["friendly energy", "clear callouts", "playful interaction copy"]
+        "traits": [
+          "friendly energy",
+          "clear callouts",
+          "playful interaction copy"
+        ]
       },
       {
         "name": "Mailchimp",
         "url": "https://mailchimp.com",
-        "traits": ["expressive visual personality", "illustrative tone", "warm product voice"]
+        "traits": [
+          "expressive visual personality",
+          "illustrative tone",
+          "warm product voice"
+        ]
       },
       {
         "name": "Pitch",
         "url": "https://pitch.com",
-        "traits": ["bold card choreography", "presentational clarity", "vibrant accenting"]
+        "traits": [
+          "bold card choreography",
+          "presentational clarity",
+          "vibrant accenting"
+        ]
+      },
+      {
+        "traits": [
+          "personality-driven visuals",
+          "playful composition",
+          "creative storytelling"
+        ],
+        "url": "https://www.awwwards.com/websites/portfolio/",
+        "name": "Awwwards Portfolio"
       }
     ]
   },
@@ -195,17 +375,38 @@
       {
         "name": "Discord",
         "url": "https://discord.com",
-        "traits": ["community energy", "expressive icon language", "high interaction density"]
+        "traits": [
+          "community energy",
+          "expressive icon language",
+          "high interaction density"
+        ]
       },
       {
         "name": "Canva",
         "url": "https://www.canva.com",
-        "traits": ["creative tooling framing", "visual block systems", "friendly affordances"]
+        "traits": [
+          "creative tooling framing",
+          "visual block systems",
+          "friendly affordances"
+        ]
       },
       {
         "name": "Figma",
         "url": "https://www.figma.com",
-        "traits": ["multi-pane workspace patterns", "tool clarity", "collaborative metaphors"]
+        "traits": [
+          "multi-pane workspace patterns",
+          "tool clarity",
+          "collaborative metaphors"
+        ]
+      },
+      {
+        "traits": [
+          "experimental details",
+          "expressive motion",
+          "novel interaction"
+        ],
+        "url": "https://www.awwwards.com/websites/honorable-mentions/",
+        "name": "Awwwards Honorable Mentions"
       }
     ]
   }

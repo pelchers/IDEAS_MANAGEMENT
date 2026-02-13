@@ -38,10 +38,13 @@ Runs the frontend concept ideation loop for `.docs/planning/concepts`.
 - `--variant-seed`
 6. Require each pass to be wholly distinct in layout structure, typography, color language, spacing rhythm, and interaction framing.
 7. Require each pass to cross-reference external style inspiration and log it in pass artifacts.
-8. Enforce pairwise uniqueness validation before Playwright validation.
-9. Require each pass to output a full, navigable frontend ideation for the app pages (not a landing-page-only mock).
-10. Require Playwright visual validation for each pass and capture artifacts.
-11. Emit a summary index after generation with style and pass links.
+8. Require each pass to include at least one `awwwards.com` reference and rotate reference selection between runs.
+9. Require each pass to include motion/3D libraries (`three.js` and `gsap`) with meaningful animated interaction.
+10. Require each pass to include downloaded visual media assets when possible (backgrounds/textures) and log them in handoff artifacts.
+11. Enforce pairwise uniqueness validation before Playwright validation.
+12. Require each pass to output a full, navigable frontend ideation for the app pages (not a landing-page-only mock).
+13. Require Playwright visual validation for each pass and capture artifacts.
+14. Emit a summary index after generation with style and pass links.
 
 ## Required Page Views Per Pass
 - Dashboard
@@ -62,4 +65,7 @@ Runs the frontend concept ideation loop for `.docs/planning/concepts`.
 - Require per-pass report at `validation/report.playwright.json`.
 - Require per-pass handoff manifest at `validation/handoff.json`.
 - Require per-pass inspiration cross-reference at `validation/inspiration-crossreference.json`.
+- Require at least one `awwwards.com` link in `validation/inspiration-crossreference.json`.
+- Require `three.js` and `gsap` includes in each pass `index.html`.
+- Require local media files under `assets/` for each pass.
 - Fail orchestration if validation artifacts are missing.

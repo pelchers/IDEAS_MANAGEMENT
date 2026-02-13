@@ -1,0 +1,85 @@
+{
+  "key": "playful-clay/pass-1",
+  "styleId": "playful-clay",
+  "pass": 1,
+  "runSeed": "20260213T064949Z",
+  "profile": "sunset-film",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "personality-driven visuals",
+      "playful composition",
+      "creative storytelling"
+    ],
+    "url": "https://www.awwwards.com/websites/portfolio/",
+    "name": "Awwwards Portfolio"
+  },
+  "direction": "Sticker-style tactile workbench with rounded modules, playful labels, and upbeat interaction language.",
+  "references": [
+    {
+      "traits": [
+        "personality-driven visuals",
+        "playful composition",
+        "creative storytelling"
+      ],
+      "url": "https://www.awwwards.com/websites/portfolio/",
+      "name": "Awwwards Portfolio"
+    },
+    {
+      "name": "Duolingo",
+      "url": "https://www.duolingo.com",
+      "traits": [
+        "friendly energy",
+        "clear callouts",
+        "playful interaction copy"
+      ]
+    },
+    {
+      "name": "Mailchimp",
+      "url": "https://mailchimp.com",
+      "traits": [
+        "expressive visual personality",
+        "illustrative tone",
+        "warm product voice"
+      ]
+    }
+  ],
+  "allCatalogReferences": [
+    {
+      "name": "Duolingo",
+      "url": "https://www.duolingo.com",
+      "traits": [
+        "friendly energy",
+        "clear callouts",
+        "playful interaction copy"
+      ]
+    },
+    {
+      "name": "Mailchimp",
+      "url": "https://mailchimp.com",
+      "traits": [
+        "expressive visual personality",
+        "illustrative tone",
+        "warm product voice"
+      ]
+    },
+    {
+      "name": "Pitch",
+      "url": "https://pitch.com",
+      "traits": [
+        "bold card choreography",
+        "presentational clarity",
+        "vibrant accenting"
+      ]
+    },
+    {
+      "traits": [
+        "personality-driven visuals",
+        "playful composition",
+        "creative storytelling"
+      ],
+      "url": "https://www.awwwards.com/websites/portfolio/",
+      "name": "Awwwards Portfolio"
+    }
+  ],
+  "appliedAt": "2026-02-13T06:49:53.9404369Z"
+}

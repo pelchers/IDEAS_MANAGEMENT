@@ -13,3 +13,8 @@ Applied principles for this subagent:
 
 External cross-reference catalog:
 - `.codex/skills/frontend-design-subagent/references/external-inspiration-catalog.json`
+
+Additional direction:
+- Include Awwwards references (`https://www.awwwards.com/`) in every pass.
+- Raise motion quality bar with Three.js + GSAP where appropriate.
+- Prefer richer visual atmosphere with downloaded/local media assets in each pass.

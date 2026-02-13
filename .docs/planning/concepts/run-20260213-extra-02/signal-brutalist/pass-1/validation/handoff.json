@@ -1,0 +1,29 @@
+{
+  "styleId": "signal-brutalist",
+  "pass": 1,
+  "variantSeed": "slab-grid-ruleset-v2",
+  "runSeed": "20260213T064949Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-02\\signal-brutalist\\pass-1",
+  "template": "Signal Brutalist / Pass 1",
+  "visualProfile": "kinetic-neon",
+  "motionProfile": "vortex",
+  "motionSeed": 1118,
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "downloaded": true,
+      "file": "assets/background-primary.jpg",
+      "source": "https://picsum.photos/seed/signal-brutalist-1-kinetic-neon-20260213T064949Z-primary/1920/1200"
+    },
+    {
+      "downloaded": true,
+      "file": "assets/background-secondary.jpg",
+      "source": "https://picsum.photos/seed/signal-brutalist-1-kinetic-neon-20260213T064949Z-secondary/1400/1000"
+    }
+  ],
+  "generatedAt": "2026-02-13T06:49:51.8207464Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

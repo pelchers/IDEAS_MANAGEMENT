@@ -39,6 +39,9 @@ Handles exactly one `(style-id, pass)` job.
 - Ensure desktop + mobile responsiveness.
 - Ensure this pass is visually and structurally distinct from every other pass in typography, layout architecture, component language, spacing, and color system.
 - Cross-reference external inspiration sites from the project catalog and log applied direction for this pass.
+- Include at least one `awwwards.com` inspiration reference in the pass output.
+- Include `three.js` and `gsap` for 3D/motion treatment and apply them meaningfully to the UI experience.
+- Download/use local media assets in `assets/` (backgrounds/textures) where possible to improve visual richness.
 
 ## Playwright Requirement
 - Run pass-level visual validation and write screenshots under `validation/screenshots/`.

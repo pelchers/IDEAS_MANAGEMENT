@@ -1,0 +1,85 @@
+{
+  "key": "ledger-editorial/pass-2",
+  "styleId": "ledger-editorial",
+  "pass": 2,
+  "runSeed": "20260213T064949Z",
+  "profile": "sunset-film",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "restraint",
+      "grid clarity",
+      "content-first hierarchy"
+    ],
+    "url": "https://www.awwwards.com/websites/minimal/",
+    "name": "Awwwards Minimal"
+  },
+  "direction": "Legal-notebook workspace with tabbed chapters, annotation lines, and monochrome precision.",
+  "references": [
+    {
+      "traits": [
+        "restraint",
+        "grid clarity",
+        "content-first hierarchy"
+      ],
+      "url": "https://www.awwwards.com/websites/minimal/",
+      "name": "Awwwards Minimal"
+    },
+    {
+      "name": "Medium",
+      "url": "https://medium.com",
+      "traits": [
+        "long-form readability",
+        "typographic pacing",
+        "low-friction content focus"
+      ]
+    },
+    {
+      "name": "Substack",
+      "url": "https://substack.com",
+      "traits": [
+        "newsletter structure",
+        "content framing",
+        "minimal chrome"
+      ]
+    }
+  ],
+  "allCatalogReferences": [
+    {
+      "name": "Medium",
+      "url": "https://medium.com",
+      "traits": [
+        "long-form readability",
+        "typographic pacing",
+        "low-friction content focus"
+      ]
+    },
+    {
+      "name": "Substack",
+      "url": "https://substack.com",
+      "traits": [
+        "newsletter structure",
+        "content framing",
+        "minimal chrome"
+      ]
+    },
+    {
+      "name": "Notion",
+      "url": "https://www.notion.so",
+      "traits": [
+        "document workflows",
+        "simple controls",
+        "structured panel organization"
+      ]
+    },
+    {
+      "traits": [
+        "restraint",
+        "grid clarity",
+        "content-first hierarchy"
+      ],
+      "url": "https://www.awwwards.com/websites/minimal/",
+      "name": "Awwwards Minimal"
+    }
+  ],
+  "appliedAt": "2026-02-13T06:49:54.1716890Z"
+}

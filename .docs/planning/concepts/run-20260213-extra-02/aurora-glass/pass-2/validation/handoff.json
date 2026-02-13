@@ -1,0 +1,29 @@
+{
+  "styleId": "aurora-glass",
+  "pass": 2,
+  "variantSeed": "orbital-rail-prism-v2",
+  "runSeed": "20260213T064949Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-02\\aurora-glass\\pass-2",
+  "template": "Aurora Glass / Pass 2",
+  "visualProfile": "noir-ink",
+  "motionProfile": "monolith",
+  "motionSeed": 9748,
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "file": "assets/background-primary.jpg",
+      "downloaded": true,
+      "source": "https://picsum.photos/seed/aurora-glass-2-noir-ink-20260213T064949Z-primary/1920/1200"
+    },
+    {
+      "file": "assets/background-secondary.jpg",
+      "downloaded": true,
+      "source": "https://picsum.photos/seed/aurora-glass-2-noir-ink-20260213T064949Z-secondary/1400/1000"
+    }
+  ],
+  "generatedAt": "2026-02-13T06:49:52.0997475Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

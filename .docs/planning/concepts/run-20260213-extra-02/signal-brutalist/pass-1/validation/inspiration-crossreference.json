@@ -1,0 +1,76 @@
+{
+  "key": "signal-brutalist/pass-1",
+  "styleId": "signal-brutalist",
+  "pass": 1,
+  "runSeed": "20260213T064949Z",
+  "profile": "kinetic-neon",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "radical composition",
+      "high-contrast typography",
+      "graphic confrontation"
+    ],
+    "url": "https://www.awwwards.com/websites/brutalism/",
+    "name": "Awwwards Brutalism"
+  },
+  "direction": "Poster-grade brutalist slab grid with oversized typographic hierarchy and severe block segmentation.",
+  "references": [
+    {
+      "traits": [
+        "radical composition",
+        "high-contrast typography",
+        "graphic confrontation"
+      ],
+      "url": "https://www.awwwards.com/websites/brutalism/",
+      "name": "Awwwards Brutalism"
+    },
+    {
+      "name": "OFFF Festival",
+      "url": "https://www.offf.barcelona",
+      "traits": [
+        "poster language",
+        "display type dominance",
+        "graphic intensity"
+      ]
+    },
+    {
+      "name": "Brutalist Websites Directory",
+      "url": "https://brutalistwebsites.com",
+      "traits": [
+        "raw geometry",
+        "hard borders",
+        "anti-polish typography"
+      ]
+    }
+  ],
+  "allCatalogReferences": [
+    {
+      "name": "Brutalist Websites Directory",
+      "url": "https://brutalistwebsites.com",
+      "traits": [
+        "raw geometry",
+        "hard borders",
+        "anti-polish typography"
+      ]
+    },
+    {
+      "name": "OFFF Festival",
+      "url": "https://www.offf.barcelona",
+      "traits": [
+        "poster language",
+        "display type dominance",
+        "graphic intensity"
+      ]
+    },
+    {
+      "traits": [
+        "radical composition",
+        "high-contrast typography",
+        "graphic confrontation"
+      ],
+      "url": "https://www.awwwards.com/websites/brutalism/",
+      "name": "Awwwards Brutalism"
+    }
+  ],
+  "appliedAt": "2026-02-13T06:49:51.8221398Z"
+}

@@ -1,0 +1,29 @@
+{
+  "styleId": "playful-clay",
+  "pass": 1,
+  "variantSeed": "sticker-workbench-v2",
+  "runSeed": "20260213T064949Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-02\\playful-clay\\pass-1",
+  "template": "Playful Clay / Pass 1",
+  "visualProfile": "sunset-film",
+  "motionProfile": "ribbon",
+  "motionSeed": 9969,
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "file": "assets/background-primary.jpg",
+      "downloaded": true,
+      "source": "https://picsum.photos/seed/playful-clay-1-sunset-film-20260213T064949Z-primary/1920/1200"
+    },
+    {
+      "file": "assets/background-secondary.jpg",
+      "downloaded": true,
+      "source": "https://picsum.photos/seed/playful-clay-1-sunset-film-20260213T064949Z-secondary/1400/1000"
+    }
+  ],
+  "generatedAt": "2026-02-13T06:49:53.9390289Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

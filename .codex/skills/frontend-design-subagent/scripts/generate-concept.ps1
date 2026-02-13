@@ -2,7 +2,8 @@ param(
   [Parameter(Mandatory = $true)][string]$StyleId,
   [Parameter(Mandatory = $true)][int]$Pass,
   [Parameter(Mandatory = $true)][string]$VariantSeed,
-  [Parameter(Mandatory = $true)][string]$OutputDir
+  [Parameter(Mandatory = $true)][string]$OutputDir,
+  [string]$RunSeed = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -12,8 +13,38 @@ $validationDir = Join-Path $OutputDir "validation"
 $screenshotsDir = Join-Path $validationDir "screenshots"
 New-Item -ItemType Directory -Force -Path $validationDir | Out-Null
 New-Item -ItemType Directory -Force -Path $screenshotsDir | Out-Null
+$assetsDir = Join-Path $OutputDir "assets"
+New-Item -ItemType Directory -Force -Path $assetsDir | Out-Null
 
 $key = "$StyleId/pass-$Pass"
+$effectiveRunSeed = if ([string]::IsNullOrWhiteSpace($RunSeed)) { "baseline-seed" } else { $RunSeed }
+
+function Get-SeedIndex {
+  param(
+    [Parameter(Mandatory = $true)][string]$Seed,
+    [Parameter(Mandatory = $true)][int]$Count
+  )
+  if ($Count -le 0) { return 0 }
+  $sha = [System.Security.Cryptography.SHA256]::Create()
+  $bytes = [System.Text.Encoding]::UTF8.GetBytes($Seed)
+  $hash = $sha.ComputeHash($bytes)
+  $raw = [BitConverter]::ToUInt32($hash, 0)
+  return [int]($raw % $Count)
+}
+
+function Save-RemoteAsset {
+  param(
+    [Parameter(Mandatory = $true)][string]$Uri,
+    [Parameter(Mandatory = $true)][string]$OutFile
+  )
+  try {
+    Invoke-WebRequest -Uri $Uri -OutFile $OutFile -TimeoutSec 20 | Out-Null
+    return $true
+  }
+  catch {
+    return $false
+  }
+}
 
 $templates = @{
   "signal-brutalist/pass-1" = @{
@@ -73,6 +104,67 @@ if (-not $templates.ContainsKey($key)) {
 }
 
 $t = $templates[$key]
+
+$visualProfiles = @(
+  @{
+    id = "kinetic-neon"
+    navPrefix = "VX-"
+    layerBlend = "screen"
+    layerOpacity = "0.26"
+    imageFilter = "saturate(1.25) contrast(1.08) hue-rotate(12deg)"
+    motion = "vortex"
+    overlayColor = "rgba(40, 220, 255, 0.22)"
+  },
+  @{
+    id = "sunset-film"
+    navPrefix = "FM-"
+    layerBlend = "soft-light"
+    layerOpacity = "0.34"
+    imageFilter = "sepia(0.22) saturate(1.1) contrast(1.05)"
+    motion = "ribbon"
+    overlayColor = "rgba(255, 140, 80, 0.24)"
+  },
+  @{
+    id = "techno-oxide"
+    navPrefix = "TX-"
+    layerBlend = "overlay"
+    layerOpacity = "0.3"
+    imageFilter = "grayscale(0.18) contrast(1.18) saturate(1.2)"
+    motion = "lattice"
+    overlayColor = "rgba(120, 255, 180, 0.2)"
+  },
+  @{
+    id = "noir-ink"
+    navPrefix = "NK-"
+    layerBlend = "multiply"
+    layerOpacity = "0.28"
+    imageFilter = "contrast(1.25) brightness(0.92)"
+    motion = "monolith"
+    overlayColor = "rgba(32, 32, 32, 0.22)"
+  }
+)
+
+$mediaQueries = @{
+  "signal-brutalist" = @("editorial grid", "poster texture", "print collage");
+  "aurora-glass" = @("futuristic glass", "holographic light", "sci fi interface");
+  "ledger-editorial" = @("newspaper texture", "paper grain", "book spread");
+  "industrial-terminal" = @("industrial control room", "terminal display", "machine dashboard");
+  "playful-clay" = @("colorful abstract", "clay illustration", "playful shapes");
+}
+
+$profile = $visualProfiles[(Get-SeedIndex -Seed "$key|$VariantSeed|$effectiveRunSeed|profile" -Count $visualProfiles.Count)]
+$motionSeed = (Get-SeedIndex -Seed "$key|$VariantSeed|$effectiveRunSeed|motion" -Count 9999) + 1
+$querySet = if ($mediaQueries.ContainsKey($StyleId)) { $mediaQueries[$StyleId] } else { @("creative interface", "design moodboard", "abstract texture") }
+$mediaTag = $querySet[(Get-SeedIndex -Seed "$key|$effectiveRunSeed|media" -Count $querySet.Count)]
+$mediaSeedA = "$($StyleId)-$Pass-$($profile.id)-$effectiveRunSeed-primary"
+$mediaSeedB = "$($StyleId)-$Pass-$($profile.id)-$effectiveRunSeed-secondary"
+$backgroundPrimaryPath = Join-Path $assetsDir "background-primary.jpg"
+$backgroundSecondaryPath = Join-Path $assetsDir "background-secondary.jpg"
+
+$mediaUrlA = "https://picsum.photos/seed/$([uri]::EscapeDataString($mediaSeedA))/1920/1200"
+$mediaUrlB = "https://picsum.photos/seed/$([uri]::EscapeDataString($mediaSeedB))/1400/1000"
+$mediaDownloadPrimary = Save-RemoteAsset -Uri $mediaUrlA -OutFile $backgroundPrimaryPath
+$mediaDownloadSecondary = Save-RemoteAsset -Uri $mediaUrlB -OutFile $backgroundSecondaryPath
 
 $views = @(
   @{ id = "dashboard"; title = "Dashboard"; desc = "Cross-project velocity, risk, and delivery state." },
@@ -164,58 +256,73 @@ function Get-Sections {
   }
 }
 
-$nav = Get-NavButtons -ClassName $t.navClass -Prefix "N-"
+$nav = Get-NavButtons -ClassName $t.navClass -Prefix $profile.navPrefix
 $sections = Get-Sections -Mode $t.sectionMode -ClassName $t.sectionClass
 
 $fontLink = "<link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Baloo+2:wght@400;700&family=Bebas+Neue&family=Bricolage+Grotesque:wght@400;600;800&family=Chivo+Mono:wght@400;700&family=Cormorant+Garamond:wght@500;700&family=DM+Sans:wght@400;500;700&family=Fira+Code:wght@400;500&family=Fredoka:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&family=Instrument+Serif&family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Nunito:wght@400;700&family=Oswald:wght@400;600&family=Outfit:wght@400;600;700&family=Playfair+Display:wght@500;700&family=Quicksand:wght@400;600;700&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&family=Source+Serif+4:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@500;700&family=VT323&display=swap' rel='stylesheet'>"
 
 function Get-Layout {
-  param([string]$Mode, [string]$Title, [string]$Seed, [string]$NavButtons, [string]$Sections, [string]$BodyClass)
+  param(
+    [string]$Mode,
+    [string]$Title,
+    [string]$Seed,
+    [string]$NavButtons,
+    [string]$Sections,
+    [string]$BodyClass,
+    [string]$ProfileId,
+    [int]$MotionSeed,
+    [string]$MediaHint
+  )
   switch ($Mode) {
     "brutal-grid" {
-      return "<body class='$BodyClass' data-theme-root><div class='paper-noise'></div><section class='blk-shell'><aside class='blk-nav'><h1>Signal Grid Ops</h1><p>Poster-scale command surface for project planning.</p><nav>$NavButtons</nav></aside><main class='blk-stage'><div class='blk-hero'><p>Variant Seed: $Seed</p><h2>Hard-edge layout with uncompromising hierarchy</h2></div><section class='blk-panels'>$Sections</section></main></section></body>"
+      return "<body class='$BodyClass run-profile-$ProfileId' data-theme-root data-motion-seed='$MotionSeed' data-motion-profile='$($profile.motion)' data-media-hint='$MediaHint'><div id='fx-3d-stage' class='fx-3d-stage'></div><div class='fx-media-overlay'></div><div class='paper-noise'></div><section class='blk-shell'><aside class='blk-nav'><h1>Signal Grid Ops</h1><p>Poster-scale command surface for project planning.</p><nav>$NavButtons</nav></aside><main class='blk-stage'><div class='blk-hero'><p>Variant Seed: $Seed</p><h2>Hard-edge layout with uncompromising hierarchy</h2></div><section class='blk-panels'>$Sections</section></main></section></body>"
     }
     "brutal-stamp" {
-      return "<body class='$BodyClass' data-theme-root><header class='stamp-top'><h1>Stamped Tactical Ops</h1><p>Variant Seed: $Seed</p></header><nav class='stamp-bar'>$NavButtons</nav><main class='stamp-grid'>$Sections</main></body>"
+      return "<body class='$BodyClass run-profile-$ProfileId' data-theme-root data-motion-seed='$MotionSeed' data-motion-profile='$($profile.motion)' data-media-hint='$MediaHint'><div id='fx-3d-stage' class='fx-3d-stage'></div><div class='fx-media-overlay'></div><header class='stamp-top'><h1>Stamped Tactical Ops</h1><p>Variant Seed: $Seed</p></header><nav class='stamp-bar'>$NavButtons</nav><main class='stamp-grid'>$Sections</main></body>"
     }
     "glass-dock" {
-      return "<body class='$BodyClass' data-theme-root><div class='aurora-cloud a'></div><div class='aurora-cloud b'></div><main class='gls-shell'><header><h1>Aurora Dock Suite</h1><p>$Seed</p></header><section class='gls-window'>$Sections</section></main><nav class='gls-dock'>$NavButtons</nav></body>"
+      return "<body class='$BodyClass run-profile-$ProfileId' data-theme-root data-motion-seed='$MotionSeed' data-motion-profile='$($profile.motion)' data-media-hint='$MediaHint'><div id='fx-3d-stage' class='fx-3d-stage'></div><div class='fx-media-overlay'></div><div class='aurora-cloud a'></div><div class='aurora-cloud b'></div><main class='gls-shell'><header><h1>Aurora Dock Suite</h1><p>$Seed</p></header><section class='gls-window'>$Sections</section></main><nav class='gls-dock'>$NavButtons</nav></body>"
     }
     "glass-orbit" {
-      return "<body class='$BodyClass' data-theme-root><div class='prm-halo'></div><aside class='prm-rail'>$NavButtons</aside><main class='prm-center'><header><h1>Prism Orbital Console</h1><p>Variant Seed: $Seed</p></header><div class='prm-orbit'>$Sections</div></main></body>"
+      return "<body class='$BodyClass run-profile-$ProfileId' data-theme-root data-motion-seed='$MotionSeed' data-motion-profile='$($profile.motion)' data-media-hint='$MediaHint'><div id='fx-3d-stage' class='fx-3d-stage'></div><div class='fx-media-overlay'></div><div class='prm-halo'></div><aside class='prm-rail'>$NavButtons</aside><main class='prm-center'><header><h1>Prism Orbital Console</h1><p>Variant Seed: $Seed</p></header><div class='prm-orbit'>$Sections</div></main></body>"
     }
     "editorial-broadsheet" {
-      return "<body class='$BodyClass' data-theme-root><header class='news-masthead'><h1>Project Ledger Times</h1><p>$Seed</p></header><section class='news-layout'><nav class='news-toc'>$NavButtons</nav><main class='news-copy'>$Sections</main><aside class='news-brief'><h3>Edition Notes</h3><p>A publication-centric product shell tuned for planning depth.</p></aside></section></body>"
+      return "<body class='$BodyClass run-profile-$ProfileId' data-theme-root data-motion-seed='$MotionSeed' data-motion-profile='$($profile.motion)' data-media-hint='$MediaHint'><div id='fx-3d-stage' class='fx-3d-stage'></div><div class='fx-media-overlay'></div><header class='news-masthead'><h1>Project Ledger Times</h1><p>$Seed</p></header><section class='news-layout'><nav class='news-toc'>$NavButtons</nav><main class='news-copy'>$Sections</main><aside class='news-brief'><h3>Edition Notes</h3><p>A publication-centric product shell tuned for planning depth.</p></aside></section></body>"
     }
     "editorial-ledger" {
-      return "<body class='$BodyClass' data-theme-root><div class='spine'></div><main class='note-shell'><header><h1>Monochrome Notebook Ops</h1><p>$Seed</p></header><nav class='note-tabs'>$NavButtons</nav><section class='note-sheet'>$Sections</section></main></body>"
+      return "<body class='$BodyClass run-profile-$ProfileId' data-theme-root data-motion-seed='$MotionSeed' data-motion-profile='$($profile.motion)' data-media-hint='$MediaHint'><div id='fx-3d-stage' class='fx-3d-stage'></div><div class='fx-media-overlay'></div><div class='spine'></div><main class='note-shell'><header><h1>Monochrome Notebook Ops</h1><p>$Seed</p></header><nav class='note-tabs'>$NavButtons</nav><section class='note-sheet'>$Sections</section></main></body>"
     }
     "terminal-crt" {
-      return "<body class='$BodyClass' data-theme-root><div class='scanlines'></div><section class='crt-shell'><aside class='crt-console'><h1>Vector Command Core</h1><p>$Seed</p>$NavButtons</aside><main class='crt-output'>$Sections</main></section></body>"
+      return "<body class='$BodyClass run-profile-$ProfileId' data-theme-root data-motion-seed='$MotionSeed' data-motion-profile='$($profile.motion)' data-media-hint='$MediaHint'><div id='fx-3d-stage' class='fx-3d-stage'></div><div class='fx-media-overlay'></div><div class='scanlines'></div><section class='crt-shell'><aside class='crt-console'><h1>Vector Command Core</h1><p>$Seed</p>$NavButtons</aside><main class='crt-output'>$Sections</main></section></body>"
     }
     "terminal-scada" {
-      return "<body class='$BodyClass' data-theme-root><header><h1>Rack Operations Wallboard</h1><p>$Seed</p></header><section class='scada-layout'><nav class='scada-switches'>$NavButtons</nav><main class='scada-grid'>$Sections</main></section></body>"
+      return "<body class='$BodyClass run-profile-$ProfileId' data-theme-root data-motion-seed='$MotionSeed' data-motion-profile='$($profile.motion)' data-media-hint='$MediaHint'><div id='fx-3d-stage' class='fx-3d-stage'></div><div class='fx-media-overlay'></div><header><h1>Rack Operations Wallboard</h1><p>$Seed</p></header><section class='scada-layout'><nav class='scada-switches'>$NavButtons</nav><main class='scada-grid'>$Sections</main></section></body>"
     }
     "clay-studio" {
-      return "<body class='$BodyClass' data-theme-root><header><h1>Tactile Studio Board</h1><p>$Seed</p></header><nav class='clay-rack'>$NavButtons</nav><main class='clay-canvas'>$Sections</main></body>"
+      return "<body class='$BodyClass run-profile-$ProfileId' data-theme-root data-motion-seed='$MotionSeed' data-motion-profile='$($profile.motion)' data-media-hint='$MediaHint'><div id='fx-3d-stage' class='fx-3d-stage'></div><div class='fx-media-overlay'></div><header><h1>Tactile Studio Board</h1><p>$Seed</p></header><nav class='clay-rack'>$NavButtons</nav><main class='clay-canvas'>$Sections</main></body>"
     }
     "clay-comic" {
-      return "<body class='$BodyClass' data-theme-root><header><h1>Comic Motion Workspace</h1><p>$Seed</p></header><nav class='comic-nav'>$NavButtons</nav><section class='comic-grid'>$Sections</section></body>"
+      return "<body class='$BodyClass run-profile-$ProfileId' data-theme-root data-motion-seed='$MotionSeed' data-motion-profile='$($profile.motion)' data-media-hint='$MediaHint'><div id='fx-3d-stage' class='fx-3d-stage'></div><div class='fx-media-overlay'></div><header><h1>Comic Motion Workspace</h1><p>$Seed</p></header><nav class='comic-nav'>$NavButtons</nav><section class='comic-grid'>$Sections</section></body>"
     }
     default { throw "Unsupported layout mode: $Mode" }
   }
 }
 
-$bodyMarkup = Get-Layout -Mode $t.layoutMode -Title $t.title -Seed $VariantSeed -NavButtons $nav -Sections $sections -BodyClass $t.bodyClass
+$bodyMarkup = Get-Layout -Mode $t.layoutMode -Title $t.title -Seed $VariantSeed -NavButtons $nav -Sections $sections -BodyClass $t.bodyClass -ProfileId $profile.id -MotionSeed $motionSeed -MediaHint $mediaTag
 
-$html = "<!doctype html><html lang='en'><head><meta charset='UTF-8' /><meta name='viewport' content='width=device-width, initial-scale=1.0' /><title>$($t.title)</title>$fontLink<link rel='stylesheet' href='./style.css' /></head>$bodyMarkup<script src='./app.js'></script></html>"
+$html = "<!doctype html><html lang='en'><head><meta charset='UTF-8' /><meta name='viewport' content='width=device-width, initial-scale=1.0' /><title>$($t.title)</title>$fontLink<link rel='stylesheet' href='./style.css' /></head>$bodyMarkup<script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r160/three.min.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js'></script><script src='./app.js'></script></html>"
 
 $cssBase = @"
-:root{--bg:$($t.colors.bg);--text:$($t.colors.text);--surface:$($t.colors.surface);--accent:$($t.colors.accent);--accent2:$($t.colors.accent2);--border:$($t.colors.border)}
+:root{--bg:$($t.colors.bg);--text:$($t.colors.text);--surface:$($t.colors.surface);--accent:$($t.colors.accent);--accent2:$($t.colors.accent2);--border:$($t.colors.border);--fx-overlay:$($profile.overlayColor);--fx-layer-blend:$($profile.layerBlend);--fx-layer-opacity:$($profile.layerOpacity);--fx-image-filter:$($profile.imageFilter)}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%}
 button{font:inherit}
 [data-page]{display:none}
 [data-page].active{display:block}
+.fx-3d-stage{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.72}
+.fx-3d-stage canvas{display:block;width:100%;height:100%}
+.fx-media-overlay{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(140deg,var(--fx-overlay),transparent 62%);mix-blend-mode:var(--fx-layer-blend);opacity:var(--fx-layer-opacity)}
+body::before{content:"";position:fixed;inset:0;background-image:url('./assets/background-primary.jpg');background-size:cover;background-position:center;filter:var(--fx-image-filter);opacity:.16;z-index:-1}
+header,main,nav,section,aside,article{position:relative;z-index:1}
 "@
 
 switch ($t.layoutMode) {
@@ -276,23 +383,126 @@ switch ($t.layoutMode) {
 
 $css = $cssBase + "`n" + $cssLayout
 
-$js = @"
+$js = @'
 (() => {
+  const root = document.querySelector("[data-theme-root]") || document.body;
   const buttons = Array.from(document.querySelectorAll("button[data-view]"));
   const pages = Array.from(document.querySelectorAll("[data-page]"));
+  const runtime = {
+    motionSeed: Number(root.dataset.motionSeed || 1),
+    motionProfile: root.dataset.motionProfile || "vortex"
+  };
+
+  function animateView(page) {
+    if (!window.gsap || !page) return;
+    gsap.fromTo(
+      page,
+      { y: 24, opacity: 0, rotateX: 2 },
+      { y: 0, opacity: 1, rotateX: 0, duration: 0.45, ease: "power2.out" }
+    );
+  }
+
   function activate(id) {
     buttons.forEach((btn) => btn.classList.toggle("active", btn.dataset.view === id));
     pages.forEach((page) => page.classList.toggle("active", page.dataset.page === id));
-    const root = document.querySelector("[data-theme-root]") || document.body;
     root.setAttribute("data-active-view", id);
+    const activePage = pages.find((page) => page.dataset.page === id);
+    animateView(activePage);
     const url = new URL(window.location.href);
     url.hash = id;
     history.replaceState({}, "", url);
   }
+
+  function animateNavigation() {
+    if (!window.gsap || buttons.length === 0) return;
+    gsap.from(buttons, {
+      y: 14,
+      opacity: 0,
+      duration: 0.36,
+      ease: "power2.out",
+      stagger: 0.03
+    });
+  }
+
+  function initThreeScene() {
+    if (!window.THREE) return;
+    const stage = document.getElementById("fx-3d-stage");
+    if (!stage) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1200);
+    camera.position.set(0, 0, 7);
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    stage.appendChild(renderer.domElement);
+
+    const geometries = [
+      new THREE.TorusKnotGeometry(1.8, 0.36, 180, 32),
+      new THREE.IcosahedronGeometry(2.0, 1),
+      new THREE.OctahedronGeometry(2.1, 0),
+      new THREE.TorusGeometry(2.0, 0.55, 16, 120)
+    ];
+    const geometry = geometries[runtime.motionSeed % geometries.length];
+    const material = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      metalness: 0.35,
+      roughness: 0.32,
+      transparent: true,
+      opacity: 0.7,
+      wireframe: runtime.motionProfile === "lattice"
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    const rim = new THREE.PointLight(0x7fd8ff, 1.2, 30);
+    rim.position.set(3, 4, 5);
+    const fill = new THREE.PointLight(0xff9dd1, 1.1, 26);
+    fill.position.set(-3, -2, 4);
+    scene.add(rim);
+    scene.add(fill);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.42));
+
+    if (window.gsap) {
+      gsap.to(mesh.rotation, {
+        y: Math.PI * 2,
+        duration: 20,
+        ease: "none",
+        repeat: -1
+      });
+    }
+
+    let raf = 0;
+    const tick = () => {
+      const t = performance.now() * 0.001;
+      mesh.rotation.x = Math.sin(t * 0.42) * 0.42;
+      mesh.position.y = Math.cos(t * 0.8) * 0.24;
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(tick);
+    };
+    tick();
+
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    window.addEventListener("beforeunload", () => {
+      cancelAnimationFrame(raf);
+      renderer.dispose();
+      geometry.dispose();
+      material.dispose();
+    });
+  }
+
   buttons.forEach((btn) => btn.addEventListener("click", () => activate(btn.dataset.view)));
   activate(window.location.hash ? window.location.hash.slice(1) : "dashboard");
+  animateNavigation();
+  initThreeScene();
 })();
-"@
+'@
 
 $catalogPath = ".codex/skills/frontend-design-subagent/references/external-inspiration-catalog.json"
 if (-not (Test-Path $catalogPath)) {
@@ -307,13 +517,39 @@ if (-not $catalog.ContainsKey($key)) {
   throw "Missing inspiration cross-reference entry for $key"
 }
 $inspiration = $catalog[$key]
+$allRefs = @($inspiration.references)
+$awwwardsRefs = @($allRefs | Where-Object { $_.url -match "awwwards\.com" })
+$nonAwwwardsRefs = @($allRefs | Where-Object { $_.url -notmatch "awwwards\.com" })
+if ($awwwardsRefs.Count -eq 0) {
+  throw "Missing required Awwwards reference for $key"
+}
+$primaryAwwwards = $awwwardsRefs[(Get-SeedIndex -Seed "$key|$effectiveRunSeed|awwwards" -Count $awwwardsRefs.Count)]
+$pickedNonAwwwards = @()
+if ($nonAwwwardsRefs.Count -gt 0) {
+  $takeCount = [Math]::Min(2, $nonAwwwardsRefs.Count)
+  $offset = Get-SeedIndex -Seed "$key|$effectiveRunSeed|refs" -Count $nonAwwwardsRefs.Count
+  for ($i = 0; $i -lt $takeCount; $i++) {
+    $idx = ($offset + $i) % $nonAwwwardsRefs.Count
+    $pickedNonAwwwards += $nonAwwwardsRefs[$idx]
+  }
+}
+$selectedReferences = @($primaryAwwwards) + $pickedNonAwwwards
 
 $handoff = [PSCustomObject]@{
   styleId = $StyleId
   pass = $Pass
   variantSeed = $VariantSeed
+  runSeed = $effectiveRunSeed
   outputDir = $OutputDir
   template = $t.title
+  visualProfile = $profile.id
+  motionProfile = $profile.motion
+  motionSeed = $motionSeed
+  animationLibraries = @("three.js", "gsap")
+  mediaAssets = @(
+    @{ file = "assets/background-primary.jpg"; source = $mediaUrlA; downloaded = $mediaDownloadPrimary },
+    @{ file = "assets/background-secondary.jpg"; source = $mediaUrlB; downloaded = $mediaDownloadSecondary }
+  )
   generatedAt = (Get-Date).ToUniversalTime().ToString("o")
   script = ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }
@@ -321,12 +557,16 @@ $inspirationLog = [PSCustomObject]@{
   key = $key
   styleId = $StyleId
   pass = $Pass
+  runSeed = $effectiveRunSeed
+  profile = $profile.id
+  primaryAwwwardsReference = $primaryAwwwards
   direction = $inspiration.direction
-  references = $inspiration.references
+  references = $selectedReferences
+  allCatalogReferences = $allRefs
   appliedAt = (Get-Date).ToUniversalTime().ToString("o")
 }
 
-$readmeRefs = ($inspiration.references | ForEach-Object {
+$readmeRefs = ($selectedReferences | ForEach-Object {
   "- $($_.name): $($_.url) (traits: $([string]::Join(', ', $_.traits)))"
 }) -join "`n"
 
@@ -336,6 +576,11 @@ $readme = @"
 - style-id: $StyleId
 - pass: $Pass
 - variant-seed: $VariantSeed
+- run-seed: $effectiveRunSeed
+- visual-profile: $($profile.id)
+- motion-profile: $($profile.motion)
+- animation-libraries: three.js, gsap
+- media-assets: assets/background-primary.jpg, assets/background-secondary.jpg
 
 ## External Inspiration Cross-Reference
 $readmeRefs

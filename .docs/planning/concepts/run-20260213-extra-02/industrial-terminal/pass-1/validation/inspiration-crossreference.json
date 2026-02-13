@@ -1,0 +1,85 @@
+{
+  "key": "industrial-terminal/pass-1",
+  "styleId": "industrial-terminal",
+  "pass": 1,
+  "runSeed": "20260213T064949Z",
+  "profile": "noir-ink",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "tech-forward visual systems",
+      "data-rich interfaces",
+      "signal emphasis"
+    ],
+    "url": "https://www.awwwards.com/websites/technology/",
+    "name": "Awwwards Technology"
+  },
+  "direction": "Retro CRT operations console with scanline character, terminal commands, and telemetry blocks.",
+  "references": [
+    {
+      "traits": [
+        "tech-forward visual systems",
+        "data-rich interfaces",
+        "signal emphasis"
+      ],
+      "url": "https://www.awwwards.com/websites/technology/",
+      "name": "Awwwards Technology"
+    },
+    {
+      "name": "Grafana",
+      "url": "https://grafana.com",
+      "traits": [
+        "monitoring density",
+        "dashboard repetition",
+        "operator-first cues"
+      ]
+    },
+    {
+      "name": "Splunk",
+      "url": "https://www.splunk.com",
+      "traits": [
+        "machine-data framing",
+        "alert salience",
+        "observability semantics"
+      ]
+    }
+  ],
+  "allCatalogReferences": [
+    {
+      "name": "Hack The Box",
+      "url": "https://www.hackthebox.com",
+      "traits": [
+        "terminal culture",
+        "security operations language",
+        "neon-on-dark emphasis"
+      ]
+    },
+    {
+      "name": "Grafana",
+      "url": "https://grafana.com",
+      "traits": [
+        "monitoring density",
+        "dashboard repetition",
+        "operator-first cues"
+      ]
+    },
+    {
+      "name": "Splunk",
+      "url": "https://www.splunk.com",
+      "traits": [
+        "machine-data framing",
+        "alert salience",
+        "observability semantics"
+      ]
+    },
+    {
+      "traits": [
+        "tech-forward visual systems",
+        "data-rich interfaces",
+        "signal emphasis"
+      ],
+      "url": "https://www.awwwards.com/websites/technology/",
+      "name": "Awwwards Technology"
+    }
+  ],
+  "appliedAt": "2026-02-13T06:49:54.5347043Z"
+}

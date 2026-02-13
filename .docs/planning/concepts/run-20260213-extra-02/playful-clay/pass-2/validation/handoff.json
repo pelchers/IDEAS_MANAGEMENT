@@ -1,0 +1,29 @@
+{
+  "styleId": "playful-clay",
+  "pass": 2,
+  "variantSeed": "comic-panel-workspace-v2",
+  "runSeed": "20260213T064949Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-02\\playful-clay\\pass-2",
+  "template": "Playful Clay / Pass 2",
+  "visualProfile": "techno-oxide",
+  "motionProfile": "lattice",
+  "motionSeed": 8406,
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "source": "https://picsum.photos/seed/playful-clay-2-techno-oxide-20260213T064949Z-primary/1920/1200",
+      "downloaded": true,
+      "file": "assets/background-primary.jpg"
+    },
+    {
+      "source": "https://picsum.photos/seed/playful-clay-2-techno-oxide-20260213T064949Z-secondary/1400/1000",
+      "downloaded": true,
+      "file": "assets/background-secondary.jpg"
+    }
+  ],
+  "generatedAt": "2026-02-13T06:49:54.8827418Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

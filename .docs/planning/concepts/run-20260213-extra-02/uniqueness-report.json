@@ -1,0 +1,60 @@
+{
+  "conceptRoot": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-02",
+  "threshold": 0.55,
+  "evaluatedAt": "2026-02-13T06:49:54.983Z",
+  "totalPasses": 10,
+  "maxSimilarity": 0.1126,
+  "topPairs": [
+    {
+      "a": "aurora-glass/pass-2",
+      "b": "industrial-terminal/pass-1",
+      "similarity": 0.1126
+    },
+    {
+      "a": "aurora-glass/pass-2",
+      "b": "ledger-editorial/pass-2",
+      "similarity": 0.1063
+    },
+    {
+      "a": "aurora-glass/pass-2",
+      "b": "playful-clay/pass-2",
+      "similarity": 0.1048
+    },
+    {
+      "a": "industrial-terminal/pass-1",
+      "b": "ledger-editorial/pass-2",
+      "similarity": 0.1
+    },
+    {
+      "a": "industrial-terminal/pass-1",
+      "b": "playful-clay/pass-2",
+      "similarity": 0.0986
+    },
+    {
+      "a": "ledger-editorial/pass-2",
+      "b": "playful-clay/pass-2",
+      "similarity": 0.0961
+    },
+    {
+      "a": "aurora-glass/pass-2",
+      "b": "signal-brutalist/pass-2",
+      "similarity": 0.0922
+    },
+    {
+      "a": "aurora-glass/pass-1",
+      "b": "aurora-glass/pass-2",
+      "similarity": 0.0915
+    },
+    {
+      "a": "aurora-glass/pass-2",
+      "b": "playful-clay/pass-1",
+      "similarity": 0.0914
+    },
+    {
+      "a": "aurora-glass/pass-2",
+      "b": "industrial-terminal/pass-2",
+      "similarity": 0.0889
+    }
+  ],
+  "violations": []
+}

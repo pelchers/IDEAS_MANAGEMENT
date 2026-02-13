@@ -1,0 +1,85 @@
+{
+  "key": "aurora-glass/pass-2",
+  "styleId": "aurora-glass",
+  "pass": 2,
+  "runSeed": "20260213T064949Z",
+  "profile": "noir-ink",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "motion storytelling",
+      "kinetic transitions",
+      "fluid interaction"
+    ],
+    "url": "https://www.awwwards.com/websites/animation/",
+    "name": "Awwwards Animation"
+  },
+  "direction": "Prismatic orbital rail interface with radial focus and luminous translucent panels.",
+  "references": [
+    {
+      "traits": [
+        "motion storytelling",
+        "kinetic transitions",
+        "fluid interaction"
+      ],
+      "url": "https://www.awwwards.com/websites/animation/",
+      "name": "Awwwards Animation"
+    },
+    {
+      "name": "Vercel",
+      "url": "https://vercel.com",
+      "traits": [
+        "clean technical minimalism",
+        "tight spacing",
+        "dense readable control surfaces"
+      ]
+    },
+    {
+      "name": "Arc Browser",
+      "url": "https://arc.net",
+      "traits": [
+        "distinct navigation metaphors",
+        "layered paneling",
+        "soft translucency"
+      ]
+    }
+  ],
+  "allCatalogReferences": [
+    {
+      "name": "Stripe",
+      "url": "https://stripe.com",
+      "traits": [
+        "gradient confidence",
+        "enterprise polish",
+        "high-clarity modules"
+      ]
+    },
+    {
+      "name": "Vercel",
+      "url": "https://vercel.com",
+      "traits": [
+        "clean technical minimalism",
+        "tight spacing",
+        "dense readable control surfaces"
+      ]
+    },
+    {
+      "name": "Arc Browser",
+      "url": "https://arc.net",
+      "traits": [
+        "distinct navigation metaphors",
+        "layered paneling",
+        "soft translucency"
+      ]
+    },
+    {
+      "traits": [
+        "motion storytelling",
+        "kinetic transitions",
+        "fluid interaction"
+      ],
+      "url": "https://www.awwwards.com/websites/animation/",
+      "name": "Awwwards Animation"
+    }
+  ],
+  "appliedAt": "2026-02-13T06:49:52.1010888Z"
+}

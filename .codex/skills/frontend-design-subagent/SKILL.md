@@ -20,13 +20,17 @@ Use this skill for one pass only. Do not blend with other pass outputs.
 4. Use plain HTML/CSS/JS to keep review friction low.
 5. Include responsive behavior for desktop and mobile.
 6. Cross-reference external style inspiration from the catalog and record applied traits.
-7. Include Playwright visual validation artifacts.
+7. Include at least one `awwwards.com` reference in the pass inspiration output.
+8. Include `three.js` and `gsap` with meaningful 3D/motion behavior.
+9. Download/use local visual media assets in `assets/` for atmospheric richness when possible.
+10. Include Playwright visual validation artifacts.
 
 ## Files
 - `index.html`
 - `style.css`
 - `app.js`
 - `README.md`
+- `assets/*`
 - `validation/handoff.json`
 - `validation/inspiration-crossreference.json`
 - `validation/screenshots/*.png`

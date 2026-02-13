@@ -1,0 +1,29 @@
+{
+  "styleId": "industrial-terminal",
+  "pass": 2,
+  "variantSeed": "scada-wallboard-grid-v2",
+  "runSeed": "20260213T064949Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-02\\industrial-terminal\\pass-2",
+  "template": "Industrial Terminal / Pass 2",
+  "visualProfile": "techno-oxide",
+  "motionProfile": "lattice",
+  "motionSeed": 5073,
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "file": "assets/background-primary.jpg",
+      "source": "https://picsum.photos/seed/industrial-terminal-2-techno-oxide-20260213T064949Z-primary/1920/1200",
+      "downloaded": true
+    },
+    {
+      "file": "assets/background-secondary.jpg",
+      "source": "https://picsum.photos/seed/industrial-terminal-2-techno-oxide-20260213T064949Z-secondary/1400/1000",
+      "downloaded": true
+    }
+  ],
+  "generatedAt": "2026-02-13T06:49:54.1019955Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

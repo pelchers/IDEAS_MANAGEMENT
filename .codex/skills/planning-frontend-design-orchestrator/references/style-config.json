@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "outputRoot": ".docs/planning/concepts",
   "orchestration": {
     "concurrency": 5,
@@ -7,6 +7,9 @@
     "screenshotsSubfolder": "validation/screenshots",
     "requireValidation": true,
     "requireExternalInspiration": true,
+    "requireAwwwardsReference": true,
+    "requireDownloadedMedia": true,
+    "requiredAnimationLibraries": ["three.js", "gsap"],
     "uniquenessThreshold": 0.55
   },
   "passesPerStyle": 2,

@@ -1,0 +1,85 @@
+{
+  "key": "industrial-terminal/pass-2",
+  "styleId": "industrial-terminal",
+  "pass": 2,
+  "runSeed": "20260213T064949Z",
+  "profile": "techno-oxide",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "application ergonomics",
+      "utility-first interaction",
+      "panel architecture"
+    ],
+    "url": "https://www.awwwards.com/websites/web-apps/",
+    "name": "Awwwards Web Apps"
+  },
+  "direction": "SCADA wallboard grid with control switches, heavy instrument modules, and status semantics.",
+  "references": [
+    {
+      "traits": [
+        "application ergonomics",
+        "utility-first interaction",
+        "panel architecture"
+      ],
+      "url": "https://www.awwwards.com/websites/web-apps/",
+      "name": "Awwwards Web Apps"
+    },
+    {
+      "name": "Cisco ThousandEyes",
+      "url": "https://www.thousandeyes.com",
+      "traits": [
+        "network diagnostics",
+        "incident triage flows",
+        "system health framing"
+      ]
+    },
+    {
+      "name": "Datadog",
+      "url": "https://www.datadoghq.com",
+      "traits": [
+        "multi-panel observability",
+        "status color semantics",
+        "telemetry density"
+      ]
+    }
+  ],
+  "allCatalogReferences": [
+    {
+      "name": "Datadog",
+      "url": "https://www.datadoghq.com",
+      "traits": [
+        "multi-panel observability",
+        "status color semantics",
+        "telemetry density"
+      ]
+    },
+    {
+      "name": "Cloudflare Dashboard",
+      "url": "https://dash.cloudflare.com",
+      "traits": [
+        "ops controls",
+        "critical signal prominence",
+        "network-centric modules"
+      ]
+    },
+    {
+      "name": "Cisco ThousandEyes",
+      "url": "https://www.thousandeyes.com",
+      "traits": [
+        "network diagnostics",
+        "incident triage flows",
+        "system health framing"
+      ]
+    },
+    {
+      "traits": [
+        "application ergonomics",
+        "utility-first interaction",
+        "panel architecture"
+      ],
+      "url": "https://www.awwwards.com/websites/web-apps/",
+      "name": "Awwwards Web Apps"
+    }
+  ],
+  "appliedAt": "2026-02-13T06:49:54.1034016Z"
+}

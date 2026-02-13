@@ -1,0 +1,85 @@
+{
+  "key": "ledger-editorial/pass-1",
+  "styleId": "ledger-editorial",
+  "pass": 1,
+  "runSeed": "20260213T064949Z",
+  "profile": "noir-ink",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "narrative pacing",
+      "structured composition",
+      "type confidence"
+    ],
+    "url": "https://www.awwwards.com/websites/nominees/",
+    "name": "Awwwards Nominees"
+  },
+  "direction": "Broadsheet newsroom interface with multi-column story rhythm and serif-first hierarchy.",
+  "references": [
+    {
+      "traits": [
+        "narrative pacing",
+        "structured composition",
+        "type confidence"
+      ],
+      "url": "https://www.awwwards.com/websites/nominees/",
+      "name": "Awwwards Nominees"
+    },
+    {
+      "name": "Monocle",
+      "url": "https://monocle.com",
+      "traits": [
+        "restrained palette",
+        "print-like rhythm",
+        "careful typographic pacing"
+      ]
+    },
+    {
+      "name": "The New York Times",
+      "url": "https://www.nytimes.com",
+      "traits": [
+        "column hierarchy",
+        "story-first structure",
+        "serif authority"
+      ]
+    }
+  ],
+  "allCatalogReferences": [
+    {
+      "name": "The New York Times",
+      "url": "https://www.nytimes.com",
+      "traits": [
+        "column hierarchy",
+        "story-first structure",
+        "serif authority"
+      ]
+    },
+    {
+      "name": "The Guardian",
+      "url": "https://www.theguardian.com/international",
+      "traits": [
+        "modular editorial blocks",
+        "sectioned narrative flow",
+        "publication cadence"
+      ]
+    },
+    {
+      "name": "Monocle",
+      "url": "https://monocle.com",
+      "traits": [
+        "restrained palette",
+        "print-like rhythm",
+        "careful typographic pacing"
+      ]
+    },
+    {
+      "traits": [
+        "narrative pacing",
+        "structured composition",
+        "type confidence"
+      ],
+      "url": "https://www.awwwards.com/websites/nominees/",
+      "name": "Awwwards Nominees"
+    }
+  ],
+  "appliedAt": "2026-02-13T06:49:52.3764952Z"
+}

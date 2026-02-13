@@ -17,11 +17,16 @@ Each pass includes:
 - `style.css`
 - `app.js`
 - `README.md`
+- `assets/` (downloaded/local visual media)
 - `validation/` (visual validation output target)
   - `validation/handoff.json`
   - `validation/inspiration-crossreference.json`
   - `validation/report.playwright.json`
   - `validation/screenshots/*.png`
+
+Quality requirements for new runs:
+- Include at least one `awwwards.com` inspiration reference per pass.
+- Include `three.js` + `gsap` and meaningful motion/3D treatment.
 
 ## Quick Review
 

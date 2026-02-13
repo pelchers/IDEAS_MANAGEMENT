@@ -23,6 +23,9 @@ $validationSubfolder = if ($cfg.orchestration.validationSubfolder) { $cfg.orches
 $uniquenessThreshold = if ($cfg.orchestration.uniquenessThreshold) { [double]$cfg.orchestration.uniquenessThreshold } else { 0.62 }
 $requireExternalInspiration = if ($null -ne $cfg.orchestration.requireExternalInspiration) { [bool]$cfg.orchestration.requireExternalInspiration } else { $true }
 $requireValidation = if ($null -ne $cfg.orchestration.requireValidation) { [bool]$cfg.orchestration.requireValidation } else { $true }
+$requireAwwwardsReference = if ($null -ne $cfg.orchestration.requireAwwwardsReference) { [bool]$cfg.orchestration.requireAwwwardsReference } else { $true }
+$requireDownloadedMedia = if ($null -ne $cfg.orchestration.requireDownloadedMedia) { [bool]$cfg.orchestration.requireDownloadedMedia } else { $true }
+$requiredAnimationLibraries = if ($cfg.orchestration.requiredAnimationLibraries) { @($cfg.orchestration.requiredAnimationLibraries) } else { @('three.js', 'gsap') }
 
 $runId = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
 $runLogRoot = Join-Path $effectiveOutputRoot "_orchestration/$runId"
@@ -55,7 +58,7 @@ $results = @()
 if ($Sequential) {
   foreach ($job in $jobs) {
     $start = (Get-Date).ToUniversalTime().ToString('o')
-    & $generateScript -StyleId $job.styleId -Pass $job.pass -VariantSeed $job.variantSeed -OutputDir $job.outputDir
+    & $generateScript -StyleId $job.styleId -Pass $job.pass -VariantSeed $job.variantSeed -OutputDir $job.outputDir -RunSeed $runId
     $end = (Get-Date).ToUniversalTime().ToString('o')
     $results += [PSCustomObject]@{
       jobId = $job.jobId
@@ -78,11 +81,11 @@ if ($Sequential) {
       $active = @($active | Where-Object { $_.State -eq 'Running' })
     }
     $psJob = Start-Job -Name $job.jobId -ScriptBlock {
-      param($generateScriptPath, $styleId, $pass, $variantSeed, $outputDir, $workspaceRootPath)
+      param($generateScriptPath, $styleId, $pass, $variantSeed, $outputDir, $workspaceRootPath, $runSeed)
       $ErrorActionPreference = 'Stop'
       Set-Location $workspaceRootPath
       $startedAt = (Get-Date).ToUniversalTime().ToString('o')
-      & $generateScriptPath -StyleId $styleId -Pass $pass -VariantSeed $variantSeed -OutputDir $outputDir
+      & $generateScriptPath -StyleId $styleId -Pass $pass -VariantSeed $variantSeed -OutputDir $outputDir -RunSeed $runSeed
       $endedAt = (Get-Date).ToUniversalTime().ToString('o')
       [PSCustomObject]@{
         styleId = $styleId
@@ -92,7 +95,7 @@ if ($Sequential) {
         endedAt = $endedAt
         pid = $PID
       }
-    } -ArgumentList $generateScript, $job.styleId, $job.pass, $job.variantSeed, $job.outputDir, $workspaceRoot
+    } -ArgumentList $generateScript, $job.styleId, $job.pass, $job.variantSeed, $job.outputDir, $workspaceRoot, $runId
     $active += $psJob
     $submitted += $psJob
   }
@@ -151,6 +154,45 @@ foreach ($r in $results) {
   if ($requireExternalInspiration -and -not (Test-Path (Join-Path $passValidationDir 'inspiration-crossreference.json'))) {
     throw "Missing inspiration cross-reference file: $(Join-Path $passValidationDir 'inspiration-crossreference.json')"
   }
+  $inspirationPath = Join-Path $passValidationDir 'inspiration-crossreference.json'
+  if ($requireAwwwardsReference -and (Test-Path $inspirationPath)) {
+    $insp = Get-Content -Raw -Path $inspirationPath | ConvertFrom-Json
+    $refs = @($insp.references)
+    $hasAwwwards = ($refs | Where-Object { $_.url -match 'awwwards\.com' }).Count -gt 0
+    if (-not $hasAwwwards) {
+      throw "Missing required Awwwards reference in: $inspirationPath"
+    }
+  }
+
+  $indexPath = Join-Path $r.outputDir 'index.html'
+  if (-not (Test-Path $indexPath)) {
+    throw "Missing index file for animation library validation: $indexPath"
+  }
+  $indexMarkup = Get-Content -Raw -Path $indexPath
+  foreach ($lib in $requiredAnimationLibraries) {
+    switch -Regex ($lib.ToLowerInvariant()) {
+      'three(\.js)?' {
+        if ($indexMarkup -notmatch 'three\.min\.js') { throw "Missing required Three.js include in $indexPath" }
+      }
+      'gsap' {
+        if ($indexMarkup -notmatch 'gsap(\.min)?\.js') { throw "Missing required GSAP include in $indexPath" }
+      }
+      default {
+        if ($indexMarkup -notmatch [regex]::Escape($lib)) { throw "Missing required animation library marker '$lib' in $indexPath" }
+      }
+    }
+  }
+
+  if ($requireDownloadedMedia) {
+    $primaryMedia = Join-Path $r.outputDir 'assets/background-primary.jpg'
+    $secondaryMedia = Join-Path $r.outputDir 'assets/background-secondary.jpg'
+    if (-not (Test-Path $primaryMedia)) {
+      throw "Missing required media asset: $primaryMedia"
+    }
+    if (-not (Test-Path $secondaryMedia)) {
+      throw "Missing required media asset: $secondaryMedia"
+    }
+  }
 }
 
 $summary = [PSCustomObject]@{
@@ -160,6 +202,9 @@ $summary = [PSCustomObject]@{
   totalJobs = $results.Count
   uniquenessThreshold = $uniquenessThreshold
   requireExternalInspiration = $requireExternalInspiration
+  requireAwwwardsReference = $requireAwwwardsReference
+  requireDownloadedMedia = $requireDownloadedMedia
+  requiredAnimationLibraries = $requiredAnimationLibraries
   validationRequired = $requireValidation
   outputRoot = $effectiveOutputRoot
   outputSetName = if ([string]::IsNullOrWhiteSpace($OutputSetName)) { $null } else { $OutputSetName }

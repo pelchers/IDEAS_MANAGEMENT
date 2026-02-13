@@ -1,0 +1,29 @@
+{
+  "styleId": "aurora-glass",
+  "pass": 1,
+  "variantSeed": "floating-dock-window-v2",
+  "runSeed": "20260213T064949Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-02\\aurora-glass\\pass-1",
+  "template": "Aurora Glass / Pass 1",
+  "visualProfile": "kinetic-neon",
+  "motionProfile": "vortex",
+  "motionSeed": 8690,
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "downloaded": true,
+      "source": "https://picsum.photos/seed/aurora-glass-1-kinetic-neon-20260213T064949Z-primary/1920/1200",
+      "file": "assets/background-primary.jpg"
+    },
+    {
+      "downloaded": true,
+      "source": "https://picsum.photos/seed/aurora-glass-1-kinetic-neon-20260213T064949Z-secondary/1400/1000",
+      "file": "assets/background-secondary.jpg"
+    }
+  ],
+  "generatedAt": "2026-02-13T06:49:51.9903126Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}
