@@ -169,9 +169,9 @@ $js = @"
 $readme = @"
 # $($t.title)
 
-- style-id: `$StyleId`
-- pass: `$Pass`
-- variant-seed: `$VariantSeed`
+- style-id: $StyleId
+- pass: $Pass
+- variant-seed: $VariantSeed
 
 This pass contains a fully navigable app ideation with views for:
 - dashboard
@@ -185,9 +185,9 @@ This pass contains a fully navigable app ideation with views for:
 - ai-chat
 - settings
 
-Validation artifacts should be captured in `validation/`:
-- Screenshots: `validation/screenshots/*.png`
-- Playwright report: `validation/report.playwright.json`
+Validation artifacts should be captured in validation/:
+- Screenshots: validation/screenshots/*.png
+- Playwright report: validation/report.playwright.json
 "@
 
 Set-Content -Path (Join-Path $OutputDir 'index.html') -Value $html

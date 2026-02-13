@@ -1,0 +1,8 @@
+{
+    "styleId":  "industrial-terminal",
+    "pass":  1,
+    "variantSeed":  "green-vector-console",
+    "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\industrial-terminal\\pass-1",
+    "generatedAt":  "2026-02-13T04:09:17.5712169Z",
+    "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

@@ -1,0 +1,8 @@
+{
+    "styleId":  "aurora-glass",
+    "pass":  2,
+    "variantSeed":  "floating-dock-prism",
+    "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\aurora-glass\\pass-2",
+    "generatedAt":  "2026-02-13T04:09:17.3329457Z",
+    "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

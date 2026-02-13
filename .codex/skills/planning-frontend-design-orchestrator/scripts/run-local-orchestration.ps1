@@ -9,7 +9,8 @@ $buildJobsScript = (Resolve-Path '.codex/skills/planning-frontend-design-orchest
 $jobsManifestPath = '.codex/skills/planning-frontend-design-orchestrator/references/pass-jobs.json'
 $generateScript = (Resolve-Path '.codex/skills/frontend-design-subagent/scripts/generate-concept.ps1').Path
 $validateScript = (Resolve-Path '.codex/skills/frontend-design-subagent/scripts/validate-concepts-playwright.mjs').Path
-$outputRoot = $cfg.outputRoot
+$workspaceRoot = (Get-Location).Path
+$outputRoot = [System.IO.Path]::GetFullPath((Join-Path $workspaceRoot $cfg.outputRoot))
 $concurrency = if ($cfg.orchestration.concurrency) { [int]$cfg.orchestration.concurrency } else { 5 }
 $validationSubfolder = if ($cfg.orchestration.validationSubfolder) { $cfg.orchestration.validationSubfolder } else { 'validation' }
 $requireValidation = if ($null -ne $cfg.orchestration.requireValidation) { [bool]$cfg.orchestration.requireValidation } else { $true }
@@ -19,14 +20,14 @@ $runLogRoot = Join-Path $outputRoot "_orchestration/$runId"
 New-Item -ItemType Directory -Force -Path $runLogRoot | Out-Null
 
 & $buildJobsScript -ConfigPath $ConfigPath -OutPath $jobsManifestPath
-if ($LASTEXITCODE -ne 0) {
+if (-not (Test-Path $jobsManifestPath)) {
   throw "Failed to build pass jobs manifest."
 }
 
 $jobs = @()
 foreach ($style in $cfg.styles) {
   foreach ($variant in $style.passVariants) {
-    $outputDir = "$outputRoot/$($style.id)/pass-$($variant.pass)"
+    $outputDir = Join-Path $outputRoot "$($style.id)/pass-$($variant.pass)"
     $jobs += [PSCustomObject]@{
       jobId = "$($style.id)-pass-$($variant.pass)"
       styleId = $style.id
@@ -46,11 +47,7 @@ if ($Sequential) {
   foreach ($job in $jobs) {
     $start = (Get-Date).ToUniversalTime().ToString('o')
     & $generateScript -StyleId $job.styleId -Pass $job.pass -VariantSeed $job.variantSeed -OutputDir $job.outputDir
-    $exitCode = $LASTEXITCODE
     $end = (Get-Date).ToUniversalTime().ToString('o')
-    if ($exitCode -ne 0) {
-      throw "Generation failed for $($job.jobId) with exit code $exitCode"
-    }
     $results += [PSCustomObject]@{
       jobId = $job.jobId
       styleId = $job.styleId
@@ -77,9 +74,6 @@ if ($Sequential) {
       $startedAt = (Get-Date).ToUniversalTime().ToString('o')
       & $generateScriptPath -StyleId $styleId -Pass $pass -VariantSeed $variantSeed -OutputDir $outputDir
       $endedAt = (Get-Date).ToUniversalTime().ToString('o')
-      if ($LASTEXITCODE -ne 0) {
-        throw "Generation script failed with exit code $LASTEXITCODE"
-      }
       [PSCustomObject]@{
         styleId = $styleId
         pass = $pass

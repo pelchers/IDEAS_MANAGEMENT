@@ -1,0 +1,8 @@
+{
+    "styleId":  "ledger-editorial",
+    "pass":  2,
+    "variantSeed":  "monochrome-ledger",
+    "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\ledger-editorial\\pass-2",
+    "generatedAt":  "2026-02-13T04:09:17.4916498Z",
+    "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

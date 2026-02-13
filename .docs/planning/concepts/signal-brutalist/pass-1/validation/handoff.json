@@ -1,0 +1,8 @@
+{
+    "styleId":  "signal-brutalist",
+    "pass":  1,
+    "variantSeed":  "brutal-grid-heavy",
+    "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\signal-brutalist\\pass-1",
+    "generatedAt":  "2026-02-13T04:09:17.0751956Z",
+    "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

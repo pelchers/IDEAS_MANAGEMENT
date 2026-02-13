@@ -1,0 +1,8 @@
+{
+    "styleId":  "playful-clay",
+    "pass":  2,
+    "variantSeed":  "comic-motion-bubbles",
+    "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\playful-clay\\pass-2",
+    "generatedAt":  "2026-02-13T04:09:17.8123498Z",
+    "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

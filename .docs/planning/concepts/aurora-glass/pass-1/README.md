@@ -1,8 +1,8 @@
 # Aurora Glass / Pass 1
 
-- style-id: $StyleId
-- pass: $Pass
-- variant-seed: $VariantSeed
+- style-id: aurora-glass
+- pass: 1
+- variant-seed: frosted-sidebar-aurora
 
 This pass contains a fully navigable app ideation with views for:
 - dashboard
@@ -16,4 +16,6 @@ This pass contains a fully navigable app ideation with views for:
 - ai-chat
 - settings
 
-Validation artifacts should be captured in alidation/playwright/.
+Validation artifacts should be captured in validation/:
+- Screenshots: validation/screenshots/*.png
+- Playwright report: validation/report.playwright.json
