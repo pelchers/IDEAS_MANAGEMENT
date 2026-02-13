@@ -19,33 +19,57 @@ async function exists(p) {
 
 function htmlTokens(content) {
   const tokens = [];
-  const classMatches = content.match(/class=['"]([^'"]+)['"]/g) ?? [];
-  for (const match of classMatches) {
+  const bodyClassMatch = content.match(/<body[^>]*class=['"]([^'"]+)['"]/i);
+  if (bodyClassMatch) {
+    for (const cls of bodyClassMatch[1].split(/\s+/).filter(Boolean)) {
+      tokens.push(`body:${cls.toLowerCase()}`);
+    }
+  }
+
+  const navStyleMatches = content.match(/class=['"][^'"]*\bnav-btn\b[^'"]*['"]/gi) ?? [];
+  for (const match of navStyleMatches) {
     const classes = match
       .replace(/class=['"]/, "")
       .replace(/['"]$/, "")
       .split(/\s+/)
-      .filter(Boolean);
-    for (const cls of classes) tokens.push(`cls:${cls.toLowerCase()}`);
+      .map((x) => x.toLowerCase());
+    for (const cls of classes) {
+      if (cls !== "nav-btn") tokens.push(`nav:${cls}`);
+    }
+  }
+
+  const flowMatches = content.match(/class=['"][^'"]*\bflow-[a-z0-9-]+/gi) ?? [];
+  for (const match of flowMatches) {
+    const flow = match.match(/flow-[a-z0-9-]+/i)?.[0]?.toLowerCase();
+    if (flow) tokens.push(`flow:${flow}`);
+  }
+
+  const dataAttrs = [
+    "data-profile-id",
+    "data-nav-pattern",
+    "data-content-flow",
+    "data-scroll-mode",
+    "data-motion-language",
+    "data-hero-treatment"
+  ];
+  for (const attr of dataAttrs) {
+    const rx = new RegExp(`${attr}=['"]([^'"]+)['"]`, "gi");
+    let match;
+    while ((match = rx.exec(content)) !== null) {
+      tokens.push(`meta:${attr}:${String(match[1]).toLowerCase()}`);
+    }
   }
 
   return tokens;
 }
 
-function cssTokens(content) {
+function cssVariableTokens(content) {
   const tokens = [];
-  const selectorRegex = /([^{}]+)\{/g;
-  let selectorMatch;
-  while ((selectorMatch = selectorRegex.exec(content)) !== null) {
-    const selectorGroup = selectorMatch[1].trim();
-    if (!selectorGroup || selectorGroup.startsWith("@")) continue;
-    for (const part of selectorGroup.split(",")) {
-      const cleaned = part.trim().replace(/:[a-z-()]+/gi, "");
-      if (!cleaned) continue;
-      tokens.push(`sel:${cleaned.toLowerCase()}`);
-      const clsMatches = cleaned.match(/\.[a-z0-9_-]+/gi) ?? [];
-      for (const cls of clsMatches) tokens.push(`selcls:${cls.slice(1).toLowerCase()}`);
-    }
+  const rootMatch = content.match(/:root\s*\{([^}]+)\}/i);
+  if (!rootMatch) return tokens;
+  const vars = rootMatch[1].match(/--[a-z0-9-]+\s*:\s*[^;]+/gi) ?? [];
+  for (const v of vars) {
+    tokens.push(`var:${v.replace(/\s+/g, "").toLowerCase()}`);
   }
   return tokens;
 }
@@ -72,6 +96,18 @@ function cosine(a, b) {
   }
   if (!magA || !magB) return 0;
   return dot / (Math.sqrt(magA) * Math.sqrt(magB));
+}
+
+function jaccard(a, b) {
+  const setA = new Set(a.keys());
+  const setB = new Set(b.keys());
+  const union = new Set([...setA, ...setB]);
+  if (union.size === 0) return 0;
+  let intersection = 0;
+  for (const key of setA) {
+    if (setB.has(key)) intersection += 1;
+  }
+  return intersection / union.size;
 }
 
 const conceptRoot = path.resolve(arg("--concept-root", ".docs/planning/concepts"));
@@ -101,22 +137,35 @@ for (const style of styles) {
     }
     const html = await fs.readFile(htmlPath, "utf8");
     const css = await fs.readFile(cssPath, "utf8");
-    const signatureTokens = [...htmlTokens(html), ...cssTokens(css)];
+    const signatureTokens = [...htmlTokens(html), ...cssVariableTokens(css)];
 
     passes.push({
       id: `${style.name}/${pass.name}`,
       style: style.name,
       pass: pass.name,
-      tokens: freq(signatureTokens)
+      rawTokens: signatureTokens
     });
   }
+}
+
+const docFrequency = new Map();
+for (const pass of passes) {
+  for (const token of new Set(pass.rawTokens)) {
+    docFrequency.set(token, (docFrequency.get(token) ?? 0) + 1);
+  }
+}
+
+const maxShared = Math.max(2, Math.floor(passes.length * 0.6));
+for (const pass of passes) {
+  const filtered = pass.rawTokens.filter((token) => (docFrequency.get(token) ?? 0) <= maxShared);
+  pass.tokens = freq(filtered);
 }
 
 const pairs = [];
 let maxSimilarity = 0;
 for (let i = 0; i < passes.length; i += 1) {
   for (let j = i + 1; j < passes.length; j += 1) {
-    const similarity = cosine(passes[i].tokens, passes[j].tokens);
+    const similarity = jaccard(passes[i].tokens, passes[j].tokens);
     maxSimilarity = Math.max(maxSimilarity, similarity);
     pairs.push({
       a: passes[i].id,

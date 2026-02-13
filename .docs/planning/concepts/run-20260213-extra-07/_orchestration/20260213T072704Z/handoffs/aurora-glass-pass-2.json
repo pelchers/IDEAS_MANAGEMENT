@@ -1,0 +1,109 @@
+{
+  "runId": "20260213T072704Z",
+  "jobId": "aurora-glass-pass-2",
+  "jobKey": "aurora-glass/pass-2",
+  "styleId": "aurora-glass",
+  "pass": 2,
+  "variantSeed": "orbital-rail-prism-v2",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/aurora-glass/pass-2",
+  "uniquenessFlags": {
+    "profileId": "ribbon-editorial-desk",
+    "shellMode": "top-ribbon-command",
+    "navPattern": "segmented-tabs",
+    "contentFlow": "columns",
+    "scrollMode": "chapter-snap",
+    "alignment": "left",
+    "heroTreatment": "marquee",
+    "motionLanguage": "calm",
+    "density": "spacious",
+    "componentTone": "mixed"
+  },
+  "inspiration": {
+    "direction": "Prismatic orbital rail interface with radial focus and luminous translucent panels.",
+    "primaryAwwwards": {
+      "traits": [
+        "motion storytelling",
+        "kinetic transitions",
+        "fluid interaction"
+      ],
+      "url": "https://www.awwwards.com/websites/animation/",
+      "name": "Awwwards Animation"
+    },
+    "selectedReferences": [
+      {
+        "traits": [
+          "motion storytelling",
+          "kinetic transitions",
+          "fluid interaction"
+        ],
+        "url": "https://www.awwwards.com/websites/animation/",
+        "name": "Awwwards Animation"
+      },
+      {
+        "name": "Arc Browser",
+        "url": "https://arc.net",
+        "traits": [
+          "distinct navigation metaphors",
+          "layered paneling",
+          "soft translucency"
+        ]
+      },
+      {
+        "name": "Stripe",
+        "url": "https://stripe.com",
+        "traits": [
+          "gradient confidence",
+          "enterprise polish",
+          "high-clarity modules"
+        ]
+      }
+    ],
+    "allReferences": [
+      {
+        "name": "Stripe",
+        "url": "https://stripe.com",
+        "traits": [
+          "gradient confidence",
+          "enterprise polish",
+          "high-clarity modules"
+        ]
+      },
+      {
+        "name": "Vercel",
+        "url": "https://vercel.com",
+        "traits": [
+          "clean technical minimalism",
+          "tight spacing",
+          "dense readable control surfaces"
+        ]
+      },
+      {
+        "name": "Arc Browser",
+        "url": "https://arc.net",
+        "traits": [
+          "distinct navigation metaphors",
+          "layered paneling",
+          "soft translucency"
+        ]
+      },
+      {
+        "traits": [
+          "motion storytelling",
+          "kinetic transitions",
+          "fluid interaction"
+        ],
+        "url": "https://www.awwwards.com/websites/animation/",
+        "name": "Awwwards Animation"
+      }
+    ],
+    "sourceCatalogKey": "aurora-glass/pass-2"
+  },
+  "researchReferences": [
+    "https://www.awwwards.com/websites/sites_of_the_day/",
+    "https://www.awwwards.com/websites/transitions/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout",
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://threejs.org/manual/#en/fundamentals"
+  ],
+  "createdAt": "2026-02-13T07:27:04.3716885Z"
+}

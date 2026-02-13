@@ -1,0 +1,109 @@
+{
+  "runId": "20260213T072704Z",
+  "jobId": "ledger-editorial-pass-1",
+  "jobKey": "ledger-editorial/pass-1",
+  "styleId": "ledger-editorial",
+  "pass": 1,
+  "variantSeed": "broadsheet-columns-v2",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/ledger-editorial/pass-1",
+  "uniquenessFlags": {
+    "profileId": "billboard-sticky-exhibit",
+    "shellMode": "billboard-sticky-stack",
+    "navPattern": "segmented-tabs",
+    "contentFlow": "stack",
+    "scrollMode": "sticky",
+    "alignment": "center",
+    "heroTreatment": "cinematic",
+    "motionLanguage": "drift",
+    "density": "spacious",
+    "componentTone": "mixed"
+  },
+  "inspiration": {
+    "direction": "Broadsheet newsroom interface with multi-column story rhythm and serif-first hierarchy.",
+    "primaryAwwwards": {
+      "traits": [
+        "narrative pacing",
+        "structured composition",
+        "type confidence"
+      ],
+      "url": "https://www.awwwards.com/websites/nominees/",
+      "name": "Awwwards Nominees"
+    },
+    "selectedReferences": [
+      {
+        "traits": [
+          "narrative pacing",
+          "structured composition",
+          "type confidence"
+        ],
+        "url": "https://www.awwwards.com/websites/nominees/",
+        "name": "Awwwards Nominees"
+      },
+      {
+        "name": "The Guardian",
+        "url": "https://www.theguardian.com/international",
+        "traits": [
+          "modular editorial blocks",
+          "sectioned narrative flow",
+          "publication cadence"
+        ]
+      },
+      {
+        "name": "Monocle",
+        "url": "https://monocle.com",
+        "traits": [
+          "restrained palette",
+          "print-like rhythm",
+          "careful typographic pacing"
+        ]
+      }
+    ],
+    "allReferences": [
+      {
+        "name": "The New York Times",
+        "url": "https://www.nytimes.com",
+        "traits": [
+          "column hierarchy",
+          "story-first structure",
+          "serif authority"
+        ]
+      },
+      {
+        "name": "The Guardian",
+        "url": "https://www.theguardian.com/international",
+        "traits": [
+          "modular editorial blocks",
+          "sectioned narrative flow",
+          "publication cadence"
+        ]
+      },
+      {
+        "name": "Monocle",
+        "url": "https://monocle.com",
+        "traits": [
+          "restrained palette",
+          "print-like rhythm",
+          "careful typographic pacing"
+        ]
+      },
+      {
+        "traits": [
+          "narrative pacing",
+          "structured composition",
+          "type confidence"
+        ],
+        "url": "https://www.awwwards.com/websites/nominees/",
+        "name": "Awwwards Nominees"
+      }
+    ],
+    "sourceCatalogKey": "ledger-editorial/pass-1"
+  },
+  "researchReferences": [
+    "https://www.awwwards.com/websites/sites_of_the_day/",
+    "https://www.awwwards.com/websites/transitions/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout",
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://threejs.org/manual/#en/fundamentals"
+  ],
+  "createdAt": "2026-02-13T07:27:04.3874566Z"
+}

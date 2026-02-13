@@ -1,0 +1,86 @@
+{
+  "key": "aurora-glass/pass-2",
+  "styleId": "aurora-glass",
+  "pass": 2,
+  "runSeed": "20260213T072704Z",
+  "profile": "ribbon-editorial-desk",
+  "direction": "Prismatic orbital rail interface with radial focus and luminous translucent panels.",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "motion storytelling",
+      "kinetic transitions",
+      "fluid interaction"
+    ],
+    "url": "https://www.awwwards.com/websites/animation/",
+    "name": "Awwwards Animation"
+  },
+  "references": [
+    {
+      "traits": [
+        "motion storytelling",
+        "kinetic transitions",
+        "fluid interaction"
+      ],
+      "url": "https://www.awwwards.com/websites/animation/",
+      "name": "Awwwards Animation"
+    },
+    {
+      "name": "Arc Browser",
+      "url": "https://arc.net",
+      "traits": [
+        "distinct navigation metaphors",
+        "layered paneling",
+        "soft translucency"
+      ]
+    },
+    {
+      "name": "Stripe",
+      "url": "https://stripe.com",
+      "traits": [
+        "gradient confidence",
+        "enterprise polish",
+        "high-clarity modules"
+      ]
+    }
+  ],
+  "catalogReferences": [
+    {
+      "name": "Stripe",
+      "url": "https://stripe.com",
+      "traits": [
+        "gradient confidence",
+        "enterprise polish",
+        "high-clarity modules"
+      ]
+    },
+    {
+      "name": "Vercel",
+      "url": "https://vercel.com",
+      "traits": [
+        "clean technical minimalism",
+        "tight spacing",
+        "dense readable control surfaces"
+      ]
+    },
+    {
+      "name": "Arc Browser",
+      "url": "https://arc.net",
+      "traits": [
+        "distinct navigation metaphors",
+        "layered paneling",
+        "soft translucency"
+      ]
+    },
+    {
+      "traits": [
+        "motion storytelling",
+        "kinetic transitions",
+        "fluid interaction"
+      ],
+      "url": "https://www.awwwards.com/websites/animation/",
+      "name": "Awwwards Animation"
+    }
+  ],
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\aurora-glass-pass-2.json",
+  "appliedAt": "2026-02-13T07:27:06.9074318Z"
+}

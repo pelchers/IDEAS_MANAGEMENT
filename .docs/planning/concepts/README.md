@@ -27,6 +27,8 @@ Each pass includes:
 Quality requirements for new runs:
 - Include at least one `awwwards.com` inspiration reference per pass.
 - Include `three.js` + `gsap` and meaningful motion/3D treatment.
+- Include explicit uniqueness flag handoff per pass (`shellMode`, `navPattern`, `contentFlow`, `scrollMode`, `alignment`, `motionLanguage`).
+- Persist handoff source trace in `validation/handoff.json` and `validation/inspiration-crossreference.json`.
 
 ## Quick Review
 

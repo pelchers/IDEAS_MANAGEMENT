@@ -1,0 +1,109 @@
+{
+  "runId": "20260213T072704Z",
+  "jobId": "playful-clay-pass-2",
+  "jobKey": "playful-clay/pass-2",
+  "styleId": "playful-clay",
+  "pass": 2,
+  "variantSeed": "comic-panel-workspace-v2",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/playful-clay/pass-2",
+  "uniquenessFlags": {
+    "profileId": "cockpit-monitor-cluster",
+    "shellMode": "cockpit-monitor-wall",
+    "navPattern": "command-palette",
+    "contentFlow": "bento",
+    "scrollMode": "parallax",
+    "alignment": "center",
+    "heroTreatment": "datawall",
+    "motionLanguage": "strobe",
+    "density": "compact",
+    "componentTone": "hard"
+  },
+  "inspiration": {
+    "direction": "Comic panel workspace with halftone atmosphere, bold outlines, and speech-bubble controls.",
+    "primaryAwwwards": {
+      "traits": [
+        "experimental details",
+        "expressive motion",
+        "novel interaction"
+      ],
+      "url": "https://www.awwwards.com/websites/honorable-mentions/",
+      "name": "Awwwards Honorable Mentions"
+    },
+    "selectedReferences": [
+      {
+        "traits": [
+          "experimental details",
+          "expressive motion",
+          "novel interaction"
+        ],
+        "url": "https://www.awwwards.com/websites/honorable-mentions/",
+        "name": "Awwwards Honorable Mentions"
+      },
+      {
+        "name": "Figma",
+        "url": "https://www.figma.com",
+        "traits": [
+          "multi-pane workspace patterns",
+          "tool clarity",
+          "collaborative metaphors"
+        ]
+      },
+      {
+        "name": "Discord",
+        "url": "https://discord.com",
+        "traits": [
+          "community energy",
+          "expressive icon language",
+          "high interaction density"
+        ]
+      }
+    ],
+    "allReferences": [
+      {
+        "name": "Discord",
+        "url": "https://discord.com",
+        "traits": [
+          "community energy",
+          "expressive icon language",
+          "high interaction density"
+        ]
+      },
+      {
+        "name": "Canva",
+        "url": "https://www.canva.com",
+        "traits": [
+          "creative tooling framing",
+          "visual block systems",
+          "friendly affordances"
+        ]
+      },
+      {
+        "name": "Figma",
+        "url": "https://www.figma.com",
+        "traits": [
+          "multi-pane workspace patterns",
+          "tool clarity",
+          "collaborative metaphors"
+        ]
+      },
+      {
+        "traits": [
+          "experimental details",
+          "expressive motion",
+          "novel interaction"
+        ],
+        "url": "https://www.awwwards.com/websites/honorable-mentions/",
+        "name": "Awwwards Honorable Mentions"
+      }
+    ],
+    "sourceCatalogKey": "playful-clay/pass-2"
+  },
+  "researchReferences": [
+    "https://www.awwwards.com/websites/sites_of_the_day/",
+    "https://www.awwwards.com/websites/transitions/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout",
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://threejs.org/manual/#en/fundamentals"
+  ],
+  "createdAt": "2026-02-13T07:27:04.3649454Z"
+}

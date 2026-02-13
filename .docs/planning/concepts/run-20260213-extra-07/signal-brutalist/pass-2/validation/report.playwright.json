@@ -1,0 +1,29 @@
+{
+  "style": "signal-brutalist",
+  "pass": "pass-2",
+  "requiredViews": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "screenshots": [
+    "validation/screenshots/dashboard.png",
+    "validation/screenshots/projects.png",
+    "validation/screenshots/project-workspace.png",
+    "validation/screenshots/kanban.png",
+    "validation/screenshots/whiteboard.png",
+    "validation/screenshots/schema-planner.png",
+    "validation/screenshots/directory-tree.png",
+    "validation/screenshots/ideas.png",
+    "validation/screenshots/ai-chat.png",
+    "validation/screenshots/settings.png"
+  ],
+  "timestamp": "2026-02-13T07:27:51.822Z"
+}

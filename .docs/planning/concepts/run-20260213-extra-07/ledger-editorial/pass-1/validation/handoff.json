@@ -1,0 +1,39 @@
+{
+  "styleId": "ledger-editorial",
+  "pass": 1,
+  "variantSeed": "broadsheet-columns-v2",
+  "runSeed": "20260213T072704Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/ledger-editorial/pass-1",
+  "template": "Ledger Editorial / Pass 1",
+  "uniquenessFlags": {
+    "profileId": "billboard-sticky-exhibit",
+    "shellMode": "billboard-sticky-stack",
+    "navPattern": "segmented-tabs",
+    "contentFlow": "stack",
+    "scrollMode": "sticky",
+    "alignment": "center",
+    "heroTreatment": "cinematic",
+    "motionLanguage": "drift",
+    "density": "spacious",
+    "componentTone": "mixed"
+  },
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\ledger-editorial-pass-1.json",
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "source": "https://picsum.photos/seed/ledger-editorial-1-billboard-sticky-exhibit-20260213T072704Z-primary/1920/1200",
+      "file": "assets/background-primary.jpg",
+      "downloaded": true
+    },
+    {
+      "source": "https://picsum.photos/seed/ledger-editorial-1-billboard-sticky-exhibit-20260213T072704Z-secondary/1600/1000",
+      "file": "assets/background-secondary.jpg",
+      "downloaded": true
+    }
+  ],
+  "generatedAt": "2026-02-13T07:27:09.1779355Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

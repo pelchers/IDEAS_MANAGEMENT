@@ -1,0 +1,100 @@
+{
+  "runId": "20260213T072704Z",
+  "jobId": "signal-brutalist-pass-1",
+  "jobKey": "signal-brutalist/pass-1",
+  "styleId": "signal-brutalist",
+  "pass": 1,
+  "variantSeed": "slab-grid-ruleset-v2",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/signal-brutalist/pass-1",
+  "uniquenessFlags": {
+    "profileId": "gallery-horizontal-rail",
+    "shellMode": "gallery-horizontal-pan",
+    "navPattern": "rail-list",
+    "contentFlow": "horizontal",
+    "scrollMode": "horizontal",
+    "alignment": "mixed",
+    "heroTreatment": "marquee",
+    "motionLanguage": "orbit",
+    "density": "balanced",
+    "componentTone": "soft"
+  },
+  "inspiration": {
+    "direction": "Poster-grade brutalist slab grid with oversized typographic hierarchy and severe block segmentation.",
+    "primaryAwwwards": {
+      "traits": [
+        "radical composition",
+        "high-contrast typography",
+        "graphic confrontation"
+      ],
+      "url": "https://www.awwwards.com/websites/brutalism/",
+      "name": "Awwwards Brutalism"
+    },
+    "selectedReferences": [
+      {
+        "traits": [
+          "radical composition",
+          "high-contrast typography",
+          "graphic confrontation"
+        ],
+        "url": "https://www.awwwards.com/websites/brutalism/",
+        "name": "Awwwards Brutalism"
+      },
+      {
+        "name": "OFFF Festival",
+        "url": "https://www.offf.barcelona",
+        "traits": [
+          "poster language",
+          "display type dominance",
+          "graphic intensity"
+        ]
+      },
+      {
+        "name": "Brutalist Websites Directory",
+        "url": "https://brutalistwebsites.com",
+        "traits": [
+          "raw geometry",
+          "hard borders",
+          "anti-polish typography"
+        ]
+      }
+    ],
+    "allReferences": [
+      {
+        "name": "Brutalist Websites Directory",
+        "url": "https://brutalistwebsites.com",
+        "traits": [
+          "raw geometry",
+          "hard borders",
+          "anti-polish typography"
+        ]
+      },
+      {
+        "name": "OFFF Festival",
+        "url": "https://www.offf.barcelona",
+        "traits": [
+          "poster language",
+          "display type dominance",
+          "graphic intensity"
+        ]
+      },
+      {
+        "traits": [
+          "radical composition",
+          "high-contrast typography",
+          "graphic confrontation"
+        ],
+        "url": "https://www.awwwards.com/websites/brutalism/",
+        "name": "Awwwards Brutalism"
+      }
+    ],
+    "sourceCatalogKey": "signal-brutalist/pass-1"
+  },
+  "researchReferences": [
+    "https://www.awwwards.com/websites/sites_of_the_day/",
+    "https://www.awwwards.com/websites/transitions/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout",
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://threejs.org/manual/#en/fundamentals"
+  ],
+  "createdAt": "2026-02-13T07:27:04.3908910Z"
+}

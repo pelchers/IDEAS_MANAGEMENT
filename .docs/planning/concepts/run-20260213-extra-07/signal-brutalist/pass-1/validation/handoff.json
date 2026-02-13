@@ -1,0 +1,39 @@
+{
+  "styleId": "signal-brutalist",
+  "pass": 1,
+  "variantSeed": "slab-grid-ruleset-v2",
+  "runSeed": "20260213T072704Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/signal-brutalist/pass-1",
+  "template": "Signal Brutalist / Pass 1",
+  "uniquenessFlags": {
+    "profileId": "gallery-horizontal-rail",
+    "shellMode": "gallery-horizontal-pan",
+    "navPattern": "rail-list",
+    "contentFlow": "horizontal",
+    "scrollMode": "horizontal",
+    "alignment": "mixed",
+    "heroTreatment": "marquee",
+    "motionLanguage": "orbit",
+    "density": "balanced",
+    "componentTone": "soft"
+  },
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\signal-brutalist-pass-1.json",
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "downloaded": true,
+      "file": "assets/background-primary.jpg",
+      "source": "https://picsum.photos/seed/signal-brutalist-1-gallery-horizontal-rail-20260213T072704Z-primary/1920/1200"
+    },
+    {
+      "downloaded": true,
+      "file": "assets/background-secondary.jpg",
+      "source": "https://picsum.photos/seed/signal-brutalist-1-gallery-horizontal-rail-20260213T072704Z-secondary/1600/1000"
+    }
+  ],
+  "generatedAt": "2026-02-13T07:27:08.3864889Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

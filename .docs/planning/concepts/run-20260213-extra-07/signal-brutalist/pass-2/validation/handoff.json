@@ -1,0 +1,39 @@
+{
+  "styleId": "signal-brutalist",
+  "pass": 2,
+  "variantSeed": "stamp-ops-ledger-v2",
+  "runSeed": "20260213T072704Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/signal-brutalist/pass-2",
+  "template": "Signal Brutalist / Pass 2",
+  "uniquenessFlags": {
+    "profileId": "split-command-atelier",
+    "shellMode": "split-command-rail",
+    "navPattern": "chip-cloud",
+    "contentFlow": "masonry",
+    "scrollMode": "reveal",
+    "alignment": "left",
+    "heroTreatment": "split",
+    "motionLanguage": "elastic",
+    "density": "compact",
+    "componentTone": "mixed"
+  },
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\signal-brutalist-pass-2.json",
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "downloaded": true,
+      "source": "https://picsum.photos/seed/signal-brutalist-2-split-command-atelier-20260213T072704Z-primary/1920/1200",
+      "file": "assets/background-primary.jpg"
+    },
+    {
+      "downloaded": true,
+      "source": "https://picsum.photos/seed/signal-brutalist-2-split-command-atelier-20260213T072704Z-secondary/1600/1000",
+      "file": "assets/background-secondary.jpg"
+    }
+  ],
+  "generatedAt": "2026-02-13T07:27:08.7383745Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

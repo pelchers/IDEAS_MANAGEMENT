@@ -1,0 +1,39 @@
+{
+  "styleId": "playful-clay",
+  "pass": 2,
+  "variantSeed": "comic-panel-workspace-v2",
+  "runSeed": "20260213T072704Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/playful-clay/pass-2",
+  "template": "Playful Clay / Pass 2",
+  "uniquenessFlags": {
+    "profileId": "cockpit-monitor-cluster",
+    "shellMode": "cockpit-monitor-wall",
+    "navPattern": "command-palette",
+    "contentFlow": "bento",
+    "scrollMode": "parallax",
+    "alignment": "center",
+    "heroTreatment": "datawall",
+    "motionLanguage": "strobe",
+    "density": "compact",
+    "componentTone": "hard"
+  },
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\playful-clay-pass-2.json",
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "file": "assets/background-primary.jpg",
+      "source": "https://picsum.photos/seed/playful-clay-2-cockpit-monitor-cluster-20260213T072704Z-primary/1920/1200",
+      "downloaded": true
+    },
+    {
+      "file": "assets/background-secondary.jpg",
+      "source": "https://picsum.photos/seed/playful-clay-2-cockpit-monitor-cluster-20260213T072704Z-secondary/1600/1000",
+      "downloaded": true
+    }
+  ],
+  "generatedAt": "2026-02-13T07:27:06.3618084Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

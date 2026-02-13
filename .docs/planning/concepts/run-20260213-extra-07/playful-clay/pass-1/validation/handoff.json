@@ -1,0 +1,39 @@
+{
+  "styleId": "playful-clay",
+  "pass": 1,
+  "variantSeed": "sticker-workbench-v2",
+  "runSeed": "20260213T072704Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/playful-clay/pass-1",
+  "template": "Playful Clay / Pass 1",
+  "uniquenessFlags": {
+    "profileId": "timeline-ops-narrative",
+    "shellMode": "timeline-story-stack",
+    "navPattern": "timeline-dots",
+    "contentFlow": "timeline",
+    "scrollMode": "chapter-snap",
+    "alignment": "left",
+    "heroTreatment": "datawall",
+    "motionLanguage": "strobe",
+    "density": "spacious",
+    "componentTone": "mixed"
+  },
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\playful-clay-pass-1.json",
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "source": "https://picsum.photos/seed/playful-clay-1-timeline-ops-narrative-20260213T072704Z-primary/1920/1200",
+      "file": "assets/background-primary.jpg",
+      "downloaded": true
+    },
+    {
+      "source": "https://picsum.photos/seed/playful-clay-1-timeline-ops-narrative-20260213T072704Z-secondary/1600/1000",
+      "file": "assets/background-secondary.jpg",
+      "downloaded": true
+    }
+  ],
+  "generatedAt": "2026-02-13T07:27:07.2996043Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

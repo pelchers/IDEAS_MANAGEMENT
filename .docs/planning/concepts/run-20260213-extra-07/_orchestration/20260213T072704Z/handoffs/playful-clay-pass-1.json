@@ -1,0 +1,109 @@
+{
+  "runId": "20260213T072704Z",
+  "jobId": "playful-clay-pass-1",
+  "jobKey": "playful-clay/pass-1",
+  "styleId": "playful-clay",
+  "pass": 1,
+  "variantSeed": "sticker-workbench-v2",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/playful-clay/pass-1",
+  "uniquenessFlags": {
+    "profileId": "timeline-ops-narrative",
+    "shellMode": "timeline-story-stack",
+    "navPattern": "timeline-dots",
+    "contentFlow": "timeline",
+    "scrollMode": "chapter-snap",
+    "alignment": "left",
+    "heroTreatment": "datawall",
+    "motionLanguage": "strobe",
+    "density": "spacious",
+    "componentTone": "mixed"
+  },
+  "inspiration": {
+    "direction": "Sticker-style tactile workbench with rounded modules, playful labels, and upbeat interaction language.",
+    "primaryAwwwards": {
+      "traits": [
+        "personality-driven visuals",
+        "playful composition",
+        "creative storytelling"
+      ],
+      "url": "https://www.awwwards.com/websites/portfolio/",
+      "name": "Awwwards Portfolio"
+    },
+    "selectedReferences": [
+      {
+        "traits": [
+          "personality-driven visuals",
+          "playful composition",
+          "creative storytelling"
+        ],
+        "url": "https://www.awwwards.com/websites/portfolio/",
+        "name": "Awwwards Portfolio"
+      },
+      {
+        "name": "Duolingo",
+        "url": "https://www.duolingo.com",
+        "traits": [
+          "friendly energy",
+          "clear callouts",
+          "playful interaction copy"
+        ]
+      },
+      {
+        "name": "Mailchimp",
+        "url": "https://mailchimp.com",
+        "traits": [
+          "expressive visual personality",
+          "illustrative tone",
+          "warm product voice"
+        ]
+      }
+    ],
+    "allReferences": [
+      {
+        "name": "Duolingo",
+        "url": "https://www.duolingo.com",
+        "traits": [
+          "friendly energy",
+          "clear callouts",
+          "playful interaction copy"
+        ]
+      },
+      {
+        "name": "Mailchimp",
+        "url": "https://mailchimp.com",
+        "traits": [
+          "expressive visual personality",
+          "illustrative tone",
+          "warm product voice"
+        ]
+      },
+      {
+        "name": "Pitch",
+        "url": "https://pitch.com",
+        "traits": [
+          "bold card choreography",
+          "presentational clarity",
+          "vibrant accenting"
+        ]
+      },
+      {
+        "traits": [
+          "personality-driven visuals",
+          "playful composition",
+          "creative storytelling"
+        ],
+        "url": "https://www.awwwards.com/websites/portfolio/",
+        "name": "Awwwards Portfolio"
+      }
+    ],
+    "sourceCatalogKey": "playful-clay/pass-1"
+  },
+  "researchReferences": [
+    "https://www.awwwards.com/websites/sites_of_the_day/",
+    "https://www.awwwards.com/websites/transitions/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout",
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://threejs.org/manual/#en/fundamentals"
+  ],
+  "createdAt": "2026-02-13T07:27:04.3846562Z"
+}

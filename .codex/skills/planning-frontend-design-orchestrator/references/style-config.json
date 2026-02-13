@@ -1,6 +1,8 @@
 {
-  "version": 3,
+  "version": 4,
   "outputRoot": ".docs/planning/concepts",
+  "inspirationCatalogPath": ".codex/skills/frontend-design-subagent/references/external-inspiration-catalog.json",
+  "uniquenessCatalogPath": ".codex/skills/planning-frontend-design-orchestrator/references/layout-uniqueness-catalog.json",
   "orchestration": {
     "concurrency": 5,
     "validationSubfolder": "validation",
@@ -9,6 +11,7 @@
     "requireExternalInspiration": true,
     "requireAwwwardsReference": true,
     "requireDownloadedMedia": true,
+    "requireUniqueProfilesPerRun": true,
     "requiredAnimationLibraries": ["three.js", "gsap"],
     "uniquenessThreshold": 0.55
   },

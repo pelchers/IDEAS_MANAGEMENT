@@ -1,0 +1,86 @@
+{
+  "key": "playful-clay/pass-1",
+  "styleId": "playful-clay",
+  "pass": 1,
+  "runSeed": "20260213T072704Z",
+  "profile": "timeline-ops-narrative",
+  "direction": "Sticker-style tactile workbench with rounded modules, playful labels, and upbeat interaction language.",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "personality-driven visuals",
+      "playful composition",
+      "creative storytelling"
+    ],
+    "url": "https://www.awwwards.com/websites/portfolio/",
+    "name": "Awwwards Portfolio"
+  },
+  "references": [
+    {
+      "traits": [
+        "personality-driven visuals",
+        "playful composition",
+        "creative storytelling"
+      ],
+      "url": "https://www.awwwards.com/websites/portfolio/",
+      "name": "Awwwards Portfolio"
+    },
+    {
+      "name": "Duolingo",
+      "url": "https://www.duolingo.com",
+      "traits": [
+        "friendly energy",
+        "clear callouts",
+        "playful interaction copy"
+      ]
+    },
+    {
+      "name": "Mailchimp",
+      "url": "https://mailchimp.com",
+      "traits": [
+        "expressive visual personality",
+        "illustrative tone",
+        "warm product voice"
+      ]
+    }
+  ],
+  "catalogReferences": [
+    {
+      "name": "Duolingo",
+      "url": "https://www.duolingo.com",
+      "traits": [
+        "friendly energy",
+        "clear callouts",
+        "playful interaction copy"
+      ]
+    },
+    {
+      "name": "Mailchimp",
+      "url": "https://mailchimp.com",
+      "traits": [
+        "expressive visual personality",
+        "illustrative tone",
+        "warm product voice"
+      ]
+    },
+    {
+      "name": "Pitch",
+      "url": "https://pitch.com",
+      "traits": [
+        "bold card choreography",
+        "presentational clarity",
+        "vibrant accenting"
+      ]
+    },
+    {
+      "traits": [
+        "personality-driven visuals",
+        "playful composition",
+        "creative storytelling"
+      ],
+      "url": "https://www.awwwards.com/websites/portfolio/",
+      "name": "Awwwards Portfolio"
+    }
+  ],
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\playful-clay-pass-1.json",
+  "appliedAt": "2026-02-13T07:27:07.3017626Z"
+}

@@ -1,0 +1,109 @@
+{
+  "runId": "20260213T072704Z",
+  "jobId": "industrial-terminal-pass-1",
+  "jobKey": "industrial-terminal/pass-1",
+  "styleId": "industrial-terminal",
+  "pass": 1,
+  "variantSeed": "crt-command-console-v2",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/industrial-terminal/pass-1",
+  "uniquenessFlags": {
+    "profileId": "orbital-command-atlas",
+    "shellMode": "radial-hub-stage",
+    "navPattern": "floating-orbital",
+    "contentFlow": "bento",
+    "scrollMode": "parallax",
+    "alignment": "mixed",
+    "heroTreatment": "cinematic",
+    "motionLanguage": "orbit",
+    "density": "balanced",
+    "componentTone": "soft"
+  },
+  "inspiration": {
+    "direction": "Retro CRT operations console with scanline character, terminal commands, and telemetry blocks.",
+    "primaryAwwwards": {
+      "traits": [
+        "tech-forward visual systems",
+        "data-rich interfaces",
+        "signal emphasis"
+      ],
+      "url": "https://www.awwwards.com/websites/technology/",
+      "name": "Awwwards Technology"
+    },
+    "selectedReferences": [
+      {
+        "traits": [
+          "tech-forward visual systems",
+          "data-rich interfaces",
+          "signal emphasis"
+        ],
+        "url": "https://www.awwwards.com/websites/technology/",
+        "name": "Awwwards Technology"
+      },
+      {
+        "name": "Splunk",
+        "url": "https://www.splunk.com",
+        "traits": [
+          "machine-data framing",
+          "alert salience",
+          "observability semantics"
+        ]
+      },
+      {
+        "name": "Hack The Box",
+        "url": "https://www.hackthebox.com",
+        "traits": [
+          "terminal culture",
+          "security operations language",
+          "neon-on-dark emphasis"
+        ]
+      }
+    ],
+    "allReferences": [
+      {
+        "name": "Hack The Box",
+        "url": "https://www.hackthebox.com",
+        "traits": [
+          "terminal culture",
+          "security operations language",
+          "neon-on-dark emphasis"
+        ]
+      },
+      {
+        "name": "Grafana",
+        "url": "https://grafana.com",
+        "traits": [
+          "monitoring density",
+          "dashboard repetition",
+          "operator-first cues"
+        ]
+      },
+      {
+        "name": "Splunk",
+        "url": "https://www.splunk.com",
+        "traits": [
+          "machine-data framing",
+          "alert salience",
+          "observability semantics"
+        ]
+      },
+      {
+        "traits": [
+          "tech-forward visual systems",
+          "data-rich interfaces",
+          "signal emphasis"
+        ],
+        "url": "https://www.awwwards.com/websites/technology/",
+        "name": "Awwwards Technology"
+      }
+    ],
+    "sourceCatalogKey": "industrial-terminal/pass-1"
+  },
+  "researchReferences": [
+    "https://www.awwwards.com/websites/sites_of_the_day/",
+    "https://www.awwwards.com/websites/transitions/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout",
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://threejs.org/manual/#en/fundamentals"
+  ],
+  "createdAt": "2026-02-13T07:27:04.3685901Z"
+}

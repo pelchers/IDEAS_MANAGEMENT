@@ -1,0 +1,39 @@
+{
+  "styleId": "ledger-editorial",
+  "pass": 2,
+  "variantSeed": "tabbed-legal-notebook-v2",
+  "runSeed": "20260213T072704Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/ledger-editorial/pass-2",
+  "template": "Ledger Editorial / Pass 2",
+  "uniquenessFlags": {
+    "profileId": "inspector-right-rail",
+    "shellMode": "right-rail-inspector",
+    "navPattern": "rail-list",
+    "contentFlow": "masonry",
+    "scrollMode": "sticky",
+    "alignment": "left",
+    "heroTreatment": "minimal",
+    "motionLanguage": "elastic",
+    "density": "compact",
+    "componentTone": "hard"
+  },
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\ledger-editorial-pass-2.json",
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "source": "https://picsum.photos/seed/ledger-editorial-2-inspector-right-rail-20260213T072704Z-primary/1920/1200",
+      "downloaded": true,
+      "file": "assets/background-primary.jpg"
+    },
+    {
+      "source": "https://picsum.photos/seed/ledger-editorial-2-inspector-right-rail-20260213T072704Z-secondary/1600/1000",
+      "downloaded": true,
+      "file": "assets/background-secondary.jpg"
+    }
+  ],
+  "generatedAt": "2026-02-13T07:27:06.7762259Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

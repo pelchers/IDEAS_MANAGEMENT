@@ -1,0 +1,86 @@
+{
+  "key": "industrial-terminal/pass-1",
+  "styleId": "industrial-terminal",
+  "pass": 1,
+  "runSeed": "20260213T072704Z",
+  "profile": "orbital-command-atlas",
+  "direction": "Retro CRT operations console with scanline character, terminal commands, and telemetry blocks.",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "tech-forward visual systems",
+      "data-rich interfaces",
+      "signal emphasis"
+    ],
+    "url": "https://www.awwwards.com/websites/technology/",
+    "name": "Awwwards Technology"
+  },
+  "references": [
+    {
+      "traits": [
+        "tech-forward visual systems",
+        "data-rich interfaces",
+        "signal emphasis"
+      ],
+      "url": "https://www.awwwards.com/websites/technology/",
+      "name": "Awwwards Technology"
+    },
+    {
+      "name": "Splunk",
+      "url": "https://www.splunk.com",
+      "traits": [
+        "machine-data framing",
+        "alert salience",
+        "observability semantics"
+      ]
+    },
+    {
+      "name": "Hack The Box",
+      "url": "https://www.hackthebox.com",
+      "traits": [
+        "terminal culture",
+        "security operations language",
+        "neon-on-dark emphasis"
+      ]
+    }
+  ],
+  "catalogReferences": [
+    {
+      "name": "Hack The Box",
+      "url": "https://www.hackthebox.com",
+      "traits": [
+        "terminal culture",
+        "security operations language",
+        "neon-on-dark emphasis"
+      ]
+    },
+    {
+      "name": "Grafana",
+      "url": "https://grafana.com",
+      "traits": [
+        "monitoring density",
+        "dashboard repetition",
+        "operator-first cues"
+      ]
+    },
+    {
+      "name": "Splunk",
+      "url": "https://www.splunk.com",
+      "traits": [
+        "machine-data framing",
+        "alert salience",
+        "observability semantics"
+      ]
+    },
+    {
+      "traits": [
+        "tech-forward visual systems",
+        "data-rich interfaces",
+        "signal emphasis"
+      ],
+      "url": "https://www.awwwards.com/websites/technology/",
+      "name": "Awwwards Technology"
+    }
+  ],
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\industrial-terminal-pass-1.json",
+  "appliedAt": "2026-02-13T07:27:06.7184806Z"
+}

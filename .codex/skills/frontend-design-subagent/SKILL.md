@@ -12,6 +12,7 @@ Use this skill for one pass only. Do not blend with other pass outputs.
 - `--pass`
 - `--variant-seed`
 - `--output-dir`
+- `--handoff-path`
 
 ## Hard Requirements
 1. Generate a fully navigable app frontend ideation (not a landing page).
@@ -20,10 +21,11 @@ Use this skill for one pass only. Do not blend with other pass outputs.
 4. Use plain HTML/CSS/JS to keep review friction low.
 5. Include responsive behavior for desktop and mobile.
 6. Cross-reference external style inspiration from the catalog and record applied traits.
-7. Include at least one `awwwards.com` reference in the pass inspiration output.
-8. Include `three.js` and `gsap` with meaningful 3D/motion behavior.
-9. Download/use local visual media assets in `assets/` for atmospheric richness when possible.
-10. Include Playwright visual validation artifacts.
+7. Apply uniqueness flags from handoff payload (`shellMode`, `navPattern`, `contentFlow`, `scrollMode`, `alignment`, `heroTreatment`, `motionLanguage`, `density`, `componentTone`).
+8. Include at least one `awwwards.com` reference in the pass inspiration output.
+9. Include `three.js` and `gsap` with meaningful 3D/motion behavior.
+10. Download/use local visual media assets in `assets/` for atmospheric richness when possible.
+11. Include Playwright visual validation artifacts.
 
 ## Files
 - `index.html`
@@ -44,3 +46,7 @@ Use this skill for one pass only. Do not blend with other pass outputs.
 ## Inspiration
 Use inspiration notes from Anthropic frontend design guidance:
 - `references/inspiration-notes.md`
+
+## Handoff Contract
+- The generator must persist the consumed handoff source path in output artifacts.
+- The generator must fail if handoff-provided references do not include at least one Awwwards URL.

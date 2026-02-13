@@ -1,0 +1,39 @@
+{
+  "styleId": "industrial-terminal",
+  "pass": 2,
+  "variantSeed": "scada-wallboard-grid-v2",
+  "runSeed": "20260213T072704Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/industrial-terminal/pass-2",
+  "template": "Industrial Terminal / Pass 2",
+  "uniquenessFlags": {
+    "profileId": "dock-workbench-drift",
+    "shellMode": "bottom-dock-workbench",
+    "navPattern": "dock-pills",
+    "contentFlow": "cards",
+    "scrollMode": "reveal",
+    "alignment": "center",
+    "heroTreatment": "split",
+    "motionLanguage": "drift",
+    "density": "balanced",
+    "componentTone": "soft"
+  },
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\industrial-terminal-pass-2.json",
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "file": "assets/background-primary.jpg",
+      "source": "https://picsum.photos/seed/industrial-terminal-2-dock-workbench-drift-20260213T072704Z-primary/1920/1200",
+      "downloaded": true
+    },
+    {
+      "file": "assets/background-secondary.jpg",
+      "source": "https://picsum.photos/seed/industrial-terminal-2-dock-workbench-drift-20260213T072704Z-secondary/1600/1000",
+      "downloaded": true
+    }
+  ],
+  "generatedAt": "2026-02-13T07:27:08.4595399Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

@@ -1,0 +1,39 @@
+{
+  "styleId": "industrial-terminal",
+  "pass": 1,
+  "variantSeed": "crt-command-console-v2",
+  "runSeed": "20260213T072704Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/industrial-terminal/pass-1",
+  "template": "Industrial Terminal / Pass 1",
+  "uniquenessFlags": {
+    "profileId": "orbital-command-atlas",
+    "shellMode": "radial-hub-stage",
+    "navPattern": "floating-orbital",
+    "contentFlow": "bento",
+    "scrollMode": "parallax",
+    "alignment": "mixed",
+    "heroTreatment": "cinematic",
+    "motionLanguage": "orbit",
+    "density": "balanced",
+    "componentTone": "soft"
+  },
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\industrial-terminal-pass-1.json",
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "downloaded": true,
+      "source": "https://picsum.photos/seed/industrial-terminal-1-orbital-command-atlas-20260213T072704Z-primary/1920/1200",
+      "file": "assets/background-primary.jpg"
+    },
+    {
+      "downloaded": true,
+      "source": "https://picsum.photos/seed/industrial-terminal-1-orbital-command-atlas-20260213T072704Z-secondary/1600/1000",
+      "file": "assets/background-secondary.jpg"
+    }
+  ],
+  "generatedAt": "2026-02-13T07:27:06.7168366Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

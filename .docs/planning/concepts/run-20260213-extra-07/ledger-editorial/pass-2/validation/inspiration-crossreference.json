@@ -1,0 +1,86 @@
+{
+  "key": "ledger-editorial/pass-2",
+  "styleId": "ledger-editorial",
+  "pass": 2,
+  "runSeed": "20260213T072704Z",
+  "profile": "inspector-right-rail",
+  "direction": "Legal-notebook workspace with tabbed chapters, annotation lines, and monochrome precision.",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "restraint",
+      "grid clarity",
+      "content-first hierarchy"
+    ],
+    "url": "https://www.awwwards.com/websites/minimal/",
+    "name": "Awwwards Minimal"
+  },
+  "references": [
+    {
+      "traits": [
+        "restraint",
+        "grid clarity",
+        "content-first hierarchy"
+      ],
+      "url": "https://www.awwwards.com/websites/minimal/",
+      "name": "Awwwards Minimal"
+    },
+    {
+      "name": "Substack",
+      "url": "https://substack.com",
+      "traits": [
+        "newsletter structure",
+        "content framing",
+        "minimal chrome"
+      ]
+    },
+    {
+      "name": "Notion",
+      "url": "https://www.notion.so",
+      "traits": [
+        "document workflows",
+        "simple controls",
+        "structured panel organization"
+      ]
+    }
+  ],
+  "catalogReferences": [
+    {
+      "name": "Medium",
+      "url": "https://medium.com",
+      "traits": [
+        "long-form readability",
+        "typographic pacing",
+        "low-friction content focus"
+      ]
+    },
+    {
+      "name": "Substack",
+      "url": "https://substack.com",
+      "traits": [
+        "newsletter structure",
+        "content framing",
+        "minimal chrome"
+      ]
+    },
+    {
+      "name": "Notion",
+      "url": "https://www.notion.so",
+      "traits": [
+        "document workflows",
+        "simple controls",
+        "structured panel organization"
+      ]
+    },
+    {
+      "traits": [
+        "restraint",
+        "grid clarity",
+        "content-first hierarchy"
+      ],
+      "url": "https://www.awwwards.com/websites/minimal/",
+      "name": "Awwwards Minimal"
+    }
+  ],
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\ledger-editorial-pass-2.json",
+  "appliedAt": "2026-02-13T07:27:06.7777713Z"
+}

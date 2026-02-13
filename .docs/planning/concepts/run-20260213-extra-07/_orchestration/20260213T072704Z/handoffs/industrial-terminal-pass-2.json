@@ -1,0 +1,109 @@
+{
+  "runId": "20260213T072704Z",
+  "jobId": "industrial-terminal-pass-2",
+  "jobKey": "industrial-terminal/pass-2",
+  "styleId": "industrial-terminal",
+  "pass": 2,
+  "variantSeed": "scada-wallboard-grid-v2",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/industrial-terminal/pass-2",
+  "uniquenessFlags": {
+    "profileId": "dock-workbench-drift",
+    "shellMode": "bottom-dock-workbench",
+    "navPattern": "dock-pills",
+    "contentFlow": "cards",
+    "scrollMode": "reveal",
+    "alignment": "center",
+    "heroTreatment": "split",
+    "motionLanguage": "drift",
+    "density": "balanced",
+    "componentTone": "soft"
+  },
+  "inspiration": {
+    "direction": "SCADA wallboard grid with control switches, heavy instrument modules, and status semantics.",
+    "primaryAwwwards": {
+      "traits": [
+        "application ergonomics",
+        "utility-first interaction",
+        "panel architecture"
+      ],
+      "url": "https://www.awwwards.com/websites/web-apps/",
+      "name": "Awwwards Web Apps"
+    },
+    "selectedReferences": [
+      {
+        "traits": [
+          "application ergonomics",
+          "utility-first interaction",
+          "panel architecture"
+        ],
+        "url": "https://www.awwwards.com/websites/web-apps/",
+        "name": "Awwwards Web Apps"
+      },
+      {
+        "name": "Cisco ThousandEyes",
+        "url": "https://www.thousandeyes.com",
+        "traits": [
+          "network diagnostics",
+          "incident triage flows",
+          "system health framing"
+        ]
+      },
+      {
+        "name": "Datadog",
+        "url": "https://www.datadoghq.com",
+        "traits": [
+          "multi-panel observability",
+          "status color semantics",
+          "telemetry density"
+        ]
+      }
+    ],
+    "allReferences": [
+      {
+        "name": "Datadog",
+        "url": "https://www.datadoghq.com",
+        "traits": [
+          "multi-panel observability",
+          "status color semantics",
+          "telemetry density"
+        ]
+      },
+      {
+        "name": "Cloudflare Dashboard",
+        "url": "https://dash.cloudflare.com",
+        "traits": [
+          "ops controls",
+          "critical signal prominence",
+          "network-centric modules"
+        ]
+      },
+      {
+        "name": "Cisco ThousandEyes",
+        "url": "https://www.thousandeyes.com",
+        "traits": [
+          "network diagnostics",
+          "incident triage flows",
+          "system health framing"
+        ]
+      },
+      {
+        "traits": [
+          "application ergonomics",
+          "utility-first interaction",
+          "panel architecture"
+        ],
+        "url": "https://www.awwwards.com/websites/web-apps/",
+        "name": "Awwwards Web Apps"
+      }
+    ],
+    "sourceCatalogKey": "industrial-terminal/pass-2"
+  },
+  "researchReferences": [
+    "https://www.awwwards.com/websites/sites_of_the_day/",
+    "https://www.awwwards.com/websites/transitions/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout",
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://threejs.org/manual/#en/fundamentals"
+  ],
+  "createdAt": "2026-02-13T07:27:04.3861037Z"
+}

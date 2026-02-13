@@ -13,11 +13,16 @@ $effectiveOutputRoot = if ([string]::IsNullOrWhiteSpace($OutputRootOverride)) { 
 foreach ($style in $cfg.styles) {
   foreach ($variant in $style.passVariants) {
     $outputDir = "$effectiveOutputRoot/$($style.id)/pass-$($variant.pass)"
+    $jobKey = "$($style.id)/pass-$($variant.pass)"
     $jobs += [PSCustomObject]@{
+      jobId = "$($style.id)-pass-$($variant.pass)"
+      jobKey = $jobKey
       styleId = $style.id
       styleLabel = $style.label
+      styleNotes = $style.notes
       pass = [int]$variant.pass
       variantSeed = $variant.variantSeed
+      styleLayoutArchetypes = @($style.layoutArchetypes)
       outputDir = $outputDir
       validationDir = "$outputDir/$validationSubfolder"
       screenshotsDir = "$outputDir/$screenshotsSubfolder"

@@ -1,0 +1,39 @@
+{
+  "styleId": "aurora-glass",
+  "pass": 1,
+  "variantSeed": "floating-dock-window-v2",
+  "runSeed": "20260213T072704Z",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/aurora-glass/pass-1",
+  "template": "Aurora Glass / Pass 1",
+  "uniquenessFlags": {
+    "profileId": "notebook-schematic-canvas",
+    "shellMode": "notebook-sheet-canvas",
+    "navPattern": "chip-cloud",
+    "contentFlow": "stack",
+    "scrollMode": "reveal",
+    "alignment": "mixed",
+    "heroTreatment": "minimal",
+    "motionLanguage": "calm",
+    "density": "balanced",
+    "componentTone": "hard"
+  },
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\aurora-glass-pass-1.json",
+  "animationLibraries": [
+    "three.js",
+    "gsap"
+  ],
+  "mediaAssets": [
+    {
+      "source": "https://picsum.photos/seed/aurora-glass-1-notebook-schematic-canvas-20260213T072704Z-primary/1920/1200",
+      "downloaded": true,
+      "file": "assets/background-primary.jpg"
+    },
+    {
+      "source": "https://picsum.photos/seed/aurora-glass-1-notebook-schematic-canvas-20260213T072704Z-secondary/1600/1000",
+      "downloaded": true,
+      "file": "assets/background-secondary.jpg"
+    }
+  ],
+  "generatedAt": "2026-02-13T07:27:08.7374483Z",
+  "script": ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

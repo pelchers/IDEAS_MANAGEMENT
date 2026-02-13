@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "notes": "Profiles are intentionally orthogonal to style families so the orchestrator can rotate structural shells per run.",
+  "profiles": [
+    {
+      "profileId": "orbital-command-atlas",
+      "shellMode": "radial-hub-stage",
+      "navPattern": "floating-orbital",
+      "contentFlow": "bento",
+      "scrollMode": "parallax",
+      "alignment": "mixed",
+      "heroTreatment": "cinematic",
+      "motionLanguage": "orbit",
+      "density": "balanced",
+      "componentTone": "soft"
+    },
+    {
+      "profileId": "ribbon-editorial-desk",
+      "shellMode": "top-ribbon-command",
+      "navPattern": "segmented-tabs",
+      "contentFlow": "columns",
+      "scrollMode": "chapter-snap",
+      "alignment": "left",
+      "heroTreatment": "marquee",
+      "motionLanguage": "calm",
+      "density": "spacious",
+      "componentTone": "mixed"
+    },
+    {
+      "profileId": "dock-workbench-drift",
+      "shellMode": "bottom-dock-workbench",
+      "navPattern": "dock-pills",
+      "contentFlow": "cards",
+      "scrollMode": "reveal",
+      "alignment": "center",
+      "heroTreatment": "split",
+      "motionLanguage": "drift",
+      "density": "balanced",
+      "componentTone": "soft"
+    },
+    {
+      "profileId": "inspector-right-rail",
+      "shellMode": "right-rail-inspector",
+      "navPattern": "rail-list",
+      "contentFlow": "masonry",
+      "scrollMode": "sticky",
+      "alignment": "left",
+      "heroTreatment": "minimal",
+      "motionLanguage": "elastic",
+      "density": "compact",
+      "componentTone": "hard"
+    },
+    {
+      "profileId": "timeline-ops-narrative",
+      "shellMode": "timeline-story-stack",
+      "navPattern": "timeline-dots",
+      "contentFlow": "timeline",
+      "scrollMode": "chapter-snap",
+      "alignment": "left",
+      "heroTreatment": "datawall",
+      "motionLanguage": "strobe",
+      "density": "spacious",
+      "componentTone": "mixed"
+    },
+    {
+      "profileId": "notebook-schematic-canvas",
+      "shellMode": "notebook-sheet-canvas",
+      "navPattern": "chip-cloud",
+      "contentFlow": "stack",
+      "scrollMode": "reveal",
+      "alignment": "mixed",
+      "heroTreatment": "minimal",
+      "motionLanguage": "calm",
+      "density": "balanced",
+      "componentTone": "hard"
+    },
+    {
+      "profileId": "cockpit-monitor-cluster",
+      "shellMode": "cockpit-monitor-wall",
+      "navPattern": "command-palette",
+      "contentFlow": "bento",
+      "scrollMode": "parallax",
+      "alignment": "center",
+      "heroTreatment": "datawall",
+      "motionLanguage": "strobe",
+      "density": "compact",
+      "componentTone": "hard"
+    },
+    {
+      "profileId": "billboard-sticky-exhibit",
+      "shellMode": "billboard-sticky-stack",
+      "navPattern": "segmented-tabs",
+      "contentFlow": "stack",
+      "scrollMode": "sticky",
+      "alignment": "center",
+      "heroTreatment": "cinematic",
+      "motionLanguage": "drift",
+      "density": "spacious",
+      "componentTone": "mixed"
+    },
+    {
+      "profileId": "gallery-horizontal-rail",
+      "shellMode": "gallery-horizontal-pan",
+      "navPattern": "rail-list",
+      "contentFlow": "horizontal",
+      "scrollMode": "horizontal",
+      "alignment": "mixed",
+      "heroTreatment": "marquee",
+      "motionLanguage": "orbit",
+      "density": "balanced",
+      "componentTone": "soft"
+    },
+    {
+      "profileId": "split-command-atelier",
+      "shellMode": "split-command-rail",
+      "navPattern": "chip-cloud",
+      "contentFlow": "masonry",
+      "scrollMode": "reveal",
+      "alignment": "left",
+      "heroTreatment": "split",
+      "motionLanguage": "elastic",
+      "density": "compact",
+      "componentTone": "mixed"
+    }
+  ]
+}

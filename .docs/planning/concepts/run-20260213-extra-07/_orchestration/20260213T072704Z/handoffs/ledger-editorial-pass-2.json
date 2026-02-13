@@ -1,0 +1,109 @@
+{
+  "runId": "20260213T072704Z",
+  "jobId": "ledger-editorial-pass-2",
+  "jobKey": "ledger-editorial/pass-2",
+  "styleId": "ledger-editorial",
+  "pass": 2,
+  "variantSeed": "tabbed-legal-notebook-v2",
+  "outputDir": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07/ledger-editorial/pass-2",
+  "uniquenessFlags": {
+    "profileId": "inspector-right-rail",
+    "shellMode": "right-rail-inspector",
+    "navPattern": "rail-list",
+    "contentFlow": "masonry",
+    "scrollMode": "sticky",
+    "alignment": "left",
+    "heroTreatment": "minimal",
+    "motionLanguage": "elastic",
+    "density": "compact",
+    "componentTone": "hard"
+  },
+  "inspiration": {
+    "direction": "Legal-notebook workspace with tabbed chapters, annotation lines, and monochrome precision.",
+    "primaryAwwwards": {
+      "traits": [
+        "restraint",
+        "grid clarity",
+        "content-first hierarchy"
+      ],
+      "url": "https://www.awwwards.com/websites/minimal/",
+      "name": "Awwwards Minimal"
+    },
+    "selectedReferences": [
+      {
+        "traits": [
+          "restraint",
+          "grid clarity",
+          "content-first hierarchy"
+        ],
+        "url": "https://www.awwwards.com/websites/minimal/",
+        "name": "Awwwards Minimal"
+      },
+      {
+        "name": "Substack",
+        "url": "https://substack.com",
+        "traits": [
+          "newsletter structure",
+          "content framing",
+          "minimal chrome"
+        ]
+      },
+      {
+        "name": "Notion",
+        "url": "https://www.notion.so",
+        "traits": [
+          "document workflows",
+          "simple controls",
+          "structured panel organization"
+        ]
+      }
+    ],
+    "allReferences": [
+      {
+        "name": "Medium",
+        "url": "https://medium.com",
+        "traits": [
+          "long-form readability",
+          "typographic pacing",
+          "low-friction content focus"
+        ]
+      },
+      {
+        "name": "Substack",
+        "url": "https://substack.com",
+        "traits": [
+          "newsletter structure",
+          "content framing",
+          "minimal chrome"
+        ]
+      },
+      {
+        "name": "Notion",
+        "url": "https://www.notion.so",
+        "traits": [
+          "document workflows",
+          "simple controls",
+          "structured panel organization"
+        ]
+      },
+      {
+        "traits": [
+          "restraint",
+          "grid clarity",
+          "content-first hierarchy"
+        ],
+        "url": "https://www.awwwards.com/websites/minimal/",
+        "name": "Awwwards Minimal"
+      }
+    ],
+    "sourceCatalogKey": "ledger-editorial/pass-2"
+  },
+  "researchReferences": [
+    "https://www.awwwards.com/websites/sites_of_the_day/",
+    "https://www.awwwards.com/websites/transitions/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout",
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://threejs.org/manual/#en/fundamentals"
+  ],
+  "createdAt": "2026-02-13T07:27:04.3699345Z"
+}

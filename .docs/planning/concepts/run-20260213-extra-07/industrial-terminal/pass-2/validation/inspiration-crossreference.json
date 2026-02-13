@@ -1,0 +1,86 @@
+{
+  "key": "industrial-terminal/pass-2",
+  "styleId": "industrial-terminal",
+  "pass": 2,
+  "runSeed": "20260213T072704Z",
+  "profile": "dock-workbench-drift",
+  "direction": "SCADA wallboard grid with control switches, heavy instrument modules, and status semantics.",
+  "primaryAwwwardsReference": {
+    "traits": [
+      "application ergonomics",
+      "utility-first interaction",
+      "panel architecture"
+    ],
+    "url": "https://www.awwwards.com/websites/web-apps/",
+    "name": "Awwwards Web Apps"
+  },
+  "references": [
+    {
+      "traits": [
+        "application ergonomics",
+        "utility-first interaction",
+        "panel architecture"
+      ],
+      "url": "https://www.awwwards.com/websites/web-apps/",
+      "name": "Awwwards Web Apps"
+    },
+    {
+      "name": "Cisco ThousandEyes",
+      "url": "https://www.thousandeyes.com",
+      "traits": [
+        "network diagnostics",
+        "incident triage flows",
+        "system health framing"
+      ]
+    },
+    {
+      "name": "Datadog",
+      "url": "https://www.datadoghq.com",
+      "traits": [
+        "multi-panel observability",
+        "status color semantics",
+        "telemetry density"
+      ]
+    }
+  ],
+  "catalogReferences": [
+    {
+      "name": "Datadog",
+      "url": "https://www.datadoghq.com",
+      "traits": [
+        "multi-panel observability",
+        "status color semantics",
+        "telemetry density"
+      ]
+    },
+    {
+      "name": "Cloudflare Dashboard",
+      "url": "https://dash.cloudflare.com",
+      "traits": [
+        "ops controls",
+        "critical signal prominence",
+        "network-centric modules"
+      ]
+    },
+    {
+      "name": "Cisco ThousandEyes",
+      "url": "https://www.thousandeyes.com",
+      "traits": [
+        "network diagnostics",
+        "incident triage flows",
+        "system health framing"
+      ]
+    },
+    {
+      "traits": [
+        "application ergonomics",
+        "utility-first interaction",
+        "panel architecture"
+      ],
+      "url": "https://www.awwwards.com/websites/web-apps/",
+      "name": "Awwwards Web Apps"
+    }
+  ],
+  "handoffSource": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-07\\_orchestration\\20260213T072704Z\\handoffs\\industrial-terminal-pass-2.json",
+  "appliedAt": "2026-02-13T07:27:08.4610949Z"
+}
