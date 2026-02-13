@@ -29,6 +29,19 @@ Open any pass directly:
 - `.docs/planning/concepts/<style>/pass-1/index.html`
 - `.docs/planning/concepts/<style>/pass-2/index.html`
 
+## Additional Generation Sets (Append Mode)
+
+To keep existing passes and generate an additional set of 10, run orchestrator with `-OutputSetName`.
+
+Example:
+```bash
+powershell -NoProfile -ExecutionPolicy Bypass -File .codex/skills/planning-frontend-design-orchestrator/scripts/run-local-orchestration.ps1 -OutputSetName run-YYYYMMDD-extra-01
+```
+
+This writes a new isolated set under:
+- `.docs/planning/concepts/run-YYYYMMDD-extra-01/<style>/pass-1`
+- `.docs/planning/concepts/run-YYYYMMDD-extra-01/<style>/pass-2`
+
 ## Playwright Visual Validation
 
 Script:

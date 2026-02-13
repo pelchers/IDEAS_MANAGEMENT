@@ -1,0 +1,36 @@
+{
+    "key":  "signal-brutalist/pass-1",
+    "styleId":  "signal-brutalist",
+    "pass":  1,
+    "direction":  "Poster-grade brutalist slab grid with oversized typographic hierarchy and severe block segmentation.",
+    "references":  [
+                       {
+                           "name":  "Brutalist Websites Directory",
+                           "url":  "https://brutalistwebsites.com",
+                           "traits":  [
+                                          "raw geometry",
+                                          "hard borders",
+                                          "anti-polish typography"
+                                      ]
+                       },
+                       {
+                           "name":  "Awwwards Brutalism Collection",
+                           "url":  "https://www.awwwards.com/websites/brutalism/",
+                           "traits":  [
+                                          "disruptive composition",
+                                          "graphic imbalance",
+                                          "deliberate visual friction"
+                                      ]
+                       },
+                       {
+                           "name":  "OFFF Festival",
+                           "url":  "https://www.offf.barcelona",
+                           "traits":  [
+                                          "poster language",
+                                          "display type dominance",
+                                          "graphic intensity"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T06:27:19.7843332Z"
+}

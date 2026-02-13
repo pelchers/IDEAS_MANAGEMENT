@@ -1,0 +1,36 @@
+{
+    "key":  "industrial-terminal/pass-1",
+    "styleId":  "industrial-terminal",
+    "pass":  1,
+    "direction":  "Retro CRT operations console with scanline character, terminal commands, and telemetry blocks.",
+    "references":  [
+                       {
+                           "name":  "Hack The Box",
+                           "url":  "https://www.hackthebox.com",
+                           "traits":  [
+                                          "terminal culture",
+                                          "security operations language",
+                                          "neon-on-dark emphasis"
+                                      ]
+                       },
+                       {
+                           "name":  "Grafana",
+                           "url":  "https://grafana.com",
+                           "traits":  [
+                                          "monitoring density",
+                                          "dashboard repetition",
+                                          "operator-first cues"
+                                      ]
+                       },
+                       {
+                           "name":  "Splunk",
+                           "url":  "https://www.splunk.com",
+                           "traits":  [
+                                          "machine-data framing",
+                                          "alert salience",
+                                          "observability semantics"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T06:27:20.4256785Z"
+}

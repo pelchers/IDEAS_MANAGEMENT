@@ -1,0 +1,9 @@
+{
+    "styleId":  "industrial-terminal",
+    "pass":  2,
+    "variantSeed":  "scada-wallboard-grid-v2",
+    "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-01\\industrial-terminal\\pass-2",
+    "template":  "Industrial Terminal / Pass 2",
+    "generatedAt":  "2026-02-13T06:27:20.5074666Z",
+    "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

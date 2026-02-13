@@ -1,0 +1,9 @@
+{
+    "styleId":  "aurora-glass",
+    "pass":  2,
+    "variantSeed":  "orbital-rail-prism-v2",
+    "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-01\\aurora-glass\\pass-2",
+    "template":  "Aurora Glass / Pass 2",
+    "generatedAt":  "2026-02-13T06:27:19.9501984Z",
+    "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

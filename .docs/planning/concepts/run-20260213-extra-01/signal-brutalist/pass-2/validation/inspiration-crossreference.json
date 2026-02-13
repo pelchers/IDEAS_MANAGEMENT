@@ -1,0 +1,36 @@
+{
+    "key":  "signal-brutalist/pass-2",
+    "styleId":  "signal-brutalist",
+    "pass":  2,
+    "direction":  "Stamped operations ledger with tactical labels, hard separators, and legal-form aesthetics.",
+    "references":  [
+                       {
+                           "name":  "MUBI",
+                           "url":  "https://mubi.com",
+                           "traits":  [
+                                          "strong display hierarchy",
+                                          "discipline in whitespace",
+                                          "cinematic framing"
+                                      ]
+                       },
+                       {
+                           "name":  "NTS Radio",
+                           "url":  "https://www.nts.live",
+                           "traits":  [
+                                          "data-dense rhythm",
+                                          "utility metadata styling",
+                                          "hard-edged modules"
+                                      ]
+                       },
+                       {
+                           "name":  "Frieze",
+                           "url":  "https://www.frieze.com",
+                           "traits":  [
+                                          "editorial segmentation",
+                                          "high-contrast type",
+                                          "publication-grade blocks"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T06:27:19.8030957Z"
+}

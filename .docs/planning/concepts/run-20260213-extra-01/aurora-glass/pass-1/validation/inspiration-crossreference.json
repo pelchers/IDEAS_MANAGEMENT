@@ -1,0 +1,36 @@
+{
+    "key":  "aurora-glass/pass-1",
+    "styleId":  "aurora-glass",
+    "pass":  1,
+    "direction":  "Immersive floating glass dock with atmospheric depth and translucent command windows.",
+    "references":  [
+                       {
+                           "name":  "Apple Vision Pro",
+                           "url":  "https://www.apple.com/apple-vision-pro/",
+                           "traits":  [
+                                          "spatial translucency",
+                                          "floating surfaces",
+                                          "ambient depth"
+                                      ]
+                       },
+                       {
+                           "name":  "Linear",
+                           "url":  "https://linear.app",
+                           "traits":  [
+                                          "precision spacing",
+                                          "calm premium UI",
+                                          "high signal density"
+                                      ]
+                       },
+                       {
+                           "name":  "Raycast",
+                           "url":  "https://www.raycast.com",
+                           "traits":  [
+                                          "command-first workflows",
+                                          "tool clarity",
+                                          "purposeful polish"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T06:27:19.8777904Z"
+}

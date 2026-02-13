@@ -1,0 +1,36 @@
+{
+    "key":  "ledger-editorial/pass-2",
+    "styleId":  "ledger-editorial",
+    "pass":  2,
+    "direction":  "Legal-notebook workspace with tabbed chapters, annotation lines, and monochrome precision.",
+    "references":  [
+                       {
+                           "name":  "Medium",
+                           "url":  "https://medium.com",
+                           "traits":  [
+                                          "long-form readability",
+                                          "typographic pacing",
+                                          "low-friction content focus"
+                                      ]
+                       },
+                       {
+                           "name":  "Substack",
+                           "url":  "https://substack.com",
+                           "traits":  [
+                                          "newsletter structure",
+                                          "content framing",
+                                          "minimal chrome"
+                                      ]
+                       },
+                       {
+                           "name":  "Notion",
+                           "url":  "https://www.notion.so",
+                           "traits":  [
+                                          "document workflows",
+                                          "simple controls",
+                                          "structured panel organization"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T06:27:20.3400365Z"
+}

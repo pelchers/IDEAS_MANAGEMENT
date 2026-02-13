@@ -1,0 +1,6 @@
+:root{--bg:#16100a;--text:#ffd79a;--surface:#23180f;--accent:#ffb567;--accent2:#67b9ff;--border:#6b421f}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+button{font:inherit}
+[data-page]{display:none}
+[data-page].active{display:block}
+.scada-wall{background:var(--bg);color:var(--text);font-family:"Rajdhani",sans-serif}.scada-wall>header{display:flex;justify-content:space-between;align-items:end;padding:16px 20px;border-bottom:2px solid var(--border);background:#1f1610}.scada-layout{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 82px)}.scada-switches{padding:14px;border-right:2px solid var(--border);display:grid;gap:8px;align-content:start;background:#19120d}.scada-switch{border:1px solid var(--border);background:#281b12;color:var(--text);padding:9px 10px;text-align:left;font-weight:700;cursor:pointer}.scada-switch.active{background:var(--accent);color:#281807}.scada-grid{padding:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.scada-module{border:2px solid var(--border);padding:12px;background:var(--surface)}@media (max-width:1024px){.scada-layout{grid-template-columns:1fr}.scada-switches{border-right:none;border-bottom:2px solid var(--border);grid-template-columns:repeat(2,minmax(0,1fr))}.scada-grid{grid-template-columns:1fr}}

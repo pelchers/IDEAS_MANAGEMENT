@@ -1,0 +1,36 @@
+{
+    "key":  "playful-clay/pass-2",
+    "styleId":  "playful-clay",
+    "pass":  2,
+    "direction":  "Comic panel workspace with halftone atmosphere, bold outlines, and speech-bubble controls.",
+    "references":  [
+                       {
+                           "name":  "Discord",
+                           "url":  "https://discord.com",
+                           "traits":  [
+                                          "community energy",
+                                          "expressive icon language",
+                                          "high interaction density"
+                                      ]
+                       },
+                       {
+                           "name":  "Canva",
+                           "url":  "https://www.canva.com",
+                           "traits":  [
+                                          "creative tooling framing",
+                                          "visual block systems",
+                                          "friendly affordances"
+                                      ]
+                       },
+                       {
+                           "name":  "Figma",
+                           "url":  "https://www.figma.com",
+                           "traits":  [
+                                          "multi-pane workspace patterns",
+                                          "tool clarity",
+                                          "collaborative metaphors"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T06:27:20.6701585Z"
+}

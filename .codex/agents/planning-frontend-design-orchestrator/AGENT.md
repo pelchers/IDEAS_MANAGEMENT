@@ -24,6 +24,7 @@ Runs the frontend concept ideation loop for `.docs/planning/concepts`.
 ## Required Inputs
 - Style config: `.codex/skills/planning-frontend-design-orchestrator/references/style-config.json`
 - Output root: `.docs/planning/concepts`
+- Optional output set: use `-OutputSetName <set-name>` to write a new appended run under `.docs/planning/concepts/<set-name>/` without overwriting existing passes.
 
 ## Mandatory Orchestration Rules
 1. Generate exactly 5 unique style families unless the config is edited.

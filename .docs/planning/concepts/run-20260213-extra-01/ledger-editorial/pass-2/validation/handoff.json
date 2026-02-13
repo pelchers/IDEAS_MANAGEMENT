@@ -1,0 +1,9 @@
+{
+    "styleId":  "ledger-editorial",
+    "pass":  2,
+    "variantSeed":  "tabbed-legal-notebook-v2",
+    "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\run-20260213-extra-01\\ledger-editorial\\pass-2",
+    "template":  "Ledger Editorial / Pass 2",
+    "generatedAt":  "2026-02-13T06:27:20.3380352Z",
+    "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
+}

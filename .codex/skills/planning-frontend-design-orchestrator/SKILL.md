@@ -31,6 +31,10 @@ Use this skill to run multi-style frontend concept ideation with strict pass iso
 - Inspiration cross-reference: `.docs/planning/concepts/<style>/pass-<n>/validation/inspiration-crossreference.json`
 - Uniqueness report: `.docs/planning/concepts/uniqueness-report.json`
 
+## Append Runs Without Overwrite
+- Use `scripts/run-local-orchestration.ps1 -OutputSetName <set-name>` to generate an additional isolated set while preserving existing passes.
+- In append mode, artifacts are written under `.docs/planning/concepts/<set-name>/...` with the same style/pass structure and validation contract.
+
 ## Scripts
 - `scripts/build-pass-jobs.ps1` builds a job manifest from style config.
 - `scripts/run-local-orchestration.ps1` local fallback orchestrator with concurrent isolated job dispatch and validation checks.

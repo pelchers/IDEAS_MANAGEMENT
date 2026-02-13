@@ -1,0 +1,292 @@
+[
+  {
+    "style": "aurora-glass",
+    "pass": "pass-1",
+    "requiredViews": [
+      "dashboard",
+      "projects",
+      "project-workspace",
+      "kanban",
+      "whiteboard",
+      "schema-planner",
+      "directory-tree",
+      "ideas",
+      "ai-chat",
+      "settings"
+    ],
+    "screenshots": [
+      "validation/screenshots/dashboard.png",
+      "validation/screenshots/projects.png",
+      "validation/screenshots/project-workspace.png",
+      "validation/screenshots/kanban.png",
+      "validation/screenshots/whiteboard.png",
+      "validation/screenshots/schema-planner.png",
+      "validation/screenshots/directory-tree.png",
+      "validation/screenshots/ideas.png",
+      "validation/screenshots/ai-chat.png",
+      "validation/screenshots/settings.png"
+    ],
+    "timestamp": "2026-02-13T06:27:24.770Z"
+  },
+  {
+    "style": "aurora-glass",
+    "pass": "pass-2",
+    "requiredViews": [
+      "dashboard",
+      "projects",
+      "project-workspace",
+      "kanban",
+      "whiteboard",
+      "schema-planner",
+      "directory-tree",
+      "ideas",
+      "ai-chat",
+      "settings"
+    ],
+    "screenshots": [
+      "validation/screenshots/dashboard.png",
+      "validation/screenshots/projects.png",
+      "validation/screenshots/project-workspace.png",
+      "validation/screenshots/kanban.png",
+      "validation/screenshots/whiteboard.png",
+      "validation/screenshots/schema-planner.png",
+      "validation/screenshots/directory-tree.png",
+      "validation/screenshots/ideas.png",
+      "validation/screenshots/ai-chat.png",
+      "validation/screenshots/settings.png"
+    ],
+    "timestamp": "2026-02-13T06:27:28.052Z"
+  },
+  {
+    "style": "industrial-terminal",
+    "pass": "pass-1",
+    "requiredViews": [
+      "dashboard",
+      "projects",
+      "project-workspace",
+      "kanban",
+      "whiteboard",
+      "schema-planner",
+      "directory-tree",
+      "ideas",
+      "ai-chat",
+      "settings"
+    ],
+    "screenshots": [
+      "validation/screenshots/dashboard.png",
+      "validation/screenshots/projects.png",
+      "validation/screenshots/project-workspace.png",
+      "validation/screenshots/kanban.png",
+      "validation/screenshots/whiteboard.png",
+      "validation/screenshots/schema-planner.png",
+      "validation/screenshots/directory-tree.png",
+      "validation/screenshots/ideas.png",
+      "validation/screenshots/ai-chat.png",
+      "validation/screenshots/settings.png"
+    ],
+    "timestamp": "2026-02-13T06:27:30.161Z"
+  },
+  {
+    "style": "industrial-terminal",
+    "pass": "pass-2",
+    "requiredViews": [
+      "dashboard",
+      "projects",
+      "project-workspace",
+      "kanban",
+      "whiteboard",
+      "schema-planner",
+      "directory-tree",
+      "ideas",
+      "ai-chat",
+      "settings"
+    ],
+    "screenshots": [
+      "validation/screenshots/dashboard.png",
+      "validation/screenshots/projects.png",
+      "validation/screenshots/project-workspace.png",
+      "validation/screenshots/kanban.png",
+      "validation/screenshots/whiteboard.png",
+      "validation/screenshots/schema-planner.png",
+      "validation/screenshots/directory-tree.png",
+      "validation/screenshots/ideas.png",
+      "validation/screenshots/ai-chat.png",
+      "validation/screenshots/settings.png"
+    ],
+    "timestamp": "2026-02-13T06:27:32.577Z"
+  },
+  {
+    "style": "ledger-editorial",
+    "pass": "pass-1",
+    "requiredViews": [
+      "dashboard",
+      "projects",
+      "project-workspace",
+      "kanban",
+      "whiteboard",
+      "schema-planner",
+      "directory-tree",
+      "ideas",
+      "ai-chat",
+      "settings"
+    ],
+    "screenshots": [
+      "validation/screenshots/dashboard.png",
+      "validation/screenshots/projects.png",
+      "validation/screenshots/project-workspace.png",
+      "validation/screenshots/kanban.png",
+      "validation/screenshots/whiteboard.png",
+      "validation/screenshots/schema-planner.png",
+      "validation/screenshots/directory-tree.png",
+      "validation/screenshots/ideas.png",
+      "validation/screenshots/ai-chat.png",
+      "validation/screenshots/settings.png"
+    ],
+    "timestamp": "2026-02-13T06:27:34.711Z"
+  },
+  {
+    "style": "ledger-editorial",
+    "pass": "pass-2",
+    "requiredViews": [
+      "dashboard",
+      "projects",
+      "project-workspace",
+      "kanban",
+      "whiteboard",
+      "schema-planner",
+      "directory-tree",
+      "ideas",
+      "ai-chat",
+      "settings"
+    ],
+    "screenshots": [
+      "validation/screenshots/dashboard.png",
+      "validation/screenshots/projects.png",
+      "validation/screenshots/project-workspace.png",
+      "validation/screenshots/kanban.png",
+      "validation/screenshots/whiteboard.png",
+      "validation/screenshots/schema-planner.png",
+      "validation/screenshots/directory-tree.png",
+      "validation/screenshots/ideas.png",
+      "validation/screenshots/ai-chat.png",
+      "validation/screenshots/settings.png"
+    ],
+    "timestamp": "2026-02-13T06:27:36.728Z"
+  },
+  {
+    "style": "playful-clay",
+    "pass": "pass-1",
+    "requiredViews": [
+      "dashboard",
+      "projects",
+      "project-workspace",
+      "kanban",
+      "whiteboard",
+      "schema-planner",
+      "directory-tree",
+      "ideas",
+      "ai-chat",
+      "settings"
+    ],
+    "screenshots": [
+      "validation/screenshots/dashboard.png",
+      "validation/screenshots/projects.png",
+      "validation/screenshots/project-workspace.png",
+      "validation/screenshots/kanban.png",
+      "validation/screenshots/whiteboard.png",
+      "validation/screenshots/schema-planner.png",
+      "validation/screenshots/directory-tree.png",
+      "validation/screenshots/ideas.png",
+      "validation/screenshots/ai-chat.png",
+      "validation/screenshots/settings.png"
+    ],
+    "timestamp": "2026-02-13T06:27:38.840Z"
+  },
+  {
+    "style": "playful-clay",
+    "pass": "pass-2",
+    "requiredViews": [
+      "dashboard",
+      "projects",
+      "project-workspace",
+      "kanban",
+      "whiteboard",
+      "schema-planner",
+      "directory-tree",
+      "ideas",
+      "ai-chat",
+      "settings"
+    ],
+    "screenshots": [
+      "validation/screenshots/dashboard.png",
+      "validation/screenshots/projects.png",
+      "validation/screenshots/project-workspace.png",
+      "validation/screenshots/kanban.png",
+      "validation/screenshots/whiteboard.png",
+      "validation/screenshots/schema-planner.png",
+      "validation/screenshots/directory-tree.png",
+      "validation/screenshots/ideas.png",
+      "validation/screenshots/ai-chat.png",
+      "validation/screenshots/settings.png"
+    ],
+    "timestamp": "2026-02-13T06:27:40.876Z"
+  },
+  {
+    "style": "signal-brutalist",
+    "pass": "pass-1",
+    "requiredViews": [
+      "dashboard",
+      "projects",
+      "project-workspace",
+      "kanban",
+      "whiteboard",
+      "schema-planner",
+      "directory-tree",
+      "ideas",
+      "ai-chat",
+      "settings"
+    ],
+    "screenshots": [
+      "validation/screenshots/dashboard.png",
+      "validation/screenshots/projects.png",
+      "validation/screenshots/project-workspace.png",
+      "validation/screenshots/kanban.png",
+      "validation/screenshots/whiteboard.png",
+      "validation/screenshots/schema-planner.png",
+      "validation/screenshots/directory-tree.png",
+      "validation/screenshots/ideas.png",
+      "validation/screenshots/ai-chat.png",
+      "validation/screenshots/settings.png"
+    ],
+    "timestamp": "2026-02-13T06:27:43.254Z"
+  },
+  {
+    "style": "signal-brutalist",
+    "pass": "pass-2",
+    "requiredViews": [
+      "dashboard",
+      "projects",
+      "project-workspace",
+      "kanban",
+      "whiteboard",
+      "schema-planner",
+      "directory-tree",
+      "ideas",
+      "ai-chat",
+      "settings"
+    ],
+    "screenshots": [
+      "validation/screenshots/dashboard.png",
+      "validation/screenshots/projects.png",
+      "validation/screenshots/project-workspace.png",
+      "validation/screenshots/kanban.png",
+      "validation/screenshots/whiteboard.png",
+      "validation/screenshots/schema-planner.png",
+      "validation/screenshots/directory-tree.png",
+      "validation/screenshots/ideas.png",
+      "validation/screenshots/ai-chat.png",
+      "validation/screenshots/settings.png"
+    ],
+    "timestamp": "2026-02-13T06:27:45.283Z"
+  }
+]

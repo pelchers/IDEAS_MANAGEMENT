@@ -1,0 +1,36 @@
+{
+    "key":  "ledger-editorial/pass-1",
+    "styleId":  "ledger-editorial",
+    "pass":  1,
+    "direction":  "Broadsheet newsroom interface with multi-column story rhythm and serif-first hierarchy.",
+    "references":  [
+                       {
+                           "name":  "The New York Times",
+                           "url":  "https://www.nytimes.com",
+                           "traits":  [
+                                          "column hierarchy",
+                                          "story-first structure",
+                                          "serif authority"
+                                      ]
+                       },
+                       {
+                           "name":  "The Guardian",
+                           "url":  "https://www.theguardian.com/international",
+                           "traits":  [
+                                          "modular editorial blocks",
+                                          "sectioned narrative flow",
+                                          "publication cadence"
+                                      ]
+                       },
+                       {
+                           "name":  "Monocle",
+                           "url":  "https://monocle.com",
+                           "traits":  [
+                                          "restrained palette",
+                                          "print-like rhythm",
+                                          "careful typographic pacing"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T06:27:20.0374211Z"
+}

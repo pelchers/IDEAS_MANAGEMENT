@@ -1,16 +1,18 @@
 param(
   [string]$ConfigPath = '.codex/skills/planning-frontend-design-orchestrator/references/style-config.json',
-  [string]$OutPath = '.codex/skills/planning-frontend-design-orchestrator/references/pass-jobs.json'
+  [string]$OutPath = '.codex/skills/planning-frontend-design-orchestrator/references/pass-jobs.json',
+  [string]$OutputRootOverride = ''
 )
 
 $cfg = Get-Content -Raw -Path $ConfigPath | ConvertFrom-Json
 $jobs = @()
 $validationSubfolder = if ($cfg.orchestration.validationSubfolder) { $cfg.orchestration.validationSubfolder } else { 'validation' }
 $screenshotsSubfolder = if ($cfg.orchestration.screenshotsSubfolder) { $cfg.orchestration.screenshotsSubfolder } else { 'validation/screenshots' }
+$effectiveOutputRoot = if ([string]::IsNullOrWhiteSpace($OutputRootOverride)) { $cfg.outputRoot } else { $OutputRootOverride }
 
 foreach ($style in $cfg.styles) {
   foreach ($variant in $style.passVariants) {
-    $outputDir = "$($cfg.outputRoot)/$($style.id)/pass-$($variant.pass)"
+    $outputDir = "$effectiveOutputRoot/$($style.id)/pass-$($variant.pass)"
     $jobs += [PSCustomObject]@{
       styleId = $style.id
       styleLabel = $style.label

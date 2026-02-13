@@ -1,0 +1,36 @@
+{
+    "key":  "aurora-glass/pass-2",
+    "styleId":  "aurora-glass",
+    "pass":  2,
+    "direction":  "Prismatic orbital rail interface with radial focus and luminous translucent panels.",
+    "references":  [
+                       {
+                           "name":  "Stripe",
+                           "url":  "https://stripe.com",
+                           "traits":  [
+                                          "gradient confidence",
+                                          "enterprise polish",
+                                          "high-clarity modules"
+                                      ]
+                       },
+                       {
+                           "name":  "Vercel",
+                           "url":  "https://vercel.com",
+                           "traits":  [
+                                          "clean technical minimalism",
+                                          "tight spacing",
+                                          "dense readable control surfaces"
+                                      ]
+                       },
+                       {
+                           "name":  "Arc Browser",
+                           "url":  "https://arc.net",
+                           "traits":  [
+                                          "distinct navigation metaphors",
+                                          "layered paneling",
+                                          "soft translucency"
+                                      ]
+                       }
+                   ],
+    "appliedAt":  "2026-02-13T06:27:19.9517179Z"
+}

@@ -1,6 +1,7 @@
 param(
   [string]$ConfigPath = '.codex/skills/planning-frontend-design-orchestrator/references/style-config.json',
-  [switch]$Sequential
+  [switch]$Sequential,
+  [string]$OutputSetName = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -11,7 +12,12 @@ $generateScript = (Resolve-Path '.codex/skills/frontend-design-subagent/scripts/
 $uniquenessScript = (Resolve-Path '.codex/skills/frontend-design-subagent/scripts/validate-design-uniqueness.mjs').Path
 $validateScript = (Resolve-Path '.codex/skills/frontend-design-subagent/scripts/validate-concepts-playwright.mjs').Path
 $workspaceRoot = (Get-Location).Path
-$outputRoot = [System.IO.Path]::GetFullPath((Join-Path $workspaceRoot $cfg.outputRoot))
+$baseOutputRoot = [System.IO.Path]::GetFullPath((Join-Path $workspaceRoot $cfg.outputRoot))
+$effectiveOutputRoot = if ([string]::IsNullOrWhiteSpace($OutputSetName)) {
+  $baseOutputRoot
+} else {
+  [System.IO.Path]::GetFullPath((Join-Path $baseOutputRoot $OutputSetName))
+}
 $concurrency = if ($cfg.orchestration.concurrency) { [int]$cfg.orchestration.concurrency } else { 5 }
 $validationSubfolder = if ($cfg.orchestration.validationSubfolder) { $cfg.orchestration.validationSubfolder } else { 'validation' }
 $uniquenessThreshold = if ($cfg.orchestration.uniquenessThreshold) { [double]$cfg.orchestration.uniquenessThreshold } else { 0.62 }
@@ -19,10 +25,10 @@ $requireExternalInspiration = if ($null -ne $cfg.orchestration.requireExternalIn
 $requireValidation = if ($null -ne $cfg.orchestration.requireValidation) { [bool]$cfg.orchestration.requireValidation } else { $true }
 
 $runId = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
-$runLogRoot = Join-Path $outputRoot "_orchestration/$runId"
+$runLogRoot = Join-Path $effectiveOutputRoot "_orchestration/$runId"
 New-Item -ItemType Directory -Force -Path $runLogRoot | Out-Null
 
-& $buildJobsScript -ConfigPath $ConfigPath -OutPath $jobsManifestPath
+& $buildJobsScript -ConfigPath $ConfigPath -OutPath $jobsManifestPath -OutputRootOverride $effectiveOutputRoot
 if (-not (Test-Path $jobsManifestPath)) {
   throw "Failed to build pass jobs manifest."
 }
@@ -30,7 +36,7 @@ if (-not (Test-Path $jobsManifestPath)) {
 $jobs = @()
 foreach ($style in $cfg.styles) {
   foreach ($variant in $style.passVariants) {
-    $outputDir = Join-Path $outputRoot "$($style.id)/pass-$($variant.pass)"
+    $outputDir = Join-Path $effectiveOutputRoot "$($style.id)/pass-$($variant.pass)"
     $jobs += [PSCustomObject]@{
       jobId = "$($style.id)-pass-$($variant.pass)"
       styleId = $style.id
@@ -118,14 +124,14 @@ if ($Sequential) {
 $results | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $runLogRoot 'handoff-results.json')
 
 Write-Output "Running uniqueness validation..."
-node $uniquenessScript --concept-root $outputRoot --threshold $uniquenessThreshold
+node $uniquenessScript --concept-root $effectiveOutputRoot --threshold $uniquenessThreshold
 if ($LASTEXITCODE -ne 0) {
   throw "Uniqueness validation failed with exit code $LASTEXITCODE"
 }
 
 if ($requireValidation) {
   Write-Output "Running Playwright validation..."
-  node $validateScript --concept-root $outputRoot
+  node $validateScript --concept-root $effectiveOutputRoot
   if ($LASTEXITCODE -ne 0) {
     throw "Playwright validation failed with exit code $LASTEXITCODE"
   }
@@ -155,6 +161,8 @@ $summary = [PSCustomObject]@{
   uniquenessThreshold = $uniquenessThreshold
   requireExternalInspiration = $requireExternalInspiration
   validationRequired = $requireValidation
+  outputRoot = $effectiveOutputRoot
+  outputSetName = if ([string]::IsNullOrWhiteSpace($OutputSetName)) { $null } else { $OutputSetName }
   generatedAt = (Get-Date).ToUniversalTime().ToString('o')
   results = $results
 }

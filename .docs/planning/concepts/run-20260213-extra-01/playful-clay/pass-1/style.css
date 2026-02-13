@@ -1,0 +1,6 @@
+:root{--bg:#fff5fb;--text:#2f2155;--surface:#ffffff;--accent:#ff7f90;--accent2:#7454d1;--border:#d8c6ff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+button{font:inherit}
+[data-page]{display:none}
+[data-page].active{display:block}
+.clay-board{background:linear-gradient(180deg,#fff5fb 0%,#f2f6ff 52%,#f0fff7 100%);font-family:"Nunito",sans-serif;color:var(--text)}.clay-board>header{display:flex;justify-content:space-between;align-items:end;padding:18px 20px}.clay-rack{display:flex;flex-wrap:wrap;gap:8px;padding:0 20px 16px}.clay-chip{border:none;border-radius:999px;background:#fff;box-shadow:0 8px 14px rgba(73,59,143,.15);padding:10px 14px;font-weight:700;color:#3d2c63;cursor:pointer}.clay-chip.active{background:var(--accent);color:#fff}.clay-canvas{padding:10px 20px 24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.clay-blob{padding:16px;border-radius:28px;background:#fff;border:2px solid var(--border);box-shadow:0 14px 24px rgba(92,74,177,.18)}@media (max-width:1024px){.clay-canvas{grid-template-columns:1fr}}
