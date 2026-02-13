@@ -2,15 +2,15 @@
     "key":  "ledger-editorial/pass-2",
     "styleId":  "ledger-editorial",
     "pass":  2,
-    "direction":  "Notebook and legal-ledger hybrid with tabbed chapters and monochrome precision.",
+    "direction":  "Legal-notebook workspace with tabbed chapters, annotation lines, and monochrome precision.",
     "references":  [
                        {
                            "name":  "Medium",
                            "url":  "https://medium.com",
                            "traits":  [
-                                          "readability",
+                                          "long-form readability",
                                           "typographic pacing",
-                                          "focus mode clarity"
+                                          "low-friction content focus"
                                       ]
                        },
                        {
@@ -18,19 +18,19 @@
                            "url":  "https://substack.com",
                            "traits":  [
                                           "newsletter structure",
-                                          "long-form hierarchy",
-                                          "content-first framing"
+                                          "content framing",
+                                          "minimal chrome"
                                       ]
                        },
                        {
                            "name":  "Notion",
                            "url":  "https://www.notion.so",
                            "traits":  [
-                                          "document workspace patterns",
+                                          "document workflows",
                                           "simple controls",
-                                          "structured side navigation"
+                                          "structured panel organization"
                                       ]
                        }
                    ],
-    "appliedAt":  "2026-02-13T05:20:57.7145844Z"
+    "appliedAt":  "2026-02-13T05:53:18.3922823Z"
 }

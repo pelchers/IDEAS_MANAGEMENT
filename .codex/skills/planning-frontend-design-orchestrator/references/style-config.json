@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "outputRoot": ".docs/planning/concepts",
   "orchestration": {
     "concurrency": 5,
@@ -7,7 +7,7 @@
     "screenshotsSubfolder": "validation/screenshots",
     "requireValidation": true,
     "requireExternalInspiration": true,
-    "uniquenessThreshold": 0.62
+    "uniquenessThreshold": 0.55
   },
   "passesPerStyle": 2,
   "requiredViews": [
@@ -26,46 +26,51 @@
     {
       "id": "signal-brutalist",
       "label": "Signal Brutalist",
-      "notes": "High-contrast geometric raw blocks with assertive typography.",
+      "notes": "Hard-edged poster systems, anti-polish typography, zero-softness component geometry.",
+      "layoutArchetypes": ["slab-grid", "stamp-ops-ledger"],
       "passVariants": [
-        { "pass": 1, "variantSeed": "brutal-grid-heavy" },
-        { "pass": 2, "variantSeed": "stamped-editorial-brutal" }
+        { "pass": 1, "variantSeed": "slab-grid-ruleset-v2" },
+        { "pass": 2, "variantSeed": "stamp-ops-ledger-v2" }
       ]
     },
     {
       "id": "aurora-glass",
       "label": "Aurora Glass",
-      "notes": "Layered translucent panes and atmospheric gradients.",
+      "notes": "Translucent spatial UI with atmospheric depth and premium command-surface polish.",
+      "layoutArchetypes": ["floating-dock-window", "orbital-rail-prism"],
       "passVariants": [
-        { "pass": 1, "variantSeed": "frosted-sidebar-aurora" },
-        { "pass": 2, "variantSeed": "floating-dock-prism" }
+        { "pass": 1, "variantSeed": "floating-dock-window-v2" },
+        { "pass": 2, "variantSeed": "orbital-rail-prism-v2" }
       ]
     },
     {
       "id": "ledger-editorial",
       "label": "Ledger Editorial",
-      "notes": "Publication-grade layout with serif hierarchy and structured reading flow.",
+      "notes": "Publication-grade storytelling shells with strong reading hierarchy and low-chrome controls.",
+      "layoutArchetypes": ["broadsheet-columns", "tabbed-legal-notebook"],
       "passVariants": [
-        { "pass": 1, "variantSeed": "broadsheet-columns" },
-        { "pass": 2, "variantSeed": "monochrome-ledger" }
+        { "pass": 1, "variantSeed": "broadsheet-columns-v2" },
+        { "pass": 2, "variantSeed": "tabbed-legal-notebook-v2" }
       ]
     },
     {
       "id": "industrial-terminal",
       "label": "Industrial Terminal",
-      "notes": "Operational control-room aesthetic with machine-grade paneling.",
+      "notes": "Operator-heavy control environments, telemetry density, and machine-instrument metaphors.",
+      "layoutArchetypes": ["crt-command-console", "scada-wallboard-grid"],
       "passVariants": [
-        { "pass": 1, "variantSeed": "green-vector-console" },
-        { "pass": 2, "variantSeed": "amber-rack-ops" }
+        { "pass": 1, "variantSeed": "crt-command-console-v2" },
+        { "pass": 2, "variantSeed": "scada-wallboard-grid-v2" }
       ]
     },
     {
       "id": "playful-clay",
       "label": "Playful Clay",
-      "notes": "Soft tactile surfaces, bold color cues, and friendly visual rhythm.",
+      "notes": "Expressive, tactile, characterful systems with playful interaction language.",
+      "layoutArchetypes": ["sticker-workbench", "comic-panel-workspace"],
       "passVariants": [
-        { "pass": 1, "variantSeed": "pastel-clay-cards" },
-        { "pass": 2, "variantSeed": "comic-motion-bubbles" }
+        { "pass": 1, "variantSeed": "sticker-workbench-v2" },
+        { "pass": 2, "variantSeed": "comic-panel-workspace-v2" }
       ]
     }
   ]

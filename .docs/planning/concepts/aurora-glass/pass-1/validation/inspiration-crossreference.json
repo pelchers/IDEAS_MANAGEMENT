@@ -2,15 +2,15 @@
     "key":  "aurora-glass/pass-1",
     "styleId":  "aurora-glass",
     "pass":  1,
-    "direction":  "Deep-space frosted panes and floating dock navigation with atmospheric depth.",
+    "direction":  "Immersive floating glass dock with atmospheric depth and translucent command windows.",
     "references":  [
                        {
                            "name":  "Apple Vision Pro",
                            "url":  "https://www.apple.com/apple-vision-pro/",
                            "traits":  [
-                                          "glass layering",
-                                          "ambient gradients",
-                                          "floating surfaces"
+                                          "spatial translucency",
+                                          "floating surfaces",
+                                          "ambient depth"
                                       ]
                        },
                        {
@@ -18,19 +18,19 @@
                            "url":  "https://linear.app",
                            "traits":  [
                                           "precision spacing",
-                                          "calm dark surfaces",
-                                          "minimal but premium controls"
+                                          "calm premium UI",
+                                          "high signal density"
                                       ]
                        },
                        {
                            "name":  "Raycast",
                            "url":  "https://www.raycast.com",
                            "traits":  [
-                                          "command centricity",
-                                          "smooth transitions",
-                                          "tool-like clarity"
+                                          "command-first workflows",
+                                          "tool clarity",
+                                          "purposeful polish"
                                       ]
                        }
                    ],
-    "appliedAt":  "2026-02-13T05:20:57.4629574Z"
+    "appliedAt":  "2026-02-13T05:53:18.1443249Z"
 }

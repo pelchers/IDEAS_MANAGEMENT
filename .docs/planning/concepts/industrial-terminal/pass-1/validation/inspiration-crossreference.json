@@ -2,15 +2,15 @@
     "key":  "industrial-terminal/pass-1",
     "styleId":  "industrial-terminal",
     "pass":  1,
-    "direction":  "CRT console workflow with command-line framing, scanlines, and status telemetry.",
+    "direction":  "Retro CRT operations console with scanline character, terminal commands, and telemetry blocks.",
     "references":  [
                        {
                            "name":  "Hack The Box",
                            "url":  "https://www.hackthebox.com",
                            "traits":  [
                                           "terminal culture",
-                                          "security operations visual language",
-                                          "neon-on-dark contrast"
+                                          "security operations language",
+                                          "neon-on-dark emphasis"
                                       ]
                        },
                        {
@@ -18,19 +18,19 @@
                            "url":  "https://grafana.com",
                            "traits":  [
                                           "monitoring density",
-                                          "dashboard cadence",
-                                          "operational paneling"
+                                          "dashboard repetition",
+                                          "operator-first cues"
                                       ]
                        },
                        {
                            "name":  "Splunk",
                            "url":  "https://www.splunk.com",
                            "traits":  [
-                                          "machine data emphasis",
-                                          "alert hierarchy",
-                                          "operator feedback loops"
+                                          "machine-data framing",
+                                          "alert salience",
+                                          "observability semantics"
                                       ]
                        }
                    ],
-    "appliedAt":  "2026-02-13T05:20:57.7891793Z"
+    "appliedAt":  "2026-02-13T05:53:18.4712873Z"
 }

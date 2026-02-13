@@ -1,9 +1,9 @@
 {
     "styleId":  "signal-brutalist",
     "pass":  2,
-    "variantSeed":  "stamped-editorial-brutal",
+    "variantSeed":  "stamp-ops-ledger-v2",
     "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\signal-brutalist\\pass-2",
     "template":  "Signal Brutalist / Pass 2",
-    "generatedAt":  "2026-02-13T05:20:57.3837177Z",
+    "generatedAt":  "2026-02-13T05:53:18.0641447Z",
     "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }

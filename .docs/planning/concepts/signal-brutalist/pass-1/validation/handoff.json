@@ -1,9 +1,9 @@
 {
     "styleId":  "signal-brutalist",
     "pass":  1,
-    "variantSeed":  "brutal-grid-heavy",
+    "variantSeed":  "slab-grid-ruleset-v2",
     "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\signal-brutalist\\pass-1",
     "template":  "Signal Brutalist / Pass 1",
-    "generatedAt":  "2026-02-13T05:20:57.3086373Z",
+    "generatedAt":  "2026-02-13T05:53:17.9739516Z",
     "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }

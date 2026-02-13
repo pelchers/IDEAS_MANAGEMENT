@@ -1,9 +1,9 @@
 {
     "styleId":  "aurora-glass",
     "pass":  2,
-    "variantSeed":  "floating-dock-prism",
+    "variantSeed":  "orbital-rail-prism-v2",
     "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\aurora-glass\\pass-2",
     "template":  "Aurora Glass / Pass 2",
-    "generatedAt":  "2026-02-13T05:20:57.5567752Z",
+    "generatedAt":  "2026-02-13T05:53:18.2240083Z",
     "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }

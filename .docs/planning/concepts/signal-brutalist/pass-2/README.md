@@ -2,12 +2,12 @@
 
 - style-id: signal-brutalist
 - pass: 2
-- variant-seed: stamped-editorial-brutal
+- variant-seed: stamp-ops-ledger-v2
 
 ## External Inspiration Cross-Reference
-- MUBI: https://mubi.com (traits: strong typographic hierarchy, minimal color palette, cinematic framing)
-- NTS Radio: https://www.nts.live (traits: grid rhythm, utility labels, high-density metadata)
-- Frieze: https://www.frieze.com (traits: editorial blocks, hard rules, display-first typography)
+- MUBI: https://mubi.com (traits: strong display hierarchy, discipline in whitespace, cinematic framing)
+- NTS Radio: https://www.nts.live (traits: data-dense rhythm, utility metadata styling, hard-edged modules)
+- Frieze: https://www.frieze.com (traits: editorial segmentation, high-contrast type, publication-grade blocks)
 
 ## Included Views
 - dashboard

@@ -1,9 +1,9 @@
 {
     "styleId":  "industrial-terminal",
     "pass":  1,
-    "variantSeed":  "green-vector-console",
+    "variantSeed":  "crt-command-console-v2",
     "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\industrial-terminal\\pass-1",
     "template":  "Industrial Terminal / Pass 1",
-    "generatedAt":  "2026-02-13T05:20:57.7881796Z",
+    "generatedAt":  "2026-02-13T05:53:18.4696920Z",
     "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }

@@ -2,12 +2,12 @@
 
 - style-id: industrial-terminal
 - pass: 2
-- variant-seed: amber-rack-ops
+- variant-seed: scada-wallboard-grid-v2
 
 ## External Inspiration Cross-Reference
-- Datadog: https://www.datadoghq.com (traits: multi-panel observability, status color semantics, dense telemetry)
-- Cloudflare Dashboard: https://dash.cloudflare.com (traits: ops controls, critical alert prominence, network-centric modules)
-- Cisco ThousandEyes: https://www.thousandeyes.com (traits: network maps, incident triage surfaces, system health framing)
+- Datadog: https://www.datadoghq.com (traits: multi-panel observability, status color semantics, telemetry density)
+- Cloudflare Dashboard: https://dash.cloudflare.com (traits: ops controls, critical signal prominence, network-centric modules)
+- Cisco ThousandEyes: https://www.thousandeyes.com (traits: network diagnostics, incident triage flows, system health framing)
 
 ## Included Views
 - dashboard

@@ -2,7 +2,7 @@
     "key":  "aurora-glass/pass-2",
     "styleId":  "aurora-glass",
     "pass":  2,
-    "direction":  "Prismatic control room with radial focus, translucent rails, and luminous cards.",
+    "direction":  "Prismatic orbital rail interface with radial focus and luminous translucent panels.",
     "references":  [
                        {
                            "name":  "Stripe",
@@ -10,16 +10,16 @@
                            "traits":  [
                                           "gradient confidence",
                                           "enterprise polish",
-                                          "high legibility"
+                                          "high-clarity modules"
                                       ]
                        },
                        {
                            "name":  "Vercel",
                            "url":  "https://vercel.com",
                            "traits":  [
-                                          "clean technical aesthetic",
-                                          "subtle motion",
-                                          "dense but readable UI"
+                                          "clean technical minimalism",
+                                          "tight spacing",
+                                          "dense readable control surfaces"
                                       ]
                        },
                        {
@@ -27,10 +27,10 @@
                            "url":  "https://arc.net",
                            "traits":  [
                                           "distinct navigation metaphors",
-                                          "soft translucency",
-                                          "layered UI planes"
+                                          "layered paneling",
+                                          "soft translucency"
                                       ]
                        }
                    ],
-    "appliedAt":  "2026-02-13T05:20:57.5587755Z"
+    "appliedAt":  "2026-02-13T05:53:18.2255119Z"
 }

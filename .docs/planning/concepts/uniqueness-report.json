@@ -1,7 +1,7 @@
 {
   "conceptRoot": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts",
-  "threshold": 0.62,
-  "evaluatedAt": "2026-02-13T05:20:58.113Z",
+  "threshold": 0.55,
+  "evaluatedAt": "2026-02-13T05:53:18.780Z",
   "totalPasses": 10,
   "maxSimilarity": 0.0526,
   "topPairs": [

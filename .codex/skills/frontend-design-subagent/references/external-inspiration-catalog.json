@@ -1,201 +1,211 @@
 {
   "signal-brutalist/pass-1": {
-    "direction": "Hardware-inspired brutalist dashboard with heavy geometry and aggressive negative space.",
+    "layoutArchetype": "slab-grid",
+    "direction": "Poster-grade brutalist slab grid with oversized typographic hierarchy and severe block segmentation.",
     "references": [
       {
         "name": "Brutalist Websites Directory",
         "url": "https://brutalistwebsites.com",
-        "traits": ["raw geometry", "thick borders", "anti-polish typography"]
+        "traits": ["raw geometry", "hard borders", "anti-polish typography"]
       },
       {
         "name": "Awwwards Brutalism Collection",
         "url": "https://www.awwwards.com/websites/brutalism/",
-        "traits": ["disruptive block layout", "asymmetry", "high contrast"]
+        "traits": ["disruptive composition", "graphic imbalance", "deliberate visual friction"]
       },
       {
         "name": "OFFF Festival",
         "url": "https://www.offf.barcelona",
-        "traits": ["poster-like composition", "graphic impact", "editorial scale"]
+        "traits": ["poster language", "display type dominance", "graphic intensity"]
       }
     ]
   },
   "signal-brutalist/pass-2": {
-    "direction": "Stamped tactical control surfaces with industrial form labels and rigid framing.",
+    "layoutArchetype": "stamp-ops-ledger",
+    "direction": "Stamped operations ledger with tactical labels, hard separators, and legal-form aesthetics.",
     "references": [
       {
         "name": "MUBI",
         "url": "https://mubi.com",
-        "traits": ["strong typographic hierarchy", "minimal color palette", "cinematic framing"]
+        "traits": ["strong display hierarchy", "discipline in whitespace", "cinematic framing"]
       },
       {
         "name": "NTS Radio",
         "url": "https://www.nts.live",
-        "traits": ["grid rhythm", "utility labels", "high-density metadata"]
+        "traits": ["data-dense rhythm", "utility metadata styling", "hard-edged modules"]
       },
       {
         "name": "Frieze",
         "url": "https://www.frieze.com",
-        "traits": ["editorial blocks", "hard rules", "display-first typography"]
+        "traits": ["editorial segmentation", "high-contrast type", "publication-grade blocks"]
       }
     ]
   },
   "aurora-glass/pass-1": {
-    "direction": "Deep-space frosted panes and floating dock navigation with atmospheric depth.",
+    "layoutArchetype": "floating-dock-window",
+    "direction": "Immersive floating glass dock with atmospheric depth and translucent command windows.",
     "references": [
       {
         "name": "Apple Vision Pro",
         "url": "https://www.apple.com/apple-vision-pro/",
-        "traits": ["glass layering", "ambient gradients", "floating surfaces"]
+        "traits": ["spatial translucency", "floating surfaces", "ambient depth"]
       },
       {
         "name": "Linear",
         "url": "https://linear.app",
-        "traits": ["precision spacing", "calm dark surfaces", "minimal but premium controls"]
+        "traits": ["precision spacing", "calm premium UI", "high signal density"]
       },
       {
         "name": "Raycast",
         "url": "https://www.raycast.com",
-        "traits": ["command centricity", "smooth transitions", "tool-like clarity"]
+        "traits": ["command-first workflows", "tool clarity", "purposeful polish"]
       }
     ]
   },
   "aurora-glass/pass-2": {
-    "direction": "Prismatic control room with radial focus, translucent rails, and luminous cards.",
+    "layoutArchetype": "orbital-rail-prism",
+    "direction": "Prismatic orbital rail interface with radial focus and luminous translucent panels.",
     "references": [
       {
         "name": "Stripe",
         "url": "https://stripe.com",
-        "traits": ["gradient confidence", "enterprise polish", "high legibility"]
+        "traits": ["gradient confidence", "enterprise polish", "high-clarity modules"]
       },
       {
         "name": "Vercel",
         "url": "https://vercel.com",
-        "traits": ["clean technical aesthetic", "subtle motion", "dense but readable UI"]
+        "traits": ["clean technical minimalism", "tight spacing", "dense readable control surfaces"]
       },
       {
         "name": "Arc Browser",
         "url": "https://arc.net",
-        "traits": ["distinct navigation metaphors", "soft translucency", "layered UI planes"]
+        "traits": ["distinct navigation metaphors", "layered paneling", "soft translucency"]
       }
     ]
   },
   "ledger-editorial/pass-1": {
-    "direction": "Broadsheet product interface with newspaper composition and serif-led storytelling.",
+    "layoutArchetype": "broadsheet-columns",
+    "direction": "Broadsheet newsroom interface with multi-column story rhythm and serif-first hierarchy.",
     "references": [
       {
         "name": "The New York Times",
         "url": "https://www.nytimes.com",
-        "traits": ["column hierarchy", "serif dominance", "story-first layout"]
+        "traits": ["column hierarchy", "story-first structure", "serif authority"]
       },
       {
         "name": "The Guardian",
         "url": "https://www.theguardian.com/international",
-        "traits": ["module stacking", "section signposting", "editorial cards"]
+        "traits": ["modular editorial blocks", "sectioned narrative flow", "publication cadence"]
       },
       {
         "name": "Monocle",
         "url": "https://monocle.com",
-        "traits": ["publication rhythm", "restrained palette", "classic typography"]
+        "traits": ["restrained palette", "print-like rhythm", "careful typographic pacing"]
       }
     ]
   },
   "ledger-editorial/pass-2": {
-    "direction": "Notebook and legal-ledger hybrid with tabbed chapters and monochrome precision.",
+    "layoutArchetype": "tabbed-legal-notebook",
+    "direction": "Legal-notebook workspace with tabbed chapters, annotation lines, and monochrome precision.",
     "references": [
       {
         "name": "Medium",
         "url": "https://medium.com",
-        "traits": ["readability", "typographic pacing", "focus mode clarity"]
+        "traits": ["long-form readability", "typographic pacing", "low-friction content focus"]
       },
       {
         "name": "Substack",
         "url": "https://substack.com",
-        "traits": ["newsletter structure", "long-form hierarchy", "content-first framing"]
+        "traits": ["newsletter structure", "content framing", "minimal chrome"]
       },
       {
         "name": "Notion",
         "url": "https://www.notion.so",
-        "traits": ["document workspace patterns", "simple controls", "structured side navigation"]
+        "traits": ["document workflows", "simple controls", "structured panel organization"]
       }
     ]
   },
   "industrial-terminal/pass-1": {
-    "direction": "CRT console workflow with command-line framing, scanlines, and status telemetry.",
+    "layoutArchetype": "crt-command-console",
+    "direction": "Retro CRT operations console with scanline character, terminal commands, and telemetry blocks.",
     "references": [
       {
         "name": "Hack The Box",
         "url": "https://www.hackthebox.com",
-        "traits": ["terminal culture", "security operations visual language", "neon-on-dark contrast"]
+        "traits": ["terminal culture", "security operations language", "neon-on-dark emphasis"]
       },
       {
         "name": "Grafana",
         "url": "https://grafana.com",
-        "traits": ["monitoring density", "dashboard cadence", "operational paneling"]
+        "traits": ["monitoring density", "dashboard repetition", "operator-first cues"]
       },
       {
         "name": "Splunk",
         "url": "https://www.splunk.com",
-        "traits": ["machine data emphasis", "alert hierarchy", "operator feedback loops"]
+        "traits": ["machine-data framing", "alert salience", "observability semantics"]
       }
     ]
   },
   "industrial-terminal/pass-2": {
-    "direction": "SCADA-style wallboard with grid diagnostics, LED semantics, and industrial labels.",
+    "layoutArchetype": "scada-wallboard-grid",
+    "direction": "SCADA wallboard grid with control switches, heavy instrument modules, and status semantics.",
     "references": [
       {
         "name": "Datadog",
         "url": "https://www.datadoghq.com",
-        "traits": ["multi-panel observability", "status color semantics", "dense telemetry"]
+        "traits": ["multi-panel observability", "status color semantics", "telemetry density"]
       },
       {
         "name": "Cloudflare Dashboard",
         "url": "https://dash.cloudflare.com",
-        "traits": ["ops controls", "critical alert prominence", "network-centric modules"]
+        "traits": ["ops controls", "critical signal prominence", "network-centric modules"]
       },
       {
         "name": "Cisco ThousandEyes",
         "url": "https://www.thousandeyes.com",
-        "traits": ["network maps", "incident triage surfaces", "system health framing"]
+        "traits": ["network diagnostics", "incident triage flows", "system health framing"]
       }
     ]
   },
   "playful-clay/pass-1": {
-    "direction": "Tactile pastel workbench with rounded modules, sticker UI, and upbeat personality.",
+    "layoutArchetype": "sticker-workbench",
+    "direction": "Sticker-style tactile workbench with rounded modules, playful labels, and upbeat interaction language.",
     "references": [
       {
         "name": "Duolingo",
         "url": "https://www.duolingo.com",
-        "traits": ["friendly tone", "high-contrast callouts", "playful interaction language"]
+        "traits": ["friendly energy", "clear callouts", "playful interaction copy"]
       },
       {
         "name": "Mailchimp",
         "url": "https://mailchimp.com",
-        "traits": ["illustrated surfaces", "warm personality", "expressive accents"]
+        "traits": ["expressive visual personality", "illustrative tone", "warm product voice"]
       },
       {
         "name": "Pitch",
         "url": "https://pitch.com",
-        "traits": ["vibrant blocks", "interactive cards", "presentation-like clarity"]
+        "traits": ["bold card choreography", "presentational clarity", "vibrant accenting"]
       }
     ]
   },
   "playful-clay/pass-2": {
-    "direction": "Comic-panel app shell with halftone textures, bold outlines, and speech-bubble controls.",
+    "layoutArchetype": "comic-panel-workspace",
+    "direction": "Comic panel workspace with halftone atmosphere, bold outlines, and speech-bubble controls.",
     "references": [
       {
         "name": "Discord",
         "url": "https://discord.com",
-        "traits": ["community energy", "expressive iconography", "dense interaction surfaces"]
+        "traits": ["community energy", "expressive icon language", "high interaction density"]
       },
       {
         "name": "Canva",
         "url": "https://www.canva.com",
-        "traits": ["creative tooling cues", "visual blocks", "friendly affordances"]
+        "traits": ["creative tooling framing", "visual block systems", "friendly affordances"]
       },
       {
         "name": "Figma",
         "url": "https://www.figma.com",
-        "traits": ["tool-heavy workspace", "multi-pane composition", "collaborative metaphors"]
+        "traits": ["multi-pane workspace patterns", "tool clarity", "collaborative metaphors"]
       }
     ]
   }

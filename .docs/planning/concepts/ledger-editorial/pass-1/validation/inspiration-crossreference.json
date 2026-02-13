@@ -2,35 +2,35 @@
     "key":  "ledger-editorial/pass-1",
     "styleId":  "ledger-editorial",
     "pass":  1,
-    "direction":  "Broadsheet product interface with newspaper composition and serif-led storytelling.",
+    "direction":  "Broadsheet newsroom interface with multi-column story rhythm and serif-first hierarchy.",
     "references":  [
                        {
                            "name":  "The New York Times",
                            "url":  "https://www.nytimes.com",
                            "traits":  [
                                           "column hierarchy",
-                                          "serif dominance",
-                                          "story-first layout"
+                                          "story-first structure",
+                                          "serif authority"
                                       ]
                        },
                        {
                            "name":  "The Guardian",
                            "url":  "https://www.theguardian.com/international",
                            "traits":  [
-                                          "module stacking",
-                                          "section signposting",
-                                          "editorial cards"
+                                          "modular editorial blocks",
+                                          "sectioned narrative flow",
+                                          "publication cadence"
                                       ]
                        },
                        {
                            "name":  "Monocle",
                            "url":  "https://monocle.com",
                            "traits":  [
-                                          "publication rhythm",
                                           "restrained palette",
-                                          "classic typography"
+                                          "print-like rhythm",
+                                          "careful typographic pacing"
                                       ]
                        }
                    ],
-    "appliedAt":  "2026-02-13T05:20:57.6385904Z"
+    "appliedAt":  "2026-02-13T05:53:18.3156950Z"
 }

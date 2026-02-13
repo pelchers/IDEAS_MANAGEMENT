@@ -1,9 +1,9 @@
 {
     "styleId":  "playful-clay",
     "pass":  2,
-    "variantSeed":  "comic-motion-bubbles",
+    "variantSeed":  "comic-panel-workspace-v2",
     "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\playful-clay\\pass-2",
     "template":  "Playful Clay / Pass 2",
-    "generatedAt":  "2026-02-13T05:20:58.0309497Z",
+    "generatedAt":  "2026-02-13T05:53:18.6955326Z",
     "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }

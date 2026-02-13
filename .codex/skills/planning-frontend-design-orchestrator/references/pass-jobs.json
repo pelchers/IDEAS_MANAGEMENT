@@ -3,7 +3,7 @@
         "styleId":  "signal-brutalist",
         "styleLabel":  "Signal Brutalist",
         "pass":  1,
-        "variantSeed":  "brutal-grid-heavy",
+        "variantSeed":  "slab-grid-ruleset-v2",
         "outputDir":  ".docs/planning/concepts/signal-brutalist/pass-1",
         "validationDir":  ".docs/planning/concepts/signal-brutalist/pass-1/validation",
         "screenshotsDir":  ".docs/planning/concepts/signal-brutalist/pass-1/validation/screenshots",
@@ -13,14 +13,14 @@
                       "--style-id signal-brutalist",
                       "--pass 1",
                       "--output-dir .docs/planning/concepts/signal-brutalist/pass-1",
-                      "--variant-seed brutal-grid-heavy"
+                      "--variant-seed slab-grid-ruleset-v2"
                   ]
     },
     {
         "styleId":  "signal-brutalist",
         "styleLabel":  "Signal Brutalist",
         "pass":  2,
-        "variantSeed":  "stamped-editorial-brutal",
+        "variantSeed":  "stamp-ops-ledger-v2",
         "outputDir":  ".docs/planning/concepts/signal-brutalist/pass-2",
         "validationDir":  ".docs/planning/concepts/signal-brutalist/pass-2/validation",
         "screenshotsDir":  ".docs/planning/concepts/signal-brutalist/pass-2/validation/screenshots",
@@ -30,14 +30,14 @@
                       "--style-id signal-brutalist",
                       "--pass 2",
                       "--output-dir .docs/planning/concepts/signal-brutalist/pass-2",
-                      "--variant-seed stamped-editorial-brutal"
+                      "--variant-seed stamp-ops-ledger-v2"
                   ]
     },
     {
         "styleId":  "aurora-glass",
         "styleLabel":  "Aurora Glass",
         "pass":  1,
-        "variantSeed":  "frosted-sidebar-aurora",
+        "variantSeed":  "floating-dock-window-v2",
         "outputDir":  ".docs/planning/concepts/aurora-glass/pass-1",
         "validationDir":  ".docs/planning/concepts/aurora-glass/pass-1/validation",
         "screenshotsDir":  ".docs/planning/concepts/aurora-glass/pass-1/validation/screenshots",
@@ -47,14 +47,14 @@
                       "--style-id aurora-glass",
                       "--pass 1",
                       "--output-dir .docs/planning/concepts/aurora-glass/pass-1",
-                      "--variant-seed frosted-sidebar-aurora"
+                      "--variant-seed floating-dock-window-v2"
                   ]
     },
     {
         "styleId":  "aurora-glass",
         "styleLabel":  "Aurora Glass",
         "pass":  2,
-        "variantSeed":  "floating-dock-prism",
+        "variantSeed":  "orbital-rail-prism-v2",
         "outputDir":  ".docs/planning/concepts/aurora-glass/pass-2",
         "validationDir":  ".docs/planning/concepts/aurora-glass/pass-2/validation",
         "screenshotsDir":  ".docs/planning/concepts/aurora-glass/pass-2/validation/screenshots",
@@ -64,14 +64,14 @@
                       "--style-id aurora-glass",
                       "--pass 2",
                       "--output-dir .docs/planning/concepts/aurora-glass/pass-2",
-                      "--variant-seed floating-dock-prism"
+                      "--variant-seed orbital-rail-prism-v2"
                   ]
     },
     {
         "styleId":  "ledger-editorial",
         "styleLabel":  "Ledger Editorial",
         "pass":  1,
-        "variantSeed":  "broadsheet-columns",
+        "variantSeed":  "broadsheet-columns-v2",
         "outputDir":  ".docs/planning/concepts/ledger-editorial/pass-1",
         "validationDir":  ".docs/planning/concepts/ledger-editorial/pass-1/validation",
         "screenshotsDir":  ".docs/planning/concepts/ledger-editorial/pass-1/validation/screenshots",
@@ -81,14 +81,14 @@
                       "--style-id ledger-editorial",
                       "--pass 1",
                       "--output-dir .docs/planning/concepts/ledger-editorial/pass-1",
-                      "--variant-seed broadsheet-columns"
+                      "--variant-seed broadsheet-columns-v2"
                   ]
     },
     {
         "styleId":  "ledger-editorial",
         "styleLabel":  "Ledger Editorial",
         "pass":  2,
-        "variantSeed":  "monochrome-ledger",
+        "variantSeed":  "tabbed-legal-notebook-v2",
         "outputDir":  ".docs/planning/concepts/ledger-editorial/pass-2",
         "validationDir":  ".docs/planning/concepts/ledger-editorial/pass-2/validation",
         "screenshotsDir":  ".docs/planning/concepts/ledger-editorial/pass-2/validation/screenshots",
@@ -98,14 +98,14 @@
                       "--style-id ledger-editorial",
                       "--pass 2",
                       "--output-dir .docs/planning/concepts/ledger-editorial/pass-2",
-                      "--variant-seed monochrome-ledger"
+                      "--variant-seed tabbed-legal-notebook-v2"
                   ]
     },
     {
         "styleId":  "industrial-terminal",
         "styleLabel":  "Industrial Terminal",
         "pass":  1,
-        "variantSeed":  "green-vector-console",
+        "variantSeed":  "crt-command-console-v2",
         "outputDir":  ".docs/planning/concepts/industrial-terminal/pass-1",
         "validationDir":  ".docs/planning/concepts/industrial-terminal/pass-1/validation",
         "screenshotsDir":  ".docs/planning/concepts/industrial-terminal/pass-1/validation/screenshots",
@@ -115,14 +115,14 @@
                       "--style-id industrial-terminal",
                       "--pass 1",
                       "--output-dir .docs/planning/concepts/industrial-terminal/pass-1",
-                      "--variant-seed green-vector-console"
+                      "--variant-seed crt-command-console-v2"
                   ]
     },
     {
         "styleId":  "industrial-terminal",
         "styleLabel":  "Industrial Terminal",
         "pass":  2,
-        "variantSeed":  "amber-rack-ops",
+        "variantSeed":  "scada-wallboard-grid-v2",
         "outputDir":  ".docs/planning/concepts/industrial-terminal/pass-2",
         "validationDir":  ".docs/planning/concepts/industrial-terminal/pass-2/validation",
         "screenshotsDir":  ".docs/planning/concepts/industrial-terminal/pass-2/validation/screenshots",
@@ -132,14 +132,14 @@
                       "--style-id industrial-terminal",
                       "--pass 2",
                       "--output-dir .docs/planning/concepts/industrial-terminal/pass-2",
-                      "--variant-seed amber-rack-ops"
+                      "--variant-seed scada-wallboard-grid-v2"
                   ]
     },
     {
         "styleId":  "playful-clay",
         "styleLabel":  "Playful Clay",
         "pass":  1,
-        "variantSeed":  "pastel-clay-cards",
+        "variantSeed":  "sticker-workbench-v2",
         "outputDir":  ".docs/planning/concepts/playful-clay/pass-1",
         "validationDir":  ".docs/planning/concepts/playful-clay/pass-1/validation",
         "screenshotsDir":  ".docs/planning/concepts/playful-clay/pass-1/validation/screenshots",
@@ -149,14 +149,14 @@
                       "--style-id playful-clay",
                       "--pass 1",
                       "--output-dir .docs/planning/concepts/playful-clay/pass-1",
-                      "--variant-seed pastel-clay-cards"
+                      "--variant-seed sticker-workbench-v2"
                   ]
     },
     {
         "styleId":  "playful-clay",
         "styleLabel":  "Playful Clay",
         "pass":  2,
-        "variantSeed":  "comic-motion-bubbles",
+        "variantSeed":  "comic-panel-workspace-v2",
         "outputDir":  ".docs/planning/concepts/playful-clay/pass-2",
         "validationDir":  ".docs/planning/concepts/playful-clay/pass-2/validation",
         "screenshotsDir":  ".docs/planning/concepts/playful-clay/pass-2/validation/screenshots",
@@ -166,7 +166,7 @@
                       "--style-id playful-clay",
                       "--pass 2",
                       "--output-dir .docs/planning/concepts/playful-clay/pass-2",
-                      "--variant-seed comic-motion-bubbles"
+                      "--variant-seed comic-panel-workspace-v2"
                   ]
     }
 ]

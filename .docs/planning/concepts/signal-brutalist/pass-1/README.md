@@ -2,12 +2,12 @@
 
 - style-id: signal-brutalist
 - pass: 1
-- variant-seed: brutal-grid-heavy
+- variant-seed: slab-grid-ruleset-v2
 
 ## External Inspiration Cross-Reference
-- Brutalist Websites Directory: https://brutalistwebsites.com (traits: raw geometry, thick borders, anti-polish typography)
-- Awwwards Brutalism Collection: https://www.awwwards.com/websites/brutalism/ (traits: disruptive block layout, asymmetry, high contrast)
-- OFFF Festival: https://www.offf.barcelona (traits: poster-like composition, graphic impact, editorial scale)
+- Brutalist Websites Directory: https://brutalistwebsites.com (traits: raw geometry, hard borders, anti-polish typography)
+- Awwwards Brutalism Collection: https://www.awwwards.com/websites/brutalism/ (traits: disruptive composition, graphic imbalance, deliberate visual friction)
+- OFFF Festival: https://www.offf.barcelona (traits: poster language, display type dominance, graphic intensity)
 
 ## Included Views
 - dashboard

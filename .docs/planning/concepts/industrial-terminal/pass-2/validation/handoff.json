@@ -1,9 +1,9 @@
 {
     "styleId":  "industrial-terminal",
     "pass":  2,
-    "variantSeed":  "amber-rack-ops",
+    "variantSeed":  "scada-wallboard-grid-v2",
     "outputDir":  "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts\\industrial-terminal\\pass-2",
     "template":  "Industrial Terminal / Pass 2",
-    "generatedAt":  "2026-02-13T05:20:57.8630630Z",
+    "generatedAt":  "2026-02-13T05:53:18.5465158Z",
     "script":  ".codex/skills/frontend-design-subagent/scripts/generate-concept.ps1"
 }

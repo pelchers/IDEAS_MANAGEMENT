@@ -2,23 +2,23 @@
     "key":  "playful-clay/pass-2",
     "styleId":  "playful-clay",
     "pass":  2,
-    "direction":  "Comic-panel app shell with halftone textures, bold outlines, and speech-bubble controls.",
+    "direction":  "Comic panel workspace with halftone atmosphere, bold outlines, and speech-bubble controls.",
     "references":  [
                        {
                            "name":  "Discord",
                            "url":  "https://discord.com",
                            "traits":  [
                                           "community energy",
-                                          "expressive iconography",
-                                          "dense interaction surfaces"
+                                          "expressive icon language",
+                                          "high interaction density"
                                       ]
                        },
                        {
                            "name":  "Canva",
                            "url":  "https://www.canva.com",
                            "traits":  [
-                                          "creative tooling cues",
-                                          "visual blocks",
+                                          "creative tooling framing",
+                                          "visual block systems",
                                           "friendly affordances"
                                       ]
                        },
@@ -26,11 +26,11 @@
                            "name":  "Figma",
                            "url":  "https://www.figma.com",
                            "traits":  [
-                                          "tool-heavy workspace",
-                                          "multi-pane composition",
+                                          "multi-pane workspace patterns",
+                                          "tool clarity",
                                           "collaborative metaphors"
                                       ]
                        }
                    ],
-    "appliedAt":  "2026-02-13T05:20:58.0324616Z"
+    "appliedAt":  "2026-02-13T05:53:18.6965253Z"
 }

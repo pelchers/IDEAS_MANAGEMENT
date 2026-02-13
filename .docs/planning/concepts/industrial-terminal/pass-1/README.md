@@ -2,12 +2,12 @@
 
 - style-id: industrial-terminal
 - pass: 1
-- variant-seed: green-vector-console
+- variant-seed: crt-command-console-v2
 
 ## External Inspiration Cross-Reference
-- Hack The Box: https://www.hackthebox.com (traits: terminal culture, security operations visual language, neon-on-dark contrast)
-- Grafana: https://grafana.com (traits: monitoring density, dashboard cadence, operational paneling)
-- Splunk: https://www.splunk.com (traits: machine data emphasis, alert hierarchy, operator feedback loops)
+- Hack The Box: https://www.hackthebox.com (traits: terminal culture, security operations language, neon-on-dark emphasis)
+- Grafana: https://grafana.com (traits: monitoring density, dashboard repetition, operator-first cues)
+- Splunk: https://www.splunk.com (traits: machine-data framing, alert salience, observability semantics)
 
 ## Included Views
 - dashboard

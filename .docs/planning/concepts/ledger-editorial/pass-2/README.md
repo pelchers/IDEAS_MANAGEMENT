@@ -2,12 +2,12 @@
 
 - style-id: ledger-editorial
 - pass: 2
-- variant-seed: monochrome-ledger
+- variant-seed: tabbed-legal-notebook-v2
 
 ## External Inspiration Cross-Reference
-- Medium: https://medium.com (traits: readability, typographic pacing, focus mode clarity)
-- Substack: https://substack.com (traits: newsletter structure, long-form hierarchy, content-first framing)
-- Notion: https://www.notion.so (traits: document workspace patterns, simple controls, structured side navigation)
+- Medium: https://medium.com (traits: long-form readability, typographic pacing, low-friction content focus)
+- Substack: https://substack.com (traits: newsletter structure, content framing, minimal chrome)
+- Notion: https://www.notion.so (traits: document workflows, simple controls, structured panel organization)
 
 ## Included Views
 - dashboard
