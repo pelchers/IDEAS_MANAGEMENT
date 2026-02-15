@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea Management — Liquid Motion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════
+       FLOATING BLOB NAVIGATION
+       ════════════════════════════════════════════════════ -->
+  <nav class="blob-nav" id="blobNav">
+    <div class="blob-nav__logo">
+      <svg viewBox="0 0 40 40" class="logo-svg">
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+        <path d="M20 4 C30 4, 36 10, 36 20 C36 30, 30 36, 20 36 C10 36, 4 30, 4 20 C4 10, 10 4, 20 4Z" fill="url(#logoGrad)"/>
+        <text x="20" y="25" text-anchor="middle" fill="#fff" font-size="14" font-family="Syne" font-weight="700">IM</text>
+      </svg>
+    </div>
+
+    <div class="blob-nav__items">
+      <button class="blob-nav__btn active" data-view="dashboard" title="Dashboard">
+        <span class="blob-nav__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="4" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="11" width="7" height="10" rx="2"/></svg>
+        </span>
+        <span class="blob-nav__label">Dashboard</span>
+      </button>
+
+      <button class="blob-nav__btn" data-view="projects" title="Projects">
+        <span class="blob-nav__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+        </span>
+        <span class="blob-nav__label">Projects</span>
+      </button>
+
+      <button class="blob-nav__btn" data-view="project-workspace" title="Workspace">
+        <span class="blob-nav__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
+        </span>
+        <span class="blob-nav__label">Workspace</span>
+      </button>
+
+      <button class="blob-nav__btn" data-view="kanban" title="Kanban">
+        <span class="blob-nav__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="6" height="18" rx="2"/><rect x="9" y="3" width="6" height="12" rx="2"/><rect x="16" y="3" width="6" height="15" rx="2"/></svg>
+        </span>
+        <span class="blob-nav__label">Kanban</span>
+      </button>
+
+      <button class="blob-nav__btn" data-view="whiteboard" title="Whiteboard">
+        <span class="blob-nav__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="4"/><circle cx="8" cy="8" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="16" r="2"/><line x1="9.5" y1="9.5" x2="14.5" y2="11" /><line x1="14.5" y1="13.5" x2="11.5" y2="15"/></svg>
+        </span>
+        <span class="blob-nav__label">Whiteboard</span>
+      </button>
+
+      <button class="blob-nav__btn" data-view="schema-planner" title="Schema">
+        <span class="blob-nav__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6"/><path d="M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+        </span>
+        <span class="blob-nav__label">Schema</span>
+      </button>
+
+      <button class="blob-nav__btn" data-view="directory-tree" title="Directory">
+        <span class="blob-nav__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18"/><path d="M3 9h4c1 0 2-1 2-2V5c0-1-1-2-2-2H3"/><path d="M3 15h8c1 0 2-1 2-2v-2c0-1-1-2-2-2H7"/><path d="M3 21h12c1 0 2-1 2-2v-2c0-1-1-2-2-2H11"/></svg>
+        </span>
+        <span class="blob-nav__label">Directory</span>
+      </button>
+
+      <button class="blob-nav__btn" data-view="ideas" title="Ideas">
+        <span class="blob-nav__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 00-4 12.73V17a1 1 0 001 1h6a1 1 0 001-1v-2.27A7 7 0 0012 2z"/><line x1="9" y1="21" x2="15" y2="21"/><line x1="10" y1="24" x2="14" y2="24"/></svg>
+        </span>
+        <span class="blob-nav__label">Ideas</span>
+      </button>
+
+      <button class="blob-nav__btn" data-view="ai-chat" title="AI Chat">
+        <span class="blob-nav__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        </span>
+        <span class="blob-nav__label">AI Chat</span>
+      </button>
+
+      <button class="blob-nav__btn" data-view="settings" title="Settings">
+        <span class="blob-nav__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        </span>
+        <span class="blob-nav__label">Settings</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════
+       MAIN CONTENT AREA
+       ════════════════════════════════════════════════════ -->
+  <main class="content-area" id="contentArea">
+
+    <!-- ── GRADIENT MORPH HEADER ── -->
+    <header class="morph-header" id="morphHeader">
+      <div class="morph-header__bg"></div>
+      <div class="morph-header__inner">
+        <div class="morph-header__left">
+          <h1 class="morph-header__title" id="pageTitle">Dashboard</h1>
+          <p class="morph-header__sub" id="pageSub">Overview of all your ideas and projects</p>
+        </div>
+        <div class="morph-header__right">
+          <div class="morph-header__search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search anything..." class="morph-search-input">
+          </div>
+          <div class="morph-header__avatar">
+            <div class="avatar-blob">JD</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════
+         VIEW 1 — DASHBOARD
+         ═══════════════════════════════════════ -->
+    <section class="view active" data-page="dashboard">
+      <div class="bento-grid bento-grid--dashboard">
+        <!-- Stat Card 1 -->
+        <div class="bento-card bento-card--wide stat-card">
+          <div class="stat-card__gradient stat-card__gradient--blue"></div>
+          <div class="stat-card__content">
+            <span class="stat-card__label">Total Ideas</span>
+            <span class="stat-card__value">247</span>
+            <span class="stat-card__change positive">+12 this week</span>
+          </div>
+          <div class="stat-card__ring">
+            <svg viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="32" fill="none" stroke="#e0e7ff" stroke-width="6"/>
+              <circle cx="40" cy="40" r="32" fill="none" stroke="#3b82f6" stroke-width="6" stroke-dasharray="165 201" stroke-linecap="round" class="progress-ring"/>
+            </svg>
+            <span class="ring-label">82%</span>
+          </div>
+        </div>
+
+        <!-- Stat Card 2 -->
+        <div class="bento-card stat-card">
+          <div class="stat-card__gradient stat-card__gradient--purple"></div>
+          <div class="stat-card__content">
+            <span class="stat-card__label">Active Projects</span>
+            <span class="stat-card__value">18</span>
+            <span class="stat-card__change positive">+3 new</span>
+          </div>
+        </div>
+
+        <!-- Stat Card 3 -->
+        <div class="bento-card stat-card">
+          <div class="stat-card__gradient stat-card__gradient--mixed"></div>
+          <div class="stat-card__content">
+            <span class="stat-card__label">Completion Rate</span>
+            <span class="stat-card__value">73%</span>
+            <span class="stat-card__change positive">+5%</span>
+          </div>
+        </div>
+
+        <!-- Chart Placeholder -->
+        <div class="bento-card bento-card--wide bento-card--tall chart-card">
+          <h3 class="card-heading">Idea Flow</h3>
+          <div class="chart-placeholder">
+            <div class="chart-bar" style="--h:60%;--delay:0"><span>Mon</span></div>
+            <div class="chart-bar" style="--h:85%;--delay:1"><span>Tue</span></div>
+            <div class="chart-bar" style="--h:45%;--delay:2"><span>Wed</span></div>
+            <div class="chart-bar" style="--h:90%;--delay:3"><span>Thu</span></div>
+            <div class="chart-bar" style="--h:70%;--delay:4"><span>Fri</span></div>
+            <div class="chart-bar" style="--h:55%;--delay:5"><span>Sat</span></div>
+            <div class="chart-bar" style="--h:40%;--delay:6"><span>Sun</span></div>
+          </div>
+        </div>
+
+        <!-- Stat Card 4 -->
+        <div class="bento-card stat-card">
+          <div class="stat-card__gradient stat-card__gradient--blue"></div>
+          <div class="stat-card__content">
+            <span class="stat-card__label">Team Members</span>
+            <span class="stat-card__value">12</span>
+            <span class="stat-card__change neutral">stable</span>
+          </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="bento-card bento-card--tall activity-card">
+          <h3 class="card-heading">Recent Activity</h3>
+          <div class="activity-feed">
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text">
+                <strong>Sarah</strong> created <em>"AI Integration Plan"</em>
+                <span class="activity-time">2 min ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text">
+                <strong>Alex</strong> moved <em>"Dashboard Redesign"</em> to Done
+                <span class="activity-time">15 min ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text">
+                <strong>Maria</strong> commented on <em>"API Schema v2"</em>
+                <span class="activity-time">1 hr ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text">
+                <strong>James</strong> archived <em>"Legacy Migration"</em>
+                <span class="activity-time">3 hrs ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text">
+                <strong>Lina</strong> created <em>"Mobile App Concept"</em>
+                <span class="activity-time">5 hrs ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Ring Card -->
+        <div class="bento-card stat-card">
+          <div class="stat-card__gradient stat-card__gradient--purple"></div>
+          <div class="stat-card__content">
+            <span class="stat-card__label">This Sprint</span>
+            <span class="stat-card__value">64%</span>
+          </div>
+          <div class="stat-card__ring">
+            <svg viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="32" fill="none" stroke="#e0e7ff" stroke-width="6"/>
+              <circle cx="40" cy="40" r="32" fill="none" stroke="#8b5cf6" stroke-width="6" stroke-dasharray="128 201" stroke-linecap="round" class="progress-ring"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         VIEW 2 — PROJECTS
+         ═══════════════════════════════════════ -->
+    <section class="view" data-page="projects">
+      <div class="view-toolbar">
+        <div class="morph-input">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search projects..." class="morph-input__field">
+        </div>
+        <div class="view-toolbar__actions">
+          <button class="pill-btn pill-btn--accent">+ New Project</button>
+          <button class="pill-btn pill-btn--ghost">Filter</button>
+        </div>
+      </div>
+
+      <div class="bento-grid bento-grid--projects">
+        <div class="bento-card project-card project-card--organic-1">
+          <div class="project-card__badge blue">Active</div>
+          <h3 class="project-card__title">AI Integration Platform</h3>
+          <p class="project-card__desc">Building intelligent automation pipelines for data processing and model deployment.</p>
+          <div class="project-card__meta">
+            <span class="project-card__tag">AI/ML</span>
+            <span class="project-card__tag">Backend</span>
+          </div>
+          <div class="project-card__footer">
+            <div class="avatar-stack">
+              <div class="avatar-mini">S</div>
+              <div class="avatar-mini">A</div>
+              <div class="avatar-mini">M</div>
+            </div>
+            <span class="project-card__date">Updated 2h ago</span>
+          </div>
+          <div class="project-card__progress"><div class="project-card__progress-fill" style="width:72%"></div></div>
+        </div>
+
+        <div class="bento-card project-card project-card--organic-2">
+          <div class="project-card__badge purple">In Review</div>
+          <h3 class="project-card__title">Dashboard Redesign</h3>
+          <p class="project-card__desc">Complete overhaul of the analytics dashboard with new visualization components.</p>
+          <div class="project-card__meta">
+            <span class="project-card__tag">Design</span>
+            <span class="project-card__tag">Frontend</span>
+          </div>
+          <div class="project-card__footer">
+            <div class="avatar-stack">
+              <div class="avatar-mini">J</div>
+              <div class="avatar-mini">L</div>
+            </div>
+            <span class="project-card__date">Updated 1d ago</span>
+          </div>
+          <div class="project-card__progress"><div class="project-card__progress-fill" style="width:89%"></div></div>
+        </div>
+
+        <div class="bento-card project-card project-card--organic-3">
+          <div class="project-card__badge blue">Active</div>
+          <h3 class="project-card__title">Mobile App v3</h3>
+          <p class="project-card__desc">Native mobile experience with offline support and real-time collaboration features.</p>
+          <div class="project-card__meta">
+            <span class="project-card__tag">Mobile</span>
+            <span class="project-card__tag">React Native</span>
+          </div>
+          <div class="project-card__footer">
+            <div class="avatar-stack">
+              <div class="avatar-mini">A</div>
+              <div class="avatar-mini">K</div>
+              <div class="avatar-mini">R</div>
+              <div class="avatar-mini">+2</div>
+            </div>
+            <span class="project-card__date">Updated 30m ago</span>
+          </div>
+          <div class="project-card__progress"><div class="project-card__progress-fill" style="width:45%"></div></div>
+        </div>
+
+        <div class="bento-card project-card project-card--organic-4">
+          <div class="project-card__badge purple">Planning</div>
+          <h3 class="project-card__title">API Schema v2</h3>
+          <p class="project-card__desc">Next-generation API architecture with GraphQL federation and real-time subscriptions.</p>
+          <div class="project-card__meta">
+            <span class="project-card__tag">API</span>
+            <span class="project-card__tag">GraphQL</span>
+          </div>
+          <div class="project-card__footer">
+            <div class="avatar-stack">
+              <div class="avatar-mini">M</div>
+              <div class="avatar-mini">S</div>
+            </div>
+            <span class="project-card__date">Updated 3d ago</span>
+          </div>
+          <div class="project-card__progress"><div class="project-card__progress-fill" style="width:20%"></div></div>
+        </div>
+
+        <div class="bento-card project-card project-card--organic-5">
+          <div class="project-card__badge blue">Active</div>
+          <h3 class="project-card__title">Design System</h3>
+          <p class="project-card__desc">Unified component library with tokens, patterns, and accessibility built in.</p>
+          <div class="project-card__meta">
+            <span class="project-card__tag">Design</span>
+            <span class="project-card__tag">Components</span>
+          </div>
+          <div class="project-card__footer">
+            <div class="avatar-stack">
+              <div class="avatar-mini">L</div>
+              <div class="avatar-mini">J</div>
+            </div>
+            <span class="project-card__date">Updated 6h ago</span>
+          </div>
+          <div class="project-card__progress"><div class="project-card__progress-fill" style="width:58%"></div></div>
+        </div>
+
+        <div class="bento-card project-card project-card--organic-6">
+          <div class="project-card__badge purple">On Hold</div>
+          <h3 class="project-card__title">Data Pipeline</h3>
+          <p class="project-card__desc">Real-time ETL pipeline for processing analytics events at scale.</p>
+          <div class="project-card__meta">
+            <span class="project-card__tag">Data</span>
+            <span class="project-card__tag">Infrastructure</span>
+          </div>
+          <div class="project-card__footer">
+            <div class="avatar-stack">
+              <div class="avatar-mini">R</div>
+            </div>
+            <span class="project-card__date">Updated 1w ago</span>
+          </div>
+          <div class="project-card__progress"><div class="project-card__progress-fill" style="width:35%"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         VIEW 3 — PROJECT WORKSPACE
+         ═══════════════════════════════════════ -->
+    <section class="view" data-page="project-workspace">
+      <div class="workspace-breadcrumbs">
+        <span class="breadcrumb-dot active"></span>
+        <span class="breadcrumb-line"></span>
+        <span class="breadcrumb-dot active"></span>
+        <span class="breadcrumb-line"></span>
+        <span class="breadcrumb-dot"></span>
+        <span class="breadcrumb-labels">
+          <span>Projects</span>
+          <span>AI Integration Platform</span>
+          <span>src/</span>
+        </span>
+      </div>
+
+      <div class="workspace-split">
+        <!-- Left: File Tree -->
+        <div class="workspace-tree">
+          <div class="tree-header">
+            <h3>Explorer</h3>
+            <button class="pill-btn pill-btn--tiny">+ File</button>
+          </div>
+          <div class="tree-list">
+            <div class="tree-folder open">
+              <span class="tree-folder__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+              </span>
+              <span class="tree-folder__name">src</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-folder open">
+                <span class="tree-folder__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                </span>
+                <span class="tree-folder__name">components</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-file active">
+                  <span class="tree-file__icon ts">TS</span>
+                  <span class="tree-file__name">Header.tsx</span>
+                </div>
+                <div class="tree-file">
+                  <span class="tree-file__icon ts">TS</span>
+                  <span class="tree-file__name">Sidebar.tsx</span>
+                </div>
+                <div class="tree-file">
+                  <span class="tree-file__icon css">CS</span>
+                  <span class="tree-file__name">Layout.css</span>
+                </div>
+              </div>
+              <div class="tree-folder">
+                <span class="tree-folder__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                </span>
+                <span class="tree-folder__name">hooks</span>
+              </div>
+              <div class="tree-folder">
+                <span class="tree-folder__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                </span>
+                <span class="tree-folder__name">utils</span>
+              </div>
+              <div class="tree-file">
+                <span class="tree-file__icon ts">TS</span>
+                <span class="tree-file__name">index.ts</span>
+              </div>
+              <div class="tree-file">
+                <span class="tree-file__icon js">JS</span>
+                <span class="tree-file__name">config.js</span>
+              </div>
+            </div>
+            <div class="tree-folder">
+              <span class="tree-folder__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+              </span>
+              <span class="tree-folder__name">tests</span>
+            </div>
+            <div class="tree-file">
+              <span class="tree-file__icon json">JS</span>
+              <span class="tree-file__name">package.json</span>
+            </div>
+            <div class="tree-file">
+              <span class="tree-file__icon md">MD</span>
+              <span class="tree-file__name">README.md</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: File Content -->
+        <div class="workspace-content">
+          <div class="workspace-tabs">
+            <div class="workspace-tab active">Header.tsx</div>
+            <div class="workspace-tab">Sidebar.tsx</div>
+          </div>
+          <div class="workspace-editor">
+            <pre class="code-block"><code><span class="code-kw">import</span> React <span class="code-kw">from</span> <span class="code-str">'react'</span>;
+<span class="code-kw">import</span> { NavigationProps } <span class="code-kw">from</span> <span class="code-str">'./types'</span>;
+
+<span class="code-kw">interface</span> <span class="code-type">HeaderProps</span> {
+  title: <span class="code-type">string</span>;
+  user: <span class="code-type">UserProfile</span>;
+  onSearch: (query: <span class="code-type">string</span>) => <span class="code-type">void</span>;
+}
+
+<span class="code-kw">export const</span> <span class="code-fn">Header</span>: React.FC&lt;HeaderProps&gt; = ({
+  title,
+  user,
+  onSearch
+}) => {
+  <span class="code-kw">const</span> [searchOpen, setSearchOpen] = React.useState(<span class="code-bool">false</span>);
+
+  <span class="code-kw">return</span> (
+    &lt;<span class="code-tag">header</span> className=<span class="code-str">"app-header"</span>&gt;
+      &lt;<span class="code-tag">h1</span>&gt;{title}&lt;/<span class="code-tag">h1</span>&gt;
+      &lt;<span class="code-tag">SearchBar</span>
+        isOpen={searchOpen}
+        onToggle={() => setSearchOpen(!searchOpen)}
+        onSearch={onSearch}
+      /&gt;
+      &lt;<span class="code-tag">UserAvatar</span> user={user} /&gt;
+    &lt;/<span class="code-tag">header</span>&gt;
+  );
+};</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         VIEW 4 — KANBAN
+         ═══════════════════════════════════════ -->
+    <section class="view" data-page="kanban">
+      <div class="view-toolbar">
+        <div class="kanban-filters">
+          <button class="pill-btn pill-btn--accent pill-btn--small active">All</button>
+          <button class="pill-btn pill-btn--ghost pill-btn--small">My Tasks</button>
+          <button class="pill-btn pill-btn--ghost pill-btn--small">This Sprint</button>
+        </div>
+        <button class="pill-btn pill-btn--accent">+ Add Task</button>
+      </div>
+
+      <div class="kanban-board">
+        <!-- Backlog Column -->
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <div class="kanban-wave-header backlog"></div>
+            <div class="kanban-column__title-row">
+              <h3>Backlog</h3>
+              <span class="kanban-count">5</span>
+            </div>
+          </div>
+          <div class="kanban-column__cards">
+            <div class="kanban-card">
+              <div class="kanban-card__tag blue">Feature</div>
+              <h4>User authentication flow</h4>
+              <p>Implement OAuth2 with multiple providers</p>
+              <div class="kanban-card__footer">
+                <div class="avatar-mini">S</div>
+                <span class="kanban-card__priority high">High</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kanban-card__tag purple">Research</div>
+              <h4>Database migration strategy</h4>
+              <p>Evaluate options for zero-downtime migration</p>
+              <div class="kanban-card__footer">
+                <div class="avatar-mini">A</div>
+                <span class="kanban-card__priority medium">Med</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kanban-card__tag blue">Feature</div>
+              <h4>Export to PDF</h4>
+              <p>Allow users to export reports as formatted PDFs</p>
+              <div class="kanban-card__footer">
+                <div class="avatar-mini">M</div>
+                <span class="kanban-card__priority low">Low</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- In Progress Column -->
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <div class="kanban-wave-header in-progress"></div>
+            <div class="kanban-column__title-row">
+              <h3>In Progress</h3>
+              <span class="kanban-count">3</span>
+            </div>
+          </div>
+          <div class="kanban-column__cards">
+            <div class="kanban-card">
+              <div class="kanban-card__tag blue">Feature</div>
+              <h4>Real-time collaboration</h4>
+              <p>WebSocket-based live editing with conflict resolution</p>
+              <div class="kanban-card__footer">
+                <div class="avatar-mini">J</div>
+                <span class="kanban-card__priority high">High</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kanban-card__tag purple">Design</div>
+              <h4>Component library update</h4>
+              <p>Refresh button styles and form elements</p>
+              <div class="kanban-card__footer">
+                <div class="avatar-mini">L</div>
+                <span class="kanban-card__priority medium">Med</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review Column -->
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <div class="kanban-wave-header review"></div>
+            <div class="kanban-column__title-row">
+              <h3>Review</h3>
+              <span class="kanban-count">2</span>
+            </div>
+          </div>
+          <div class="kanban-column__cards">
+            <div class="kanban-card">
+              <div class="kanban-card__tag blue">Bug Fix</div>
+              <h4>Fix pagination offset</h4>
+              <p>Off-by-one error on search results page 2+</p>
+              <div class="kanban-card__footer">
+                <div class="avatar-mini">K</div>
+                <span class="kanban-card__priority high">High</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kanban-card__tag purple">Enhancement</div>
+              <h4>Dark mode support</h4>
+              <p>CSS custom properties for theme switching</p>
+              <div class="kanban-card__footer">
+                <div class="avatar-mini">A</div>
+                <span class="kanban-card__priority low">Low</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Done Column -->
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <div class="kanban-wave-header done"></div>
+            <div class="kanban-column__title-row">
+              <h3>Done</h3>
+              <span class="kanban-count">8</span>
+            </div>
+          </div>
+          <div class="kanban-column__cards">
+            <div class="kanban-card kanban-card--done">
+              <div class="kanban-card__tag blue">Feature</div>
+              <h4>Notification system</h4>
+              <p>In-app and email notifications for key events</p>
+              <div class="kanban-card__footer">
+                <div class="avatar-mini">R</div>
+                <span class="kanban-card__priority done-mark">Done</span>
+              </div>
+            </div>
+            <div class="kanban-card kanban-card--done">
+              <div class="kanban-card__tag purple">Infra</div>
+              <h4>CI/CD pipeline</h4>
+              <p>Automated testing and deployment via GitHub Actions</p>
+              <div class="kanban-card__footer">
+                <div class="avatar-mini">S</div>
+                <span class="kanban-card__priority done-mark">Done</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         VIEW 5 — WHITEBOARD
+         ═══════════════════════════════════════ -->
+    <section class="view" data-page="whiteboard">
+      <div class="whiteboard-toolbar">
+        <button class="wb-tool active" title="Select">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+        </button>
+        <button class="wb-tool" title="Rectangle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/></svg>
+        </button>
+        <button class="wb-tool" title="Circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+        </button>
+        <button class="wb-tool" title="Line">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="19" y2="5"/></svg>
+        </button>
+        <button class="wb-tool" title="Text">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9.5" y1="20" x2="14.5" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+        </button>
+        <div class="wb-separator"></div>
+        <button class="wb-tool" title="Undo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        </button>
+        <button class="wb-tool" title="Zoom In">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </button>
+      </div>
+
+      <div class="whiteboard-canvas">
+        <div class="wb-grid"></div>
+        <!-- Whiteboard Nodes -->
+        <div class="wb-node wb-node--blob-1" style="left:10%;top:15%">
+          <div class="wb-node__content">
+            <h4>User Research</h4>
+            <p>Interviews & surveys</p>
+          </div>
+        </div>
+        <div class="wb-node wb-node--blob-2" style="left:40%;top:10%">
+          <div class="wb-node__content">
+            <h4>Ideation</h4>
+            <p>Brainstorm sessions</p>
+          </div>
+        </div>
+        <div class="wb-node wb-node--blob-3" style="left:70%;top:20%">
+          <div class="wb-node__content">
+            <h4>Prototype</h4>
+            <p>Figma mockups</p>
+          </div>
+        </div>
+        <div class="wb-node wb-node--blob-4" style="left:25%;top:55%">
+          <div class="wb-node__content">
+            <h4>Testing</h4>
+            <p>A/B experiments</p>
+          </div>
+        </div>
+        <div class="wb-node wb-node--blob-5" style="left:60%;top:60%">
+          <div class="wb-node__content">
+            <h4>Launch</h4>
+            <p>Staged rollout</p>
+          </div>
+        </div>
+        <!-- SVG Connections -->
+        <svg class="wb-connections" viewBox="0 0 1000 600" preserveAspectRatio="none">
+          <path d="M 150 100 C 250 80, 300 80, 420 85" class="wb-line"/>
+          <path d="M 450 110 C 550 100, 600 120, 720 130" class="wb-line"/>
+          <path d="M 150 120 C 200 250, 220 300, 280 350" class="wb-line"/>
+          <path d="M 320 370 C 400 380, 500 380, 630 380" class="wb-line"/>
+          <path d="M 740 160 C 720 250, 680 320, 650 360" class="wb-line"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         VIEW 6 — SCHEMA PLANNER
+         ═══════════════════════════════════════ -->
+    <section class="view" data-page="schema-planner">
+      <div class="view-toolbar">
+        <div class="view-toolbar__actions">
+          <button class="pill-btn pill-btn--accent">+ Add Entity</button>
+          <button class="pill-btn pill-btn--ghost">Auto Layout</button>
+          <button class="pill-btn pill-btn--ghost">Export SQL</button>
+        </div>
+      </div>
+
+      <div class="schema-canvas">
+        <!-- Entity Blobs -->
+        <div class="schema-entity schema-entity--blob-1" style="left:5%;top:10%">
+          <div class="schema-entity__header blue">Users</div>
+          <div class="schema-entity__fields">
+            <div class="schema-field"><span class="schema-field__key">PK</span><span class="schema-field__name">id</span><span class="schema-field__type">uuid</span></div>
+            <div class="schema-field"><span class="schema-field__name">email</span><span class="schema-field__type">varchar</span></div>
+            <div class="schema-field"><span class="schema-field__name">name</span><span class="schema-field__type">varchar</span></div>
+            <div class="schema-field"><span class="schema-field__name">role</span><span class="schema-field__type">enum</span></div>
+            <div class="schema-field"><span class="schema-field__name">created_at</span><span class="schema-field__type">timestamp</span></div>
+          </div>
+        </div>
+
+        <div class="schema-entity schema-entity--blob-2" style="left:40%;top:5%">
+          <div class="schema-entity__header purple">Projects</div>
+          <div class="schema-entity__fields">
+            <div class="schema-field"><span class="schema-field__key">PK</span><span class="schema-field__name">id</span><span class="schema-field__type">uuid</span></div>
+            <div class="schema-field"><span class="schema-field__key">FK</span><span class="schema-field__name">owner_id</span><span class="schema-field__type">uuid</span></div>
+            <div class="schema-field"><span class="schema-field__name">title</span><span class="schema-field__type">varchar</span></div>
+            <div class="schema-field"><span class="schema-field__name">status</span><span class="schema-field__type">enum</span></div>
+            <div class="schema-field"><span class="schema-field__name">description</span><span class="schema-field__type">text</span></div>
+          </div>
+        </div>
+
+        <div class="schema-entity schema-entity--blob-3" style="left:75%;top:10%">
+          <div class="schema-entity__header blue">Ideas</div>
+          <div class="schema-entity__fields">
+            <div class="schema-field"><span class="schema-field__key">PK</span><span class="schema-field__name">id</span><span class="schema-field__type">uuid</span></div>
+            <div class="schema-field"><span class="schema-field__key">FK</span><span class="schema-field__name">project_id</span><span class="schema-field__type">uuid</span></div>
+            <div class="schema-field"><span class="schema-field__key">FK</span><span class="schema-field__name">author_id</span><span class="schema-field__type">uuid</span></div>
+            <div class="schema-field"><span class="schema-field__name">title</span><span class="schema-field__type">varchar</span></div>
+            <div class="schema-field"><span class="schema-field__name">priority</span><span class="schema-field__type">int</span></div>
+          </div>
+        </div>
+
+        <div class="schema-entity schema-entity--blob-4" style="left:20%;top:60%">
+          <div class="schema-entity__header purple">Tags</div>
+          <div class="schema-entity__fields">
+            <div class="schema-field"><span class="schema-field__key">PK</span><span class="schema-field__name">id</span><span class="schema-field__type">uuid</span></div>
+            <div class="schema-field"><span class="schema-field__name">name</span><span class="schema-field__type">varchar</span></div>
+            <div class="schema-field"><span class="schema-field__name">color</span><span class="schema-field__type">varchar</span></div>
+          </div>
+        </div>
+
+        <div class="schema-entity schema-entity--blob-5" style="left:60%;top:58%">
+          <div class="schema-entity__header blue">Comments</div>
+          <div class="schema-entity__fields">
+            <div class="schema-field"><span class="schema-field__key">PK</span><span class="schema-field__name">id</span><span class="schema-field__type">uuid</span></div>
+            <div class="schema-field"><span class="schema-field__key">FK</span><span class="schema-field__name">idea_id</span><span class="schema-field__type">uuid</span></div>
+            <div class="schema-field"><span class="schema-field__key">FK</span><span class="schema-field__name">user_id</span><span class="schema-field__type">uuid</span></div>
+            <div class="schema-field"><span class="schema-field__name">body</span><span class="schema-field__type">text</span></div>
+          </div>
+        </div>
+
+        <!-- Relationship Lines -->
+        <svg class="schema-lines" viewBox="0 0 1000 600" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="relGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.6"/>
+            </linearGradient>
+          </defs>
+          <path d="M 250 120 C 330 100, 350 90, 420 85" stroke="url(#relGrad1)" stroke-width="3" fill="none" stroke-dasharray="8 4"/>
+          <path d="M 600 100 C 670 90, 700 85, 760 90" stroke="url(#relGrad1)" stroke-width="3" fill="none" stroke-dasharray="8 4"/>
+          <path d="M 200 200 C 210 350, 220 370, 250 380" stroke="url(#relGrad1)" stroke-width="3" fill="none" stroke-dasharray="8 4"/>
+          <path d="M 800 200 C 780 350, 720 370, 680 380" stroke="url(#relGrad1)" stroke-width="3" fill="none" stroke-dasharray="8 4"/>
+          <path d="M 500 180 C 480 300, 460 340, 350 380" stroke="url(#relGrad1)" stroke-width="3" fill="none" stroke-dasharray="8 4"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         VIEW 7 — DIRECTORY TREE
+         ═══════════════════════════════════════ -->
+    <section class="view" data-page="directory-tree">
+      <div class="view-toolbar">
+        <div class="morph-input">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Filter files..." class="morph-input__field">
+        </div>
+        <div class="view-toolbar__actions">
+          <button class="pill-btn pill-btn--ghost">Collapse All</button>
+          <button class="pill-btn pill-btn--ghost">Expand All</button>
+        </div>
+      </div>
+
+      <div class="directory-container">
+        <div class="dir-tree">
+          <div class="dir-item dir-folder open depth-0">
+            <div class="dir-item__row">
+              <span class="dir-chevron">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+              <span class="dir-icon folder-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+              </span>
+              <span class="dir-name">idea-management</span>
+              <span class="dir-meta">14 items</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-folder open depth-1">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-chevron">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+              <span class="dir-icon folder-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+              </span>
+              <span class="dir-name">src</span>
+              <span class="dir-meta">8 items</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-folder depth-2">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-flow-line"></span>
+              <span class="dir-chevron">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+              <span class="dir-icon folder-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+              </span>
+              <span class="dir-name">components</span>
+              <span class="dir-meta">12 items</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-file depth-2">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-flow-line"></span>
+              <span class="dir-file-icon ts">TS</span>
+              <span class="dir-name">App.tsx</span>
+              <span class="dir-meta">4.2 KB</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-file depth-2">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-flow-line"></span>
+              <span class="dir-file-icon ts">TS</span>
+              <span class="dir-name">index.ts</span>
+              <span class="dir-meta">1.1 KB</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-file depth-2">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-flow-line"></span>
+              <span class="dir-file-icon css">CS</span>
+              <span class="dir-name">globals.css</span>
+              <span class="dir-meta">2.8 KB</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-folder depth-2">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-flow-line"></span>
+              <span class="dir-chevron">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+              <span class="dir-icon folder-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+              </span>
+              <span class="dir-name">utils</span>
+              <span class="dir-meta">5 items</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-folder open depth-1">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-chevron">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+              <span class="dir-icon folder-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+              </span>
+              <span class="dir-name">public</span>
+              <span class="dir-meta">3 items</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-file depth-2">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-flow-line"></span>
+              <span class="dir-file-icon html">HT</span>
+              <span class="dir-name">index.html</span>
+              <span class="dir-meta">2.1 KB</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-file depth-2">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-flow-line"></span>
+              <span class="dir-file-icon svg">SV</span>
+              <span class="dir-name">favicon.svg</span>
+              <span class="dir-meta">0.8 KB</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-file depth-1">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-file-icon json">JS</span>
+              <span class="dir-name">package.json</span>
+              <span class="dir-meta">1.4 KB</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-file depth-1">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-file-icon ts">TS</span>
+              <span class="dir-name">tsconfig.json</span>
+              <span class="dir-meta">0.6 KB</span>
+            </div>
+          </div>
+
+          <div class="dir-item dir-file depth-1">
+            <div class="dir-item__row">
+              <span class="dir-flow-line"></span>
+              <span class="dir-file-icon md">MD</span>
+              <span class="dir-name">README.md</span>
+              <span class="dir-meta">3.2 KB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         VIEW 8 — IDEAS
+         ═══════════════════════════════════════ -->
+    <section class="view" data-page="ideas">
+      <!-- Capture Form -->
+      <div class="idea-capture">
+        <div class="idea-capture__blob">
+          <h3>Capture a New Idea</h3>
+          <div class="idea-capture__form">
+            <input type="text" placeholder="What's your idea?" class="idea-capture__title">
+            <textarea placeholder="Describe it in more detail..." class="idea-capture__desc"></textarea>
+            <div class="idea-capture__row">
+              <div class="idea-capture__tags">
+                <span class="idea-tag-input">+ Add Tag</span>
+              </div>
+              <div class="idea-capture__priority-select">
+                <button class="priority-btn priority-btn--low active">Low</button>
+                <button class="priority-btn priority-btn--med">Med</button>
+                <button class="priority-btn priority-btn--high">High</button>
+              </div>
+              <button class="pill-btn pill-btn--accent">Save Idea</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ideas Grid (floating bubbles) -->
+      <div class="ideas-bubbles">
+        <div class="idea-bubble idea-bubble--high">
+          <div class="idea-bubble__glow"></div>
+          <h4>AI-powered code review</h4>
+          <p>Automated PR reviews using LLM analysis for code quality and security patterns.</p>
+          <div class="idea-bubble__tags">
+            <span class="idea-bubble__tag">AI</span>
+            <span class="idea-bubble__tag">DevTools</span>
+          </div>
+          <div class="idea-bubble__footer">
+            <span class="idea-bubble__priority high">High Priority</span>
+            <span class="idea-bubble__date">2 days ago</span>
+          </div>
+        </div>
+
+        <div class="idea-bubble idea-bubble--med">
+          <div class="idea-bubble__glow"></div>
+          <h4>Real-time whiteboard sync</h4>
+          <p>Multi-user collaborative whiteboard with live cursors and instant updates.</p>
+          <div class="idea-bubble__tags">
+            <span class="idea-bubble__tag">Collaboration</span>
+            <span class="idea-bubble__tag">Real-time</span>
+          </div>
+          <div class="idea-bubble__footer">
+            <span class="idea-bubble__priority med">Medium Priority</span>
+            <span class="idea-bubble__date">1 week ago</span>
+          </div>
+        </div>
+
+        <div class="idea-bubble idea-bubble--low">
+          <div class="idea-bubble__glow"></div>
+          <h4>Customizable dashboard widgets</h4>
+          <p>Drag and drop dashboard builder with resizable chart and data widgets.</p>
+          <div class="idea-bubble__tags">
+            <span class="idea-bubble__tag">UX</span>
+            <span class="idea-bubble__tag">Dashboard</span>
+          </div>
+          <div class="idea-bubble__footer">
+            <span class="idea-bubble__priority low">Low Priority</span>
+            <span class="idea-bubble__date">2 weeks ago</span>
+          </div>
+        </div>
+
+        <div class="idea-bubble idea-bubble--high">
+          <div class="idea-bubble__glow"></div>
+          <h4>GraphQL federation layer</h4>
+          <p>Unified API gateway composing multiple domain services into a single graph.</p>
+          <div class="idea-bubble__tags">
+            <span class="idea-bubble__tag">API</span>
+            <span class="idea-bubble__tag">Architecture</span>
+          </div>
+          <div class="idea-bubble__footer">
+            <span class="idea-bubble__priority high">High Priority</span>
+            <span class="idea-bubble__date">3 days ago</span>
+          </div>
+        </div>
+
+        <div class="idea-bubble idea-bubble--med">
+          <div class="idea-bubble__glow"></div>
+          <h4>Smart notification digest</h4>
+          <p>AI-curated daily digest that groups and prioritizes notifications by relevance.</p>
+          <div class="idea-bubble__tags">
+            <span class="idea-bubble__tag">AI</span>
+            <span class="idea-bubble__tag">Notifications</span>
+          </div>
+          <div class="idea-bubble__footer">
+            <span class="idea-bubble__priority med">Medium Priority</span>
+            <span class="idea-bubble__date">5 days ago</span>
+          </div>
+        </div>
+
+        <div class="idea-bubble idea-bubble--low">
+          <div class="idea-bubble__glow"></div>
+          <h4>Keyboard shortcut commander</h4>
+          <p>Command palette (Cmd+K) with fuzzy search across all app actions and navigation.</p>
+          <div class="idea-bubble__tags">
+            <span class="idea-bubble__tag">UX</span>
+            <span class="idea-bubble__tag">Productivity</span>
+          </div>
+          <div class="idea-bubble__footer">
+            <span class="idea-bubble__priority low">Low Priority</span>
+            <span class="idea-bubble__date">1 month ago</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         VIEW 9 — AI CHAT
+         ═══════════════════════════════════════ -->
+    <section class="view" data-page="ai-chat">
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-message chat-message--ai">
+            <div class="chat-blob ai-blob">
+              <div class="chat-avatar ai-avatar">AI</div>
+              <div class="chat-content">
+                <p>Hello! I'm your AI assistant for idea management. I can help you brainstorm, organize your thoughts, analyze project feasibility, or generate implementation plans. What would you like to explore?</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-message chat-message--user">
+            <div class="chat-blob user-blob">
+              <div class="chat-content">
+                <p>Can you help me prioritize the ideas in our backlog? We have about 50 ideas and need to pick the top 10 for next quarter.</p>
+              </div>
+              <div class="chat-avatar user-avatar">JD</div>
+            </div>
+          </div>
+
+          <div class="chat-message chat-message--ai">
+            <div class="chat-blob ai-blob">
+              <div class="chat-avatar ai-avatar">AI</div>
+              <div class="chat-content">
+                <p>I'd be happy to help you prioritize! Let me suggest a framework. We can score each idea on these dimensions:</p>
+                <ul>
+                  <li><strong>Impact</strong> - How much value does this deliver to users?</li>
+                  <li><strong>Effort</strong> - Engineering time and complexity</li>
+                  <li><strong>Alignment</strong> - How well does it fit your strategic goals?</li>
+                  <li><strong>Urgency</strong> - Time-sensitive factors or dependencies</li>
+                </ul>
+                <p>Would you like me to pull your current backlog and start scoring, or would you prefer to walk through them manually?</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-message chat-message--user">
+            <div class="chat-blob user-blob">
+              <div class="chat-content">
+                <p>Pull the backlog and start scoring. Focus on impact and effort first.</p>
+              </div>
+              <div class="chat-avatar user-avatar">JD</div>
+            </div>
+          </div>
+
+          <div class="chat-message chat-message--ai">
+            <div class="chat-blob ai-blob">
+              <div class="chat-avatar ai-avatar">AI</div>
+              <div class="chat-content">
+                <p>Analyzing your backlog now. Here are the top candidates based on <strong>Impact/Effort ratio</strong>:</p>
+                <div class="chat-code-block">
+                  <code>
+ #  Idea                        Impact  Effort  Score
+ 1  AI Code Review              9/10    5/10    1.80
+ 2  GraphQL Federation          8/10    6/10    1.33
+ 3  Real-time Collab            9/10    7/10    1.29
+ 4  Smart Notifications         7/10    4/10    1.75
+ 5  Keyboard Commander          6/10    3/10    2.00
+                  </code>
+                </div>
+                <p>Interesting: <em>Keyboard Commander</em> actually has the highest ratio due to low effort. But <em>AI Code Review</em> delivers the most raw impact. Shall I continue with the full list?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <div class="chat-input-blob">
+            <textarea placeholder="Ask me anything about your ideas..." class="chat-input" rows="1"></textarea>
+            <button class="chat-send-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+          <div class="chat-actions">
+            <button class="chat-action-btn">Brainstorm</button>
+            <button class="chat-action-btn">Analyze</button>
+            <button class="chat-action-btn">Summarize</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         VIEW 10 — SETTINGS
+         ═══════════════════════════════════════ -->
+    <section class="view" data-page="settings">
+      <div class="settings-container">
+        <!-- Settings Tabs -->
+        <div class="settings-tabs">
+          <button class="settings-tab active" data-settings-tab="general">General</button>
+          <button class="settings-tab" data-settings-tab="appearance">Appearance</button>
+          <button class="settings-tab" data-settings-tab="notifications">Notifications</button>
+          <button class="settings-tab" data-settings-tab="team">Team</button>
+        </div>
+
+        <div class="settings-wave-sep"></div>
+
+        <!-- General Settings -->
+        <div class="settings-section active" data-settings-panel="general">
+          <div class="settings-group">
+            <h3 class="settings-group__title">Profile</h3>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">Display Name</span>
+                <span class="settings-row__desc">How your name appears to others</span>
+              </div>
+              <input type="text" value="John Doe" class="settings-input">
+            </div>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">Email</span>
+                <span class="settings-row__desc">Your primary email address</span>
+              </div>
+              <input type="email" value="john@example.com" class="settings-input">
+            </div>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">Timezone</span>
+                <span class="settings-row__desc">Used for scheduling and notifications</span>
+              </div>
+              <select class="settings-select">
+                <option>UTC-8 (Pacific Time)</option>
+                <option>UTC-5 (Eastern Time)</option>
+                <option selected>UTC+0 (GMT)</option>
+                <option>UTC+1 (CET)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-wave-sep"></div>
+
+          <div class="settings-group">
+            <h3 class="settings-group__title">Preferences</h3>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">Auto-save</span>
+                <span class="settings-row__desc">Automatically save changes as you work</span>
+              </div>
+              <label class="liquid-toggle">
+                <input type="checkbox" checked>
+                <span class="liquid-toggle__track">
+                  <span class="liquid-toggle__thumb"></span>
+                </span>
+              </label>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">Compact Mode</span>
+                <span class="settings-row__desc">Reduce spacing for denser content</span>
+              </div>
+              <label class="liquid-toggle">
+                <input type="checkbox">
+                <span class="liquid-toggle__track">
+                  <span class="liquid-toggle__thumb"></span>
+                </span>
+              </label>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">AI Suggestions</span>
+                <span class="settings-row__desc">Show AI-powered recommendations inline</span>
+              </div>
+              <label class="liquid-toggle">
+                <input type="checkbox" checked>
+                <span class="liquid-toggle__track">
+                  <span class="liquid-toggle__thumb"></span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Appearance Settings -->
+        <div class="settings-section" data-settings-panel="appearance">
+          <div class="settings-group">
+            <h3 class="settings-group__title">Theme</h3>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">Color Mode</span>
+                <span class="settings-row__desc">Choose your preferred visual theme</span>
+              </div>
+              <div class="theme-picker">
+                <button class="theme-option active" data-theme="light">
+                  <div class="theme-preview light"></div>
+                  <span>Light</span>
+                </button>
+                <button class="theme-option" data-theme="dark">
+                  <div class="theme-preview dark"></div>
+                  <span>Dark</span>
+                </button>
+                <button class="theme-option" data-theme="auto">
+                  <div class="theme-preview auto"></div>
+                  <span>Auto</span>
+                </button>
+              </div>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">Animations</span>
+                <span class="settings-row__desc">Enable fluid motion effects</span>
+              </div>
+              <label class="liquid-toggle">
+                <input type="checkbox" checked>
+                <span class="liquid-toggle__track">
+                  <span class="liquid-toggle__thumb"></span>
+                </span>
+              </label>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">Font Size</span>
+                <span class="settings-row__desc">Adjust the base text size</span>
+              </div>
+              <div class="settings-slider-row">
+                <input type="range" min="12" max="20" value="16" class="liquid-slider">
+                <span class="slider-value">16px</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications Settings -->
+        <div class="settings-section" data-settings-panel="notifications">
+          <div class="settings-group">
+            <h3 class="settings-group__title">Notification Preferences</h3>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">Email Notifications</span>
+                <span class="settings-row__desc">Receive updates via email</span>
+              </div>
+              <label class="liquid-toggle">
+                <input type="checkbox" checked>
+                <span class="liquid-toggle__track">
+                  <span class="liquid-toggle__thumb"></span>
+                </span>
+              </label>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">Push Notifications</span>
+                <span class="settings-row__desc">Browser push for real-time alerts</span>
+              </div>
+              <label class="liquid-toggle">
+                <input type="checkbox" checked>
+                <span class="liquid-toggle__track">
+                  <span class="liquid-toggle__thumb"></span>
+                </span>
+              </label>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row__info">
+                <span class="settings-row__label">Weekly Digest</span>
+                <span class="settings-row__desc">Summary of activity each Monday</span>
+              </div>
+              <label class="liquid-toggle">
+                <input type="checkbox">
+                <span class="liquid-toggle__track">
+                  <span class="liquid-toggle__thumb"></span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Team Settings -->
+        <div class="settings-section" data-settings-panel="team">
+          <div class="settings-group">
+            <h3 class="settings-group__title">Team Management</h3>
+            <div class="team-members-list">
+              <div class="team-member">
+                <div class="avatar-blob">JD</div>
+                <div class="team-member__info">
+                  <span class="team-member__name">John Doe</span>
+                  <span class="team-member__role">Owner</span>
+                </div>
+                <span class="team-member__badge admin">Admin</span>
+              </div>
+              <div class="team-member">
+                <div class="avatar-blob">SC</div>
+                <div class="team-member__info">
+                  <span class="team-member__name">Sarah Chen</span>
+                  <span class="team-member__role">Lead Developer</span>
+                </div>
+                <span class="team-member__badge admin">Admin</span>
+              </div>
+              <div class="team-member">
+                <div class="avatar-blob">AK</div>
+                <div class="team-member__info">
+                  <span class="team-member__name">Alex Kim</span>
+                  <span class="team-member__role">Designer</span>
+                </div>
+                <span class="team-member__badge member">Member</span>
+              </div>
+              <div class="team-member">
+                <div class="avatar-blob">ML</div>
+                <div class="team-member__info">
+                  <span class="team-member__name">Maria Lopez</span>
+                  <span class="team-member__role">Product Manager</span>
+                </div>
+                <span class="team-member__badge member">Member</span>
+              </div>
+            </div>
+            <button class="pill-btn pill-btn--accent" style="margin-top:20px">+ Invite Member</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+{
+  "concept": "retro-50s",
+  "pass": 1,
+  "variantSeed": "chrome-diner-jukebox",
+  "generatedAt": "2026-02-15",
+  "palette": {
+    "background": "#fef5f0",
+    "text": "#2a1f3d",
+    "surface": "#ffffff",
+    "accent": "#ff6b8a",
+    "accent2": "#4ecdc4",
+    "border": "#e0d4e8"
+  },
+  "typography": {
+    "heading": "Fredoka",
+    "body": "Nunito",
+    "mono": "Fira Code"
+  },
+  "layoutProfile": {
+    "shell": "bottom-jukebox-bar",
+    "navPattern": "flip-card-selector-buttons",
+    "contentFlow": "themed-panels",
+    "scroll": "slide-horizontal",
+    "alignment": "center",
+    "hero": "neon-marquee-header",
+    "motion": "bounce-playful",
+    "density": "balanced",
+    "componentTone": "soft",
+    "cornerRadius": "16-24px"
+  },
+  "views": [
+    {
+      "id": "dashboard",
+      "navLabel": "Dash",
+      "metaphor": "Speedometer + diner menu",
+      "uniqueElements": [
+        "SVG speedometer gauge with animated needle",
+        "Stat cards styled as numbered menu items",
+        "Jukebox playlist activity feed with track numbers",
+        "Mini velocity gauges with gradient fills",
+        "Milestone strip with road markers"
+      ]
+    },
+    {
+      "id": "projects",
+      "navLabel": "Projects",
+      "metaphor": "Vinyl record collection",
+      "uniqueElements": [
+        "Record sleeve cards with spinning vinyl hole on hover",
+        "Checkerboard pattern background",
+        "Chrome-bezel search bar with pill filters",
+        "Record status labels (Now Playing, New Release, Greatest Hit)",
+        "New project card as 'Press a New Record'"
+      ]
+    },
+    {
+      "id": "project-workspace",
+      "navLabel": "Booth",
+      "metaphor": "Filing cabinet + diner booth table",
+      "uniqueElements": [
+        "Filing cabinet sidebar with folder tabs and drawer handle",
+        "Booth table surface with faint pinstripe texture",
+        "Highway-style breadcrumbs with arrow markers",
+        "Order ticket task checklist",
+        "File detail card with meta chips"
+      ]
+    },
+    {
+      "id": "kanban",
+      "navLabel": "Menu",
+      "metaphor": "Drive-in menu board",
+      "uniqueElements": [
+        "Dark columns resembling menu board panels",
+        "Neon-colored column headers (pink, turquoise, gold, green)",
+        "Order ticket cards with perforated top edge",
+        "Star rating priority system",
+        "Cooking/review/served state indicators"
+      ]
+    },
+    {
+      "id": "whiteboard",
+      "navLabel": "Sketch",
+      "metaphor": "Sketch pad on diner counter",
+      "uniqueElements": [
+        "Graph paper CSS grid background",
+        "Diner counter toolbar with chrome knob tools",
+        "Color knob selectors",
+        "Positioned sticky notes with slight rotations",
+        "Dashed shape outlines"
+      ]
+    },
+    {
+      "id": "schema-planner",
+      "navLabel": "Schema",
+      "metaphor": "Retro TV channel guide",
+      "uniqueElements": [
+        "TV-shaped entity frames with antennas and dials",
+        "CRT-style dark screen with green-tinted text",
+        "Channel number headings with golden glow",
+        "Phone cord SVG relationship lines (dashed, wavy)",
+        "Field type badges (PK, FK)"
+      ]
+    },
+    {
+      "id": "directory-tree",
+      "navLabel": "Files",
+      "metaphor": "Jukebox song listing",
+      "uniqueElements": [
+        "Category letters (A, B, C, D) as section headers",
+        "Track numbering (A1, A2, B1...)",
+        "Dark gradient category headers",
+        "Collapsible track listings",
+        "File size display"
+      ]
+    },
+    {
+      "id": "ideas",
+      "navLabel": "Ideas",
+      "metaphor": "Coin-drop jukebox + postcards",
+      "uniqueElements": [
+        "Coin slot chrome input area",
+        "Drop It button with coin animation",
+        "Postcard cards with corner folds",
+        "Rotated stamp badges (NEW, HOT, IDEA)",
+        "Diner sticker tags"
+      ]
+    },
+    {
+      "id": "ai-chat",
+      "navLabel": "Chat",
+      "metaphor": "Comic strip + diner order pad",
+      "uniqueElements": [
+        "Comic speech bubble chat messages",
+        "Triangle tail pointers on bubbles",
+        "Pastel-differentiated user vs AI bubbles",
+        "Order pad input with ruled lines accent",
+        "Bubble pop entrance animation"
+      ]
+    },
+    {
+      "id": "settings",
+      "navLabel": "Settings",
+      "metaphor": "Retro TV control panel",
+      "uniqueElements": [
+        "Chrome toggle switches with physical knob appearance",
+        "Retro slider with chrome thumb",
+        "Chrome select dropdowns",
+        "Grouped settings sections as control panel zones",
+        "Brushed metal gradient on toggles"
+      ]
+    }
+  ],
+  "globalElements": {
+    "navigation": "Fixed bottom jukebox bar with 10 flip-card buttons",
+    "header": "Neon marquee sign with flickering letter animation",
+    "chromeBezel": "CSS gradient borders simulating brushed metal",
+    "checkerboard": "repeating-conic-gradient pattern accent",
+    "neonGlow": "box-shadow with accent color blur on hover",
+    "motionSystem": "cubic-bezier(0.34, 1.56, 0.64, 1) overshoot easing",
+    "cornerRadius": "16-24px on panels, 999px capsule on buttons"
+  },
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

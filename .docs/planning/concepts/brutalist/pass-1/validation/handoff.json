@@ -1,0 +1,29 @@
+{
+  "styleId": "brutalist",
+  "pass": 1,
+  "variantSeed": "concrete-slab-monolith",
+  "uniquenessFlags": {
+    "shell": "fixed-left-rail",
+    "navPattern": "stacked-oversized-labels",
+    "contentFlow": "single-column-stack",
+    "scroll": "standard-scroll",
+    "alignment": "left",
+    "hero": "none",
+    "motion": "none-harsh-cuts",
+    "density": "compact",
+    "componentTone": "hard-sharp-edges-zero-border-radius",
+    "headingFont": "Anton",
+    "bodyFont": "Space Grotesk",
+    "monoFont": "IBM Plex Mono",
+    "background": "#e8e0d0",
+    "accent": "#ff3b00",
+    "accent2": "#0038ff",
+    "surface": "#f5f0e6",
+    "border": "#1a1a1a",
+    "borderRadius": 0,
+    "borderWidth": "3px"
+  },
+  "animationLibraries": [],
+  "mediaAssets": [],
+  "generatedAt": "2026-02-15T09:41:00.000Z"
+}

@@ -1,0 +1,72 @@
+{
+  "concept": "Liquid Motion",
+  "pass": 1,
+  "variantSeed": "morphing-blob-surfaces",
+  "inspirationSources": [
+    {
+      "name": "Stripe",
+      "url": "https://stripe.com",
+      "elementsAdapted": [
+        {
+          "element": "Gradient confidence",
+          "implementation": "Blue-to-purple gradient spectrum applied to stat values, card backgrounds, nav active states, and button fills. The morph-header background uses a shifting gradient reminiscent of Stripe's hero sections.",
+          "cssSelectors": [".morph-header__bg", ".stat-card__value", ".pill-btn--accent", ".blob-nav__btn.active"],
+          "differentiator": "While Stripe uses horizontal gradient bands, this concept applies gradients to organic blob shapes with morphing border-radius, creating a more fluid and biological feel."
+        },
+        {
+          "element": "Fluid motion",
+          "implementation": "GSAP-powered spring easing on all interactions. View transitions use fade+slide+scale. Cards lift on hover with smooth box-shadow transitions. Everything uses cubic-bezier curves or elastic easing.",
+          "cssSelectors": [".bento-card", ".project-card", ".kanban-card"],
+          "differentiator": "Stripe's motion is precise and linear. This concept makes motion feel liquid — organic, slightly unpredictable with spring overshoot and blob morphing."
+        }
+      ]
+    },
+    {
+      "name": "Linear",
+      "url": "https://linear.app",
+      "elementsAdapted": [
+        {
+          "element": "Precision spacing",
+          "implementation": "Consistent 20px grid gaps in bento layouts. Uniform padding (24px) in cards. Systematic use of CSS custom properties for all spacing values. Clean typographic hierarchy with Syne headings.",
+          "cssSelectors": [".bento-grid", ".bento-card", ".kanban-board"],
+          "differentiator": "Linear uses sharp rectangles and tight grids. This concept maintains the spatial discipline but wraps everything in organic blob shapes with asymmetric border-radius."
+        },
+        {
+          "element": "Smooth transitions",
+          "implementation": "300-500ms transition durations on all interactive elements. View switching uses cross-fade with GSAP staggered reveals. Nav collapse/expand uses 400ms liquid easing. Settings tabs morph between states.",
+          "cssSelectors": [".blob-nav", ".view", ".settings-tab"],
+          "differentiator": "Linear's transitions are fast and efficient (200-300ms). This concept uses slightly longer durations with spring physics to create a more playful, water-like feel."
+        }
+      ]
+    },
+    {
+      "name": "Awwwards Animation",
+      "url": "https://www.awwwards.com",
+      "elementsAdapted": [
+        {
+          "element": "Motion storytelling",
+          "implementation": "View transitions tell a story: content fades out, slides away, then new content emerges with staggered element reveals. Dashboard chart bars animate up from zero. Activity feed items cascade in sequence.",
+          "cssSelectors": [".chart-bar", ".activity-item", ".bento-card"],
+          "differentiator": "Award-winning sites often use scroll-triggered narratives. This concept applies narrative sequencing to view switches and idle states, with breathing animations that make the UI feel alive."
+        },
+        {
+          "element": "Kinetic transitions",
+          "implementation": "GSAP elastic easing creates overshoot on nav button morphs. Cards scale up with spring physics on hover. Toggle switches bounce to position. Send button ripples on click. Parallax follows mouse with momentum interpolation.",
+          "cssSelectors": [".blob-nav__btn", ".liquid-toggle__thumb", ".chat-send-btn"],
+          "differentiator": "Rather than cinematic full-page transitions, this concept applies kinetic energy to every micro-interaction, making the entire UI feel responsive to touch — like the surface of water."
+        }
+      ]
+    }
+  ],
+  "uniqueDifferentiators": [
+    "Blob morphing border-radius (CSS keyframes cycling through 4 organic shapes continuously)",
+    "Breathing idle animation on all cards (subtle scale/opacity oscillation at different phase offsets)",
+    "Floating nav with organic blob shapes that morph on hover via GSAP with random radius generation",
+    "Momentum-based mouse parallax with smooth interpolation (0.06 lerp factor)",
+    "Liquid toggle switches with GSAP elastic.out spring physics",
+    "Wave separators in settings with animated gradient movement",
+    "Kanban cards with subtle bob-float animation at staggered intervals",
+    "Ideas displayed as floating bubbles with priority-based gradient intensity glow",
+    "Chat messages as asymmetric blobs (6px corner for pointer, 24px for body)"
+  ]
+}

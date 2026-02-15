@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean-deep">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liquid Motion | Pass 2 — Wave Current Flow</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- =========================================================
+       OCEAN AMBIENT BACKGROUND — layered SVG waves
+  ========================================================= -->
+  <div class="ocean-bg" aria-hidden="true">
+    <svg class="ocean-bg__wave ocean-bg__wave--deep" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path d="M0,224L48,218.7C96,213,192,203,288,208C384,213,480,235,576,229.3C672,224,768,192,864,186.7C960,181,1056,203,1152,208C1248,213,1344,203,1392,197.3L1440,192L1440,320L0,320Z" fill="var(--color-surface)" fill-opacity="0.4"/>
+    </svg>
+    <svg class="ocean-bg__wave ocean-bg__wave--mid" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path d="M0,288L60,272C120,256,240,224,360,218.7C480,213,600,235,720,245.3C840,256,960,256,1080,234.7C1200,213,1320,171,1380,149.3L1440,128L1440,320L0,320Z" fill="var(--color-border)" fill-opacity="0.25"/>
+    </svg>
+    <svg class="ocean-bg__wave ocean-bg__wave--surface" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path d="M0,160L48,170.7C96,181,192,203,288,192C384,181,480,139,576,138.7C672,139,768,181,864,197.3C960,213,1056,203,1152,181.3C1248,160,1344,128,1392,112L1440,96L1440,320L0,320Z" fill="var(--color-accent)" fill-opacity="0.06"/>
+    </svg>
+  </div>
+
+  <!-- =========================================================
+       HORIZONTAL STREAM NAVIGATION (TOP BAR)
+  ========================================================= -->
+  <header class="stream-nav" id="streamNav">
+    <div class="stream-nav__brand">
+      <svg class="stream-nav__logo" viewBox="0 0 40 40" width="36" height="36">
+        <circle cx="20" cy="20" r="16" fill="none" stroke="var(--color-accent)" stroke-width="2"/>
+        <path d="M10,20 Q15,12 20,20 Q25,28 30,20" fill="none" stroke="var(--color-accent)" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M10,26 Q15,18 20,26 Q25,34 30,26" fill="none" stroke="var(--color-accent2)" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+      </svg>
+      <span class="stream-nav__title">IdeaFlow</span>
+    </div>
+
+    <nav class="stream-nav__items" id="navStream" role="navigation" aria-label="Main navigation">
+      <button class="stream-nav__item active" data-view="dashboard">
+        <svg class="stream-nav__icon" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="stream-nav__item" data-view="projects">
+        <svg class="stream-nav__icon" viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" fill="currentColor"/></svg>
+        <span>Projects</span>
+      </button>
+      <button class="stream-nav__item" data-view="project-workspace">
+        <svg class="stream-nav__icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 9V3.5L18.5 9H13z" fill="currentColor"/></svg>
+        <span>Workspace</span>
+      </button>
+      <button class="stream-nav__item" data-view="kanban">
+        <svg class="stream-nav__icon" viewBox="0 0 24 24"><path d="M4 4h4v16H4V4zm6 0h4v12h-4V4zm6 0h4v8h-4V4z" fill="currentColor"/></svg>
+        <span>Kanban</span>
+      </button>
+      <button class="stream-nav__item" data-view="whiteboard">
+        <svg class="stream-nav__icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z" fill="currentColor"/><circle cx="8" cy="10" r="2" fill="currentColor"/><circle cx="16" cy="14" r="2" fill="currentColor"/><line x1="10" y1="10" x2="14" y2="14" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>Whiteboard</span>
+      </button>
+      <button class="stream-nav__item" data-view="schema-planner">
+        <svg class="stream-nav__icon" viewBox="0 0 24 24"><path d="M17 7h-4v2h4c1.65 0 3 1.35 3 3s-1.35 3-3 3h-4v2h4c2.76 0 5-2.24 5-5s-2.24-5-5-5zm-6 8H7c-1.65 0-3-1.35-3-3s1.35-3 3-3h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-2zm-3-4h8v2H8z" fill="currentColor"/></svg>
+        <span>Schema</span>
+      </button>
+      <button class="stream-nav__item" data-view="directory-tree">
+        <svg class="stream-nav__icon" viewBox="0 0 24 24"><path d="M22 11V3h-7v3H9V3H2v8h7V8h2v10h4v3h7v-8h-7v3h-2V8h2v3h7zM7 9H4V5h3v4zm10 6h3v4h-3v-4zm0-10h3v4h-3V5z" fill="currentColor"/></svg>
+        <span>Directory</span>
+      </button>
+      <button class="stream-nav__item" data-view="ideas">
+        <svg class="stream-nav__icon" viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z" fill="currentColor"/></svg>
+        <span>Ideas</span>
+      </button>
+      <button class="stream-nav__item" data-view="ai-chat">
+        <svg class="stream-nav__icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" fill="currentColor"/><circle cx="8" cy="10" r="1" fill="currentColor"/><circle cx="12" cy="10" r="1" fill="currentColor"/><circle cx="16" cy="10" r="1" fill="currentColor"/></svg>
+        <span>AI Chat</span>
+      </button>
+      <button class="stream-nav__item" data-view="settings">
+        <svg class="stream-nav__icon" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 00-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" fill="currentColor"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <!-- Mobile hamburger -->
+    <button class="stream-nav__hamburger" id="navHamburger" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- =========================================================
+       MAIN CONTENT — each view is a data-page section
+  ========================================================= -->
+  <main class="ocean-main" id="mainContent">
+
+    <!-- ===================== DASHBOARD ===================== -->
+    <section class="view view--active" data-page="dashboard">
+      <div class="view__ocean-header">
+        <h1 class="view__title">Ocean Depths Dashboard</h1>
+        <p class="view__subtitle">Surface readings from the idea current</p>
+        <!-- SVG wave divider -->
+        <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none">
+          <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,25 1440,30 L1440,60 L0,60 Z" fill="var(--color-surface)"/>
+        </svg>
+      </div>
+
+      <div class="view__body">
+        <!-- Stats rising from seafloor -->
+        <div class="dashboard-stats">
+          <div class="stat-card stat-card--rise" data-depth="1">
+            <div class="stat-card__value" data-counter="47">0</div>
+            <div class="stat-card__label">Active Ideas</div>
+            <div class="stat-card__wave"></div>
+          </div>
+          <div class="stat-card stat-card--rise" data-depth="2">
+            <div class="stat-card__value" data-counter="12">0</div>
+            <div class="stat-card__label">Projects</div>
+            <div class="stat-card__wave"></div>
+          </div>
+          <div class="stat-card stat-card--rise" data-depth="3">
+            <div class="stat-card__value" data-counter="89">0</div>
+            <div class="stat-card__label">Tasks Done</div>
+            <div class="stat-card__wave"></div>
+          </div>
+          <div class="stat-card stat-card--rise" data-depth="4">
+            <div class="stat-card__value" data-counter="5">0</div>
+            <div class="stat-card__label">AI Sessions</div>
+            <div class="stat-card__wave"></div>
+          </div>
+        </div>
+
+        <!-- Wave-form chart -->
+        <div class="dashboard-chart">
+          <h2 class="section-heading">Idea Current &mdash; Weekly Flow</h2>
+          <div class="wave-chart">
+            <svg class="wave-chart__svg" viewBox="0 0 800 200" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="waveGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--color-accent)" stop-opacity="0.5"/>
+                  <stop offset="100%" stop-color="var(--color-accent)" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <path class="wave-chart__line" d="M0,150 C50,130 100,100 150,110 C200,120 250,80 300,60 C350,40 400,70 450,90 C500,110 550,50 600,40 C650,30 700,60 750,55 C775,52 790,48 800,45" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round"/>
+              <path class="wave-chart__area" d="M0,150 C50,130 100,100 150,110 C200,120 250,80 300,60 C350,40 400,70 450,90 C500,110 550,50 600,40 C650,30 700,60 750,55 C775,52 790,48 800,45 L800,200 L0,200 Z" fill="url(#waveGrad)"/>
+            </svg>
+            <div class="wave-chart__labels">
+              <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity current -->
+        <div class="dashboard-activity">
+          <h2 class="section-heading">Activity Current</h2>
+          <svg class="wave-divider wave-divider--sm" viewBox="0 0 1440 30" preserveAspectRatio="none">
+            <path d="M0,15 Q360,30 720,15 Q1080,0 1440,15 L1440,30 L0,30 Z" fill="var(--color-border)" fill-opacity="0.4"/>
+          </svg>
+          <ul class="activity-stream">
+            <li class="activity-stream__item">
+              <div class="activity-stream__bubble"></div>
+              <div class="activity-stream__content">
+                <strong>Sarah</strong> created a new idea <em>"Neural interface for task routing"</em>
+                <span class="activity-stream__time">2 min ago</span>
+              </div>
+            </li>
+            <li class="activity-stream__item">
+              <div class="activity-stream__bubble"></div>
+              <div class="activity-stream__content">
+                <strong>Marcus</strong> moved <em>"API Gateway v3"</em> to In Progress
+                <span class="activity-stream__time">15 min ago</span>
+              </div>
+            </li>
+            <li class="activity-stream__item">
+              <div class="activity-stream__bubble"></div>
+              <div class="activity-stream__content">
+                <strong>AI Copilot</strong> generated a schema for <em>"User Analytics"</em>
+                <span class="activity-stream__time">1 hr ago</span>
+              </div>
+            </li>
+            <li class="activity-stream__item">
+              <div class="activity-stream__bubble"></div>
+              <div class="activity-stream__content">
+                <strong>Elena</strong> completed 5 tasks in <em>"Frontend Overhaul"</em>
+                <span class="activity-stream__time">3 hr ago</span>
+              </div>
+            </li>
+            <li class="activity-stream__item">
+              <div class="activity-stream__bubble"></div>
+              <div class="activity-stream__content">
+                <strong>System</strong> archived <em>"Legacy Migration"</em> project
+                <span class="activity-stream__time">Yesterday</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PROJECTS ===================== -->
+    <section class="view" data-page="projects">
+      <div class="view__ocean-header">
+        <h1 class="view__title">Project Fleet</h1>
+        <p class="view__subtitle">Vessels afloat on the idea ocean</p>
+        <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none">
+          <path d="M0,20 C240,50 480,10 720,30 C960,50 1200,10 1440,25 L1440,60 L0,60 Z" fill="var(--color-surface)"/>
+        </svg>
+      </div>
+      <div class="view__body">
+        <div class="project-fleet">
+          <div class="vessel-card" data-depth="1">
+            <div class="vessel-card__hull">
+              <svg class="vessel-card__wave" viewBox="0 0 400 30" preserveAspectRatio="none">
+                <path d="M0,15 Q100,30 200,15 Q300,0 400,15 L400,30 L0,30 Z" fill="var(--color-accent)" fill-opacity="0.15"/>
+              </svg>
+              <div class="vessel-card__mast"></div>
+            </div>
+            <h3 class="vessel-card__name">Project Atlas</h3>
+            <p class="vessel-card__desc">Full-stack platform rebuild with microservices architecture</p>
+            <div class="vessel-card__meta">
+              <span class="vessel-card__tag">In Progress</span>
+              <span class="vessel-card__crew">8 crew</span>
+            </div>
+            <div class="vessel-card__progress">
+              <div class="vessel-card__progress-fill" style="--progress: 68%"></div>
+            </div>
+          </div>
+
+          <div class="vessel-card" data-depth="2">
+            <div class="vessel-card__hull">
+              <svg class="vessel-card__wave" viewBox="0 0 400 30" preserveAspectRatio="none">
+                <path d="M0,15 Q100,0 200,15 Q300,30 400,15 L400,30 L0,30 Z" fill="var(--color-accent2)" fill-opacity="0.15"/>
+              </svg>
+              <div class="vessel-card__mast"></div>
+            </div>
+            <h3 class="vessel-card__name">Coral AI</h3>
+            <p class="vessel-card__desc">Machine learning pipeline for content recommendation</p>
+            <div class="vessel-card__meta">
+              <span class="vessel-card__tag vessel-card__tag--review">Review</span>
+              <span class="vessel-card__crew">4 crew</span>
+            </div>
+            <div class="vessel-card__progress">
+              <div class="vessel-card__progress-fill" style="--progress: 92%"></div>
+            </div>
+          </div>
+
+          <div class="vessel-card" data-depth="3">
+            <div class="vessel-card__hull">
+              <svg class="vessel-card__wave" viewBox="0 0 400 30" preserveAspectRatio="none">
+                <path d="M0,15 Q100,25 200,10 Q300,25 400,15 L400,30 L0,30 Z" fill="var(--color-accent)" fill-opacity="0.15"/>
+              </svg>
+              <div class="vessel-card__mast"></div>
+            </div>
+            <h3 class="vessel-card__name">Tide Mobile</h3>
+            <p class="vessel-card__desc">Cross-platform mobile app with offline-first sync</p>
+            <div class="vessel-card__meta">
+              <span class="vessel-card__tag vessel-card__tag--planning">Planning</span>
+              <span class="vessel-card__crew">3 crew</span>
+            </div>
+            <div class="vessel-card__progress">
+              <div class="vessel-card__progress-fill" style="--progress: 25%"></div>
+            </div>
+          </div>
+
+          <div class="vessel-card" data-depth="4">
+            <div class="vessel-card__hull">
+              <svg class="vessel-card__wave" viewBox="0 0 400 30" preserveAspectRatio="none">
+                <path d="M0,10 Q100,25 200,12 Q300,0 400,18 L400,30 L0,30 Z" fill="var(--color-accent2)" fill-opacity="0.15"/>
+              </svg>
+              <div class="vessel-card__mast"></div>
+            </div>
+            <h3 class="vessel-card__name">Abyssal Docs</h3>
+            <p class="vessel-card__desc">Knowledge base with AI-powered search and auto-tagging</p>
+            <div class="vessel-card__meta">
+              <span class="vessel-card__tag">In Progress</span>
+              <span class="vessel-card__crew">6 crew</span>
+            </div>
+            <div class="vessel-card__progress">
+              <div class="vessel-card__progress-fill" style="--progress: 51%"></div>
+            </div>
+          </div>
+        </div>
+
+        <svg class="wave-divider wave-divider--mid" viewBox="0 0 1440 40" preserveAspectRatio="none">
+          <path d="M0,20 Q180,35 360,20 Q540,5 720,20 Q900,35 1080,20 Q1260,5 1440,20 L1440,40 L0,40 Z" fill="var(--color-border)" fill-opacity="0.3"/>
+        </svg>
+
+        <button class="btn-ripple btn-ripple--primary">
+          <span>Launch New Vessel</span>
+          <div class="btn-ripple__effect"></div>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================== PROJECT WORKSPACE ===================== -->
+    <section class="view" data-page="project-workspace">
+      <div class="view__ocean-header">
+        <h1 class="view__title">Deep Dive Workspace</h1>
+        <p class="view__subtitle">Project Atlas &mdash; Depth Layer View</p>
+        <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none">
+          <path d="M0,35 C320,10 640,50 960,25 C1200,8 1360,40 1440,30 L1440,60 L0,60 Z" fill="var(--color-surface)"/>
+        </svg>
+      </div>
+      <div class="view__body">
+        <div class="workspace-split">
+          <!-- Coral file tree -->
+          <aside class="coral-tree">
+            <h3 class="coral-tree__heading">Coral Branches</h3>
+            <ul class="coral-tree__list">
+              <li class="coral-tree__branch coral-tree__branch--open">
+                <span class="coral-tree__label">src/</span>
+                <ul class="coral-tree__list">
+                  <li class="coral-tree__branch coral-tree__branch--open">
+                    <span class="coral-tree__label">components/</span>
+                    <ul class="coral-tree__list">
+                      <li class="coral-tree__leaf">Header.tsx</li>
+                      <li class="coral-tree__leaf">Sidebar.tsx</li>
+                      <li class="coral-tree__leaf">Dashboard.tsx</li>
+                      <li class="coral-tree__leaf">KanbanBoard.tsx</li>
+                    </ul>
+                  </li>
+                  <li class="coral-tree__branch">
+                    <span class="coral-tree__label">hooks/</span>
+                    <ul class="coral-tree__list">
+                      <li class="coral-tree__leaf">useCurrentFlow.ts</li>
+                      <li class="coral-tree__leaf">useDepthLayer.ts</li>
+                    </ul>
+                  </li>
+                  <li class="coral-tree__branch">
+                    <span class="coral-tree__label">utils/</span>
+                    <ul class="coral-tree__list">
+                      <li class="coral-tree__leaf">waveGenerator.ts</li>
+                      <li class="coral-tree__leaf">tidalSync.ts</li>
+                    </ul>
+                  </li>
+                  <li class="coral-tree__leaf">App.tsx</li>
+                  <li class="coral-tree__leaf">index.ts</li>
+                </ul>
+              </li>
+              <li class="coral-tree__branch">
+                <span class="coral-tree__label">public/</span>
+                <ul class="coral-tree__list">
+                  <li class="coral-tree__leaf">index.html</li>
+                  <li class="coral-tree__leaf">manifest.json</li>
+                </ul>
+              </li>
+              <li class="coral-tree__leaf">package.json</li>
+              <li class="coral-tree__leaf">tsconfig.json</li>
+            </ul>
+          </aside>
+
+          <!-- Depth layer content -->
+          <div class="depth-layers">
+            <div class="depth-layer depth-layer--surface">
+              <h3>Surface Layer &mdash; Overview</h3>
+              <p>Project Atlas is a full-stack platform rebuild targeting microservices. Current sprint focuses on API gateway and auth service decomposition.</p>
+              <div class="depth-layer__stats">
+                <span>Sprint 14</span>
+                <span>|</span>
+                <span>23 open tasks</span>
+                <span>|</span>
+                <span>68% complete</span>
+              </div>
+            </div>
+            <svg class="wave-divider wave-divider--sm" viewBox="0 0 1440 20" preserveAspectRatio="none">
+              <path d="M0,10 Q360,20 720,10 Q1080,0 1440,10 L1440,20 L0,20 Z" fill="var(--color-accent)" fill-opacity="0.1"/>
+            </svg>
+            <div class="depth-layer depth-layer--mid">
+              <h3>Mid Depth &mdash; Active Tasks</h3>
+              <div class="depth-task-list">
+                <div class="depth-task">
+                  <span class="depth-task__status depth-task__status--progress"></span>
+                  <span class="depth-task__text">Implement JWT refresh token rotation</span>
+                  <span class="depth-task__assignee">@sarah</span>
+                </div>
+                <div class="depth-task">
+                  <span class="depth-task__status depth-task__status--progress"></span>
+                  <span class="depth-task__text">Design API rate limiting middleware</span>
+                  <span class="depth-task__assignee">@marcus</span>
+                </div>
+                <div class="depth-task">
+                  <span class="depth-task__status depth-task__status--review"></span>
+                  <span class="depth-task__text">Database migration scripts for user service</span>
+                  <span class="depth-task__assignee">@elena</span>
+                </div>
+                <div class="depth-task">
+                  <span class="depth-task__status depth-task__status--todo"></span>
+                  <span class="depth-task__text">Set up service mesh with Istio</span>
+                  <span class="depth-task__assignee">@dev-team</span>
+                </div>
+              </div>
+            </div>
+            <svg class="wave-divider wave-divider--sm" viewBox="0 0 1440 20" preserveAspectRatio="none">
+              <path d="M0,10 Q360,0 720,10 Q1080,20 1440,10 L1440,20 L0,20 Z" fill="var(--color-accent2)" fill-opacity="0.1"/>
+            </svg>
+            <div class="depth-layer depth-layer--deep">
+              <h3>Deep Layer &mdash; Notes &amp; Context</h3>
+              <div class="depth-note">
+                <p>Architecture decision: chose event-driven microservices over REST orchestration. Key driver: real-time sync requirements and eventual consistency tolerance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== KANBAN ===================== -->
+    <section class="view" data-page="kanban">
+      <div class="view__ocean-header">
+        <h1 class="view__title">Ocean Currents Board</h1>
+        <p class="view__subtitle">Cards flowing between currents</p>
+        <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none">
+          <path d="M0,40 C480,10 960,50 1440,20 L1440,60 L0,60 Z" fill="var(--color-surface)"/>
+        </svg>
+      </div>
+      <div class="view__body">
+        <div class="kanban-currents">
+          <!-- Backlog current -->
+          <div class="current-column">
+            <div class="current-column__header">
+              <h3>Backlog</h3>
+              <span class="current-column__count">4</span>
+              <svg class="current-column__flow" viewBox="0 0 200 8" preserveAspectRatio="none">
+                <path d="M0,4 Q50,0 100,4 Q150,8 200,4" fill="none" stroke="var(--color-accent)" stroke-width="2" opacity="0.3"/>
+              </svg>
+            </div>
+            <div class="current-column__cards">
+              <div class="current-card">
+                <div class="current-card__tag current-card__tag--feature">Feature</div>
+                <h4>Dark mode toggle</h4>
+                <p>Add system-wide theme switching capability</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--low">Low</span>
+                  <span class="current-card__avatar">SK</span>
+                </div>
+              </div>
+              <div class="current-card">
+                <div class="current-card__tag current-card__tag--bug">Bug</div>
+                <h4>Memory leak in WS handler</h4>
+                <p>WebSocket connections not properly cleaned up</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--high">High</span>
+                  <span class="current-card__avatar">MR</span>
+                </div>
+              </div>
+              <div class="current-card">
+                <div class="current-card__tag current-card__tag--feature">Feature</div>
+                <h4>Export to PDF</h4>
+                <p>Allow users to export project reports</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--med">Med</span>
+                  <span class="current-card__avatar">EL</span>
+                </div>
+              </div>
+              <div class="current-card">
+                <div class="current-card__tag current-card__tag--chore">Chore</div>
+                <h4>Update dependencies</h4>
+                <p>Audit and update all npm packages</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--low">Low</span>
+                  <span class="current-card__avatar">DT</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- In Progress current -->
+          <div class="current-column">
+            <div class="current-column__header">
+              <h3>In Progress</h3>
+              <span class="current-column__count">3</span>
+              <svg class="current-column__flow" viewBox="0 0 200 8" preserveAspectRatio="none">
+                <path d="M0,4 Q50,8 100,4 Q150,0 200,4" fill="none" stroke="var(--color-accent)" stroke-width="2" opacity="0.5"/>
+              </svg>
+            </div>
+            <div class="current-column__cards">
+              <div class="current-card">
+                <div class="current-card__tag current-card__tag--feature">Feature</div>
+                <h4>JWT token rotation</h4>
+                <p>Implement refresh token with sliding window</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--high">High</span>
+                  <span class="current-card__avatar">SR</span>
+                </div>
+              </div>
+              <div class="current-card">
+                <div class="current-card__tag current-card__tag--feature">Feature</div>
+                <h4>Rate limiting middleware</h4>
+                <p>Token bucket algorithm for API endpoints</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--high">High</span>
+                  <span class="current-card__avatar">MR</span>
+                </div>
+              </div>
+              <div class="current-card">
+                <div class="current-card__tag current-card__tag--chore">Chore</div>
+                <h4>CI pipeline optimization</h4>
+                <p>Reduce build time from 12min to under 5min</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--med">Med</span>
+                  <span class="current-card__avatar">EL</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review current -->
+          <div class="current-column">
+            <div class="current-column__header">
+              <h3>Review</h3>
+              <span class="current-column__count">2</span>
+              <svg class="current-column__flow" viewBox="0 0 200 8" preserveAspectRatio="none">
+                <path d="M0,4 Q50,0 100,4 Q150,8 200,4" fill="none" stroke="var(--color-accent2)" stroke-width="2" opacity="0.5"/>
+              </svg>
+            </div>
+            <div class="current-column__cards">
+              <div class="current-card">
+                <div class="current-card__tag current-card__tag--feature">Feature</div>
+                <h4>DB migration scripts</h4>
+                <p>Migrate user service to new schema</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--high">High</span>
+                  <span class="current-card__avatar">EL</span>
+                </div>
+              </div>
+              <div class="current-card">
+                <div class="current-card__tag current-card__tag--bug">Bug</div>
+                <h4>Fix CORS preflight</h4>
+                <p>OPTIONS requests failing on staging</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--med">Med</span>
+                  <span class="current-card__avatar">SR</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Done current -->
+          <div class="current-column">
+            <div class="current-column__header">
+              <h3>Done</h3>
+              <span class="current-column__count">3</span>
+              <svg class="current-column__flow" viewBox="0 0 200 8" preserveAspectRatio="none">
+                <path d="M0,4 Q50,8 100,4 Q150,0 200,4" fill="none" stroke="#22c55e" stroke-width="2" opacity="0.4"/>
+              </svg>
+            </div>
+            <div class="current-column__cards">
+              <div class="current-card current-card--done">
+                <div class="current-card__tag current-card__tag--feature">Feature</div>
+                <h4>User authentication flow</h4>
+                <p>OAuth2 + local auth with MFA support</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--high">High</span>
+                  <span class="current-card__avatar">SR</span>
+                </div>
+              </div>
+              <div class="current-card current-card--done">
+                <div class="current-card__tag current-card__tag--chore">Chore</div>
+                <h4>Docker compose setup</h4>
+                <p>Local dev environment orchestration</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--med">Med</span>
+                  <span class="current-card__avatar">DT</span>
+                </div>
+              </div>
+              <div class="current-card current-card--done">
+                <div class="current-card__tag current-card__tag--feature">Feature</div>
+                <h4>Logging infrastructure</h4>
+                <p>ELK stack with structured JSON logging</p>
+                <div class="current-card__footer">
+                  <span class="current-card__priority current-card__priority--med">Med</span>
+                  <span class="current-card__avatar">MR</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== WHITEBOARD ===================== -->
+    <section class="view" data-page="whiteboard">
+      <div class="view__ocean-header">
+        <h1 class="view__title">Underwater Canvas</h1>
+        <p class="view__subtitle">Nodes connected by flowing currents</p>
+        <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none">
+          <path d="M0,30 Q360,55 720,25 Q1080,0 1440,35 L1440,60 L0,60 Z" fill="var(--color-surface)"/>
+        </svg>
+      </div>
+      <div class="view__body">
+        <div class="underwater-canvas">
+          <svg class="canvas-connections" viewBox="0 0 900 500">
+            <!-- Animated current lines -->
+            <path class="current-line" d="M150,100 C250,80 300,200 450,150" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-dasharray="8 4"/>
+            <path class="current-line" d="M450,150 C550,120 600,300 750,250" fill="none" stroke="var(--color-accent2)" stroke-width="2" stroke-dasharray="8 4"/>
+            <path class="current-line" d="M150,100 C200,200 350,350 450,380" fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.5"/>
+            <path class="current-line" d="M450,380 C550,360 650,300 750,250" fill="none" stroke="var(--color-accent2)" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.5"/>
+            <path class="current-line" d="M450,150 C400,250 400,320 450,380" fill="none" stroke="var(--color-border)" stroke-width="1.5" stroke-dasharray="4 8" opacity="0.4"/>
+          </svg>
+          <div class="canvas-node" style="left: 100px; top: 70px;">
+            <div class="canvas-node__glow"></div>
+            <h4>User Research</h4>
+            <p>Interviews &amp; surveys</p>
+          </div>
+          <div class="canvas-node canvas-node--accent2" style="left: 400px; top: 120px;">
+            <div class="canvas-node__glow"></div>
+            <h4>Feature Map</h4>
+            <p>Core requirements matrix</p>
+          </div>
+          <div class="canvas-node" style="left: 700px; top: 220px;">
+            <div class="canvas-node__glow"></div>
+            <h4>Architecture</h4>
+            <p>System design decisions</p>
+          </div>
+          <div class="canvas-node canvas-node--accent2" style="left: 400px; top: 350px;">
+            <div class="canvas-node__glow"></div>
+            <h4>Prototyping</h4>
+            <p>Interactive mockups</p>
+          </div>
+        </div>
+        <div class="canvas-toolbar">
+          <button class="btn-ripple btn-ripple--sm"><span>Add Node</span><div class="btn-ripple__effect"></div></button>
+          <button class="btn-ripple btn-ripple--sm"><span>Connect</span><div class="btn-ripple__effect"></div></button>
+          <button class="btn-ripple btn-ripple--sm"><span>Auto-Layout</span><div class="btn-ripple__effect"></div></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SCHEMA PLANNER ===================== -->
+    <section class="view" data-page="schema-planner">
+      <div class="view__ocean-header">
+        <h1 class="view__title">Abyssal Schema</h1>
+        <p class="view__subtitle">Deep-sea entity structures with bioluminescent threads</p>
+        <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none">
+          <path d="M0,25 C360,50 720,10 1080,40 C1260,52 1380,20 1440,30 L1440,60 L0,60 Z" fill="var(--color-surface)"/>
+        </svg>
+      </div>
+      <div class="view__body">
+        <div class="schema-abyss">
+          <svg class="schema-threads" viewBox="0 0 900 400">
+            <defs>
+              <linearGradient id="bioGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="var(--color-accent)" stop-opacity="0.8"/>
+                <stop offset="50%" stop-color="var(--color-accent2)" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="var(--color-accent)" stop-opacity="0.8"/>
+              </linearGradient>
+            </defs>
+            <path class="bio-thread" d="M200,80 C300,80 350,200 450,200" fill="none" stroke="url(#bioGrad1)" stroke-width="2"/>
+            <path class="bio-thread" d="M450,200 C550,200 600,100 700,120" fill="none" stroke="url(#bioGrad1)" stroke-width="2"/>
+            <path class="bio-thread" d="M200,80 C250,150 350,300 450,320" fill="none" stroke="url(#bioGrad1)" stroke-width="1.5" opacity="0.6"/>
+            <path class="bio-thread" d="M450,200 C500,280 550,310 450,320" fill="none" stroke="url(#bioGrad1)" stroke-width="1.5" opacity="0.6"/>
+          </svg>
+
+          <div class="schema-entity" style="left: 120px; top: 40px;">
+            <div class="schema-entity__biolum"></div>
+            <h4>User</h4>
+            <ul class="schema-entity__fields">
+              <li><code>id</code> <span>UUID</span></li>
+              <li><code>email</code> <span>String</span></li>
+              <li><code>name</code> <span>String</span></li>
+              <li><code>role</code> <span>Enum</span></li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left: 370px; top: 160px;">
+            <div class="schema-entity__biolum"></div>
+            <h4>Project</h4>
+            <ul class="schema-entity__fields">
+              <li><code>id</code> <span>UUID</span></li>
+              <li><code>title</code> <span>String</span></li>
+              <li><code>owner_id</code> <span>FK&rarr;User</span></li>
+              <li><code>status</code> <span>Enum</span></li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left: 620px; top: 80px;">
+            <div class="schema-entity__biolum"></div>
+            <h4>Task</h4>
+            <ul class="schema-entity__fields">
+              <li><code>id</code> <span>UUID</span></li>
+              <li><code>title</code> <span>String</span></li>
+              <li><code>project_id</code> <span>FK&rarr;Project</span></li>
+              <li><code>assignee_id</code> <span>FK&rarr;User</span></li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left: 370px; top: 280px;">
+            <div class="schema-entity__biolum"></div>
+            <h4>Idea</h4>
+            <ul class="schema-entity__fields">
+              <li><code>id</code> <span>UUID</span></li>
+              <li><code>content</code> <span>Text</span></li>
+              <li><code>author_id</code> <span>FK&rarr;User</span></li>
+              <li><code>project_id</code> <span>FK&rarr;Project</span></li>
+            </ul>
+          </div>
+        </div>
+        <button class="btn-ripple btn-ripple--primary" style="margin-top: 1.5rem;">
+          <span>Add Entity</span>
+          <div class="btn-ripple__effect"></div>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================== DIRECTORY TREE ===================== -->
+    <section class="view" data-page="directory-tree">
+      <div class="view__ocean-header">
+        <h1 class="view__title">Coral Reef Directory</h1>
+        <p class="view__subtitle">Branching structures of the project ecosystem</p>
+        <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none">
+          <path d="M0,30 C240,55 480,5 720,30 C960,55 1200,10 1440,25 L1440,60 L0,60 Z" fill="var(--color-surface)"/>
+        </svg>
+      </div>
+      <div class="view__body">
+        <div class="reef-directory">
+          <div class="reef-branch reef-branch--root">
+            <div class="reef-branch__label reef-branch__label--folder">
+              <svg viewBox="0 0 20 20" width="18" height="18"><path d="M2 4a2 2 0 012-2h3.17a2 2 0 011.41.59l1.42 1.41H16a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4z" fill="var(--color-accent)"/></svg>
+              idea-management/
+            </div>
+            <div class="reef-branch__children">
+              <div class="reef-branch">
+                <div class="reef-branch__label reef-branch__label--folder">
+                  <svg viewBox="0 0 20 20" width="16" height="16"><path d="M2 4a2 2 0 012-2h3.17a2 2 0 011.41.59l1.42 1.41H16a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4z" fill="var(--color-accent2)"/></svg>
+                  src/
+                </div>
+                <div class="reef-branch__children">
+                  <div class="reef-branch">
+                    <div class="reef-branch__label reef-branch__label--folder">
+                      <svg viewBox="0 0 20 20" width="16" height="16"><path d="M2 4a2 2 0 012-2h3.17a2 2 0 011.41.59l1.42 1.41H16a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4z" fill="var(--color-accent2)" opacity="0.7"/></svg>
+                      components/
+                    </div>
+                    <div class="reef-branch__children">
+                      <div class="reef-creature">Dashboard.tsx <span class="reef-creature__size">4.2 KB</span></div>
+                      <div class="reef-creature">KanbanBoard.tsx <span class="reef-creature__size">6.1 KB</span></div>
+                      <div class="reef-creature">IdeaCapture.tsx <span class="reef-creature__size">2.8 KB</span></div>
+                      <div class="reef-creature">SchemaView.tsx <span class="reef-creature__size">5.4 KB</span></div>
+                    </div>
+                  </div>
+                  <div class="reef-branch">
+                    <div class="reef-branch__label reef-branch__label--folder">
+                      <svg viewBox="0 0 20 20" width="16" height="16"><path d="M2 4a2 2 0 012-2h3.17a2 2 0 011.41.59l1.42 1.41H16a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4z" fill="var(--color-accent2)" opacity="0.7"/></svg>
+                      services/
+                    </div>
+                    <div class="reef-branch__children">
+                      <div class="reef-creature">api.ts <span class="reef-creature__size">1.9 KB</span></div>
+                      <div class="reef-creature">auth.ts <span class="reef-creature__size">3.2 KB</span></div>
+                      <div class="reef-creature">websocket.ts <span class="reef-creature__size">2.1 KB</span></div>
+                    </div>
+                  </div>
+                  <div class="reef-branch">
+                    <div class="reef-branch__label reef-branch__label--folder">
+                      <svg viewBox="0 0 20 20" width="16" height="16"><path d="M2 4a2 2 0 012-2h3.17a2 2 0 011.41.59l1.42 1.41H16a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4z" fill="var(--color-accent2)" opacity="0.7"/></svg>
+                      styles/
+                    </div>
+                    <div class="reef-branch__children">
+                      <div class="reef-creature">globals.css <span class="reef-creature__size">2.4 KB</span></div>
+                      <div class="reef-creature">variables.css <span class="reef-creature__size">0.8 KB</span></div>
+                      <div class="reef-creature">animations.css <span class="reef-creature__size">3.6 KB</span></div>
+                    </div>
+                  </div>
+                  <div class="reef-creature">App.tsx <span class="reef-creature__size">1.4 KB</span></div>
+                  <div class="reef-creature">main.tsx <span class="reef-creature__size">0.6 KB</span></div>
+                </div>
+              </div>
+              <div class="reef-branch">
+                <div class="reef-branch__label reef-branch__label--folder">
+                  <svg viewBox="0 0 20 20" width="16" height="16"><path d="M2 4a2 2 0 012-2h3.17a2 2 0 011.41.59l1.42 1.41H16a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4z" fill="var(--color-accent)"/></svg>
+                  tests/
+                </div>
+                <div class="reef-branch__children">
+                  <div class="reef-creature">dashboard.test.ts <span class="reef-creature__size">2.1 KB</span></div>
+                  <div class="reef-creature">kanban.test.ts <span class="reef-creature__size">3.8 KB</span></div>
+                </div>
+              </div>
+              <div class="reef-creature">package.json <span class="reef-creature__size">1.2 KB</span></div>
+              <div class="reef-creature">tsconfig.json <span class="reef-creature__size">0.4 KB</span></div>
+              <div class="reef-creature">README.md <span class="reef-creature__size">2.8 KB</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== IDEAS ===================== -->
+    <section class="view" data-page="ideas">
+      <div class="view__ocean-header">
+        <h1 class="view__title">Rising Bubbles</h1>
+        <p class="view__subtitle">Ideas surfacing from the deep</p>
+        <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none">
+          <path d="M0,20 Q480,55 960,15 Q1200,5 1440,30 L1440,60 L0,60 Z" fill="var(--color-surface)"/>
+        </svg>
+      </div>
+      <div class="view__body">
+        <!-- Capture input at the ocean floor -->
+        <div class="idea-floor">
+          <div class="idea-floor__input-wrap">
+            <input type="text" class="idea-floor__input" placeholder="Drop an idea into the deep..." aria-label="New idea input">
+            <button class="btn-ripple btn-ripple--accent idea-floor__submit">
+              <span>Release Bubble</span>
+              <div class="btn-ripple__effect"></div>
+            </button>
+          </div>
+        </div>
+
+        <svg class="wave-divider wave-divider--sm wave-divider--invert" viewBox="0 0 1440 30" preserveAspectRatio="none">
+          <path d="M0,20 Q360,5 720,20 Q1080,35 1440,15 L1440,0 L0,0 Z" fill="var(--color-border)" fill-opacity="0.3"/>
+        </svg>
+
+        <!-- Ideas as rising bubbles -->
+        <div class="bubble-field">
+          <div class="idea-bubble idea-bubble--large" data-rise="1">
+            <div class="idea-bubble__shimmer"></div>
+            <h3>AI-powered code review assistant</h3>
+            <p>Use LLMs to provide contextual review comments based on project conventions and past PR feedback patterns.</p>
+            <div class="idea-bubble__meta">
+              <span class="idea-bubble__author">@sarah</span>
+              <span class="idea-bubble__votes">+12</span>
+            </div>
+          </div>
+          <div class="idea-bubble" data-rise="2">
+            <div class="idea-bubble__shimmer"></div>
+            <h3>Real-time collaborative whiteboard</h3>
+            <p>CRDT-based shared canvas for brainstorming with cursor presence.</p>
+            <div class="idea-bubble__meta">
+              <span class="idea-bubble__author">@marcus</span>
+              <span class="idea-bubble__votes">+8</span>
+            </div>
+          </div>
+          <div class="idea-bubble" data-rise="3">
+            <div class="idea-bubble__shimmer"></div>
+            <h3>Automated sprint retrospectives</h3>
+            <p>Analyze commit patterns and PR velocity to generate retro talking points.</p>
+            <div class="idea-bubble__meta">
+              <span class="idea-bubble__author">@elena</span>
+              <span class="idea-bubble__votes">+5</span>
+            </div>
+          </div>
+          <div class="idea-bubble idea-bubble--small" data-rise="4">
+            <div class="idea-bubble__shimmer"></div>
+            <h3>Voice memo to task</h3>
+            <p>Speech-to-text quick capture with auto-categorization.</p>
+            <div class="idea-bubble__meta">
+              <span class="idea-bubble__author">@dev-team</span>
+              <span class="idea-bubble__votes">+3</span>
+            </div>
+          </div>
+          <div class="idea-bubble idea-bubble--small" data-rise="5">
+            <div class="idea-bubble__shimmer"></div>
+            <h3>Dependency graph visualizer</h3>
+            <p>Interactive visualization of package and module dependencies.</p>
+            <div class="idea-bubble__meta">
+              <span class="idea-bubble__author">@marcus</span>
+              <span class="idea-bubble__votes">+7</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== AI CHAT ===================== -->
+    <section class="view" data-page="ai-chat">
+      <div class="view__ocean-header">
+        <h1 class="view__title">Sonar Channel</h1>
+        <p class="view__subtitle">Messages echoing through the depths</p>
+        <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none">
+          <path d="M0,35 C320,55 640,10 960,35 C1200,50 1360,15 1440,25 L1440,60 L0,60 Z" fill="var(--color-surface)"/>
+        </svg>
+      </div>
+      <div class="view__body">
+        <div class="sonar-chat">
+          <div class="sonar-chat__messages" id="chatMessages">
+            <!-- AI from the deep -->
+            <div class="sonar-msg sonar-msg--ai">
+              <div class="sonar-msg__pulse"></div>
+              <div class="sonar-msg__content">
+                <span class="sonar-msg__sender">Deep AI</span>
+                <p>Welcome to the Sonar Channel. I can help you navigate your project depths, analyze code currents, or brainstorm new ideas. What would you like to explore?</p>
+              </div>
+            </div>
+            <!-- User surfaces upward -->
+            <div class="sonar-msg sonar-msg--user">
+              <div class="sonar-msg__content">
+                <span class="sonar-msg__sender">You</span>
+                <p>Can you analyze our current sprint velocity and suggest improvements?</p>
+              </div>
+            </div>
+            <!-- AI response -->
+            <div class="sonar-msg sonar-msg--ai">
+              <div class="sonar-msg__pulse"></div>
+              <div class="sonar-msg__content">
+                <span class="sonar-msg__sender">Deep AI</span>
+                <p>Based on the last 3 sprints, your team velocity averages <strong>34 story points</strong> with a completion rate of <strong>78%</strong>. Here are some observations:</p>
+                <ul>
+                  <li>Bug fixes consume ~30% of sprint capacity</li>
+                  <li>Code review bottleneck on Thursdays/Fridays</li>
+                  <li>Largest velocity gains correlate with pair programming sessions</li>
+                </ul>
+                <p>Recommendation: Introduce async code review windows and dedicate 1 day per sprint to tech debt reduction.</p>
+              </div>
+            </div>
+            <!-- User message -->
+            <div class="sonar-msg sonar-msg--user">
+              <div class="sonar-msg__content">
+                <span class="sonar-msg__sender">You</span>
+                <p>Good insights. Can you draft a sprint planning template based on these patterns?</p>
+              </div>
+            </div>
+            <!-- AI response -->
+            <div class="sonar-msg sonar-msg--ai">
+              <div class="sonar-msg__pulse"></div>
+              <div class="sonar-msg__content">
+                <span class="sonar-msg__sender">Deep AI</span>
+                <p>Generating a sprint planning template optimized for your team's flow patterns...</p>
+                <div class="sonar-msg__code">
+                  <code>Sprint Template v2.1</code>
+                  <pre>Day 1-2: Feature development (60% capacity)
+Day 3:   Code review + pair sessions
+Day 4:   Bug fixes + tech debt (20% capacity)
+Day 5:   Testing + documentation</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sonar-chat__input-area">
+            <div class="sonar-chat__input-wrap">
+              <input type="text" class="sonar-chat__input" placeholder="Send a sonar ping..." aria-label="Chat message input">
+              <button class="btn-ripple btn-ripple--accent sonar-chat__send">
+                <span>Ping</span>
+                <div class="btn-ripple__effect"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SETTINGS ===================== -->
+    <section class="view" data-page="settings">
+      <div class="view__ocean-header">
+        <h1 class="view__title">Submarine Control Panel</h1>
+        <p class="view__subtitle">System gauges and operational controls</p>
+        <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none">
+          <path d="M0,25 Q360,50 720,20 Q1080,45 1440,30 L1440,60 L0,60 Z" fill="var(--color-surface)"/>
+        </svg>
+      </div>
+      <div class="view__body">
+        <div class="sub-panel">
+          <!-- Depth gauges row -->
+          <div class="sub-panel__gauges">
+            <div class="gauge">
+              <svg class="gauge__svg" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-border)" stroke-width="6"/>
+                <circle class="gauge__fill" cx="60" cy="60" r="52" fill="none" stroke="var(--color-accent)" stroke-width="6" stroke-dasharray="260" stroke-dashoffset="78" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+                <text x="60" y="58" text-anchor="middle" fill="var(--color-foam)" font-family="var(--font-mono)" font-size="18" font-weight="600">70%</text>
+                <text x="60" y="78" text-anchor="middle" fill="var(--color-text)" font-family="var(--font-body)" font-size="10" opacity="0.7">Storage</text>
+              </svg>
+            </div>
+            <div class="gauge">
+              <svg class="gauge__svg" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-border)" stroke-width="6"/>
+                <circle class="gauge__fill" cx="60" cy="60" r="52" fill="none" stroke="var(--color-accent2)" stroke-width="6" stroke-dasharray="260" stroke-dashoffset="182" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+                <text x="60" y="58" text-anchor="middle" fill="var(--color-foam)" font-family="var(--font-mono)" font-size="18" font-weight="600">30%</text>
+                <text x="60" y="78" text-anchor="middle" fill="var(--color-text)" font-family="var(--font-body)" font-size="10" opacity="0.7">CPU</text>
+              </svg>
+            </div>
+            <div class="gauge">
+              <svg class="gauge__svg" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-border)" stroke-width="6"/>
+                <circle class="gauge__fill" cx="60" cy="60" r="52" fill="none" stroke="#22c55e" stroke-width="6" stroke-dasharray="260" stroke-dashoffset="26" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+                <text x="60" y="58" text-anchor="middle" fill="var(--color-foam)" font-family="var(--font-mono)" font-size="18" font-weight="600">90%</text>
+                <text x="60" y="78" text-anchor="middle" fill="var(--color-text)" font-family="var(--font-body)" font-size="10" opacity="0.7">Uptime</text>
+              </svg>
+            </div>
+          </div>
+
+          <svg class="wave-divider wave-divider--sm" viewBox="0 0 1440 20" preserveAspectRatio="none">
+            <path d="M0,10 Q360,20 720,10 Q1080,0 1440,10 L1440,20 L0,20 Z" fill="var(--color-border)" fill-opacity="0.3"/>
+          </svg>
+
+          <!-- Valve toggles -->
+          <div class="sub-panel__controls">
+            <h3 class="section-heading">Valve Controls</h3>
+            <div class="valve-group">
+              <div class="valve-toggle">
+                <span class="valve-toggle__label">Email Notifications</span>
+                <label class="valve-switch">
+                  <input type="checkbox" checked>
+                  <span class="valve-switch__slider"></span>
+                </label>
+              </div>
+              <div class="valve-toggle">
+                <span class="valve-toggle__label">AI Auto-Suggestions</span>
+                <label class="valve-switch">
+                  <input type="checkbox" checked>
+                  <span class="valve-switch__slider"></span>
+                </label>
+              </div>
+              <div class="valve-toggle">
+                <span class="valve-toggle__label">Real-time Sync</span>
+                <label class="valve-switch">
+                  <input type="checkbox" checked>
+                  <span class="valve-switch__slider"></span>
+                </label>
+              </div>
+              <div class="valve-toggle">
+                <span class="valve-toggle__label">Dark Abyss Mode</span>
+                <label class="valve-switch">
+                  <input type="checkbox" checked>
+                  <span class="valve-switch__slider"></span>
+                </label>
+              </div>
+              <div class="valve-toggle">
+                <span class="valve-toggle__label">Sonar Sounds</span>
+                <label class="valve-switch">
+                  <input type="checkbox">
+                  <span class="valve-switch__slider"></span>
+                </label>
+              </div>
+              <div class="valve-toggle">
+                <span class="valve-toggle__label">Auto-save Drafts</span>
+                <label class="valve-switch">
+                  <input type="checkbox" checked>
+                  <span class="valve-switch__slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <svg class="wave-divider wave-divider--sm" viewBox="0 0 1440 20" preserveAspectRatio="none">
+            <path d="M0,10 Q360,0 720,10 Q1080,20 1440,10 L1440,20 L0,20 Z" fill="var(--color-border)" fill-opacity="0.3"/>
+          </svg>
+
+          <!-- Analog settings -->
+          <div class="sub-panel__analog">
+            <h3 class="section-heading">Depth Controls</h3>
+            <div class="dial-group">
+              <div class="dial-control">
+                <label>AI Temperature</label>
+                <input type="range" class="depth-slider" min="0" max="100" value="70">
+                <span class="dial-control__value">0.7</span>
+              </div>
+              <div class="dial-control">
+                <label>Notification Depth</label>
+                <input type="range" class="depth-slider" min="0" max="100" value="50">
+                <span class="dial-control__value">Medium</span>
+              </div>
+              <div class="dial-control">
+                <label>Auto-Archive Days</label>
+                <input type="range" class="depth-slider" min="0" max="100" value="30">
+                <span class="dial-control__value">30 days</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-ripple btn-ripple--primary" style="margin-top: 2rem;">
+            <span>Save Configuration</span>
+            <div class="btn-ripple__effect"></div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

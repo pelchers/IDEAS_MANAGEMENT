@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IdeaEngine — Slate Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Rajdhani:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Stone-texture overlay (CSS-only, no images) -->
+  <div class="stone-texture" aria-hidden="true"></div>
+
+  <div class="shell">
+
+    <!-- ===== LEFT RAIL (recessed/carved) ===== -->
+    <aside class="rail">
+      <div class="rail-header">
+        <div class="brand-mark">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <rect x="2" y="2" width="24" height="24" rx="3" stroke="#c89b3c" stroke-width="1.5" fill="none"/>
+            <path d="M8 8h12M8 14h8M8 20h10" stroke="#c89b3c" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">IdeaEngine</span>
+          <span class="brand-edition">Slate Console</span>
+        </div>
+      </div>
+
+      <nav class="rail-nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-section-label">Operations</div>
+        <a href="#dashboard" class="nav-item active" data-view="dashboard">
+          <svg class="nav-icon" viewBox="0 0 20 20"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="11" y="2" width="7" height="3" rx="1.5" fill="currentColor"/><rect x="11" y="7" width="7" height="2" rx="1" fill="currentColor"/><rect x="2" y="11" width="7" height="3" rx="1.5" fill="currentColor"/><rect x="2" y="16" width="7" height="2" rx="1" fill="currentColor"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="currentColor"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#projects" class="nav-item" data-view="projects">
+          <svg class="nav-icon" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h4l2 2h6a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V4z" fill="currentColor"/></svg>
+          <span>Projects</span>
+        </a>
+        <a href="#project-workspace" class="nav-item" data-view="project-workspace">
+          <svg class="nav-icon" viewBox="0 0 20 20"><rect x="2" y="3" width="7" height="14" rx="1.5" fill="currentColor"/><rect x="11" y="3" width="7" height="14" rx="1.5" fill="currentColor"/></svg>
+          <span>Workspace</span>
+        </a>
+        <a href="#kanban" class="nav-item" data-view="kanban">
+          <svg class="nav-icon" viewBox="0 0 20 20"><rect x="2" y="2" width="4" height="16" rx="1" fill="currentColor"/><rect x="8" y="2" width="4" height="11" rx="1" fill="currentColor"/><rect x="14" y="2" width="4" height="14" rx="1" fill="currentColor"/></svg>
+          <span>Kanban</span>
+        </a>
+
+        <div class="nav-section-label">Planning</div>
+        <a href="#whiteboard" class="nav-item" data-view="whiteboard">
+          <svg class="nav-icon" viewBox="0 0 20 20"><rect x="2" y="2" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="7" cy="7" r="2" fill="currentColor"/><circle cx="13" cy="13" r="2" fill="currentColor"/><line x1="8.5" y1="8" x2="11.5" y2="12" stroke="currentColor" stroke-width="1"/></svg>
+          <span>Whiteboard</span>
+        </a>
+        <a href="#schema-planner" class="nav-item" data-view="schema-planner">
+          <svg class="nav-icon" viewBox="0 0 20 20"><rect x="2" y="3" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="12" y="12" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M8 5.5h2v9h2" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          <span>Schema Planner</span>
+        </a>
+        <a href="#directory-tree" class="nav-item" data-view="directory-tree">
+          <svg class="nav-icon" viewBox="0 0 20 20"><path d="M4 3v14M4 7h4M8 7v4M8 11h4M4 13h4M8 13v2M8 15h4" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
+          <span>Directory</span>
+        </a>
+
+        <div class="nav-section-label">Capture</div>
+        <a href="#ideas" class="nav-item" data-view="ideas">
+          <svg class="nav-icon" viewBox="0 0 20 20"><path d="M10 2a6 6 0 014 10.5V15a1 1 0 01-1 1H7a1 1 0 01-1-1v-2.5A6 6 0 0110 2z" fill="currentColor"/><rect x="7" y="17" width="6" height="1.5" rx="0.75" fill="currentColor"/></svg>
+          <span>Ideas</span>
+        </a>
+        <a href="#ai-chat" class="nav-item" data-view="ai-chat">
+          <svg class="nav-icon" viewBox="0 0 20 20"><rect x="2" y="3" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M6 17l3-3h-1" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/><circle cx="7" cy="8.5" r="1" fill="currentColor"/><circle cx="10" cy="8.5" r="1" fill="currentColor"/><circle cx="13" cy="8.5" r="1" fill="currentColor"/></svg>
+          <span>AI Chat</span>
+        </a>
+
+        <div class="nav-section-label">System</div>
+        <a href="#settings" class="nav-item" data-view="settings">
+          <svg class="nav-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M10 2v3M10 15v3M2 10h3M15 10h3M4.2 4.2l2.1 2.1M13.7 13.7l2.1 2.1M4.2 15.8l2.1-2.1M13.7 6.3l2.1-2.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="rail-footer">
+        <div class="user-badge">
+          <div class="user-avatar">JD</div>
+          <div class="user-info">
+            <span class="user-name">J. Donovan</span>
+            <span class="user-role">Architect</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="content">
+
+      <!-- ===== DASHBOARD ===== -->
+      <section class="page active" data-page="dashboard">
+        <header class="page-header">
+          <h1 class="chiseled-title">Dashboard</h1>
+          <span class="page-subtitle">System Overview &mdash; Live Metrics</span>
+        </header>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">Active Projects</div>
+            <div class="stat-value">24</div>
+            <div class="stat-delta positive">+3 this week</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Open Ideas</div>
+            <div class="stat-value">147</div>
+            <div class="stat-delta positive">+12 pending</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Team Members</div>
+            <div class="stat-value">18</div>
+            <div class="stat-delta neutral">2 invited</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Tasks Completed</div>
+            <div class="stat-value">892</div>
+            <div class="stat-delta positive">+67 this month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Schema Entities</div>
+            <div class="stat-value">36</div>
+            <div class="stat-delta neutral">4 drafts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">AI Conversations</div>
+            <div class="stat-value">203</div>
+            <div class="stat-delta positive">+8 today</div>
+          </div>
+        </div>
+
+        <div class="dashboard-panels">
+          <div class="panel carved-panel">
+            <h2 class="panel-title">Throughput &mdash; Last 7 Days</h2>
+            <div class="bar-chart">
+              <div class="bar-row"><span class="bar-label">Mon</span><div class="bar-track"><div class="bar-fill" style="width:68%"></div></div><span class="bar-val">34</span></div>
+              <div class="bar-row"><span class="bar-label">Tue</span><div class="bar-track"><div class="bar-fill" style="width:82%"></div></div><span class="bar-val">41</span></div>
+              <div class="bar-row"><span class="bar-label">Wed</span><div class="bar-track"><div class="bar-fill" style="width:55%"></div></div><span class="bar-val">28</span></div>
+              <div class="bar-row"><span class="bar-label">Thu</span><div class="bar-track"><div class="bar-fill" style="width:91%"></div></div><span class="bar-val">46</span></div>
+              <div class="bar-row"><span class="bar-label">Fri</span><div class="bar-track"><div class="bar-fill" style="width:74%"></div></div><span class="bar-val">37</span></div>
+              <div class="bar-row"><span class="bar-label">Sat</span><div class="bar-track"><div class="bar-fill" style="width:30%"></div></div><span class="bar-val">15</span></div>
+              <div class="bar-row"><span class="bar-label">Sun</span><div class="bar-track"><div class="bar-fill" style="width:22%"></div></div><span class="bar-val">11</span></div>
+            </div>
+          </div>
+
+          <div class="panel carved-panel">
+            <h2 class="panel-title">Activity Feed</h2>
+            <div class="activity-feed">
+              <div class="feed-item"><span class="feed-time">14:32</span><span class="feed-text">Schema <strong>UserAuth</strong> updated by R. Kim</span></div>
+              <div class="feed-item"><span class="feed-time">14:18</span><span class="feed-text">New idea submitted: <strong>Multi-tenant isolation</strong></span></div>
+              <div class="feed-item"><span class="feed-time">13:55</span><span class="feed-text">Project <strong>Orion v2</strong> moved to In Review</span></div>
+              <div class="feed-item"><span class="feed-time">13:41</span><span class="feed-text">AI session completed: <strong>Architecture audit</strong></span></div>
+              <div class="feed-item"><span class="feed-time">12:30</span><span class="feed-text">Task <strong>API rate limiter</strong> completed by M. Chen</span></div>
+              <div class="feed-item"><span class="feed-time">11:58</span><span class="feed-text">Whiteboard <strong>Q3 Roadmap</strong> shared with team</span></div>
+              <div class="feed-item"><span class="feed-time">11:20</span><span class="feed-text">Directory restructured: <strong>/services/auth</strong></span></div>
+              <div class="feed-item"><span class="feed-time">10:45</span><span class="feed-text">New member <strong>A. Torres</strong> joined Engineering</span></div>
+            </div>
+          </div>
+
+          <div class="panel carved-panel panel-narrow">
+            <h2 class="panel-title">System Health</h2>
+            <div class="health-list">
+              <div class="health-item"><span class="health-dot green"></span><span class="health-label">API Gateway</span><span class="health-status">Operational</span></div>
+              <div class="health-item"><span class="health-dot green"></span><span class="health-label">Database</span><span class="health-status">Healthy</span></div>
+              <div class="health-item"><span class="health-dot amber"></span><span class="health-label">Search Index</span><span class="health-status">Rebuilding</span></div>
+              <div class="health-item"><span class="health-dot green"></span><span class="health-label">AI Service</span><span class="health-status">Operational</span></div>
+              <div class="health-item"><span class="health-dot green"></span><span class="health-label">File Storage</span><span class="health-status">Healthy</span></div>
+              <div class="health-item"><span class="health-dot amber"></span><span class="health-label">WebSocket</span><span class="health-status">Degraded</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PROJECTS ===== -->
+      <section class="page" data-page="projects">
+        <header class="page-header">
+          <h1 class="chiseled-title">Projects</h1>
+          <span class="page-subtitle">All active projects &mdash; 24 total</span>
+        </header>
+
+        <div class="panel carved-panel">
+          <div class="table-controls">
+            <input type="text" class="recessed-input search-input" placeholder="Filter projects...">
+            <button class="stone-btn">New Project</button>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="sortable active-sort">Name <span class="sort-arrow">&#9662;</span></th>
+                <th class="sortable">Status</th>
+                <th class="sortable">Team</th>
+                <th class="sortable">Updated</th>
+                <th>Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="cell-name">Orion v2 Platform</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td class="cell-team">Engineering</td>
+                <td class="cell-date">2 hours ago</td>
+                <td><span class="priority-indicator p-high"></span></td>
+              </tr>
+              <tr>
+                <td class="cell-name">Atlas Data Pipeline</td>
+                <td><span class="status-badge status-review">In Review</span></td>
+                <td class="cell-team">Data Eng</td>
+                <td class="cell-date">5 hours ago</td>
+                <td><span class="priority-indicator p-high"></span></td>
+              </tr>
+              <tr>
+                <td class="cell-name">Meridian Auth System</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td class="cell-team">Security</td>
+                <td class="cell-date">1 day ago</td>
+                <td><span class="priority-indicator p-med"></span></td>
+              </tr>
+              <tr>
+                <td class="cell-name">Nexus API Gateway</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td class="cell-team">Platform</td>
+                <td class="cell-date">1 day ago</td>
+                <td><span class="priority-indicator p-high"></span></td>
+              </tr>
+              <tr>
+                <td class="cell-name">Cosmos Frontend</td>
+                <td><span class="status-badge status-planning">Planning</span></td>
+                <td class="cell-team">Design</td>
+                <td class="cell-date">3 days ago</td>
+                <td><span class="priority-indicator p-med"></span></td>
+              </tr>
+              <tr>
+                <td class="cell-name">Stellar Analytics</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td class="cell-team">Data Eng</td>
+                <td class="cell-date">3 days ago</td>
+                <td><span class="priority-indicator p-low"></span></td>
+              </tr>
+              <tr>
+                <td class="cell-name">Vanguard Mobile</td>
+                <td><span class="status-badge status-review">In Review</span></td>
+                <td class="cell-team">Mobile</td>
+                <td class="cell-date">4 days ago</td>
+                <td><span class="priority-indicator p-med"></span></td>
+              </tr>
+              <tr>
+                <td class="cell-name">Zenith Infrastructure</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td class="cell-team">DevOps</td>
+                <td class="cell-date">5 days ago</td>
+                <td><span class="priority-indicator p-high"></span></td>
+              </tr>
+              <tr>
+                <td class="cell-name">Eclipse Notifications</td>
+                <td><span class="status-badge status-planning">Planning</span></td>
+                <td class="cell-team">Engineering</td>
+                <td class="cell-date">1 week ago</td>
+                <td><span class="priority-indicator p-low"></span></td>
+              </tr>
+              <tr>
+                <td class="cell-name">Horizon Design System</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td class="cell-team">Design</td>
+                <td class="cell-date">1 week ago</td>
+                <td><span class="priority-indicator p-med"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== PROJECT WORKSPACE ===== -->
+      <section class="page" data-page="project-workspace">
+        <header class="page-header">
+          <h1 class="chiseled-title">Project Workspace</h1>
+          <span class="page-subtitle">Orion v2 Platform &mdash; Active</span>
+        </header>
+
+        <div class="workspace-split">
+          <div class="workspace-tree carved-panel">
+            <div class="tree-header">Structure</div>
+            <ul class="file-tree">
+              <li class="tree-folder open">
+                <span class="tree-toggle">&#9662;</span> src/
+                <ul>
+                  <li class="tree-folder open">
+                    <span class="tree-toggle">&#9662;</span> components/
+                    <ul>
+                      <li class="tree-file active-file">Dashboard.tsx</li>
+                      <li class="tree-file">Navigation.tsx</li>
+                      <li class="tree-file">ProjectCard.tsx</li>
+                      <li class="tree-file">KanbanBoard.tsx</li>
+                    </ul>
+                  </li>
+                  <li class="tree-folder">
+                    <span class="tree-toggle">&#9656;</span> services/
+                  </li>
+                  <li class="tree-folder">
+                    <span class="tree-toggle">&#9656;</span> hooks/
+                  </li>
+                  <li class="tree-file">App.tsx</li>
+                  <li class="tree-file">index.ts</li>
+                </ul>
+              </li>
+              <li class="tree-folder">
+                <span class="tree-toggle">&#9656;</span> tests/
+              </li>
+              <li class="tree-folder">
+                <span class="tree-toggle">&#9656;</span> docs/
+              </li>
+              <li class="tree-file">package.json</li>
+              <li class="tree-file">tsconfig.json</li>
+            </ul>
+          </div>
+
+          <div class="workspace-content carved-panel">
+            <div class="file-tab-bar">
+              <span class="file-tab active-tab">Dashboard.tsx</span>
+              <span class="file-tab">Navigation.tsx</span>
+              <span class="file-tab">App.tsx</span>
+            </div>
+            <div class="file-content">
+              <pre class="code-block"><code><span class="code-keyword">import</span> React <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+<span class="code-keyword">import</span> { useProjectMetrics } <span class="code-keyword">from</span> <span class="code-string">'../hooks/useMetrics'</span>;
+<span class="code-keyword">import</span> { StatCard, BarChart } <span class="code-keyword">from</span> <span class="code-string">'./shared'</span>;
+
+<span class="code-keyword">interface</span> <span class="code-type">DashboardProps</span> {
+  projectId: <span class="code-type">string</span>;
+  timeRange?: <span class="code-string">'7d'</span> | <span class="code-string">'30d'</span> | <span class="code-string">'90d'</span>;
+}
+
+<span class="code-keyword">export const</span> <span class="code-fn">Dashboard</span>: React.FC&lt;<span class="code-type">DashboardProps</span>&gt; = ({
+  projectId,
+  timeRange = <span class="code-string">'7d'</span>
+}) =&gt; {
+  <span class="code-keyword">const</span> { metrics, loading } = useProjectMetrics(projectId, timeRange);
+
+  <span class="code-keyword">if</span> (loading) <span class="code-keyword">return</span> &lt;LoadingSkeleton /&gt;;
+
+  <span class="code-keyword">return</span> (
+    &lt;<span class="code-tag">div</span> className=<span class="code-string">"dashboard-container"</span>&gt;
+      &lt;<span class="code-tag">StatGrid</span> metrics={metrics.summary} /&gt;
+      &lt;<span class="code-tag">BarChart</span> data={metrics.throughput} /&gt;
+      &lt;<span class="code-tag">ActivityFeed</span> items={metrics.activity} /&gt;
+    &lt;/<span class="code-tag">div</span>&gt;
+  );
+};</code></pre>
+            </div>
+            <div class="file-meta">
+              <span>TypeScript JSX</span>
+              <span>24 lines</span>
+              <span>Last modified: 2h ago by R. Kim</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== KANBAN ===== -->
+      <section class="page" data-page="kanban">
+        <header class="page-header">
+          <h1 class="chiseled-title">Kanban Board</h1>
+          <span class="page-subtitle">Orion v2 &mdash; Sprint 14</span>
+        </header>
+
+        <div class="kanban-board">
+          <div class="kanban-column">
+            <div class="kanban-column-header">
+              <span class="column-title">Backlog</span>
+              <span class="column-count">5</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-title">Implement rate limiting middleware</div>
+                <div class="card-meta"><span class="card-badge badge-backend">Backend</span><span class="card-assignee">MC</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-title">Design token refresh flow</div>
+                <div class="card-meta"><span class="card-badge badge-design">Design</span><span class="card-assignee">AT</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-title">Audit logging for admin actions</div>
+                <div class="card-meta"><span class="card-badge badge-backend">Backend</span><span class="card-assignee">RK</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-title">WebSocket reconnection logic</div>
+                <div class="card-meta"><span class="card-badge badge-frontend">Frontend</span><span class="card-assignee">JD</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-title">Database migration scripts</div>
+                <div class="card-meta"><span class="card-badge badge-devops">DevOps</span><span class="card-assignee">PL</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-column-header">
+              <span class="column-title">In Progress</span>
+              <span class="column-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-title">GraphQL subscription layer</div>
+                <div class="card-meta"><span class="card-badge badge-backend">Backend</span><span class="card-assignee">MC</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-title">User permission matrix UI</div>
+                <div class="card-meta"><span class="card-badge badge-frontend">Frontend</span><span class="card-assignee">JD</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-title">Multi-tenant data isolation</div>
+                <div class="card-meta"><span class="card-badge badge-backend">Backend</span><span class="card-assignee">RK</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-column-header">
+              <span class="column-title">Review</span>
+              <span class="column-count">2</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-title">API versioning strategy</div>
+                <div class="card-meta"><span class="card-badge badge-backend">Backend</span><span class="card-assignee">AT</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-title">Dashboard widget framework</div>
+                <div class="card-meta"><span class="card-badge badge-frontend">Frontend</span><span class="card-assignee">PL</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-column-header">
+              <span class="column-title">Done</span>
+              <span class="column-count">4</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card card-done">
+                <div class="card-title">OAuth2 integration</div>
+                <div class="card-meta"><span class="card-badge badge-backend">Backend</span><span class="card-assignee">RK</span></div>
+              </div>
+              <div class="kanban-card card-done">
+                <div class="card-title">Search indexing pipeline</div>
+                <div class="card-meta"><span class="card-badge badge-devops">DevOps</span><span class="card-assignee">MC</span></div>
+              </div>
+              <div class="kanban-card card-done">
+                <div class="card-title">Component library v3</div>
+                <div class="card-meta"><span class="card-badge badge-frontend">Frontend</span><span class="card-assignee">JD</span></div>
+              </div>
+              <div class="kanban-card card-done">
+                <div class="card-title">Error boundary patterns</div>
+                <div class="card-meta"><span class="card-badge badge-frontend">Frontend</span><span class="card-assignee">AT</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WHITEBOARD ===== -->
+      <section class="page" data-page="whiteboard">
+        <header class="page-header">
+          <h1 class="chiseled-title">Whiteboard</h1>
+          <span class="page-subtitle">Q3 Architecture Roadmap</span>
+        </header>
+
+        <div class="whiteboard-toolbar">
+          <button class="tool-btn active-tool" title="Select"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M2 2l5 12 2-5 5-2L2 2z" fill="currentColor"/></svg></button>
+          <button class="tool-btn" title="Rectangle"><svg viewBox="0 0 16 16" width="16" height="16"><rect x="2" y="2" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></button>
+          <button class="tool-btn" title="Connection"><svg viewBox="0 0 16 16" width="16" height="16"><line x1="3" y1="13" x2="13" y2="3" stroke="currentColor" stroke-width="1.5"/><circle cx="13" cy="3" r="2" fill="currentColor"/></svg></button>
+          <button class="tool-btn" title="Text"><svg viewBox="0 0 16 16" width="16" height="16"><text x="3" y="13" fill="currentColor" font-size="13" font-weight="600">T</text></svg></button>
+          <div class="tool-separator"></div>
+          <button class="tool-btn" title="Zoom In"><svg viewBox="0 0 16 16" width="16" height="16"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="11" y1="11" x2="14" y2="14" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="7" x2="9" y2="7" stroke="currentColor" stroke-width="1"/><line x1="7" y1="5" x2="7" y2="9" stroke="currentColor" stroke-width="1"/></svg></button>
+          <button class="tool-btn" title="Zoom Out"><svg viewBox="0 0 16 16" width="16" height="16"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="11" y1="11" x2="14" y2="14" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="7" x2="9" y2="7" stroke="currentColor" stroke-width="1"/></svg></button>
+        </div>
+
+        <div class="whiteboard-canvas">
+          <svg class="canvas-grid" width="100%" height="100%">
+            <defs>
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2a2a32" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)"/>
+          </svg>
+
+          <div class="wb-node" style="left:60px;top:40px;">
+            <div class="wb-node-title">API Gateway</div>
+            <div class="wb-node-sub">Entry Point</div>
+          </div>
+          <div class="wb-node" style="left:300px;top:40px;">
+            <div class="wb-node-title">Auth Service</div>
+            <div class="wb-node-sub">OAuth2 / JWT</div>
+          </div>
+          <div class="wb-node" style="left:60px;top:180px;">
+            <div class="wb-node-title">Project Service</div>
+            <div class="wb-node-sub">CRUD + Events</div>
+          </div>
+          <div class="wb-node" style="left:300px;top:180px;">
+            <div class="wb-node-title">Idea Engine</div>
+            <div class="wb-node-sub">ML + Search</div>
+          </div>
+          <div class="wb-node" style="left:540px;top:110px;">
+            <div class="wb-node-title">AI Orchestrator</div>
+            <div class="wb-node-sub">LLM Pipeline</div>
+          </div>
+          <div class="wb-node" style="left:180px;top:320px;">
+            <div class="wb-node-title">Database Cluster</div>
+            <div class="wb-node-sub">PostgreSQL + Redis</div>
+          </div>
+
+          <svg class="canvas-lines" width="100%" height="100%">
+            <line x1="220" y1="65" x2="300" y2="65" stroke="#c89b3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="140" y1="90" x2="140" y2="180" stroke="#c89b3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="380" y1="90" x2="380" y2="180" stroke="#c89b3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="460" y1="205" x2="540" y2="155" stroke="#c89b3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="220" y1="225" x2="260" y2="320" stroke="#c89b3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="380" y1="225" x2="340" y2="320" stroke="#c89b3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ===== SCHEMA PLANNER ===== -->
+      <section class="page" data-page="schema-planner">
+        <header class="page-header">
+          <h1 class="chiseled-title">Schema Planner</h1>
+          <span class="page-subtitle">Entity Relationship Diagram &mdash; 6 entities</span>
+        </header>
+
+        <div class="schema-canvas">
+          <div class="entity-block" style="left:40px;top:20px;">
+            <div class="entity-header">User</div>
+            <ul class="entity-fields">
+              <li><span class="field-key">PK</span> id <span class="field-type">uuid</span></li>
+              <li>email <span class="field-type">varchar(255)</span></li>
+              <li>displayName <span class="field-type">varchar(100)</span></li>
+              <li>role <span class="field-type">enum</span></li>
+              <li>createdAt <span class="field-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-block" style="left:320px;top:20px;">
+            <div class="entity-header">Project</div>
+            <ul class="entity-fields">
+              <li><span class="field-key">PK</span> id <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> ownerId <span class="field-type">uuid</span></li>
+              <li>name <span class="field-type">varchar(200)</span></li>
+              <li>status <span class="field-type">enum</span></li>
+              <li>updatedAt <span class="field-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-block" style="left:600px;top:20px;">
+            <div class="entity-header">Task</div>
+            <ul class="entity-fields">
+              <li><span class="field-key">PK</span> id <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> projectId <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> assigneeId <span class="field-type">uuid</span></li>
+              <li>title <span class="field-type">varchar(300)</span></li>
+              <li>status <span class="field-type">enum</span></li>
+              <li>priority <span class="field-type">int</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-block" style="left:40px;top:260px;">
+            <div class="entity-header">Idea</div>
+            <ul class="entity-fields">
+              <li><span class="field-key">PK</span> id <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> authorId <span class="field-type">uuid</span></li>
+              <li>title <span class="field-type">varchar(300)</span></li>
+              <li>body <span class="field-type">text</span></li>
+              <li>priority <span class="field-type">int</span></li>
+              <li>tags <span class="field-type">jsonb</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-block" style="left:320px;top:260px;">
+            <div class="entity-header">Comment</div>
+            <ul class="entity-fields">
+              <li><span class="field-key">PK</span> id <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> authorId <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> ideaId <span class="field-type">uuid</span></li>
+              <li>body <span class="field-type">text</span></li>
+              <li>createdAt <span class="field-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-block" style="left:600px;top:260px;">
+            <div class="entity-header">AISession</div>
+            <ul class="entity-fields">
+              <li><span class="field-key">PK</span> id <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> userId <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> projectId <span class="field-type">uuid</span></li>
+              <li>model <span class="field-type">varchar(50)</span></li>
+              <li>tokenCount <span class="field-type">int</span></li>
+              <li>createdAt <span class="field-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <svg class="schema-lines" width="100%" height="100%">
+            <line x1="240" y1="60" x2="320" y2="60" stroke="#c89b3c" stroke-width="1" stroke-dasharray="6,3"/>
+            <line x1="500" y1="60" x2="600" y2="60" stroke="#c89b3c" stroke-width="1" stroke-dasharray="6,3"/>
+            <line x1="120" y1="175" x2="120" y2="260" stroke="#c89b3c" stroke-width="1" stroke-dasharray="6,3"/>
+            <line x1="240" y1="310" x2="320" y2="310" stroke="#c89b3c" stroke-width="1" stroke-dasharray="6,3"/>
+            <line x1="700" y1="175" x2="700" y2="260" stroke="#c89b3c" stroke-width="1" stroke-dasharray="6,3"/>
+            <line x1="420" y1="175" x2="420" y2="260" stroke="#c89b3c" stroke-width="1" stroke-dasharray="6,3"/>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ===== DIRECTORY TREE ===== -->
+      <section class="page" data-page="directory-tree">
+        <header class="page-header">
+          <h1 class="chiseled-title">Directory</h1>
+          <span class="page-subtitle">Project structure &mdash; Orion v2</span>
+        </header>
+
+        <div class="panel carved-panel">
+          <div class="table-controls">
+            <input type="text" class="recessed-input search-input" placeholder="Search files...">
+          </div>
+
+          <div class="directory-browser">
+            <ul class="dir-tree">
+              <li class="dir-folder open">
+                <span class="dir-icon folder-icon"></span>
+                <span class="dir-name">orion-v2/</span>
+                <ul>
+                  <li class="dir-folder open">
+                    <span class="dir-icon folder-icon"></span>
+                    <span class="dir-name">src/</span>
+                    <ul>
+                      <li class="dir-folder open">
+                        <span class="dir-icon folder-icon"></span>
+                        <span class="dir-name">components/</span>
+                        <ul>
+                          <li class="dir-file"><span class="dir-icon file-icon"></span><span class="dir-name">Dashboard.tsx</span><span class="dir-size">4.2 KB</span></li>
+                          <li class="dir-file selected-file"><span class="dir-icon file-icon"></span><span class="dir-name">Navigation.tsx</span><span class="dir-size">2.8 KB</span></li>
+                          <li class="dir-file"><span class="dir-icon file-icon"></span><span class="dir-name">ProjectCard.tsx</span><span class="dir-size">1.9 KB</span></li>
+                          <li class="dir-file"><span class="dir-icon file-icon"></span><span class="dir-name">KanbanBoard.tsx</span><span class="dir-size">5.1 KB</span></li>
+                          <li class="dir-file"><span class="dir-icon file-icon"></span><span class="dir-name">SchemaView.tsx</span><span class="dir-size">3.4 KB</span></li>
+                        </ul>
+                      </li>
+                      <li class="dir-folder">
+                        <span class="dir-icon folder-icon"></span>
+                        <span class="dir-name">services/</span>
+                      </li>
+                      <li class="dir-folder">
+                        <span class="dir-icon folder-icon"></span>
+                        <span class="dir-name">hooks/</span>
+                      </li>
+                      <li class="dir-folder">
+                        <span class="dir-icon folder-icon"></span>
+                        <span class="dir-name">utils/</span>
+                      </li>
+                      <li class="dir-file"><span class="dir-icon file-icon"></span><span class="dir-name">App.tsx</span><span class="dir-size">1.2 KB</span></li>
+                      <li class="dir-file"><span class="dir-icon file-icon"></span><span class="dir-name">index.ts</span><span class="dir-size">0.4 KB</span></li>
+                      <li class="dir-file"><span class="dir-icon file-icon"></span><span class="dir-name">global.css</span><span class="dir-size">8.7 KB</span></li>
+                    </ul>
+                  </li>
+                  <li class="dir-folder">
+                    <span class="dir-icon folder-icon"></span>
+                    <span class="dir-name">tests/</span>
+                  </li>
+                  <li class="dir-folder">
+                    <span class="dir-icon folder-icon"></span>
+                    <span class="dir-name">docs/</span>
+                  </li>
+                  <li class="dir-folder">
+                    <span class="dir-icon folder-icon"></span>
+                    <span class="dir-name">config/</span>
+                  </li>
+                  <li class="dir-file"><span class="dir-icon file-icon"></span><span class="dir-name">package.json</span><span class="dir-size">1.8 KB</span></li>
+                  <li class="dir-file"><span class="dir-icon file-icon"></span><span class="dir-name">tsconfig.json</span><span class="dir-size">0.6 KB</span></li>
+                  <li class="dir-file"><span class="dir-icon file-icon"></span><span class="dir-name">.eslintrc.js</span><span class="dir-size">0.9 KB</span></li>
+                  <li class="dir-file"><span class="dir-icon file-icon"></span><span class="dir-name">README.md</span><span class="dir-size">3.2 KB</span></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== IDEAS ===== -->
+      <section class="page" data-page="ideas">
+        <header class="page-header">
+          <h1 class="chiseled-title">Ideas</h1>
+          <span class="page-subtitle">Capture &amp; track &mdash; 147 ideas</span>
+        </header>
+
+        <div class="idea-capture-bar carved-panel">
+          <input type="text" class="recessed-input idea-input" placeholder="Quick capture: type an idea and press Enter...">
+          <button class="stone-btn">Capture</button>
+        </div>
+
+        <div class="panel carved-panel">
+          <div class="ideas-filter-bar">
+            <button class="filter-chip active-chip">All</button>
+            <button class="filter-chip">High Priority</button>
+            <button class="filter-chip">Unreviewed</button>
+            <button class="filter-chip">Archived</button>
+            <span class="filter-count">147 results</span>
+          </div>
+
+          <div class="ideas-list">
+            <div class="idea-row priority-high">
+              <div class="idea-priority-bar"></div>
+              <div class="idea-content">
+                <div class="idea-title">Multi-tenant data isolation with row-level security</div>
+                <div class="idea-meta">
+                  <span class="idea-author">R. Kim</span>
+                  <span class="idea-time">2h ago</span>
+                  <span class="idea-tag">architecture</span>
+                  <span class="idea-tag">security</span>
+                </div>
+              </div>
+              <div class="idea-votes">
+                <span class="vote-count">14</span>
+              </div>
+            </div>
+
+            <div class="idea-row priority-high">
+              <div class="idea-priority-bar"></div>
+              <div class="idea-content">
+                <div class="idea-title">Real-time collaboration via CRDT-based sync engine</div>
+                <div class="idea-meta">
+                  <span class="idea-author">J. Donovan</span>
+                  <span class="idea-time">5h ago</span>
+                  <span class="idea-tag">real-time</span>
+                  <span class="idea-tag">infrastructure</span>
+                </div>
+              </div>
+              <div class="idea-votes">
+                <span class="vote-count">11</span>
+              </div>
+            </div>
+
+            <div class="idea-row priority-med">
+              <div class="idea-priority-bar"></div>
+              <div class="idea-content">
+                <div class="idea-title">Plugin system for third-party integrations</div>
+                <div class="idea-meta">
+                  <span class="idea-author">M. Chen</span>
+                  <span class="idea-time">1d ago</span>
+                  <span class="idea-tag">extensibility</span>
+                  <span class="idea-tag">api</span>
+                </div>
+              </div>
+              <div class="idea-votes">
+                <span class="vote-count">8</span>
+              </div>
+            </div>
+
+            <div class="idea-row priority-med">
+              <div class="idea-priority-bar"></div>
+              <div class="idea-content">
+                <div class="idea-title">Version-controlled schema migrations with rollback</div>
+                <div class="idea-meta">
+                  <span class="idea-author">A. Torres</span>
+                  <span class="idea-time">1d ago</span>
+                  <span class="idea-tag">database</span>
+                  <span class="idea-tag">devops</span>
+                </div>
+              </div>
+              <div class="idea-votes">
+                <span class="vote-count">7</span>
+              </div>
+            </div>
+
+            <div class="idea-row priority-low">
+              <div class="idea-priority-bar"></div>
+              <div class="idea-content">
+                <div class="idea-title">Dark mode presets for project-level theming</div>
+                <div class="idea-meta">
+                  <span class="idea-author">P. Larsen</span>
+                  <span class="idea-time">3d ago</span>
+                  <span class="idea-tag">ui</span>
+                  <span class="idea-tag">customization</span>
+                </div>
+              </div>
+              <div class="idea-votes">
+                <span class="vote-count">4</span>
+              </div>
+            </div>
+
+            <div class="idea-row priority-low">
+              <div class="idea-priority-bar"></div>
+              <div class="idea-content">
+                <div class="idea-title">Keyboard shortcut overlay with command palette</div>
+                <div class="idea-meta">
+                  <span class="idea-author">J. Donovan</span>
+                  <span class="idea-time">4d ago</span>
+                  <span class="idea-tag">ux</span>
+                  <span class="idea-tag">productivity</span>
+                </div>
+              </div>
+              <div class="idea-votes">
+                <span class="vote-count">3</span>
+              </div>
+            </div>
+
+            <div class="idea-row priority-med">
+              <div class="idea-priority-bar"></div>
+              <div class="idea-content">
+                <div class="idea-title">AI-powered code review suggestions inline</div>
+                <div class="idea-meta">
+                  <span class="idea-author">R. Kim</span>
+                  <span class="idea-time">5d ago</span>
+                  <span class="idea-tag">ai</span>
+                  <span class="idea-tag">code-quality</span>
+                </div>
+              </div>
+              <div class="idea-votes">
+                <span class="vote-count">9</span>
+              </div>
+            </div>
+
+            <div class="idea-row priority-low">
+              <div class="idea-priority-bar"></div>
+              <div class="idea-content">
+                <div class="idea-title">Export project reports to PDF with brand templates</div>
+                <div class="idea-meta">
+                  <span class="idea-author">A. Torres</span>
+                  <span class="idea-time">1w ago</span>
+                  <span class="idea-tag">reporting</span>
+                  <span class="idea-tag">export</span>
+                </div>
+              </div>
+              <div class="idea-votes">
+                <span class="vote-count">2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== AI CHAT ===== -->
+      <section class="page" data-page="ai-chat">
+        <header class="page-header">
+          <h1 class="chiseled-title">AI Chat</h1>
+          <span class="page-subtitle">Architecture Assistant &mdash; Claude</span>
+        </header>
+
+        <div class="chat-container carved-panel">
+          <div class="chat-messages">
+            <div class="chat-msg msg-ai">
+              <div class="msg-avatar">AI</div>
+              <div class="msg-bubble">
+                <div class="msg-content">Welcome to the Architecture Assistant. I can help you reason about system design, evaluate trade-offs, and generate technical documentation. What would you like to explore?</div>
+                <div class="msg-time">14:00</div>
+              </div>
+            </div>
+
+            <div class="chat-msg msg-user">
+              <div class="msg-bubble">
+                <div class="msg-content">We need to design a multi-tenant isolation strategy for Orion v2. The main concern is data leakage between tenants. What approaches should we consider?</div>
+                <div class="msg-time">14:02</div>
+              </div>
+              <div class="msg-avatar">JD</div>
+            </div>
+
+            <div class="chat-msg msg-ai">
+              <div class="msg-avatar">AI</div>
+              <div class="msg-bubble">
+                <div class="msg-content">For multi-tenant isolation in Orion v2, there are three primary strategies to evaluate:
+
+<strong>1. Row-Level Security (RLS)</strong>
+Shared database, shared schema. Each row has a <code>tenant_id</code> column. PostgreSQL RLS policies enforce isolation at the database level. Lowest infrastructure cost, but requires careful policy management.
+
+<strong>2. Schema-per-Tenant</strong>
+Shared database, separate schemas. Each tenant gets their own schema namespace. Better isolation than RLS, moderate complexity for migrations.
+
+<strong>3. Database-per-Tenant</strong>
+Complete physical isolation. Highest security guarantee but significantly higher infrastructure and operational costs.
+
+Given the scale indicators you described (18 team members, ~24 projects), I'd recommend starting with <strong>RLS</strong> and designing the abstraction layer so you can migrate to schema-per-tenant later if compliance requirements demand it.
+
+Shall I detail the RLS implementation pattern?</div>
+                <div class="msg-time">14:02</div>
+              </div>
+            </div>
+
+            <div class="chat-msg msg-user">
+              <div class="msg-bubble">
+                <div class="msg-content">Yes, outline the RLS approach. Include the middleware layer that sets the tenant context.</div>
+                <div class="msg-time">14:05</div>
+              </div>
+              <div class="msg-avatar">JD</div>
+            </div>
+
+            <div class="chat-msg msg-ai">
+              <div class="msg-avatar">AI</div>
+              <div class="msg-bubble">
+                <div class="msg-content">Here's the RLS implementation pattern:
+
+<code>-- Enable RLS on all tenant-scoped tables
+ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
+
+-- Create policy: users see only their tenant's data
+CREATE POLICY tenant_isolation ON projects
+  USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+-- Middleware sets tenant context per request
+SET LOCAL app.tenant_id = 'tenant-uuid-here';</code>
+
+The middleware layer intercepts every request, extracts the tenant ID from the JWT claims, and sets the PostgreSQL session variable before any queries execute. This creates an airtight isolation boundary at the database engine level.
+
+Key considerations:
+- Always use <code>SET LOCAL</code> (transaction-scoped, not session-scoped)
+- Add <code>tenant_id</code> to all composite indexes
+- Implement integration tests that verify cross-tenant queries return empty results</div>
+                <div class="msg-time">14:06</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-area">
+            <input type="text" class="recessed-input chat-input" placeholder="Ask the architecture assistant...">
+            <button class="stone-btn chat-send">Send</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SETTINGS ===== -->
+      <section class="page" data-page="settings">
+        <header class="page-header">
+          <h1 class="chiseled-title">Settings</h1>
+          <span class="page-subtitle">System Configuration</span>
+        </header>
+
+        <div class="settings-layout">
+          <div class="settings-section carved-panel">
+            <h2 class="settings-section-title">Profile</h2>
+            <div class="settings-field">
+              <label class="field-label">Display Name</label>
+              <input type="text" class="recessed-input" value="J. Donovan">
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Email</label>
+              <input type="email" class="recessed-input" value="j.donovan@orion.dev">
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Role</label>
+              <select class="recessed-input">
+                <option selected>Architect</option>
+                <option>Developer</option>
+                <option>Designer</option>
+                <option>Manager</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-section carved-panel">
+            <h2 class="settings-section-title">Appearance</h2>
+            <div class="settings-field">
+              <label class="field-label">Theme</label>
+              <div class="toggle-row">
+                <span class="toggle-label">Dark Slate</span>
+                <div class="toggle-switch active-toggle">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Compact Density</label>
+              <div class="toggle-row">
+                <span class="toggle-label">Enabled</span>
+                <div class="toggle-switch active-toggle">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Code Font Size</label>
+              <select class="recessed-input">
+                <option>12px</option>
+                <option selected>13px</option>
+                <option>14px</option>
+                <option>15px</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-section carved-panel">
+            <h2 class="settings-section-title">Notifications</h2>
+            <div class="settings-field">
+              <label class="field-label">Email Notifications</label>
+              <div class="toggle-row">
+                <span class="toggle-label">Enabled</span>
+                <div class="toggle-switch active-toggle">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Desktop Alerts</label>
+              <div class="toggle-row">
+                <span class="toggle-label">Disabled</span>
+                <div class="toggle-switch">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Digest Frequency</label>
+              <select class="recessed-input">
+                <option>Instant</option>
+                <option selected>Daily</option>
+                <option>Weekly</option>
+                <option>Never</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-section carved-panel">
+            <h2 class="settings-section-title">AI Configuration</h2>
+            <div class="settings-field">
+              <label class="field-label">Default Model</label>
+              <select class="recessed-input">
+                <option selected>Claude Opus 4</option>
+                <option>Claude Sonnet 4</option>
+                <option>Claude Haiku</option>
+              </select>
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Context Window</label>
+              <select class="recessed-input">
+                <option>32K tokens</option>
+                <option selected>128K tokens</option>
+                <option>200K tokens</option>
+              </select>
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Auto-suggestions</label>
+              <div class="toggle-row">
+                <span class="toggle-label">Enabled</span>
+                <div class="toggle-switch active-toggle">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-actions">
+            <button class="stone-btn btn-secondary">Reset Defaults</button>
+            <button class="stone-btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

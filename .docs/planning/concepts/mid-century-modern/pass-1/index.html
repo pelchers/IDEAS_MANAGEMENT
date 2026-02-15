@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IdeaFlow — Mid-Century Modern Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ============================== -->
+  <!-- CREDENZA SHELF NAVIGATION      -->
+  <!-- ============================== -->
+  <header class="credenza-shelf">
+    <div class="shelf-inner">
+      <a href="#" class="shelf-brand">
+        <span class="brand-mark">IF</span>
+        <span class="brand-name">IdeaFlow</span>
+      </a>
+      <nav class="shelf-nav" role="navigation" aria-label="Main navigation">
+        <button class="shelf-item active" data-view="dashboard">
+          <svg class="shelf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="shelf-item" data-view="projects">
+          <svg class="shelf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+          <span>Projects</span>
+        </button>
+        <button class="shelf-item" data-view="project-workspace">
+          <svg class="shelf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+          <span>Workspace</span>
+        </button>
+        <button class="shelf-item" data-view="kanban">
+          <svg class="shelf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="6" height="18" rx="2"/><rect x="9" y="3" width="6" height="12" rx="2"/><rect x="16" y="3" width="6" height="15" rx="2"/></svg>
+          <span>Kanban</span>
+        </button>
+        <button class="shelf-item" data-view="whiteboard">
+          <svg class="shelf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+          <span>Whiteboard</span>
+        </button>
+        <button class="shelf-item" data-view="schema-planner">
+          <svg class="shelf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          <span>Schema</span>
+        </button>
+        <button class="shelf-item" data-view="directory-tree">
+          <svg class="shelf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="2"/></svg>
+          <span>Files</span>
+        </button>
+        <button class="shelf-item" data-view="ideas">
+          <svg class="shelf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>
+          <span>Ideas</span>
+        </button>
+        <button class="shelf-item" data-view="ai-chat">
+          <svg class="shelf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span>AI Chat</span>
+        </button>
+        <button class="shelf-item" data-view="settings">
+          <svg class="shelf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1.08-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1.08 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001.08 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1.08z"/></svg>
+          <span>Settings</span>
+        </button>
+      </nav>
+      <div class="shelf-user">
+        <div class="user-avatar">MK</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================== -->
+  <!-- MAIN CONTENT AREA              -->
+  <!-- ============================== -->
+  <main class="content-stage">
+
+    <!-- ====================== -->
+    <!-- 1. DASHBOARD           -->
+    <!-- ====================== -->
+    <section class="view active" data-page="dashboard">
+      <div class="view-container">
+
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <h1>Good afternoon, Mika</h1>
+            <p>Your creative workspace is humming along. Three projects need attention today, and two fresh ideas are waiting for review.</p>
+          </div>
+          <div class="welcome-date">
+            <span class="date-day">15</span>
+            <span class="date-details">
+              <span class="date-month">February</span>
+              <span class="date-year">2026</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card stat-amber">
+            <span class="stat-label">Active Projects</span>
+            <span class="stat-value">12</span>
+            <span class="stat-delta positive">+2 this week</span>
+          </div>
+          <div class="stat-card stat-olive">
+            <span class="stat-label">Ideas Captured</span>
+            <span class="stat-value">87</span>
+            <span class="stat-delta positive">+14 this month</span>
+          </div>
+          <div class="stat-card stat-amber">
+            <span class="stat-label">Tasks Completed</span>
+            <span class="stat-value">243</span>
+            <span class="stat-delta positive">92% on time</span>
+          </div>
+          <div class="stat-card stat-olive">
+            <span class="stat-label">Team Members</span>
+            <span class="stat-value">8</span>
+            <span class="stat-delta">2 online now</span>
+          </div>
+        </div>
+
+        <div class="dashboard-columns">
+          <!-- Activity Timeline -->
+          <div class="panel">
+            <h2 class="panel-title">Recent Activity</h2>
+            <ul class="activity-timeline">
+              <li class="timeline-item">
+                <span class="timeline-dot amber"></span>
+                <div class="timeline-content">
+                  <strong>Mika K.</strong> updated the brand identity project
+                  <span class="timeline-time">12 min ago</span>
+                </div>
+              </li>
+              <li class="timeline-item">
+                <span class="timeline-dot olive"></span>
+                <div class="timeline-content">
+                  <strong>Soren W.</strong> added 3 new schema entities
+                  <span class="timeline-time">45 min ago</span>
+                </div>
+              </li>
+              <li class="timeline-item">
+                <span class="timeline-dot amber"></span>
+                <div class="timeline-content">
+                  <strong>Elara J.</strong> completed the onboarding flow wireframes
+                  <span class="timeline-time">1 hr ago</span>
+                </div>
+              </li>
+              <li class="timeline-item">
+                <span class="timeline-dot olive"></span>
+                <div class="timeline-content">
+                  <strong>Kai T.</strong> pushed 4 commits to the API branch
+                  <span class="timeline-time">2 hrs ago</span>
+                </div>
+              </li>
+              <li class="timeline-item">
+                <span class="timeline-dot amber"></span>
+                <div class="timeline-content">
+                  <strong>Noa R.</strong> submitted an idea: "Voice-first capture mode"
+                  <span class="timeline-time">3 hrs ago</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Project Health -->
+          <div class="panel">
+            <h2 class="panel-title">Project Health</h2>
+            <div class="health-donuts">
+              <div class="donut-item">
+                <div class="donut" style="--percent:78; --donut-color: var(--accent);">
+                  <span class="donut-value">78%</span>
+                </div>
+                <span class="donut-label">Brand Refresh</span>
+              </div>
+              <div class="donut-item">
+                <div class="donut" style="--percent:45; --donut-color: var(--accent2);">
+                  <span class="donut-value">45%</span>
+                </div>
+                <span class="donut-label">Mobile App</span>
+              </div>
+              <div class="donut-item">
+                <div class="donut" style="--percent:92; --donut-color: var(--accent);">
+                  <span class="donut-value">92%</span>
+                </div>
+                <span class="donut-label">API v2</span>
+              </div>
+              <div class="donut-item">
+                <div class="donut" style="--percent:61; --donut-color: var(--accent2);">
+                  <span class="donut-value">61%</span>
+                </div>
+                <span class="donut-label">Onboarding</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming Deadlines -->
+        <div class="panel">
+          <h2 class="panel-title">Upcoming Deadlines</h2>
+          <ul class="deadline-list">
+            <li class="deadline-item urgent">
+              <span class="deadline-date">Feb 16</span>
+              <span class="deadline-name">Brand guidelines final review</span>
+              <span class="deadline-project">Brand Refresh</span>
+            </li>
+            <li class="deadline-item">
+              <span class="deadline-date">Feb 19</span>
+              <span class="deadline-name">Mobile prototype handoff to engineering</span>
+              <span class="deadline-project">Mobile App</span>
+            </li>
+            <li class="deadline-item">
+              <span class="deadline-date">Feb 22</span>
+              <span class="deadline-name">Schema migration plan approval</span>
+              <span class="deadline-project">API v2</span>
+            </li>
+            <li class="deadline-item">
+              <span class="deadline-date">Feb 28</span>
+              <span class="deadline-name">Onboarding A/B test results analysis</span>
+              <span class="deadline-project">Onboarding</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================== -->
+    <!-- 2. PROJECTS            -->
+    <!-- ====================== -->
+    <section class="view" data-page="projects">
+      <div class="view-container">
+        <div class="view-header">
+          <h1>Projects</h1>
+          <div class="search-bar">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="search-input" placeholder="Search projects..." />
+          </div>
+        </div>
+
+        <div class="projects-grid">
+          <div class="project-card">
+            <div class="project-thumb" style="background: linear-gradient(135deg, #c4652a 0%, #e89a6a 100%);"></div>
+            <div class="project-body">
+              <h3 class="project-name">Brand Refresh 2026</h3>
+              <p class="project-desc">Complete visual identity overhaul including logo, typography system, and color palette for the new product line.</p>
+              <div class="project-meta">
+                <div class="avatar-stack">
+                  <span class="mini-avatar" style="background:#c4652a;">MK</span>
+                  <span class="mini-avatar" style="background:#1b6b5a;">EJ</span>
+                  <span class="mini-avatar" style="background:#8b6b4a;">SW</span>
+                </div>
+                <span class="project-date">Updated 2 hrs ago</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background: linear-gradient(135deg, #1b6b5a 0%, #3da88e 100%);"></div>
+            <div class="project-body">
+              <h3 class="project-name">Mobile App v3</h3>
+              <p class="project-desc">Native iOS and Android redesign with gesture-first navigation and offline-first architecture.</p>
+              <div class="project-meta">
+                <div class="avatar-stack">
+                  <span class="mini-avatar" style="background:#c4652a;">KT</span>
+                  <span class="mini-avatar" style="background:#1b6b5a;">NR</span>
+                </div>
+                <span class="project-date">Updated 5 hrs ago</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background: linear-gradient(135deg, #8b6b4a 0%, #c4a67a 100%);"></div>
+            <div class="project-body">
+              <h3 class="project-name">API v2 Migration</h3>
+              <p class="project-desc">RESTful to GraphQL migration with backward compatibility layer and automated schema validation.</p>
+              <div class="project-meta">
+                <div class="avatar-stack">
+                  <span class="mini-avatar" style="background:#1b6b5a;">SW</span>
+                  <span class="mini-avatar" style="background:#c4652a;">KT</span>
+                  <span class="mini-avatar" style="background:#8b6b4a;">AH</span>
+                </div>
+                <span class="project-date">Updated 1 day ago</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background: linear-gradient(135deg, #d4c5a9 0%, #faf6ef 100%);"></div>
+            <div class="project-body">
+              <h3 class="project-name">Onboarding Flow</h3>
+              <p class="project-desc">Progressive onboarding experience with personalization engine and interactive product walkthroughs.</p>
+              <div class="project-meta">
+                <div class="avatar-stack">
+                  <span class="mini-avatar" style="background:#c4652a;">EJ</span>
+                  <span class="mini-avatar" style="background:#1b6b5a;">MK</span>
+                </div>
+                <span class="project-date">Updated 2 days ago</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background: linear-gradient(135deg, #c4652a 0%, #1b6b5a 100%);"></div>
+            <div class="project-body">
+              <h3 class="project-name">Design System Unification</h3>
+              <p class="project-desc">Consolidate three component libraries into a single source of truth with Figma-to-code pipeline.</p>
+              <div class="project-meta">
+                <div class="avatar-stack">
+                  <span class="mini-avatar" style="background:#8b6b4a;">MK</span>
+                  <span class="mini-avatar" style="background:#c4652a;">EJ</span>
+                  <span class="mini-avatar" style="background:#1b6b5a;">SW</span>
+                  <span class="mini-avatar" style="background:#d4c5a9; color:#2c1810;">+2</span>
+                </div>
+                <span class="project-date">Updated 3 days ago</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background: linear-gradient(135deg, #2c1810 0%, #5a3a28 100%);"></div>
+            <div class="project-body">
+              <h3 class="project-name">Analytics Dashboard</h3>
+              <p class="project-desc">Real-time metrics visualization with customizable widgets and automated insight generation using AI.</p>
+              <div class="project-meta">
+                <div class="avatar-stack">
+                  <span class="mini-avatar" style="background:#1b6b5a;">NR</span>
+                  <span class="mini-avatar" style="background:#c4652a;">KT</span>
+                </div>
+                <span class="project-date">Updated 4 days ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== -->
+    <!-- 3. PROJECT WORKSPACE   -->
+    <!-- ====================== -->
+    <section class="view" data-page="project-workspace">
+      <div class="view-container">
+        <div class="breadcrumbs">
+          <span class="crumb">Projects</span>
+          <span class="crumb-sep">/</span>
+          <span class="crumb">Brand Refresh 2026</span>
+          <span class="crumb-sep">/</span>
+          <span class="crumb active">Visual Identity</span>
+        </div>
+
+        <div class="workspace-layout">
+          <!-- File Tree -->
+          <aside class="file-tree-panel">
+            <h3 class="panel-title">Files</h3>
+            <ul class="file-tree">
+              <li class="tree-folder open">
+                <span class="tree-toggle">&#9662;</span>
+                <span class="folder-icon">&#128193;</span>
+                <span class="tree-label">Brand Refresh 2026</span>
+                <ul class="tree-children">
+                  <li class="tree-folder open">
+                    <span class="tree-toggle">&#9662;</span>
+                    <span class="folder-icon">&#128193;</span>
+                    <span class="tree-label">Visual Identity</span>
+                    <ul class="tree-children">
+                      <li class="tree-file selected">
+                        <span class="file-icon">&#128196;</span>
+                        <span class="tree-label">logo-explorations.fig</span>
+                      </li>
+                      <li class="tree-file">
+                        <span class="file-icon">&#128196;</span>
+                        <span class="tree-label">color-palette.json</span>
+                      </li>
+                      <li class="tree-file">
+                        <span class="file-icon">&#128196;</span>
+                        <span class="tree-label">typography-scale.md</span>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="tree-folder">
+                    <span class="tree-toggle">&#9656;</span>
+                    <span class="folder-icon">&#128193;</span>
+                    <span class="tree-label">Brand Guidelines</span>
+                  </li>
+                  <li class="tree-folder">
+                    <span class="tree-toggle">&#9656;</span>
+                    <span class="folder-icon">&#128193;</span>
+                    <span class="tree-label">Mockups</span>
+                  </li>
+                  <li class="tree-file">
+                    <span class="file-icon">&#128196;</span>
+                    <span class="tree-label">project-brief.pdf</span>
+                  </li>
+                  <li class="tree-file">
+                    <span class="file-icon">&#128196;</span>
+                    <span class="tree-label">timeline.md</span>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </aside>
+
+          <!-- File Content Area -->
+          <div class="file-content-panel">
+            <div class="file-content-header">
+              <h2>logo-explorations.fig</h2>
+              <div class="file-actions">
+                <button class="btn-subtle">Edit</button>
+                <button class="btn-subtle">Share</button>
+                <button class="btn-subtle">Download</button>
+              </div>
+            </div>
+            <div class="file-detail-grid">
+              <div class="file-detail-item">
+                <span class="detail-label">Type</span>
+                <span class="detail-value">Figma Design File</span>
+              </div>
+              <div class="file-detail-item">
+                <span class="detail-label">Size</span>
+                <span class="detail-value">4.2 MB</span>
+              </div>
+              <div class="file-detail-item">
+                <span class="detail-label">Modified</span>
+                <span class="detail-value">Feb 15, 2026 at 2:34 PM</span>
+              </div>
+              <div class="file-detail-item">
+                <span class="detail-label">Created by</span>
+                <span class="detail-value">Mika K.</span>
+              </div>
+            </div>
+            <div class="file-preview-placeholder">
+              <div class="preview-frame">
+                <p class="preview-label">Logo Exploration Preview</p>
+                <div class="preview-grid-mock">
+                  <div class="mock-logo-cell" style="background: #c4652a; border-radius: 14px;"><span style="color:#fff; font-family: var(--font-heading); font-size: 1.8rem;">IF</span></div>
+                  <div class="mock-logo-cell" style="background: #1b6b5a; border-radius: 50%;"><span style="color:#fff; font-family: var(--font-heading); font-size: 1.8rem;">IF</span></div>
+                  <div class="mock-logo-cell" style="background: #2c1810; border-radius: 14px;"><span style="color:#faf6ef; font-family: var(--font-heading); font-size: 1.8rem;">IF</span></div>
+                  <div class="mock-logo-cell" style="background: #faf6ef; border: 2px solid #d4c5a9; border-radius: 50%;"><span style="color:#c4652a; font-family: var(--font-heading); font-size: 1.8rem;">IF</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="file-description">
+              <h3>Description</h3>
+              <p>Six logo directions exploring the intersection of warmth and precision. Directions range from a geometric monogram with rounded terminals to an organic wordmark with ligature details. Each concept includes dark, light, and accent colorway variants suitable for both digital and print applications.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== -->
+    <!-- 4. KANBAN               -->
+    <!-- ====================== -->
+    <section class="view" data-page="kanban">
+      <div class="view-container">
+        <div class="view-header">
+          <h1>Kanban Board</h1>
+          <div class="kanban-controls">
+            <span class="kanban-project-label">Brand Refresh 2026</span>
+            <button class="btn-warm">+ Add Task</button>
+          </div>
+        </div>
+
+        <div class="kanban-board">
+          <!-- Backlog -->
+          <div class="kanban-column">
+            <div class="kanban-col-header backlog">
+              <span class="col-dot"></span>
+              <h3>Backlog</h3>
+              <span class="col-count">4</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Research competitor color palettes</h4>
+                <div class="card-tags">
+                  <span class="tag tag-amber">Research</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#1b6b5a; width:26px; height:26px; font-size:0.7rem;">EJ</span>
+                  <span class="card-due">Feb 20</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Audit existing iconography set</h4>
+                <div class="card-tags">
+                  <span class="tag tag-olive">Design</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#c4652a; width:26px; height:26px; font-size:0.7rem;">MK</span>
+                  <span class="card-due">Feb 22</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Write brand voice documentation</h4>
+                <div class="card-tags">
+                  <span class="tag tag-amber">Content</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#8b6b4a; width:26px; height:26px; font-size:0.7rem;">SW</span>
+                  <span class="card-due">Feb 25</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Collect stakeholder feedback on directions</h4>
+                <div class="card-tags">
+                  <span class="tag tag-olive">Planning</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#c4652a; width:26px; height:26px; font-size:0.7rem;">NR</span>
+                  <span class="card-due">Feb 26</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- In Progress -->
+          <div class="kanban-column">
+            <div class="kanban-col-header in-progress">
+              <span class="col-dot"></span>
+              <h3>In Progress</h3>
+              <span class="col-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Finalize primary color palette</h4>
+                <div class="card-tags">
+                  <span class="tag tag-amber">Design</span>
+                  <span class="tag tag-olive">High Priority</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#c4652a; width:26px; height:26px; font-size:0.7rem;">MK</span>
+                  <span class="card-due overdue">Feb 14</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Typography scale exploration</h4>
+                <div class="card-tags">
+                  <span class="tag tag-amber">Design</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#1b6b5a; width:26px; height:26px; font-size:0.7rem;">EJ</span>
+                  <span class="card-due">Feb 18</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Logo concept B refinement</h4>
+                <div class="card-tags">
+                  <span class="tag tag-olive">Design</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#c4652a; width:26px; height:26px; font-size:0.7rem;">MK</span>
+                  <span class="card-due">Feb 17</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review -->
+          <div class="kanban-column">
+            <div class="kanban-col-header review">
+              <span class="col-dot"></span>
+              <h3>Review</h3>
+              <span class="col-count">2</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Mood board presentation deck</h4>
+                <div class="card-tags">
+                  <span class="tag tag-amber">Presentation</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#8b6b4a; width:26px; height:26px; font-size:0.7rem;">SW</span>
+                  <span class="card-due">Feb 16</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Business card and stationery mockups</h4>
+                <div class="card-tags">
+                  <span class="tag tag-olive">Design</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#1b6b5a; width:26px; height:26px; font-size:0.7rem;">EJ</span>
+                  <span class="card-due">Feb 16</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Done -->
+          <div class="kanban-column">
+            <div class="kanban-col-header done">
+              <span class="col-dot"></span>
+              <h3>Done</h3>
+              <span class="col-count">5</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card completed">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Initial brand audit report</h4>
+                <div class="card-tags">
+                  <span class="tag tag-olive">Research</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#c4652a; width:26px; height:26px; font-size:0.7rem;">NR</span>
+                  <span class="card-due">Feb 8</span>
+                </div>
+              </div>
+              <div class="kanban-card completed">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Stakeholder interview synthesis</h4>
+                <div class="card-tags">
+                  <span class="tag tag-amber">Research</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#8b6b4a; width:26px; height:26px; font-size:0.7rem;">SW</span>
+                  <span class="card-due">Feb 5</span>
+                </div>
+              </div>
+              <div class="kanban-card completed">
+                <div class="card-drag-handle">&#8942;&#8942;</div>
+                <h4 class="card-title">Competitive landscape analysis</h4>
+                <div class="card-tags">
+                  <span class="tag tag-olive">Research</span>
+                </div>
+                <div class="card-footer">
+                  <span class="mini-avatar" style="background:#1b6b5a; width:26px; height:26px; font-size:0.7rem;">KT</span>
+                  <span class="card-due">Feb 3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== -->
+    <!-- 5. WHITEBOARD           -->
+    <!-- ====================== -->
+    <section class="view" data-page="whiteboard">
+      <div class="view-container view-container--flush">
+        <div class="whiteboard-toolbar">
+          <button class="wb-tool active" title="Select"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51z"/></svg></button>
+          <button class="wb-tool" title="Rectangle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/></svg></button>
+          <button class="wb-tool" title="Circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/></svg></button>
+          <button class="wb-tool" title="Text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9.5" y1="20" x2="14.5" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></button>
+          <button class="wb-tool" title="Draw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></button>
+          <span class="wb-divider"></span>
+          <button class="wb-tool" title="Sticky Note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15.5 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V8.5L15.5 3z"/><polyline points="14 3 14 9 21 9"/></svg></button>
+          <button class="wb-tool" title="Connection"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="15 8 19 12 15 16"/></svg></button>
+        </div>
+
+        <div class="whiteboard-canvas">
+          <div class="canvas-dot-grid"></div>
+
+          <!-- Sticky Notes and Shapes -->
+          <div class="wb-node wb-sticky amber" style="left: 80px; top: 60px;">
+            <h4>User Research</h4>
+            <p>Interview 12 users about their current workflow pain points</p>
+          </div>
+
+          <div class="wb-node wb-sticky olive" style="left: 380px; top: 40px;">
+            <h4>Persona Mapping</h4>
+            <p>Create 3 primary personas from interview synthesis</p>
+          </div>
+
+          <div class="wb-node wb-sticky amber" style="left: 660px; top: 80px;">
+            <h4>Journey Map</h4>
+            <p>Document the end-to-end experience for "idea to launch" flow</p>
+          </div>
+
+          <div class="wb-node wb-rect" style="left: 140px; top: 280px; width: 200px; height: 100px;">
+            <span>Information Architecture</span>
+          </div>
+
+          <div class="wb-node wb-circle" style="left: 460px; top: 260px;">
+            <span>Validate</span>
+          </div>
+
+          <div class="wb-node wb-rect" style="left: 620px; top: 280px; width: 200px; height: 100px;">
+            <span>Wireframe Iteration</span>
+          </div>
+
+          <div class="wb-node wb-sticky olive" style="left: 200px; top: 440px;">
+            <h4>Design Tokens</h4>
+            <p>Define spacing, color, and type scales as reusable tokens</p>
+          </div>
+
+          <div class="wb-node wb-sticky amber" style="left: 520px; top: 460px;">
+            <h4>Prototype</h4>
+            <p>Build interactive prototype for usability testing round 2</p>
+          </div>
+
+          <!-- SVG Connections -->
+          <svg class="wb-connections" viewBox="0 0 900 600">
+            <line x1="250" y1="130" x2="380" y2="100" stroke="var(--border)" stroke-width="2" stroke-dasharray="6,4"/>
+            <line x1="550" y1="110" x2="660" y2="120" stroke="var(--border)" stroke-width="2" stroke-dasharray="6,4"/>
+            <line x1="200" y1="180" x2="230" y2="280" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="470" y1="160" x2="490" y2="260" stroke="var(--accent2)" stroke-width="2"/>
+            <line x1="340" y1="330" x2="460" y2="310" stroke="var(--border)" stroke-width="2" stroke-dasharray="6,4"/>
+            <line x1="530" y1="310" x2="620" y2="320" stroke="var(--border)" stroke-width="2" stroke-dasharray="6,4"/>
+            <line x1="280" y1="380" x2="300" y2="440" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="720" y1="380" x2="640" y2="460" stroke="var(--accent2)" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== -->
+    <!-- 6. SCHEMA PLANNER       -->
+    <!-- ====================== -->
+    <section class="view" data-page="schema-planner">
+      <div class="view-container">
+        <div class="view-header">
+          <h1>Schema Planner</h1>
+          <button class="btn-warm">+ New Entity</button>
+        </div>
+
+        <!-- Migration Timeline -->
+        <div class="migration-timeline">
+          <div class="timeline-step completed">
+            <span class="step-dot"></span>
+            <span class="step-label">Schema Design</span>
+          </div>
+          <div class="timeline-connector completed"></div>
+          <div class="timeline-step completed">
+            <span class="step-dot"></span>
+            <span class="step-label">Review</span>
+          </div>
+          <div class="timeline-connector active"></div>
+          <div class="timeline-step active">
+            <span class="step-dot"></span>
+            <span class="step-label">Migration Scripts</span>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-step">
+            <span class="step-dot"></span>
+            <span class="step-label">Staging Test</span>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-step">
+            <span class="step-dot"></span>
+            <span class="step-label">Production Deploy</span>
+          </div>
+        </div>
+
+        <!-- Entity Diagram -->
+        <div class="schema-diagram">
+          <div class="entity-card" style="grid-column: 1; grid-row: 1;">
+            <div class="entity-header amber">User</div>
+            <ul class="entity-fields">
+              <li><span class="field-name">id</span><span class="field-type">uuid</span></li>
+              <li><span class="field-name">email</span><span class="field-type">varchar(255)</span></li>
+              <li><span class="field-name">display_name</span><span class="field-type">varchar(100)</span></li>
+              <li><span class="field-name">avatar_url</span><span class="field-type">text</span></li>
+              <li><span class="field-name">role</span><span class="field-type">enum</span></li>
+              <li><span class="field-name">created_at</span><span class="field-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-card" style="grid-column: 2; grid-row: 1;">
+            <div class="entity-header olive">Project</div>
+            <ul class="entity-fields">
+              <li><span class="field-name">id</span><span class="field-type">uuid</span></li>
+              <li><span class="field-name">name</span><span class="field-type">varchar(200)</span></li>
+              <li><span class="field-name">description</span><span class="field-type">text</span></li>
+              <li><span class="field-name">owner_id</span><span class="field-type">uuid (FK)</span></li>
+              <li><span class="field-name">status</span><span class="field-type">enum</span></li>
+              <li><span class="field-name">created_at</span><span class="field-type">timestamp</span></li>
+              <li><span class="field-name">updated_at</span><span class="field-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-card" style="grid-column: 3; grid-row: 1;">
+            <div class="entity-header amber">Idea</div>
+            <ul class="entity-fields">
+              <li><span class="field-name">id</span><span class="field-type">uuid</span></li>
+              <li><span class="field-name">title</span><span class="field-type">varchar(300)</span></li>
+              <li><span class="field-name">body</span><span class="field-type">text</span></li>
+              <li><span class="field-name">author_id</span><span class="field-type">uuid (FK)</span></li>
+              <li><span class="field-name">project_id</span><span class="field-type">uuid (FK)</span></li>
+              <li><span class="field-name">priority</span><span class="field-type">enum</span></li>
+              <li><span class="field-name">status</span><span class="field-type">enum</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-card" style="grid-column: 1; grid-row: 2;">
+            <div class="entity-header olive">Task</div>
+            <ul class="entity-fields">
+              <li><span class="field-name">id</span><span class="field-type">uuid</span></li>
+              <li><span class="field-name">title</span><span class="field-type">varchar(300)</span></li>
+              <li><span class="field-name">project_id</span><span class="field-type">uuid (FK)</span></li>
+              <li><span class="field-name">assignee_id</span><span class="field-type">uuid (FK)</span></li>
+              <li><span class="field-name">column</span><span class="field-type">enum</span></li>
+              <li><span class="field-name">position</span><span class="field-type">integer</span></li>
+              <li><span class="field-name">due_date</span><span class="field-type">date</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-card" style="grid-column: 2; grid-row: 2;">
+            <div class="entity-header amber">Tag</div>
+            <ul class="entity-fields">
+              <li><span class="field-name">id</span><span class="field-type">uuid</span></li>
+              <li><span class="field-name">name</span><span class="field-type">varchar(50)</span></li>
+              <li><span class="field-name">color</span><span class="field-type">varchar(7)</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-card" style="grid-column: 3; grid-row: 2;">
+            <div class="entity-header olive">Comment</div>
+            <ul class="entity-fields">
+              <li><span class="field-name">id</span><span class="field-type">uuid</span></li>
+              <li><span class="field-name">body</span><span class="field-type">text</span></li>
+              <li><span class="field-name">author_id</span><span class="field-type">uuid (FK)</span></li>
+              <li><span class="field-name">idea_id</span><span class="field-type">uuid (FK)</span></li>
+              <li><span class="field-name">created_at</span><span class="field-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <!-- SVG Relationship Lines -->
+          <svg class="schema-lines" viewBox="0 0 1000 700">
+            <line x1="300" y1="120" x2="340" y2="120" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="640" y1="120" x2="680" y2="120" stroke="var(--accent2)" stroke-width="2"/>
+            <line x1="160" y1="260" x2="160" y2="300" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="500" y1="260" x2="500" y2="300" stroke="var(--accent2)" stroke-width="2"/>
+            <line x1="830" y1="260" x2="830" y2="300" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="300" y1="400" x2="340" y2="400" stroke="var(--border)" stroke-width="2" stroke-dasharray="6,4"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== -->
+    <!-- 7. DIRECTORY TREE       -->
+    <!-- ====================== -->
+    <section class="view" data-page="directory-tree">
+      <div class="view-container">
+        <div class="view-header">
+          <h1>File Explorer</h1>
+          <div class="search-bar">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="search-input" placeholder="Search files..." />
+          </div>
+        </div>
+
+        <div class="directory-panel">
+          <table class="dir-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Modified</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="dir-row folder expanded" data-depth="0">
+                <td class="dir-name"><span class="dir-chevron">&#9662;</span><span class="dir-icon">&#128193;</span>Brand Refresh 2026</td>
+                <td class="dir-size">--</td>
+                <td class="dir-date">Feb 15, 2026</td>
+              </tr>
+              <tr class="dir-row folder expanded" data-depth="1">
+                <td class="dir-name"><span class="dir-indent"></span><span class="dir-chevron">&#9662;</span><span class="dir-icon">&#128193;</span>Visual Identity</td>
+                <td class="dir-size">--</td>
+                <td class="dir-date">Feb 15, 2026</td>
+              </tr>
+              <tr class="dir-row file selected" data-depth="2">
+                <td class="dir-name"><span class="dir-indent"></span><span class="dir-indent"></span><span class="dir-icon">&#128196;</span>logo-explorations.fig</td>
+                <td class="dir-size">4.2 MB</td>
+                <td class="dir-date">Feb 15, 2026</td>
+              </tr>
+              <tr class="dir-row file" data-depth="2">
+                <td class="dir-name"><span class="dir-indent"></span><span class="dir-indent"></span><span class="dir-icon">&#127912;</span>color-palette.json</td>
+                <td class="dir-size">1.8 KB</td>
+                <td class="dir-date">Feb 14, 2026</td>
+              </tr>
+              <tr class="dir-row file" data-depth="2">
+                <td class="dir-name"><span class="dir-indent"></span><span class="dir-indent"></span><span class="dir-icon">&#128196;</span>typography-scale.md</td>
+                <td class="dir-size">3.1 KB</td>
+                <td class="dir-date">Feb 13, 2026</td>
+              </tr>
+              <tr class="dir-row folder" data-depth="1">
+                <td class="dir-name"><span class="dir-indent"></span><span class="dir-chevron">&#9656;</span><span class="dir-icon">&#128193;</span>Brand Guidelines</td>
+                <td class="dir-size">--</td>
+                <td class="dir-date">Feb 12, 2026</td>
+              </tr>
+              <tr class="dir-row folder" data-depth="1">
+                <td class="dir-name"><span class="dir-indent"></span><span class="dir-chevron">&#9656;</span><span class="dir-icon">&#128193;</span>Mockups</td>
+                <td class="dir-size">--</td>
+                <td class="dir-date">Feb 11, 2026</td>
+              </tr>
+              <tr class="dir-row file" data-depth="1">
+                <td class="dir-name"><span class="dir-indent"></span><span class="dir-icon">&#128196;</span>project-brief.pdf</td>
+                <td class="dir-size">2.4 MB</td>
+                <td class="dir-date">Feb 8, 2026</td>
+              </tr>
+              <tr class="dir-row file" data-depth="1">
+                <td class="dir-name"><span class="dir-indent"></span><span class="dir-icon">&#128196;</span>timeline.md</td>
+                <td class="dir-size">1.2 KB</td>
+                <td class="dir-date">Feb 5, 2026</td>
+              </tr>
+              <tr class="dir-row folder" data-depth="0">
+                <td class="dir-name"><span class="dir-chevron">&#9656;</span><span class="dir-icon">&#128193;</span>Mobile App v3</td>
+                <td class="dir-size">--</td>
+                <td class="dir-date">Feb 14, 2026</td>
+              </tr>
+              <tr class="dir-row folder" data-depth="0">
+                <td class="dir-name"><span class="dir-chevron">&#9656;</span><span class="dir-icon">&#128193;</span>API v2 Migration</td>
+                <td class="dir-size">--</td>
+                <td class="dir-date">Feb 13, 2026</td>
+              </tr>
+              <tr class="dir-row folder" data-depth="0">
+                <td class="dir-name"><span class="dir-chevron">&#9656;</span><span class="dir-icon">&#128193;</span>Design System Unification</td>
+                <td class="dir-size">--</td>
+                <td class="dir-date">Feb 10, 2026</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== -->
+    <!-- 8. IDEAS                -->
+    <!-- ====================== -->
+    <section class="view" data-page="ideas">
+      <div class="view-container">
+        <div class="view-header">
+          <h1>Ideas</h1>
+        </div>
+
+        <!-- Capture Card -->
+        <div class="idea-capture-card">
+          <h3>Capture a new idea</h3>
+          <textarea class="idea-textarea" placeholder="What's on your mind? Describe your idea, feature request, or inspiration..." rows="3"></textarea>
+          <div class="idea-capture-footer">
+            <div class="capture-options">
+              <select class="capture-select">
+                <option>Link to project...</option>
+                <option>Brand Refresh 2026</option>
+                <option>Mobile App v3</option>
+                <option>API v2 Migration</option>
+                <option>Onboarding Flow</option>
+              </select>
+              <select class="capture-select">
+                <option>Priority</option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+              </select>
+            </div>
+            <button class="btn-warm">Submit Idea</button>
+          </div>
+        </div>
+
+        <!-- Ideas List -->
+        <div class="ideas-grid">
+          <div class="idea-card">
+            <div class="idea-card-header">
+              <h3>Voice-first capture mode</h3>
+              <span class="priority-badge high">High</span>
+            </div>
+            <p class="idea-desc">Allow users to dictate ideas via microphone with real-time transcription and automatic tagging using NLP. Could integrate with Whisper API for accuracy.</p>
+            <div class="idea-tags">
+              <span class="tag tag-amber">Feature</span>
+              <span class="tag tag-olive">AI</span>
+              <span class="tag tag-amber">UX</span>
+            </div>
+            <div class="idea-footer">
+              <span class="idea-project-pill">Mobile App v3</span>
+              <span class="idea-author">Noa R. &middot; 3 hrs ago</span>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-card-header">
+              <h3>Contextual AI suggestions in workspace</h3>
+              <span class="priority-badge high">High</span>
+            </div>
+            <p class="idea-desc">While editing a project, the AI sidebar should proactively suggest related ideas, past decisions, and similar patterns from other projects in the workspace.</p>
+            <div class="idea-tags">
+              <span class="tag tag-olive">AI</span>
+              <span class="tag tag-amber">Productivity</span>
+            </div>
+            <div class="idea-footer">
+              <span class="idea-project-pill">Design System</span>
+              <span class="idea-author">Mika K. &middot; 1 day ago</span>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-card-header">
+              <h3>Automated dependency graph visualization</h3>
+              <span class="priority-badge medium">Medium</span>
+            </div>
+            <p class="idea-desc">Generate a visual dependency graph from schema planner entities, showing how changes to one entity cascade through related models and API endpoints.</p>
+            <div class="idea-tags">
+              <span class="tag tag-olive">Visualization</span>
+              <span class="tag tag-amber">Dev Tools</span>
+            </div>
+            <div class="idea-footer">
+              <span class="idea-project-pill">API v2 Migration</span>
+              <span class="idea-author">Soren W. &middot; 2 days ago</span>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-card-header">
+              <h3>Team mood pulse check-in</h3>
+              <span class="priority-badge low">Low</span>
+            </div>
+            <p class="idea-desc">Weekly anonymous 1-question pulse survey integrated into the dashboard. Shows team sentiment trends over time without identifying individuals.</p>
+            <div class="idea-tags">
+              <span class="tag tag-olive">Culture</span>
+              <span class="tag tag-amber">Analytics</span>
+            </div>
+            <div class="idea-footer">
+              <span class="idea-project-pill">Onboarding Flow</span>
+              <span class="idea-author">Elara J. &middot; 3 days ago</span>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-card-header">
+              <h3>Kanban card templates with pre-filled fields</h3>
+              <span class="priority-badge medium">Medium</span>
+            </div>
+            <p class="idea-desc">Create reusable card templates for common task types (bug, feature, spike, design review). Each template pre-fills tags, checklists, and assignee suggestions.</p>
+            <div class="idea-tags">
+              <span class="tag tag-amber">Workflow</span>
+              <span class="tag tag-olive">Templates</span>
+            </div>
+            <div class="idea-footer">
+              <span class="idea-project-pill">Brand Refresh 2026</span>
+              <span class="idea-author">Kai T. &middot; 4 days ago</span>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-card-header">
+              <h3>Dark mode with teak warmth</h3>
+              <span class="priority-badge low">Low</span>
+            </div>
+            <p class="idea-desc">A dark mode that retains the mid-century warmth: deep espresso backgrounds, warm amber accents, muted olive greens. Not cold and clinical like typical dark themes.</p>
+            <div class="idea-tags">
+              <span class="tag tag-amber">Design</span>
+              <span class="tag tag-olive">Theme</span>
+            </div>
+            <div class="idea-footer">
+              <span class="idea-project-pill">Design System</span>
+              <span class="idea-author">Mika K. &middot; 5 days ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== -->
+    <!-- 9. AI CHAT              -->
+    <!-- ====================== -->
+    <section class="view" data-page="ai-chat">
+      <div class="view-container view-container--flush">
+        <div class="chat-layout">
+          <!-- Chat Thread -->
+          <div class="chat-thread">
+            <div class="chat-messages">
+              <div class="chat-message ai">
+                <div class="message-avatar ai-avatar">AI</div>
+                <div class="message-bubble">
+                  <p>Hello, Mika! I'm your IdeaFlow assistant. I have context on all your projects, ideas, and schemas. How can I help you today?</p>
+                  <span class="message-time">2:00 PM</span>
+                </div>
+              </div>
+
+              <div class="chat-message user">
+                <div class="message-bubble">
+                  <p>Can you summarize the current state of the Brand Refresh project? I need to prepare for tomorrow's stakeholder meeting.</p>
+                  <span class="message-time">2:01 PM</span>
+                </div>
+                <div class="message-avatar user-avatar">MK</div>
+              </div>
+
+              <div class="chat-message ai">
+                <div class="message-avatar ai-avatar">AI</div>
+                <div class="message-bubble">
+                  <p>Here's a summary of <strong>Brand Refresh 2026</strong>:</p>
+                  <ul>
+                    <li><strong>Overall progress:</strong> 78% complete</li>
+                    <li><strong>In progress:</strong> Primary color palette finalization (overdue by 1 day), typography scale exploration, and Logo concept B refinement</li>
+                    <li><strong>In review:</strong> Mood board presentation deck and stationery mockups</li>
+                    <li><strong>Completed:</strong> Brand audit, stakeholder interviews, competitive analysis</li>
+                    <li><strong>Upcoming deadline:</strong> Brand guidelines final review on Feb 16 (tomorrow)</li>
+                  </ul>
+                  <p>The color palette task being overdue could impact tomorrow's review. I'd suggest prioritizing that before the meeting.</p>
+                  <span class="message-time">2:01 PM</span>
+                </div>
+              </div>
+
+              <div class="chat-message user">
+                <div class="message-bubble">
+                  <p>That's really helpful. Can you also pull up any related ideas that have been submitted for this project?</p>
+                  <span class="message-time">2:03 PM</span>
+                </div>
+                <div class="message-avatar user-avatar">MK</div>
+              </div>
+
+              <div class="chat-message ai">
+                <div class="message-avatar ai-avatar">AI</div>
+                <div class="message-bubble">
+                  <p>I found <strong>2 ideas</strong> linked to Brand Refresh 2026:</p>
+                  <ol>
+                    <li><strong>"Kanban card templates with pre-filled fields"</strong> by Kai T. (Medium priority) - Would streamline how the team creates tasks for different phases of the refresh.</li>
+                    <li><strong>"Dark mode with teak warmth"</strong> by you (Low priority) - A thematic dark mode concept that aligns with the mid-century brand direction.</li>
+                  </ol>
+                  <p>The card templates idea has synergy with your current workflow. Want me to draft a proposal connecting it to the Brand Refresh timeline?</p>
+                  <span class="message-time">2:03 PM</span>
+                </div>
+              </div>
+
+              <div class="chat-message user">
+                <div class="message-bubble">
+                  <p>Yes, please draft a brief proposal I can share in the meeting. Keep it concise.</p>
+                  <span class="message-time">2:05 PM</span>
+                </div>
+                <div class="message-avatar user-avatar">MK</div>
+              </div>
+
+              <div class="chat-message ai">
+                <div class="message-avatar ai-avatar">AI</div>
+                <div class="message-bubble">
+                  <p><strong>Proposal: Kanban Card Templates for Brand Refresh</strong></p>
+                  <p><em>Objective:</em> Reduce task creation overhead by 40% through pre-configured card templates for recurring brand refresh activities.</p>
+                  <p><em>Templates to create:</em></p>
+                  <ul>
+                    <li><strong>Design Review</strong> - Pre-assigns to design lead, includes feedback checklist</li>
+                    <li><strong>Asset Export</strong> - Tags: Design + Delivery, links to brand guidelines</li>
+                    <li><strong>Stakeholder Approval</strong> - Includes sign-off checklist and due date formula</li>
+                  </ul>
+                  <p><em>Timeline:</em> Can be implemented within the current sprint alongside existing work.</p>
+                  <p>Shall I format this as a shareable document?</p>
+                  <span class="message-time">2:05 PM</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-input-bar">
+              <input type="text" class="chat-input" placeholder="Ask IdeaFlow AI anything..." />
+              <button class="chat-send-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Context Side Panel -->
+          <aside class="chat-context-panel">
+            <h3 class="panel-title">Context</h3>
+            <div class="context-section">
+              <h4>Active Project</h4>
+              <div class="context-item">
+                <span class="context-dot amber"></span>
+                Brand Refresh 2026
+              </div>
+            </div>
+            <div class="context-section">
+              <h4>Referenced Entities</h4>
+              <div class="context-item">
+                <span class="context-dot olive"></span>
+                12 tasks across 4 columns
+              </div>
+              <div class="context-item">
+                <span class="context-dot amber"></span>
+                2 linked ideas
+              </div>
+              <div class="context-item">
+                <span class="context-dot olive"></span>
+                6 team members
+              </div>
+            </div>
+            <div class="context-section">
+              <h4>Suggested Actions</h4>
+              <button class="context-action">Generate meeting agenda</button>
+              <button class="context-action">Export project summary</button>
+              <button class="context-action">Create follow-up tasks</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== -->
+    <!-- 10. SETTINGS            -->
+    <!-- ====================== -->
+    <section class="view" data-page="settings">
+      <div class="view-container">
+        <div class="view-header">
+          <h1>Settings</h1>
+        </div>
+
+        <!-- Settings Tab Bar -->
+        <div class="settings-tabs">
+          <button class="settings-tab active" data-settings-tab="profile">Profile</button>
+          <button class="settings-tab" data-settings-tab="workspace">Workspace</button>
+          <button class="settings-tab" data-settings-tab="notifications">Notifications</button>
+          <button class="settings-tab" data-settings-tab="integrations">Integrations</button>
+          <button class="settings-tab" data-settings-tab="billing">Billing</button>
+        </div>
+
+        <!-- Profile Settings -->
+        <div class="settings-panel active" data-settings-panel="profile">
+          <div class="settings-section">
+            <h3>Personal Information</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Display Name</label>
+                <input type="text" class="form-input" value="Mika Korhonen" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-input" value="mika@ideaflow.studio" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Role</label>
+                <select class="form-select">
+                  <option selected>Design Lead</option>
+                  <option>Developer</option>
+                  <option>Product Manager</option>
+                  <option>Researcher</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Time Zone</label>
+                <select class="form-select">
+                  <option>UTC-8 (Pacific)</option>
+                  <option selected>UTC-5 (Eastern)</option>
+                  <option>UTC+0 (London)</option>
+                  <option>UTC+2 (Helsinki)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3>Appearance</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Theme</label>
+                <select class="form-select">
+                  <option selected>Warm Cream (Default)</option>
+                  <option>Teak Dark</option>
+                  <option>System Preference</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Content Density</label>
+                <select class="form-select">
+                  <option selected>Spacious</option>
+                  <option>Comfortable</option>
+                  <option>Compact</option>
+                </select>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-item">
+                <span class="toggle-label">Show welcome banner on dashboard</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="toggle-item">
+                <span class="toggle-label">Enable smooth scroll transitions</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="toggle-item">
+                <span class="toggle-label">Show project health donuts on dashboard</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="toggle-item">
+                <span class="toggle-label">Reduce motion</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3>Notifications</h3>
+            <div class="toggle-row">
+              <div class="toggle-item">
+                <span class="toggle-label">Email notifications for task assignments</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="toggle-item">
+                <span class="toggle-label">Browser push notifications</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="toggle-item">
+                <span class="toggle-label">Weekly digest email</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="toggle-item">
+                <span class="toggle-label">AI chat conversation summaries</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-actions">
+            <button class="btn-warm">Save Changes</button>
+            <button class="btn-subtle">Cancel</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

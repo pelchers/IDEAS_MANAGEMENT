@@ -1,0 +1,146 @@
+{
+  "style": "mid-century-modern",
+  "pass": 2,
+  "variantSeed": "saarinen-tulip-dashboard",
+  "description": "Pedestal/tulip-table layout inspired by Eero Saarinen's iconic furniture. A central hub radiates outward with orbital navigation rings, tapered panel borders that thin toward the bottom, and atomic-age starburst decorative elements as section dividers.",
+  "generatedDate": "2026-02-15",
+  "palette": {
+    "bg": "#faf6ef",
+    "text": "#2c1810",
+    "surface": "#ffffff",
+    "accent": "#c4652a",
+    "accent2": "#1b6b5a",
+    "mustard": "#c9982e",
+    "border": "#d4c5a9",
+    "creamDark": "#f0e8d8",
+    "warmGray": "#8a7e6e"
+  },
+  "typography": {
+    "heading": {
+      "family": "Playfair Display",
+      "weights": [400, 500, 600, 700],
+      "category": "serif"
+    },
+    "body": {
+      "family": "DM Sans",
+      "weights": [300, 400, 500, 600, 700],
+      "category": "sans-serif"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weights": [400, 500],
+      "category": "monospace"
+    },
+    "source": "Google Fonts CDN"
+  },
+  "layout": {
+    "type": "radial-hub-and-spoke",
+    "navigation": "orbital-rings",
+    "navigationDescription": "Concentric orbital rings around a central hub logo. Inner ring holds 5 primary views, outer ring holds 5 secondary views. Items orbit and scale on hover/active.",
+    "contentFlow": "center-outward-radiation",
+    "pageHeaders": "pedestal-hub-with-stem",
+    "decorativePattern": "starburst-atomic-dividers",
+    "borderStyle": "tapered-thick-to-thin",
+    "cardStyle": "tulip-stem-borders-with-clip-path",
+    "responsive": {
+      "desktop": "1440px - full orbital nav, multi-column layouts",
+      "tablet": "1024px - simplified grid, stacked panels",
+      "mobile": "768px - single column, hidden labels",
+      "smallMobile": "480px - hamburger-style toggle, full mobile adaptation"
+    }
+  },
+  "motion": {
+    "viewTransition": "scale(0.94) rotate(2deg) exit, scale(0.92) rotate(-2deg) enter, 500ms cubic-bezier",
+    "orbitalFloat": "translateY oscillation on stat pedestals, 4s ease-in-out infinite with staggered delays",
+    "starburstSpin": "continuous 360deg rotation, 6-8s linear infinite",
+    "cardEntrance": "scale(0.8) rotate(-5deg) to scale(1) rotate(0), staggered 80ms per card",
+    "toggleBounce": "cubic-bezier(0.34, 1.56, 0.64, 1) spring effect on nav items and controls",
+    "progressFill": "width animation 800ms with spring easing, triggered by IntersectionObserver"
+  },
+  "views": [
+    {
+      "id": "dashboard",
+      "label": "Dashboard",
+      "description": "Central hub with floating stat pedestals in orbit ring, sunburst activity chart, and activity timeline with pulsing orbital dots"
+    },
+    {
+      "id": "projects",
+      "label": "Projects",
+      "description": "Project cards in showcase grid with tulip stem borders, orbital entrance animations, and tapered clip-path stat pedestals"
+    },
+    {
+      "id": "project-workspace",
+      "label": "Project Workspace",
+      "description": "Split workspace with tapered panel borders using border-image gradients, atomic starburst breadcrumbs, task checklist, and notes area"
+    },
+    {
+      "id": "kanban",
+      "label": "Kanban",
+      "description": "Four lanes styled as tulip pedestals with plate-top headers, stem connectors, and card trays. Draggable card interaction"
+    },
+    {
+      "id": "whiteboard",
+      "label": "Whiteboard",
+      "description": "Canvas with starburst radial-gradient grid markers, atomic-age node shapes (diamond, ellipse, atom-ring, starburst clip-path), draggable nodes"
+    },
+    {
+      "id": "schema-planner",
+      "label": "Schema Planner",
+      "description": "Entity blocks as architectural pedestals with typed fields, primary/foreign key highlighting, and SVG dashed connection lines"
+    },
+    {
+      "id": "directory-tree",
+      "label": "Directory Tree",
+      "description": "File tree with starburst expand/collapse icons that rotate on toggle, orbital connector dots for files, animated max-height expand"
+    },
+    {
+      "id": "ideas",
+      "label": "Ideas",
+      "description": "Central capture input hub with pill-shaped ring container, idea cards in orbital field with dashed circular background decoration"
+    },
+    {
+      "id": "ai-chat",
+      "label": "AI Chat",
+      "description": "Tulip-shaped message containers with rounded bubble tops and gradient stems. Live chat simulation with AI responses"
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "description": "Mid-century toggle switches with spring-animated thumbs, starburst section dividers, range sliders, text inputs, danger zone"
+    }
+  ],
+  "files": [
+    {
+      "name": "index.html",
+      "description": "Complete HTML document with all 10 views using data-page/data-view attributes, semantic structure, Google Fonts preconnect"
+    },
+    {
+      "name": "style.css",
+      "description": "Full CSS with custom properties, orbital nav styles, pedestal layouts, starburst animations, tapered borders, responsive breakpoints, reduced-motion support"
+    },
+    {
+      "name": "app.js",
+      "description": "IIFE-wrapped vanilla JS with hash routing, orbital view transitions, tree toggles, whiteboard drag, chat simulation, idea capture, keyboard nav, IntersectionObserver optimizations"
+    },
+    {
+      "name": "README.md",
+      "description": "Concept documentation covering design philosophy, palette, typography, all 10 views, technical details, and differentiation from Pass 1"
+    },
+    {
+      "name": "validation/handoff.json",
+      "description": "This file - structured metadata about the pass including all configuration values"
+    },
+    {
+      "name": "validation/inspiration-crossreference.json",
+      "description": "Design inspiration sources with specific elements adapted and differentiators explaining uniqueness"
+    }
+  ],
+  "differentiationFromPass1": {
+    "navigation": "Orbital rings replacing horizontal credenza shelf",
+    "layout": "Hub-and-spoke radial flow replacing 2-column card grid",
+    "decorative": "Starburst/atomic CSS dividers replacing wood-grain textures",
+    "motion": "Rotational scale+rotate transitions replacing linear fades",
+    "hero": "Central pedestal hub element replacing top banner",
+    "timing": "420-500ms spring curves replacing 200-280ms linear easing"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "concept": "Liquid Motion",
+  "pass": 1,
+  "variantSeed": "morphing-blob-surfaces",
+  "generatedAt": "2026-02-15T00:00:00Z",
+  "style": {
+    "name": "Liquid Motion",
+    "description": "Blob-surface layout with organic morphing shapes, fluid GSAP animations, and a breathing UI that responds to every interaction with liquid-like feedback.",
+    "layoutProfile": "blob-morph-surfaces",
+    "motionStyle": "liquid-morph",
+    "density": "balanced",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "background": "#f0f4ff",
+    "text": "#0a1628",
+    "surface": "#ffffff",
+    "accent": "#3b82f6",
+    "accent2": "#8b5cf6",
+    "border": "#c7d2fe"
+  },
+  "typography": {
+    "heading": "Syne",
+    "body": "Manrope",
+    "mono": "JetBrains Mono"
+  },
+  "layout": {
+    "shell": "floating-blob-nav-left",
+    "navPattern": "organic-blob-buttons",
+    "contentFlow": "fluid-bento-grid",
+    "scrollBehavior": "momentum-parallax",
+    "alignment": "center",
+    "heroStyle": "gradient-morph-header"
+  },
+  "animationLibraries": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
+      "usage": "View transitions, nav morph, staggered reveals, parallax, toggle springs, breathing idle animations"
+    }
+  ],
+  "views": [
+    { "id": "dashboard", "label": "Dashboard", "navSelector": "[data-view='dashboard']", "contentSelector": "[data-page='dashboard']" },
+    { "id": "projects", "label": "Projects", "navSelector": "[data-view='projects']", "contentSelector": "[data-page='projects']" },
+    { "id": "project-workspace", "label": "Workspace", "navSelector": "[data-view='project-workspace']", "contentSelector": "[data-page='project-workspace']" },
+    { "id": "kanban", "label": "Kanban", "navSelector": "[data-view='kanban']", "contentSelector": "[data-page='kanban']" },
+    { "id": "whiteboard", "label": "Whiteboard", "navSelector": "[data-view='whiteboard']", "contentSelector": "[data-page='whiteboard']" },
+    { "id": "schema-planner", "label": "Schema Planner", "navSelector": "[data-view='schema-planner']", "contentSelector": "[data-page='schema-planner']" },
+    { "id": "directory-tree", "label": "Directory Tree", "navSelector": "[data-view='directory-tree']", "contentSelector": "[data-page='directory-tree']" },
+    { "id": "ideas", "label": "Ideas", "navSelector": "[data-view='ideas']", "contentSelector": "[data-page='ideas']" },
+    { "id": "ai-chat", "label": "AI Chat", "navSelector": "[data-view='ai-chat']", "contentSelector": "[data-page='ai-chat']" },
+    { "id": "settings", "label": "Settings", "navSelector": "[data-view='settings']", "contentSelector": "[data-page='settings']" }
+  ],
+  "files": [
+    { "path": "index.html", "type": "markup", "description": "Complete HTML with all 10 navigable views, Google Fonts, GSAP CDN" },
+    { "path": "style.css", "type": "stylesheet", "description": "CSS custom properties, blob shapes, breathing keyframes, responsive breakpoints" },
+    { "path": "app.js", "type": "script", "description": "GSAP view transitions, parallax, hover morphs, hash routing, toggle springs" },
+    { "path": "README.md", "type": "documentation", "description": "Concept overview and design system documentation" }
+  ],
+  "designTokens": {
+    "borderRadius": {
+      "soft": "24px",
+      "blob": "30% 70% 70% 30% / 30% 30% 70% 70%",
+      "blobAlt": "60% 40% 55% 45% / 45% 60% 40% 55%",
+      "pill": "100px"
+    },
+    "shadows": {
+      "soft": "0 4px 24px rgba(59, 130, 246, 0.08)",
+      "glow": "0 8px 40px rgba(59, 130, 246, 0.15)",
+      "lift": "0 12px 48px rgba(59, 130, 246, 0.18)"
+    },
+    "transitions": {
+      "liquid": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "spring": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      "smoothOut": "cubic-bezier(0, 0, 0.2, 1)"
+    }
+  },
+  "noBackgroundImages": true,
+  "noThreeJs": true
+}

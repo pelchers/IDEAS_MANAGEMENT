@@ -1,0 +1,67 @@
+{
+  "style": "Mid-Century Modern",
+  "pass": 1,
+  "variantSeed": "eames-lounge-workspace",
+  "generatedDate": "2026-02-15",
+  "palette": {
+    "background": "#faf6ef",
+    "text": "#2c1810",
+    "surface": "#ffffff",
+    "accent": "#c4652a",
+    "accent2": "#1b6b5a",
+    "border": "#d4c5a9"
+  },
+  "typography": {
+    "heading": "Playfair Display",
+    "body": "DM Sans",
+    "mono": "JetBrains Mono"
+  },
+  "layoutProfile": "credenza-shelf",
+  "layoutDetails": {
+    "shell": "Horizontal shelf navigation (top)",
+    "navPattern": "Icon-and-label row",
+    "contentFlow": "Card grid 2 columns",
+    "scroll": "Smooth scroll",
+    "alignment": "Center",
+    "hero": "Warm welcome banner",
+    "motion": "Subtle ease (CSS transitions, 200-280ms)",
+    "density": "Spacious",
+    "componentTone": "Soft (rounded corners 14px)"
+  },
+  "uniquenessFlags": {
+    "hasBackgroundImages": false,
+    "hasThreeJS": false,
+    "has3DMotion": false,
+    "cssTransitionsOnly": true,
+    "woodGrainTexture": true,
+    "roundedCornersRadius": "14px",
+    "generousWhitespace": true,
+    "serifHeadings": true,
+    "horizontalNavigation": true,
+    "warmColorScheme": true,
+    "conicGradientDonuts": true,
+    "dotGridWhiteboard": true,
+    "svgEntityConnections": true
+  },
+  "views": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ],
+  "mediaAssets": []
+}

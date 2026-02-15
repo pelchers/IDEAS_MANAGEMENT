@@ -1,0 +1,112 @@
+{
+  "concept": "brutalist",
+  "pass": 2,
+  "variant_seed": "stamp-grid-manifesto",
+  "inspiration_sources": [
+    {
+      "source": "OFFF Festival (offf.barcelona)",
+      "category": "poster-language-graphic-intensity",
+      "elements_applied": [
+        {
+          "element": "headline-banner",
+          "reference": "Full-width headline text styled as poster typography, using Anton at 4.5rem with heavy rule underneath - mirrors OFFF's graphic poster announcements",
+          "css_class": ".headline-banner, .headline-text"
+        },
+        {
+          "element": "page-index-num",
+          "reference": "Oversized semi-transparent page numbers (7rem) positioned as background watermarks in each view - inspired by OFFF's bold numeral hierarchy on event posters",
+          "css_class": ".page-index-num"
+        },
+        {
+          "element": "stamp-badges",
+          "reference": "Navigation as circled numbered stamps resembling postal/event admission stamps - draws from OFFF's ticketing and badge visual language",
+          "css_class": ".stamp-badge, .stamp-num, .stamp-label"
+        },
+        {
+          "element": "notice-stamps",
+          "reference": "Rotated ink-stamp labels (URGENT, REVIEW, DRAFT) on idea cards - poster paste-up aesthetic with slight rotation transform",
+          "css_class": ".notice-stamp, .notice-stamp--red, .notice-stamp--blue"
+        },
+        {
+          "element": "masonry-layout",
+          "reference": "Intentionally irregular multi-column grid (1fr/1.1fr/0.9fr) creating asymmetric poster composition - not a uniform grid",
+          "css_class": ".masonry-cols, .masonry-cols--3, .masonry-cols--2"
+        }
+      ]
+    },
+    {
+      "source": "NTS Radio (nts.live)",
+      "category": "data-dense-rhythm-utility-metadata",
+      "elements_applied": [
+        {
+          "element": "dispatch-items",
+          "reference": "Compact timestamp + description feed layout - directly inspired by NTS's show schedule with time codes and brief descriptions in dense rows",
+          "css_class": ".dispatch-item, .dispatch-time, .dispatch-text"
+        },
+        {
+          "element": "classified-ads",
+          "reference": "Dense, bordered, stacked task cards in kanban columns - modeled after NTS's compact show listings with minimal whitespace and utility metadata",
+          "css_class": ".classified-ad, .ad-ref, .ad-footer"
+        },
+        {
+          "element": "monospace-metadata",
+          "reference": "IBM Plex Mono used extensively for labels, timestamps, badges, and field specs - echoes NTS's utility-first typographic approach",
+          "css_class": ".meta-mono, .msg-time, .ad-ref, .entity-field"
+        },
+        {
+          "element": "masthead-edition",
+          "reference": "Volume/date metadata line in the masthead (VOL. I / 15 FEB 2026) - inspired by NTS's broadcast date and show numbering system",
+          "css_class": ".masthead-edition, .edition-label, .edition-date"
+        },
+        {
+          "element": "toolbar-ribbon",
+          "reference": "Dense horizontal tool strip with minimal-height stamp buttons - inspired by NTS's compact player controls and utility interface",
+          "css_class": ".blueprint-toolbar, .tool-stamp"
+        }
+      ]
+    },
+    {
+      "source": "Awwwards Typography",
+      "category": "display-led-hierarchy-word-as-interface",
+      "elements_applied": [
+        {
+          "element": "masthead-title",
+          "reference": "Anton at 2.8rem with 8px letter-spacing as the app's identity - words functioning as visual interface element, not just label",
+          "css_class": ".masthead-title"
+        },
+        {
+          "element": "pull-quotes",
+          "reference": "Typographic pull-quotes with oversized opening quotation marks (4rem) and italic body text - editorial display typography as content hierarchy device",
+          "css_class": ".pull-quote, .pull-quote-mark, .pull-quote-text"
+        },
+        {
+          "element": "legal-article-headings",
+          "reference": "Section symbols and em-dashes as structural markers (section 1, section 2) in settings - typography as organizational system, not decoration",
+          "css_class": ".legal-article, .article-section-head"
+        },
+        {
+          "element": "col-masthead",
+          "reference": "Kanban column headers styled as newspaper section mastheads with numero symbols and inverted color blocks - display type defining content zones",
+          "css_class": ".col-masthead, .col-masthead-num, .col-masthead-title"
+        },
+        {
+          "element": "stat-block-values",
+          "reference": "Dashboard numbers rendered at heading-xl scale (4.5rem) making data the visual focal point - inspired by Awwwards' data-as-display approach",
+          "css_class": ".stat-block-value, .stat-block-value--xl"
+        },
+        {
+          "element": "dot-leader-directory",
+          "reference": "Table of contents with dot leaders connecting file names to page references - classic typographic convention elevated as interface pattern",
+          "css_class": ".dir-entry, .dir-dots, .dir-page"
+        }
+      ]
+    }
+  ],
+  "cross_reference_summary": {
+    "total_elements_traced": 16,
+    "offf_elements": 5,
+    "nts_elements": 5,
+    "awwwards_elements": 6,
+    "coverage": "All 10 views incorporate at least one traced inspiration element. No generic/unstyled components exist."
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "concept": "slate",
+  "pass": 2,
+  "variantSeed": "layered-bedrock-strata",
+  "inspirationReferences": [
+    {
+      "source": "Notion (notion.so)",
+      "category": "Structured panel organization, clean information architecture",
+      "elementsAdapted": [
+        "Top-aligned navigation bar with tab-style view switching",
+        "Dense card grid layout for projects and ideas (3-column grid)",
+        "Settings organized as tabbed panels with clean form sections",
+        "Centered content column with max-width constraint for readability",
+        "Property-based metadata display on project cards (key-value rows)"
+      ],
+      "viewsInfluenced": ["projects", "ideas", "settings", "directory-tree"]
+    },
+    {
+      "source": "Grafana (grafana.com)",
+      "category": "Monitoring density, dashboard repetition, data-rich panels",
+      "elementsAdapted": [
+        "Dense 4-column KPI grid with sparkline bar charts inside each tile",
+        "Multi-panel dashboard layout with 3 equal-width data panels",
+        "Small type with monospace metadata and tight vertical spacing",
+        "Summary strip at bottom with secondary aggregate metrics",
+        "Health status rows with colored indicator pips and service names"
+      ],
+      "viewsInfluenced": ["dashboard", "kanban", "schema-planner"]
+    },
+    {
+      "source": "Awwwards Web Apps",
+      "category": "Application ergonomics, utility-first interaction, visual depth",
+      "elementsAdapted": [
+        "Elevation-based visual hierarchy: varying box-shadow depths create layered stone effect",
+        "Protruding tablet-style navigation tabs that extend above the top bar baseline",
+        "Hover interactions that lift elements (translateY) to reinforce physical depth metaphor",
+        "Geological gradient background: CSS linear-gradient darker at bottom, lighter at top",
+        "Chat interface with alternating elevation depths creating visual conversation rhythm"
+      ],
+      "viewsInfluenced": ["dashboard", "ai-chat", "whiteboard", "project-workspace"]
+    }
+  ],
+  "uniqueDesignElements": [
+    "Geological strata depth model: content at 3 elevation levels with external box-shadows casting downward",
+    "Stone tablet navigation: top bar tabs that protrude upward with shadow underneath, active tab has amber underline glow",
+    "Strata reveal animation: content emerges from below via translateY + opacity at 400ms ease-out",
+    "Gradient background: linear-gradient from lighter slate at top to deep charcoal at bottom (sedimentary layers)",
+    "Priority-as-elevation: higher-priority items have larger box-shadows (elevation-3 vs elevation-1)",
+    "Dense multi-column grid: 3-4 column layouts throughout (dashboard KPIs, project cards, idea tiles, kanban lanes)"
+  ],
+  "animationLibraries": [],
+  "mediaAssets": []
+}

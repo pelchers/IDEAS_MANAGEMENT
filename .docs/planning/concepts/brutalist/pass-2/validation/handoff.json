@@ -1,0 +1,142 @@
+{
+  "concept": "brutalist",
+  "pass": 2,
+  "variant_seed": "stamp-grid-manifesto",
+  "generated": "2026-02-15",
+  "layout_profile": "manifesto-masonry",
+  "structural_fingerprint": {
+    "shell": "top-bar-stamp-badges",
+    "nav_pattern": "numbered-badge-buttons-top-bar",
+    "nav_element": "stamp-nav",
+    "content_flow": "irregular-masonry-newspaper-columns",
+    "scroll": "reveal-on-scroll",
+    "alignment": "mixed-asymmetric",
+    "hero": "full-bleed-headline-banner",
+    "motion": "none-instant-transitions",
+    "density": "dense",
+    "component_tone": "hard-zero-border-radius"
+  },
+  "differentiation_from_pass_1": {
+    "nav_location": "TOP BAR (pass-1 uses fixed LEFT RAIL)",
+    "nav_type": "Stamp badges with circled numbers (pass-1 uses stacked button list)",
+    "layout": "Irregular masonry / newspaper columns (pass-1 uses single-column stack)",
+    "content_style": "Broadsheet / manifesto / editorial (pass-1 uses monolithic slab panels)",
+    "class_prefix": "broadsheet-*, stamp-*, classified-*, notice-*, legal-* (pass-1 uses left-rail, stat-card, view-*)",
+    "html_structure": "masthead + stamp-nav + broadsheet-content (pass-1 uses left-rail + content-area)",
+    "typography": "Pull-quotes, oversized index numbers, editorial section markers (pass-1 uses flat headings)",
+    "special_elements": "Page folios, dispatch items, classified ads, TOC with dot leaders, ink stamps, legal forms"
+  },
+  "palette": {
+    "background": "#e8e0d0",
+    "text": "#1a1a1a",
+    "surface": "#f5f0e6",
+    "accent": "#ff3b00",
+    "accent2": "#0038ff",
+    "border": "#1a1a1a"
+  },
+  "typography": {
+    "heading": "Anton",
+    "body": "Space Grotesk",
+    "mono": "IBM Plex Mono"
+  },
+  "views": [
+    {
+      "id": "dashboard",
+      "nav_label": "DASH",
+      "stamp_number": "01",
+      "description": "Broadsheet front page - headline stats, pull-quotes, dispatch feed",
+      "unique_elements": ["headline-banner", "stat-block", "pull-quote", "editorial-note", "dispatch-item"]
+    },
+    {
+      "id": "projects",
+      "nav_label": "PROJ",
+      "stamp_number": "02",
+      "description": "Magazine index page - editorial entries with large index numbers and category stamps",
+      "unique_elements": ["index-entry", "index-entry-num", "category-stamp"]
+    },
+    {
+      "id": "project-workspace",
+      "nav_label": "WORK",
+      "stamp_number": "03",
+      "description": "Newspaper editorial desk - TOC column (narrow left), article content (wide right)",
+      "unique_elements": ["editorial-desk", "desk-toc", "desk-article", "toc-list", "annotation-block"]
+    },
+    {
+      "id": "kanban",
+      "nav_label": "KANBAN",
+      "stamp_number": "04",
+      "description": "Newspaper classified columns - 4 columns with masthead headers and classified ad cards",
+      "unique_elements": ["classified-columns", "classified-col", "col-masthead", "classified-ad", "ad-ref"]
+    },
+    {
+      "id": "whiteboard",
+      "nav_label": "BOARD",
+      "stamp_number": "05",
+      "description": "Blueprint/schematic - ruled grid canvas with stamp-pad toolbar ribbon",
+      "unique_elements": ["blueprint-toolbar", "tool-stamp", "blueprint-canvas", "blueprint-grid", "blueprint-box"]
+    },
+    {
+      "id": "schema-planner",
+      "nav_label": "SCHEMA",
+      "stamp_number": "06",
+      "description": "Technical diagram - entity boxes with thick borders, monospace field specs, relation lines",
+      "unique_elements": ["schema-diagram", "schema-entity", "entity-header", "entity-field", "schema-relations"]
+    },
+    {
+      "id": "directory-tree",
+      "nav_label": "DIR",
+      "stamp_number": "07",
+      "description": "Table of contents - dot leaders, fake page numbers, hierarchical indentation via left border",
+      "unique_elements": ["dir-section", "dir-entry", "dir-dots", "dir-page"]
+    },
+    {
+      "id": "ideas",
+      "nav_label": "IDEAS",
+      "stamp_number": "08",
+      "description": "Manifesto wall - pinned notice cards with ink stamps, priority colors, tag labels",
+      "unique_elements": ["notice-card", "notice-stamp", "ink-tag", "notice-card--urgent"]
+    },
+    {
+      "id": "ai-chat",
+      "nav_label": "AI",
+      "stamp_number": "09",
+      "description": "Typewriter correspondence - monospace messages, ruled separators, indent left/right",
+      "unique_elements": ["correspondence-thread", "correspondence-msg", "msg-stamp", "msg-brief"]
+    },
+    {
+      "id": "settings",
+      "nav_label": "SET",
+      "stamp_number": "10",
+      "description": "Government/legal form - article-numbered sections, heavy underlines, toggle checkbox stamps",
+      "unique_elements": ["legal-form", "legal-article", "legal-field", "toggle-stamp", "legal-action"]
+    }
+  ],
+  "navigation": {
+    "type": "stamp-badge-top-bar",
+    "data_view_attr": "data-view",
+    "data_page_attr": "data-page",
+    "hash_routing": true,
+    "keyboard_shortcuts": "Number keys 1-9 and 0 map to views"
+  },
+  "constraints_verified": {
+    "no_background_images": true,
+    "no_threejs": true,
+    "no_gsap": true,
+    "zero_border_radius": true,
+    "instant_transitions": true,
+    "different_class_names_from_pass_1": true,
+    "different_html_structure_from_pass_1": true,
+    "top_bar_not_left_rail": true,
+    "masonry_not_single_column": true,
+    "newspaper_editorial_not_monolithic_slabs": true,
+    "oversized_indexing_numbers": true
+  },
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

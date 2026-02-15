@@ -1,0 +1,81 @@
+{
+  "concept": "mid-century-modern",
+  "pass": 2,
+  "variantSeed": "saarinen-tulip-dashboard",
+  "inspirationReferences": [
+    {
+      "source": "Eero Saarinen - Tulip Table and Chair Series (1956)",
+      "category": "Furniture Design",
+      "elementsAdapted": [
+        "Single-pedestal form language: page headers use a vertical stem leading to a wider top surface, mirroring the tulip table's central column supporting a circular top",
+        "Tapered column silhouette: CSS borders use gradient border-image that transitions from opaque at top to transparent at bottom, replicating the pedestal's narrowing profile",
+        "Clean unified base: the orbital navigation hub acts as the single unifying base from which all views radiate outward, like the tulip chair's single-stem base supporting the shell"
+      ],
+      "differentiators": [
+        "The pedestal metaphor is structural rather than decorative -- it organizes information hierarchy (stem = navigation path, top = content) rather than just styling surface elements",
+        "Tapered borders are achieved via CSS border-image with linear gradients and clip-path polygons, creating a digital interpretation that would be impossible in physical furniture",
+        "The hub-and-spoke navigation is interactive and orbital (items respond to hover with scale/translate spring animations) rather than static like the physical furniture's fixed form"
+      ]
+    },
+    {
+      "source": "Atomic Age / Googie Architecture Starburst Motifs (1950s-1960s)",
+      "category": "Architectural Decoration",
+      "elementsAdapted": [
+        "Starburst/asterisk shapes as section dividers throughout the interface, referencing the era's ubiquitous starburst wall clocks and Googie signage decorations",
+        "Radial gradient patterns on the whiteboard canvas mimicking atomic orbital diagrams and starburst tile patterns found in mid-century commercial interiors",
+        "Rotating CSS animations on decorative elements that evoke the kinetic sculptures and mobiles popular in atomic-age interior design"
+      ],
+      "differentiators": [
+        "Starbursts serve a functional UX role as section dividers and expand/collapse indicators in the directory tree, not purely decorative like their architectural counterparts",
+        "The continuous rotation animation is managed by IntersectionObserver for performance -- pausing when off-screen -- a digital optimization that reimagines the motif as living UI rather than static decoration",
+        "Whiteboard nodes use starburst clip-path shapes as interactive, draggable canvas elements, transforming the decorative motif into a functional design tool shape"
+      ]
+    },
+    {
+      "source": "Alexander Girard - Color and Pattern Systems for Herman Miller (1960s)",
+      "category": "Textile and Color Design",
+      "elementsAdapted": [
+        "Warm color palette centering on mustard (#c9982e) and burnt orange (#c4652a) paired with cream (#faf6ef), directly referencing Girard's signature warm earth-tone textile palettes for Herman Miller showrooms",
+        "Playful geometric stat displays that echo Girard's folk-art-influenced pattern work -- simple shapes (circles, diamonds) carrying content in a warm, human way",
+        "The orbital arrangement of idea cards and stat pedestals references Girard's environmental installations where small objects were arranged in radial and clustered compositions"
+      ],
+      "differentiators": [
+        "The palette is applied to interactive UI states (hover, active, focus) with opacity and saturation variations rather than flat textile application -- burnt orange becomes a functional signal color for primary actions",
+        "Girard's compositional clustering is translated into CSS Grid with auto-fill and responsive breakpoints, creating a dynamic radial feel that reflows across screen sizes unlike fixed physical installations",
+        "The warm cream-to-surface color layering creates depth hierarchy (background -> card surface -> active element) that serves information architecture, extending Girard's color theory into spatial UI layering"
+      ]
+    }
+  ],
+  "uniqueDesignElements": [
+    {
+      "element": "Orbital Ring Navigation",
+      "description": "Navigation buttons arranged in concentric rings around a central hub logo, with inner ring (5 primary items) and outer ring (5 secondary items). Each item uses spring-curve hover animations with translateY + scale transforms. Active state uses burnt orange fill with elevation shadow. At mobile breakpoints, rings collapse behind a starburst toggle button and expand with a scale animation.",
+      "cssPattern": "Flexbox rings with dashed-border pseudo-element halos, cubic-bezier(0.34, 1.56, 0.64, 1) spring transitions"
+    },
+    {
+      "element": "Tulip Stem Card Borders",
+      "description": "Project and idea cards feature a bottom 'stem' element: a horizontal line at 60% width tapering to a 3px vertical line extending downward, created with paired ::before and ::after pseudo-elements. This gives cards the silhouette of sitting atop a tulip pedestal.",
+      "cssPattern": "::before for horizontal plate, ::after for vertical stem, both using absolute positioning with translateX(-50%) centering and linear-gradient backgrounds fading to transparent"
+    },
+    {
+      "element": "Rotational View Transitions",
+      "description": "View changes use a two-phase transition: outgoing view exits with scale(0.94) rotate(2deg) over 250ms, then incoming view enters with an animation from scale(0.92) rotate(-2deg) to scale(1) rotate(0) over 500ms. This creates an orbital 'swing' feeling distinct from standard slide or fade transitions.",
+      "cssPattern": "@keyframes view-enter with transform origin at center, cubic-bezier spring easing, coordinated via JS setTimeout for phase sequencing"
+    },
+    {
+      "element": "Tapered Panel Border Gradients",
+      "description": "Content panels use border-image with linear-gradient(to bottom, var(--accent) 0%, transparent 100%) on left and right borders, creating the visual effect of structural supports that are thick and strong at the top (where they bear the content 'weight') and taper to nothing at the bottom, like architectural pedestal columns.",
+      "cssPattern": "border-left/right: 4px solid; border-image: linear-gradient(to bottom, color, transparent) 1"
+    },
+    {
+      "element": "Atomic-Shape Whiteboard Nodes",
+      "description": "Whiteboard canvas features four distinct node shapes inspired by atomic-age iconography: diamond (clip-path polygon), ellipse (border-radius 50%), atom (rectangle with two concentric ring pseudo-elements), and starburst (10-point star clip-path). Each is draggable via vanilla JS mouse events.",
+      "cssPattern": "clip-path: polygon() for diamond and starburst, border-radius: 50% for ellipse, ::before/::after with inset negative margins and border-radius for atom orbital rings"
+    },
+    {
+      "element": "Pedestal Hub Page Headers",
+      "description": "Every view opens with a centered header structure: a vertical 3px stem (gradient from accent to transparent), a gap, then the page title and subtitle centered below. This creates a visual anchor point that ties each view back to the central pedestal metaphor of the navigation hub.",
+      "cssPattern": "Flexbox column with align-items: center, linear-gradient stem element, optional --compact variant with reduced height"
+    }
+  ]
+}

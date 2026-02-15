@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDEA MGMT // BRUTALIST</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================= -->
+  <!-- LEFT RAIL NAVIGATION                          -->
+  <!-- ============================================= -->
+  <nav class="left-rail" id="leftRail">
+    <div class="rail-brand">
+      <span class="brand-mark">IDEA<br>MGMT</span>
+      <span class="brand-version">v0.1</span>
+    </div>
+
+    <div class="rail-nav-group">
+      <button class="nav-btn active" data-view="dashboard">
+        <span class="nav-index">01</span>
+        <span class="nav-label">DASHBOARD</span>
+      </button>
+      <button class="nav-btn" data-view="projects">
+        <span class="nav-index">02</span>
+        <span class="nav-label">PROJECTS</span>
+      </button>
+      <button class="nav-btn" data-view="project-workspace">
+        <span class="nav-index">03</span>
+        <span class="nav-label">WORKSPACE</span>
+      </button>
+      <button class="nav-btn" data-view="kanban">
+        <span class="nav-index">04</span>
+        <span class="nav-label">KANBAN</span>
+      </button>
+      <button class="nav-btn" data-view="whiteboard">
+        <span class="nav-index">05</span>
+        <span class="nav-label">WHITEBOARD</span>
+      </button>
+      <button class="nav-btn" data-view="schema-planner">
+        <span class="nav-index">06</span>
+        <span class="nav-label">SCHEMA</span>
+      </button>
+      <button class="nav-btn" data-view="directory-tree">
+        <span class="nav-index">07</span>
+        <span class="nav-label">DIRECTORY</span>
+      </button>
+      <button class="nav-btn" data-view="ideas">
+        <span class="nav-index">08</span>
+        <span class="nav-label">IDEAS</span>
+      </button>
+      <button class="nav-btn" data-view="ai-chat">
+        <span class="nav-index">09</span>
+        <span class="nav-label">AI CHAT</span>
+      </button>
+      <button class="nav-btn" data-view="settings">
+        <span class="nav-index">10</span>
+        <span class="nav-label">SETTINGS</span>
+      </button>
+    </div>
+
+    <div class="rail-footer">
+      <div class="rail-user">
+        <div class="user-avatar">JD</div>
+        <div class="user-meta">
+          <span class="user-name">J. DOE</span>
+          <span class="user-role">ADMIN</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================= -->
+  <!-- MAIN CONTENT AREA                             -->
+  <!-- ============================================= -->
+  <main class="content-area" id="contentArea">
+
+    <!-- =========== VIEW 1: DASHBOARD =========== -->
+    <section class="view" data-page="dashboard">
+      <header class="view-header">
+        <h1 class="view-title">DASHBOARD</h1>
+        <span class="view-timestamp">LAST UPDATED: 2026-02-15 09:41 UTC</span>
+      </header>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">TOTAL PROJECTS</span>
+          <span class="stat-value">47</span>
+          <span class="stat-delta stat-up">+3 THIS WEEK</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">ACTIVE TASKS</span>
+          <span class="stat-value">218</span>
+          <span class="stat-delta stat-down">-12 FROM LAST SPRINT</span>
+        </div>
+        <div class="stat-card stat-card--accent">
+          <span class="stat-label">VELOCITY</span>
+          <span class="stat-value">34</span>
+          <span class="stat-delta">PTS / SPRINT AVG</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">IDEAS CAPTURED</span>
+          <span class="stat-value">892</span>
+          <span class="stat-delta stat-up">+28 THIS MONTH</span>
+        </div>
+        <div class="stat-card stat-card--danger">
+          <span class="stat-label">BLOCKED ITEMS</span>
+          <span class="stat-value">7</span>
+          <span class="stat-delta">REQUIRES ATTENTION</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">TEAM MEMBERS</span>
+          <span class="stat-value">12</span>
+          <span class="stat-delta">3 TEAMS</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">SCHEMA ENTITIES</span>
+          <span class="stat-value">63</span>
+          <span class="stat-delta stat-up">+5 NEW TABLES</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">AI CONVERSATIONS</span>
+          <span class="stat-value">1,247</span>
+          <span class="stat-delta">THIS QUARTER</span>
+        </div>
+      </div>
+
+      <div class="dashboard-sections">
+        <div class="dash-section">
+          <h2 class="section-heading">RISK INDICATORS</h2>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>RISK</th>
+                <th>PROJECT</th>
+                <th>SEVERITY</th>
+                <th>OWNER</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Scope creep on auth module</td>
+                <td>IDEA-MGMT</td>
+                <td><span class="badge badge--red">HIGH</span></td>
+                <td>M. Chen</td>
+                <td>OPEN</td>
+              </tr>
+              <tr>
+                <td>Dependency vulnerability CVE-2026-1192</td>
+                <td>API-GATEWAY</td>
+                <td><span class="badge badge--red">HIGH</span></td>
+                <td>S. Park</td>
+                <td>IN REVIEW</td>
+              </tr>
+              <tr>
+                <td>Sprint velocity declining 3 consecutive</td>
+                <td>MOBILE-APP</td>
+                <td><span class="badge badge--yellow">MEDIUM</span></td>
+                <td>J. Doe</td>
+                <td>MONITORING</td>
+              </tr>
+              <tr>
+                <td>Third-party API rate limit approaching</td>
+                <td>INTEGRATIONS</td>
+                <td><span class="badge badge--yellow">MEDIUM</span></td>
+                <td>A. Volkov</td>
+                <td>MITIGATING</td>
+              </tr>
+              <tr>
+                <td>Test coverage below 60% threshold</td>
+                <td>SCHEMA-SVC</td>
+                <td><span class="badge badge--gray">LOW</span></td>
+                <td>R. Torres</td>
+                <td>PLANNED</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="dash-section">
+          <h2 class="section-heading">ACTIVITY FEED</h2>
+          <ul class="activity-feed">
+            <li class="activity-item">
+              <span class="activity-time">09:38</span>
+              <span class="activity-actor">M. Chen</span>
+              <span class="activity-action">merged PR #247</span>
+              <span class="activity-target">feat/auth-rbac into main</span>
+            </li>
+            <li class="activity-item">
+              <span class="activity-time">09:22</span>
+              <span class="activity-actor">S. Park</span>
+              <span class="activity-action">created issue</span>
+              <span class="activity-target">GATE-891: Rate limiter bypass</span>
+            </li>
+            <li class="activity-item">
+              <span class="activity-time">09:10</span>
+              <span class="activity-actor">J. Doe</span>
+              <span class="activity-action">updated schema</span>
+              <span class="activity-target">Added index on ideas.created_at</span>
+            </li>
+            <li class="activity-item">
+              <span class="activity-time">08:55</span>
+              <span class="activity-actor">R. Torres</span>
+              <span class="activity-action">completed task</span>
+              <span class="activity-target">Write integration tests for /api/ideas</span>
+            </li>
+            <li class="activity-item">
+              <span class="activity-time">08:41</span>
+              <span class="activity-actor">A. Volkov</span>
+              <span class="activity-action">started sprint</span>
+              <span class="activity-target">Sprint 24 - Integrations Team</span>
+            </li>
+            <li class="activity-item">
+              <span class="activity-time">08:30</span>
+              <span class="activity-actor">SYSTEM</span>
+              <span class="activity-action">deployed</span>
+              <span class="activity-target">v2.14.0 to staging environment</span>
+            </li>
+            <li class="activity-item">
+              <span class="activity-time">08:12</span>
+              <span class="activity-actor">L. Kim</span>
+              <span class="activity-action">captured idea</span>
+              <span class="activity-target">"Unified notification center with digest mode"</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== VIEW 2: PROJECTS =========== -->
+    <section class="view" data-page="projects" style="display:none;">
+      <header class="view-header">
+        <h1 class="view-title">PROJECTS</h1>
+        <span class="view-count">47 TOTAL</span>
+      </header>
+
+      <div class="toolbar">
+        <input type="text" class="search-input" placeholder="SEARCH PROJECTS...">
+        <div class="toolbar-controls">
+          <button class="tool-btn active">ALL</button>
+          <button class="tool-btn">ACTIVE</button>
+          <button class="tool-btn">ARCHIVED</button>
+          <button class="tool-btn">DRAFT</button>
+        </div>
+        <div class="sort-controls">
+          <label class="sort-label">SORT:</label>
+          <select class="sort-select">
+            <option>LAST MODIFIED</option>
+            <option>NAME A-Z</option>
+            <option>CREATED DATE</option>
+            <option>TEAM SIZE</option>
+            <option>TASK COUNT</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="project-grid">
+        <div class="project-block">
+          <div class="project-block-header">
+            <span class="project-id">PRJ-001</span>
+            <span class="badge badge--red">ACTIVE</span>
+          </div>
+          <h3 class="project-name">IDEA MANAGEMENT PLATFORM</h3>
+          <p class="project-desc">Full-stack idea capture, evaluation, and tracking system with AI-powered prioritization and team collaboration.</p>
+          <div class="project-meta">
+            <span>TEAM: 5</span>
+            <span>TASKS: 84</span>
+            <span>CREATED: 2025-11-02</span>
+          </div>
+          <div class="project-tags">
+            <span class="tag">FULLSTACK</span>
+            <span class="tag">AI/ML</span>
+            <span class="tag">SaaS</span>
+          </div>
+        </div>
+
+        <div class="project-block">
+          <div class="project-block-header">
+            <span class="project-id">PRJ-002</span>
+            <span class="badge badge--red">ACTIVE</span>
+          </div>
+          <h3 class="project-name">API GATEWAY SERVICE</h3>
+          <p class="project-desc">Centralized API gateway with rate limiting, auth delegation, and request transformation pipelines.</p>
+          <div class="project-meta">
+            <span>TEAM: 3</span>
+            <span>TASKS: 42</span>
+            <span>CREATED: 2025-12-15</span>
+          </div>
+          <div class="project-tags">
+            <span class="tag">BACKEND</span>
+            <span class="tag">INFRA</span>
+            <span class="tag">SECURITY</span>
+          </div>
+        </div>
+
+        <div class="project-block">
+          <div class="project-block-header">
+            <span class="project-id">PRJ-003</span>
+            <span class="badge badge--yellow">DRAFT</span>
+          </div>
+          <h3 class="project-name">MOBILE COMPANION APP</h3>
+          <p class="project-desc">Cross-platform mobile application for on-the-go idea capture, quick task updates, and push notification management.</p>
+          <div class="project-meta">
+            <span>TEAM: 4</span>
+            <span>TASKS: 31</span>
+            <span>CREATED: 2026-01-08</span>
+          </div>
+          <div class="project-tags">
+            <span class="tag">MOBILE</span>
+            <span class="tag">REACT NATIVE</span>
+          </div>
+        </div>
+
+        <div class="project-block">
+          <div class="project-block-header">
+            <span class="project-id">PRJ-004</span>
+            <span class="badge badge--red">ACTIVE</span>
+          </div>
+          <h3 class="project-name">SCHEMA SERVICE</h3>
+          <p class="project-desc">Database schema management, migration orchestration, and entity relationship visualization engine.</p>
+          <div class="project-meta">
+            <span>TEAM: 2</span>
+            <span>TASKS: 28</span>
+            <span>CREATED: 2025-10-20</span>
+          </div>
+          <div class="project-tags">
+            <span class="tag">BACKEND</span>
+            <span class="tag">DATABASE</span>
+          </div>
+        </div>
+
+        <div class="project-block">
+          <div class="project-block-header">
+            <span class="project-id">PRJ-005</span>
+            <span class="badge badge--gray">ARCHIVED</span>
+          </div>
+          <h3 class="project-name">LEGACY DATA MIGRATION</h3>
+          <p class="project-desc">One-time migration of legacy Jira and Notion data into the unified idea management platform.</p>
+          <div class="project-meta">
+            <span>TEAM: 2</span>
+            <span>TASKS: 16</span>
+            <span>CREATED: 2025-09-01</span>
+          </div>
+          <div class="project-tags">
+            <span class="tag">MIGRATION</span>
+            <span class="tag">ETL</span>
+          </div>
+        </div>
+
+        <div class="project-block">
+          <div class="project-block-header">
+            <span class="project-id">PRJ-006</span>
+            <span class="badge badge--red">ACTIVE</span>
+          </div>
+          <h3 class="project-name">INTEGRATIONS HUB</h3>
+          <p class="project-desc">Third-party integration framework: Slack, GitHub, Linear, Figma webhooks and bi-directional sync.</p>
+          <div class="project-meta">
+            <span>TEAM: 3</span>
+            <span>TASKS: 55</span>
+            <span>CREATED: 2026-01-20</span>
+          </div>
+          <div class="project-tags">
+            <span class="tag">INTEGRATIONS</span>
+            <span class="tag">WEBHOOKS</span>
+            <span class="tag">API</span>
+          </div>
+        </div>
+
+        <div class="project-block">
+          <div class="project-block-header">
+            <span class="project-id">PRJ-007</span>
+            <span class="badge badge--yellow">DRAFT</span>
+          </div>
+          <h3 class="project-name">ANALYTICS DASHBOARD</h3>
+          <p class="project-desc">Real-time analytics with custom report builder, team velocity tracking, and exportable insights.</p>
+          <div class="project-meta">
+            <span>TEAM: 2</span>
+            <span>TASKS: 19</span>
+            <span>CREATED: 2026-02-01</span>
+          </div>
+          <div class="project-tags">
+            <span class="tag">ANALYTICS</span>
+            <span class="tag">DATA VIZ</span>
+          </div>
+        </div>
+
+        <div class="project-block">
+          <div class="project-block-header">
+            <span class="project-id">PRJ-008</span>
+            <span class="badge badge--red">ACTIVE</span>
+          </div>
+          <h3 class="project-name">AI ASSISTANT ENGINE</h3>
+          <p class="project-desc">LLM-powered assistant for idea evaluation, code review suggestions, sprint planning, and documentation generation.</p>
+          <div class="project-meta">
+            <span>TEAM: 3</span>
+            <span>TASKS: 67</span>
+            <span>CREATED: 2025-11-15</span>
+          </div>
+          <div class="project-tags">
+            <span class="tag">AI/ML</span>
+            <span class="tag">LLM</span>
+            <span class="tag">NLP</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== VIEW 3: PROJECT WORKSPACE =========== -->
+    <section class="view" data-page="project-workspace" style="display:none;">
+      <header class="view-header">
+        <h1 class="view-title">WORKSPACE</h1>
+        <div class="breadcrumb">
+          <span>PROJECTS</span>
+          <span class="bc-sep">/</span>
+          <span>PRJ-001</span>
+          <span class="bc-sep">/</span>
+          <span class="bc-current">IDEA MANAGEMENT PLATFORM</span>
+        </div>
+      </header>
+
+      <div class="workspace-split">
+        <aside class="workspace-tree">
+          <div class="tree-header">
+            <h3 class="tree-title">FILE TREE</h3>
+            <button class="tool-btn-sm">+ NEW</button>
+          </div>
+          <ul class="file-tree">
+            <li class="tree-folder open">
+              <span class="folder-name">src/</span>
+              <ul>
+                <li class="tree-folder open">
+                  <span class="folder-name">components/</span>
+                  <ul>
+                    <li class="tree-file active"><span class="file-icon">TS</span> Dashboard.tsx</li>
+                    <li class="tree-file"><span class="file-icon">TS</span> KanbanBoard.tsx</li>
+                    <li class="tree-file"><span class="file-icon">TS</span> IdeaCard.tsx</li>
+                    <li class="tree-file"><span class="file-icon">TS</span> SchemaViewer.tsx</li>
+                    <li class="tree-file"><span class="file-icon">CS</span> styles.module.css</li>
+                  </ul>
+                </li>
+                <li class="tree-folder">
+                  <span class="folder-name">hooks/</span>
+                  <ul>
+                    <li class="tree-file"><span class="file-icon">TS</span> useIdeas.ts</li>
+                    <li class="tree-file"><span class="file-icon">TS</span> useProjects.ts</li>
+                    <li class="tree-file"><span class="file-icon">TS</span> useKanban.ts</li>
+                  </ul>
+                </li>
+                <li class="tree-folder">
+                  <span class="folder-name">api/</span>
+                  <ul>
+                    <li class="tree-file"><span class="file-icon">TS</span> client.ts</li>
+                    <li class="tree-file"><span class="file-icon">TS</span> endpoints.ts</li>
+                    <li class="tree-file"><span class="file-icon">JS</span> config.js</li>
+                  </ul>
+                </li>
+                <li class="tree-file"><span class="file-icon">TS</span> App.tsx</li>
+                <li class="tree-file"><span class="file-icon">TS</span> index.ts</li>
+              </ul>
+            </li>
+            <li class="tree-folder">
+              <span class="folder-name">tests/</span>
+              <ul>
+                <li class="tree-file"><span class="file-icon">TS</span> Dashboard.test.tsx</li>
+                <li class="tree-file"><span class="file-icon">TS</span> IdeaCard.test.tsx</li>
+              </ul>
+            </li>
+            <li class="tree-folder">
+              <span class="folder-name">docs/</span>
+              <ul>
+                <li class="tree-file"><span class="file-icon">MD</span> architecture.md</li>
+                <li class="tree-file"><span class="file-icon">MD</span> api-spec.md</li>
+              </ul>
+            </li>
+            <li class="tree-file"><span class="file-icon">JS</span> package.json</li>
+            <li class="tree-file"><span class="file-icon">CF</span> tsconfig.json</li>
+            <li class="tree-file"><span class="file-icon">MD</span> README.md</li>
+          </ul>
+        </aside>
+
+        <div class="workspace-content">
+          <div class="workspace-content-header">
+            <span class="wc-path">src/components/Dashboard.tsx</span>
+            <div class="wc-actions">
+              <button class="tool-btn-sm">EDIT</button>
+              <button class="tool-btn-sm">HISTORY</button>
+              <button class="tool-btn-sm">DELETE</button>
+            </div>
+          </div>
+          <div class="workspace-descriptor">
+            <div class="descriptor-section">
+              <h3>COMPONENT OVERVIEW</h3>
+              <p>Main dashboard component rendering stat cards, risk indicators, and the activity feed. Consumes data from <code>useProjects</code> and <code>useIdeas</code> hooks. Memoized with <code>React.memo</code> for performance.</p>
+            </div>
+            <div class="descriptor-section">
+              <h3>PROPS INTERFACE</h3>
+              <pre class="code-block">interface DashboardProps {
+  userId: string;
+  teamId: string;
+  dateRange?: [Date, Date];
+  onNavigate: (view: string) =&gt; void;
+  refreshInterval?: number; // ms, default 30000
+}</pre>
+            </div>
+            <div class="descriptor-section">
+              <h3>DEPENDENCIES</h3>
+              <ul class="dep-list">
+                <li><code>react@18.3.0</code> - Core framework</li>
+                <li><code>@tanstack/react-query@5.x</code> - Data fetching</li>
+                <li><code>date-fns@3.x</code> - Date formatting</li>
+                <li><code>zustand@4.x</code> - State management</li>
+              </ul>
+            </div>
+            <div class="descriptor-section">
+              <h3>NOTES</h3>
+              <ul class="dep-list">
+                <li>Stat cards use CSS Grid 4-column layout at desktop, 2-column at tablet</li>
+                <li>Activity feed auto-polls every 30s via react-query</li>
+                <li>Risk table rows are clickable, navigate to project detail</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== VIEW 4: KANBAN =========== -->
+    <section class="view" data-page="kanban" style="display:none;">
+      <header class="view-header">
+        <h1 class="view-title">KANBAN</h1>
+        <div class="view-header-actions">
+          <button class="tool-btn">+ ADD TASK</button>
+          <select class="sort-select">
+            <option>SPRINT 23</option>
+            <option>SPRINT 22</option>
+            <option>SPRINT 21</option>
+          </select>
+        </div>
+      </header>
+
+      <div class="kanban-board">
+        <div class="kanban-column">
+          <div class="kanban-col-header">
+            <h3>BACKLOG</h3>
+            <span class="kanban-count">5</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-341</span>
+                <span class="badge badge--yellow">MEDIUM</span>
+              </div>
+              <p class="kc-title">Add bulk import for CSV idea files</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">M. Chen</span>
+                <span class="kc-points">5 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-342</span>
+                <span class="badge badge--gray">LOW</span>
+              </div>
+              <p class="kc-title">Keyboard shortcuts documentation page</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">L. Kim</span>
+                <span class="kc-points">2 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-343</span>
+                <span class="badge badge--red">HIGH</span>
+              </div>
+              <p class="kc-title">Rate limiter bypass on public endpoints</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">S. Park</span>
+                <span class="kc-points">8 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-344</span>
+                <span class="badge badge--yellow">MEDIUM</span>
+              </div>
+              <p class="kc-title">Export project data as structured JSON</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">R. Torres</span>
+                <span class="kc-points">3 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-345</span>
+                <span class="badge badge--gray">LOW</span>
+              </div>
+              <p class="kc-title">Add dark mode toggle to settings</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">Unassigned</span>
+                <span class="kc-points">3 pts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="kanban-col-header">
+            <h3>IN PROGRESS</h3>
+            <span class="kanban-count">4</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-330</span>
+                <span class="badge badge--red">HIGH</span>
+              </div>
+              <p class="kc-title">Implement RBAC middleware for API routes</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">M. Chen</span>
+                <span class="kc-points">13 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-332</span>
+                <span class="badge badge--yellow">MEDIUM</span>
+              </div>
+              <p class="kc-title">Refactor idea card component for accessibility</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">L. Kim</span>
+                <span class="kc-points">5 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-335</span>
+                <span class="badge badge--red">HIGH</span>
+              </div>
+              <p class="kc-title">Schema migration for v2.15 entity changes</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">A. Volkov</span>
+                <span class="kc-points">8 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-337</span>
+                <span class="badge badge--yellow">MEDIUM</span>
+              </div>
+              <p class="kc-title">WebSocket connection pooling for real-time feed</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">S. Park</span>
+                <span class="kc-points">8 pts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column kanban-column--blocked">
+          <div class="kanban-col-header">
+            <h3>BLOCKED</h3>
+            <span class="kanban-count">3</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card kanban-card--blocked">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-318</span>
+                <span class="badge badge--red">HIGH</span>
+              </div>
+              <p class="kc-title">SSO integration with corporate SAML provider</p>
+              <p class="kc-blocker">BLOCKED BY: Waiting on IT security review</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">M. Chen</span>
+                <span class="kc-points">13 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card kanban-card--blocked">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-325</span>
+                <span class="badge badge--yellow">MEDIUM</span>
+              </div>
+              <p class="kc-title">Figma plugin bi-directional sync</p>
+              <p class="kc-blocker">BLOCKED BY: Figma API v3 beta access pending</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">R. Torres</span>
+                <span class="kc-points">8 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card kanban-card--blocked">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-329</span>
+                <span class="badge badge--gray">LOW</span>
+              </div>
+              <p class="kc-title">Custom email template editor</p>
+              <p class="kc-blocker">BLOCKED BY: Design mockups not finalized</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">L. Kim</span>
+                <span class="kc-points">5 pts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="kanban-col-header">
+            <h3>DONE</h3>
+            <span class="kanban-count">4</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card kanban-card--done">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-310</span>
+                <span class="badge badge--gray">--</span>
+              </div>
+              <p class="kc-title">Setup CI/CD pipeline for staging deploys</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">A. Volkov</span>
+                <span class="kc-points">5 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card kanban-card--done">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-312</span>
+                <span class="badge badge--gray">--</span>
+              </div>
+              <p class="kc-title">Implement idea tagging with auto-suggest</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">L. Kim</span>
+                <span class="kc-points">5 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card kanban-card--done">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-315</span>
+                <span class="badge badge--gray">--</span>
+              </div>
+              <p class="kc-title">Database connection pooling optimization</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">S. Park</span>
+                <span class="kc-points">3 pts</span>
+              </div>
+            </div>
+            <div class="kanban-card kanban-card--done">
+              <div class="kc-header">
+                <span class="kc-id">IDEA-316</span>
+                <span class="badge badge--gray">--</span>
+              </div>
+              <p class="kc-title">Add project archiving with soft delete</p>
+              <div class="kc-footer">
+                <span class="kc-assignee">R. Torres</span>
+                <span class="kc-points">3 pts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== VIEW 5: WHITEBOARD =========== -->
+    <section class="view" data-page="whiteboard" style="display:none;">
+      <header class="view-header">
+        <h1 class="view-title">WHITEBOARD</h1>
+        <div class="view-header-actions">
+          <span class="wb-board-name">Sprint 23 Planning Board</span>
+        </div>
+      </header>
+
+      <div class="whiteboard-toolbar">
+        <button class="wb-tool active" title="Select"><span class="wb-tool-icon">SEL</span></button>
+        <button class="wb-tool" title="Rectangle"><span class="wb-tool-icon">RCT</span></button>
+        <button class="wb-tool" title="Text"><span class="wb-tool-icon">TXT</span></button>
+        <button class="wb-tool" title="Arrow"><span class="wb-tool-icon">ARR</span></button>
+        <button class="wb-tool" title="Sticky Note"><span class="wb-tool-icon">STK</span></button>
+        <button class="wb-tool" title="Line"><span class="wb-tool-icon">LNE</span></button>
+        <div class="wb-separator"></div>
+        <button class="wb-tool" title="Undo"><span class="wb-tool-icon">UND</span></button>
+        <button class="wb-tool" title="Redo"><span class="wb-tool-icon">RDO</span></button>
+        <div class="wb-separator"></div>
+        <div class="wb-zoom-controls">
+          <button class="wb-tool" id="zoomOut"><span class="wb-tool-icon">-</span></button>
+          <span class="wb-zoom-level" id="zoomLevel">100%</span>
+          <button class="wb-tool" id="zoomIn"><span class="wb-tool-icon">+</span></button>
+        </div>
+      </div>
+
+      <div class="whiteboard-canvas" id="whiteboardCanvas">
+        <div class="wb-grid"></div>
+
+        <!-- Placeholder nodes on the canvas -->
+        <div class="wb-node" style="left: 60px; top: 40px; width: 220px;">
+          <div class="wb-node-header">USER STORIES</div>
+          <div class="wb-node-body">
+            <p>- Auth flow redesign</p>
+            <p>- Bulk import feature</p>
+            <p>- Notification center</p>
+          </div>
+        </div>
+
+        <div class="wb-node wb-node--accent" style="left: 360px; top: 40px; width: 220px;">
+          <div class="wb-node-header">SPRINT GOALS</div>
+          <div class="wb-node-body">
+            <p>1. Complete RBAC</p>
+            <p>2. Schema migration</p>
+            <p>3. Fix 3 blockers</p>
+          </div>
+        </div>
+
+        <div class="wb-node" style="left: 60px; top: 240px; width: 220px;">
+          <div class="wb-node-header">TECH DEBT</div>
+          <div class="wb-node-body">
+            <p>- Refactor auth module</p>
+            <p>- Update deps (12 outdated)</p>
+            <p>- Remove dead code in /legacy</p>
+          </div>
+        </div>
+
+        <div class="wb-node" style="left: 360px; top: 240px; width: 220px;">
+          <div class="wb-node-header">RISKS</div>
+          <div class="wb-node-body">
+            <p>- SSO blocked on IT</p>
+            <p>- Figma API dependency</p>
+            <p>- Velocity decline trend</p>
+          </div>
+        </div>
+
+        <div class="wb-sticky" style="left: 660px; top: 60px;">
+          <p>DISCUSS: Should we split the monolith?</p>
+        </div>
+
+        <div class="wb-sticky wb-sticky--red" style="left: 660px; top: 180px;">
+          <p>URGENT: CVE-2026-1192 patch needed before release</p>
+        </div>
+
+        <div class="wb-sticky" style="left: 660px; top: 300px;">
+          <p>NOTE: Design review scheduled Thu 2/19</p>
+        </div>
+
+        <!-- Connection lines (CSS-drawn) -->
+        <svg class="wb-connections" viewBox="0 0 900 450" xmlns="http://www.w3.org/2000/svg">
+          <line x1="280" y1="80" x2="360" y2="80" stroke="#1a1a1a" stroke-width="2"/>
+          <line x1="170" y1="160" x2="170" y2="240" stroke="#1a1a1a" stroke-width="2"/>
+          <line x1="470" y1="160" x2="470" y2="240" stroke="#ff3b00" stroke-width="3"/>
+          <line x1="280" y1="280" x2="360" y2="280" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="8,4"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- =========== VIEW 6: SCHEMA PLANNER =========== -->
+    <section class="view" data-page="schema-planner" style="display:none;">
+      <header class="view-header">
+        <h1 class="view-title">SCHEMA PLANNER</h1>
+        <div class="view-header-actions">
+          <button class="tool-btn">+ ADD ENTITY</button>
+          <button class="tool-btn">EXPORT SQL</button>
+          <button class="tool-btn">VALIDATE</button>
+        </div>
+      </header>
+
+      <div class="schema-canvas">
+        <div class="schema-entity" style="left: 40px; top: 20px;">
+          <div class="entity-header">USERS</div>
+          <ul class="entity-fields">
+            <li><span class="field-key">PK</span> <span class="field-name">id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-name">email</span> <span class="field-type">VARCHAR(255)</span></li>
+            <li><span class="field-name">display_name</span> <span class="field-type">VARCHAR(100)</span></li>
+            <li><span class="field-name">password_hash</span> <span class="field-type">TEXT</span></li>
+            <li><span class="field-name">role</span> <span class="field-type">ENUM</span></li>
+            <li><span class="field-name">created_at</span> <span class="field-type">TIMESTAMP</span></li>
+            <li><span class="field-name">updated_at</span> <span class="field-type">TIMESTAMP</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity" style="left: 370px; top: 20px;">
+          <div class="entity-header">PROJECTS</div>
+          <ul class="entity-fields">
+            <li><span class="field-key">PK</span> <span class="field-name">id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-key">FK</span> <span class="field-name">owner_id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-name">name</span> <span class="field-type">VARCHAR(200)</span></li>
+            <li><span class="field-name">description</span> <span class="field-type">TEXT</span></li>
+            <li><span class="field-name">status</span> <span class="field-type">ENUM</span></li>
+            <li><span class="field-name">created_at</span> <span class="field-type">TIMESTAMP</span></li>
+            <li><span class="field-name">archived_at</span> <span class="field-type">TIMESTAMP?</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity" style="left: 700px; top: 20px;">
+          <div class="entity-header">IDEAS</div>
+          <ul class="entity-fields">
+            <li><span class="field-key">PK</span> <span class="field-name">id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-key">FK</span> <span class="field-name">project_id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-key">FK</span> <span class="field-name">author_id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-name">title</span> <span class="field-type">VARCHAR(300)</span></li>
+            <li><span class="field-name">body</span> <span class="field-type">TEXT</span></li>
+            <li><span class="field-name">priority</span> <span class="field-type">INT</span></li>
+            <li><span class="field-name">status</span> <span class="field-type">ENUM</span></li>
+            <li><span class="field-name">created_at</span> <span class="field-type">TIMESTAMP</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity" style="left: 40px; top: 320px;">
+          <div class="entity-header">TASKS</div>
+          <ul class="entity-fields">
+            <li><span class="field-key">PK</span> <span class="field-name">id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-key">FK</span> <span class="field-name">idea_id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-key">FK</span> <span class="field-name">assignee_id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-name">title</span> <span class="field-type">VARCHAR(300)</span></li>
+            <li><span class="field-name">status</span> <span class="field-type">ENUM</span></li>
+            <li><span class="field-name">points</span> <span class="field-type">INT</span></li>
+            <li><span class="field-name">due_date</span> <span class="field-type">DATE?</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity" style="left: 370px; top: 320px;">
+          <div class="entity-header">TAGS</div>
+          <ul class="entity-fields">
+            <li><span class="field-key">PK</span> <span class="field-name">id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-name">label</span> <span class="field-type">VARCHAR(50)</span></li>
+            <li><span class="field-name">color</span> <span class="field-type">VARCHAR(7)</span></li>
+            <li><span class="field-name">created_at</span> <span class="field-type">TIMESTAMP</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity" style="left: 700px; top: 320px;">
+          <div class="entity-header">IDEA_TAGS</div>
+          <ul class="entity-fields">
+            <li><span class="field-key">PK</span> <span class="field-name">id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-key">FK</span> <span class="field-name">idea_id</span> <span class="field-type">UUID</span></li>
+            <li><span class="field-key">FK</span> <span class="field-name">tag_id</span> <span class="field-type">UUID</span></li>
+          </ul>
+        </div>
+
+        <!-- Relationship lines -->
+        <svg class="schema-lines" viewBox="0 0 1020 600" xmlns="http://www.w3.org/2000/svg">
+          <!-- USERS -> PROJECTS (owner_id) -->
+          <line x1="270" y1="80" x2="370" y2="80" stroke="#1a1a1a" stroke-width="2"/>
+          <text x="310" y="72" class="rel-label">1:N</text>
+          <!-- PROJECTS -> IDEAS (project_id) -->
+          <line x1="600" y1="80" x2="700" y2="80" stroke="#1a1a1a" stroke-width="2"/>
+          <text x="640" y="72" class="rel-label">1:N</text>
+          <!-- USERS -> TASKS (assignee_id) -->
+          <line x1="150" y1="250" x2="150" y2="320" stroke="#ff3b00" stroke-width="2"/>
+          <text x="160" y="290" class="rel-label">1:N</text>
+          <!-- IDEAS -> TASKS (idea_id) -->
+          <line x1="810" y1="250" x2="270" y2="370" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="6,3"/>
+          <text x="520" y="300" class="rel-label">1:N</text>
+          <!-- IDEAS -> IDEA_TAGS -->
+          <line x1="810" y1="250" x2="810" y2="320" stroke="#1a1a1a" stroke-width="2"/>
+          <text x="820" y="290" class="rel-label">1:N</text>
+          <!-- TAGS -> IDEA_TAGS -->
+          <line x1="530" y1="400" x2="700" y2="400" stroke="#1a1a1a" stroke-width="2"/>
+          <text x="610" y="392" class="rel-label">1:N</text>
+        </svg>
+      </div>
+
+      <div class="migration-timeline">
+        <h2 class="section-heading">MIGRATION TIMELINE</h2>
+        <div class="timeline-track">
+          <div class="timeline-item timeline-done">
+            <span class="tl-version">v2.10</span>
+            <span class="tl-desc">Initial schema: users, projects</span>
+            <span class="tl-date">2025-10-20</span>
+          </div>
+          <div class="timeline-item timeline-done">
+            <span class="tl-version">v2.12</span>
+            <span class="tl-desc">Added ideas, tags, idea_tags</span>
+            <span class="tl-date">2025-12-01</span>
+          </div>
+          <div class="timeline-item timeline-done">
+            <span class="tl-version">v2.14</span>
+            <span class="tl-desc">Added tasks table, index on ideas.created_at</span>
+            <span class="tl-date">2026-01-15</span>
+          </div>
+          <div class="timeline-item timeline-current">
+            <span class="tl-version">v2.15</span>
+            <span class="tl-desc">Add comments table, alter users add avatar_url</span>
+            <span class="tl-date">2026-02-15</span>
+          </div>
+          <div class="timeline-item timeline-planned">
+            <span class="tl-version">v2.16</span>
+            <span class="tl-desc">Add notifications table, audit_log table</span>
+            <span class="tl-date">2026-03-01</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== VIEW 7: DIRECTORY TREE =========== -->
+    <section class="view" data-page="directory-tree" style="display:none;">
+      <header class="view-header">
+        <h1 class="view-title">DIRECTORY TREE</h1>
+        <div class="breadcrumb">
+          <span class="bc-current">/ ROOT</span>
+        </div>
+      </header>
+
+      <div class="toolbar">
+        <input type="text" class="search-input" placeholder="FILTER FILES...">
+        <div class="toolbar-controls">
+          <button class="tool-btn">+ NEW FILE</button>
+          <button class="tool-btn">+ NEW FOLDER</button>
+          <button class="tool-btn">UPLOAD</button>
+        </div>
+      </div>
+
+      <div class="dir-tree-container">
+        <ul class="dir-tree">
+          <li class="dir-item dir-folder open" data-dir="src">
+            <div class="dir-row">
+              <span class="dir-toggle">[&minus;]</span>
+              <span class="dir-icon dir-icon--folder">DIR</span>
+              <span class="dir-name">src/</span>
+              <span class="dir-meta">14 items</span>
+              <div class="dir-actions">
+                <button class="action-btn">RENAME</button>
+                <button class="action-btn">DELETE</button>
+              </div>
+            </div>
+            <ul class="dir-children">
+              <li class="dir-item dir-folder open" data-dir="src/components">
+                <div class="dir-row">
+                  <span class="dir-toggle">[&minus;]</span>
+                  <span class="dir-icon dir-icon--folder">DIR</span>
+                  <span class="dir-name">components/</span>
+                  <span class="dir-meta">6 items</span>
+                  <div class="dir-actions">
+                    <button class="action-btn">RENAME</button>
+                    <button class="action-btn">DELETE</button>
+                  </div>
+                </div>
+                <ul class="dir-children">
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--ts">TSX</span>
+                      <span class="dir-name">Dashboard.tsx</span>
+                      <span class="dir-meta">4.2 KB &middot; Modified 2h ago</span>
+                      <div class="dir-actions">
+                        <button class="action-btn">OPEN</button>
+                        <button class="action-btn">RENAME</button>
+                        <button class="action-btn action-btn--danger">DELETE</button>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--ts">TSX</span>
+                      <span class="dir-name">KanbanBoard.tsx</span>
+                      <span class="dir-meta">6.8 KB &middot; Modified 5h ago</span>
+                      <div class="dir-actions">
+                        <button class="action-btn">OPEN</button>
+                        <button class="action-btn">RENAME</button>
+                        <button class="action-btn action-btn--danger">DELETE</button>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--ts">TSX</span>
+                      <span class="dir-name">IdeaCard.tsx</span>
+                      <span class="dir-meta">3.1 KB &middot; Modified 1d ago</span>
+                      <div class="dir-actions">
+                        <button class="action-btn">OPEN</button>
+                        <button class="action-btn">RENAME</button>
+                        <button class="action-btn action-btn--danger">DELETE</button>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--ts">TSX</span>
+                      <span class="dir-name">SchemaViewer.tsx</span>
+                      <span class="dir-meta">5.5 KB &middot; Modified 3d ago</span>
+                      <div class="dir-actions">
+                        <button class="action-btn">OPEN</button>
+                        <button class="action-btn">RENAME</button>
+                        <button class="action-btn action-btn--danger">DELETE</button>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--ts">TSX</span>
+                      <span class="dir-name">AIChat.tsx</span>
+                      <span class="dir-meta">7.2 KB &middot; Modified 6h ago</span>
+                      <div class="dir-actions">
+                        <button class="action-btn">OPEN</button>
+                        <button class="action-btn">RENAME</button>
+                        <button class="action-btn action-btn--danger">DELETE</button>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--css">CSS</span>
+                      <span class="dir-name">styles.module.css</span>
+                      <span class="dir-meta">2.9 KB &middot; Modified 1d ago</span>
+                      <div class="dir-actions">
+                        <button class="action-btn">OPEN</button>
+                        <button class="action-btn">RENAME</button>
+                        <button class="action-btn action-btn--danger">DELETE</button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li class="dir-item dir-folder" data-dir="src/hooks">
+                <div class="dir-row">
+                  <span class="dir-toggle">[+]</span>
+                  <span class="dir-icon dir-icon--folder">DIR</span>
+                  <span class="dir-name">hooks/</span>
+                  <span class="dir-meta">4 items</span>
+                  <div class="dir-actions">
+                    <button class="action-btn">RENAME</button>
+                    <button class="action-btn">DELETE</button>
+                  </div>
+                </div>
+                <ul class="dir-children" style="display:none;">
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--ts">TS</span>
+                      <span class="dir-name">useIdeas.ts</span>
+                      <span class="dir-meta">1.8 KB</span>
+                    </div>
+                  </li>
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--ts">TS</span>
+                      <span class="dir-name">useProjects.ts</span>
+                      <span class="dir-meta">2.1 KB</span>
+                    </div>
+                  </li>
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--ts">TS</span>
+                      <span class="dir-name">useKanban.ts</span>
+                      <span class="dir-meta">1.4 KB</span>
+                    </div>
+                  </li>
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--ts">TS</span>
+                      <span class="dir-name">useAuth.ts</span>
+                      <span class="dir-meta">2.6 KB</span>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li class="dir-item dir-folder" data-dir="src/api">
+                <div class="dir-row">
+                  <span class="dir-toggle">[+]</span>
+                  <span class="dir-icon dir-icon--folder">DIR</span>
+                  <span class="dir-name">api/</span>
+                  <span class="dir-meta">3 items</span>
+                  <div class="dir-actions">
+                    <button class="action-btn">RENAME</button>
+                    <button class="action-btn">DELETE</button>
+                  </div>
+                </div>
+                <ul class="dir-children" style="display:none;">
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--ts">TS</span>
+                      <span class="dir-name">client.ts</span>
+                      <span class="dir-meta">3.2 KB</span>
+                    </div>
+                  </li>
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--ts">TS</span>
+                      <span class="dir-name">endpoints.ts</span>
+                      <span class="dir-meta">4.7 KB</span>
+                    </div>
+                  </li>
+                  <li class="dir-item dir-file">
+                    <div class="dir-row">
+                      <span class="dir-icon dir-icon--js">JS</span>
+                      <span class="dir-name">config.js</span>
+                      <span class="dir-meta">0.8 KB</span>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li class="dir-item dir-file">
+                <div class="dir-row">
+                  <span class="dir-icon dir-icon--ts">TSX</span>
+                  <span class="dir-name">App.tsx</span>
+                  <span class="dir-meta">1.9 KB &middot; Modified 2d ago</span>
+                </div>
+              </li>
+              <li class="dir-item dir-file">
+                <div class="dir-row">
+                  <span class="dir-icon dir-icon--ts">TS</span>
+                  <span class="dir-name">index.ts</span>
+                  <span class="dir-meta">0.3 KB &middot; Modified 5d ago</span>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li class="dir-item dir-folder" data-dir="tests">
+            <div class="dir-row">
+              <span class="dir-toggle">[+]</span>
+              <span class="dir-icon dir-icon--folder">DIR</span>
+              <span class="dir-name">tests/</span>
+              <span class="dir-meta">8 items</span>
+              <div class="dir-actions">
+                <button class="action-btn">RENAME</button>
+                <button class="action-btn">DELETE</button>
+              </div>
+            </div>
+            <ul class="dir-children" style="display:none;">
+              <li class="dir-item dir-file">
+                <div class="dir-row">
+                  <span class="dir-icon dir-icon--ts">TSX</span>
+                  <span class="dir-name">Dashboard.test.tsx</span>
+                  <span class="dir-meta">3.4 KB</span>
+                </div>
+              </li>
+              <li class="dir-item dir-file">
+                <div class="dir-row">
+                  <span class="dir-icon dir-icon--ts">TSX</span>
+                  <span class="dir-name">IdeaCard.test.tsx</span>
+                  <span class="dir-meta">2.8 KB</span>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li class="dir-item dir-folder" data-dir="docs">
+            <div class="dir-row">
+              <span class="dir-toggle">[+]</span>
+              <span class="dir-icon dir-icon--folder">DIR</span>
+              <span class="dir-name">docs/</span>
+              <span class="dir-meta">4 items</span>
+            </div>
+            <ul class="dir-children" style="display:none;">
+              <li class="dir-item dir-file">
+                <div class="dir-row">
+                  <span class="dir-icon dir-icon--md">MD</span>
+                  <span class="dir-name">architecture.md</span>
+                  <span class="dir-meta">8.1 KB</span>
+                </div>
+              </li>
+              <li class="dir-item dir-file">
+                <div class="dir-row">
+                  <span class="dir-icon dir-icon--md">MD</span>
+                  <span class="dir-name">api-spec.md</span>
+                  <span class="dir-meta">12.3 KB</span>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li class="dir-item dir-file">
+            <div class="dir-row">
+              <span class="dir-icon dir-icon--json">JSON</span>
+              <span class="dir-name">package.json</span>
+              <span class="dir-meta">1.2 KB &middot; Modified 3d ago</span>
+            </div>
+          </li>
+          <li class="dir-item dir-file">
+            <div class="dir-row">
+              <span class="dir-icon dir-icon--json">JSON</span>
+              <span class="dir-name">tsconfig.json</span>
+              <span class="dir-meta">0.6 KB &middot; Modified 14d ago</span>
+            </div>
+          </li>
+          <li class="dir-item dir-file">
+            <div class="dir-row">
+              <span class="dir-icon dir-icon--md">MD</span>
+              <span class="dir-name">README.md</span>
+              <span class="dir-meta">2.4 KB &middot; Modified 7d ago</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- =========== VIEW 8: IDEAS =========== -->
+    <section class="view" data-page="ideas" style="display:none;">
+      <header class="view-header">
+        <h1 class="view-title">IDEAS</h1>
+        <span class="view-count">892 CAPTURED</span>
+      </header>
+
+      <div class="idea-capture-form">
+        <h2 class="section-heading">CAPTURE NEW IDEA</h2>
+        <div class="form-row">
+          <input type="text" class="form-input form-input--large" placeholder="IDEA TITLE...">
+        </div>
+        <div class="form-row">
+          <textarea class="form-textarea" rows="3" placeholder="DESCRIBE YOUR IDEA... WHAT PROBLEM DOES IT SOLVE? WHO BENEFITS?"></textarea>
+        </div>
+        <div class="form-row form-row--inline">
+          <select class="sort-select">
+            <option>PRIORITY: MEDIUM</option>
+            <option>PRIORITY: HIGH</option>
+            <option>PRIORITY: LOW</option>
+            <option>PRIORITY: CRITICAL</option>
+          </select>
+          <select class="sort-select">
+            <option>PROJECT: UNASSIGNED</option>
+            <option>PROJECT: IDEA MANAGEMENT</option>
+            <option>PROJECT: API GATEWAY</option>
+            <option>PROJECT: MOBILE APP</option>
+          </select>
+          <input type="text" class="form-input" placeholder="TAGS (COMMA SEPARATED)">
+          <button class="tool-btn tool-btn--accent">SUBMIT IDEA</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" class="search-input" placeholder="SEARCH IDEAS...">
+        <div class="toolbar-controls">
+          <button class="tool-btn active">ALL</button>
+          <button class="tool-btn">NEW</button>
+          <button class="tool-btn">APPROVED</button>
+          <button class="tool-btn">REJECTED</button>
+          <button class="tool-btn">IMPLEMENTED</button>
+        </div>
+        <div class="sort-controls">
+          <label class="sort-label">SORT:</label>
+          <select class="sort-select">
+            <option>NEWEST FIRST</option>
+            <option>HIGHEST PRIORITY</option>
+            <option>MOST DISCUSSED</option>
+            <option>RECENTLY UPDATED</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ideas-list">
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-id">#892</span>
+            <span class="badge badge--red">CRITICAL</span>
+            <span class="idea-status">NEW</span>
+          </div>
+          <h3 class="idea-title">Unified Notification Center with Digest Mode</h3>
+          <p class="idea-body">Consolidate all notification channels (email, in-app, push, Slack) into a single notification center. Add daily/weekly digest options to reduce notification fatigue.</p>
+          <div class="idea-meta">
+            <span class="idea-author">L. Kim</span>
+            <span class="idea-date">2026-02-15</span>
+            <span class="idea-project">IDEA MANAGEMENT</span>
+            <span class="idea-comments">3 comments</span>
+          </div>
+          <div class="idea-tags">
+            <span class="tag">UX</span>
+            <span class="tag">NOTIFICATIONS</span>
+            <span class="tag">PRODUCTIVITY</span>
+          </div>
+        </div>
+
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-id">#891</span>
+            <span class="badge badge--red">HIGH</span>
+            <span class="idea-status">APPROVED</span>
+          </div>
+          <h3 class="idea-title">AI-Powered Idea Deduplication</h3>
+          <p class="idea-body">Use semantic similarity to detect duplicate or near-duplicate ideas across projects. Surface matches during idea creation to prevent redundant work.</p>
+          <div class="idea-meta">
+            <span class="idea-author">M. Chen</span>
+            <span class="idea-date">2026-02-14</span>
+            <span class="idea-project">AI ASSISTANT</span>
+            <span class="idea-comments">7 comments</span>
+          </div>
+          <div class="idea-tags">
+            <span class="tag">AI/ML</span>
+            <span class="tag">NLP</span>
+            <span class="tag">DEDUP</span>
+          </div>
+        </div>
+
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-id">#890</span>
+            <span class="badge badge--yellow">MEDIUM</span>
+            <span class="idea-status">NEW</span>
+          </div>
+          <h3 class="idea-title">Whiteboard-to-Task Conversion</h3>
+          <p class="idea-body">Allow users to select whiteboard nodes and convert them directly into kanban tasks with pre-populated titles and descriptions. Bridge ideation and execution.</p>
+          <div class="idea-meta">
+            <span class="idea-author">A. Volkov</span>
+            <span class="idea-date">2026-02-13</span>
+            <span class="idea-project">IDEA MANAGEMENT</span>
+            <span class="idea-comments">2 comments</span>
+          </div>
+          <div class="idea-tags">
+            <span class="tag">WHITEBOARD</span>
+            <span class="tag">KANBAN</span>
+            <span class="tag">WORKFLOW</span>
+          </div>
+        </div>
+
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-id">#889</span>
+            <span class="badge badge--yellow">MEDIUM</span>
+            <span class="idea-status">APPROVED</span>
+          </div>
+          <h3 class="idea-title">Git Branch Linking for Ideas</h3>
+          <p class="idea-body">Automatically link Git branches to ideas based on naming convention (e.g., idea/889-feature-name). Show branch status, PR state, and CI results on the idea card.</p>
+          <div class="idea-meta">
+            <span class="idea-author">S. Park</span>
+            <span class="idea-date">2026-02-12</span>
+            <span class="idea-project">INTEGRATIONS</span>
+            <span class="idea-comments">5 comments</span>
+          </div>
+          <div class="idea-tags">
+            <span class="tag">GIT</span>
+            <span class="tag">INTEGRATIONS</span>
+            <span class="tag">CI/CD</span>
+          </div>
+        </div>
+
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-id">#888</span>
+            <span class="badge badge--gray">LOW</span>
+            <span class="idea-status">REJECTED</span>
+          </div>
+          <h3 class="idea-title">Gamification System with Achievement Badges</h3>
+          <p class="idea-body">Add achievement badges for milestones (10 ideas submitted, first PR merged, etc.). Leaderboard for team engagement. Optional - can be toggled off per team.</p>
+          <div class="idea-meta">
+            <span class="idea-author">R. Torres</span>
+            <span class="idea-date">2026-02-11</span>
+            <span class="idea-project">IDEA MANAGEMENT</span>
+            <span class="idea-comments">12 comments</span>
+          </div>
+          <div class="idea-tags">
+            <span class="tag">GAMIFICATION</span>
+            <span class="tag">ENGAGEMENT</span>
+          </div>
+        </div>
+
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-id">#887</span>
+            <span class="badge badge--red">HIGH</span>
+            <span class="idea-status">IMPLEMENTED</span>
+          </div>
+          <h3 class="idea-title">Real-Time Collaborative Editing on Idea Descriptions</h3>
+          <p class="idea-body">Enable multiple users to edit an idea description simultaneously with conflict-free resolution (CRDT-based). Show presence cursors and change attribution.</p>
+          <div class="idea-meta">
+            <span class="idea-author">J. Doe</span>
+            <span class="idea-date">2026-02-08</span>
+            <span class="idea-project">IDEA MANAGEMENT</span>
+            <span class="idea-comments">9 comments</span>
+          </div>
+          <div class="idea-tags">
+            <span class="tag">COLLAB</span>
+            <span class="tag">CRDT</span>
+            <span class="tag">REAL-TIME</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== VIEW 9: AI CHAT =========== -->
+    <section class="view" data-page="ai-chat" style="display:none;">
+      <header class="view-header">
+        <h1 class="view-title">AI CHAT</h1>
+        <span class="view-timestamp">SESSION: 2026-02-15 09:00</span>
+      </header>
+
+      <div class="chat-layout">
+        <div class="chat-thread" id="chatThread">
+          <div class="chat-message chat-user">
+            <div class="chat-meta">
+              <span class="chat-sender">J. DOE</span>
+              <span class="chat-time">09:00</span>
+            </div>
+            <div class="chat-body">
+              <p>I need to plan the schema migration for v2.15. We need to add a comments table and an avatar_url column to users. What's the best approach?</p>
+            </div>
+          </div>
+
+          <div class="chat-message chat-ai">
+            <div class="chat-meta">
+              <span class="chat-sender">AI ASSISTANT</span>
+              <span class="chat-time">09:00</span>
+            </div>
+            <div class="chat-body">
+              <p>Here's my recommended approach for the v2.15 migration:</p>
+              <p><strong>Step 1: Create the comments table</strong></p>
+              <pre class="code-block">CREATE TABLE comments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  idea_id UUID NOT NULL REFERENCES ideas(id),
+  author_id UUID NOT NULL REFERENCES users(id),
+  body TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_comments_idea_id ON comments(idea_id);
+CREATE INDEX idx_comments_author_id ON comments(author_id);</pre>
+              <p><strong>Step 2: Alter users table</strong></p>
+              <pre class="code-block">ALTER TABLE users
+  ADD COLUMN avatar_url VARCHAR(500) DEFAULT NULL;</pre>
+              <p><strong>Key considerations:</strong></p>
+              <ul>
+                <li>Run the ALTER TABLE in a separate migration from the CREATE TABLE to isolate rollback points</li>
+                <li>The avatar_url column is nullable, so no backfill needed</li>
+                <li>Add a foreign key cascade: ON DELETE CASCADE for comments when an idea is deleted</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="chat-message chat-user">
+            <div class="chat-meta">
+              <span class="chat-sender">J. DOE</span>
+              <span class="chat-time">09:05</span>
+            </div>
+            <div class="chat-body">
+              <p>Good. Should we add soft delete to comments? And what about threading - should comments support replies?</p>
+            </div>
+          </div>
+
+          <div class="chat-message chat-ai">
+            <div class="chat-meta">
+              <span class="chat-sender">AI ASSISTANT</span>
+              <span class="chat-time">09:05</span>
+            </div>
+            <div class="chat-body">
+              <p>Great questions. Here's my recommendation:</p>
+              <p><strong>Soft delete:</strong> Yes, add a <code>deleted_at TIMESTAMP DEFAULT NULL</code> column. This allows recovery and maintains referential integrity. Filter with <code>WHERE deleted_at IS NULL</code> in queries.</p>
+              <p><strong>Threading:</strong> Add a self-referencing <code>parent_id UUID REFERENCES comments(id)</code> column. This gives you unlimited nesting depth. For the UI, I'd recommend limiting display to 2 levels deep and showing a "view thread" link for deeper chains.</p>
+              <pre class="code-block">CREATE TABLE comments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  idea_id UUID NOT NULL REFERENCES ideas(id),
+  author_id UUID NOT NULL REFERENCES users(id),
+  parent_id UUID REFERENCES comments(id),
+  body TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+  deleted_at TIMESTAMP DEFAULT NULL
+);</pre>
+              <p>This keeps the schema flexible without over-engineering.</p>
+            </div>
+          </div>
+
+          <div class="chat-message chat-user">
+            <div class="chat-meta">
+              <span class="chat-sender">J. DOE</span>
+              <span class="chat-time">09:12</span>
+            </div>
+            <div class="chat-body">
+              <p>Perfect. Generate the full migration file and add it to the schema planner timeline.</p>
+            </div>
+          </div>
+
+          <div class="chat-message chat-ai">
+            <div class="chat-meta">
+              <span class="chat-sender">AI ASSISTANT</span>
+              <span class="chat-time">09:12</span>
+            </div>
+            <div class="chat-body">
+              <p>Done. I've generated migration file <code>20260215_001_add_comments_and_avatar.sql</code> and updated the schema planner timeline with the v2.15 entry. The migration includes:</p>
+              <ul>
+                <li>CREATE TABLE comments (with parent_id, deleted_at)</li>
+                <li>3 indexes (idea_id, author_id, parent_id)</li>
+                <li>ALTER TABLE users ADD avatar_url</li>
+                <li>Rollback script included</li>
+              </ul>
+              <p>Estimated execution time: ~2s on current dataset size.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-context">
+          <h3 class="context-title">CONTEXT</h3>
+          <div class="context-section">
+            <h4>ACTIVE PROJECT</h4>
+            <p>SCHEMA SERVICE (PRJ-004)</p>
+          </div>
+          <div class="context-section">
+            <h4>REFERENCED ENTITIES</h4>
+            <ul>
+              <li>users (7 fields)</li>
+              <li>ideas (8 fields)</li>
+              <li>comments (new)</li>
+            </ul>
+          </div>
+          <div class="context-section">
+            <h4>RELATED FILES</h4>
+            <ul>
+              <li>migrations/v2.14/*.sql</li>
+              <li>src/api/endpoints.ts</li>
+              <li>docs/api-spec.md</li>
+            </ul>
+          </div>
+          <div class="context-section">
+            <h4>SUGGESTED ACTIONS</h4>
+            <div class="suggested-actions">
+              <button class="action-chip">Review migration file</button>
+              <button class="action-chip">Update API spec</button>
+              <button class="action-chip">Create kanban task</button>
+              <button class="action-chip">Run migration dry-run</button>
+              <button class="action-chip">Generate TypeScript types</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <textarea class="chat-input" rows="2" placeholder="TYPE YOUR MESSAGE... (SHIFT+ENTER FOR NEWLINE)"></textarea>
+        <button class="chat-send-btn">SEND</button>
+      </div>
+    </section>
+
+    <!-- =========== VIEW 10: SETTINGS =========== -->
+    <section class="view" data-page="settings" style="display:none;">
+      <header class="view-header">
+        <h1 class="view-title">SETTINGS</h1>
+      </header>
+
+      <div class="settings-tabs">
+        <button class="settings-tab active" data-settings-tab="profile">PROFILE</button>
+        <button class="settings-tab" data-settings-tab="notifications">NOTIFICATIONS</button>
+        <button class="settings-tab" data-settings-tab="integrations">INTEGRATIONS</button>
+        <button class="settings-tab" data-settings-tab="billing">BILLING</button>
+      </div>
+
+      <div class="settings-panel" data-settings-panel="profile">
+        <h2 class="section-heading">PROFILE INFORMATION</h2>
+        <div class="form-group">
+          <label class="form-label">DISPLAY NAME</label>
+          <input type="text" class="form-input" value="J. Doe">
+        </div>
+        <div class="form-group">
+          <label class="form-label">EMAIL</label>
+          <input type="email" class="form-input" value="j.doe@company.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">ROLE</label>
+          <select class="sort-select">
+            <option selected>ADMIN</option>
+            <option>EDITOR</option>
+            <option>VIEWER</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">BIO</label>
+          <textarea class="form-textarea" rows="3">Full-stack engineer, idea management platform lead. Building tools that make teams think better together.</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">TIMEZONE</label>
+          <select class="sort-select">
+            <option>UTC-8 (Pacific)</option>
+            <option selected>UTC-5 (Eastern)</option>
+            <option>UTC+0 (London)</option>
+            <option>UTC+1 (Berlin)</option>
+            <option>UTC+9 (Tokyo)</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button class="tool-btn tool-btn--accent">SAVE CHANGES</button>
+          <button class="tool-btn">CANCEL</button>
+        </div>
+
+        <h2 class="section-heading" style="margin-top:40px;">CHANGE PASSWORD</h2>
+        <div class="form-group">
+          <label class="form-label">CURRENT PASSWORD</label>
+          <input type="password" class="form-input" placeholder="Enter current password">
+        </div>
+        <div class="form-group">
+          <label class="form-label">NEW PASSWORD</label>
+          <input type="password" class="form-input" placeholder="Enter new password">
+        </div>
+        <div class="form-group">
+          <label class="form-label">CONFIRM NEW PASSWORD</label>
+          <input type="password" class="form-input" placeholder="Confirm new password">
+        </div>
+        <div class="form-actions">
+          <button class="tool-btn tool-btn--accent">UPDATE PASSWORD</button>
+        </div>
+      </div>
+
+      <div class="settings-panel" data-settings-panel="notifications" style="display:none;">
+        <h2 class="section-heading">NOTIFICATION PREFERENCES</h2>
+        <div class="toggle-group">
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-label">EMAIL NOTIFICATIONS</span>
+              <span class="toggle-desc">Receive email for mentions, assignments, and status changes</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-label">PUSH NOTIFICATIONS</span>
+              <span class="toggle-desc">Browser push notifications for real-time updates</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-label">SLACK INTEGRATION</span>
+              <span class="toggle-desc">Post updates to connected Slack channels</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox">
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-label">DAILY DIGEST</span>
+              <span class="toggle-desc">Receive a summary of all activity at end of day</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-label">SPRINT REMINDERS</span>
+              <span class="toggle-desc">Automated reminders for sprint start, midpoint, and end</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-label">AI ASSISTANT SUMMARIES</span>
+              <span class="toggle-desc">Weekly AI-generated summary of your project activity</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox">
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="tool-btn tool-btn--accent">SAVE PREFERENCES</button>
+        </div>
+      </div>
+
+      <div class="settings-panel" data-settings-panel="integrations" style="display:none;">
+        <h2 class="section-heading">CONNECTED SERVICES</h2>
+        <div class="integration-list">
+          <div class="integration-item">
+            <div class="intg-info">
+              <span class="intg-name">GITHUB</span>
+              <span class="intg-status intg-status--connected">CONNECTED</span>
+            </div>
+            <p class="intg-desc">Repository sync, PR linking, branch tracking. Connected to: github.com/org/idea-mgmt</p>
+            <div class="intg-actions">
+              <button class="tool-btn">CONFIGURE</button>
+              <button class="tool-btn tool-btn--danger">DISCONNECT</button>
+            </div>
+          </div>
+          <div class="integration-item">
+            <div class="intg-info">
+              <span class="intg-name">SLACK</span>
+              <span class="intg-status intg-status--connected">CONNECTED</span>
+            </div>
+            <p class="intg-desc">Channel notifications, slash commands, thread linking. Workspace: company-hq.slack.com</p>
+            <div class="intg-actions">
+              <button class="tool-btn">CONFIGURE</button>
+              <button class="tool-btn tool-btn--danger">DISCONNECT</button>
+            </div>
+          </div>
+          <div class="integration-item">
+            <div class="intg-info">
+              <span class="intg-name">FIGMA</span>
+              <span class="intg-status intg-status--pending">PENDING</span>
+            </div>
+            <p class="intg-desc">Design file linking, component sync, prototype embedding. Awaiting API v3 access.</p>
+            <div class="intg-actions">
+              <button class="tool-btn">RETRY CONNECTION</button>
+            </div>
+          </div>
+          <div class="integration-item">
+            <div class="intg-info">
+              <span class="intg-name">LINEAR</span>
+              <span class="intg-status intg-status--disconnected">NOT CONNECTED</span>
+            </div>
+            <p class="intg-desc">Issue sync, cycle tracking, bi-directional status updates.</p>
+            <div class="intg-actions">
+              <button class="tool-btn tool-btn--accent">CONNECT</button>
+            </div>
+          </div>
+          <div class="integration-item">
+            <div class="intg-info">
+              <span class="intg-name">VERCEL</span>
+              <span class="intg-status intg-status--disconnected">NOT CONNECTED</span>
+            </div>
+            <p class="intg-desc">Deploy previews, environment management, analytics integration.</p>
+            <div class="intg-actions">
+              <button class="tool-btn tool-btn--accent">CONNECT</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-panel" data-settings-panel="billing" style="display:none;">
+        <h2 class="section-heading">BILLING &amp; SUBSCRIPTION</h2>
+        <div class="billing-plan">
+          <div class="plan-header">
+            <h3 class="plan-name">TEAM PLAN</h3>
+            <span class="badge badge--red">ACTIVE</span>
+          </div>
+          <div class="plan-details">
+            <div class="plan-stat">
+              <span class="plan-stat-label">MONTHLY COST</span>
+              <span class="plan-stat-value">$49/mo</span>
+            </div>
+            <div class="plan-stat">
+              <span class="plan-stat-label">SEATS USED</span>
+              <span class="plan-stat-value">12 / 20</span>
+            </div>
+            <div class="plan-stat">
+              <span class="plan-stat-label">NEXT BILLING</span>
+              <span class="plan-stat-value">2026-03-01</span>
+            </div>
+            <div class="plan-stat">
+              <span class="plan-stat-label">AI TOKENS USED</span>
+              <span class="plan-stat-value">847K / 1M</span>
+            </div>
+          </div>
+          <div class="plan-actions">
+            <button class="tool-btn tool-btn--accent">UPGRADE PLAN</button>
+            <button class="tool-btn">VIEW INVOICES</button>
+            <button class="tool-btn tool-btn--danger">CANCEL SUBSCRIPTION</button>
+          </div>
+        </div>
+
+        <h2 class="section-heading" style="margin-top: 40px;">PAYMENT METHOD</h2>
+        <div class="payment-method">
+          <div class="pm-card">
+            <span class="pm-type">VISA</span>
+            <span class="pm-number">**** **** **** 4242</span>
+            <span class="pm-expiry">EXP: 08/2027</span>
+          </div>
+          <div class="pm-actions">
+            <button class="tool-btn">UPDATE CARD</button>
+            <button class="tool-btn">ADD NEW METHOD</button>
+          </div>
+        </div>
+
+        <h2 class="section-heading" style="margin-top: 40px;">RECENT INVOICES</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>INVOICE</th>
+              <th>DATE</th>
+              <th>AMOUNT</th>
+              <th>STATUS</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>INV-2026-0002</td>
+              <td>2026-02-01</td>
+              <td>$49.00</td>
+              <td><span class="badge badge--red">PAID</span></td>
+              <td><button class="action-btn">DOWNLOAD</button></td>
+            </tr>
+            <tr>
+              <td>INV-2026-0001</td>
+              <td>2026-01-01</td>
+              <td>$49.00</td>
+              <td><span class="badge badge--red">PAID</span></td>
+              <td><button class="action-btn">DOWNLOAD</button></td>
+            </tr>
+            <tr>
+              <td>INV-2025-0012</td>
+              <td>2025-12-01</td>
+              <td>$49.00</td>
+              <td><span class="badge badge--red">PAID</span></td>
+              <td><button class="action-btn">DOWNLOAD</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

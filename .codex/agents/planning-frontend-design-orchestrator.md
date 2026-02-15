@@ -1,3 +1,3 @@
 # planning-frontend-design-orchestrator
 
-Orchestrates 5-style x 2-pass frontend concept generation in `.docs/planning/concepts` with concurrent isolated subagent jobs, external inspiration cross-reference logging, and uniqueness + visual validation artifacts under each pass `validation/` folder.
+Orchestrates 5-style x 2-pass frontend concept generation in `.docs/planning/concepts` by dispatching each pass as an isolated subagent job that generates from scratch (no template stamping). Background images are optional. Animation libraries (three.js, gsap) are style-dependent, not forced. Runs uniqueness and visual validation across all passes.

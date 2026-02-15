@@ -1,0 +1,131 @@
+{
+  "concept": "retro-50s",
+  "pass": 2,
+  "variantSeed": "atomic-age-googie",
+  "direction": "Googie/space-age layout. Jetsons meets LAX Theme Building. Boomerang and parabola shapes in navigation and panel borders. Starburst dividers. Atomic orbit decorative elements.",
+  "palette": {
+    "bg": "#f0f7f6",
+    "bgWarm": "#fef5f0",
+    "text": "#2a1f3d",
+    "textMuted": "#5a4f6d",
+    "surface": "#ffffff",
+    "accent": "#ff6b6b",
+    "accent2": "#4ecdc4",
+    "accentGlow": "rgba(78,205,196,.25)",
+    "border": "#cde3e0",
+    "spaceNavy": "#1a2a44",
+    "cream": "#fef8f2",
+    "coralLight": "#ffe0db",
+    "turquoiseLight": "#d4f5f2"
+  },
+  "typography": {
+    "heading": "Fredoka",
+    "body": "Nunito",
+    "mono": "Fira Code",
+    "source": "Google Fonts CDN"
+  },
+  "layoutProfile": {
+    "navigation": "Swooping fixed top bar with parabola-clipped angled tabs",
+    "headerHeight": "72px",
+    "panelShape": "Boomerang border-radius (0 40px 0 40px)",
+    "containerStyle": "Capsule/pod cards with porthole icons",
+    "grid": "CSS Grid with responsive breakpoints",
+    "responsive": {
+      "mobile": "375px — single column, hamburger nav",
+      "desktop": "1440px — multi-column grids"
+    }
+  },
+  "motion": {
+    "easeParabola": "cubic-bezier(.4, 0, .2, 1)",
+    "easeOrbital": "cubic-bezier(.22, .61, .36, 1)",
+    "viewTransition": "view-swoop (translateY + scale + opacity, 0.5s)",
+    "decorative": [
+      "orbit-spin (360deg rotation, 4-10s linear infinite)",
+      "electron-pulse (scale 1→1.6→1, 2s ease-in-out infinite)",
+      "starburst-pulse (scale 1→1.3→1, 3s ease-in-out infinite)",
+      "wave-dance (scaleY 1→0.4→1, 1.2s ease-in-out infinite)",
+      "star-twinkle (opacity + scale, 3s ease-in-out infinite)",
+      "dash-flow (stroke-dashoffset animation, 15-20s linear infinite)",
+      "float-gentle (translateY 0→-6px→0, 6-7s ease-in-out infinite)"
+    ]
+  },
+  "views": [
+    {
+      "id": "dashboard",
+      "title": "Mission Control",
+      "metaphor": "Space-age control panel",
+      "features": ["Orbital stat rings with animated electrons", "Atomic activity chart (bar chart with gradient fills)", "Recent missions list", "Quick-launch navigation buttons"]
+    },
+    {
+      "id": "projects",
+      "title": "Launch Bay",
+      "metaphor": "Space pods in a launch facility",
+      "features": ["Pod grid with porthole icons", "Progress bars with gradient fills", "Status badges (In Orbit / Pre-Launch / Landed)", "Search capsule input"]
+    },
+    {
+      "id": "project-workspace",
+      "title": "Cockpit View",
+      "metaphor": "Spacecraft cockpit with instruments",
+      "features": ["Instrument panel sidebar (gauges, readouts, crew roster)", "Viewport content area with tabbed sections", "Mission objectives with status indicators", "Transmission log"]
+    },
+    {
+      "id": "kanban",
+      "title": "Orbital Lanes",
+      "metaphor": "Launch tubes / orbital trajectories",
+      "features": ["4 lanes (Launch Pad → In Orbit → Re-Entry → Landed)", "Parabola-clipped lane headers", "Pod cards with priority dots and avatar badges", "Card tags with pill badges"]
+    },
+    {
+      "id": "whiteboard",
+      "title": "Star Map",
+      "metaphor": "Star chart with constellation connections",
+      "features": ["Draggable constellation nodes", "SVG connection lines with dash animation", "Deep-space canvas background", "Toolbar with selectable tools"]
+    },
+    {
+      "id": "schema-planner",
+      "title": "Space Station Planner",
+      "metaphor": "Space station modules with satellite dishes",
+      "features": ["Entity blocks as station modules", "Satellite dish decorative tops", "SVG orbital connection paths (quadratic curves)", "Field type annotations"]
+    },
+    {
+      "id": "directory-tree",
+      "title": "Antenna Array",
+      "metaphor": "Branching antenna / signal array",
+      "features": ["Collapsible tree branches with toggle carets", "Space-navy sidebar with search", "Code preview pane", "File type indicators"]
+    },
+    {
+      "id": "ideas",
+      "title": "Shooting Stars",
+      "metaphor": "Comets and shooting stars captured in orbit",
+      "features": ["Orbital capture input with spinning ring", "Comet-tail cards with gradient side accent", "Vote counts as stars", "New idea animation (slide-in from left)"]
+    },
+    {
+      "id": "ai-chat",
+      "title": "Space Radio",
+      "metaphor": "Radio communications in space",
+      "features": ["Signal wave animation header", "Frequency display", "Incoming/outgoing message styling (turquoise/coral)", "Simulated AI response on transmit"]
+    },
+    {
+      "id": "settings",
+      "title": "Space Console",
+      "metaphor": "Retro spacecraft control console",
+      "features": ["Pilot profile with orbiting avatar ring", "Rotatable dial knobs", "Orbital toggle switches with sliding planet", "Self-destruct danger zone"]
+    }
+  ],
+  "files": [
+    { "name": "index.html", "type": "html", "description": "Complete HTML with all 10 navigable views" },
+    { "name": "style.css", "type": "css", "description": "Full CSS with custom properties, layout, responsive design, and animations" },
+    { "name": "app.js", "type": "javascript", "description": "Navigation logic, hash routing, interactions, and UI state management" },
+    { "name": "README.md", "type": "markdown", "description": "Concept documentation and design decisions" },
+    { "name": "validation/handoff.json", "type": "json", "description": "Structured metadata for this pass" },
+    { "name": "validation/inspiration-crossreference.json", "type": "json", "description": "Inspiration sources with differentiators" }
+  ],
+  "globalElements": {
+    "starburstDividers": "Star-polygon + gradient line dividers between view headers and content",
+    "boomerangPanels": "Asymmetric border-radius (0 40px 0 40px) surface containers",
+    "orbitalRings": "SVG circle-based stat displays with animated electron dots",
+    "capsuleInputs": "Pill-shaped (border-radius: 100px) input fields and buttons",
+    "spaceNavyContrast": "#1a2a44 dark panels for instrument panels, nav bar, canvas backgrounds",
+    "starfieldBackground": "CSS radial-gradient layered star pattern (no images)",
+    "parabolicNavTabs": "clip-path polygon angled tabs in the top navigation bar"
+  }
+}

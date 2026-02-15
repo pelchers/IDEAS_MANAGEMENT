@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "outputRoot": ".docs/planning/concepts",
+  "inspirationCatalogPath": ".claude/skills/frontend-design-subagent/references/external-inspiration-catalog.json",
+  "uniquenessCatalogPath": ".claude/skills/planning-frontend-design-orchestrator/references/layout-uniqueness-catalog.json",
+  "orchestration": {
+    "concurrency": 5,
+    "validationSubfolder": "validation",
+    "requireValidation": true,
+    "requireExternalInspiration": true,
+    "requireDownloadedMedia": false,
+    "requireUniqueProfilesPerRun": true,
+    "forceAnimationLibraries": false,
+    "uniquenessThreshold": 0.55
+  },
+  "passesPerStyle": 2,
+  "requiredViews": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "styles": [
+    {
+      "id": "brutalist",
+      "label": "Brutalist",
+      "notes": "Raw concrete geometry, exposed structural grid, anti-decoration, monumental type, zero border-radius, visible construction. Think Barbican Centre meets a CLI. Harsh, honest, unapologetically structural.",
+      "palette": {
+        "bg": "#e8e0d0",
+        "text": "#1a1a1a",
+        "surface": "#f5f0e6",
+        "accent": "#ff3b00",
+        "accent2": "#0038ff",
+        "border": "#1a1a1a",
+        "heading": "Anton",
+        "body": "Space Grotesk",
+        "mono": "IBM Plex Mono"
+      },
+      "passVariants": [
+        {
+          "pass": 1,
+          "variantSeed": "concrete-slab-monolith",
+          "direction": "Monolithic slab layout. Everything is a heavy concrete block. Navigation is a vertical stack of oversized labels. Content panels are harsh-bordered rectangles with no curves. Typography is enormous display-weight headings crushed against tight body text. Color is almost absent - raw paper, black ink, one explosive red accent."
+        },
+        {
+          "pass": 2,
+          "variantSeed": "stamp-grid-manifesto",
+          "direction": "Poster/manifesto grid layout. The app feels like a printed broadsheet with stamps, seals, and grid lines visible. Navigation uses numbered stamps/badges. Content is arranged in irregular newspaper columns with pull-quotes and oversized indexing numbers. Heavy use of borders, rules, and monospace labeling."
+        }
+      ]
+    },
+    {
+      "id": "mid-century-modern",
+      "label": "Mid-Century Modern",
+      "notes": "Organic curves meeting geometric precision, warm teak/walnut tones, Eames-era furniture logic applied to UI. Hairpin-leg tables become nav rails. Sunburst clocks become loading spinners. Clean but warm, never cold.",
+      "palette": {
+        "bg": "#faf6ef",
+        "text": "#2c1810",
+        "surface": "#ffffff",
+        "accent": "#c4652a",
+        "accent2": "#1b6b5a",
+        "border": "#d4c5a9",
+        "heading": "Playfair Display",
+        "body": "DM Sans",
+        "mono": "JetBrains Mono"
+      },
+      "passVariants": [
+        {
+          "pass": 1,
+          "variantSeed": "eames-lounge-workspace",
+          "direction": "Furniture-logic layout. The workspace feels like sitting in an Eames lounge chair looking at a teak credenza. Rounded-rectangle panels with subtle wood-grain CSS textures. Navigation is a horizontal mid-century credenza shelf with icon-and-label items. Warm amber and olive accents. Generous whitespace. Organic curves on cards but geometric grid underneath."
+        },
+        {
+          "pass": 2,
+          "variantSeed": "saarinen-tulip-dashboard",
+          "direction": "Pedestal/tulip-table layout. A central hub radiates outward like Saarinen's tulip table. Navigation orbits the center. Content panels have tapered legs (subtle CSS borders that thin toward the bottom). Atomic-age starburst decorative elements as section dividers. Color palette leans into mustard, burnt orange, and cream."
+        }
+      ]
+    },
+    {
+      "id": "retro-50s",
+      "label": "Retro 50s Aesthetic",
+      "notes": "Chrome diner meets atomic age. Pastel palette (mint, pink, baby blue), googie architecture curves, jukebox chrome accents, checkerboard patterns, neon sign energy. Optimistic, kitschy, fun.",
+      "palette": {
+        "bg": "#fef5f0",
+        "text": "#2a1f3d",
+        "surface": "#ffffff",
+        "accent": "#ff6b8a",
+        "accent2": "#4ecdc4",
+        "border": "#e0d4e8",
+        "heading": "Fredoka",
+        "body": "Nunito",
+        "mono": "Fira Code"
+      },
+      "passVariants": [
+        {
+          "pass": 1,
+          "variantSeed": "chrome-diner-jukebox",
+          "direction": "Diner-booth layout. The app is a chrome-trimmed diner. Navigation is a jukebox selector with flip-card buttons. Content panels have rounded chrome bezels and checkerboard accents. Pastel mint, pink, and cream. Neon-glow hover effects on interactive elements. Each view has a different retro illustration vibe (dashboard = speedometer, kanban = drive-in menu board, etc.)."
+        },
+        {
+          "pass": 2,
+          "variantSeed": "atomic-age-googie",
+          "direction": "Googie/space-age layout. Think Jetsons meets LAX Theme Building. Boomerang and parabola shapes in navigation and panel borders. Starburst dividers. Atomic orbit decorative elements. Navigation is a swooping top bar with angled tabs. Color leans into turquoise, coral, and cream. Optional: subtle starfield background using CSS radial gradients (no image download needed)."
+        }
+      ]
+    },
+    {
+      "id": "liquid",
+      "label": "Liquid Motion",
+      "notes": "Everything slides, morphs, flows. The motion IS the design. Clean modern aesthetic underneath but every interaction feels like touching water. Blob nav, morphing panels, wave transitions, ripple feedback. GSAP is essential here.",
+      "palette": {
+        "bg": "#f0f4ff",
+        "text": "#0a1628",
+        "surface": "#ffffff",
+        "accent": "#3b82f6",
+        "accent2": "#8b5cf6",
+        "border": "#c7d2fe",
+        "heading": "Syne",
+        "body": "Manrope",
+        "mono": "JetBrains Mono"
+      },
+      "passVariants": [
+        {
+          "pass": 1,
+          "variantSeed": "morphing-blob-surfaces",
+          "direction": "Blob-surface layout. Navigation items are organic blob shapes that morph on hover. Content panels have fluid, animated border-radius that subtly shifts. Page transitions are liquid dissolves. Scroll behavior has momentum-based parallax. Color is clean blue-to-purple gradient spectrum with white surfaces. GSAP morphSVG or CSS clip-path animations for panel transitions. The whole UI breathes."
+        },
+        {
+          "pass": 2,
+          "variantSeed": "wave-current-flow",
+          "direction": "Wave/current layout. The app flows like a river. Navigation is a horizontal stream with items that float and bob subtly. Content panels slide in from the side like currents merging. Scroll creates a wave effect where content rises from below. SVG wave dividers between sections. Color is deep ocean blue fading to surface foam white. Every button press sends a ripple animation. GSAP ScrollTrigger for current-like scroll behavior."
+        }
+      ]
+    },
+    {
+      "id": "slate",
+      "label": "Slate",
+      "notes": "Dark stone, carved interfaces. Think luxury watch UI meets mountain lodge. Layered slate textures, etched typography, chiseled borders. Muted earth tones with one warm amber accent. Dense, premium, weighty. No playfulness.",
+      "palette": {
+        "bg": "#1e1e24",
+        "text": "#d4d0c8",
+        "surface": "#2a2a32",
+        "accent": "#c89b3c",
+        "accent2": "#6b8f71",
+        "border": "#3d3d47",
+        "heading": "Rajdhani",
+        "body": "Source Serif 4",
+        "mono": "IBM Plex Mono"
+      },
+      "passVariants": [
+        {
+          "pass": 1,
+          "variantSeed": "carved-monolith-console",
+          "direction": "Carved-stone console layout. The UI feels etched into dark slate. Navigation is a left rail with items that look recessed/engraved. Content panels have subtle inner shadows that create depth like carved-out areas. Typography uses letter-spacing and thin weights to feel etched. Color is charcoal, graphite, and warm amber for active states. Borders are subtle stone-texture-gradient (CSS only, no images). Premium and heavy."
+        },
+        {
+          "pass": 2,
+          "variantSeed": "layered-bedrock-strata",
+          "direction": "Geological strata layout. Content is layered like sedimentary rock - each section sits at a different visual depth with CSS box-shadows creating a stacked-stone effect. Navigation is a top bar with tab items that look like protruding stone tablets. Scroll reveals layers. Color shifts from deep charcoal at the base to lighter slate at the top. One warm amber accent for active/focus states. Dense information display with small type and tight grid."
+        }
+      ]
+    }
+  ]
+}

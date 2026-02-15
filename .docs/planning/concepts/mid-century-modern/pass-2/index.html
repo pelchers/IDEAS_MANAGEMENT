@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Idea Management - Mid-Century Modern (Pass 2: Saarinen Tulip Dashboard)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ===================== ORBITAL NAV HUB ===================== -->
+    <nav class="orbital-nav" id="orbitalNav">
+      <div class="nav-hub-center">
+        <div class="hub-logo">
+          <span class="hub-logo-icon">&#9670;</span>
+          <span class="hub-logo-text">Ideas</span>
+        </div>
+      </div>
+      <div class="orbital-ring orbital-ring--inner">
+        <button class="orbit-item orbit-item--1" data-view="dashboard" title="Dashboard">
+          <span class="orbit-icon">&#9681;</span>
+          <span class="orbit-label">Dashboard</span>
+        </button>
+        <button class="orbit-item orbit-item--2" data-view="projects" title="Projects">
+          <span class="orbit-icon">&#9633;</span>
+          <span class="orbit-label">Projects</span>
+        </button>
+        <button class="orbit-item orbit-item--3" data-view="project-workspace" title="Workspace">
+          <span class="orbit-icon">&#9638;</span>
+          <span class="orbit-label">Workspace</span>
+        </button>
+        <button class="orbit-item orbit-item--4" data-view="kanban" title="Kanban">
+          <span class="orbit-icon">&#9783;</span>
+          <span class="orbit-label">Kanban</span>
+        </button>
+        <button class="orbit-item orbit-item--5" data-view="whiteboard" title="Whiteboard">
+          <span class="orbit-icon">&#9674;</span>
+          <span class="orbit-label">Whiteboard</span>
+        </button>
+      </div>
+      <div class="orbital-ring orbital-ring--outer">
+        <button class="orbit-item orbit-item--6" data-view="schema-planner" title="Schema">
+          <span class="orbit-icon">&#9707;</span>
+          <span class="orbit-label">Schema</span>
+        </button>
+        <button class="orbit-item orbit-item--7" data-view="directory-tree" title="Files">
+          <span class="orbit-icon">&#9776;</span>
+          <span class="orbit-label">Files</span>
+        </button>
+        <button class="orbit-item orbit-item--8" data-view="ideas" title="Ideas">
+          <span class="orbit-icon">&#10038;</span>
+          <span class="orbit-label">Ideas</span>
+        </button>
+        <button class="orbit-item orbit-item--9" data-view="ai-chat" title="AI Chat">
+          <span class="orbit-icon">&#9000;</span>
+          <span class="orbit-label">AI Chat</span>
+        </button>
+        <button class="orbit-item orbit-item--10" data-view="settings" title="Settings">
+          <span class="orbit-icon">&#9881;</span>
+          <span class="orbit-label">Settings</span>
+        </button>
+      </div>
+      <!-- Mobile nav toggle -->
+      <button class="nav-mobile-toggle" id="navMobileToggle" aria-label="Toggle navigation">
+        <span class="toggle-starburst">&#10038;</span>
+      </button>
+    </nav>
+
+    <!-- ===================== MAIN CONTENT ===================== -->
+    <main class="content-area" id="contentArea">
+
+      <!-- ===== VIEW 1: DASHBOARD ===== -->
+      <section class="page-view" data-page="dashboard">
+        <div class="pedestal-hub">
+          <div class="pedestal-stem"></div>
+          <div class="pedestal-top">
+            <h1 class="page-title">Command Center</h1>
+            <p class="page-subtitle">Your creative universe at a glance</p>
+          </div>
+        </div>
+
+        <div class="starburst-divider">
+          <span class="starburst-line"></span>
+          <span class="starburst-icon">&#10038;</span>
+          <span class="starburst-line"></span>
+        </div>
+
+        <div class="stat-orbit-ring">
+          <div class="stat-orbit stat-orbit--1">
+            <div class="stat-pedestal">
+              <div class="stat-value">47</div>
+              <div class="stat-label">Active Ideas</div>
+              <div class="pedestal-base"></div>
+            </div>
+          </div>
+          <div class="stat-orbit stat-orbit--2">
+            <div class="stat-pedestal">
+              <div class="stat-value">12</div>
+              <div class="stat-label">Projects</div>
+              <div class="pedestal-base"></div>
+            </div>
+          </div>
+          <div class="stat-orbit stat-orbit--3">
+            <div class="stat-pedestal">
+              <div class="stat-value">89%</div>
+              <div class="stat-label">Completion</div>
+              <div class="pedestal-base"></div>
+            </div>
+          </div>
+          <div class="stat-orbit stat-orbit--4">
+            <div class="stat-pedestal">
+              <div class="stat-value">6</div>
+              <div class="stat-label">Collaborators</div>
+              <div class="pedestal-base"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="starburst-divider">
+          <span class="starburst-line"></span>
+          <span class="starburst-icon">&#10038;</span>
+          <span class="starburst-line"></span>
+        </div>
+
+        <div class="sunburst-chart">
+          <div class="sunburst-ring-label">Activity this week</div>
+          <div class="sunburst-segments">
+            <div class="sunburst-segment" style="--seg-angle: 120deg; --seg-color: var(--accent);">
+              <span>Ideation</span>
+            </div>
+            <div class="sunburst-segment" style="--seg-angle: 90deg; --seg-color: var(--accent2);">
+              <span>Development</span>
+            </div>
+            <div class="sunburst-segment" style="--seg-angle: 80deg; --seg-color: var(--mustard);">
+              <span>Review</span>
+            </div>
+            <div class="sunburst-segment" style="--seg-angle: 70deg; --seg-color: var(--border);">
+              <span>Planning</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="recent-activity-pedestal">
+          <h2 class="section-heading">Recent Activity</h2>
+          <div class="activity-timeline">
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <div class="timeline-content">
+                <strong>New idea captured:</strong> Modular furniture design system
+                <span class="timeline-time">2h ago</span>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <div class="timeline-content">
+                <strong>Project updated:</strong> Retro Color Palette Generator
+                <span class="timeline-time">4h ago</span>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <div class="timeline-content">
+                <strong>Schema finalized:</strong> Product catalog entity model
+                <span class="timeline-time">1d ago</span>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <div class="timeline-content">
+                <strong>AI conversation:</strong> Brand identity brainstorm
+                <span class="timeline-time">1d ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VIEW 2: PROJECTS ===== -->
+      <section class="page-view" data-page="projects">
+        <div class="pedestal-hub">
+          <div class="pedestal-stem"></div>
+          <div class="pedestal-top">
+            <h1 class="page-title">Projects</h1>
+            <p class="page-subtitle">Orbital overview of all initiatives</p>
+          </div>
+        </div>
+
+        <div class="starburst-divider">
+          <span class="starburst-line"></span>
+          <span class="starburst-icon">&#10038;</span>
+          <span class="starburst-line"></span>
+        </div>
+
+        <div class="project-orbit-showcase">
+          <div class="project-tulip-card project-tulip-card--orbit-1">
+            <div class="tulip-card-head">
+              <span class="project-status project-status--active"></span>
+              <h3>Retro Brand System</h3>
+            </div>
+            <div class="tulip-card-body">
+              <p>Complete visual identity with atomic-age influence</p>
+              <div class="card-meta">
+                <span class="meta-tag">Design</span>
+                <span class="meta-tag">Branding</span>
+              </div>
+              <div class="card-progress">
+                <div class="progress-track">
+                  <div class="progress-fill" style="--progress: 72%;"></div>
+                </div>
+                <span class="progress-label">72%</span>
+              </div>
+            </div>
+            <div class="tulip-stem-border"></div>
+          </div>
+
+          <div class="project-tulip-card project-tulip-card--orbit-2">
+            <div class="tulip-card-head">
+              <span class="project-status project-status--paused"></span>
+              <h3>Furniture Configurator</h3>
+            </div>
+            <div class="tulip-card-body">
+              <p>3D configurator for mid-century inspired pieces</p>
+              <div class="card-meta">
+                <span class="meta-tag">Product</span>
+                <span class="meta-tag">3D</span>
+              </div>
+              <div class="card-progress">
+                <div class="progress-track">
+                  <div class="progress-fill" style="--progress: 34%;"></div>
+                </div>
+                <span class="progress-label">34%</span>
+              </div>
+            </div>
+            <div class="tulip-stem-border"></div>
+          </div>
+
+          <div class="project-tulip-card project-tulip-card--orbit-3">
+            <div class="tulip-card-head">
+              <span class="project-status project-status--active"></span>
+              <h3>Color Palette Generator</h3>
+            </div>
+            <div class="tulip-card-body">
+              <p>AI-powered palette creation from era references</p>
+              <div class="card-meta">
+                <span class="meta-tag">Tool</span>
+                <span class="meta-tag">AI</span>
+              </div>
+              <div class="card-progress">
+                <div class="progress-track">
+                  <div class="progress-fill" style="--progress: 91%;"></div>
+                </div>
+                <span class="progress-label">91%</span>
+              </div>
+            </div>
+            <div class="tulip-stem-border"></div>
+          </div>
+
+          <div class="project-tulip-card project-tulip-card--orbit-4">
+            <div class="tulip-card-head">
+              <span class="project-status project-status--review"></span>
+              <h3>Pattern Library</h3>
+            </div>
+            <div class="tulip-card-body">
+              <p>Reusable geometric and organic pattern assets</p>
+              <div class="card-meta">
+                <span class="meta-tag">Assets</span>
+                <span class="meta-tag">Library</span>
+              </div>
+              <div class="card-progress">
+                <div class="progress-track">
+                  <div class="progress-fill" style="--progress: 56%;"></div>
+                </div>
+                <span class="progress-label">56%</span>
+              </div>
+            </div>
+            <div class="tulip-stem-border"></div>
+          </div>
+
+          <div class="project-tulip-card project-tulip-card--orbit-5">
+            <div class="tulip-card-head">
+              <span class="project-status project-status--active"></span>
+              <h3>Typography Showcase</h3>
+            </div>
+            <div class="tulip-card-body">
+              <p>Interactive specimen for curated typeface pairs</p>
+              <div class="card-meta">
+                <span class="meta-tag">Typography</span>
+              </div>
+              <div class="card-progress">
+                <div class="progress-track">
+                  <div class="progress-fill" style="--progress: 48%;"></div>
+                </div>
+                <span class="progress-label">48%</span>
+              </div>
+            </div>
+            <div class="tulip-stem-border"></div>
+          </div>
+
+          <div class="project-tulip-card project-tulip-card--orbit-6">
+            <div class="tulip-card-head">
+              <span class="project-status project-status--draft"></span>
+              <h3>Illustration System</h3>
+            </div>
+            <div class="tulip-card-body">
+              <p>Scalable illustration set with atomic-age motifs</p>
+              <div class="card-meta">
+                <span class="meta-tag">Illustration</span>
+              </div>
+              <div class="card-progress">
+                <div class="progress-track">
+                  <div class="progress-fill" style="--progress: 15%;"></div>
+                </div>
+                <span class="progress-label">15%</span>
+              </div>
+            </div>
+            <div class="tulip-stem-border"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VIEW 3: PROJECT WORKSPACE ===== -->
+      <section class="page-view" data-page="project-workspace">
+        <div class="pedestal-hub pedestal-hub--compact">
+          <div class="pedestal-stem"></div>
+          <div class="pedestal-top">
+            <h1 class="page-title">Project Workspace</h1>
+            <div class="atomic-breadcrumbs">
+              <span class="crumb">Projects</span>
+              <span class="crumb-separator">&#10038;</span>
+              <span class="crumb">Retro Brand System</span>
+              <span class="crumb-separator">&#10038;</span>
+              <span class="crumb crumb--active">Workspace</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="starburst-divider">
+          <span class="starburst-line"></span>
+          <span class="starburst-icon">&#10038;</span>
+          <span class="starburst-line"></span>
+        </div>
+
+        <div class="workspace-split">
+          <div class="workspace-panel workspace-panel--left">
+            <div class="tapered-panel">
+              <h2 class="panel-title">Project Details</h2>
+              <div class="detail-row">
+                <span class="detail-label">Status</span>
+                <span class="detail-value status-badge status-badge--active">Active</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Created</span>
+                <span class="detail-value">Jan 15, 2026</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Owner</span>
+                <span class="detail-value">Sarah Mitchell</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Priority</span>
+                <span class="detail-value priority-indicator priority-indicator--high">High</span>
+              </div>
+
+              <div class="starburst-section-break">
+                <span>&#10038;</span>
+              </div>
+
+              <h3 class="subsection-title">Team Members</h3>
+              <div class="team-avatars">
+                <div class="avatar-circle" style="--avatar-hue: 30;">SM</div>
+                <div class="avatar-circle" style="--avatar-hue: 160;">JR</div>
+                <div class="avatar-circle" style="--avatar-hue: 280;">KL</div>
+                <div class="avatar-circle" style="--avatar-hue: 50;">DP</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="workspace-panel workspace-panel--right">
+            <div class="tapered-panel">
+              <h2 class="panel-title">Tasks & Milestones</h2>
+              <div class="task-list">
+                <div class="task-item task-item--done">
+                  <span class="task-check">&#10003;</span>
+                  <span class="task-text">Define brand color system</span>
+                </div>
+                <div class="task-item task-item--done">
+                  <span class="task-check">&#10003;</span>
+                  <span class="task-text">Typography selection and pairing</span>
+                </div>
+                <div class="task-item task-item--active">
+                  <span class="task-check"></span>
+                  <span class="task-text">Logo mark variations</span>
+                </div>
+                <div class="task-item">
+                  <span class="task-check"></span>
+                  <span class="task-text">Brand guidelines document</span>
+                </div>
+                <div class="task-item">
+                  <span class="task-check"></span>
+                  <span class="task-text">Collateral templates</span>
+                </div>
+                <div class="task-item">
+                  <span class="task-check"></span>
+                  <span class="task-text">Digital asset library</span>
+                </div>
+              </div>
+
+              <div class="starburst-section-break">
+                <span>&#10038;</span>
+              </div>
+
+              <h3 class="subsection-title">Notes</h3>
+              <div class="notes-area">
+                <textarea class="note-input" placeholder="Add project notes..." rows="4">Focus on clean geometric forms with warm accents. Reference Saul Bass poster work for compositional inspiration.</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VIEW 4: KANBAN ===== -->
+      <section class="page-view" data-page="kanban">
+        <div class="pedestal-hub pedestal-hub--compact">
+          <div class="pedestal-stem"></div>
+          <div class="pedestal-top">
+            <h1 class="page-title">Kanban Board</h1>
+            <p class="page-subtitle">Tulip pedestal lanes</p>
+          </div>
+        </div>
+
+        <div class="starburst-divider">
+          <span class="starburst-line"></span>
+          <span class="starburst-icon">&#10038;</span>
+          <span class="starburst-line"></span>
+        </div>
+
+        <div class="kanban-pedestal-lanes">
+          <div class="kanban-lane">
+            <div class="lane-pedestal-top">
+              <h3 class="lane-title">Backlog</h3>
+              <span class="lane-count">4</span>
+            </div>
+            <div class="lane-stem"></div>
+            <div class="lane-cards">
+              <div class="kanban-card">
+                <span class="card-priority card-priority--low"></span>
+                <h4>Research competitor brands</h4>
+                <p class="card-desc">Audit 5 competitor visual identities</p>
+                <div class="card-footer">
+                  <span class="card-tag">Research</span>
+                  <span class="card-assignee">SM</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="card-priority card-priority--medium"></span>
+                <h4>Mood board assembly</h4>
+                <p class="card-desc">Collect reference imagery</p>
+                <div class="card-footer">
+                  <span class="card-tag">Design</span>
+                  <span class="card-assignee">JR</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="card-priority card-priority--low"></span>
+                <h4>Font licensing review</h4>
+                <p class="card-desc">Verify licensing for chosen typefaces</p>
+                <div class="card-footer">
+                  <span class="card-tag">Legal</span>
+                  <span class="card-assignee">KL</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="card-priority card-priority--high"></span>
+                <h4>Stakeholder interviews</h4>
+                <p class="card-desc">Gather brand perception data</p>
+                <div class="card-footer">
+                  <span class="card-tag">Research</span>
+                  <span class="card-assignee">DP</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-lane">
+            <div class="lane-pedestal-top">
+              <h3 class="lane-title">In Progress</h3>
+              <span class="lane-count">3</span>
+            </div>
+            <div class="lane-stem"></div>
+            <div class="lane-cards">
+              <div class="kanban-card">
+                <span class="card-priority card-priority--high"></span>
+                <h4>Logo mark exploration</h4>
+                <p class="card-desc">Create 10 geometric logo variations</p>
+                <div class="card-footer">
+                  <span class="card-tag">Design</span>
+                  <span class="card-assignee">SM</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="card-priority card-priority--medium"></span>
+                <h4>Color palette refinement</h4>
+                <p class="card-desc">Narrow down to final 5 swatches</p>
+                <div class="card-footer">
+                  <span class="card-tag">Design</span>
+                  <span class="card-assignee">JR</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="card-priority card-priority--medium"></span>
+                <h4>Icon system draft</h4>
+                <p class="card-desc">Geometric icon set, 24px grid</p>
+                <div class="card-footer">
+                  <span class="card-tag">Assets</span>
+                  <span class="card-assignee">KL</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-lane">
+            <div class="lane-pedestal-top">
+              <h3 class="lane-title">Review</h3>
+              <span class="lane-count">2</span>
+            </div>
+            <div class="lane-stem"></div>
+            <div class="lane-cards">
+              <div class="kanban-card">
+                <span class="card-priority card-priority--high"></span>
+                <h4>Typography hierarchy</h4>
+                <p class="card-desc">Heading, body, caption scale system</p>
+                <div class="card-footer">
+                  <span class="card-tag">Typography</span>
+                  <span class="card-assignee">SM</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="card-priority card-priority--low"></span>
+                <h4>Brand voice doc</h4>
+                <p class="card-desc">Tone and messaging guidelines</p>
+                <div class="card-footer">
+                  <span class="card-tag">Writing</span>
+                  <span class="card-assignee">DP</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-lane">
+            <div class="lane-pedestal-top">
+              <h3 class="lane-title">Done</h3>
+              <span class="lane-count">3</span>
+            </div>
+            <div class="lane-stem"></div>
+            <div class="lane-cards">
+              <div class="kanban-card kanban-card--done">
+                <span class="card-priority card-priority--high"></span>
+                <h4>Brand audit</h4>
+                <p class="card-desc">Current state analysis complete</p>
+                <div class="card-footer">
+                  <span class="card-tag">Research</span>
+                  <span class="card-assignee">SM</span>
+                </div>
+              </div>
+              <div class="kanban-card kanban-card--done">
+                <span class="card-priority card-priority--medium"></span>
+                <h4>Project kickoff</h4>
+                <p class="card-desc">Stakeholder alignment meeting</p>
+                <div class="card-footer">
+                  <span class="card-tag">Planning</span>
+                  <span class="card-assignee">JR</span>
+                </div>
+              </div>
+              <div class="kanban-card kanban-card--done">
+                <span class="card-priority card-priority--low"></span>
+                <h4>Brief document</h4>
+                <p class="card-desc">Creative brief finalized</p>
+                <div class="card-footer">
+                  <span class="card-tag">Writing</span>
+                  <span class="card-assignee">DP</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VIEW 5: WHITEBOARD ===== -->
+      <section class="page-view" data-page="whiteboard">
+        <div class="pedestal-hub pedestal-hub--compact">
+          <div class="pedestal-stem"></div>
+          <div class="pedestal-top">
+            <h1 class="page-title">Whiteboard</h1>
+            <p class="page-subtitle">Atomic-age canvas</p>
+          </div>
+        </div>
+
+        <div class="starburst-divider">
+          <span class="starburst-line"></span>
+          <span class="starburst-icon">&#10038;</span>
+          <span class="starburst-line"></span>
+        </div>
+
+        <div class="whiteboard-toolbar">
+          <button class="wb-tool wb-tool--active" data-tool="select">
+            <span>&#9670;</span> Select
+          </button>
+          <button class="wb-tool" data-tool="draw">
+            <span>&#9998;</span> Draw
+          </button>
+          <button class="wb-tool" data-tool="shape">
+            <span>&#9634;</span> Shape
+          </button>
+          <button class="wb-tool" data-tool="text">
+            <span>T</span> Text
+          </button>
+          <button class="wb-tool" data-tool="connect">
+            <span>&#8594;</span> Connect
+          </button>
+          <button class="wb-tool" data-tool="starburst">
+            <span>&#10038;</span> Starburst
+          </button>
+        </div>
+
+        <div class="whiteboard-canvas" id="whiteboardCanvas">
+          <div class="wb-grid-starburst"></div>
+          <div class="wb-node wb-node--diamond" style="left: 15%; top: 20%;">
+            <div class="wb-node-content">Core Concept</div>
+          </div>
+          <div class="wb-node wb-node--ellipse" style="left: 40%; top: 15%;">
+            <div class="wb-node-content">Research</div>
+          </div>
+          <div class="wb-node wb-node--atom" style="left: 65%; top: 25%;">
+            <div class="wb-node-content">Prototype</div>
+          </div>
+          <div class="wb-node wb-node--diamond" style="left: 30%; top: 50%;">
+            <div class="wb-node-content">Design</div>
+          </div>
+          <div class="wb-node wb-node--ellipse" style="left: 55%; top: 55%;">
+            <div class="wb-node-content">Test</div>
+          </div>
+          <div class="wb-node wb-node--atom" style="left: 75%; top: 50%;">
+            <div class="wb-node-content">Iterate</div>
+          </div>
+          <div class="wb-node wb-node--starburst" style="left: 45%; top: 80%;">
+            <div class="wb-node-content">Launch</div>
+          </div>
+
+          <svg class="wb-connections" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line x1="22" y1="24" x2="40" y2="19" stroke="var(--accent)" stroke-width="0.3" />
+            <line x1="47" y1="19" x2="63" y2="28" stroke="var(--accent)" stroke-width="0.3" />
+            <line x1="20" y1="27" x2="30" y2="50" stroke="var(--accent2)" stroke-width="0.3" />
+            <line x1="37" y1="53" x2="53" y2="57" stroke="var(--accent2)" stroke-width="0.3" />
+            <line x1="62" y1="57" x2="73" y2="53" stroke="var(--accent2)" stroke-width="0.3" />
+            <line x1="55" y1="62" x2="48" y2="80" stroke="var(--accent)" stroke-width="0.3" />
+          </svg>
+        </div>
+      </section>
+
+      <!-- ===== VIEW 6: SCHEMA PLANNER ===== -->
+      <section class="page-view" data-page="schema-planner">
+        <div class="pedestal-hub pedestal-hub--compact">
+          <div class="pedestal-stem"></div>
+          <div class="pedestal-top">
+            <h1 class="page-title">Schema Planner</h1>
+            <p class="page-subtitle">Architectural pedestals</p>
+          </div>
+        </div>
+
+        <div class="starburst-divider">
+          <span class="starburst-line"></span>
+          <span class="starburst-icon">&#10038;</span>
+          <span class="starburst-line"></span>
+        </div>
+
+        <div class="schema-canvas">
+          <div class="schema-entity schema-entity--primary" style="left: 10%; top: 10%;">
+            <div class="entity-pedestal-top">
+              <h3>User</h3>
+            </div>
+            <div class="entity-fields">
+              <div class="field field--pk"><code>id</code> <span>UUID</span></div>
+              <div class="field"><code>name</code> <span>String</span></div>
+              <div class="field"><code>email</code> <span>String</span></div>
+              <div class="field"><code>role</code> <span>Enum</span></div>
+              <div class="field"><code>avatar_url</code> <span>String?</span></div>
+            </div>
+            <div class="entity-pedestal-stem"></div>
+          </div>
+
+          <div class="schema-entity schema-entity--secondary" style="left: 45%; top: 5%;">
+            <div class="entity-pedestal-top">
+              <h3>Project</h3>
+            </div>
+            <div class="entity-fields">
+              <div class="field field--pk"><code>id</code> <span>UUID</span></div>
+              <div class="field"><code>title</code> <span>String</span></div>
+              <div class="field field--fk"><code>owner_id</code> <span>FK &rarr; User</span></div>
+              <div class="field"><code>status</code> <span>Enum</span></div>
+              <div class="field"><code>created_at</code> <span>DateTime</span></div>
+            </div>
+            <div class="entity-pedestal-stem"></div>
+          </div>
+
+          <div class="schema-entity" style="left: 10%; top: 55%;">
+            <div class="entity-pedestal-top">
+              <h3>Idea</h3>
+            </div>
+            <div class="entity-fields">
+              <div class="field field--pk"><code>id</code> <span>UUID</span></div>
+              <div class="field"><code>title</code> <span>String</span></div>
+              <div class="field"><code>body</code> <span>Text</span></div>
+              <div class="field field--fk"><code>project_id</code> <span>FK &rarr; Project</span></div>
+              <div class="field field--fk"><code>author_id</code> <span>FK &rarr; User</span></div>
+              <div class="field"><code>tags</code> <span>String[]</span></div>
+            </div>
+            <div class="entity-pedestal-stem"></div>
+          </div>
+
+          <div class="schema-entity" style="left: 55%; top: 50%;">
+            <div class="entity-pedestal-top">
+              <h3>Task</h3>
+            </div>
+            <div class="entity-fields">
+              <div class="field field--pk"><code>id</code> <span>UUID</span></div>
+              <div class="field"><code>title</code> <span>String</span></div>
+              <div class="field field--fk"><code>project_id</code> <span>FK &rarr; Project</span></div>
+              <div class="field field--fk"><code>assignee_id</code> <span>FK &rarr; User</span></div>
+              <div class="field"><code>status</code> <span>Enum</span></div>
+              <div class="field"><code>priority</code> <span>Int</span></div>
+            </div>
+            <div class="entity-pedestal-stem"></div>
+          </div>
+
+          <svg class="schema-connections" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line x1="28" y1="22" x2="45" y2="15" stroke="var(--accent)" stroke-width="0.4" stroke-dasharray="1,0.5" />
+            <line x1="18" y1="38" x2="18" y2="55" stroke="var(--accent2)" stroke-width="0.4" stroke-dasharray="1,0.5" />
+            <line x1="55" y1="30" x2="60" y2="50" stroke="var(--accent)" stroke-width="0.4" stroke-dasharray="1,0.5" />
+            <line x1="28" y1="70" x2="55" y2="62" stroke="var(--accent2)" stroke-width="0.4" stroke-dasharray="1,0.5" />
+          </svg>
+        </div>
+      </section>
+
+      <!-- ===== VIEW 7: DIRECTORY TREE ===== -->
+      <section class="page-view" data-page="directory-tree">
+        <div class="pedestal-hub pedestal-hub--compact">
+          <div class="pedestal-stem"></div>
+          <div class="pedestal-top">
+            <h1 class="page-title">Directory Tree</h1>
+            <p class="page-subtitle">Atomic orbital file structure</p>
+          </div>
+        </div>
+
+        <div class="starburst-divider">
+          <span class="starburst-line"></span>
+          <span class="starburst-icon">&#10038;</span>
+          <span class="starburst-line"></span>
+        </div>
+
+        <div class="tree-container">
+          <ul class="atomic-tree">
+            <li class="tree-node tree-node--folder tree-node--open">
+              <button class="tree-toggle">
+                <span class="toggle-starburst-icon">&#10038;</span>
+                <span class="folder-icon">&#9776;</span>
+                <span class="node-name">idea-management</span>
+              </button>
+              <ul class="tree-children">
+                <li class="tree-node tree-node--folder tree-node--open">
+                  <button class="tree-toggle">
+                    <span class="toggle-starburst-icon">&#10038;</span>
+                    <span class="folder-icon">&#9776;</span>
+                    <span class="node-name">src</span>
+                  </button>
+                  <ul class="tree-children">
+                    <li class="tree-node tree-node--folder">
+                      <button class="tree-toggle">
+                        <span class="toggle-starburst-icon">&#10038;</span>
+                        <span class="folder-icon">&#9776;</span>
+                        <span class="node-name">components</span>
+                      </button>
+                      <ul class="tree-children">
+                        <li class="tree-node tree-node--file">
+                          <span class="orbital-connector"></span>
+                          <span class="file-icon">&#9674;</span>
+                          <span class="node-name">Dashboard.tsx</span>
+                          <span class="file-size">4.2 KB</span>
+                        </li>
+                        <li class="tree-node tree-node--file">
+                          <span class="orbital-connector"></span>
+                          <span class="file-icon">&#9674;</span>
+                          <span class="node-name">ProjectCard.tsx</span>
+                          <span class="file-size">2.8 KB</span>
+                        </li>
+                        <li class="tree-node tree-node--file">
+                          <span class="orbital-connector"></span>
+                          <span class="file-icon">&#9674;</span>
+                          <span class="node-name">KanbanBoard.tsx</span>
+                          <span class="file-size">5.1 KB</span>
+                        </li>
+                        <li class="tree-node tree-node--file">
+                          <span class="orbital-connector"></span>
+                          <span class="file-icon">&#9674;</span>
+                          <span class="node-name">IdeaCapture.tsx</span>
+                          <span class="file-size">3.6 KB</span>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="tree-node tree-node--folder">
+                      <button class="tree-toggle">
+                        <span class="toggle-starburst-icon">&#10038;</span>
+                        <span class="folder-icon">&#9776;</span>
+                        <span class="node-name">hooks</span>
+                      </button>
+                      <ul class="tree-children">
+                        <li class="tree-node tree-node--file">
+                          <span class="orbital-connector"></span>
+                          <span class="file-icon">&#9674;</span>
+                          <span class="node-name">useProjects.ts</span>
+                          <span class="file-size">1.4 KB</span>
+                        </li>
+                        <li class="tree-node tree-node--file">
+                          <span class="orbital-connector"></span>
+                          <span class="file-icon">&#9674;</span>
+                          <span class="node-name">useIdeas.ts</span>
+                          <span class="file-size">1.1 KB</span>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="tree-node tree-node--folder">
+                      <button class="tree-toggle">
+                        <span class="toggle-starburst-icon">&#10038;</span>
+                        <span class="folder-icon">&#9776;</span>
+                        <span class="node-name">utils</span>
+                      </button>
+                      <ul class="tree-children">
+                        <li class="tree-node tree-node--file">
+                          <span class="orbital-connector"></span>
+                          <span class="file-icon">&#9674;</span>
+                          <span class="node-name">helpers.ts</span>
+                          <span class="file-size">0.8 KB</span>
+                        </li>
+                        <li class="tree-node tree-node--file">
+                          <span class="orbital-connector"></span>
+                          <span class="file-icon">&#9674;</span>
+                          <span class="node-name">constants.ts</span>
+                          <span class="file-size">0.5 KB</span>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="tree-node tree-node--file">
+                      <span class="orbital-connector"></span>
+                      <span class="file-icon">&#9674;</span>
+                      <span class="node-name">App.tsx</span>
+                      <span class="file-size">2.3 KB</span>
+                    </li>
+                    <li class="tree-node tree-node--file">
+                      <span class="orbital-connector"></span>
+                      <span class="file-icon">&#9674;</span>
+                      <span class="node-name">index.tsx</span>
+                      <span class="file-size">0.4 KB</span>
+                    </li>
+                  </ul>
+                </li>
+                <li class="tree-node tree-node--folder">
+                  <button class="tree-toggle">
+                    <span class="toggle-starburst-icon">&#10038;</span>
+                    <span class="folder-icon">&#9776;</span>
+                    <span class="node-name">public</span>
+                  </button>
+                  <ul class="tree-children">
+                    <li class="tree-node tree-node--file">
+                      <span class="orbital-connector"></span>
+                      <span class="file-icon">&#9674;</span>
+                      <span class="node-name">index.html</span>
+                      <span class="file-size">1.2 KB</span>
+                    </li>
+                    <li class="tree-node tree-node--file">
+                      <span class="orbital-connector"></span>
+                      <span class="file-icon">&#9674;</span>
+                      <span class="node-name">favicon.ico</span>
+                      <span class="file-size">4.1 KB</span>
+                    </li>
+                  </ul>
+                </li>
+                <li class="tree-node tree-node--file">
+                  <span class="orbital-connector"></span>
+                  <span class="file-icon">&#9674;</span>
+                  <span class="node-name">package.json</span>
+                  <span class="file-size">1.8 KB</span>
+                </li>
+                <li class="tree-node tree-node--file">
+                  <span class="orbital-connector"></span>
+                  <span class="file-icon">&#9674;</span>
+                  <span class="node-name">tsconfig.json</span>
+                  <span class="file-size">0.6 KB</span>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== VIEW 8: IDEAS ===== -->
+      <section class="page-view" data-page="ideas">
+        <div class="pedestal-hub">
+          <div class="pedestal-stem"></div>
+          <div class="pedestal-top">
+            <h1 class="page-title">Ideas</h1>
+            <p class="page-subtitle">Capture hub with orbital cards</p>
+          </div>
+        </div>
+
+        <div class="idea-capture-hub">
+          <div class="capture-ring">
+            <input type="text" class="idea-input" placeholder="Capture a new idea..." />
+            <button class="idea-submit-btn">
+              <span>&#10038;</span> Add
+            </button>
+          </div>
+        </div>
+
+        <div class="starburst-divider">
+          <span class="starburst-line"></span>
+          <span class="starburst-icon">&#10038;</span>
+          <span class="starburst-line"></span>
+        </div>
+
+        <div class="ideas-orbit-field">
+          <div class="idea-orbit-card idea-orbit-card--pos1">
+            <div class="idea-card-inner">
+              <span class="idea-card-icon">&#9670;</span>
+              <h3>Modular Plugin Architecture</h3>
+              <p>Allow third-party extensions to snap into the platform like building blocks.</p>
+              <div class="idea-meta">
+                <span class="idea-tag">Architecture</span>
+                <span class="idea-date">Feb 14</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="idea-orbit-card idea-orbit-card--pos2">
+            <div class="idea-card-inner">
+              <span class="idea-card-icon">&#9670;</span>
+              <h3>Voice-to-Idea Capture</h3>
+              <p>Speech recognition for hands-free idea logging during brainstorms.</p>
+              <div class="idea-meta">
+                <span class="idea-tag">Feature</span>
+                <span class="idea-date">Feb 13</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="idea-orbit-card idea-orbit-card--pos3">
+            <div class="idea-card-inner">
+              <span class="idea-card-icon">&#9670;</span>
+              <h3>Collaborative Mood Boards</h3>
+              <p>Shared visual boards for team inspiration and reference gathering.</p>
+              <div class="idea-meta">
+                <span class="idea-tag">Collaboration</span>
+                <span class="idea-date">Feb 12</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="idea-orbit-card idea-orbit-card--pos4">
+            <div class="idea-card-inner">
+              <span class="idea-card-icon">&#9670;</span>
+              <h3>Smart Tagging Engine</h3>
+              <p>AI auto-categorizes ideas based on content analysis and context.</p>
+              <div class="idea-meta">
+                <span class="idea-tag">AI</span>
+                <span class="idea-date">Feb 11</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="idea-orbit-card idea-orbit-card--pos5">
+            <div class="idea-card-inner">
+              <span class="idea-card-icon">&#9670;</span>
+              <h3>Idea Genealogy Map</h3>
+              <p>Visualize how ideas evolve and branch from parent concepts.</p>
+              <div class="idea-meta">
+                <span class="idea-tag">Visualization</span>
+                <span class="idea-date">Feb 10</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="idea-orbit-card idea-orbit-card--pos6">
+            <div class="idea-card-inner">
+              <span class="idea-card-icon">&#9670;</span>
+              <h3>Cross-Project Linking</h3>
+              <p>Connect related ideas across different project boundaries.</p>
+              <div class="idea-meta">
+                <span class="idea-tag">Feature</span>
+                <span class="idea-date">Feb 9</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VIEW 9: AI CHAT ===== -->
+      <section class="page-view" data-page="ai-chat">
+        <div class="pedestal-hub pedestal-hub--compact">
+          <div class="pedestal-stem"></div>
+          <div class="pedestal-top">
+            <h1 class="page-title">AI Assistant</h1>
+            <p class="page-subtitle">Tulip conversation flow</p>
+          </div>
+        </div>
+
+        <div class="starburst-divider">
+          <span class="starburst-line"></span>
+          <span class="starburst-icon">&#10038;</span>
+          <span class="starburst-line"></span>
+        </div>
+
+        <div class="chat-tulip-container">
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-bubble chat-bubble--ai">
+              <div class="tulip-message-shape">
+                <div class="bubble-content">
+                  <p>Welcome! I'm your creative assistant. I can help brainstorm ideas, refine concepts, or analyze your projects. What would you like to explore?</p>
+                </div>
+                <div class="tulip-message-stem"></div>
+              </div>
+              <span class="chat-time">10:00 AM</span>
+            </div>
+
+            <div class="chat-bubble chat-bubble--user">
+              <div class="tulip-message-shape">
+                <div class="bubble-content">
+                  <p>I want to brainstorm features for a mid-century modern design tool. Something that feels like those Eames-era catalogs.</p>
+                </div>
+                <div class="tulip-message-stem"></div>
+              </div>
+              <span class="chat-time">10:01 AM</span>
+            </div>
+
+            <div class="chat-bubble chat-bubble--ai">
+              <div class="tulip-message-shape">
+                <div class="bubble-content">
+                  <p>Great direction! Here are some feature ideas that capture that Eames-era spirit:</p>
+                  <ul>
+                    <li><strong>Material Palette:</strong> A curated set of MCM textures -- walnut, teak, brass, terrazzo</li>
+                    <li><strong>Grid System:</strong> Modular proportions based on golden ratio and Fibonacci</li>
+                    <li><strong>Color Stories:</strong> Era-authentic palettes with names like "Palm Springs Sunset"</li>
+                    <li><strong>Shape Library:</strong> Boomerangs, starbursts, kidney shapes, atomic orbitals</li>
+                  </ul>
+                </div>
+                <div class="tulip-message-stem"></div>
+              </div>
+              <span class="chat-time">10:01 AM</span>
+            </div>
+
+            <div class="chat-bubble chat-bubble--user">
+              <div class="tulip-message-shape">
+                <div class="bubble-content">
+                  <p>Love the shape library idea. Can we also have a feature that generates color palettes from vintage photographs?</p>
+                </div>
+                <div class="tulip-message-stem"></div>
+              </div>
+              <span class="chat-time">10:02 AM</span>
+            </div>
+
+            <div class="chat-bubble chat-bubble--ai">
+              <div class="tulip-message-shape">
+                <div class="bubble-content">
+                  <p>Absolutely! Here's how that could work:</p>
+                  <p>Upload a vintage photo -- say, a 1958 Julius Shulman architectural shot -- and the tool extracts dominant colors, maps them to nearest period-authentic Pantone equivalents, and generates harmonious palettes. You'd get both the raw extracted colors and "era-corrected" versions.</p>
+                  <pre><code>extractPalette(image)
+  .dominantColors(6)
+  .mapToEra("1950-1965")
+  .generateHarmonies()</code></pre>
+                </div>
+                <div class="tulip-message-stem"></div>
+              </div>
+              <span class="chat-time">10:03 AM</span>
+            </div>
+          </div>
+
+          <div class="chat-input-area">
+            <div class="chat-input-tulip">
+              <textarea class="chat-input" placeholder="Ask the AI assistant..." rows="2"></textarea>
+              <button class="chat-send-btn">
+                <span>&#10148;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VIEW 10: SETTINGS ===== -->
+      <section class="page-view" data-page="settings">
+        <div class="pedestal-hub pedestal-hub--compact">
+          <div class="pedestal-stem"></div>
+          <div class="pedestal-top">
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">Control panel</p>
+          </div>
+        </div>
+
+        <div class="starburst-divider">
+          <span class="starburst-line"></span>
+          <span class="starburst-icon">&#10038;</span>
+          <span class="starburst-line"></span>
+        </div>
+
+        <div class="settings-panels">
+          <div class="settings-section">
+            <h2 class="settings-section-title">
+              <span class="section-starburst">&#10038;</span>
+              Appearance
+            </h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Dark Mode</span>
+                <span class="setting-desc">Switch to a darker color palette</span>
+              </div>
+              <label class="mcm-toggle">
+                <input type="checkbox" class="toggle-input" />
+                <span class="toggle-track">
+                  <span class="toggle-thumb"></span>
+                </span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Compact Navigation</span>
+                <span class="setting-desc">Reduce orbital nav size</span>
+              </div>
+              <label class="mcm-toggle">
+                <input type="checkbox" class="toggle-input" />
+                <span class="toggle-track">
+                  <span class="toggle-thumb"></span>
+                </span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Animations</span>
+                <span class="setting-desc">Enable orbital transition effects</span>
+              </div>
+              <label class="mcm-toggle">
+                <input type="checkbox" class="toggle-input" checked />
+                <span class="toggle-track">
+                  <span class="toggle-thumb"></span>
+                </span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Font Size</span>
+                <span class="setting-desc">Adjust base text size</span>
+              </div>
+              <div class="mcm-range-group">
+                <input type="range" class="mcm-range" min="12" max="20" value="16" />
+                <span class="range-value">16px</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="starburst-divider starburst-divider--section">
+            <span class="starburst-line"></span>
+            <span class="starburst-icon">&#10038;</span>
+            <span class="starburst-line"></span>
+          </div>
+
+          <div class="settings-section">
+            <h2 class="settings-section-title">
+              <span class="section-starburst">&#10038;</span>
+              Notifications
+            </h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Email Notifications</span>
+                <span class="setting-desc">Receive updates via email</span>
+              </div>
+              <label class="mcm-toggle">
+                <input type="checkbox" class="toggle-input" checked />
+                <span class="toggle-track">
+                  <span class="toggle-thumb"></span>
+                </span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Desktop Alerts</span>
+                <span class="setting-desc">Show browser notifications</span>
+              </div>
+              <label class="mcm-toggle">
+                <input type="checkbox" class="toggle-input" />
+                <span class="toggle-track">
+                  <span class="toggle-thumb"></span>
+                </span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Weekly Digest</span>
+                <span class="setting-desc">Summary email every Monday</span>
+              </div>
+              <label class="mcm-toggle">
+                <input type="checkbox" class="toggle-input" checked />
+                <span class="toggle-track">
+                  <span class="toggle-thumb"></span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="starburst-divider starburst-divider--section">
+            <span class="starburst-line"></span>
+            <span class="starburst-icon">&#10038;</span>
+            <span class="starburst-line"></span>
+          </div>
+
+          <div class="settings-section">
+            <h2 class="settings-section-title">
+              <span class="section-starburst">&#10038;</span>
+              Account
+            </h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Display Name</span>
+                <span class="setting-desc">How others see you</span>
+              </div>
+              <input type="text" class="mcm-text-input" value="Sarah Mitchell" />
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Email</span>
+                <span class="setting-desc">Primary contact email</span>
+              </div>
+              <input type="email" class="mcm-text-input" value="sarah@designstudio.co" />
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Two-Factor Auth</span>
+                <span class="setting-desc">Extra security layer</span>
+              </div>
+              <label class="mcm-toggle">
+                <input type="checkbox" class="toggle-input" checked />
+                <span class="toggle-track">
+                  <span class="toggle-thumb"></span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="starburst-divider starburst-divider--section">
+            <span class="starburst-line"></span>
+            <span class="starburst-icon">&#10038;</span>
+            <span class="starburst-line"></span>
+          </div>
+
+          <div class="settings-section">
+            <h2 class="settings-section-title">
+              <span class="section-starburst">&#10038;</span>
+              Data & Privacy
+            </h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Export Data</span>
+                <span class="setting-desc">Download all your data as JSON</span>
+              </div>
+              <button class="mcm-button mcm-button--secondary">Export</button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Delete Account</span>
+                <span class="setting-desc">Permanently remove your account</span>
+              </div>
+              <button class="mcm-button mcm-button--danger">Delete</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

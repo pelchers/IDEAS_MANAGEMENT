@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IdeaEngine &mdash; Strata Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Rajdhani:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Geological gradient overlay (CSS-only, no images) -->
+  <div class="geo-gradient" aria-hidden="true"></div>
+
+  <div class="strata-shell">
+
+    <!-- ===== TOP BAR: Protruding stone tablet navigation ===== -->
+    <header class="topbar">
+      <div class="topbar-brand">
+        <svg class="topbar-logo" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <polygon points="12,2 22,8 22,16 12,22 2,16 2,8" stroke="#d4a843" stroke-width="1.4" fill="none"/>
+          <polyline points="7,10 12,7 17,10 12,13 7,10" stroke="#d4a843" stroke-width="1" fill="none"/>
+          <line x1="12" y1="13" x2="12" y2="18" stroke="#d4a843" stroke-width="1"/>
+        </svg>
+        <span class="topbar-title">IdeaEngine</span>
+        <span class="topbar-edition">Strata</span>
+      </div>
+
+      <nav class="tablet-nav" role="navigation" aria-label="Main navigation">
+        <a href="#dashboard" class="tablet-tab active" data-view="dashboard">
+          <span class="tab-label">Dashboard</span>
+        </a>
+        <a href="#projects" class="tablet-tab" data-view="projects">
+          <span class="tab-label">Projects</span>
+        </a>
+        <a href="#project-workspace" class="tablet-tab" data-view="project-workspace">
+          <span class="tab-label">Workspace</span>
+        </a>
+        <a href="#kanban" class="tablet-tab" data-view="kanban">
+          <span class="tab-label">Kanban</span>
+        </a>
+        <a href="#whiteboard" class="tablet-tab" data-view="whiteboard">
+          <span class="tab-label">Whiteboard</span>
+        </a>
+        <a href="#schema-planner" class="tablet-tab" data-view="schema-planner">
+          <span class="tab-label">Schema</span>
+        </a>
+        <a href="#directory-tree" class="tablet-tab" data-view="directory-tree">
+          <span class="tab-label">Directory</span>
+        </a>
+        <a href="#ideas" class="tablet-tab" data-view="ideas">
+          <span class="tab-label">Ideas</span>
+        </a>
+        <a href="#ai-chat" class="tablet-tab" data-view="ai-chat">
+          <span class="tab-label">AI Chat</span>
+        </a>
+        <a href="#settings" class="tablet-tab" data-view="settings">
+          <span class="tab-label">Settings</span>
+        </a>
+      </nav>
+
+      <div class="topbar-user">
+        <span class="topbar-user-name">J. Donovan</span>
+        <div class="topbar-avatar">JD</div>
+      </div>
+    </header>
+
+    <!-- ===== MAIN VIEWPORT: Scrollable strata layers ===== -->
+    <main class="strata-viewport">
+
+      <!-- ===== DASHBOARD ===== -->
+      <section class="stratum hidden" data-page="dashboard">
+        <div class="stratum-header depth-0">
+          <h1 class="stratum-title">Dashboard</h1>
+          <span class="stratum-sub">System Metrics &mdash; Live Overview</span>
+        </div>
+
+        <!-- KPI tiles at varying elevations -->
+        <div class="kpi-grid depth-1">
+          <div class="kpi-tile elevation-3">
+            <div class="kpi-number">24</div>
+            <div class="kpi-label">Active Projects</div>
+            <div class="kpi-spark">
+              <span class="spark-bar" style="height:40%"></span>
+              <span class="spark-bar" style="height:65%"></span>
+              <span class="spark-bar" style="height:50%"></span>
+              <span class="spark-bar" style="height:80%"></span>
+              <span class="spark-bar" style="height:60%"></span>
+              <span class="spark-bar" style="height:90%"></span>
+              <span class="spark-bar" style="height:75%"></span>
+            </div>
+            <div class="kpi-delta up">+3 this week</div>
+          </div>
+          <div class="kpi-tile elevation-2">
+            <div class="kpi-number">147</div>
+            <div class="kpi-label">Open Ideas</div>
+            <div class="kpi-spark">
+              <span class="spark-bar" style="height:30%"></span>
+              <span class="spark-bar" style="height:45%"></span>
+              <span class="spark-bar" style="height:60%"></span>
+              <span class="spark-bar" style="height:55%"></span>
+              <span class="spark-bar" style="height:70%"></span>
+              <span class="spark-bar" style="height:85%"></span>
+              <span class="spark-bar" style="height:95%"></span>
+            </div>
+            <div class="kpi-delta up">+12 pending</div>
+          </div>
+          <div class="kpi-tile elevation-1">
+            <div class="kpi-number">18</div>
+            <div class="kpi-label">Team Members</div>
+            <div class="kpi-spark">
+              <span class="spark-bar" style="height:85%"></span>
+              <span class="spark-bar" style="height:85%"></span>
+              <span class="spark-bar" style="height:85%"></span>
+              <span class="spark-bar" style="height:85%"></span>
+              <span class="spark-bar" style="height:90%"></span>
+              <span class="spark-bar" style="height:90%"></span>
+              <span class="spark-bar" style="height:95%"></span>
+            </div>
+            <div class="kpi-delta flat">2 invited</div>
+          </div>
+          <div class="kpi-tile elevation-3">
+            <div class="kpi-number">892</div>
+            <div class="kpi-label">Tasks Done</div>
+            <div class="kpi-spark">
+              <span class="spark-bar" style="height:55%"></span>
+              <span class="spark-bar" style="height:70%"></span>
+              <span class="spark-bar" style="height:45%"></span>
+              <span class="spark-bar" style="height:85%"></span>
+              <span class="spark-bar" style="height:65%"></span>
+              <span class="spark-bar" style="height:90%"></span>
+              <span class="spark-bar" style="height:78%"></span>
+            </div>
+            <div class="kpi-delta up">+67 this month</div>
+          </div>
+        </div>
+
+        <!-- Dense 3-column panel layer -->
+        <div class="dash-panels depth-2">
+          <div class="stacked-slab elevation-2">
+            <div class="slab-head">Throughput &mdash; 7d</div>
+            <div class="slab-body">
+              <div class="hbar-row"><span class="hbar-day">Mon</span><div class="hbar-track"><div class="hbar-fill" style="width:68%"></div></div><span class="hbar-num">34</span></div>
+              <div class="hbar-row"><span class="hbar-day">Tue</span><div class="hbar-track"><div class="hbar-fill" style="width:82%"></div></div><span class="hbar-num">41</span></div>
+              <div class="hbar-row"><span class="hbar-day">Wed</span><div class="hbar-track"><div class="hbar-fill" style="width:55%"></div></div><span class="hbar-num">28</span></div>
+              <div class="hbar-row"><span class="hbar-day">Thu</span><div class="hbar-track"><div class="hbar-fill" style="width:91%"></div></div><span class="hbar-num">46</span></div>
+              <div class="hbar-row"><span class="hbar-day">Fri</span><div class="hbar-track"><div class="hbar-fill" style="width:74%"></div></div><span class="hbar-num">37</span></div>
+              <div class="hbar-row"><span class="hbar-day">Sat</span><div class="hbar-track"><div class="hbar-fill" style="width:30%"></div></div><span class="hbar-num">15</span></div>
+              <div class="hbar-row"><span class="hbar-day">Sun</span><div class="hbar-track"><div class="hbar-fill" style="width:22%"></div></div><span class="hbar-num">11</span></div>
+            </div>
+          </div>
+
+          <div class="stacked-slab elevation-3">
+            <div class="slab-head">Activity Stream</div>
+            <div class="slab-body">
+              <div class="stream-row"><span class="stream-ts">14:32</span><span class="stream-msg">Schema <strong>UserAuth</strong> updated &mdash; R. Kim</span></div>
+              <div class="stream-row"><span class="stream-ts">14:18</span><span class="stream-msg">Idea submitted: <strong>Multi-tenant isolation</strong></span></div>
+              <div class="stream-row"><span class="stream-ts">13:55</span><span class="stream-msg"><strong>Orion v2</strong> moved to In Review</span></div>
+              <div class="stream-row"><span class="stream-ts">13:41</span><span class="stream-msg">AI session: <strong>Architecture audit</strong></span></div>
+              <div class="stream-row"><span class="stream-ts">12:30</span><span class="stream-msg">Task <strong>API rate limiter</strong> done &mdash; M. Chen</span></div>
+              <div class="stream-row"><span class="stream-ts">11:58</span><span class="stream-msg">Whiteboard <strong>Q3 Roadmap</strong> shared</span></div>
+              <div class="stream-row"><span class="stream-ts">11:20</span><span class="stream-msg">Directory restructured: <strong>/services/auth</strong></span></div>
+              <div class="stream-row"><span class="stream-ts">10:45</span><span class="stream-msg"><strong>A. Torres</strong> joined Engineering</span></div>
+            </div>
+          </div>
+
+          <div class="stacked-slab elevation-1">
+            <div class="slab-head">System Health</div>
+            <div class="slab-body">
+              <div class="health-row"><span class="health-pip ok"></span><span class="health-svc">API Gateway</span><span class="health-st">Operational</span></div>
+              <div class="health-row"><span class="health-pip ok"></span><span class="health-svc">Database</span><span class="health-st">Healthy</span></div>
+              <div class="health-row"><span class="health-pip warn"></span><span class="health-svc">Search Index</span><span class="health-st">Rebuilding</span></div>
+              <div class="health-row"><span class="health-pip ok"></span><span class="health-svc">AI Service</span><span class="health-st">Operational</span></div>
+              <div class="health-row"><span class="health-pip ok"></span><span class="health-svc">File Storage</span><span class="health-st">Healthy</span></div>
+              <div class="health-row"><span class="health-pip warn"></span><span class="health-svc">WebSocket</span><span class="health-st">Degraded</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom summary strip -->
+        <div class="dash-strip depth-3">
+          <div class="strip-stat"><span class="strip-val">36</span><span class="strip-lbl">Schemas</span></div>
+          <div class="strip-stat"><span class="strip-val">203</span><span class="strip-lbl">AI Sessions</span></div>
+          <div class="strip-stat"><span class="strip-val">4.2k</span><span class="strip-lbl">API Calls / hr</span></div>
+          <div class="strip-stat"><span class="strip-val">99.7%</span><span class="strip-lbl">Uptime</span></div>
+        </div>
+      </section>
+
+      <!-- ===== PROJECTS ===== -->
+      <section class="stratum hidden" data-page="projects">
+        <div class="stratum-header depth-0">
+          <h1 class="stratum-title">Projects</h1>
+          <span class="stratum-sub">All active projects &mdash; 24 total</span>
+        </div>
+
+        <div class="proj-grid depth-1">
+          <div class="proj-card elevation-2">
+            <div class="proj-card-head">
+              <span class="proj-name">Orion v2 Platform</span>
+              <span class="proj-status st-active">Active</span>
+            </div>
+            <div class="proj-card-body">
+              <div class="proj-meta-row"><span class="proj-meta-k">Team</span><span class="proj-meta-v">Engineering</span></div>
+              <div class="proj-meta-row"><span class="proj-meta-k">Updated</span><span class="proj-meta-v">2h ago</span></div>
+              <div class="proj-progress"><div class="proj-progress-fill" style="width:72%"></div></div>
+              <div class="proj-foot"><span class="proj-members">8 members</span><span class="proj-priority priority-hi">High</span></div>
+            </div>
+          </div>
+
+          <div class="proj-card elevation-3">
+            <div class="proj-card-head">
+              <span class="proj-name">Atlas Data Pipeline</span>
+              <span class="proj-status st-review">In Review</span>
+            </div>
+            <div class="proj-card-body">
+              <div class="proj-meta-row"><span class="proj-meta-k">Team</span><span class="proj-meta-v">Data Eng</span></div>
+              <div class="proj-meta-row"><span class="proj-meta-k">Updated</span><span class="proj-meta-v">5h ago</span></div>
+              <div class="proj-progress"><div class="proj-progress-fill" style="width:88%"></div></div>
+              <div class="proj-foot"><span class="proj-members">5 members</span><span class="proj-priority priority-hi">High</span></div>
+            </div>
+          </div>
+
+          <div class="proj-card elevation-1">
+            <div class="proj-card-head">
+              <span class="proj-name">Meridian Auth System</span>
+              <span class="proj-status st-active">Active</span>
+            </div>
+            <div class="proj-card-body">
+              <div class="proj-meta-row"><span class="proj-meta-k">Team</span><span class="proj-meta-v">Security</span></div>
+              <div class="proj-meta-row"><span class="proj-meta-k">Updated</span><span class="proj-meta-v">1d ago</span></div>
+              <div class="proj-progress"><div class="proj-progress-fill" style="width:45%"></div></div>
+              <div class="proj-foot"><span class="proj-members">4 members</span><span class="proj-priority priority-md">Medium</span></div>
+            </div>
+          </div>
+
+          <div class="proj-card elevation-2">
+            <div class="proj-card-head">
+              <span class="proj-name">Nexus API Gateway</span>
+              <span class="proj-status st-active">Active</span>
+            </div>
+            <div class="proj-card-body">
+              <div class="proj-meta-row"><span class="proj-meta-k">Team</span><span class="proj-meta-v">Platform</span></div>
+              <div class="proj-meta-row"><span class="proj-meta-k">Updated</span><span class="proj-meta-v">1d ago</span></div>
+              <div class="proj-progress"><div class="proj-progress-fill" style="width:60%"></div></div>
+              <div class="proj-foot"><span class="proj-members">6 members</span><span class="proj-priority priority-hi">High</span></div>
+            </div>
+          </div>
+
+          <div class="proj-card elevation-1">
+            <div class="proj-card-head">
+              <span class="proj-name">Cosmos Frontend</span>
+              <span class="proj-status st-plan">Planning</span>
+            </div>
+            <div class="proj-card-body">
+              <div class="proj-meta-row"><span class="proj-meta-k">Team</span><span class="proj-meta-v">Design</span></div>
+              <div class="proj-meta-row"><span class="proj-meta-k">Updated</span><span class="proj-meta-v">3d ago</span></div>
+              <div class="proj-progress"><div class="proj-progress-fill" style="width:15%"></div></div>
+              <div class="proj-foot"><span class="proj-members">3 members</span><span class="proj-priority priority-md">Medium</span></div>
+            </div>
+          </div>
+
+          <div class="proj-card elevation-3">
+            <div class="proj-card-head">
+              <span class="proj-name">Stellar Analytics</span>
+              <span class="proj-status st-active">Active</span>
+            </div>
+            <div class="proj-card-body">
+              <div class="proj-meta-row"><span class="proj-meta-k">Team</span><span class="proj-meta-v">Data Eng</span></div>
+              <div class="proj-meta-row"><span class="proj-meta-k">Updated</span><span class="proj-meta-v">3d ago</span></div>
+              <div class="proj-progress"><div class="proj-progress-fill" style="width:52%"></div></div>
+              <div class="proj-foot"><span class="proj-members">4 members</span><span class="proj-priority priority-lo">Low</span></div>
+            </div>
+          </div>
+
+          <div class="proj-card elevation-2">
+            <div class="proj-card-head">
+              <span class="proj-name">Vanguard Mobile</span>
+              <span class="proj-status st-review">In Review</span>
+            </div>
+            <div class="proj-card-body">
+              <div class="proj-meta-row"><span class="proj-meta-k">Team</span><span class="proj-meta-v">Mobile</span></div>
+              <div class="proj-meta-row"><span class="proj-meta-k">Updated</span><span class="proj-meta-v">4d ago</span></div>
+              <div class="proj-progress"><div class="proj-progress-fill" style="width:80%"></div></div>
+              <div class="proj-foot"><span class="proj-members">5 members</span><span class="proj-priority priority-md">Medium</span></div>
+            </div>
+          </div>
+
+          <div class="proj-card elevation-1">
+            <div class="proj-card-head">
+              <span class="proj-name">Zenith Infrastructure</span>
+              <span class="proj-status st-active">Active</span>
+            </div>
+            <div class="proj-card-body">
+              <div class="proj-meta-row"><span class="proj-meta-k">Team</span><span class="proj-meta-v">DevOps</span></div>
+              <div class="proj-meta-row"><span class="proj-meta-k">Updated</span><span class="proj-meta-v">5d ago</span></div>
+              <div class="proj-progress"><div class="proj-progress-fill" style="width:35%"></div></div>
+              <div class="proj-foot"><span class="proj-members">7 members</span><span class="proj-priority priority-hi">High</span></div>
+            </div>
+          </div>
+
+          <div class="proj-card elevation-3">
+            <div class="proj-card-head">
+              <span class="proj-name">Horizon Design System</span>
+              <span class="proj-status st-active">Active</span>
+            </div>
+            <div class="proj-card-body">
+              <div class="proj-meta-row"><span class="proj-meta-k">Team</span><span class="proj-meta-v">Design</span></div>
+              <div class="proj-meta-row"><span class="proj-meta-k">Updated</span><span class="proj-meta-v">1w ago</span></div>
+              <div class="proj-progress"><div class="proj-progress-fill" style="width:68%"></div></div>
+              <div class="proj-foot"><span class="proj-members">3 members</span><span class="proj-priority priority-md">Medium</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PROJECT WORKSPACE ===== -->
+      <section class="stratum hidden" data-page="project-workspace">
+        <div class="stratum-header depth-0">
+          <h1 class="stratum-title">Project Workspace</h1>
+          <span class="stratum-sub">Orion v2 Platform &mdash; Active</span>
+        </div>
+
+        <!-- Top file explorer strip -->
+        <div class="ws-explorer depth-1 elevation-2">
+          <div class="ws-explorer-tree">
+            <span class="ws-folder open">src/</span>
+            <span class="ws-folder indent-1 open">components/</span>
+            <span class="ws-file indent-2 ws-active">Dashboard.tsx</span>
+            <span class="ws-file indent-2">Navigation.tsx</span>
+            <span class="ws-file indent-2">ProjectCard.tsx</span>
+            <span class="ws-folder indent-1">services/</span>
+            <span class="ws-folder indent-1">hooks/</span>
+            <span class="ws-file indent-1">App.tsx</span>
+            <span class="ws-file indent-1">index.ts</span>
+          </div>
+        </div>
+
+        <!-- Open file tabs -->
+        <div class="ws-tabs depth-2">
+          <span class="ws-tab ws-tab-active">Dashboard.tsx</span>
+          <span class="ws-tab">Navigation.tsx</span>
+          <span class="ws-tab">App.tsx</span>
+        </div>
+
+        <!-- Code content at deepest stratum -->
+        <div class="ws-content depth-3 elevation-1">
+          <pre class="ws-code"><code><span class="syn-kw">import</span> React <span class="syn-kw">from</span> <span class="syn-str">'react'</span>;
+<span class="syn-kw">import</span> { useProjectMetrics } <span class="syn-kw">from</span> <span class="syn-str">'../hooks/useMetrics'</span>;
+<span class="syn-kw">import</span> { StatCard, BarChart } <span class="syn-kw">from</span> <span class="syn-str">'./shared'</span>;
+
+<span class="syn-kw">interface</span> <span class="syn-type">DashboardProps</span> {
+  projectId: <span class="syn-type">string</span>;
+  timeRange?: <span class="syn-str">'7d'</span> | <span class="syn-str">'30d'</span> | <span class="syn-str">'90d'</span>;
+}
+
+<span class="syn-kw">export const</span> <span class="syn-fn">Dashboard</span>: React.FC&lt;<span class="syn-type">DashboardProps</span>&gt; = ({
+  projectId,
+  timeRange = <span class="syn-str">'7d'</span>
+}) =&gt; {
+  <span class="syn-kw">const</span> { metrics, loading } = useProjectMetrics(projectId, timeRange);
+
+  <span class="syn-kw">if</span> (loading) <span class="syn-kw">return</span> &lt;LoadingSkeleton /&gt;;
+
+  <span class="syn-kw">return</span> (
+    &lt;<span class="syn-tag">div</span> className=<span class="syn-str">"dashboard-container"</span>&gt;
+      &lt;<span class="syn-tag">StatGrid</span> metrics={metrics.summary} /&gt;
+      &lt;<span class="syn-tag">BarChart</span> data={metrics.throughput} /&gt;
+      &lt;<span class="syn-tag">ActivityFeed</span> items={metrics.activity} /&gt;
+    &lt;/<span class="syn-tag">div</span>&gt;
+  );
+};</code></pre>
+          <div class="ws-meta">
+            <span>TypeScript JSX</span>
+            <span>24 lines</span>
+            <span>Modified 2h ago by R. Kim</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== KANBAN ===== -->
+      <section class="stratum hidden" data-page="kanban">
+        <div class="stratum-header depth-0">
+          <h1 class="stratum-title">Kanban Board</h1>
+          <span class="stratum-sub">Orion v2 &mdash; Sprint 14</span>
+        </div>
+
+        <div class="swim-lanes depth-1">
+          <!-- Lane 1: Backlog -->
+          <div class="geo-column elevation-1">
+            <div class="geo-column-head">
+              <span class="geo-col-title">Backlog</span>
+              <span class="geo-col-count">5</span>
+            </div>
+            <div class="geo-column-body">
+              <div class="stone-chip">
+                <div class="chip-title">Implement rate limiting middleware</div>
+                <div class="chip-foot"><span class="chip-tag tag-be">Backend</span><span class="chip-owner">MC</span></div>
+              </div>
+              <div class="stone-chip">
+                <div class="chip-title">Design token refresh flow</div>
+                <div class="chip-foot"><span class="chip-tag tag-ds">Design</span><span class="chip-owner">AT</span></div>
+              </div>
+              <div class="stone-chip">
+                <div class="chip-title">Audit logging for admin actions</div>
+                <div class="chip-foot"><span class="chip-tag tag-be">Backend</span><span class="chip-owner">RK</span></div>
+              </div>
+              <div class="stone-chip">
+                <div class="chip-title">WebSocket reconnection logic</div>
+                <div class="chip-foot"><span class="chip-tag tag-fe">Frontend</span><span class="chip-owner">JD</span></div>
+              </div>
+              <div class="stone-chip">
+                <div class="chip-title">Database migration scripts</div>
+                <div class="chip-foot"><span class="chip-tag tag-ops">DevOps</span><span class="chip-owner">PL</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lane 2: In Progress -->
+          <div class="geo-column elevation-2">
+            <div class="geo-column-head">
+              <span class="geo-col-title">In Progress</span>
+              <span class="geo-col-count">3</span>
+            </div>
+            <div class="geo-column-body">
+              <div class="stone-chip">
+                <div class="chip-title">GraphQL subscription layer</div>
+                <div class="chip-foot"><span class="chip-tag tag-be">Backend</span><span class="chip-owner">MC</span></div>
+              </div>
+              <div class="stone-chip">
+                <div class="chip-title">User permission matrix UI</div>
+                <div class="chip-foot"><span class="chip-tag tag-fe">Frontend</span><span class="chip-owner">JD</span></div>
+              </div>
+              <div class="stone-chip">
+                <div class="chip-title">Multi-tenant data isolation</div>
+                <div class="chip-foot"><span class="chip-tag tag-be">Backend</span><span class="chip-owner">RK</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lane 3: Review -->
+          <div class="geo-column elevation-3">
+            <div class="geo-column-head">
+              <span class="geo-col-title">Review</span>
+              <span class="geo-col-count">2</span>
+            </div>
+            <div class="geo-column-body">
+              <div class="stone-chip">
+                <div class="chip-title">API versioning strategy</div>
+                <div class="chip-foot"><span class="chip-tag tag-be">Backend</span><span class="chip-owner">AT</span></div>
+              </div>
+              <div class="stone-chip">
+                <div class="chip-title">Dashboard widget framework</div>
+                <div class="chip-foot"><span class="chip-tag tag-fe">Frontend</span><span class="chip-owner">PL</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lane 4: Done -->
+          <div class="geo-column elevation-1">
+            <div class="geo-column-head">
+              <span class="geo-col-title">Done</span>
+              <span class="geo-col-count">4</span>
+            </div>
+            <div class="geo-column-body">
+              <div class="stone-chip chip-done">
+                <div class="chip-title">OAuth2 integration</div>
+                <div class="chip-foot"><span class="chip-tag tag-be">Backend</span><span class="chip-owner">RK</span></div>
+              </div>
+              <div class="stone-chip chip-done">
+                <div class="chip-title">Search indexing pipeline</div>
+                <div class="chip-foot"><span class="chip-tag tag-ops">DevOps</span><span class="chip-owner">MC</span></div>
+              </div>
+              <div class="stone-chip chip-done">
+                <div class="chip-title">Component library v3</div>
+                <div class="chip-foot"><span class="chip-tag tag-fe">Frontend</span><span class="chip-owner">JD</span></div>
+              </div>
+              <div class="stone-chip chip-done">
+                <div class="chip-title">Error boundary patterns</div>
+                <div class="chip-foot"><span class="chip-tag tag-fe">Frontend</span><span class="chip-owner">AT</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WHITEBOARD ===== -->
+      <section class="stratum hidden" data-page="whiteboard">
+        <div class="stratum-header depth-0">
+          <h1 class="stratum-title">Whiteboard</h1>
+          <span class="stratum-sub">Q3 Architecture Roadmap</span>
+        </div>
+
+        <!-- Toolbar protruding above the canvas like a stone ledge -->
+        <div class="ledge-toolbar depth-1 elevation-3">
+          <button class="ledge-btn ledge-active" title="Select">
+            <svg viewBox="0 0 16 16" width="14" height="14"><path d="M2 2l5 12 2-5 5-2L2 2z" fill="currentColor"/></svg>
+          </button>
+          <button class="ledge-btn" title="Rectangle">
+            <svg viewBox="0 0 16 16" width="14" height="14"><rect x="2" y="2" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          </button>
+          <button class="ledge-btn" title="Line">
+            <svg viewBox="0 0 16 16" width="14" height="14"><line x1="3" y1="13" x2="13" y2="3" stroke="currentColor" stroke-width="1.5"/><circle cx="13" cy="3" r="2" fill="currentColor"/></svg>
+          </button>
+          <button class="ledge-btn" title="Text">
+            <svg viewBox="0 0 16 16" width="14" height="14"><text x="3" y="13" fill="currentColor" font-size="13" font-weight="600">T</text></svg>
+          </button>
+          <span class="ledge-divider"></span>
+          <button class="ledge-btn" title="Zoom In">
+            <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="11" y1="11" x2="14" y2="14" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="7" x2="9" y2="7" stroke="currentColor" stroke-width="1"/><line x1="7" y1="5" x2="7" y2="9" stroke="currentColor" stroke-width="1"/></svg>
+          </button>
+          <button class="ledge-btn" title="Zoom Out">
+            <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="11" y1="11" x2="14" y2="14" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="7" x2="9" y2="7" stroke="currentColor" stroke-width="1"/></svg>
+          </button>
+        </div>
+
+        <!-- Canvas at deepest layer -->
+        <div class="wb-canvas depth-3">
+          <svg class="wb-grid" width="100%" height="100%">
+            <defs>
+              <pattern id="strata-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+                <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#22222a" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#strata-grid)"/>
+          </svg>
+
+          <div class="wb-element" style="left:50px;top:30px;">
+            <div class="wb-el-title">API Gateway</div>
+            <div class="wb-el-desc">Entry Point</div>
+          </div>
+          <div class="wb-element" style="left:280px;top:30px;">
+            <div class="wb-el-title">Auth Service</div>
+            <div class="wb-el-desc">OAuth2 / JWT</div>
+          </div>
+          <div class="wb-element" style="left:50px;top:160px;">
+            <div class="wb-el-title">Project Service</div>
+            <div class="wb-el-desc">CRUD + Events</div>
+          </div>
+          <div class="wb-element" style="left:280px;top:160px;">
+            <div class="wb-el-title">Idea Engine</div>
+            <div class="wb-el-desc">ML + Search</div>
+          </div>
+          <div class="wb-element" style="left:510px;top:95px;">
+            <div class="wb-el-title">AI Orchestrator</div>
+            <div class="wb-el-desc">LLM Pipeline</div>
+          </div>
+          <div class="wb-element" style="left:165px;top:290px;">
+            <div class="wb-el-title">Database Cluster</div>
+            <div class="wb-el-desc">PostgreSQL + Redis</div>
+          </div>
+
+          <svg class="wb-lines" width="100%" height="100%">
+            <line x1="200" y1="55" x2="280" y2="55" stroke="#d4a843" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="120" y1="78" x2="120" y2="160" stroke="#d4a843" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="360" y1="78" x2="360" y2="160" stroke="#d4a843" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="430" y1="185" x2="510" y2="140" stroke="#d4a843" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="200" y1="205" x2="240" y2="290" stroke="#d4a843" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="360" y1="205" x2="320" y2="290" stroke="#d4a843" stroke-width="1.5" stroke-dasharray="4,3"/>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ===== SCHEMA PLANNER ===== -->
+      <section class="stratum hidden" data-page="schema-planner">
+        <div class="stratum-header depth-0">
+          <h1 class="stratum-title">Schema Planner</h1>
+          <span class="stratum-sub">Entity Relationship Diagram &mdash; 6 entities</span>
+        </div>
+
+        <div class="schema-grid depth-1">
+          <div class="entity-tile elevation-2" style="grid-column:1;grid-row:1;">
+            <div class="entity-head">User</div>
+            <ul class="entity-cols">
+              <li><span class="col-key">PK</span> id <span class="col-type">uuid</span></li>
+              <li>email <span class="col-type">varchar(255)</span></li>
+              <li>displayName <span class="col-type">varchar(100)</span></li>
+              <li>role <span class="col-type">enum</span></li>
+              <li>createdAt <span class="col-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-tile elevation-2" style="grid-column:2;grid-row:1;">
+            <div class="entity-head">Project</div>
+            <ul class="entity-cols">
+              <li><span class="col-key">PK</span> id <span class="col-type">uuid</span></li>
+              <li><span class="col-key">FK</span> ownerId <span class="col-type">uuid</span></li>
+              <li>name <span class="col-type">varchar(200)</span></li>
+              <li>status <span class="col-type">enum</span></li>
+              <li>updatedAt <span class="col-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-tile elevation-2" style="grid-column:3;grid-row:1;">
+            <div class="entity-head">Task</div>
+            <ul class="entity-cols">
+              <li><span class="col-key">PK</span> id <span class="col-type">uuid</span></li>
+              <li><span class="col-key">FK</span> projectId <span class="col-type">uuid</span></li>
+              <li><span class="col-key">FK</span> assigneeId <span class="col-type">uuid</span></li>
+              <li>title <span class="col-type">varchar(300)</span></li>
+              <li>status <span class="col-type">enum</span></li>
+              <li>priority <span class="col-type">int</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-tile elevation-2" style="grid-column:1;grid-row:2;">
+            <div class="entity-head">Idea</div>
+            <ul class="entity-cols">
+              <li><span class="col-key">PK</span> id <span class="col-type">uuid</span></li>
+              <li><span class="col-key">FK</span> authorId <span class="col-type">uuid</span></li>
+              <li>title <span class="col-type">varchar(300)</span></li>
+              <li>body <span class="col-type">text</span></li>
+              <li>priority <span class="col-type">int</span></li>
+              <li>tags <span class="col-type">jsonb</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-tile elevation-2" style="grid-column:2;grid-row:2;">
+            <div class="entity-head">Comment</div>
+            <ul class="entity-cols">
+              <li><span class="col-key">PK</span> id <span class="col-type">uuid</span></li>
+              <li><span class="col-key">FK</span> authorId <span class="col-type">uuid</span></li>
+              <li><span class="col-key">FK</span> ideaId <span class="col-type">uuid</span></li>
+              <li>body <span class="col-type">text</span></li>
+              <li>createdAt <span class="col-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-tile elevation-2" style="grid-column:3;grid-row:2;">
+            <div class="entity-head">AISession</div>
+            <ul class="entity-cols">
+              <li><span class="col-key">PK</span> id <span class="col-type">uuid</span></li>
+              <li><span class="col-key">FK</span> userId <span class="col-type">uuid</span></li>
+              <li><span class="col-key">FK</span> projectId <span class="col-type">uuid</span></li>
+              <li>model <span class="col-type">varchar(50)</span></li>
+              <li>tokenCount <span class="col-type">int</span></li>
+              <li>createdAt <span class="col-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <!-- Connection lines overlay -->
+          <svg class="schema-connectors" width="100%" height="100%">
+            <line x1="100%" y1="15%" x2="0%" y2="15%" stroke="#d4a843" stroke-width="1" stroke-dasharray="6,3" class="connector-h row1"/>
+            <line x1="100%" y1="65%" x2="0%" y2="65%" stroke="#d4a843" stroke-width="1" stroke-dasharray="6,3" class="connector-h row2"/>
+            <line x1="17%" y1="45%" x2="17%" y2="55%" stroke="#d4a843" stroke-width="1" stroke-dasharray="6,3" class="connector-v col1"/>
+            <line x1="50%" y1="45%" x2="50%" y2="55%" stroke="#d4a843" stroke-width="1" stroke-dasharray="6,3" class="connector-v col2"/>
+            <line x1="83%" y1="45%" x2="83%" y2="55%" stroke="#d4a843" stroke-width="1" stroke-dasharray="6,3" class="connector-v col3"/>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ===== DIRECTORY TREE ===== -->
+      <section class="stratum hidden" data-page="directory-tree">
+        <div class="stratum-header depth-0">
+          <h1 class="stratum-title">Directory</h1>
+          <span class="stratum-sub">Project structure &mdash; Orion v2</span>
+        </div>
+
+        <div class="dir-column depth-1">
+          <div class="dir-search-bar elevation-1">
+            <input type="text" class="strata-input" placeholder="Search files...">
+          </div>
+
+          <div class="dir-listing elevation-2">
+            <div class="dir-node depth-folder-0">
+              <span class="dir-chevron open"></span>
+              <span class="dir-icon-f"></span>
+              <span class="dir-label">orion-v2/</span>
+            </div>
+            <div class="dir-node depth-folder-1">
+              <span class="dir-chevron open"></span>
+              <span class="dir-icon-f"></span>
+              <span class="dir-label">src/</span>
+            </div>
+            <div class="dir-node depth-folder-2">
+              <span class="dir-chevron open"></span>
+              <span class="dir-icon-f"></span>
+              <span class="dir-label">components/</span>
+            </div>
+            <div class="dir-node depth-folder-3 dir-file-node">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">Dashboard.tsx</span>
+              <span class="dir-fsize">4.2 KB</span>
+            </div>
+            <div class="dir-node depth-folder-3 dir-file-node dir-selected">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">Navigation.tsx</span>
+              <span class="dir-fsize">2.8 KB</span>
+            </div>
+            <div class="dir-node depth-folder-3 dir-file-node">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">ProjectCard.tsx</span>
+              <span class="dir-fsize">1.9 KB</span>
+            </div>
+            <div class="dir-node depth-folder-3 dir-file-node">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">KanbanBoard.tsx</span>
+              <span class="dir-fsize">5.1 KB</span>
+            </div>
+            <div class="dir-node depth-folder-3 dir-file-node">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">SchemaView.tsx</span>
+              <span class="dir-fsize">3.4 KB</span>
+            </div>
+            <div class="dir-node depth-folder-2">
+              <span class="dir-chevron"></span>
+              <span class="dir-icon-f"></span>
+              <span class="dir-label">services/</span>
+            </div>
+            <div class="dir-node depth-folder-2">
+              <span class="dir-chevron"></span>
+              <span class="dir-icon-f"></span>
+              <span class="dir-label">hooks/</span>
+            </div>
+            <div class="dir-node depth-folder-2">
+              <span class="dir-chevron"></span>
+              <span class="dir-icon-f"></span>
+              <span class="dir-label">utils/</span>
+            </div>
+            <div class="dir-node depth-folder-2 dir-file-node">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">App.tsx</span>
+              <span class="dir-fsize">1.2 KB</span>
+            </div>
+            <div class="dir-node depth-folder-2 dir-file-node">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">index.ts</span>
+              <span class="dir-fsize">0.4 KB</span>
+            </div>
+            <div class="dir-node depth-folder-2 dir-file-node">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">global.css</span>
+              <span class="dir-fsize">8.7 KB</span>
+            </div>
+            <div class="dir-node depth-folder-1">
+              <span class="dir-chevron"></span>
+              <span class="dir-icon-f"></span>
+              <span class="dir-label">tests/</span>
+            </div>
+            <div class="dir-node depth-folder-1">
+              <span class="dir-chevron"></span>
+              <span class="dir-icon-f"></span>
+              <span class="dir-label">docs/</span>
+            </div>
+            <div class="dir-node depth-folder-1">
+              <span class="dir-chevron"></span>
+              <span class="dir-icon-f"></span>
+              <span class="dir-label">config/</span>
+            </div>
+            <div class="dir-node depth-folder-1 dir-file-node">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">package.json</span>
+              <span class="dir-fsize">1.8 KB</span>
+            </div>
+            <div class="dir-node depth-folder-1 dir-file-node">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">tsconfig.json</span>
+              <span class="dir-fsize">0.6 KB</span>
+            </div>
+            <div class="dir-node depth-folder-1 dir-file-node">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">.eslintrc.js</span>
+              <span class="dir-fsize">0.9 KB</span>
+            </div>
+            <div class="dir-node depth-folder-1 dir-file-node">
+              <span class="dir-icon-doc"></span>
+              <span class="dir-label">README.md</span>
+              <span class="dir-fsize">3.2 KB</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== IDEAS ===== -->
+      <section class="stratum hidden" data-page="ideas">
+        <div class="stratum-header depth-0">
+          <h1 class="stratum-title">Ideas</h1>
+          <span class="stratum-sub">Capture &amp; track &mdash; 147 ideas</span>
+        </div>
+
+        <div class="ideas-capture depth-1 elevation-2">
+          <input type="text" class="strata-input ideas-input" placeholder="Quick capture: type an idea and press Enter...">
+          <button class="strata-btn">Capture</button>
+        </div>
+
+        <div class="ideas-filters depth-1">
+          <button class="filter-pill filter-active">All</button>
+          <button class="filter-pill">High Priority</button>
+          <button class="filter-pill">Unreviewed</button>
+          <button class="filter-pill">Archived</button>
+          <span class="filter-total">147 results</span>
+        </div>
+
+        <div class="ideas-grid depth-2">
+          <div class="idea-slab elevation-3">
+            <div class="idea-slab-head">
+              <span class="idea-slab-title">Multi-tenant data isolation with row-level security</span>
+              <span class="idea-votes-badge">14</span>
+            </div>
+            <div class="idea-slab-tags">
+              <span class="idea-chip">architecture</span>
+              <span class="idea-chip">security</span>
+            </div>
+            <div class="idea-slab-foot">
+              <span class="idea-author">R. Kim</span>
+              <span class="idea-ts">2h ago</span>
+            </div>
+          </div>
+
+          <div class="idea-slab elevation-3">
+            <div class="idea-slab-head">
+              <span class="idea-slab-title">Real-time collaboration via CRDT-based sync engine</span>
+              <span class="idea-votes-badge">11</span>
+            </div>
+            <div class="idea-slab-tags">
+              <span class="idea-chip">real-time</span>
+              <span class="idea-chip">infrastructure</span>
+            </div>
+            <div class="idea-slab-foot">
+              <span class="idea-author">J. Donovan</span>
+              <span class="idea-ts">5h ago</span>
+            </div>
+          </div>
+
+          <div class="idea-slab elevation-2">
+            <div class="idea-slab-head">
+              <span class="idea-slab-title">Plugin system for third-party integrations</span>
+              <span class="idea-votes-badge">8</span>
+            </div>
+            <div class="idea-slab-tags">
+              <span class="idea-chip">extensibility</span>
+              <span class="idea-chip">api</span>
+            </div>
+            <div class="idea-slab-foot">
+              <span class="idea-author">M. Chen</span>
+              <span class="idea-ts">1d ago</span>
+            </div>
+          </div>
+
+          <div class="idea-slab elevation-2">
+            <div class="idea-slab-head">
+              <span class="idea-slab-title">Version-controlled schema migrations with rollback</span>
+              <span class="idea-votes-badge">7</span>
+            </div>
+            <div class="idea-slab-tags">
+              <span class="idea-chip">database</span>
+              <span class="idea-chip">devops</span>
+            </div>
+            <div class="idea-slab-foot">
+              <span class="idea-author">A. Torres</span>
+              <span class="idea-ts">1d ago</span>
+            </div>
+          </div>
+
+          <div class="idea-slab elevation-1">
+            <div class="idea-slab-head">
+              <span class="idea-slab-title">Dark mode presets for project-level theming</span>
+              <span class="idea-votes-badge">4</span>
+            </div>
+            <div class="idea-slab-tags">
+              <span class="idea-chip">ui</span>
+              <span class="idea-chip">customization</span>
+            </div>
+            <div class="idea-slab-foot">
+              <span class="idea-author">P. Larsen</span>
+              <span class="idea-ts">3d ago</span>
+            </div>
+          </div>
+
+          <div class="idea-slab elevation-1">
+            <div class="idea-slab-head">
+              <span class="idea-slab-title">Keyboard shortcut overlay with command palette</span>
+              <span class="idea-votes-badge">3</span>
+            </div>
+            <div class="idea-slab-tags">
+              <span class="idea-chip">ux</span>
+              <span class="idea-chip">productivity</span>
+            </div>
+            <div class="idea-slab-foot">
+              <span class="idea-author">J. Donovan</span>
+              <span class="idea-ts">4d ago</span>
+            </div>
+          </div>
+
+          <div class="idea-slab elevation-2">
+            <div class="idea-slab-head">
+              <span class="idea-slab-title">AI-powered code review suggestions inline</span>
+              <span class="idea-votes-badge">9</span>
+            </div>
+            <div class="idea-slab-tags">
+              <span class="idea-chip">ai</span>
+              <span class="idea-chip">code-quality</span>
+            </div>
+            <div class="idea-slab-foot">
+              <span class="idea-author">R. Kim</span>
+              <span class="idea-ts">5d ago</span>
+            </div>
+          </div>
+
+          <div class="idea-slab elevation-1">
+            <div class="idea-slab-head">
+              <span class="idea-slab-title">Export project reports to PDF with brand templates</span>
+              <span class="idea-votes-badge">2</span>
+            </div>
+            <div class="idea-slab-tags">
+              <span class="idea-chip">reporting</span>
+              <span class="idea-chip">export</span>
+            </div>
+            <div class="idea-slab-foot">
+              <span class="idea-author">A. Torres</span>
+              <span class="idea-ts">1w ago</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== AI CHAT ===== -->
+      <section class="stratum hidden" data-page="ai-chat">
+        <div class="stratum-header depth-0">
+          <h1 class="stratum-title">AI Chat</h1>
+          <span class="stratum-sub">Architecture Assistant &mdash; Claude</span>
+        </div>
+
+        <div class="chat-stack depth-1">
+          <div class="chat-slab slab-ai elevation-2">
+            <div class="chat-slab-avatar">AI</div>
+            <div class="chat-slab-body">
+              <div class="chat-slab-text">Welcome to the Architecture Assistant. I can help you reason about system design, evaluate trade-offs, and generate technical documentation. What would you like to explore?</div>
+              <div class="chat-slab-time">14:00</div>
+            </div>
+          </div>
+
+          <div class="chat-slab slab-user elevation-1">
+            <div class="chat-slab-body">
+              <div class="chat-slab-text">We need to design a multi-tenant isolation strategy for Orion v2. The main concern is data leakage between tenants. What approaches should we consider?</div>
+              <div class="chat-slab-time">14:02</div>
+            </div>
+            <div class="chat-slab-avatar">JD</div>
+          </div>
+
+          <div class="chat-slab slab-ai elevation-3">
+            <div class="chat-slab-avatar">AI</div>
+            <div class="chat-slab-body">
+              <div class="chat-slab-text">For multi-tenant isolation in Orion v2, there are three primary strategies to evaluate:
+
+<strong>1. Row-Level Security (RLS)</strong>
+Shared database, shared schema. Each row has a <code>tenant_id</code> column. PostgreSQL RLS policies enforce isolation at the database level. Lowest infrastructure cost, but requires careful policy management.
+
+<strong>2. Schema-per-Tenant</strong>
+Shared database, separate schemas. Each tenant gets their own schema namespace. Better isolation than RLS, moderate complexity for migrations.
+
+<strong>3. Database-per-Tenant</strong>
+Complete physical isolation. Highest security guarantee but significantly higher infrastructure and operational costs.
+
+Given the scale indicators you described (18 team members, ~24 projects), I'd recommend starting with <strong>RLS</strong> and designing the abstraction layer so you can migrate to schema-per-tenant later if compliance requirements demand it.
+
+Shall I detail the RLS implementation pattern?</div>
+              <div class="chat-slab-time">14:02</div>
+            </div>
+          </div>
+
+          <div class="chat-slab slab-user elevation-2">
+            <div class="chat-slab-body">
+              <div class="chat-slab-text">Yes, outline the RLS approach. Include the middleware layer that sets the tenant context.</div>
+              <div class="chat-slab-time">14:05</div>
+            </div>
+            <div class="chat-slab-avatar">JD</div>
+          </div>
+
+          <div class="chat-slab slab-ai elevation-1">
+            <div class="chat-slab-avatar">AI</div>
+            <div class="chat-slab-body">
+              <div class="chat-slab-text">Here is the RLS implementation pattern:
+
+<code>-- Enable RLS on all tenant-scoped tables
+ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
+
+-- Create policy: users see only their tenant's data
+CREATE POLICY tenant_isolation ON projects
+  USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+-- Middleware sets tenant context per request
+SET LOCAL app.tenant_id = 'tenant-uuid-here';</code>
+
+The middleware layer intercepts every request, extracts the tenant ID from the JWT claims, and sets the PostgreSQL session variable before any queries execute. This creates an airtight isolation boundary at the database engine level.
+
+Key considerations:
+&bull; Always use <code>SET LOCAL</code> (transaction-scoped, not session-scoped)
+&bull; Add <code>tenant_id</code> to all composite indexes
+&bull; Implement integration tests that verify cross-tenant queries return empty results</div>
+              <div class="chat-slab-time">14:06</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input at deepest level -->
+        <div class="chat-input-strip depth-3">
+          <input type="text" class="strata-input chat-field" placeholder="Ask the architecture assistant...">
+          <button class="strata-btn">Send</button>
+        </div>
+      </section>
+
+      <!-- ===== SETTINGS ===== -->
+      <section class="stratum hidden" data-page="settings">
+        <div class="stratum-header depth-0">
+          <h1 class="stratum-title">Settings</h1>
+          <span class="stratum-sub">System Configuration</span>
+        </div>
+
+        <!-- Settings tabs as stacked strata -->
+        <div class="settings-tabs depth-1">
+          <button class="settings-tab settings-tab-active" data-settab="profile">Profile</button>
+          <button class="settings-tab" data-settab="appearance">Appearance</button>
+          <button class="settings-tab" data-settab="notifications">Notifications</button>
+          <button class="settings-tab" data-settab="ai-config">AI Config</button>
+        </div>
+
+        <!-- Profile panel -->
+        <div class="settings-panel settings-panel-active elevation-3" data-setpanel="profile">
+          <div class="set-field">
+            <label class="set-label">Display Name</label>
+            <input type="text" class="strata-input" value="J. Donovan">
+          </div>
+          <div class="set-field">
+            <label class="set-label">Email</label>
+            <input type="email" class="strata-input" value="j.donovan@orion.dev">
+          </div>
+          <div class="set-field">
+            <label class="set-label">Role</label>
+            <select class="strata-input">
+              <option selected>Architect</option>
+              <option>Developer</option>
+              <option>Designer</option>
+              <option>Manager</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Appearance panel -->
+        <div class="settings-panel elevation-2" data-setpanel="appearance">
+          <div class="set-field">
+            <label class="set-label">Theme</label>
+            <div class="set-toggle-row">
+              <span class="set-toggle-label">Dark Strata</span>
+              <div class="set-switch set-on">
+                <div class="set-knob"></div>
+              </div>
+            </div>
+          </div>
+          <div class="set-field">
+            <label class="set-label">Dense Layout</label>
+            <div class="set-toggle-row">
+              <span class="set-toggle-label">Enabled</span>
+              <div class="set-switch set-on">
+                <div class="set-knob"></div>
+              </div>
+            </div>
+          </div>
+          <div class="set-field">
+            <label class="set-label">Code Font Size</label>
+            <select class="strata-input">
+              <option>12px</option>
+              <option selected>13px</option>
+              <option>14px</option>
+              <option>15px</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Notifications panel -->
+        <div class="settings-panel elevation-1" data-setpanel="notifications">
+          <div class="set-field">
+            <label class="set-label">Email Notifications</label>
+            <div class="set-toggle-row">
+              <span class="set-toggle-label">Enabled</span>
+              <div class="set-switch set-on">
+                <div class="set-knob"></div>
+              </div>
+            </div>
+          </div>
+          <div class="set-field">
+            <label class="set-label">Desktop Alerts</label>
+            <div class="set-toggle-row">
+              <span class="set-toggle-label">Disabled</span>
+              <div class="set-switch">
+                <div class="set-knob"></div>
+              </div>
+            </div>
+          </div>
+          <div class="set-field">
+            <label class="set-label">Digest Frequency</label>
+            <select class="strata-input">
+              <option>Instant</option>
+              <option selected>Daily</option>
+              <option>Weekly</option>
+              <option>Never</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- AI Config panel -->
+        <div class="settings-panel elevation-2" data-setpanel="ai-config">
+          <div class="set-field">
+            <label class="set-label">Default Model</label>
+            <select class="strata-input">
+              <option selected>Claude Opus 4</option>
+              <option>Claude Sonnet 4</option>
+              <option>Claude Haiku</option>
+            </select>
+          </div>
+          <div class="set-field">
+            <label class="set-label">Context Window</label>
+            <select class="strata-input">
+              <option>32K tokens</option>
+              <option selected>128K tokens</option>
+              <option>200K tokens</option>
+            </select>
+          </div>
+          <div class="set-field">
+            <label class="set-label">Auto-suggestions</label>
+            <div class="set-toggle-row">
+              <span class="set-toggle-label">Enabled</span>
+              <div class="set-switch set-on">
+                <div class="set-knob"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-actions depth-2">
+          <button class="strata-btn strata-btn-ghost">Reset Defaults</button>
+          <button class="strata-btn strata-btn-accent">Save Changes</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+{
+  "concept": "liquid-motion",
+  "pass": 2,
+  "variantSeed": "wave-current-flow",
+  "generatedAt": "2026-02-15T00:00:00.000Z",
+  "palette": {
+    "bg": "#0a1628",
+    "text": "#e8f0ff",
+    "surface": "#132038",
+    "accent": "#00d4ff",
+    "accent2": "#6366f1",
+    "border": "#1e3a5f",
+    "foam": "#f0f8ff"
+  },
+  "typography": {
+    "heading": {
+      "family": "Syne",
+      "weights": [600, 700, 800],
+      "source": "Google Fonts CDN"
+    },
+    "body": {
+      "family": "Manrope",
+      "weights": [300, 400, 500],
+      "source": "Google Fonts CDN"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weights": [400, 500],
+      "source": "Google Fonts CDN"
+    }
+  },
+  "layout": {
+    "type": "horizontal-stream-flow",
+    "navigation": "horizontal top bar with bobbing nav items",
+    "contentFlow": "current-like slide-in from right, depth layers within views",
+    "grid": "CSS Grid with auto-fill for card layouts",
+    "maxWidth": "1200px",
+    "navHeight": "64px"
+  },
+  "animationLibraries": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
+      "usage": [
+        "View transitions (slide in/out like currents)",
+        "Nav item bob animation (staggered sine wave)",
+        "Ripple button effect (radial expand)",
+        "Card hover wave distortion",
+        "Counter animations (dashboard stats)",
+        "Scroll-triggered content reveal",
+        "Background wave parallax",
+        "Entrance animations per view"
+      ]
+    }
+  ],
+  "views": [
+    {
+      "id": "dashboard",
+      "label": "Dashboard",
+      "theme": "Ocean Depths — stats rising from seafloor, wave-form chart, activity current"
+    },
+    {
+      "id": "projects",
+      "label": "Projects",
+      "theme": "Project Fleet — vessel cards floating on the surface with wave separators"
+    },
+    {
+      "id": "project-workspace",
+      "label": "Workspace",
+      "theme": "Deep Dive — split view with coral file tree and depth layers"
+    },
+    {
+      "id": "kanban",
+      "label": "Kanban",
+      "theme": "Ocean Currents — columns as flowing currents, cards float between"
+    },
+    {
+      "id": "whiteboard",
+      "label": "Whiteboard",
+      "theme": "Underwater Canvas — nodes connected by animated SVG current lines"
+    },
+    {
+      "id": "schema-planner",
+      "label": "Schema Planner",
+      "theme": "Abyssal Schema — entities as deep-sea structures, bioluminescent threads"
+    },
+    {
+      "id": "directory-tree",
+      "label": "Directory Tree",
+      "theme": "Coral Reef — branching folder structure as coral formations"
+    },
+    {
+      "id": "ideas",
+      "label": "Ideas",
+      "theme": "Rising Bubbles — ideas surface from the deep, capture at ocean floor"
+    },
+    {
+      "id": "ai-chat",
+      "label": "AI Chat",
+      "theme": "Sonar Channel — messages as sonar pulses from different depths"
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "theme": "Submarine Panel — gauge SVGs, valve toggles, depth sliders"
+    }
+  ],
+  "files": [
+    {
+      "name": "index.html",
+      "description": "Complete HTML structure with all 10 navigable views, SVG wave dividers, data-view/data-page attributes"
+    },
+    {
+      "name": "style.css",
+      "description": "Full CSS with custom properties, deep ocean palette, wave animations, responsive breakpoints"
+    },
+    {
+      "name": "app.js",
+      "description": "GSAP-powered hash routing, view transitions, scroll effects, ripple buttons, ambient wave motion"
+    },
+    {
+      "name": "README.md",
+      "description": "Concept documentation with design decisions and differentiation table"
+    },
+    {
+      "name": "validation/handoff.json",
+      "description": "This metadata file"
+    },
+    {
+      "name": "validation/inspiration-crossreference.json",
+      "description": "Inspiration sources with unique design elements"
+    }
+  ],
+  "designTokens": {
+    "colors": {
+      "--color-bg": "#0a1628",
+      "--color-text": "#e8f0ff",
+      "--color-surface": "#132038",
+      "--color-accent": "#00d4ff",
+      "--color-accent2": "#6366f1",
+      "--color-border": "#1e3a5f",
+      "--color-foam": "#f0f8ff"
+    },
+    "fonts": {
+      "--font-heading": "'Syne', sans-serif",
+      "--font-body": "'Manrope', sans-serif",
+      "--font-mono": "'JetBrains Mono', monospace"
+    },
+    "spacing": {
+      "--gap-xs": "0.25rem",
+      "--gap-sm": "0.5rem",
+      "--gap-md": "1rem",
+      "--gap-lg": "1.5rem",
+      "--gap-xl": "2.5rem",
+      "--gap-2xl": "4rem"
+    },
+    "radii": {
+      "--radius-sm": "6px",
+      "--radius-md": "12px",
+      "--radius-lg": "20px",
+      "--radius-xl": "32px"
+    },
+    "transitions": {
+      "--ease-current": "cubic-bezier(0.23, 1, 0.32, 1)",
+      "--ease-wave": "cubic-bezier(0.36, 0.07, 0.19, 0.97)",
+      "--dur-fast": "0.2s",
+      "--dur-med": "0.4s",
+      "--dur-slow": "0.8s",
+      "--dur-wave": "1.2s"
+    },
+    "shadows": {
+      "--shadow-glow": "0 0 20px rgba(0, 212, 255, 0.15)",
+      "--shadow-deep": "0 8px 32px rgba(0, 0, 0, 0.4)",
+      "--shadow-card": "0 4px 16px rgba(0, 0, 0, 0.3)"
+    }
+  },
+  "differentiationFromPass1": {
+    "nav": "Horizontal top stream bar vs. left-side floating blob",
+    "layout": "River/current flow with depth layers vs. bento grid",
+    "shapes": "SVG wave clip-paths vs. asymmetric blob border-radius",
+    "color": "Deep ocean dark #0a1628 vs. light blue #f0f4ff",
+    "motion": "Wave undulation and rising content vs. blob morphing",
+    "hero": "Ocean surface with depth layers vs. gradient morph header",
+    "buttons": "Ripple expanding circles vs. scale+glow",
+    "scroll": "Horizontal current parallax vs. vertical momentum parallax"
+  }
+}

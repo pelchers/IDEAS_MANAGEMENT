@@ -1,0 +1,79 @@
+{
+  "concept": "retro-50s",
+  "pass": 1,
+  "variantSeed": "chrome-diner-jukebox",
+  "inspirationSources": [
+    {
+      "source": "Duolingo",
+      "patternsAdopted": [
+        {
+          "pattern": "Friendly energy and playful interaction",
+          "implementation": "Bouncy overshoot animations on all interactive elements using cubic-bezier(0.34, 1.56, 0.64, 1). Coin-drop interaction for ideas. Vinyl spin on project hover.",
+          "viewsApplied": ["all views", "ideas", "projects"]
+        },
+        {
+          "pattern": "Clear callouts and stat badges",
+          "implementation": "Pastel-colored badge pills on dashboard stat cards (badge-mint, badge-pink, badge-turquoise). Stamp badges on idea postcards. Status labels on project records.",
+          "viewsApplied": ["dashboard", "ideas", "projects"]
+        },
+        {
+          "pattern": "Progress gamification feel",
+          "implementation": "Mini velocity gauges with animated gradient fills. Milestone strip showing version progress. Star ratings on kanban tickets.",
+          "viewsApplied": ["dashboard", "kanban"]
+        }
+      ]
+    },
+    {
+      "source": "Pitch (pitch.com)",
+      "patternsAdopted": [
+        {
+          "pattern": "Bold card choreography",
+          "implementation": "Project record cards with hover lift + rotation animation. Postcard cards with corner fold and hover float. Order ticket cards with slight rotate on hover.",
+          "viewsApplied": ["projects", "ideas", "kanban"]
+        },
+        {
+          "pattern": "Vibrant accenting",
+          "implementation": "Cherry pink (#ff6b8a) as dominant accent with turquoise (#4ecdc4) secondary. Neon text shadows on kanban column headers. Gold highlights on schema channel titles.",
+          "viewsApplied": ["kanban", "schema-planner", "all views"]
+        },
+        {
+          "pattern": "Slide-based view transitions",
+          "implementation": "viewSlideIn keyframe animation with translateX and scale for entering views. Each view slides in from the right with a bounce overshoot.",
+          "viewsApplied": ["all views"]
+        }
+      ]
+    },
+    {
+      "source": "Awwwards Portfolio",
+      "patternsAdopted": [
+        {
+          "pattern": "Personality-driven visuals",
+          "implementation": "Every view has a unique retro metaphor: speedometer dashboard, vinyl records for projects, drive-in menu for kanban, TV screens for schema, jukebox listing for files, postcards for ideas, comic strips for chat, control panel for settings. No two views share the same visual language.",
+          "viewsApplied": ["all views"]
+        },
+        {
+          "pattern": "Creative storytelling through UI",
+          "implementation": "Neon marquee header sets the diner narrative. Filing cabinet sidebar tells the workspace story. Coin-drop interaction creates a jukebox ritual. Highway breadcrumbs add journey metaphor.",
+          "viewsApplied": ["project-workspace", "ideas", "dashboard"]
+        },
+        {
+          "pattern": "Textural richness and material design",
+          "implementation": "Chrome gradients on bezels and toggles simulate brushed metal. Checkerboard patterns via repeating-conic-gradient. Graph paper grid on whiteboard. Leather-toned filing cabinet. CRT screen effect on schema entities.",
+          "viewsApplied": ["whiteboard", "schema-planner", "project-workspace", "settings"]
+        }
+      ]
+    }
+  ],
+  "uniqueDifferentiators": [
+    "10 distinct view metaphors (no two views look alike)",
+    "Jukebox bottom navigation with flip animation",
+    "Chrome bezel system using CSS gradients (no images)",
+    "Neon sign header with per-letter flicker animation",
+    "Coin-slot idea input interaction",
+    "TV-shaped schema entities with antennas and dials",
+    "Filing cabinet sidebar with physical drawer aesthetics",
+    "Order ticket kanban cards with perforated edge",
+    "Comic strip speech bubbles for AI chat",
+    "Physical chrome toggle switches in settings"
+  ]
+}

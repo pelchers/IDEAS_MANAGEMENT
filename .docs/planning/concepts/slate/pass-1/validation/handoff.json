@@ -1,0 +1,79 @@
+{
+  "concept": "slate",
+  "pass": 1,
+  "variantSeed": "carved-monolith-console",
+  "generatedAt": "2026-02-15",
+  "style": {
+    "name": "Slate Console",
+    "description": "Carved-stone console layout with recessed navigation and etched content panels",
+    "palette": {
+      "background": "#1e1e24",
+      "backgroundDeep": "#18181e",
+      "surface": "#2a2a32",
+      "surfaceRaised": "#313139",
+      "accent": "#c89b3c",
+      "accent2": "#6b8f71",
+      "text": "#d4d0c8",
+      "textMuted": "#8a877f",
+      "textDim": "#5c5a54",
+      "border": "#3d3d47",
+      "borderLight": "#4a4a55"
+    },
+    "typography": {
+      "headingFont": "Rajdhani",
+      "bodyFont": "Source Serif 4",
+      "monoFont": "IBM Plex Mono",
+      "headingLetterSpacing": "0.08-0.15em",
+      "headingWeight": "300-400",
+      "headingTransform": "uppercase"
+    },
+    "layout": {
+      "profile": "carved-console-rail",
+      "railWidth": "260px",
+      "borderRadius": "2-4px",
+      "density": "compact",
+      "alignment": "left"
+    },
+    "depth": {
+      "technique": "inset box-shadow",
+      "panelShadow": "inset 0 2px 6px rgba(0,0,0,0.45), inset 0 1px 2px rgba(0,0,0,0.3)",
+      "inputShadow": "inset 0 1px 4px rgba(0,0,0,0.4)",
+      "texture": "CSS repeating-linear-gradient at multiple angles"
+    },
+    "motion": {
+      "type": "opacity-only",
+      "duration": "150ms",
+      "easing": "ease"
+    }
+  },
+  "views": [
+    { "name": "dashboard", "label": "Dashboard", "dataView": "dashboard", "dataPage": "dashboard" },
+    { "name": "projects", "label": "Projects", "dataView": "projects", "dataPage": "projects" },
+    { "name": "project-workspace", "label": "Project Workspace", "dataView": "project-workspace", "dataPage": "project-workspace" },
+    { "name": "kanban", "label": "Kanban Board", "dataView": "kanban", "dataPage": "kanban" },
+    { "name": "whiteboard", "label": "Whiteboard", "dataView": "whiteboard", "dataPage": "whiteboard" },
+    { "name": "schema-planner", "label": "Schema Planner", "dataView": "schema-planner", "dataPage": "schema-planner" },
+    { "name": "directory-tree", "label": "Directory", "dataView": "directory-tree", "dataPage": "directory-tree" },
+    { "name": "ideas", "label": "Ideas", "dataView": "ideas", "dataPage": "ideas" },
+    { "name": "ai-chat", "label": "AI Chat", "dataView": "ai-chat", "dataPage": "ai-chat" },
+    { "name": "settings", "label": "Settings", "dataView": "settings", "dataPage": "settings" }
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ],
+  "externalDependencies": [
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Rajdhani:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap"
+  ],
+  "animationLibraries": [],
+  "mediaAssets": [],
+  "navigation": {
+    "type": "hash-based",
+    "mechanism": "data-view/data-page attribute matching",
+    "transition": "CSS opacity 150ms"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "key": "brutalist-pass-1-concrete-slab-monolith",
+  "styleId": "brutalist",
+  "pass": 1,
+  "direction": "Monolithic slab layout. Everything is a heavy concrete block. Navigation is a vertical stack of oversized labels. Content panels are harsh-bordered rectangles with no curves. Typography is enormous display-weight headings crushed against tight body text. Color is almost absent - raw paper, black ink, one explosive red accent.",
+  "primaryAwwwardsReference": {
+    "source": "Awwwards Brutalism",
+    "url": "https://www.awwwards.com/websites/brutalism/",
+    "appliedPatterns": [
+      "radical composition with hard geometric blocks",
+      "zero border-radius on all elements",
+      "aggressive typographic scale with display-weight headings",
+      "monochromatic palette with single explosive accent color",
+      "dense information layout without decorative whitespace"
+    ]
+  },
+  "references": [
+    {
+      "source": "Brutalist Websites Directory",
+      "url": "https://brutalistwebsites.com",
+      "appliedPatterns": [
+        "raw geometry with thick visible borders",
+        "monolithic slab navigation structure",
+        "raw paper background without decorative images",
+        "hard-coded rectangular content blocks"
+      ]
+    },
+    {
+      "source": "Bloomberg Businessweek",
+      "url": "https://www.bloomberg.com/businessweek",
+      "appliedPatterns": [
+        "aggressive typographic hierarchy with oversized headings",
+        "data-dense stat cards and table layouts",
+        "compact information density",
+        "monospace secondary typography for data elements"
+      ]
+    },
+    {
+      "source": "Awwwards Brutalism",
+      "url": "https://www.awwwards.com/websites/brutalism/",
+      "appliedPatterns": [
+        "radical composition with hard geometric blocks",
+        "zero border-radius on all elements",
+        "aggressive typographic scale with display-weight headings",
+        "monochromatic palette with single explosive accent color",
+        "dense information layout without decorative whitespace"
+      ]
+    }
+  ],
+  "appliedAt": "2026-02-15T09:41:00.000Z"
+}

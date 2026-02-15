@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDEA MGMT // MANIFESTO BROADSHEET</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================= -->
+  <!-- BROADSHEET MASTHEAD                           -->
+  <!-- ============================================= -->
+  <header class="broadsheet-masthead">
+    <div class="masthead-rule-top"></div>
+    <div class="masthead-inner">
+      <div class="masthead-edition">
+        <span class="edition-label">VOL. I</span>
+        <span class="edition-divider">/</span>
+        <span class="edition-date">15 FEB 2026</span>
+      </div>
+      <h1 class="masthead-title">IDEA MANAGEMENT</h1>
+      <div class="masthead-subtitle">
+        <span class="subtitle-dash">&mdash;</span>
+        <span class="subtitle-text">BULLETIN &amp; WORKING BROADSHEET</span>
+        <span class="subtitle-dash">&mdash;</span>
+      </div>
+    </div>
+    <div class="masthead-rule-bottom"></div>
+  </header>
+
+  <!-- ============================================= -->
+  <!-- TOP STAMP-BADGE NAVIGATION                    -->
+  <!-- ============================================= -->
+  <nav class="stamp-nav" id="stampNav">
+    <div class="stamp-nav-inner">
+      <button class="stamp-badge active" data-view="dashboard" title="Dashboard">
+        <span class="stamp-num">01</span>
+        <span class="stamp-label">DASH</span>
+      </button>
+      <button class="stamp-badge" data-view="projects" title="Projects">
+        <span class="stamp-num">02</span>
+        <span class="stamp-label">PROJ</span>
+      </button>
+      <button class="stamp-badge" data-view="project-workspace" title="Workspace">
+        <span class="stamp-num">03</span>
+        <span class="stamp-label">WORK</span>
+      </button>
+      <button class="stamp-badge" data-view="kanban" title="Kanban">
+        <span class="stamp-num">04</span>
+        <span class="stamp-label">KANBAN</span>
+      </button>
+      <button class="stamp-badge" data-view="whiteboard" title="Whiteboard">
+        <span class="stamp-num">05</span>
+        <span class="stamp-label">BOARD</span>
+      </button>
+      <button class="stamp-badge" data-view="schema-planner" title="Schema Planner">
+        <span class="stamp-num">06</span>
+        <span class="stamp-label">SCHEMA</span>
+      </button>
+      <button class="stamp-badge" data-view="directory-tree" title="Directory Tree">
+        <span class="stamp-num">07</span>
+        <span class="stamp-label">DIR</span>
+      </button>
+      <button class="stamp-badge" data-view="ideas" title="Ideas">
+        <span class="stamp-num">08</span>
+        <span class="stamp-label">IDEAS</span>
+      </button>
+      <button class="stamp-badge" data-view="ai-chat" title="AI Chat">
+        <span class="stamp-num">09</span>
+        <span class="stamp-label">AI</span>
+      </button>
+      <button class="stamp-badge" data-view="settings" title="Settings">
+        <span class="stamp-num">10</span>
+        <span class="stamp-label">SET</span>
+      </button>
+    </div>
+    <div class="stamp-nav-user">
+      <span class="user-stamp">J.DOE</span>
+      <span class="user-role-stamp">ADMIN</span>
+    </div>
+  </nav>
+
+  <!-- ============================================= -->
+  <!-- BROADSHEET CONTENT AREA                       -->
+  <!-- ============================================= -->
+  <main class="broadsheet-content" id="broadsheetContent">
+
+    <!-- =========================================== -->
+    <!-- VIEW 1: DASHBOARD - Front Page Layout       -->
+    <!-- =========================================== -->
+    <section class="broadsheet-page" data-page="dashboard">
+      <div class="page-index-num">01</div>
+
+      <!-- HEADLINE BANNER -->
+      <div class="headline-banner">
+        <h2 class="headline-text">QUARTERLY OUTPUT REACHES RECORD HIGH</h2>
+        <div class="headline-rule"></div>
+        <p class="headline-subtext">All metrics trend upward as team velocity stabilizes across sprints</p>
+      </div>
+
+      <!-- STAT COLUMNS - irregular masonry -->
+      <div class="masonry-cols masonry-cols--3">
+        <div class="masonry-col">
+          <div class="stat-block">
+            <span class="stat-block-label">TOTAL PROJECTS</span>
+            <span class="stat-block-value">47</span>
+            <span class="stat-block-delta delta-up">+3 this week</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-block-label">COMPLETION RATE</span>
+            <span class="stat-block-value">84%</span>
+            <span class="stat-block-delta delta-up">+6% from Q3</span>
+          </div>
+          <div class="pull-quote">
+            <span class="pull-quote-mark">&ldquo;</span>
+            <p class="pull-quote-text">The team has shipped more features in the last 30 days than the previous quarter combined.</p>
+            <span class="pull-quote-attr">&mdash; Sprint Review, Feb 12</span>
+          </div>
+        </div>
+        <div class="masonry-col">
+          <div class="stat-block stat-block--tall">
+            <span class="stat-block-label">ACTIVE TASKS</span>
+            <span class="stat-block-value stat-block-value--xl">218</span>
+            <span class="stat-block-delta delta-down">-12 from last sprint</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-block-label">OPEN IDEAS</span>
+            <span class="stat-block-value">63</span>
+            <span class="stat-block-delta delta-neutral">Stable</span>
+          </div>
+        </div>
+        <div class="masonry-col">
+          <div class="stat-block">
+            <span class="stat-block-label">TEAM MEMBERS</span>
+            <span class="stat-block-value">12</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-block-label">OVERDUE</span>
+            <span class="stat-block-value stat-block-value--accent">7</span>
+            <span class="stat-block-delta delta-down">Needs attention</span>
+          </div>
+          <div class="editorial-note">
+            <span class="editorial-note-head">EDITOR&rsquo;S NOTE</span>
+            <p>Sprint 14 concludes Friday. All outstanding items must be resolved or deferred to Sprint 15 backlog.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECENT ACTIVITY - newspaper column -->
+      <div class="section-rule"></div>
+      <div class="section-head">
+        <span class="section-index">01.1</span>
+        <h3 class="section-title">RECENT DISPATCHES</h3>
+      </div>
+      <div class="masonry-cols masonry-cols--2">
+        <div class="masonry-col">
+          <div class="dispatch-item">
+            <span class="dispatch-time">09:41</span>
+            <span class="dispatch-text">Schema revision pushed to staging &mdash; 4 entities modified</span>
+          </div>
+          <div class="dispatch-item">
+            <span class="dispatch-time">08:22</span>
+            <span class="dispatch-text">New idea submitted: &ldquo;Real-time collaboration layer&rdquo;</span>
+          </div>
+          <div class="dispatch-item">
+            <span class="dispatch-time">07:15</span>
+            <span class="dispatch-text">Sprint planning completed. 23 items moved to active.</span>
+          </div>
+        </div>
+        <div class="masonry-col">
+          <div class="dispatch-item">
+            <span class="dispatch-time">YESTERDAY</span>
+            <span class="dispatch-text">Directory restructure merged into main branch</span>
+          </div>
+          <div class="dispatch-item">
+            <span class="dispatch-time">YESTERDAY</span>
+            <span class="dispatch-text">AI assistant model upgraded to latest release</span>
+          </div>
+          <div class="dispatch-item">
+            <span class="dispatch-time">FEB 13</span>
+            <span class="dispatch-text">Whiteboard export feature deployed to production</span>
+          </div>
+        </div>
+      </div>
+      <div class="page-folio">PAGE 01 OF 10 &mdash; IDEA MANAGEMENT BROADSHEET</div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- VIEW 2: PROJECTS - Magazine Index            -->
+    <!-- =========================================== -->
+    <section class="broadsheet-page" data-page="projects">
+      <div class="page-index-num">02</div>
+
+      <div class="headline-banner">
+        <h2 class="headline-text">PROJECT INDEX</h2>
+        <div class="headline-rule"></div>
+        <p class="headline-subtext">Comprehensive registry of all active and archived initiatives</p>
+      </div>
+
+      <div class="masonry-cols masonry-cols--2">
+        <div class="masonry-col">
+          <div class="index-entry">
+            <span class="index-entry-num">001</span>
+            <div class="index-entry-body">
+              <h4 class="index-entry-title">PLATFORM CORE</h4>
+              <p class="index-entry-desc">Foundation services, authentication layer, API gateway. The backbone of the entire system infrastructure.</p>
+              <div class="index-entry-meta">
+                <span class="category-stamp stamp-active">ACTIVE</span>
+                <span class="category-stamp stamp-priority">HIGH</span>
+                <span class="meta-mono">12 tasks &bull; 3 members</span>
+              </div>
+            </div>
+          </div>
+          <div class="index-entry">
+            <span class="index-entry-num">002</span>
+            <div class="index-entry-body">
+              <h4 class="index-entry-title">FRONTEND REDESIGN</h4>
+              <p class="index-entry-desc">Complete visual overhaul. New component library, design system tokens, responsive framework.</p>
+              <div class="index-entry-meta">
+                <span class="category-stamp stamp-active">ACTIVE</span>
+                <span class="category-stamp stamp-standard">MEDIUM</span>
+                <span class="meta-mono">18 tasks &bull; 4 members</span>
+              </div>
+            </div>
+          </div>
+          <div class="index-entry">
+            <span class="index-entry-num">003</span>
+            <div class="index-entry-body">
+              <h4 class="index-entry-title">DATA PIPELINE</h4>
+              <p class="index-entry-desc">ETL infrastructure, data lake integration, real-time stream processing with event sourcing.</p>
+              <div class="index-entry-meta">
+                <span class="category-stamp stamp-active">ACTIVE</span>
+                <span class="category-stamp stamp-priority">HIGH</span>
+                <span class="meta-mono">9 tasks &bull; 2 members</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="masonry-col">
+          <div class="index-entry">
+            <span class="index-entry-num">004</span>
+            <div class="index-entry-body">
+              <h4 class="index-entry-title">MOBILE COMPANION</h4>
+              <p class="index-entry-desc">Cross-platform mobile application for on-the-go project monitoring and quick idea capture.</p>
+              <div class="index-entry-meta">
+                <span class="category-stamp stamp-planned">PLANNED</span>
+                <span class="category-stamp stamp-standard">MEDIUM</span>
+                <span class="meta-mono">6 tasks &bull; 2 members</span>
+              </div>
+            </div>
+          </div>
+          <div class="index-entry">
+            <span class="index-entry-num">005</span>
+            <div class="index-entry-body">
+              <h4 class="index-entry-title">AI INTEGRATION</h4>
+              <p class="index-entry-desc">Machine learning models for idea scoring, auto-categorization, and predictive project analytics.</p>
+              <div class="index-entry-meta">
+                <span class="category-stamp stamp-active">ACTIVE</span>
+                <span class="category-stamp stamp-priority">HIGH</span>
+                <span class="meta-mono">14 tasks &bull; 3 members</span>
+              </div>
+            </div>
+          </div>
+          <div class="index-entry">
+            <span class="index-entry-num">006</span>
+            <div class="index-entry-body">
+              <h4 class="index-entry-title">SECURITY AUDIT</h4>
+              <p class="index-entry-desc">Comprehensive penetration testing, dependency scanning, OWASP compliance verification.</p>
+              <div class="index-entry-meta">
+                <span class="category-stamp stamp-archived">ARCHIVED</span>
+                <span class="category-stamp stamp-low">LOW</span>
+                <span class="meta-mono">22 tasks &bull; 5 members</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pull-quote pull-quote--wide">
+        <span class="pull-quote-mark">&ldquo;</span>
+        <p class="pull-quote-text">Six active projects, forty-seven total. The index grows as the organization matures its ideation pipeline.</p>
+        <span class="pull-quote-attr">&mdash; Project Management Office</span>
+      </div>
+      <div class="page-folio">PAGE 02 OF 10 &mdash; IDEA MANAGEMENT BROADSHEET</div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- VIEW 3: PROJECT WORKSPACE - Editorial Desk  -->
+    <!-- =========================================== -->
+    <section class="broadsheet-page" data-page="project-workspace">
+      <div class="page-index-num">03</div>
+
+      <div class="headline-banner">
+        <h2 class="headline-text">WORKSPACE: PLATFORM CORE</h2>
+        <div class="headline-rule"></div>
+        <p class="headline-subtext">Active editorial desk &mdash; file registry and working content</p>
+      </div>
+
+      <div class="editorial-desk">
+        <!-- TABLE OF CONTENTS COLUMN (narrow left) -->
+        <div class="desk-toc">
+          <div class="toc-head">
+            <span class="section-index">03.A</span>
+            <h3 class="section-title">TABLE OF CONTENTS</h3>
+          </div>
+          <ul class="toc-list">
+            <li class="toc-item toc-item--folder">
+              <span class="toc-marker">&blacksquare;</span>
+              <span class="toc-name">src/</span>
+            </li>
+            <li class="toc-item toc-item--indent1">
+              <span class="toc-marker">&loz;</span>
+              <span class="toc-name">index.ts</span>
+              <span class="toc-page">p.12</span>
+            </li>
+            <li class="toc-item toc-item--indent1">
+              <span class="toc-marker">&loz;</span>
+              <span class="toc-name">auth.ts</span>
+              <span class="toc-page">p.14</span>
+            </li>
+            <li class="toc-item toc-item--indent1">
+              <span class="toc-marker">&loz;</span>
+              <span class="toc-name">router.ts</span>
+              <span class="toc-page">p.16</span>
+            </li>
+            <li class="toc-item toc-item--folder">
+              <span class="toc-marker">&blacksquare;</span>
+              <span class="toc-name">lib/</span>
+            </li>
+            <li class="toc-item toc-item--indent1">
+              <span class="toc-marker">&loz;</span>
+              <span class="toc-name">database.ts</span>
+              <span class="toc-page">p.20</span>
+            </li>
+            <li class="toc-item toc-item--indent1">
+              <span class="toc-marker">&loz;</span>
+              <span class="toc-name">cache.ts</span>
+              <span class="toc-page">p.22</span>
+            </li>
+            <li class="toc-item toc-item--folder">
+              <span class="toc-marker">&blacksquare;</span>
+              <span class="toc-name">tests/</span>
+            </li>
+            <li class="toc-item toc-item--indent1">
+              <span class="toc-marker">&loz;</span>
+              <span class="toc-name">auth.test.ts</span>
+              <span class="toc-page">p.30</span>
+            </li>
+            <li class="toc-item toc-item--indent1">
+              <span class="toc-marker">&loz;</span>
+              <span class="toc-name">router.test.ts</span>
+              <span class="toc-page">p.32</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- ARTICLE CONTENT (wide right) -->
+        <div class="desk-article">
+          <div class="toc-head">
+            <span class="section-index">03.B</span>
+            <h3 class="section-title">WORKING DOCUMENT</h3>
+          </div>
+          <div class="article-section">
+            <h4 class="article-section-head">&sect;1 &mdash; PROJECT OVERVIEW</h4>
+            <p class="article-body">Platform Core encompasses all foundational services required for the idea management system. This includes user authentication (OAuth2 + JWT), API gateway routing, rate limiting, and session management. The project is currently in its third sprint cycle with 12 active tasks distributed across 3 team members.</p>
+          </div>
+          <div class="section-rule section-rule--thin"></div>
+          <div class="article-section">
+            <h4 class="article-section-head">&sect;2 &mdash; CURRENT OBJECTIVES</h4>
+            <ul class="article-list">
+              <li>Migrate authentication from session-based to JWT token flow</li>
+              <li>Implement rate limiting middleware (100 req/min default)</li>
+              <li>Add WebSocket support for real-time notifications</li>
+              <li>Set up distributed caching layer with Redis</li>
+            </ul>
+          </div>
+          <div class="section-rule section-rule--thin"></div>
+          <div class="article-section">
+            <h4 class="article-section-head">&sect;3 &mdash; NOTES &amp; ANNOTATIONS</h4>
+            <div class="annotation-block">
+              <span class="annotation-stamp">NOTE</span>
+              <p>Database migration scripts must be run before deploying auth changes. See p.20 for schema details.</p>
+            </div>
+            <div class="annotation-block">
+              <span class="annotation-stamp annotation-stamp--warn">CAUTION</span>
+              <p>Rate limiter currently has a known issue with WebSocket connections. Ticket #247 tracks this.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-folio">PAGE 03 OF 10 &mdash; IDEA MANAGEMENT BROADSHEET</div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- VIEW 4: KANBAN - Newspaper Classified Cols   -->
+    <!-- =========================================== -->
+    <section class="broadsheet-page" data-page="kanban">
+      <div class="page-index-num">04</div>
+
+      <div class="headline-banner">
+        <h2 class="headline-text">CLASSIFIED BOARD</h2>
+        <div class="headline-rule"></div>
+        <p class="headline-subtext">Task pipeline arranged as newspaper classified columns</p>
+      </div>
+
+      <div class="classified-columns">
+        <!-- BACKLOG COLUMN -->
+        <div class="classified-col">
+          <div class="col-masthead">
+            <span class="col-masthead-num">&numero;1</span>
+            <h3 class="col-masthead-title">BACKLOG</h3>
+            <span class="col-masthead-count">6 items</span>
+          </div>
+          <div class="classified-ad">
+            <span class="ad-ref">BK-101</span>
+            <h4 class="ad-title">User profile page redesign</h4>
+            <p class="ad-body">Update profile layout with avatar upload and activity feed.</p>
+            <div class="ad-footer">
+              <span class="ad-tag">FRONTEND</span>
+              <span class="ad-priority ad-priority--med">MED</span>
+            </div>
+          </div>
+          <div class="classified-ad">
+            <span class="ad-ref">BK-102</span>
+            <h4 class="ad-title">Export to PDF functionality</h4>
+            <p class="ad-body">Generate printable reports from project dashboards.</p>
+            <div class="ad-footer">
+              <span class="ad-tag">FEATURE</span>
+              <span class="ad-priority ad-priority--low">LOW</span>
+            </div>
+          </div>
+          <div class="classified-ad">
+            <span class="ad-ref">BK-103</span>
+            <h4 class="ad-title">Bulk idea import via CSV</h4>
+            <p class="ad-body">Allow importing ideas from spreadsheet format.</p>
+            <div class="ad-footer">
+              <span class="ad-tag">DATA</span>
+              <span class="ad-priority ad-priority--low">LOW</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TODO COLUMN -->
+        <div class="classified-col">
+          <div class="col-masthead">
+            <span class="col-masthead-num">&numero;2</span>
+            <h3 class="col-masthead-title">TO DO</h3>
+            <span class="col-masthead-count">4 items</span>
+          </div>
+          <div class="classified-ad">
+            <span class="ad-ref">TD-201</span>
+            <h4 class="ad-title">API rate limiter config</h4>
+            <p class="ad-body">Configure per-endpoint rate limits with Redis backing.</p>
+            <div class="ad-footer">
+              <span class="ad-tag">BACKEND</span>
+              <span class="ad-priority ad-priority--high">HIGH</span>
+            </div>
+          </div>
+          <div class="classified-ad">
+            <span class="ad-ref">TD-202</span>
+            <h4 class="ad-title">Notification system design</h4>
+            <p class="ad-body">Draft architecture for WebSocket-based real-time alerts.</p>
+            <div class="ad-footer">
+              <span class="ad-tag">ARCH</span>
+              <span class="ad-priority ad-priority--high">HIGH</span>
+            </div>
+          </div>
+          <div class="classified-ad">
+            <span class="ad-ref">TD-203</span>
+            <h4 class="ad-title">Accessibility audit</h4>
+            <p class="ad-body">Run WCAG 2.1 AA compliance checks on all views.</p>
+            <div class="ad-footer">
+              <span class="ad-tag">QA</span>
+              <span class="ad-priority ad-priority--med">MED</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- IN PROGRESS COLUMN -->
+        <div class="classified-col">
+          <div class="col-masthead">
+            <span class="col-masthead-num">&numero;3</span>
+            <h3 class="col-masthead-title">IN PROGRESS</h3>
+            <span class="col-masthead-count">3 items</span>
+          </div>
+          <div class="classified-ad classified-ad--active">
+            <span class="ad-ref">IP-301</span>
+            <h4 class="ad-title">JWT token migration</h4>
+            <p class="ad-body">Replace session cookies with JWT. Halfway complete.</p>
+            <div class="ad-footer">
+              <span class="ad-tag">AUTH</span>
+              <span class="ad-priority ad-priority--high">HIGH</span>
+            </div>
+          </div>
+          <div class="classified-ad classified-ad--active">
+            <span class="ad-ref">IP-302</span>
+            <h4 class="ad-title">Schema planner MVP</h4>
+            <p class="ad-body">Visual entity relationship editor. 70% done.</p>
+            <div class="ad-footer">
+              <span class="ad-tag">FEATURE</span>
+              <span class="ad-priority ad-priority--med">MED</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- DONE COLUMN -->
+        <div class="classified-col">
+          <div class="col-masthead">
+            <span class="col-masthead-num">&numero;4</span>
+            <h3 class="col-masthead-title">DONE</h3>
+            <span class="col-masthead-count">5 items</span>
+          </div>
+          <div class="classified-ad classified-ad--done">
+            <span class="ad-ref">DN-401</span>
+            <h4 class="ad-title">User auth flow</h4>
+            <p class="ad-body">Login, register, password reset. Shipped.</p>
+            <div class="ad-footer">
+              <span class="ad-tag">AUTH</span>
+              <span class="ad-priority ad-priority--done">DONE</span>
+            </div>
+          </div>
+          <div class="classified-ad classified-ad--done">
+            <span class="ad-ref">DN-402</span>
+            <h4 class="ad-title">Project CRUD endpoints</h4>
+            <p class="ad-body">Full REST API for project management.</p>
+            <div class="ad-footer">
+              <span class="ad-tag">API</span>
+              <span class="ad-priority ad-priority--done">DONE</span>
+            </div>
+          </div>
+          <div class="classified-ad classified-ad--done">
+            <span class="ad-ref">DN-403</span>
+            <h4 class="ad-title">CI/CD pipeline setup</h4>
+            <p class="ad-body">GitHub Actions with staging auto-deploy.</p>
+            <div class="ad-footer">
+              <span class="ad-tag">DEVOPS</span>
+              <span class="ad-priority ad-priority--done">DONE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-folio">PAGE 04 OF 10 &mdash; IDEA MANAGEMENT BROADSHEET</div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- VIEW 5: WHITEBOARD - Blueprint Schematic    -->
+    <!-- =========================================== -->
+    <section class="broadsheet-page" data-page="whiteboard">
+      <div class="page-index-num">05</div>
+
+      <div class="headline-banner">
+        <h2 class="headline-text">BLUEPRINT BOARD</h2>
+        <div class="headline-rule"></div>
+        <p class="headline-subtext">Schematic drafting surface with stamp-pad tools</p>
+      </div>
+
+      <!-- TOOLBAR RIBBON -->
+      <div class="blueprint-toolbar">
+        <div class="toolbar-group">
+          <button class="tool-stamp" data-tool="select" title="Select">
+            <span class="tool-icon">&target;</span>
+            <span class="tool-name">SELECT</span>
+          </button>
+          <button class="tool-stamp" data-tool="draw" title="Draw">
+            <span class="tool-icon">&para;</span>
+            <span class="tool-name">DRAW</span>
+          </button>
+          <button class="tool-stamp" data-tool="rect" title="Rectangle">
+            <span class="tool-icon">&square;</span>
+            <span class="tool-name">RECT</span>
+          </button>
+          <button class="tool-stamp" data-tool="text" title="Text">
+            <span class="tool-icon">A</span>
+            <span class="tool-name">TEXT</span>
+          </button>
+          <button class="tool-stamp" data-tool="line" title="Line">
+            <span class="tool-icon">/</span>
+            <span class="tool-name">LINE</span>
+          </button>
+          <button class="tool-stamp" data-tool="note" title="Sticky Note">
+            <span class="tool-icon">&numero;</span>
+            <span class="tool-name">NOTE</span>
+          </button>
+        </div>
+        <div class="toolbar-group">
+          <button class="tool-stamp" data-tool="undo" title="Undo">
+            <span class="tool-icon">&larr;</span>
+            <span class="tool-name">UNDO</span>
+          </button>
+          <button class="tool-stamp" data-tool="redo" title="Redo">
+            <span class="tool-icon">&rarr;</span>
+            <span class="tool-name">REDO</span>
+          </button>
+          <button class="tool-stamp" data-tool="clear" title="Clear All">
+            <span class="tool-icon">&times;</span>
+            <span class="tool-name">CLEAR</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- BLUEPRINT CANVAS -->
+      <div class="blueprint-canvas">
+        <div class="blueprint-grid">
+          <!-- Pre-placed schematic elements -->
+          <div class="blueprint-element" style="left: 5%; top: 8%; width: 25%;">
+            <div class="blueprint-box">
+              <span class="blueprint-label">AUTH SERVICE</span>
+              <span class="blueprint-detail">OAuth2 / JWT</span>
+            </div>
+          </div>
+          <div class="blueprint-element" style="left: 40%; top: 5%; width: 25%;">
+            <div class="blueprint-box">
+              <span class="blueprint-label">API GATEWAY</span>
+              <span class="blueprint-detail">Rate limiting, routing</span>
+            </div>
+          </div>
+          <div class="blueprint-element" style="left: 72%; top: 10%; width: 22%;">
+            <div class="blueprint-box">
+              <span class="blueprint-label">FRONTEND</span>
+              <span class="blueprint-detail">SPA client</span>
+            </div>
+          </div>
+          <div class="blueprint-element" style="left: 20%; top: 45%; width: 28%;">
+            <div class="blueprint-box blueprint-box--accent">
+              <span class="blueprint-label">DATABASE</span>
+              <span class="blueprint-detail">PostgreSQL + Redis</span>
+            </div>
+          </div>
+          <div class="blueprint-element" style="left: 58%; top: 40%; width: 25%;">
+            <div class="blueprint-box">
+              <span class="blueprint-label">ML ENGINE</span>
+              <span class="blueprint-detail">Scoring & classification</span>
+            </div>
+          </div>
+          <div class="blueprint-element" style="left: 30%; top: 75%; width: 35%;">
+            <div class="blueprint-box blueprint-box--accent2">
+              <span class="blueprint-label">EVENT BUS</span>
+              <span class="blueprint-detail">Kafka / WebSocket relay</span>
+            </div>
+          </div>
+          <!-- Connection lines drawn via CSS pseudo-elements and borders -->
+          <div class="blueprint-note" style="right: 3%; bottom: 5%;">
+            <span class="blueprint-note-stamp">REV. 03</span>
+            <span class="blueprint-note-date">15 FEB 2026</span>
+          </div>
+        </div>
+      </div>
+      <div class="page-folio">PAGE 05 OF 10 &mdash; IDEA MANAGEMENT BROADSHEET</div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- VIEW 6: SCHEMA PLANNER - Technical Diagram  -->
+    <!-- =========================================== -->
+    <section class="broadsheet-page" data-page="schema-planner">
+      <div class="page-index-num">06</div>
+
+      <div class="headline-banner">
+        <h2 class="headline-text">SCHEMA PLANNER</h2>
+        <div class="headline-rule"></div>
+        <p class="headline-subtext">Entity relationship diagram &mdash; technical specification document</p>
+      </div>
+
+      <div class="schema-diagram">
+        <div class="schema-entity" style="left: 3%; top: 0;">
+          <div class="entity-header">
+            <span class="entity-name">USERS</span>
+            <span class="entity-badge">PK: id</span>
+          </div>
+          <div class="entity-fields">
+            <div class="entity-field"><span class="field-key">PK</span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">email</span><span class="field-type">VARCHAR(255)</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">name</span><span class="field-type">VARCHAR(100)</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">role</span><span class="field-type">ENUM</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">created_at</span><span class="field-type">TIMESTAMP</span></div>
+          </div>
+        </div>
+
+        <div class="schema-entity" style="left: 36%; top: 0;">
+          <div class="entity-header">
+            <span class="entity-name">PROJECTS</span>
+            <span class="entity-badge">PK: id</span>
+          </div>
+          <div class="entity-fields">
+            <div class="entity-field"><span class="field-key">PK</span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+            <div class="entity-field"><span class="field-key">FK</span><span class="field-name">owner_id</span><span class="field-type">UUID &rarr; USERS</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">title</span><span class="field-type">VARCHAR(200)</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">status</span><span class="field-type">ENUM</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">created_at</span><span class="field-type">TIMESTAMP</span></div>
+          </div>
+        </div>
+
+        <div class="schema-entity" style="left: 68%; top: 0;">
+          <div class="entity-header">
+            <span class="entity-name">IDEAS</span>
+            <span class="entity-badge">PK: id</span>
+          </div>
+          <div class="entity-fields">
+            <div class="entity-field"><span class="field-key">PK</span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+            <div class="entity-field"><span class="field-key">FK</span><span class="field-name">project_id</span><span class="field-type">UUID &rarr; PROJECTS</span></div>
+            <div class="entity-field"><span class="field-key">FK</span><span class="field-name">author_id</span><span class="field-type">UUID &rarr; USERS</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">title</span><span class="field-type">VARCHAR(300)</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">body</span><span class="field-type">TEXT</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">priority</span><span class="field-type">INT</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">status</span><span class="field-type">ENUM</span></div>
+          </div>
+        </div>
+
+        <div class="schema-entity" style="left: 3%; top: 55%;">
+          <div class="entity-header">
+            <span class="entity-name">TASKS</span>
+            <span class="entity-badge">PK: id</span>
+          </div>
+          <div class="entity-fields">
+            <div class="entity-field"><span class="field-key">PK</span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+            <div class="entity-field"><span class="field-key">FK</span><span class="field-name">project_id</span><span class="field-type">UUID &rarr; PROJECTS</span></div>
+            <div class="entity-field"><span class="field-key">FK</span><span class="field-name">assignee_id</span><span class="field-type">UUID &rarr; USERS</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">title</span><span class="field-type">VARCHAR(200)</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">status</span><span class="field-type">ENUM</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">due_date</span><span class="field-type">DATE</span></div>
+          </div>
+        </div>
+
+        <div class="schema-entity" style="left: 40%; top: 58%;">
+          <div class="entity-header">
+            <span class="entity-name">TAGS</span>
+            <span class="entity-badge">PK: id</span>
+          </div>
+          <div class="entity-fields">
+            <div class="entity-field"><span class="field-key">PK</span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">name</span><span class="field-type">VARCHAR(50)</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">color</span><span class="field-type">VARCHAR(7)</span></div>
+          </div>
+        </div>
+
+        <div class="schema-entity" style="left: 68%; top: 55%;">
+          <div class="entity-header">
+            <span class="entity-name">COMMENTS</span>
+            <span class="entity-badge">PK: id</span>
+          </div>
+          <div class="entity-fields">
+            <div class="entity-field"><span class="field-key">PK</span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+            <div class="entity-field"><span class="field-key">FK</span><span class="field-name">idea_id</span><span class="field-type">UUID &rarr; IDEAS</span></div>
+            <div class="entity-field"><span class="field-key">FK</span><span class="field-name">author_id</span><span class="field-type">UUID &rarr; USERS</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">body</span><span class="field-type">TEXT</span></div>
+            <div class="entity-field"><span class="field-key">&bull;</span><span class="field-name">created_at</span><span class="field-type">TIMESTAMP</span></div>
+          </div>
+        </div>
+
+        <!-- Relationship lines described textually -->
+        <div class="schema-relations">
+          <div class="relation-line">USERS 1&mdash;&mdash;* PROJECTS (owner_id)</div>
+          <div class="relation-line">PROJECTS 1&mdash;&mdash;* IDEAS (project_id)</div>
+          <div class="relation-line">USERS 1&mdash;&mdash;* IDEAS (author_id)</div>
+          <div class="relation-line">PROJECTS 1&mdash;&mdash;* TASKS (project_id)</div>
+          <div class="relation-line">USERS 1&mdash;&mdash;* TASKS (assignee_id)</div>
+          <div class="relation-line">IDEAS 1&mdash;&mdash;* COMMENTS (idea_id)</div>
+          <div class="relation-line">IDEAS *&mdash;&mdash;* TAGS (idea_tags)</div>
+        </div>
+      </div>
+      <div class="page-folio">PAGE 06 OF 10 &mdash; IDEA MANAGEMENT BROADSHEET</div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- VIEW 7: DIRECTORY TREE - Index/TOC Format   -->
+    <!-- =========================================== -->
+    <section class="broadsheet-page" data-page="directory-tree">
+      <div class="page-index-num">07</div>
+
+      <div class="headline-banner">
+        <h2 class="headline-text">DIRECTORY INDEX</h2>
+        <div class="headline-rule"></div>
+        <p class="headline-subtext">Hierarchical file registry with dot leaders and page references</p>
+      </div>
+
+      <div class="masonry-cols masonry-cols--2">
+        <div class="masonry-col">
+          <div class="dir-section">
+            <h4 class="dir-section-head">&sect;A &mdash; ROOT</h4>
+            <div class="dir-entry dir-entry--root">
+              <span class="dir-name">idea-management/</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.001</span>
+            </div>
+            <div class="dir-entry dir-entry--l1">
+              <span class="dir-name">package.json</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.002</span>
+            </div>
+            <div class="dir-entry dir-entry--l1">
+              <span class="dir-name">tsconfig.json</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.003</span>
+            </div>
+            <div class="dir-entry dir-entry--l1">
+              <span class="dir-name">.env.example</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.004</span>
+            </div>
+            <div class="dir-entry dir-entry--l1">
+              <span class="dir-name">README.md</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.005</span>
+            </div>
+          </div>
+          <div class="dir-section">
+            <h4 class="dir-section-head">&sect;B &mdash; SOURCE</h4>
+            <div class="dir-entry dir-entry--l1">
+              <span class="dir-name">src/</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.010</span>
+            </div>
+            <div class="dir-entry dir-entry--l2">
+              <span class="dir-name">index.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.011</span>
+            </div>
+            <div class="dir-entry dir-entry--l2">
+              <span class="dir-name">app.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.012</span>
+            </div>
+            <div class="dir-entry dir-entry--l2">
+              <span class="dir-name">router.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.013</span>
+            </div>
+            <div class="dir-entry dir-entry--l2">
+              <span class="dir-name">auth/</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.020</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">login.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.021</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">register.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.022</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">middleware.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.023</span>
+            </div>
+          </div>
+        </div>
+        <div class="masonry-col">
+          <div class="dir-section">
+            <h4 class="dir-section-head">&sect;C &mdash; LIBRARY</h4>
+            <div class="dir-entry dir-entry--l2">
+              <span class="dir-name">lib/</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.030</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">database.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.031</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">cache.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.032</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">logger.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.033</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">utils.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.034</span>
+            </div>
+          </div>
+          <div class="dir-section">
+            <h4 class="dir-section-head">&sect;D &mdash; TESTS</h4>
+            <div class="dir-entry dir-entry--l2">
+              <span class="dir-name">tests/</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.040</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">auth.test.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.041</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">router.test.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.042</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">database.test.ts</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.043</span>
+            </div>
+          </div>
+          <div class="dir-section">
+            <h4 class="dir-section-head">&sect;E &mdash; CONFIGURATION</h4>
+            <div class="dir-entry dir-entry--l2">
+              <span class="dir-name">config/</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.050</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">default.json</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.051</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">production.json</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.052</span>
+            </div>
+            <div class="dir-entry dir-entry--l3">
+              <span class="dir-name">staging.json</span>
+              <span class="dir-dots"></span>
+              <span class="dir-page">p.053</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-folio">PAGE 07 OF 10 &mdash; IDEA MANAGEMENT BROADSHEET</div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- VIEW 8: IDEAS - Bulletin Board / Manifesto  -->
+    <!-- =========================================== -->
+    <section class="broadsheet-page" data-page="ideas">
+      <div class="page-index-num">08</div>
+
+      <div class="headline-banner">
+        <h2 class="headline-text">MANIFESTO WALL</h2>
+        <div class="headline-rule"></div>
+        <p class="headline-subtext">Pinned notices, stamped priorities, and ink-label tags</p>
+      </div>
+
+      <div class="masonry-cols masonry-cols--3">
+        <div class="masonry-col">
+          <div class="notice-card notice-card--urgent">
+            <div class="notice-stamp notice-stamp--red">URGENT</div>
+            <h4 class="notice-title">Real-time Collaboration</h4>
+            <p class="notice-body">Multiple users editing the same whiteboard or document simultaneously. Requires WebSocket infrastructure and conflict resolution (CRDT or OT).</p>
+            <div class="notice-footer">
+              <span class="ink-tag">FEATURE</span>
+              <span class="ink-tag">INFRA</span>
+              <span class="notice-date">Feb 15</span>
+            </div>
+          </div>
+          <div class="notice-card">
+            <div class="notice-stamp notice-stamp--blue">REVIEW</div>
+            <h4 class="notice-title">Dark Mode Toggle</h4>
+            <p class="notice-body">System-wide dark theme with automatic detection. Store preference in user settings with CSS custom property override.</p>
+            <div class="notice-footer">
+              <span class="ink-tag">UI</span>
+              <span class="ink-tag">THEME</span>
+              <span class="notice-date">Feb 14</span>
+            </div>
+          </div>
+        </div>
+        <div class="masonry-col">
+          <div class="notice-card notice-card--urgent">
+            <div class="notice-stamp notice-stamp--red">URGENT</div>
+            <h4 class="notice-title">Offline Mode</h4>
+            <p class="notice-body">Service worker caching for offline access. Sync queue for pending changes when connection restores. IndexedDB for local data.</p>
+            <div class="notice-footer">
+              <span class="ink-tag">PWA</span>
+              <span class="ink-tag">OFFLINE</span>
+              <span class="notice-date">Feb 13</span>
+            </div>
+          </div>
+          <div class="notice-card">
+            <div class="notice-stamp notice-stamp--black">DRAFT</div>
+            <h4 class="notice-title">Plugin Architecture</h4>
+            <p class="notice-body">Allow third-party extensions via a sandboxed plugin API. Define hook points for UI and data events.</p>
+            <div class="notice-footer">
+              <span class="ink-tag">ARCH</span>
+              <span class="ink-tag">EXTENSIBILITY</span>
+              <span class="notice-date">Feb 12</span>
+            </div>
+          </div>
+          <div class="notice-card">
+            <div class="notice-stamp notice-stamp--blue">REVIEW</div>
+            <h4 class="notice-title">Keyboard Shortcuts</h4>
+            <p class="notice-body">Global hotkey system for power users. Modal-aware shortcuts, customizable bindings, cheat sheet overlay.</p>
+            <div class="notice-footer">
+              <span class="ink-tag">UX</span>
+              <span class="notice-date">Feb 11</span>
+            </div>
+          </div>
+        </div>
+        <div class="masonry-col">
+          <div class="notice-card">
+            <div class="notice-stamp notice-stamp--black">DRAFT</div>
+            <h4 class="notice-title">AI-Powered Idea Scoring</h4>
+            <p class="notice-body">Machine learning model that evaluates idea feasibility, novelty, and potential impact. Trained on historical project success data.</p>
+            <div class="notice-footer">
+              <span class="ink-tag">AI</span>
+              <span class="ink-tag">ML</span>
+              <span class="notice-date">Feb 10</span>
+            </div>
+          </div>
+          <div class="notice-card notice-card--urgent">
+            <div class="notice-stamp notice-stamp--red">URGENT</div>
+            <h4 class="notice-title">Data Export API</h4>
+            <p class="notice-body">RESTful endpoints for bulk export in JSON, CSV, and PDF formats. Include project, idea, and task data with filtering.</p>
+            <div class="notice-footer">
+              <span class="ink-tag">API</span>
+              <span class="ink-tag">DATA</span>
+              <span class="notice-date">Feb 09</span>
+            </div>
+          </div>
+          <div class="notice-card">
+            <div class="notice-stamp notice-stamp--blue">REVIEW</div>
+            <h4 class="notice-title">Activity Feed</h4>
+            <p class="notice-body">Chronological stream of all actions across projects. Filterable by user, project, and action type.</p>
+            <div class="notice-footer">
+              <span class="ink-tag">SOCIAL</span>
+              <span class="notice-date">Feb 08</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pull-quote pull-quote--wide">
+        <span class="pull-quote-mark">&ldquo;</span>
+        <p class="pull-quote-text">Every idea is a seed. The manifesto wall exists to ensure none are lost, none forgotten, none dismissed without due process.</p>
+        <span class="pull-quote-attr">&mdash; Ideation Charter, Article IV</span>
+      </div>
+      <div class="page-folio">PAGE 08 OF 10 &mdash; IDEA MANAGEMENT BROADSHEET</div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- VIEW 9: AI CHAT - Typewriter Correspondence -->
+    <!-- =========================================== -->
+    <section class="broadsheet-page" data-page="ai-chat">
+      <div class="page-index-num">09</div>
+
+      <div class="headline-banner">
+        <h2 class="headline-text">CORRESPONDENCE</h2>
+        <div class="headline-rule"></div>
+        <p class="headline-subtext">Typewriter exchange with the machine intelligence</p>
+      </div>
+
+      <div class="correspondence-thread" id="correspondenceThread">
+        <div class="correspondence-msg correspondence-msg--ai">
+          <div class="msg-header">
+            <span class="msg-stamp msg-stamp--ai">AI ASSISTANT</span>
+            <span class="msg-time">09:00</span>
+          </div>
+          <div class="msg-rule"></div>
+          <p class="msg-body">Good morning. I am ready to assist with your idea management tasks. You may ask me to analyze ideas, draft project plans, review schemas, or generate reports. How shall we proceed?</p>
+        </div>
+
+        <div class="correspondence-msg correspondence-msg--user">
+          <div class="msg-header">
+            <span class="msg-stamp msg-stamp--user">J. DOE</span>
+            <span class="msg-time">09:02</span>
+          </div>
+          <div class="msg-rule"></div>
+          <p class="msg-body">Can you summarize the current state of the Platform Core project? I need a brief for the stakeholder meeting at noon.</p>
+        </div>
+
+        <div class="correspondence-msg correspondence-msg--ai">
+          <div class="msg-header">
+            <span class="msg-stamp msg-stamp--ai">AI ASSISTANT</span>
+            <span class="msg-time">09:02</span>
+          </div>
+          <div class="msg-rule"></div>
+          <p class="msg-body">Certainly. Here is your brief:</p>
+          <div class="msg-brief">
+            <p><strong>PROJECT:</strong> Platform Core</p>
+            <p><strong>STATUS:</strong> Active &mdash; Sprint 3 of 5</p>
+            <p><strong>COMPLETION:</strong> 68% overall</p>
+            <p><strong>KEY ITEMS:</strong></p>
+            <ul>
+              <li>JWT migration: 50% complete (IP-301)</li>
+              <li>Rate limiter: pending start (TD-201)</li>
+              <li>WebSocket support: in design phase</li>
+              <li>Auth flow: shipped and stable</li>
+            </ul>
+            <p><strong>RISK:</strong> Rate limiter WebSocket conflict (Ticket #247)</p>
+          </div>
+        </div>
+
+        <div class="correspondence-msg correspondence-msg--user">
+          <div class="msg-header">
+            <span class="msg-stamp msg-stamp--user">J. DOE</span>
+            <span class="msg-time">09:05</span>
+          </div>
+          <div class="msg-rule"></div>
+          <p class="msg-body">Perfect. Can you also flag any ideas on the manifesto wall that relate to Platform Core infrastructure?</p>
+        </div>
+
+        <div class="correspondence-msg correspondence-msg--ai">
+          <div class="msg-header">
+            <span class="msg-stamp msg-stamp--ai">AI ASSISTANT</span>
+            <span class="msg-time">09:05</span>
+          </div>
+          <div class="msg-rule"></div>
+          <p class="msg-body">Three ideas are directly relevant to Platform Core:</p>
+          <div class="msg-brief">
+            <p>1. <strong>Real-time Collaboration</strong> (URGENT) &mdash; Requires the WebSocket infrastructure you are building</p>
+            <p>2. <strong>Offline Mode</strong> (URGENT) &mdash; Depends on the API gateway caching layer</p>
+            <p>3. <strong>Data Export API</strong> (URGENT) &mdash; Needs rate limiter integration for bulk endpoints</p>
+          </div>
+          <p class="msg-body">I recommend prioritizing WebSocket completion as it unblocks two urgent ideas simultaneously.</p>
+        </div>
+      </div>
+
+      <!-- MESSAGE INPUT -->
+      <div class="correspondence-input">
+        <div class="input-rule"></div>
+        <div class="input-area">
+          <label class="input-label" for="chatInput">TYPE YOUR MESSAGE:</label>
+          <textarea class="input-field" id="chatInput" rows="3" placeholder="Begin typing your correspondence..."></textarea>
+          <button class="input-send" id="chatSend">
+            <span class="send-stamp">SEND &rarr;</span>
+          </button>
+        </div>
+      </div>
+      <div class="page-folio">PAGE 09 OF 10 &mdash; IDEA MANAGEMENT BROADSHEET</div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- VIEW 10: SETTINGS - Government/Legal Form   -->
+    <!-- =========================================== -->
+    <section class="broadsheet-page" data-page="settings">
+      <div class="page-index-num">10</div>
+
+      <div class="headline-banner">
+        <h2 class="headline-text">CONFIGURATION REGISTER</h2>
+        <div class="headline-rule"></div>
+        <p class="headline-subtext">Official application settings &mdash; legal document format</p>
+      </div>
+
+      <div class="legal-form">
+        <!-- SECTION 1: Profile -->
+        <div class="legal-section">
+          <h3 class="legal-article">&sect;1 &mdash; USER PROFILE</h3>
+          <div class="legal-field">
+            <label class="legal-label" for="settName">FULL NAME</label>
+            <input class="legal-input" type="text" id="settName" value="J. Doe" />
+          </div>
+          <div class="legal-field">
+            <label class="legal-label" for="settEmail">EMAIL ADDRESS</label>
+            <input class="legal-input" type="email" id="settEmail" value="j.doe@organization.com" />
+          </div>
+          <div class="legal-field">
+            <label class="legal-label" for="settRole">ROLE / TITLE</label>
+            <input class="legal-input" type="text" id="settRole" value="Administrator" readonly />
+          </div>
+        </div>
+
+        <div class="section-rule"></div>
+
+        <!-- SECTION 2: Preferences -->
+        <div class="legal-section">
+          <h3 class="legal-article">&sect;2 &mdash; DISPLAY PREFERENCES</h3>
+          <div class="legal-field legal-field--toggle">
+            <label class="legal-label">DARK MODE</label>
+            <div class="legal-toggle">
+              <input type="checkbox" id="settDark" class="toggle-input" />
+              <label for="settDark" class="toggle-stamp">
+                <span class="toggle-on">ON</span>
+                <span class="toggle-off">OFF</span>
+              </label>
+            </div>
+          </div>
+          <div class="legal-field legal-field--toggle">
+            <label class="legal-label">COMPACT DENSITY</label>
+            <div class="legal-toggle">
+              <input type="checkbox" id="settDensity" class="toggle-input" checked />
+              <label for="settDensity" class="toggle-stamp">
+                <span class="toggle-on">ON</span>
+                <span class="toggle-off">OFF</span>
+              </label>
+            </div>
+          </div>
+          <div class="legal-field legal-field--toggle">
+            <label class="legal-label">SHOW PAGE NUMBERS</label>
+            <div class="legal-toggle">
+              <input type="checkbox" id="settPageNums" class="toggle-input" checked />
+              <label for="settPageNums" class="toggle-stamp">
+                <span class="toggle-on">ON</span>
+                <span class="toggle-off">OFF</span>
+              </label>
+            </div>
+          </div>
+          <div class="legal-field">
+            <label class="legal-label" for="settLang">LANGUAGE</label>
+            <select class="legal-input legal-select" id="settLang">
+              <option value="en" selected>ENGLISH</option>
+              <option value="de">DEUTSCH</option>
+              <option value="fr">FRANCAIS</option>
+              <option value="es">ESPANOL</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-rule"></div>
+
+        <!-- SECTION 3: Notifications -->
+        <div class="legal-section">
+          <h3 class="legal-article">&sect;3 &mdash; NOTIFICATIONS</h3>
+          <div class="legal-field legal-field--toggle">
+            <label class="legal-label">EMAIL NOTIFICATIONS</label>
+            <div class="legal-toggle">
+              <input type="checkbox" id="settEmailNotif" class="toggle-input" checked />
+              <label for="settEmailNotif" class="toggle-stamp">
+                <span class="toggle-on">ON</span>
+                <span class="toggle-off">OFF</span>
+              </label>
+            </div>
+          </div>
+          <div class="legal-field legal-field--toggle">
+            <label class="legal-label">PUSH NOTIFICATIONS</label>
+            <div class="legal-toggle">
+              <input type="checkbox" id="settPush" class="toggle-input" />
+              <label for="settPush" class="toggle-stamp">
+                <span class="toggle-on">ON</span>
+                <span class="toggle-off">OFF</span>
+              </label>
+            </div>
+          </div>
+          <div class="legal-field legal-field--toggle">
+            <label class="legal-label">WEEKLY DIGEST</label>
+            <div class="legal-toggle">
+              <input type="checkbox" id="settDigest" class="toggle-input" checked />
+              <label for="settDigest" class="toggle-stamp">
+                <span class="toggle-on">ON</span>
+                <span class="toggle-off">OFF</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-rule"></div>
+
+        <!-- SECTION 4: Danger Zone -->
+        <div class="legal-section">
+          <h3 class="legal-article">&sect;4 &mdash; ADMINISTRATIVE ACTIONS</h3>
+          <div class="legal-field">
+            <label class="legal-label">EXPORT ALL DATA</label>
+            <button class="legal-action">INITIATE EXPORT</button>
+          </div>
+          <div class="legal-field">
+            <label class="legal-label">CLEAR LOCAL CACHE</label>
+            <button class="legal-action legal-action--warn">PURGE CACHE</button>
+          </div>
+          <div class="legal-field">
+            <label class="legal-label">DELETE ACCOUNT</label>
+            <button class="legal-action legal-action--danger">REQUEST DELETION</button>
+          </div>
+        </div>
+
+        <div class="legal-footer">
+          <p>By modifying these settings you acknowledge compliance with the organization&rsquo;s data governance policy (Rev. 4, Jan 2026).</p>
+          <button class="legal-submit" id="settSave">SAVE ALL CHANGES</button>
+        </div>
+      </div>
+      <div class="page-folio">PAGE 10 OF 10 &mdash; IDEA MANAGEMENT BROADSHEET</div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

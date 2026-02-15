@@ -1,6 +1,6 @@
 ---
 name: planning-frontend-design-orchestrator
-description: Orchestrate frontend concept generation across configurable style families and pass counts by dispatching isolated subagent jobs with style/pass flags, then run Playwright visual validation.
+description: Orchestrate frontend concept generation across 5 style families with 2 passes each, dispatching isolated Claude Code Task agents per pass, then running uniqueness validation.
 ---
 
 # Planning Frontend Design Orchestrator
@@ -11,45 +11,48 @@ Use this skill to run multi-style frontend concept ideation with strict pass iso
 - `.codex/skills/planning-frontend-design-orchestrator/references/style-config.json`
 
 ## Workflow
-1. Read the style config.
-2. Build one job per `(style, pass)`.
-3. Build a per-job handoff JSON using:
-- inspiration catalog (`external-inspiration-catalog.json`)
-- uniqueness profile catalog (`layout-uniqueness-catalog.json`)
-- run-specific rotation seed
-4. Dispatch each job independently and concurrently to `frontend-design-subagent` with flags:
-- `--style-id`
-- `--pass`
-- `--output-dir`
-- `--variant-seed`
-- `--handoff-path`
-5. Enforce each pass to use a distinct shell/nav/flow/scroll/motion profile.
-6. Enforce each pass to include at least one `awwwards.com` reference in its inspiration artifact.
-7. Enforce each pass to include animation/3D libraries (`three.js`, `gsap`) and meaningful motion.
-8. Enforce each pass to produce/download local media assets when possible (`assets/` backgrounds/textures).
-9. Run uniqueness validation across all generated passes and fail on high similarity.
-10. Run Playwright visual validation after generation.
-11. Write summary index for review.
+1. Read the style config to get all style families and their pass definitions.
+2. Read the uniqueness catalog and inspiration catalog.
+3. For each `(style, pass)` job:
+   a. Select a uniqueness profile (ensuring no two passes share the same profile).
+   b. Select inspiration references (rotating Awwwards + external refs).
+   c. Build a comprehensive creative brief prompt.
+   d. Dispatch as a Claude Code `Task` agent with `subagent_type=general-purpose`.
+4. The Task agent generates ALL files from scratch (no template scripts).
+5. After each pass completes, run `scripts/validate-concepts-playwright.mjs --style <style> --pass <n>` to capture desktop + mobile screenshots.
+6. After all passes complete, run `scripts/validate-design-uniqueness.mjs` for pairwise checks.
+7. Write summary index for review.
 
-## Required Artifacts
-- Concepts: `.docs/planning/concepts/<style>/pass-<n>/`
-- Validation screenshots: `.docs/planning/concepts/<style>/pass-<n>/validation/screenshots/*.png`
-- Validation report: `.docs/planning/concepts/<style>/pass-<n>/validation/report.playwright.json`
-- Handoff manifest: `.docs/planning/concepts/<style>/pass-<n>/validation/handoff.json`
-- Inspiration cross-reference: `.docs/planning/concepts/<style>/pass-<n>/validation/inspiration-crossreference.json`
-- Uniqueness report: `.docs/planning/concepts/uniqueness-report.json`
-- Local media assets: `.docs/planning/concepts/<style>/pass-<n>/assets/*`
-- Per-run handoff payloads: `.docs/planning/concepts/<set>/_orchestration/<run-id>/handoffs/*.json`
+## Key Difference from Codex
+The Codex version used `generate-concept.ps1` which stamped identical HTML structure with CSS variable swaps. This made all 10 passes look structurally identical despite different colors/fonts.
 
-## Append Runs Without Overwrite
-- Use `scripts/run-local-orchestration.ps1 -OutputSetName <set-name>` to generate an additional isolated set while preserving existing passes.
-- In append mode, artifacts are written under `.docs/planning/concepts/<set-name>/...` with the same style/pass structure and validation contract.
+The Claude Code version dispatches each pass to an AI agent that generates fresh HTML/CSS/JS from its creative brief. This produces genuinely different layouts, components, interactions, and visual hierarchies.
+
+## Required Artifacts Per Pass
+- `<style>/pass-<n>/index.html`
+- `<style>/pass-<n>/style.css`
+- `<style>/pass-<n>/app.js`
+- `<style>/pass-<n>/README.md`
+- `<style>/pass-<n>/validation/handoff.json`
+- `<style>/pass-<n>/validation/inspiration-crossreference.json`
+
+## Required Visual Validation Artifacts
+- `<style>/pass-<n>/validation/desktop/<view>.png` — 10 desktop screenshots per pass (1536x960)
+- `<style>/pass-<n>/validation/mobile/<view>.png` — 10 mobile screenshots per pass (390x844, 2x scale)
+- `<style>/pass-<n>/validation/report.playwright.json` — Structured report with viewport info
+
+A pass is NOT considered complete until all 20 screenshots exist. Run the Playwright validation script after each pass finishes generating files.
+
+## Optional Artifacts
+- `<style>/pass-<n>/assets/*` - Only when background images/textures genuinely serve the aesthetic
 
 ## Scripts
-- `scripts/build-pass-jobs.ps1` builds a job manifest from style config.
-- `scripts/run-local-orchestration.ps1` local fallback orchestrator with concurrent isolated job dispatch and validation checks.
-- `references/layout-uniqueness-catalog.json` defines structural uniqueness profiles.
-- `references/layout-uniqueness-research.md` tracks source-backed rationale for layout differentiation rules.
+- `scripts/validate-concepts-playwright.mjs` - Desktop + mobile screenshot capture for every view
+- `scripts/validate-design-uniqueness.mjs` - Pairwise pass uniqueness checking
+- `references/layout-uniqueness-catalog.json` - Structural uniqueness profiles
+- `references/style-config.json` - Style family definitions
 
 ## Notes
-- Keep style config editable so style families and pass count can be changed without rewriting orchestration logic.
+- Background images are OPTIONAL, not required
+- Animation libraries (three.js, gsap) are style-dependent, not mandated
+- Keep style config editable for easy iteration

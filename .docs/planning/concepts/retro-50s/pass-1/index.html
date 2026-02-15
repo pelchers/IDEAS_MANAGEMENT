@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IdeaHub Diner - Retro 50s Idea Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Neon Marquee Header -->
+  <header class="marquee-header">
+    <div class="marquee-inner">
+      <div class="neon-sign">
+        <span class="neon-letter" style="--i:0">I</span>
+        <span class="neon-letter" style="--i:1">D</span>
+        <span class="neon-letter" style="--i:2">E</span>
+        <span class="neon-letter" style="--i:3">A</span>
+        <span class="neon-spacer"></span>
+        <span class="neon-letter accent2" style="--i:4">H</span>
+        <span class="neon-letter accent2" style="--i:5">U</span>
+        <span class="neon-letter accent2" style="--i:6">B</span>
+      </div>
+      <p class="marquee-subtitle">Your All-American Idea Diner</p>
+    </div>
+    <div class="marquee-trim marquee-trim-left"></div>
+    <div class="marquee-trim marquee-trim-right"></div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="diner-main">
+
+    <!-- ========== DASHBOARD ========== -->
+    <section class="view-panel" data-page="dashboard">
+      <div class="view-header">
+        <div class="speedometer-icon">
+          <svg viewBox="0 0 100 60" class="speedo-svg">
+            <path d="M10 55 A45 45 0 0 1 90 55" fill="none" stroke="#e0d4e8" stroke-width="8" stroke-linecap="round"/>
+            <path d="M10 55 A45 45 0 0 1 70 15" fill="none" stroke="#ff6b8a" stroke-width="8" stroke-linecap="round" class="speedo-fill"/>
+            <circle cx="50" cy="55" r="6" fill="#2a1f3d"/>
+            <line x1="50" y1="55" x2="35" y2="25" stroke="#2a1f3d" stroke-width="3" stroke-linecap="round" class="speedo-needle"/>
+          </svg>
+        </div>
+        <h2 class="view-title">Today's Specials</h2>
+        <p class="view-subtitle">Your daily project velocity dashboard</p>
+      </div>
+
+      <div class="dashboard-stats">
+        <div class="stat-card menu-item-card">
+          <div class="menu-item-number">#1</div>
+          <div class="menu-item-name">Active Projects</div>
+          <div class="menu-item-value">12</div>
+          <div class="menu-item-badge badge-mint">+3 this week</div>
+        </div>
+        <div class="stat-card menu-item-card">
+          <div class="menu-item-number">#2</div>
+          <div class="menu-item-name">Ideas Brewing</div>
+          <div class="menu-item-value">47</div>
+          <div class="menu-item-badge badge-pink">Hot!</div>
+        </div>
+        <div class="stat-card menu-item-card">
+          <div class="menu-item-number">#3</div>
+          <div class="menu-item-name">Tasks Done</div>
+          <div class="menu-item-value">89</div>
+          <div class="menu-item-badge badge-cream">This month</div>
+        </div>
+        <div class="stat-card menu-item-card">
+          <div class="menu-item-number">#4</div>
+          <div class="menu-item-name">Team Velocity</div>
+          <div class="menu-item-value">94%</div>
+          <div class="menu-item-badge badge-turquoise">Cruisin'!</div>
+        </div>
+      </div>
+
+      <div class="dashboard-columns">
+        <div class="chrome-panel playlist-panel">
+          <h3 class="panel-title">Jukebox Activity Feed</h3>
+          <ul class="playlist-list">
+            <li class="playlist-track">
+              <span class="track-number">A1</span>
+              <span class="track-info">
+                <strong>Sarah</strong> completed "Brand Redesign"
+                <em class="track-time">2 min ago</em>
+              </span>
+            </li>
+            <li class="playlist-track">
+              <span class="track-number">A2</span>
+              <span class="track-info">
+                <strong>Mike</strong> added idea "AI Chatbot Flow"
+                <em class="track-time">15 min ago</em>
+              </span>
+            </li>
+            <li class="playlist-track">
+              <span class="track-number">A3</span>
+              <span class="track-info">
+                <strong>Jess</strong> moved task to "Done"
+                <em class="track-time">1 hr ago</em>
+              </span>
+            </li>
+            <li class="playlist-track">
+              <span class="track-number">B1</span>
+              <span class="track-info">
+                <strong>Alex</strong> created project "Summer Campaign"
+                <em class="track-time">3 hrs ago</em>
+              </span>
+            </li>
+            <li class="playlist-track">
+              <span class="track-number">B2</span>
+              <span class="track-info">
+                <strong>Pat</strong> commented on "Landing Page"
+                <em class="track-time">5 hrs ago</em>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="chrome-panel gauge-panel">
+          <h3 class="panel-title">Velocity Gauges</h3>
+          <div class="gauge-row">
+            <div class="mini-gauge">
+              <div class="gauge-fill" style="--fill: 78%"></div>
+              <span class="gauge-label">Sprint</span>
+              <span class="gauge-val">78%</span>
+            </div>
+            <div class="mini-gauge">
+              <div class="gauge-fill" style="--fill: 62%"></div>
+              <span class="gauge-label">Backlog</span>
+              <span class="gauge-val">62%</span>
+            </div>
+            <div class="mini-gauge">
+              <div class="gauge-fill" style="--fill: 91%"></div>
+              <span class="gauge-label">Quality</span>
+              <span class="gauge-val">91%</span>
+            </div>
+          </div>
+          <div class="milestone-strip">
+            <div class="milestone done">v1.0</div>
+            <div class="milestone done">v1.1</div>
+            <div class="milestone active">v2.0</div>
+            <div class="milestone">v2.1</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS ========== -->
+    <section class="view-panel" data-page="projects">
+      <div class="view-header">
+        <h2 class="view-title">The Record Collection</h2>
+        <p class="view-subtitle">Browse your project catalog</p>
+      </div>
+
+      <div class="chrome-search-bar">
+        <div class="search-chrome-bezel">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+          <input type="text" placeholder="Search the catalog..." class="search-input" />
+        </div>
+        <div class="filter-pills">
+          <button class="pill-btn active">All</button>
+          <button class="pill-btn">Active</button>
+          <button class="pill-btn">Archived</button>
+          <button class="pill-btn">Favorites</button>
+        </div>
+      </div>
+
+      <div class="checkerboard-accent-bg">
+        <div class="projects-grid">
+          <div class="project-record-card">
+            <div class="vinyl-hole"></div>
+            <div class="record-label">DESIGN</div>
+            <h4 class="record-title">Brand Refresh 2026</h4>
+            <p class="record-meta">12 tasks &middot; 3 members</p>
+            <div class="record-progress"><div class="record-progress-fill" style="width:72%"></div></div>
+            <span class="record-status status-active">Now Playing</span>
+          </div>
+          <div class="project-record-card">
+            <div class="vinyl-hole"></div>
+            <div class="record-label">ENGINEERING</div>
+            <h4 class="record-title">API Gateway v2</h4>
+            <p class="record-meta">24 tasks &middot; 5 members</p>
+            <div class="record-progress"><div class="record-progress-fill" style="width:45%"></div></div>
+            <span class="record-status status-active">Now Playing</span>
+          </div>
+          <div class="project-record-card">
+            <div class="vinyl-hole"></div>
+            <div class="record-label">MARKETING</div>
+            <h4 class="record-title">Summer Campaign</h4>
+            <p class="record-meta">8 tasks &middot; 2 members</p>
+            <div class="record-progress"><div class="record-progress-fill" style="width:20%"></div></div>
+            <span class="record-status status-new">New Release</span>
+          </div>
+          <div class="project-record-card">
+            <div class="vinyl-hole"></div>
+            <div class="record-label">PRODUCT</div>
+            <h4 class="record-title">Mobile App MVP</h4>
+            <p class="record-meta">31 tasks &middot; 4 members</p>
+            <div class="record-progress"><div class="record-progress-fill" style="width:88%"></div></div>
+            <span class="record-status status-hot">Greatest Hit</span>
+          </div>
+          <div class="project-record-card">
+            <div class="vinyl-hole"></div>
+            <div class="record-label">RESEARCH</div>
+            <h4 class="record-title">User Interviews Q1</h4>
+            <p class="record-meta">6 tasks &middot; 2 members</p>
+            <div class="record-progress"><div class="record-progress-fill" style="width:100%"></div></div>
+            <span class="record-status status-done">Wrapped</span>
+          </div>
+          <div class="project-record-card new-record-card">
+            <div class="new-record-plus">+</div>
+            <p class="new-record-text">Press a New Record</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECT WORKSPACE ========== -->
+    <section class="view-panel" data-page="project-workspace">
+      <div class="view-header">
+        <div class="highway-breadcrumbs">
+          <span class="highway-marker">Projects</span>
+          <span class="highway-divider">
+            <svg width="24" height="12" viewBox="0 0 24 12"><path d="M0 6h20m-4-4l4 4-4 4" stroke="#ff6b8a" stroke-width="2" fill="none"/></svg>
+          </span>
+          <span class="highway-marker active">Brand Refresh 2026</span>
+        </div>
+        <h2 class="view-title">The Booth</h2>
+        <p class="view-subtitle">Your project workspace - settle in!</p>
+      </div>
+
+      <div class="workspace-layout">
+        <aside class="filing-cabinet">
+          <div class="cabinet-header">
+            <div class="cabinet-handle"></div>
+            <h3>File Drawer</h3>
+          </div>
+          <ul class="cabinet-files">
+            <li class="cabinet-folder open">
+              <span class="folder-tab">Design Assets</span>
+              <ul class="cabinet-sub">
+                <li class="cabinet-file active">Logo Concepts.fig</li>
+                <li class="cabinet-file">Color Palette.pdf</li>
+                <li class="cabinet-file">Typography Guide.doc</li>
+              </ul>
+            </li>
+            <li class="cabinet-folder">
+              <span class="folder-tab">Research</span>
+            </li>
+            <li class="cabinet-folder">
+              <span class="folder-tab">Deliverables</span>
+            </li>
+            <li class="cabinet-folder">
+              <span class="folder-tab">Meeting Notes</span>
+            </li>
+          </ul>
+        </aside>
+
+        <div class="booth-table">
+          <div class="table-surface">
+            <div class="chrome-panel workspace-detail-card">
+              <h3 class="panel-title">Logo Concepts.fig</h3>
+              <div class="detail-meta-row">
+                <span class="meta-chip">Design</span>
+                <span class="meta-chip">In Progress</span>
+                <span class="meta-date">Updated 2 hrs ago</span>
+              </div>
+              <div class="detail-body">
+                <p>Three logo directions exploring the retro-modern fusion theme. Version A emphasizes the chrome lettering, B goes for a neon sign motif, C is a badge/emblem approach.</p>
+              </div>
+              <div class="detail-actions">
+                <button class="diner-btn primary">Open File</button>
+                <button class="diner-btn secondary">Add Comment</button>
+                <button class="diner-btn ghost">Share</button>
+              </div>
+            </div>
+
+            <div class="chrome-panel task-list-card">
+              <h3 class="panel-title">Order Tickets</h3>
+              <div class="task-checklist">
+                <label class="task-check done"><input type="checkbox" checked /><span>Finalize color palette</span></label>
+                <label class="task-check done"><input type="checkbox" checked /><span>Gather competitor logos</span></label>
+                <label class="task-check"><input type="checkbox" /><span>Design 3 logo concepts</span></label>
+                <label class="task-check"><input type="checkbox" /><span>Internal review meeting</span></label>
+                <label class="task-check"><input type="checkbox" /><span>Client presentation deck</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== KANBAN ========== -->
+    <section class="view-panel" data-page="kanban">
+      <div class="view-header">
+        <h2 class="view-title">The Drive-In Menu</h2>
+        <p class="view-subtitle">Order up! Drag your tasks across the board</p>
+      </div>
+
+      <div class="drivein-board">
+        <div class="drivein-column">
+          <div class="column-header neon-text-pink">
+            <span class="column-icon">&#9734;</span> Waiting
+            <span class="column-count">3</span>
+          </div>
+          <div class="order-tickets">
+            <div class="order-ticket">
+              <div class="ticket-top">
+                <span class="ticket-id">#001</span>
+                <span class="ticket-stars">&#9733;</span>
+              </div>
+              <h4 class="ticket-title">Research competitor pricing</h4>
+              <div class="ticket-tags"><span class="ticket-tag tag-research">Research</span></div>
+              <div class="ticket-footer"><span class="ticket-avatar">SM</span><span class="ticket-date">Feb 12</span></div>
+            </div>
+            <div class="order-ticket">
+              <div class="ticket-top">
+                <span class="ticket-id">#002</span>
+                <span class="ticket-stars">&#9733;&#9733;</span>
+              </div>
+              <h4 class="ticket-title">Write onboarding email sequence</h4>
+              <div class="ticket-tags"><span class="ticket-tag tag-marketing">Marketing</span></div>
+              <div class="ticket-footer"><span class="ticket-avatar">JK</span><span class="ticket-date">Feb 14</span></div>
+            </div>
+            <div class="order-ticket">
+              <div class="ticket-top">
+                <span class="ticket-id">#003</span>
+                <span class="ticket-stars">&#9733;&#9733;&#9733;</span>
+              </div>
+              <h4 class="ticket-title">Design 404 error page</h4>
+              <div class="ticket-tags"><span class="ticket-tag tag-design">Design</span></div>
+              <div class="ticket-footer"><span class="ticket-avatar">AP</span><span class="ticket-date">Feb 15</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="drivein-column">
+          <div class="column-header neon-text-turquoise">
+            <span class="column-icon">&#9881;</span> Cooking
+            <span class="column-count">2</span>
+          </div>
+          <div class="order-tickets">
+            <div class="order-ticket cooking">
+              <div class="ticket-top">
+                <span class="ticket-id">#004</span>
+                <span class="ticket-stars">&#9733;&#9733;&#9733;</span>
+              </div>
+              <h4 class="ticket-title">Build checkout flow</h4>
+              <div class="ticket-tags"><span class="ticket-tag tag-dev">Dev</span></div>
+              <div class="ticket-footer"><span class="ticket-avatar">MR</span><span class="ticket-date">Feb 10</span></div>
+            </div>
+            <div class="order-ticket cooking">
+              <div class="ticket-top">
+                <span class="ticket-id">#005</span>
+                <span class="ticket-stars">&#9733;&#9733;</span>
+              </div>
+              <h4 class="ticket-title">User interview script</h4>
+              <div class="ticket-tags"><span class="ticket-tag tag-research">Research</span></div>
+              <div class="ticket-footer"><span class="ticket-avatar">LS</span><span class="ticket-date">Feb 11</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="drivein-column">
+          <div class="column-header neon-text-gold">
+            <span class="column-icon">&#9745;</span> Review
+            <span class="column-count">2</span>
+          </div>
+          <div class="order-tickets">
+            <div class="order-ticket review">
+              <div class="ticket-top">
+                <span class="ticket-id">#006</span>
+                <span class="ticket-stars">&#9733;</span>
+              </div>
+              <h4 class="ticket-title">Landing page copy</h4>
+              <div class="ticket-tags"><span class="ticket-tag tag-marketing">Marketing</span></div>
+              <div class="ticket-footer"><span class="ticket-avatar">JK</span><span class="ticket-date">Feb 9</span></div>
+            </div>
+            <div class="order-ticket review">
+              <div class="ticket-top">
+                <span class="ticket-id">#007</span>
+                <span class="ticket-stars">&#9733;&#9733;&#9733;</span>
+              </div>
+              <h4 class="ticket-title">Database schema v2</h4>
+              <div class="ticket-tags"><span class="ticket-tag tag-dev">Dev</span></div>
+              <div class="ticket-footer"><span class="ticket-avatar">MR</span><span class="ticket-date">Feb 8</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="drivein-column">
+          <div class="column-header neon-text-green">
+            <span class="column-icon">&#10004;</span> Served!
+            <span class="column-count">3</span>
+          </div>
+          <div class="order-tickets">
+            <div class="order-ticket served">
+              <div class="ticket-top">
+                <span class="ticket-id">#008</span>
+                <span class="ticket-stars">&#9733;&#9733;</span>
+              </div>
+              <h4 class="ticket-title">Set up CI/CD pipeline</h4>
+              <div class="ticket-tags"><span class="ticket-tag tag-dev">Dev</span></div>
+              <div class="ticket-footer"><span class="ticket-avatar">AP</span><span class="ticket-date">Feb 7</span></div>
+            </div>
+            <div class="order-ticket served">
+              <div class="ticket-top">
+                <span class="ticket-id">#009</span>
+                <span class="ticket-stars">&#9733;</span>
+              </div>
+              <h4 class="ticket-title">Brand guidelines doc</h4>
+              <div class="ticket-tags"><span class="ticket-tag tag-design">Design</span></div>
+              <div class="ticket-footer"><span class="ticket-avatar">SM</span><span class="ticket-date">Feb 6</span></div>
+            </div>
+            <div class="order-ticket served">
+              <div class="ticket-top">
+                <span class="ticket-id">#010</span>
+                <span class="ticket-stars">&#9733;&#9733;&#9733;</span>
+              </div>
+              <h4 class="ticket-title">Wireframe prototypes</h4>
+              <div class="ticket-tags"><span class="ticket-tag tag-design">Design</span></div>
+              <div class="ticket-footer"><span class="ticket-avatar">LS</span><span class="ticket-date">Feb 5</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHITEBOARD ========== -->
+    <section class="view-panel" data-page="whiteboard">
+      <div class="view-header">
+        <h2 class="view-title">The Sketch Pad</h2>
+        <p class="view-subtitle">Scribble your big ideas on the counter</p>
+      </div>
+
+      <div class="diner-counter-toolbar">
+        <button class="chrome-knob active" title="Select"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 3l7 18 2.5-7.5L20 11z"/></svg></button>
+        <button class="chrome-knob" title="Pen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg></button>
+        <button class="chrome-knob" title="Rectangle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></button>
+        <button class="chrome-knob" title="Circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="9"/></svg></button>
+        <button class="chrome-knob" title="Text"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M5 4h14v3h-2V6H13v12h2v2H9v-2h2V6H7v1H5z"/></svg></button>
+        <button class="chrome-knob" title="Sticky Note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M15 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V9z"/><path d="M15 3v6h6"/></svg></button>
+        <div class="toolbar-divider"></div>
+        <button class="chrome-knob color-knob" style="--knob-color: #ff6b8a" title="Pink"></button>
+        <button class="chrome-knob color-knob" style="--knob-color: #4ecdc4" title="Turquoise"></button>
+        <button class="chrome-knob color-knob" style="--knob-color: #ffd93d" title="Yellow"></button>
+      </div>
+
+      <div class="graph-paper-canvas">
+        <div class="canvas-sticky" style="left:8%; top:12%; --sticky-color: #ffe0e6; transform: rotate(-3deg)">
+          <p>Homepage hero section needs more personality!</p>
+        </div>
+        <div class="canvas-sticky" style="left:45%; top:8%; --sticky-color: #d4f5f2; transform: rotate(2deg)">
+          <p>Use illustration style from the pitch deck</p>
+        </div>
+        <div class="canvas-sticky" style="left:25%; top:55%; --sticky-color: #fff8d4; transform: rotate(-1deg)">
+          <p>Consider animated transitions between pages</p>
+        </div>
+        <div class="canvas-shape shape-rect" style="left:65%; top:35%; width:180px; height:100px;">
+          <span>User Flow</span>
+        </div>
+        <div class="canvas-shape shape-circle" style="left:72%; top:65%; width:90px; height:90px;">
+          <span>CTA</span>
+        </div>
+        <svg class="canvas-line" style="position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none;">
+          <line x1="75%" y1="48%" x2="76%" y2="65%" stroke="#ff6b8a" stroke-width="2" stroke-dasharray="6 4"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ========== SCHEMA PLANNER ========== -->
+    <section class="view-panel" data-page="schema-planner">
+      <div class="view-header">
+        <h2 class="view-title">Channel Guide</h2>
+        <p class="view-subtitle">Tune in to your data model</p>
+      </div>
+
+      <div class="tv-schema-canvas">
+        <div class="tv-entity" style="left: 5%; top: 10%;">
+          <div class="tv-screen-frame">
+            <div class="tv-antenna-left"></div>
+            <div class="tv-antenna-right"></div>
+            <div class="tv-screen">
+              <h4 class="tv-channel">CH 01 - Users</h4>
+              <ul class="tv-listings">
+                <li><span class="field-type">PK</span> id: uuid</li>
+                <li><span class="field-type">FK</span> name: varchar</li>
+                <li>email: varchar</li>
+                <li>avatar_url: text</li>
+                <li>created_at: timestamp</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tv-dials">
+            <div class="tv-dial"></div>
+            <div class="tv-dial"></div>
+          </div>
+        </div>
+
+        <div class="tv-entity" style="left: 40%; top: 5%;">
+          <div class="tv-screen-frame">
+            <div class="tv-antenna-left"></div>
+            <div class="tv-antenna-right"></div>
+            <div class="tv-screen">
+              <h4 class="tv-channel">CH 02 - Projects</h4>
+              <ul class="tv-listings">
+                <li><span class="field-type">PK</span> id: uuid</li>
+                <li><span class="field-type">FK</span> owner_id: uuid</li>
+                <li>title: varchar</li>
+                <li>description: text</li>
+                <li>status: enum</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tv-dials">
+            <div class="tv-dial"></div>
+            <div class="tv-dial"></div>
+          </div>
+        </div>
+
+        <div class="tv-entity" style="left: 75%; top: 12%;">
+          <div class="tv-screen-frame">
+            <div class="tv-antenna-left"></div>
+            <div class="tv-antenna-right"></div>
+            <div class="tv-screen">
+              <h4 class="tv-channel">CH 03 - Tasks</h4>
+              <ul class="tv-listings">
+                <li><span class="field-type">PK</span> id: uuid</li>
+                <li><span class="field-type">FK</span> project_id: uuid</li>
+                <li><span class="field-type">FK</span> assignee_id: uuid</li>
+                <li>title: varchar</li>
+                <li>priority: int</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tv-dials">
+            <div class="tv-dial"></div>
+            <div class="tv-dial"></div>
+          </div>
+        </div>
+
+        <div class="tv-entity" style="left: 20%; top: 60%;">
+          <div class="tv-screen-frame">
+            <div class="tv-antenna-left"></div>
+            <div class="tv-antenna-right"></div>
+            <div class="tv-screen">
+              <h4 class="tv-channel">CH 04 - Ideas</h4>
+              <ul class="tv-listings">
+                <li><span class="field-type">PK</span> id: uuid</li>
+                <li><span class="field-type">FK</span> author_id: uuid</li>
+                <li>title: varchar</li>
+                <li>body: text</li>
+                <li>tags: jsonb</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tv-dials">
+            <div class="tv-dial"></div>
+            <div class="tv-dial"></div>
+          </div>
+        </div>
+
+        <div class="tv-entity" style="left: 60%; top: 58%;">
+          <div class="tv-screen-frame">
+            <div class="tv-antenna-left"></div>
+            <div class="tv-antenna-right"></div>
+            <div class="tv-screen">
+              <h4 class="tv-channel">CH 05 - Comments</h4>
+              <ul class="tv-listings">
+                <li><span class="field-type">PK</span> id: uuid</li>
+                <li><span class="field-type">FK</span> task_id: uuid</li>
+                <li><span class="field-type">FK</span> user_id: uuid</li>
+                <li>body: text</li>
+                <li>created_at: timestamp</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tv-dials">
+            <div class="tv-dial"></div>
+            <div class="tv-dial"></div>
+          </div>
+        </div>
+
+        <!-- Phone cord lines -->
+        <svg class="phone-cord-svg" viewBox="0 0 1000 600" preserveAspectRatio="none">
+          <path d="M200 120 Q 300 80, 420 100" class="phone-cord" />
+          <path d="M560 120 Q 650 90, 770 110" class="phone-cord" />
+          <path d="M180 200 Q 200 400, 250 380" class="phone-cord" />
+          <path d="M500 180 Q 550 350, 630 370" class="phone-cord" />
+          <path d="M350 400 Q 450 420, 600 390" class="phone-cord" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- ========== DIRECTORY TREE ========== -->
+    <section class="view-panel" data-page="directory-tree">
+      <div class="view-header">
+        <h2 class="view-title">The Song List</h2>
+        <p class="view-subtitle">Every file, every track, cataloged</p>
+      </div>
+
+      <div class="chrome-panel jukebox-file-tree">
+        <div class="jukebox-category">
+          <div class="category-header" data-expand="true">
+            <span class="category-letter">A</span>
+            <span class="category-name">Design Assets</span>
+            <span class="category-count">6 tracks</span>
+          </div>
+          <ul class="track-listing">
+            <li class="track-item"><span class="track-num">A1</span><span class="track-file">logo-concepts.fig</span><span class="track-size">2.4 MB</span></li>
+            <li class="track-item"><span class="track-num">A2</span><span class="track-file">color-palette.pdf</span><span class="track-size">340 KB</span></li>
+            <li class="track-item"><span class="track-num">A3</span><span class="track-file">typography-guide.doc</span><span class="track-size">120 KB</span></li>
+            <li class="track-item"><span class="track-num">A4</span><span class="track-file">hero-banner.png</span><span class="track-size">1.8 MB</span></li>
+            <li class="track-item"><span class="track-num">A5</span><span class="track-file">icon-set.svg</span><span class="track-size">56 KB</span></li>
+            <li class="track-item"><span class="track-num">A6</span><span class="track-file">mockup-v3.fig</span><span class="track-size">4.1 MB</span></li>
+          </ul>
+        </div>
+        <div class="jukebox-category">
+          <div class="category-header" data-expand="true">
+            <span class="category-letter">B</span>
+            <span class="category-name">Source Code</span>
+            <span class="category-count">4 tracks</span>
+          </div>
+          <ul class="track-listing">
+            <li class="track-item"><span class="track-num">B1</span><span class="track-file">index.html</span><span class="track-size">12 KB</span></li>
+            <li class="track-item"><span class="track-num">B2</span><span class="track-file">style.css</span><span class="track-size">28 KB</span></li>
+            <li class="track-item"><span class="track-num">B3</span><span class="track-file">app.js</span><span class="track-size">8 KB</span></li>
+            <li class="track-item"><span class="track-num">B4</span><span class="track-file">utils.ts</span><span class="track-size">3 KB</span></li>
+          </ul>
+        </div>
+        <div class="jukebox-category">
+          <div class="category-header">
+            <span class="category-letter">C</span>
+            <span class="category-name">Documentation</span>
+            <span class="category-count">3 tracks</span>
+          </div>
+          <ul class="track-listing collapsed">
+            <li class="track-item"><span class="track-num">C1</span><span class="track-file">README.md</span><span class="track-size">5 KB</span></li>
+            <li class="track-item"><span class="track-num">C2</span><span class="track-file">CONTRIBUTING.md</span><span class="track-size">2 KB</span></li>
+            <li class="track-item"><span class="track-num">C3</span><span class="track-file">CHANGELOG.md</span><span class="track-size">8 KB</span></li>
+          </ul>
+        </div>
+        <div class="jukebox-category">
+          <div class="category-header">
+            <span class="category-letter">D</span>
+            <span class="category-name">Meeting Notes</span>
+            <span class="category-count">5 tracks</span>
+          </div>
+          <ul class="track-listing collapsed">
+            <li class="track-item"><span class="track-num">D1</span><span class="track-file">kickoff-2026-01-15.md</span><span class="track-size">3 KB</span></li>
+            <li class="track-item"><span class="track-num">D2</span><span class="track-file">sprint-review-w4.md</span><span class="track-size">2 KB</span></li>
+            <li class="track-item"><span class="track-num">D3</span><span class="track-file">design-sync-feb.md</span><span class="track-size">1 KB</span></li>
+            <li class="track-item"><span class="track-num">D4</span><span class="track-file">retrospective-jan.md</span><span class="track-size">4 KB</span></li>
+            <li class="track-item"><span class="track-num">D5</span><span class="track-file">stakeholder-review.md</span><span class="track-size">6 KB</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== IDEAS ========== -->
+    <section class="view-panel" data-page="ideas">
+      <div class="view-header">
+        <h2 class="view-title">Drop a Coin</h2>
+        <p class="view-subtitle">Feed the jukebox with your brightest ideas</p>
+      </div>
+
+      <div class="coin-slot-area">
+        <div class="coin-slot">
+          <div class="coin-slot-chrome">
+            <div class="coin-slit"></div>
+          </div>
+          <input type="text" class="coin-input" placeholder="Drop your idea here..." />
+          <button class="coin-drop-btn">
+            <span class="coin-icon">&#9733;</span> Drop It!
+          </button>
+        </div>
+      </div>
+
+      <div class="postcards-grid">
+        <div class="postcard">
+          <div class="postcard-stamp stamp-pink">NEW</div>
+          <h4 class="postcard-title">AI-Powered Meeting Summaries</h4>
+          <p class="postcard-body">Use GPT to auto-summarize standup meetings and create action items from recordings.</p>
+          <div class="postcard-stickers">
+            <span class="diner-sticker sticker-ai">AI</span>
+            <span class="diner-sticker sticker-product">Product</span>
+          </div>
+          <div class="postcard-footer">
+            <span class="postcard-author">By Sarah M.</span>
+            <span class="postcard-votes">&#9829; 12</span>
+          </div>
+        </div>
+        <div class="postcard">
+          <div class="postcard-stamp stamp-turquoise">HOT</div>
+          <h4 class="postcard-title">Gamified Task Completion</h4>
+          <p class="postcard-body">Add XP, badges, and streaks when team members complete tasks. Weekly leaderboard.</p>
+          <div class="postcard-stickers">
+            <span class="diner-sticker sticker-ux">UX</span>
+            <span class="diner-sticker sticker-engagement">Fun</span>
+          </div>
+          <div class="postcard-footer">
+            <span class="postcard-author">By Mike R.</span>
+            <span class="postcard-votes">&#9829; 24</span>
+          </div>
+        </div>
+        <div class="postcard">
+          <div class="postcard-stamp stamp-cream">IDEA</div>
+          <h4 class="postcard-title">Voice-to-Task Command</h4>
+          <p class="postcard-body">Dictate tasks with voice, auto-assign priority and category using NLP analysis.</p>
+          <div class="postcard-stickers">
+            <span class="diner-sticker sticker-ai">AI</span>
+            <span class="diner-sticker sticker-mobile">Mobile</span>
+          </div>
+          <div class="postcard-footer">
+            <span class="postcard-author">By Jess L.</span>
+            <span class="postcard-votes">&#9829; 8</span>
+          </div>
+        </div>
+        <div class="postcard">
+          <div class="postcard-stamp stamp-pink">NEW</div>
+          <h4 class="postcard-title">Client Portal Dashboard</h4>
+          <p class="postcard-body">Give clients a read-only view of project progress with milestone tracking and deliverables.</p>
+          <div class="postcard-stickers">
+            <span class="diner-sticker sticker-product">Product</span>
+            <span class="diner-sticker sticker-ux">UX</span>
+          </div>
+          <div class="postcard-footer">
+            <span class="postcard-author">By Alex P.</span>
+            <span class="postcard-votes">&#9829; 15</span>
+          </div>
+        </div>
+        <div class="postcard">
+          <div class="postcard-stamp stamp-turquoise">HOT</div>
+          <h4 class="postcard-title">Mood-Based Theme Switcher</h4>
+          <p class="postcard-body">Let users pick a mood and the entire UI transforms: calm, energetic, focused, creative.</p>
+          <div class="postcard-stickers">
+            <span class="diner-sticker sticker-ux">UX</span>
+            <span class="diner-sticker sticker-engagement">Fun</span>
+          </div>
+          <div class="postcard-footer">
+            <span class="postcard-author">By Pat D.</span>
+            <span class="postcard-votes">&#9829; 31</span>
+          </div>
+        </div>
+        <div class="postcard">
+          <div class="postcard-stamp stamp-cream">IDEA</div>
+          <h4 class="postcard-title">Cross-Project Dependencies</h4>
+          <p class="postcard-body">Visualize how tasks in different projects block each other. Gantt-style dependency map.</p>
+          <div class="postcard-stickers">
+            <span class="diner-sticker sticker-product">Product</span>
+            <span class="diner-sticker sticker-ai">Data</span>
+          </div>
+          <div class="postcard-footer">
+            <span class="postcard-author">By Chris W.</span>
+            <span class="postcard-votes">&#9829; 19</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== AI CHAT ========== -->
+    <section class="view-panel" data-page="ai-chat">
+      <div class="view-header">
+        <h2 class="view-title">The Counter Chat</h2>
+        <p class="view-subtitle">Have a chat with your AI assistant at the counter</p>
+      </div>
+
+      <div class="comic-chat-area">
+        <div class="comic-bubble user-bubble">
+          <div class="bubble-avatar user-avatar">You</div>
+          <div class="bubble-content">
+            <p>Hey! Can you help me brainstorm features for our mobile app?</p>
+            <span class="bubble-time">2:30 PM</span>
+          </div>
+        </div>
+
+        <div class="comic-bubble ai-bubble">
+          <div class="bubble-avatar ai-avatar">AI</div>
+          <div class="bubble-content">
+            <p>Absolutely, sugar! Here are some ideas fresh off the grill:</p>
+            <ol class="ai-list">
+              <li><strong>Push notification digest</strong> - daily summary instead of noise</li>
+              <li><strong>Offline mode</strong> - cache recent projects for on-the-go</li>
+              <li><strong>Quick-capture widget</strong> - home screen idea capture</li>
+              <li><strong>Gesture navigation</strong> - swipe between kanban columns</li>
+            </ol>
+            <p>Want me to dig deeper into any of these, hon?</p>
+            <span class="bubble-time">2:31 PM</span>
+          </div>
+        </div>
+
+        <div class="comic-bubble user-bubble">
+          <div class="bubble-avatar user-avatar">You</div>
+          <div class="bubble-content">
+            <p>Love the quick-capture widget idea! How would that work?</p>
+            <span class="bubble-time">2:32 PM</span>
+          </div>
+        </div>
+
+        <div class="comic-bubble ai-bubble">
+          <div class="bubble-avatar ai-avatar">AI</div>
+          <div class="bubble-content">
+            <p>Picture this: a small widget right on the home screen with a single text field and a mic button. Tap to type, hold to dictate. It auto-categorizes using AI and drops it right into your Ideas board. No app open needed!</p>
+            <span class="bubble-time">2:32 PM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-pad-input">
+        <div class="order-pad-chrome">
+          <div class="pad-lines"></div>
+          <input type="text" class="pad-input" placeholder="Write your order here..." />
+          <button class="pad-send-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS ========== -->
+    <section class="view-panel" data-page="settings">
+      <div class="view-header">
+        <h2 class="view-title">The Control Panel</h2>
+        <p class="view-subtitle">Fine-tune your diner experience</p>
+      </div>
+
+      <div class="tv-control-panel">
+        <div class="chrome-panel settings-section">
+          <h3 class="settings-group-title">Display Settings</h3>
+          <div class="settings-row">
+            <div class="setting-label">
+              <span class="setting-name">Dark Mode</span>
+              <span class="setting-desc">Switch to late-night diner vibes</span>
+            </div>
+            <div class="chrome-toggle">
+              <input type="checkbox" id="toggle-dark" class="toggle-input" />
+              <label for="toggle-dark" class="toggle-slider"></label>
+            </div>
+          </div>
+          <div class="settings-row">
+            <div class="setting-label">
+              <span class="setting-name">Animations</span>
+              <span class="setting-desc">Bouncy transitions on everything</span>
+            </div>
+            <div class="chrome-toggle">
+              <input type="checkbox" id="toggle-anim" class="toggle-input" checked />
+              <label for="toggle-anim" class="toggle-slider"></label>
+            </div>
+          </div>
+          <div class="settings-row">
+            <div class="setting-label">
+              <span class="setting-name">Compact View</span>
+              <span class="setting-desc">Squeeze more onto the screen</span>
+            </div>
+            <div class="chrome-toggle">
+              <input type="checkbox" id="toggle-compact" class="toggle-input" />
+              <label for="toggle-compact" class="toggle-slider"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="chrome-panel settings-section">
+          <h3 class="settings-group-title">Volume & Notifications</h3>
+          <div class="settings-row">
+            <div class="setting-label">
+              <span class="setting-name">Notification Volume</span>
+              <span class="setting-desc">How loud should the jukebox be?</span>
+            </div>
+            <div class="knob-control">
+              <input type="range" min="0" max="100" value="65" class="retro-slider" />
+              <span class="knob-value">65%</span>
+            </div>
+          </div>
+          <div class="settings-row">
+            <div class="setting-label">
+              <span class="setting-name">Email Digests</span>
+              <span class="setting-desc">Daily or weekly summary</span>
+            </div>
+            <div class="chrome-select-wrapper">
+              <select class="chrome-select">
+                <option>Daily</option>
+                <option selected>Weekly</option>
+                <option>Never</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="chrome-panel settings-section">
+          <h3 class="settings-group-title">Profile</h3>
+          <div class="settings-row">
+            <div class="setting-label">
+              <span class="setting-name">Display Name</span>
+            </div>
+            <input type="text" value="Sunny Rhodes" class="chrome-text-input" />
+          </div>
+          <div class="settings-row">
+            <div class="setting-label">
+              <span class="setting-name">Email</span>
+            </div>
+            <input type="text" value="sunny@ideahub.diner" class="chrome-text-input" />
+          </div>
+          <div class="settings-row">
+            <div class="setting-label">
+              <span class="setting-name">Role</span>
+            </div>
+            <div class="chrome-select-wrapper">
+              <select class="chrome-select">
+                <option>Viewer</option>
+                <option>Member</option>
+                <option selected>Admin</option>
+                <option>Owner</option>
+              </select>
+            </div>
+          </div>
+          <div class="settings-actions">
+            <button class="diner-btn primary">Save Changes</button>
+            <button class="diner-btn secondary">Reset Defaults</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== JUKEBOX NAVIGATION BAR ========== -->
+  <nav class="jukebox-nav">
+    <div class="jukebox-chrome-trim"></div>
+    <div class="jukebox-buttons">
+      <button class="jukebox-btn active" data-view="dashboard">
+        <span class="jukebox-btn-inner">
+          <svg class="jb-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-13h2v5l4.28 2.54-.72 1.21L11 13V7z"/></svg>
+          <span class="jb-label">Dash</span>
+        </span>
+      </button>
+      <button class="jukebox-btn" data-view="projects">
+        <span class="jukebox-btn-inner">
+          <svg class="jb-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <span class="jb-label">Projects</span>
+        </span>
+      </button>
+      <button class="jukebox-btn" data-view="project-workspace">
+        <span class="jukebox-btn-inner">
+          <svg class="jb-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+          <span class="jb-label">Booth</span>
+        </span>
+      </button>
+      <button class="jukebox-btn" data-view="kanban">
+        <span class="jukebox-btn-inner">
+          <svg class="jb-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h4v16H4zm6 0h4v12h-4zm6 0h4v8h-4z"/></svg>
+          <span class="jb-label">Menu</span>
+        </span>
+      </button>
+      <button class="jukebox-btn" data-view="whiteboard">
+        <span class="jukebox-btn-inner">
+          <svg class="jb-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75z"/></svg>
+          <span class="jb-label">Sketch</span>
+        </span>
+      </button>
+      <button class="jukebox-btn" data-view="schema-planner">
+        <span class="jukebox-btn-inner">
+          <svg class="jb-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM3 5h8v6H3V5zm0 8h8v6H3v-6zm10 6v-6h8v6h-8zm8-8h-8V5h8v6z"/></svg>
+          <span class="jb-label">Schema</span>
+        </span>
+      </button>
+      <button class="jukebox-btn" data-view="directory-tree">
+        <span class="jukebox-btn-inner">
+          <svg class="jb-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+          <span class="jb-label">Files</span>
+        </span>
+      </button>
+      <button class="jukebox-btn" data-view="ideas">
+        <span class="jukebox-btn-inner">
+          <svg class="jb-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+          <span class="jb-label">Ideas</span>
+        </span>
+      </button>
+      <button class="jukebox-btn" data-view="ai-chat">
+        <span class="jukebox-btn-inner">
+          <svg class="jb-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+          <span class="jb-label">Chat</span>
+        </span>
+      </button>
+      <button class="jukebox-btn" data-view="settings">
+        <span class="jukebox-btn-inner">
+          <svg class="jb-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 00-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1115.6 12 3.6 3.6 0 0112 15.6z"/></svg>
+          <span class="jb-label">Settings</span>
+        </span>
+      </button>
+    </div>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>

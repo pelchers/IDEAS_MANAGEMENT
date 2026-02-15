@@ -1,0 +1,53 @@
+{
+  "concept": "slate",
+  "pass": 1,
+  "variantSeed": "carved-monolith-console",
+  "inspirationReferences": [
+    {
+      "source": "Raycast (raycast.com)",
+      "category": "Command-first workflows, dark precision",
+      "elementsAdapted": [
+        "Dense, compact information layout with monospace metadata",
+        "Dark background with precise typographic hierarchy",
+        "Minimal chrome — content-forward UI with tight spacing",
+        "Keyboard-driven aesthetic: filter inputs prominent, minimal decoration",
+        "Single accent color for active/selected states"
+      ],
+      "viewsInfluenced": ["dashboard", "projects", "ideas", "settings"]
+    },
+    {
+      "source": "Arc Browser (arc.net)",
+      "category": "Distinct nav metaphors, layered paneling, premium dark",
+      "elementsAdapted": [
+        "Recessed left rail navigation with distinct visual treatment",
+        "Layered panel depth using inset shadows (adapted as carved stone)",
+        "Section-grouped navigation with subtle dividers",
+        "Split workspace view with tree + content panels",
+        "Premium material feel through depth and shadow work"
+      ],
+      "viewsInfluenced": ["project-workspace", "directory-tree", "whiteboard", "kanban"]
+    },
+    {
+      "source": "Awwwards Technology",
+      "category": "Tech-forward visual systems, data-rich interfaces",
+      "elementsAdapted": [
+        "Wide letter-spaced uppercase headings as design feature (etched/engraved feel)",
+        "Stone-texture CSS overlay using repeating gradients (no images)",
+        "Stat grid with oversized amber numbers as visual anchors",
+        "Entity blocks in schema planner styled as architectural tablets",
+        "Toggle switches and form controls as premium crafted elements"
+      ],
+      "viewsInfluenced": ["dashboard", "schema-planner", "settings", "ai-chat"]
+    }
+  ],
+  "uniqueDesignElements": [
+    "Carved/recessed depth model: all panels use inset box-shadow instead of elevation",
+    "Stone texture overlay: CSS-only repeating gradients at 4 angles simulating stone grain",
+    "Etched typography: letter-spacing 0.08-0.15em on all headings with light font weights",
+    "Amber ember accent: single warm color (#c89b3c) with glow effects for active states",
+    "Weathered radius: 2-4px corners that feel like worn stone edges, not brutalist or rounded",
+    "Monolithic density: compact spacing throughout, no whitespace padding, luxury watch energy"
+  ],
+  "animationLibraries": [],
+  "mediaAssets": []
+}

@@ -1,0 +1,51 @@
+{
+  "style": "Mid-Century Modern",
+  "pass": 1,
+  "variantSeed": "eames-lounge-workspace",
+  "inspirationReferences": [
+    {
+      "name": "Herman Miller",
+      "url": "https://www.hermanmiller.com",
+      "category": "Furniture / Industrial Design",
+      "influencedElements": [
+        "Credenza-shelf horizontal navigation pattern",
+        "Furniture-grade spacing and padding values",
+        "Warm materiality via teak border tones and wood-grain CSS textures",
+        "Rounded-rectangle card shapes echoing molded plywood forms",
+        "Spacious density with generous whitespace between elements"
+      ]
+    },
+    {
+      "name": "Cereal Magazine",
+      "url": "https://readcereal.com",
+      "category": "Editorial / Lifestyle",
+      "influencedElements": [
+        "Serif heading typography (Playfair Display) paired with clean sans body (DM Sans)",
+        "Editorial warmth in the welcome banner and content tone",
+        "Considered whitespace throughout all view layouts",
+        "Minimal border usage favoring soft shadows for depth",
+        "Warm cream background as primary surface color"
+      ]
+    },
+    {
+      "name": "Awwwards Sites Of The Day",
+      "url": "https://www.awwwards.com/websites/sites-of-the-day/",
+      "category": "Web Design Awards / Showcase",
+      "primaryReference": true,
+      "influencedElements": [
+        "Premium polish in micro-interactions (hover lift effects on cards)",
+        "Subtle opacity + translateY entrance transitions on view switches",
+        "Refined button states with shadow elevation changes",
+        "Focus ring styling with accent-colored box-shadows",
+        "Consistent visual rhythm across all 10 views"
+      ]
+    }
+  ],
+  "designPrinciples": [
+    "Warmth over coldness — every surface should feel inviting",
+    "Organic curves meet geometric grids — softness with underlying structure",
+    "Typography carries emotion — serif headings create editorial authority",
+    "Wood-grain texture adds tactile quality without overwhelming content",
+    "Generous breathing room — spacious density lets content speak"
+  ]
+}

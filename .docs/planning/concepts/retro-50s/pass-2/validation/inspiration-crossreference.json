@@ -1,0 +1,72 @@
+{
+  "concept": "retro-50s",
+  "pass": 2,
+  "variantSeed": "atomic-age-googie",
+  "inspirationReferences": [
+    {
+      "source": "Googie Architecture (1940s-1960s)",
+      "description": "Mid-century American commercial architecture characterized by upswept roofs, boomerang shapes, parabolic curves, and space-age optimism. Exemplified by the LAX Theme Building, diners like Norms, and Googie's coffee shop in Los Angeles.",
+      "elementsAdapted": [
+        "Swooping parabolic top navigation bar with curved underside (header-swoosh element mimics upswept rooflines)",
+        "Boomerang-shaped panel containers with asymmetric border-radius (0 40px 0 40px)",
+        "Angled tab shapes using CSS clip-path polygon to emulate canted signage and fins",
+        "Turquoise and coral color palette drawn from period-typical candy-colored building facades"
+      ]
+    },
+    {
+      "source": "The Jetsons / Space-Age Futurism",
+      "description": "The 1962 Hanna-Barbera animated series depicting an optimistic space-age future. Its visual language of orbital paths, transparent tubes, capsule vehicles, and atomic motifs defined pop-culture retro-futurism.",
+      "elementsAdapted": [
+        "Orbital stat rings with animated electron dots circling central metrics (inspired by atomic orbit diagrams)",
+        "Space pods as project containers — capsule-shaped cards with porthole icons",
+        "Orbital lanes for kanban columns — representing launch-to-landing trajectories",
+        "Mission control / cockpit metaphor for project workspace with instrument gauges and readouts",
+        "Space radio communication interface for AI chat with signal wave animations"
+      ]
+    },
+    {
+      "source": "1950s Atomic Age Graphic Design",
+      "description": "The post-WWII atomic age spawned a distinct graphic style featuring starburst shapes, atomic orbit diagrams, boomerang patterns, and constellation/star motifs in everything from advertising to wallpaper.",
+      "elementsAdapted": [
+        "Starburst dividers using CSS clip-path star polygons with pulsing animation",
+        "Atomic orbit decorative rings around avatars and stat displays",
+        "Star map / constellation whiteboard with twinkling star nodes and dashed connection lines",
+        "Satellite dish decorative elements atop schema planner entity blocks",
+        "Electron-pulse animations on chart bar tips and frequency indicators",
+        "CSS radial-gradient starfield background (no images) evoking space-age wonder"
+      ]
+    }
+  ],
+  "uniqueDesignElements": [
+    {
+      "element": "Parabolic Navigation Swoosh",
+      "description": "Fixed top navigation bar with a CSS-generated parabolic underside curve (border-radius 50% bottom) that creates a Googie architectural silhouette. Tabs use clip-path polygon for angled shapes rather than standard rectangles.",
+      "differentiator": "Unlike conventional horizontal navbars or Pass 1's bottom jukebox bar, this creates an architectural profile reminiscent of mid-century coffee shop rooflines."
+    },
+    {
+      "element": "Orbital Stat Ring System",
+      "description": "Dashboard statistics displayed as SVG circular rings with animated stroke-dashoffset fills. Small electron dots (SVG circles) orbit the rings using CSS transform-origin rotation, creating a live atomic-model effect.",
+      "differentiator": "Combines data visualization with decorative atomic-age theming. The electrons are functional (they indicate activity) while also being purely ornamental, blurring the line between UI and art."
+    },
+    {
+      "element": "Constellation Drag Canvas",
+      "description": "The whiteboard view presents a deep-space-navy canvas with draggable star nodes connected by SVG dashed lines with flowing stroke-dashoffset animation. Stars twinkle independently with staggered CSS animations.",
+      "differentiator": "Transforms a standard whiteboard into an interactive star chart. The flowing dashed connections create a sense of data traveling between nodes like signals between stars."
+    },
+    {
+      "element": "Boomerang Container Shape Language",
+      "description": "All major panels use an asymmetric border-radius of (0 40px 0 40px), creating a distinctive boomerang / swept profile that differs from standard rounded rectangles.",
+      "differentiator": "This single shape property creates visual consistency across all views while immediately evoking mid-century modern furniture and architecture shapes. No other pass uses this asymmetric radius."
+    },
+    {
+      "element": "Space Radio Chat Interface",
+      "description": "AI chat styled as radio communications with a signal-wave equalizer header (CSS scaleY animation), frequency display, and wave-bar indicators on each message. Outgoing messages use coral tones, incoming use turquoise.",
+      "differentiator": "Reimagines chat UI as a radio communications console rather than a standard messenger. The directional color coding (coral for transmitted, turquoise for received) reinforces the radio metaphor."
+    },
+    {
+      "element": "Orbital Toggle Switches",
+      "description": "Settings toggles feature a planetary orbit metaphor — a small planet (circle) slides along an orbital track (pill shape) with smooth easing. Active state changes the track to turquoise.",
+      "differentiator": "Standard toggle switches are reimagined as celestial mechanics. Combined with rotatable dial knobs and gauge needles, the settings view becomes a spacecraft control console."
+    }
+  ]
+}

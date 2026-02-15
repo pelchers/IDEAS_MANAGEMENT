@@ -1,0 +1,100 @@
+{
+  "concept": "liquid-motion",
+  "pass": 2,
+  "variantSeed": "wave-current-flow",
+  "inspirationReferences": [
+    {
+      "source": "Awwwards — Immersive Ocean Exploration Sites",
+      "url": "https://www.awwwards.com",
+      "category": "Web Design Awards",
+      "elements": [
+        "Full-viewport layered wave backgrounds with parallax depth",
+        "Dark-to-light gradient transitions simulating ocean depth zones",
+        "SVG path animations for flowing connection lines between content",
+        "Horizontal scroll-triggered content reveals with current-like easing"
+      ],
+      "howWeAreDifferent": [
+        "Our waves are functional section dividers, not decorative — they separate semantic content regions",
+        "Navigation items physically bob with GSAP sine animation rather than static positioned links",
+        "Color palette maps to a specific depth metaphor (surface foam white through deep navy)",
+        "Every interactive element produces ripple feedback, creating a tactile water-surface feel"
+      ]
+    },
+    {
+      "source": "Stripe Dashboard — Fluid Data Visualization",
+      "url": "https://stripe.com/docs/dashboard",
+      "category": "SaaS Dashboard Design",
+      "elements": [
+        "Clean stat card grid with animated counters",
+        "Smooth view transitions between dashboard sections",
+        "Minimal dark surfaces with focused accent color usage",
+        "Activity feed with chronological current-like flow"
+      ],
+      "howWeAreDifferent": [
+        "Stats physically rise from below the viewport (seafloor metaphor) rather than fading in place",
+        "Chart line is a literal waveform drawn with GSAP stroke animation, not a standard chart library",
+        "Activity items slide in horizontally like a flowing river current",
+        "Surface cards float with continuous idle bobbing animation"
+      ]
+    },
+    {
+      "source": "National Geographic Ocean Portal — Depth Layer Storytelling",
+      "url": "https://www.nationalgeographic.com/environment/topic/oceans",
+      "category": "Editorial / Immersive Storytelling",
+      "elements": [
+        "Content organized by depth zones (surface, twilight, midnight, abyss)",
+        "Bioluminescent accent effects on deep-sea organism imagery",
+        "Vertical scroll driving descent through ocean layers",
+        "Sonar and submarine control panel aesthetic for data displays"
+      ],
+      "howWeAreDifferent": [
+        "Depth-zone organization is applied to a project management tool (surface=overview, mid=tasks, deep=notes)",
+        "Bioluminescence is used for entity relationship indicators in the schema planner, not decoration",
+        "Submarine control panel metaphor drives actual settings UI (gauge SVGs for metrics, valve toggles for booleans)",
+        "The sonar pulse concept powers the AI chat interface — messages arrive as depth charges from different layers"
+      ]
+    }
+  ],
+  "uniqueDesignElements": [
+    {
+      "element": "Horizontal Stream Navigation with Sine-Wave Bob",
+      "description": "Top-fixed nav bar where each item animates with staggered vertical displacement using GSAP sine easing, creating the appearance of items floating on a water surface. Click produces an expanding ripple from the touch point."
+    },
+    {
+      "element": "Current-Flow View Transitions",
+      "description": "View switching animates outgoing content to the left (carried away by the current) and incoming content from the right (merging current). This creates a continuous directional flow metaphor rather than standard fade transitions."
+    },
+    {
+      "element": "Depth-Layer Content Architecture",
+      "description": "The project workspace organizes information into surface (overview), mid-depth (active tasks), and deep (notes/context) layers, separated by animated SVG wave dividers. Each layer has distinct visual weight and border accent."
+    },
+    {
+      "element": "Vessel Cards with Bobbing Animation",
+      "description": "Project cards styled as vessels with SVG wave hulls, mast details, and continuous GSAP yoyo bobbing animation. Each card bobs at a slightly different frequency to prevent synchronized motion."
+    },
+    {
+      "element": "Bioluminescent Schema Threads",
+      "description": "Entity relationship lines in the schema planner use SVG paths with a gradient that pulses between accent colors, simulating deep-sea bioluminescent organisms. Entity nodes have glowing indicator dots."
+    },
+    {
+      "element": "Sonar Pulse Chat Messages",
+      "description": "AI chat messages arrive from the deep (bottom) with a pulsing indicator dot, while user messages surface upward. Each message has a sonar pulse animation on its status indicator."
+    },
+    {
+      "element": "Submarine Control Panel Settings",
+      "description": "Settings page uses circular SVG gauge meters for system metrics, toggle switches styled as submarine valves, and range sliders labeled as depth controls. All gauges animate their fill on view entrance."
+    },
+    {
+      "element": "Rising Bubble Idea Capture",
+      "description": "Ideas are displayed as bubble cards that float upward with idle animation. The input field sits at the bottom (ocean floor), and new ideas conceptually rise from it. Bubbles have a shimmer highlight that sweeps across them."
+    },
+    {
+      "element": "Coral Reef File Tree",
+      "description": "Directory tree structure uses coral branch metaphor with connected vertical lines styled as coral stems. Files at branch tips are styled as reef creatures with size annotations."
+    },
+    {
+      "element": "SVG Wave Section Dividers Throughout",
+      "description": "Every major content section boundary uses unique SVG wave path dividers rather than horizontal lines. Dividers have subtle horizontal drift animation powered by GSAP."
+    }
+  ]
+}

@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Idea Management - Retro 50s Googie / Pass 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== STARFIELD BACKGROUND (CSS only) ===== -->
+  <div class="starfield" aria-hidden="true"></div>
+
+  <!-- ===== SWOOPING TOP NAV BAR ===== -->
+  <header class="googie-header">
+    <div class="header-swoosh" aria-hidden="true"></div>
+    <div class="logo-pod">
+      <span class="orbit-ring" aria-hidden="true"></span>
+      <span class="logo-text">IdeaLab</span>
+      <span class="orbit-electron" aria-hidden="true"></span>
+    </div>
+    <nav class="googie-nav" role="navigation" aria-label="Main navigation">
+      <button class="nav-tab active" data-view="dashboard">
+        <span class="tab-icon">&#9678;</span>
+        <span class="tab-label">Dashboard</span>
+      </button>
+      <button class="nav-tab" data-view="projects">
+        <span class="tab-icon">&#9790;</span>
+        <span class="tab-label">Projects</span>
+      </button>
+      <button class="nav-tab" data-view="project-workspace">
+        <span class="tab-icon">&#9881;</span>
+        <span class="tab-label">Workspace</span>
+      </button>
+      <button class="nav-tab" data-view="kanban">
+        <span class="tab-icon">&#8645;</span>
+        <span class="tab-label">Kanban</span>
+      </button>
+      <button class="nav-tab" data-view="whiteboard">
+        <span class="tab-icon">&#10038;</span>
+        <span class="tab-label">Whiteboard</span>
+      </button>
+      <button class="nav-tab" data-view="schema-planner">
+        <span class="tab-icon">&#9883;</span>
+        <span class="tab-label">Schema</span>
+      </button>
+      <button class="nav-tab" data-view="directory-tree">
+        <span class="tab-icon">&#9095;</span>
+        <span class="tab-label">Files</span>
+      </button>
+      <button class="nav-tab" data-view="ideas">
+        <span class="tab-icon">&#9733;</span>
+        <span class="tab-label">Ideas</span>
+      </button>
+      <button class="nav-tab" data-view="ai-chat">
+        <span class="tab-icon">&#9737;</span>
+        <span class="tab-label">AI Chat</span>
+      </button>
+      <button class="nav-tab" data-view="settings">
+        <span class="tab-icon">&#9788;</span>
+        <span class="tab-label">Settings</span>
+      </button>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+    </button>
+  </header>
+
+  <!-- ===== MAIN CONTENT AREA ===== -->
+  <main class="content-area">
+
+    <!-- ============================== -->
+    <!-- VIEW 1: DASHBOARD              -->
+    <!-- ============================== -->
+    <section class="view active" data-page="dashboard">
+      <div class="view-header">
+        <h1 class="view-title">Mission Control</h1>
+        <div class="starburst-divider" aria-hidden="true">
+          <span class="starburst"></span>
+          <span class="starburst-line"></span>
+          <span class="starburst"></span>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Orbital Stat Rings -->
+        <div class="stat-ring-row">
+          <div class="stat-ring-card">
+            <div class="orbital-ring">
+              <svg viewBox="0 0 120 120" class="ring-svg">
+                <circle cx="60" cy="60" r="52" class="ring-track" />
+                <circle cx="60" cy="60" r="52" class="ring-fill" style="--percent:78" />
+                <circle cx="60" cy="60" r="4" class="ring-electron e1" />
+                <circle cx="60" cy="60" r="3" class="ring-electron e2" />
+              </svg>
+              <span class="ring-value">78%</span>
+            </div>
+            <p class="stat-label">Sprint Velocity</p>
+          </div>
+          <div class="stat-ring-card">
+            <div class="orbital-ring">
+              <svg viewBox="0 0 120 120" class="ring-svg">
+                <circle cx="60" cy="60" r="52" class="ring-track" />
+                <circle cx="60" cy="60" r="52" class="ring-fill" style="--percent:53" />
+                <circle cx="60" cy="60" r="4" class="ring-electron e1" />
+              </svg>
+              <span class="ring-value">53</span>
+            </div>
+            <p class="stat-label">Open Tasks</p>
+          </div>
+          <div class="stat-ring-card">
+            <div class="orbital-ring">
+              <svg viewBox="0 0 120 120" class="ring-svg">
+                <circle cx="60" cy="60" r="52" class="ring-track" />
+                <circle cx="60" cy="60" r="52" class="ring-fill" style="--percent:92" />
+                <circle cx="60" cy="60" r="4" class="ring-electron e1" />
+                <circle cx="60" cy="60" r="3" class="ring-electron e2" />
+                <circle cx="60" cy="60" r="2" class="ring-electron e3" />
+              </svg>
+              <span class="ring-value">92%</span>
+            </div>
+            <p class="stat-label">Uptime</p>
+          </div>
+          <div class="stat-ring-card">
+            <div class="orbital-ring">
+              <svg viewBox="0 0 120 120" class="ring-svg">
+                <circle cx="60" cy="60" r="52" class="ring-track" />
+                <circle cx="60" cy="60" r="52" class="ring-fill" style="--percent:37" />
+                <circle cx="60" cy="60" r="4" class="ring-electron e1" />
+              </svg>
+              <span class="ring-value">12</span>
+            </div>
+            <p class="stat-label">Active Orbits</p>
+          </div>
+        </div>
+
+        <!-- Atomic Chart Panel -->
+        <div class="boomerang-panel chart-panel">
+          <h2 class="panel-title">Atomic Activity Chart</h2>
+          <div class="atomic-chart">
+            <div class="chart-bar" style="--h:65%"><span>M</span></div>
+            <div class="chart-bar" style="--h:80%"><span>T</span></div>
+            <div class="chart-bar" style="--h:45%"><span>W</span></div>
+            <div class="chart-bar" style="--h:90%"><span>T</span></div>
+            <div class="chart-bar" style="--h:72%"><span>F</span></div>
+            <div class="chart-bar" style="--h:30%"><span>S</span></div>
+            <div class="chart-bar" style="--h:55%"><span>S</span></div>
+          </div>
+        </div>
+
+        <!-- Recent Missions -->
+        <div class="boomerang-panel missions-panel">
+          <h2 class="panel-title">Recent Missions</h2>
+          <ul class="mission-list">
+            <li class="mission-item">
+              <span class="mission-status orbit-active"></span>
+              <span class="mission-name">Design System Overhaul</span>
+              <span class="mission-eta">ETA 3d</span>
+            </li>
+            <li class="mission-item">
+              <span class="mission-status orbit-complete"></span>
+              <span class="mission-name">API Integration Sprint</span>
+              <span class="mission-eta">Done</span>
+            </li>
+            <li class="mission-item">
+              <span class="mission-status orbit-active"></span>
+              <span class="mission-name">User Research Phase 2</span>
+              <span class="mission-eta">ETA 1w</span>
+            </li>
+            <li class="mission-item">
+              <span class="mission-status orbit-pending"></span>
+              <span class="mission-name">Mobile Prototype</span>
+              <span class="mission-eta">Queued</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Quick Launch -->
+        <div class="boomerang-panel launch-panel">
+          <h2 class="panel-title">Quick Launch</h2>
+          <div class="launch-buttons">
+            <button class="launch-btn" data-view="ideas">New Idea</button>
+            <button class="launch-btn" data-view="projects">New Project</button>
+            <button class="launch-btn" data-view="kanban">Sprint Board</button>
+            <button class="launch-btn" data-view="ai-chat">AI Assist</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- VIEW 2: PROJECTS               -->
+    <!-- ============================== -->
+    <section class="view" data-page="projects">
+      <div class="view-header">
+        <h1 class="view-title">Launch Bay</h1>
+        <div class="starburst-divider" aria-hidden="true">
+          <span class="starburst"></span>
+          <span class="starburst-line"></span>
+          <span class="starburst"></span>
+        </div>
+      </div>
+
+      <div class="bay-controls">
+        <input type="text" class="search-capsule" placeholder="Search missions..." />
+        <button class="capsule-btn">+ New Pod</button>
+      </div>
+
+      <div class="pod-grid">
+        <div class="space-pod">
+          <div class="pod-porthole">
+            <span class="pod-icon">&#9790;</span>
+          </div>
+          <div class="pod-body">
+            <h3 class="pod-name">Project Alpha</h3>
+            <p class="pod-desc">Orbital platform redesign with next-gen component architecture.</p>
+            <div class="pod-meta">
+              <span class="pod-status active">In Orbit</span>
+              <span class="pod-crew">5 crew</span>
+            </div>
+            <div class="pod-progress">
+              <div class="pod-progress-fill" style="width:68%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="space-pod">
+          <div class="pod-porthole">
+            <span class="pod-icon">&#9733;</span>
+          </div>
+          <div class="pod-body">
+            <h3 class="pod-name">Project Beta</h3>
+            <p class="pod-desc">Deep space analytics engine with real-time telemetry feeds.</p>
+            <div class="pod-meta">
+              <span class="pod-status pending">Pre-Launch</span>
+              <span class="pod-crew">3 crew</span>
+            </div>
+            <div class="pod-progress">
+              <div class="pod-progress-fill" style="width:22%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="space-pod">
+          <div class="pod-porthole">
+            <span class="pod-icon">&#9678;</span>
+          </div>
+          <div class="pod-body">
+            <h3 class="pod-name">Project Gamma</h3>
+            <p class="pod-desc">Communication relay upgrade for cross-team data streams.</p>
+            <div class="pod-meta">
+              <span class="pod-status complete">Landed</span>
+              <span class="pod-crew">8 crew</span>
+            </div>
+            <div class="pod-progress">
+              <div class="pod-progress-fill" style="width:100%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="space-pod">
+          <div class="pod-porthole">
+            <span class="pod-icon">&#9883;</span>
+          </div>
+          <div class="pod-body">
+            <h3 class="pod-name">Project Delta</h3>
+            <p class="pod-desc">Automated testing satellite constellation deployment.</p>
+            <div class="pod-meta">
+              <span class="pod-status active">In Orbit</span>
+              <span class="pod-crew">4 crew</span>
+            </div>
+            <div class="pod-progress">
+              <div class="pod-progress-fill" style="width:45%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="space-pod">
+          <div class="pod-porthole">
+            <span class="pod-icon">&#9737;</span>
+          </div>
+          <div class="pod-body">
+            <h3 class="pod-name">Project Epsilon</h3>
+            <p class="pod-desc">AI co-pilot integration into mission control workflows.</p>
+            <div class="pod-meta">
+              <span class="pod-status pending">Pre-Launch</span>
+              <span class="pod-crew">2 crew</span>
+            </div>
+            <div class="pod-progress">
+              <div class="pod-progress-fill" style="width:10%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="space-pod add-pod">
+          <div class="pod-porthole">
+            <span class="pod-icon">+</span>
+          </div>
+          <div class="pod-body">
+            <h3 class="pod-name">Launch New Pod</h3>
+            <p class="pod-desc">Commission a new mission pod for your next project.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- VIEW 3: PROJECT WORKSPACE      -->
+    <!-- ============================== -->
+    <section class="view" data-page="project-workspace">
+      <div class="view-header">
+        <h1 class="view-title">Cockpit View</h1>
+        <div class="starburst-divider" aria-hidden="true">
+          <span class="starburst"></span>
+          <span class="starburst-line"></span>
+          <span class="starburst"></span>
+        </div>
+      </div>
+
+      <div class="cockpit-layout">
+        <!-- Instrument Panel Sidebar -->
+        <aside class="instrument-panel">
+          <div class="instrument-gauge">
+            <h4>Fuel Level</h4>
+            <div class="gauge-dial">
+              <div class="gauge-needle" style="--rotation:68deg"></div>
+              <span class="gauge-value">68%</span>
+            </div>
+          </div>
+          <div class="instrument-gauge">
+            <h4>Crew Morale</h4>
+            <div class="gauge-dial">
+              <div class="gauge-needle" style="--rotation:85deg"></div>
+              <span class="gauge-value">85%</span>
+            </div>
+          </div>
+          <div class="instrument-readout">
+            <h4>Mission Clock</h4>
+            <span class="readout-value">T+14d 06:32</span>
+          </div>
+          <div class="instrument-readout">
+            <h4>Velocity</h4>
+            <span class="readout-value">42 pts/week</span>
+          </div>
+          <div class="instrument-readout">
+            <h4>Altitude</h4>
+            <span class="readout-value">Phase 2 / 4</span>
+          </div>
+          <ul class="crew-roster">
+            <li class="crew-member"><span class="crew-dot online"></span> Cpt. Alice</li>
+            <li class="crew-member"><span class="crew-dot online"></span> Lt. Bob</li>
+            <li class="crew-member"><span class="crew-dot away"></span> Eng. Carol</li>
+            <li class="crew-member"><span class="crew-dot offline"></span> Sci. Dave</li>
+          </ul>
+        </aside>
+
+        <!-- Viewport Content Area -->
+        <div class="viewport-area">
+          <div class="viewport-toolbar">
+            <button class="vp-tab active">Overview</button>
+            <button class="vp-tab">Tasks</button>
+            <button class="vp-tab">Docs</button>
+            <button class="vp-tab">Timeline</button>
+          </div>
+          <div class="viewport-content">
+            <div class="vp-section">
+              <h3>Mission Brief</h3>
+              <p>Project Alpha aims to completely redesign the orbital platform using a modular component architecture. The mission encompasses 4 phases spanning 8 weeks.</p>
+            </div>
+            <div class="vp-section">
+              <h3>Current Objectives</h3>
+              <ul class="objective-list">
+                <li class="obj-item complete">Establish component library foundation</li>
+                <li class="obj-item complete">Build navigation module prototype</li>
+                <li class="obj-item active">Integrate telemetry dashboard widgets</li>
+                <li class="obj-item pending">User acceptance testing</li>
+                <li class="obj-item pending">Deploy to production orbit</li>
+              </ul>
+            </div>
+            <div class="vp-section">
+              <h3>Recent Transmissions</h3>
+              <div class="transmission-log">
+                <div class="tx-entry"><span class="tx-time">09:14</span> Alice: Dashboard widgets are looking great.</div>
+                <div class="tx-entry"><span class="tx-time">09:22</span> Bob: Merged the nav module PR.</div>
+                <div class="tx-entry"><span class="tx-time">10:05</span> Carol: Running perf tests on the relay.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- VIEW 4: KANBAN                 -->
+    <!-- ============================== -->
+    <section class="view" data-page="kanban">
+      <div class="view-header">
+        <h1 class="view-title">Orbital Lanes</h1>
+        <div class="starburst-divider" aria-hidden="true">
+          <span class="starburst"></span>
+          <span class="starburst-line"></span>
+          <span class="starburst"></span>
+        </div>
+      </div>
+
+      <div class="orbital-lanes">
+        <!-- Lane 1: Launch Pad -->
+        <div class="launch-lane">
+          <div class="lane-header">
+            <h3>Launch Pad</h3>
+            <span class="lane-count">4</span>
+          </div>
+          <div class="lane-tube">
+            <div class="pod-card">
+              <span class="card-priority high"></span>
+              <h4>Design token system</h4>
+              <p>Define color, spacing, and type tokens.</p>
+              <div class="card-footer"><span class="card-tag">Design</span><span class="card-avatar">A</span></div>
+            </div>
+            <div class="pod-card">
+              <span class="card-priority med"></span>
+              <h4>API schema draft</h4>
+              <p>Draft OpenAPI spec for v2 endpoints.</p>
+              <div class="card-footer"><span class="card-tag">Backend</span><span class="card-avatar">B</span></div>
+            </div>
+            <div class="pod-card">
+              <span class="card-priority low"></span>
+              <h4>Update README</h4>
+              <p>Add setup instructions for new devs.</p>
+              <div class="card-footer"><span class="card-tag">Docs</span><span class="card-avatar">C</span></div>
+            </div>
+            <div class="pod-card">
+              <span class="card-priority med"></span>
+              <h4>Performance audit</h4>
+              <p>Lighthouse + Core Web Vitals check.</p>
+              <div class="card-footer"><span class="card-tag">QA</span><span class="card-avatar">D</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lane 2: In Orbit -->
+        <div class="launch-lane">
+          <div class="lane-header">
+            <h3>In Orbit</h3>
+            <span class="lane-count">3</span>
+          </div>
+          <div class="lane-tube">
+            <div class="pod-card">
+              <span class="card-priority high"></span>
+              <h4>Nav component build</h4>
+              <p>Build Googie-styled navigation shell.</p>
+              <div class="card-footer"><span class="card-tag">Frontend</span><span class="card-avatar">A</span></div>
+            </div>
+            <div class="pod-card">
+              <span class="card-priority med"></span>
+              <h4>Auth flow refactor</h4>
+              <p>Migrate to OAuth 2.1 PKCE flow.</p>
+              <div class="card-footer"><span class="card-tag">Backend</span><span class="card-avatar">B</span></div>
+            </div>
+            <div class="pod-card">
+              <span class="card-priority high"></span>
+              <h4>Dashboard widgets</h4>
+              <p>Orbital ring stats + activity chart.</p>
+              <div class="card-footer"><span class="card-tag">Frontend</span><span class="card-avatar">C</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lane 3: Re-Entry -->
+        <div class="launch-lane">
+          <div class="lane-header">
+            <h3>Re-Entry</h3>
+            <span class="lane-count">2</span>
+          </div>
+          <div class="lane-tube">
+            <div class="pod-card">
+              <span class="card-priority med"></span>
+              <h4>Code review pipeline</h4>
+              <p>Review open PRs for release candidate.</p>
+              <div class="card-footer"><span class="card-tag">DevOps</span><span class="card-avatar">B</span></div>
+            </div>
+            <div class="pod-card">
+              <span class="card-priority low"></span>
+              <h4>Accessibility pass</h4>
+              <p>WCAG 2.1 AA compliance check.</p>
+              <div class="card-footer"><span class="card-tag">QA</span><span class="card-avatar">D</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lane 4: Landed -->
+        <div class="launch-lane">
+          <div class="lane-header">
+            <h3>Landed</h3>
+            <span class="lane-count">3</span>
+          </div>
+          <div class="lane-tube">
+            <div class="pod-card landed">
+              <span class="card-priority low"></span>
+              <h4>Repo setup</h4>
+              <p>Monorepo + CI/CD pipeline config.</p>
+              <div class="card-footer"><span class="card-tag">DevOps</span><span class="card-avatar">A</span></div>
+            </div>
+            <div class="pod-card landed">
+              <span class="card-priority low"></span>
+              <h4>Design mockups v1</h4>
+              <p>Initial Figma comps for all views.</p>
+              <div class="card-footer"><span class="card-tag">Design</span><span class="card-avatar">C</span></div>
+            </div>
+            <div class="pod-card landed">
+              <span class="card-priority low"></span>
+              <h4>Sprint planning</h4>
+              <p>Q1 sprint schedule and milestones.</p>
+              <div class="card-footer"><span class="card-tag">PM</span><span class="card-avatar">A</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- VIEW 5: WHITEBOARD             -->
+    <!-- ============================== -->
+    <section class="view" data-page="whiteboard">
+      <div class="view-header">
+        <h1 class="view-title">Star Map</h1>
+        <div class="starburst-divider" aria-hidden="true">
+          <span class="starburst"></span>
+          <span class="starburst-line"></span>
+          <span class="starburst"></span>
+        </div>
+      </div>
+
+      <div class="starmap-toolbar">
+        <button class="map-tool active" title="Select">&#9678;</button>
+        <button class="map-tool" title="Draw">&#9998;</button>
+        <button class="map-tool" title="Connect">&#8676;</button>
+        <button class="map-tool" title="Text">T</button>
+        <button class="map-tool" title="Erase">&#9003;</button>
+        <span class="tool-divider"></span>
+        <button class="map-tool" title="Zoom In">+</button>
+        <button class="map-tool" title="Zoom Out">&minus;</button>
+        <button class="map-tool" title="Fit View">&#9634;</button>
+      </div>
+
+      <div class="starmap-canvas">
+        <!-- Constellation nodes -->
+        <div class="constellation-node" style="left:15%;top:25%">
+          <span class="node-star">&#9733;</span>
+          <span class="node-label">User Research</span>
+        </div>
+        <div class="constellation-node" style="left:40%;top:15%">
+          <span class="node-star">&#9733;</span>
+          <span class="node-label">Wireframes</span>
+        </div>
+        <div class="constellation-node" style="left:60%;top:30%">
+          <span class="node-star">&#9733;</span>
+          <span class="node-label">Prototypes</span>
+        </div>
+        <div class="constellation-node" style="left:30%;top:50%">
+          <span class="node-star">&#9733;</span>
+          <span class="node-label">Design System</span>
+        </div>
+        <div class="constellation-node" style="left:55%;top:55%">
+          <span class="node-star">&#9733;</span>
+          <span class="node-label">Dev Handoff</span>
+        </div>
+        <div class="constellation-node" style="left:75%;top:20%">
+          <span class="node-star">&#9733;</span>
+          <span class="node-label">Testing</span>
+        </div>
+        <div class="constellation-node" style="left:80%;top:55%">
+          <span class="node-star">&#9733;</span>
+          <span class="node-label">Launch</span>
+        </div>
+        <div class="constellation-node" style="left:20%;top:70%">
+          <span class="node-star">&#9733;</span>
+          <span class="node-label">Feedback</span>
+        </div>
+
+        <!-- SVG Constellation Lines -->
+        <svg class="constellation-lines" viewBox="0 0 1000 600" preserveAspectRatio="none">
+          <line x1="150" y1="150" x2="400" y2="90" />
+          <line x1="400" y1="90" x2="600" y2="180" />
+          <line x1="150" y1="150" x2="300" y2="300" />
+          <line x1="400" y1="90" x2="300" y2="300" />
+          <line x1="600" y1="180" x2="550" y2="330" />
+          <line x1="300" y1="300" x2="550" y2="330" />
+          <line x1="600" y1="180" x2="750" y2="120" />
+          <line x1="750" y1="120" x2="800" y2="330" />
+          <line x1="550" y1="330" x2="800" y2="330" />
+          <line x1="200" y1="420" x2="300" y2="300" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- VIEW 6: SCHEMA PLANNER         -->
+    <!-- ============================== -->
+    <section class="view" data-page="schema-planner">
+      <div class="view-header">
+        <h1 class="view-title">Space Station Planner</h1>
+        <div class="starburst-divider" aria-hidden="true">
+          <span class="starburst"></span>
+          <span class="starburst-line"></span>
+          <span class="starburst"></span>
+        </div>
+      </div>
+
+      <div class="station-planner">
+        <div class="station-module" style="left:5%;top:20%">
+          <div class="module-dish" aria-hidden="true"></div>
+          <h4>Users</h4>
+          <ul class="module-fields">
+            <li><code>id</code> <span>uuid</span></li>
+            <li><code>name</code> <span>string</span></li>
+            <li><code>email</code> <span>string</span></li>
+            <li><code>role</code> <span>enum</span></li>
+          </ul>
+        </div>
+
+        <div class="station-module" style="left:35%;top:10%">
+          <div class="module-dish" aria-hidden="true"></div>
+          <h4>Projects</h4>
+          <ul class="module-fields">
+            <li><code>id</code> <span>uuid</span></li>
+            <li><code>title</code> <span>string</span></li>
+            <li><code>status</code> <span>enum</span></li>
+            <li><code>owner_id</code> <span>fk:Users</span></li>
+          </ul>
+        </div>
+
+        <div class="station-module" style="left:65%;top:15%">
+          <div class="module-dish" aria-hidden="true"></div>
+          <h4>Tasks</h4>
+          <ul class="module-fields">
+            <li><code>id</code> <span>uuid</span></li>
+            <li><code>title</code> <span>string</span></li>
+            <li><code>project_id</code> <span>fk:Projects</span></li>
+            <li><code>assignee_id</code> <span>fk:Users</span></li>
+            <li><code>priority</code> <span>enum</span></li>
+          </ul>
+        </div>
+
+        <div class="station-module" style="left:15%;top:60%">
+          <div class="module-dish" aria-hidden="true"></div>
+          <h4>Ideas</h4>
+          <ul class="module-fields">
+            <li><code>id</code> <span>uuid</span></li>
+            <li><code>content</code> <span>text</span></li>
+            <li><code>author_id</code> <span>fk:Users</span></li>
+            <li><code>project_id</code> <span>fk:Projects</span></li>
+          </ul>
+        </div>
+
+        <div class="station-module" style="left:50%;top:58%">
+          <div class="module-dish" aria-hidden="true"></div>
+          <h4>Comments</h4>
+          <ul class="module-fields">
+            <li><code>id</code> <span>uuid</span></li>
+            <li><code>body</code> <span>text</span></li>
+            <li><code>task_id</code> <span>fk:Tasks</span></li>
+            <li><code>user_id</code> <span>fk:Users</span></li>
+          </ul>
+        </div>
+
+        <!-- Orbital connection lines -->
+        <svg class="orbital-connections" viewBox="0 0 1000 600" preserveAspectRatio="none">
+          <path d="M 200 180 Q 350 100 400 100" class="orbit-path" />
+          <path d="M 500 130 Q 600 80 700 120" class="orbit-path" />
+          <path d="M 200 180 Q 180 400 250 400" class="orbit-path" />
+          <path d="M 400 140 Q 350 350 300 400" class="orbit-path" />
+          <path d="M 750 180 Q 700 400 600 400" class="orbit-path" />
+          <path d="M 200 180 Q 500 250 750 180" class="orbit-path dashed" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- VIEW 7: DIRECTORY TREE         -->
+    <!-- ============================== -->
+    <section class="view" data-page="directory-tree">
+      <div class="view-header">
+        <h1 class="view-title">Antenna Array</h1>
+        <div class="starburst-divider" aria-hidden="true">
+          <span class="starburst"></span>
+          <span class="starburst-line"></span>
+          <span class="starburst"></span>
+        </div>
+      </div>
+
+      <div class="antenna-layout">
+        <div class="antenna-sidebar">
+          <div class="antenna-search">
+            <input type="text" placeholder="Search arrays..." class="search-capsule" />
+          </div>
+          <ul class="antenna-tree">
+            <li class="tree-branch open">
+              <span class="branch-toggle">&#9662;</span>
+              <span class="branch-icon">&#9737;</span>
+              <span class="branch-name">src</span>
+              <ul class="tree-sub">
+                <li class="tree-branch open">
+                  <span class="branch-toggle">&#9662;</span>
+                  <span class="branch-icon">&#9737;</span>
+                  <span class="branch-name">components</span>
+                  <ul class="tree-sub">
+                    <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> Header.tsx</li>
+                    <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> NavTab.tsx</li>
+                    <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> OrbitalRing.tsx</li>
+                    <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> StarburstDivider.tsx</li>
+                  </ul>
+                </li>
+                <li class="tree-branch">
+                  <span class="branch-toggle">&#9656;</span>
+                  <span class="branch-icon">&#9737;</span>
+                  <span class="branch-name">views</span>
+                  <ul class="tree-sub">
+                    <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> Dashboard.tsx</li>
+                    <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> Projects.tsx</li>
+                    <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> Kanban.tsx</li>
+                  </ul>
+                </li>
+                <li class="tree-branch">
+                  <span class="branch-toggle">&#9656;</span>
+                  <span class="branch-icon">&#9737;</span>
+                  <span class="branch-name">hooks</span>
+                  <ul class="tree-sub">
+                    <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> useOrbit.ts</li>
+                    <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> useStarfield.ts</li>
+                  </ul>
+                </li>
+                <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> App.tsx</li>
+                <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> index.tsx</li>
+              </ul>
+            </li>
+            <li class="tree-branch">
+              <span class="branch-toggle">&#9656;</span>
+              <span class="branch-icon">&#9737;</span>
+              <span class="branch-name">public</span>
+              <ul class="tree-sub">
+                <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> index.html</li>
+                <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> favicon.ico</li>
+              </ul>
+            </li>
+            <li class="tree-branch">
+              <span class="branch-toggle">&#9656;</span>
+              <span class="branch-icon">&#9737;</span>
+              <span class="branch-name">tests</span>
+              <ul class="tree-sub">
+                <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> Header.test.tsx</li>
+                <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> Dashboard.test.tsx</li>
+              </ul>
+            </li>
+            <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> package.json</li>
+            <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> tsconfig.json</li>
+            <li class="tree-leaf"><span class="leaf-icon">&#9676;</span> README.md</li>
+          </ul>
+        </div>
+
+        <div class="antenna-preview">
+          <div class="preview-header">
+            <span class="preview-filename">Header.tsx</span>
+            <span class="preview-lang">TypeScript React</span>
+          </div>
+          <pre class="preview-code"><code>import React from 'react';
+import { NavTab } from './NavTab';
+import './Header.css';
+
+export const Header: React.FC = () =&gt; {
+  return (
+    &lt;header className="googie-header"&gt;
+      &lt;div className="logo-pod"&gt;
+        &lt;span className="logo-text"&gt;
+          IdeaLab
+        &lt;/span&gt;
+      &lt;/div&gt;
+      &lt;nav className="googie-nav"&gt;
+        {views.map(v =&gt; (
+          &lt;NavTab key={v.id} {...v} /&gt;
+        ))}
+      &lt;/nav&gt;
+    &lt;/header&gt;
+  );
+};</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- VIEW 8: IDEAS                  -->
+    <!-- ============================== -->
+    <section class="view" data-page="ideas">
+      <div class="view-header">
+        <h1 class="view-title">Shooting Stars</h1>
+        <div class="starburst-divider" aria-hidden="true">
+          <span class="starburst"></span>
+          <span class="starburst-line"></span>
+          <span class="starburst"></span>
+        </div>
+      </div>
+
+      <!-- Orbital Capture Input -->
+      <div class="orbital-capture">
+        <div class="capture-ring" aria-hidden="true">
+          <span class="capture-electron"></span>
+        </div>
+        <div class="capture-form">
+          <input type="text" class="idea-input" placeholder="Capture a new idea..." />
+          <button class="launch-idea-btn">Launch &#9733;</button>
+        </div>
+      </div>
+
+      <!-- Ideas Stream -->
+      <div class="comet-stream">
+        <div class="comet-card">
+          <span class="comet-tail" aria-hidden="true"></span>
+          <div class="comet-body">
+            <h4>AI-powered meeting summarizer</h4>
+            <p>Use LLM to auto-generate meeting notes with action items and owners.</p>
+            <div class="comet-meta">
+              <span class="comet-author">Alice</span>
+              <span class="comet-time">2h ago</span>
+              <span class="comet-votes">&#9733; 12</span>
+            </div>
+          </div>
+        </div>
+        <div class="comet-card">
+          <span class="comet-tail" aria-hidden="true"></span>
+          <div class="comet-body">
+            <h4>Gamified onboarding flow</h4>
+            <p>New users complete missions to learn the platform, earning badges.</p>
+            <div class="comet-meta">
+              <span class="comet-author">Bob</span>
+              <span class="comet-time">5h ago</span>
+              <span class="comet-votes">&#9733; 8</span>
+            </div>
+          </div>
+        </div>
+        <div class="comet-card">
+          <span class="comet-tail" aria-hidden="true"></span>
+          <div class="comet-body">
+            <h4>Voice command interface</h4>
+            <p>Navigate and create items via voice commands for hands-free operation.</p>
+            <div class="comet-meta">
+              <span class="comet-author">Carol</span>
+              <span class="comet-time">1d ago</span>
+              <span class="comet-votes">&#9733; 15</span>
+            </div>
+          </div>
+        </div>
+        <div class="comet-card">
+          <span class="comet-tail" aria-hidden="true"></span>
+          <div class="comet-body">
+            <h4>Drag-and-drop priority matrix</h4>
+            <p>Eisenhower matrix view where items can be dragged between quadrants.</p>
+            <div class="comet-meta">
+              <span class="comet-author">Dave</span>
+              <span class="comet-time">1d ago</span>
+              <span class="comet-votes">&#9733; 6</span>
+            </div>
+          </div>
+        </div>
+        <div class="comet-card">
+          <span class="comet-tail" aria-hidden="true"></span>
+          <div class="comet-body">
+            <h4>Cross-project dependency graph</h4>
+            <p>Visual map of dependencies between different project work streams.</p>
+            <div class="comet-meta">
+              <span class="comet-author">Alice</span>
+              <span class="comet-time">2d ago</span>
+              <span class="comet-votes">&#9733; 19</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- VIEW 9: AI CHAT                -->
+    <!-- ============================== -->
+    <section class="view" data-page="ai-chat">
+      <div class="view-header">
+        <h1 class="view-title">Space Radio</h1>
+        <div class="starburst-divider" aria-hidden="true">
+          <span class="starburst"></span>
+          <span class="starburst-line"></span>
+          <span class="starburst"></span>
+        </div>
+      </div>
+
+      <div class="radio-comm">
+        <div class="signal-display">
+          <div class="signal-wave" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <span class="freq-label">Freq: 42.0 MHz &mdash; AI Channel</span>
+        </div>
+
+        <div class="comm-log">
+          <div class="comm-message outgoing">
+            <div class="msg-signal" aria-hidden="true">
+              <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+            </div>
+            <div class="msg-content">
+              <p>Can you help me plan the sprint backlog for Project Alpha?</p>
+              <span class="msg-meta">You &middot; 10:30</span>
+            </div>
+          </div>
+          <div class="comm-message incoming">
+            <div class="msg-signal" aria-hidden="true">
+              <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+            </div>
+            <div class="msg-content">
+              <p>Roger that! Based on Project Alpha's current velocity of 42 pts/week, I'd recommend breaking the remaining work into 3 sprints. Here's a suggested breakdown:</p>
+              <ul>
+                <li><strong>Sprint 3:</strong> Dashboard widgets, notification system (18 pts)</li>
+                <li><strong>Sprint 4:</strong> Search, filtering, export features (22 pts)</li>
+                <li><strong>Sprint 5:</strong> Polish, testing, deployment prep (16 pts)</li>
+              </ul>
+              <span class="msg-meta">AI Copilot &middot; 10:31</span>
+            </div>
+          </div>
+          <div class="comm-message outgoing">
+            <div class="msg-signal" aria-hidden="true">
+              <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+            </div>
+            <div class="msg-content">
+              <p>That looks great. Can you also generate user stories for the notification system?</p>
+              <span class="msg-meta">You &middot; 10:32</span>
+            </div>
+          </div>
+          <div class="comm-message incoming">
+            <div class="msg-signal" aria-hidden="true">
+              <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+            </div>
+            <div class="msg-content">
+              <p>Affirmative! Here are 4 user stories for the notification module:</p>
+              <ol>
+                <li>As a user, I want to receive real-time notifications when tasks are assigned to me.</li>
+                <li>As a user, I want to customize my notification preferences per project.</li>
+                <li>As a team lead, I want digest summaries of team activity sent daily.</li>
+                <li>As a user, I want to snooze notifications for focused work periods.</li>
+              </ol>
+              <span class="msg-meta">AI Copilot &middot; 10:33</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comm-input-area">
+          <div class="input-freq-indicator" aria-hidden="true">
+            <span class="freq-dot"></span>
+            <span class="freq-dot"></span>
+            <span class="freq-dot"></span>
+          </div>
+          <input type="text" class="comm-input" placeholder="Transmit message..." />
+          <button class="transmit-btn">Transmit &#9737;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- VIEW 10: SETTINGS              -->
+    <!-- ============================== -->
+    <section class="view" data-page="settings">
+      <div class="view-header">
+        <h1 class="view-title">Space Console</h1>
+        <div class="starburst-divider" aria-hidden="true">
+          <span class="starburst"></span>
+          <span class="starburst-line"></span>
+          <span class="starburst"></span>
+        </div>
+      </div>
+
+      <div class="console-layout">
+        <!-- Profile Module -->
+        <div class="console-panel profile-console">
+          <h3 class="console-heading">Pilot Profile</h3>
+          <div class="pilot-card">
+            <div class="pilot-avatar">
+              <span class="avatar-ring" aria-hidden="true"></span>
+              <span class="avatar-initials">CP</span>
+            </div>
+            <div class="pilot-info">
+              <label>Callsign</label>
+              <input type="text" value="Captain Pilot" class="console-input" />
+              <label>Frequency</label>
+              <input type="email" value="pilot@idealab.space" class="console-input" />
+              <label>Rank</label>
+              <input type="text" value="Mission Commander" class="console-input" readonly />
+            </div>
+          </div>
+        </div>
+
+        <!-- Dial Controls -->
+        <div class="console-panel dials-console">
+          <h3 class="console-heading">Control Dials</h3>
+          <div class="dial-row">
+            <div class="dial-control">
+              <label>Font Size</label>
+              <div class="dial-knob" data-value="16">
+                <div class="knob-indicator"></div>
+              </div>
+              <span class="dial-readout">16px</span>
+            </div>
+            <div class="dial-control">
+              <label>Zoom Level</label>
+              <div class="dial-knob" data-value="100">
+                <div class="knob-indicator"></div>
+              </div>
+              <span class="dial-readout">100%</span>
+            </div>
+            <div class="dial-control">
+              <label>Density</label>
+              <div class="dial-knob" data-value="2">
+                <div class="knob-indicator"></div>
+              </div>
+              <span class="dial-readout">Normal</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toggle Switches -->
+        <div class="console-panel toggles-console">
+          <h3 class="console-heading">Orbital Switches</h3>
+          <div class="toggle-row">
+            <div class="orbital-toggle">
+              <span class="toggle-label">Dark Nebula Mode</span>
+              <button class="toggle-switch" aria-pressed="false">
+                <span class="toggle-orbit">
+                  <span class="toggle-planet"></span>
+                </span>
+              </button>
+            </div>
+            <div class="orbital-toggle">
+              <span class="toggle-label">Sound Effects</span>
+              <button class="toggle-switch active" aria-pressed="true">
+                <span class="toggle-orbit">
+                  <span class="toggle-planet"></span>
+                </span>
+              </button>
+            </div>
+            <div class="orbital-toggle">
+              <span class="toggle-label">Auto-Save</span>
+              <button class="toggle-switch active" aria-pressed="true">
+                <span class="toggle-orbit">
+                  <span class="toggle-planet"></span>
+                </span>
+              </button>
+            </div>
+            <div class="orbital-toggle">
+              <span class="toggle-label">Notifications</span>
+              <button class="toggle-switch active" aria-pressed="true">
+                <span class="toggle-orbit">
+                  <span class="toggle-planet"></span>
+                </span>
+              </button>
+            </div>
+            <div class="orbital-toggle">
+              <span class="toggle-label">Telemetry</span>
+              <button class="toggle-switch" aria-pressed="false">
+                <span class="toggle-orbit">
+                  <span class="toggle-planet"></span>
+                </span>
+              </button>
+            </div>
+            <div class="orbital-toggle">
+              <span class="toggle-label">Compact View</span>
+              <button class="toggle-switch" aria-pressed="false">
+                <span class="toggle-orbit">
+                  <span class="toggle-planet"></span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="console-panel danger-console">
+          <h3 class="console-heading">Self-Destruct Zone</h3>
+          <p class="danger-warning">These actions are irreversible. Proceed with extreme caution.</p>
+          <div class="danger-actions">
+            <button class="danger-btn">Reset All Settings</button>
+            <button class="danger-btn critical">Delete Account</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

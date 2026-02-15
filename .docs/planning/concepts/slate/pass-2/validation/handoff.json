@@ -1,0 +1,91 @@
+{
+  "concept": "slate",
+  "pass": 2,
+  "variantSeed": "layered-bedrock-strata",
+  "generatedAt": "2026-02-15",
+  "style": {
+    "name": "Strata Console",
+    "description": "Geological strata layout with protruding stone layers at varying visual depths, top bar tablet navigation, dense multi-column grids",
+    "palette": {
+      "background": "#1a1a20",
+      "backgroundDeeper": "#141418",
+      "backgroundDeepest": "#10101a",
+      "surface": "#252530",
+      "surfaceLight": "#2e2e3a",
+      "accent": "#d4a843",
+      "accent2": "#5a7f6b",
+      "text": "#c8c4bc",
+      "textMid": "#908c84",
+      "textFaint": "#5e5c56",
+      "border": "#35353f",
+      "borderHover": "#45454f"
+    },
+    "typography": {
+      "headingFont": "Rajdhani",
+      "bodyFont": "Source Serif 4",
+      "monoFont": "IBM Plex Mono",
+      "headingLetterSpacing": "0.08-0.14em",
+      "headingWeight": "300-400",
+      "headingTransform": "uppercase"
+    },
+    "layout": {
+      "profile": "strata-depth-layers",
+      "topbarHeight": "52px",
+      "maxContentWidth": "1400px",
+      "borderRadius": "3-5px",
+      "density": "dense",
+      "alignment": "center",
+      "columns": "3-4"
+    },
+    "depth": {
+      "technique": "external box-shadow (protruding/elevated)",
+      "elevation1": "0 2px 4px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.25)",
+      "elevation2": "0 4px 10px rgba(0,0,0,0.40), 0 2px 4px rgba(0,0,0,0.30)",
+      "elevation3": "0 8px 20px rgba(0,0,0,0.45), 0 3px 6px rgba(0,0,0,0.35)",
+      "gradient": "CSS linear-gradient darker at bottom, lighter at top (geological strata)"
+    },
+    "motion": {
+      "type": "translateY + opacity emerge",
+      "duration": "300-400ms",
+      "easing": "ease-out"
+    }
+  },
+  "structuralDifferencesFromPass1": {
+    "navigation": "TOP BAR with stone tablet tabs (pass 1 uses LEFT RAIL)",
+    "depthModel": "PROTRUDING/ELEVATED external box-shadows (pass 1 uses INSET/RECESSED)",
+    "contentLayout": "DENSE MULTI-COLUMN grid 3-4 columns (pass 1 uses compact single-column)",
+    "metaphor": "STACKED stone layers at different heights (pass 1 is carved INTO stone)",
+    "shell": "Full-width centered max-width (pass 1 is sidebar + main split)",
+    "motion": "400ms ease-out emerge (pass 1 is 150ms opacity fade)"
+  },
+  "views": [
+    { "name": "dashboard", "label": "Dashboard", "dataView": "dashboard", "dataPage": "dashboard" },
+    { "name": "projects", "label": "Projects", "dataView": "projects", "dataPage": "projects" },
+    { "name": "project-workspace", "label": "Project Workspace", "dataView": "project-workspace", "dataPage": "project-workspace" },
+    { "name": "kanban", "label": "Kanban Board", "dataView": "kanban", "dataPage": "kanban" },
+    { "name": "whiteboard", "label": "Whiteboard", "dataView": "whiteboard", "dataPage": "whiteboard" },
+    { "name": "schema-planner", "label": "Schema Planner", "dataView": "schema-planner", "dataPage": "schema-planner" },
+    { "name": "directory-tree", "label": "Directory", "dataView": "directory-tree", "dataPage": "directory-tree" },
+    { "name": "ideas", "label": "Ideas", "dataView": "ideas", "dataPage": "ideas" },
+    { "name": "ai-chat", "label": "AI Chat", "dataView": "ai-chat", "dataPage": "ai-chat" },
+    { "name": "settings", "label": "Settings", "dataView": "settings", "dataPage": "settings" }
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ],
+  "externalDependencies": [
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Rajdhani:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap"
+  ],
+  "animationLibraries": [],
+  "mediaAssets": [],
+  "navigation": {
+    "type": "hash-based",
+    "mechanism": "data-view/data-page attribute matching with top bar tablet tabs",
+    "transition": "CSS translateY + opacity 400ms ease-out"
+  }
+}
