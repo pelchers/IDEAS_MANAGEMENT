@@ -1,0 +1,76 @@
+{
+  "styleId": "mid-century-modern",
+  "pass": 4,
+  "layoutArchetype": "noguchi-sculpture-garden",
+  "references": [
+    {
+      "name": "The Noguchi Museum",
+      "url": "https://www.noguchi.org",
+      "takeaway": "Center each content element as a solitary sculptural object floating in expansive negative space",
+      "influences": [
+        {
+          "area": "Dashboard metrics",
+          "description": "Each metric is presented as a solitary sculptural object with vast whitespace around it. The sculpture-metric cards have no borders or embellishments — just large typography floating in space, like a Noguchi piece on a white plinth. The grid uses asymmetric offsets (sculpture-metric--offset) so cards do not align rigidly."
+        },
+        {
+          "area": "Whiteboard (Mood Board) view",
+          "description": "Nodes are placed asymmetrically across the canvas with enormous gaps between them, connected by thin lines. Each node is a minimal text element sitting alone in its area — the same visual logic as sculptures in the museum's outdoor garden where 60%+ of the viewport is intentional emptiness."
+        },
+        {
+          "area": "Ideas (Journal) view",
+          "description": "Each idea occupies its own full-width row separated by vast negative space and thin rules, mimicking the museum's collection pages where each artwork gets its own full-viewport section. Only the title and one line of description are shown — sculptural minimalism."
+        },
+        {
+          "area": "Overall navigation",
+          "description": "The hidden-hamburger shell with fullscreen overlay menu mirrors the Noguchi Museum's minimal navigation — just a few text links with no iconography or decoration. Navigation is presented as a curated list of text items, not as a persistent toolbar."
+        }
+      ]
+    },
+    {
+      "name": "Aman Resorts",
+      "url": "https://www.aman.com",
+      "takeaway": "Use slow, almost imperceptible parallax drift on background imagery to create a meditative scroll rhythm",
+      "influences": [
+        {
+          "area": "Scroll behavior (parallax-layers)",
+          "description": "Elements with data-parallax attributes drift at different speeds during scroll, creating subtle depth separation. The parallax speeds are deliberately low (0.02-0.06) to create an almost imperceptible drift — the viewer senses depth without consciously noticing the motion, matching Aman's slow Ken Burns zoom-drift aesthetic."
+        },
+        {
+          "area": "Page transitions",
+          "description": "The fade-through-white page transition mimics the seamless flow of Aman's continuous vertical scroll. Views dissolve through a white paper overlay rather than sliding or cutting, creating the sensation of turning a page in a luxury catalog."
+        },
+        {
+          "area": "Typography treatment",
+          "description": "Whisper-thin serif type (Cormorant Garamond at weight 300) in large sizes with wide letter-spacing on labels reflects Aman's approach to overlaying elegant serif typography over space. The page titles are cinematic in scale but featherweight in stroke."
+        },
+        {
+          "area": "Smooth scroll (Lenis)",
+          "description": "The 1.6s Lenis smooth scroll duration creates the meditative scroll rhythm that Aman achieves — scrolling feels like slowly panning a camera through a physical space rather than flicking through a webpage."
+        }
+      ]
+    },
+    {
+      "name": "Muji",
+      "url": "https://www.muji.com",
+      "takeaway": "Restrict the entire palette to 3 materials — white, warm grey, and one natural accent — and use visual quietness to make content placement the primary design gesture",
+      "influences": [
+        {
+          "area": "Color system",
+          "description": "The entire palette is restricted to warm paper (#eee9e2), warm stone (#a09080), and sage (#7a8b6f) — essentially 3 material tones plus text. There are no bright colors, no gradients, no decorative hues. The visual quietness forces the eye to notice spatial relationships and typography rather than color."
+        },
+        {
+          "area": "Content density",
+          "description": "Following Muji's 'one hero image and one line of text per section' approach, each view presents minimal information per viewport. The Properties view shows one property per scroll section. The Dashboard shows only 4 metrics. The Settings view uses vast whitespace between sections. Information density is deliberately suppressed."
+        },
+        {
+          "area": "Component surfaces",
+          "description": "Cards and surfaces use pure white (#f7f4ef) with no visible borders, no rounded corners, and minimal shadows — objects are presented on pure white backgrounds with deliberate emptiness around each one, exactly like Muji product presentation."
+        },
+        {
+          "area": "Paper texture",
+          "description": "A barely-visible (3% opacity) diagonal-line texture overlays the entire body, adding a tactile quality reminiscent of Muji's kraft paper aesthetic without any visible pattern. It creates the suggestion of a natural material surface."
+        }
+      ]
+    }
+  ]
+}

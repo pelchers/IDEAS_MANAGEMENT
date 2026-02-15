@@ -1,0 +1,51 @@
+{
+  "styleId": "brutalist",
+  "pass": 4,
+  "layoutArchetype": "construction-zone-blueprint",
+  "references": [
+    {
+      "name": "Figma",
+      "url": "https://www.figma.com",
+      "traits_used": [
+        "infinite canvas with visible dot-grid background showing coordinate space",
+        "selection handles, bounding boxes, and measurement overlays as interaction affordances"
+      ],
+      "influence_mapping": {
+        "global": "The entire body background uses a 24px graph-paper grid (CSS linear-gradient) that pulses subtly, emulating Figma's infinite canvas dot-grid coordinate space. This creates the feeling that every element is placed on a measurable surface.",
+        "dashboard": "Stat tiles and data tables sit on the grid like objects on a Figma canvas, with dashed bounding-box outlines appearing on hover — directly inspired by Figma's selection handles and bounding boxes.",
+        "project-workspace": "SVG technical drawings include dimension annotations (12,400 mm, 4,200 mm) with arrow endpoints, directly referencing Figma's measurement overlays between selected objects.",
+        "whiteboard": "Canvas area has explicit ruler edges with pixel values (0, 100, 200...) along top and side, mirroring Figma's ruler system. Nodes on the canvas have visible reference IDs (WB-01, WB-02) like Figma layer names.",
+        "ideas": "Bubble chart plots ideas on a grid with labeled axes (IMPACT vs FEASIBILITY), treating each idea as a positioned object on a canvas — the spatial, coordinate-based layout is Figma-inspired."
+      }
+    },
+    {
+      "name": "Miro",
+      "url": "https://miro.com",
+      "traits_used": [
+        "sticky-note cards with hand-drawn-style borders scattered in spatial (non-linear) arrangement",
+        "connector lines and arrows drawn between content blocks showing relationships"
+      ],
+      "influence_mapping": {
+        "whiteboard": "Nodes are positioned spatially (not in a strict grid) at absolute coordinates on the canvas, with Rough.js hand-drawn connector lines linking them — directly inspired by Miro's sticky-note clusters with connector arrows. The imperfect, sketchy line quality of Rough.js mirrors Miro's informal, whiteboard-native feel.",
+        "schema-planner": "Terminal blocks are positioned in a spatial arrangement with Rough.js wire paths connecting related entities, inspired by Miro's approach of drawing relationships between scattered content blocks. The orange pin connectors at endpoints reference Miro's connector attachment points.",
+        "kanban": "Cards can be dragged between columns (via SortableJS), inspired by Miro's movable sticky-note interaction model. The zone marker system (A, B, C, D) adds a spatial labeling convention."
+      }
+    },
+    {
+      "name": "ArchDaily",
+      "url": "https://www.archdaily.com",
+      "traits_used": [
+        "architectural drawing overlays — floor plans, sections, and elevations used as content frames",
+        "technical specification callouts with leader lines pointing to building details",
+        "dense project metadata grids (architect, area, year, materials) in standardized spec-sheet format"
+      ],
+      "influence_mapping": {
+        "project-workspace": "The main workspace presents SVG architectural sections (PIER CAP DETAIL // SECTION A-A, ABUTMENT PROFILE // SECTION B-B) with dimension annotations and dashed structural outlines — directly inspired by ArchDaily's architectural drawing overlays. The sidebar presents dense metadata (dimensions, materials, responsible engineers) in the standardized spec-sheet format characteristic of ArchDaily project pages.",
+        "dashboard": "Stat tiles use large stencil-type values with explicit unit annotations (m3, workers, YTD) — the measurement callout style from ArchDaily's technical specifications. The data table uses headers styled like drawing title blocks.",
+        "directory-tree": "Each file entry includes a reference number in brackets ([DWG-101], [GEO-201]) and a document type classification (DRAWING, REPORT, SPEC, METHOD) — inspired by ArchDaily's standardized, densely annotated project metadata format.",
+        "projects": "The Gantt-chart timeline with phase bars and month grids resembles ArchDaily's project timeline presentations, with project codes (MC-2601) and phase labels as specification callouts.",
+        "global": "Every page includes a REF annotation (REF: MC-DASH-001) in the header, timestamp metadata, and section cross-references, creating a technical specification document feel throughout the entire application — the ArchDaily influence on presenting information as architectural documentation."
+      }
+    }
+  ]
+}

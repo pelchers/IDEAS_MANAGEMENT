@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mesa Trail Manager — Sandstone Desert Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;600;700&family=Libre+Franklin:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.7/dist/tippy.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Loading overlay -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="hourglass-loader">
+      <div class="hourglass-frame">
+        <div class="hourglass-top"></div>
+        <div class="hourglass-sand"></div>
+        <div class="hourglass-bottom"></div>
+      </div>
+      <span class="loading-text">Loading trail data...</span>
+    </div>
+  </div>
+
+  <!-- Heat shimmer ambient layer -->
+  <div id="heat-shimmer" class="heat-shimmer-layer"></div>
+
+  <!-- Dust puff container for click effects -->
+  <div id="dust-puff-container" class="dust-puff-container"></div>
+
+  <!-- Micro-feedback toast -->
+  <div id="micro-feedback" class="micro-feedback hidden">
+    <svg class="sage-check" viewBox="0 0 24 24" width="18" height="18"><polyline points="4 12 9 17 20 6" fill="none" stroke="#7a8a6a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="feedback-msg">Action completed</span>
+  </div>
+
+  <!-- Top Toolbar Shell -->
+  <header class="top-toolbar">
+    <div class="toolbar-brand">
+      <svg class="brand-icon" viewBox="0 0 28 28" width="28" height="28">
+        <polygon points="14,2 26,24 2,24" fill="none" stroke="#c4622a" stroke-width="2" stroke-linejoin="round"/>
+        <line x1="8" y1="18" x2="20" y2="18" stroke="#c4622a" stroke-width="1.5"/>
+        <line x1="10" y1="13" x2="18" y2="13" stroke="#d4c0a0" stroke-width="1"/>
+      </svg>
+      <span class="brand-name">Mesa Trail</span>
+    </div>
+
+    <nav class="toolbar-nav" id="toolbar-nav">
+      <button class="toolbar-btn active" data-view="dashboard" data-tippy-content="Overview of all trail operations">
+        <svg viewBox="0 0 20 20" width="16" height="16"><rect x="2" y="2" width="7" height="7" rx="1" fill="currentColor"/><rect x="11" y="2" width="7" height="7" rx="1" fill="currentColor" opacity="0.5"/><rect x="2" y="11" width="7" height="7" rx="1" fill="currentColor" opacity="0.5"/><rect x="11" y="11" width="7" height="7" rx="1" fill="currentColor" opacity="0.3"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="toolbar-btn" data-view="projects" data-tippy-content="Explore all trail projects">
+        <svg viewBox="0 0 20 20" width="16" height="16"><path d="M3 4h14M3 8h14M3 12h10M3 16h6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <span>Projects</span>
+      </button>
+      <button class="toolbar-btn" data-view="project-workspace" data-tippy-content="Active project canyon workspace">
+        <svg viewBox="0 0 20 20" width="16" height="16"><rect x="2" y="3" width="16" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="3" x2="8" y2="17" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>Workspace</span>
+      </button>
+      <button class="toolbar-btn" data-view="kanban" data-tippy-content="Task canyon layers board">
+        <svg viewBox="0 0 20 20" width="16" height="16"><rect x="2" y="2" width="4" height="16" rx="1" fill="currentColor" opacity="0.3"/><rect x="8" y="2" width="4" height="12" rx="1" fill="currentColor" opacity="0.5"/><rect x="14" y="2" width="4" height="8" rx="1" fill="currentColor" opacity="0.7"/></svg>
+        <span>Kanban</span>
+      </button>
+      <button class="toolbar-btn" data-view="whiteboard" data-tippy-content="Desert canvas planning">
+        <svg viewBox="0 0 20 20" width="16" height="16"><circle cx="6" cy="6" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="14" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="8.5" y1="8.5" x2="11.5" y2="11.5" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/></svg>
+        <span>Whiteboard</span>
+      </button>
+      <button class="toolbar-btn" data-view="schema-planner" data-tippy-content="Geological survey schema">
+        <svg viewBox="0 0 20 20" width="16" height="16"><rect x="2" y="2" width="6" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="13" width="6" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.5H10V15.5H12" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        <span>Schema</span>
+      </button>
+      <button class="toolbar-btn" data-view="directory-tree" data-tippy-content="Canyon-rim file hierarchy">
+        <svg viewBox="0 0 20 20" width="16" height="16"><path d="M4 3v14M4 7h4M4 11h6M4 15h3M10 11v4h3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <span>Directory</span>
+      </button>
+      <button class="toolbar-btn" data-view="ideas" data-tippy-content="Mesa formation idea wall">
+        <svg viewBox="0 0 20 20" width="16" height="16"><path d="M10 2C6.5 2 4 5 4 8c0 2 1 3.5 2.5 4.5V15h7v-2.5C15 11.5 16 10 16 8c0-3-2.5-6-6-6z" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="7.5" y1="18" x2="12.5" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>Ideas</span>
+      </button>
+      <button class="toolbar-btn" data-view="ai-chat" data-tippy-content="Ranger dispatch field notes">
+        <svg viewBox="0 0 20 20" width="16" height="16"><path d="M4 4h12a1 1 0 011 1v8a1 1 0 01-1 1H8l-3 3v-3H4a1 1 0 01-1-1V5a1 1 0 011-1z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>Dispatch</span>
+      </button>
+      <button class="toolbar-btn" data-view="settings" data-tippy-content="Trail guide configuration">
+        <svg viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M4.2 15.8l1.4-1.4M14.4 5.6l1.4-1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
+    <div class="toolbar-actions">
+      <div class="toolbar-search">
+        <svg viewBox="0 0 20 20" width="14" height="14"><circle cx="8" cy="8" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="12" x2="17" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input type="text" placeholder="Search trails..." class="search-input">
+      </div>
+      <div class="user-badge" data-tippy-content="Trail Ranger: Sarah Sandstone">
+        <div class="avatar-circle">SS</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav drawer -->
+  <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+    <div class="mobile-nav-inner"></div>
+  </div>
+
+  <!-- Main content area with independent scroll regions -->
+  <main class="split-pane-container" id="main-content">
+
+    <!-- ========== DASHBOARD ========== -->
+    <section class="view-page active" data-page="dashboard">
+      <div class="split-pane-layout dashboard-layout">
+        <div class="pane pane-primary" data-resizable="true">
+          <div class="pane-header">
+            <h2 class="pane-title">Mesa Overview</h2>
+            <span class="pane-subtitle">Trail Operations Summary</span>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="mesa-stat-formations">
+              <div class="stat-formation stat-tall">
+                <div class="formation-cap"></div>
+                <div class="formation-value">47</div>
+                <div class="formation-label">Active Trails</div>
+                <div class="formation-change up">+5 this season</div>
+              </div>
+              <div class="stat-formation stat-medium">
+                <div class="formation-cap"></div>
+                <div class="formation-value">1,284</div>
+                <div class="formation-label">Trail Miles Mapped</div>
+                <div class="formation-change up">+120 mi</div>
+              </div>
+              <div class="stat-formation stat-short">
+                <div class="formation-cap"></div>
+                <div class="formation-value">89%</div>
+                <div class="formation-label">Conservation Score</div>
+                <div class="formation-change neutral">Steady</div>
+              </div>
+              <div class="stat-formation stat-tall">
+                <div class="formation-cap"></div>
+                <div class="formation-value">12</div>
+                <div class="formation-label">Ranger Stations</div>
+                <div class="formation-change up">+2 new</div>
+              </div>
+            </div>
+            <div class="dried-earth-divider"></div>
+            <div class="dashboard-section">
+              <h3 class="section-heading">Recent Trail Activity</h3>
+              <div class="activity-list">
+                <div class="activity-item">
+                  <span class="activity-marker terracotta"></span>
+                  <div class="activity-content">
+                    <strong>Canyonlands Loop</strong> trail assessment completed
+                    <span class="activity-time">2 hours ago</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <span class="activity-marker sage"></span>
+                  <div class="activity-content">
+                    <strong>Mesa Verde Connector</strong> vegetation survey submitted
+                    <span class="activity-time">5 hours ago</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <span class="activity-marker terracotta"></span>
+                  <div class="activity-content">
+                    <strong>Desert Bighorn Overlook</strong> signage installation approved
+                    <span class="activity-time">Yesterday</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <span class="activity-marker sage"></span>
+                  <div class="activity-content">
+                    <strong>Petroglyph Basin</strong> cultural site boundary markers placed
+                    <span class="activity-time">2 days ago</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <span class="activity-marker terracotta"></span>
+                  <div class="activity-content">
+                    <strong>Sunset Arch Trail</strong> erosion mitigation phase 1 done
+                    <span class="activity-time">3 days ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pane-resizer" data-resizer="true"></div>
+        <div class="pane pane-secondary">
+          <div class="pane-header">
+            <h2 class="pane-title">Season Metrics</h2>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="metric-bar-chart">
+              <div class="metric-bar-row">
+                <span class="bar-label">Visitor Count</span>
+                <div class="bar-track"><div class="bar-fill" style="width:78%" data-value="34,200"></div></div>
+              </div>
+              <div class="metric-bar-row">
+                <span class="bar-label">Wildlife Sightings</span>
+                <div class="bar-track"><div class="bar-fill sage" style="width:62%" data-value="891"></div></div>
+              </div>
+              <div class="metric-bar-row">
+                <span class="bar-label">Trail Maintenance</span>
+                <div class="bar-track"><div class="bar-fill" style="width:91%" data-value="91%"></div></div>
+              </div>
+              <div class="metric-bar-row">
+                <span class="bar-label">Water Sources</span>
+                <div class="bar-track"><div class="bar-fill sage" style="width:45%" data-value="18 active"></div></div>
+              </div>
+              <div class="metric-bar-row">
+                <span class="bar-label">Fire Risk Index</span>
+                <div class="bar-track"><div class="bar-fill warning" style="width:35%" data-value="Moderate"></div></div>
+              </div>
+            </div>
+            <div class="dried-earth-divider"></div>
+            <div class="upcoming-events">
+              <h3 class="section-heading">Upcoming Events</h3>
+              <div class="event-card">
+                <span class="event-date">Mar 15</span>
+                <span class="event-name">Spring Wildflower Survey</span>
+              </div>
+              <div class="event-card">
+                <span class="event-date">Mar 22</span>
+                <span class="event-name">Desert Tortoise Census</span>
+              </div>
+              <div class="event-card">
+                <span class="event-date">Apr 1</span>
+                <span class="event-name">Trail Opening: Slot Canyon Route</span>
+              </div>
+              <div class="event-card">
+                <span class="event-date">Apr 10</span>
+                <span class="event-name">Ranger Training: Flash Flood Safety</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS ========== -->
+    <section class="view-page" data-page="projects">
+      <div class="split-pane-layout">
+        <div class="pane pane-full">
+          <div class="pane-header">
+            <h2 class="pane-title">Trail Project Map</h2>
+            <span class="pane-subtitle">All active and planned trail initiatives</span>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="trail-map-layout">
+              <svg class="trail-path-svg" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid meet">
+                <path class="trail-path-line" d="M50,500 C150,450 200,350 300,320 S450,380 500,300 S600,200 700,250 S800,150 850,100" fill="none" stroke="#d4c0a0" stroke-width="3" stroke-dasharray="8 4"/>
+              </svg>
+              <div class="trail-waypoints">
+                <div class="waypoint" style="--wp-x:5%;--wp-y:80%">
+                  <div class="waypoint-marker"></div>
+                  <div class="waypoint-card">
+                    <h4 class="waypoint-name">Red Rock Interpretive Trail</h4>
+                    <div class="waypoint-meta">
+                      <span class="elevation">Elev: 4,200 ft</span>
+                      <span class="distance">3.2 mi loop</span>
+                    </div>
+                    <span class="waypoint-status active">Active</span>
+                  </div>
+                </div>
+                <div class="waypoint" style="--wp-x:25%;--wp-y:52%">
+                  <div class="waypoint-marker"></div>
+                  <div class="waypoint-card">
+                    <h4 class="waypoint-name">Cottonwood Spring Restoration</h4>
+                    <div class="waypoint-meta">
+                      <span class="elevation">Elev: 3,800 ft</span>
+                      <span class="distance">5.7 mi</span>
+                    </div>
+                    <span class="waypoint-status planning">Planning</span>
+                  </div>
+                </div>
+                <div class="waypoint" style="--wp-x:45%;--wp-y:55%">
+                  <div class="waypoint-marker"></div>
+                  <div class="waypoint-card">
+                    <h4 class="waypoint-name">Juniper Mesa Overlook</h4>
+                    <div class="waypoint-meta">
+                      <span class="elevation">Elev: 5,100 ft</span>
+                      <span class="distance">1.8 mi out-and-back</span>
+                    </div>
+                    <span class="waypoint-status active">Active</span>
+                  </div>
+                </div>
+                <div class="waypoint" style="--wp-x:60%;--wp-y:38%">
+                  <div class="waypoint-marker"></div>
+                  <div class="waypoint-card">
+                    <h4 class="waypoint-name">Painted Desert Corridor</h4>
+                    <div class="waypoint-meta">
+                      <span class="elevation">Elev: 5,600 ft</span>
+                      <span class="distance">12.4 mi point-to-point</span>
+                    </div>
+                    <span class="waypoint-status review">In Review</span>
+                  </div>
+                </div>
+                <div class="waypoint" style="--wp-x:78%;--wp-y:30%">
+                  <div class="waypoint-marker"></div>
+                  <div class="waypoint-card">
+                    <h4 class="waypoint-name">Sandstone Arch Preserve</h4>
+                    <div class="waypoint-meta">
+                      <span class="elevation">Elev: 4,900 ft</span>
+                      <span class="distance">7.1 mi loop</span>
+                    </div>
+                    <span class="waypoint-status active">Active</span>
+                  </div>
+                </div>
+                <div class="waypoint" style="--wp-x:92%;--wp-y:15%">
+                  <div class="waypoint-marker"></div>
+                  <div class="waypoint-card">
+                    <h4 class="waypoint-name">Eagle Peak Summit Trail</h4>
+                    <div class="waypoint-meta">
+                      <span class="elevation">Elev: 7,200 ft</span>
+                      <span class="distance">9.3 mi</span>
+                    </div>
+                    <span class="waypoint-status planning">Planning</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECT WORKSPACE ========== -->
+    <section class="view-page" data-page="project-workspace">
+      <div class="split-pane-layout workspace-layout">
+        <div class="pane pane-sidebar canyon-cliff" data-resizable="true">
+          <div class="pane-header">
+            <h2 class="pane-title">Canyon Wall</h2>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="cliff-nav-list">
+              <div class="cliff-nav-item active">
+                <span class="cliff-marker"></span>
+                <span>Overview</span>
+              </div>
+              <div class="cliff-nav-item">
+                <span class="cliff-marker"></span>
+                <span>Objectives</span>
+              </div>
+              <div class="cliff-nav-item">
+                <span class="cliff-marker"></span>
+                <span>Field Reports</span>
+              </div>
+              <div class="cliff-nav-item">
+                <span class="cliff-marker"></span>
+                <span>Resources</span>
+              </div>
+              <div class="cliff-nav-item">
+                <span class="cliff-marker"></span>
+                <span>Team Roster</span>
+              </div>
+              <div class="cliff-nav-item">
+                <span class="cliff-marker"></span>
+                <span>Photo Log</span>
+              </div>
+              <div class="cliff-nav-item">
+                <span class="cliff-marker"></span>
+                <span>Budget</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pane-resizer" data-resizer="true"></div>
+        <div class="pane pane-main canyon-valley">
+          <div class="pane-header">
+            <h2 class="pane-title">Painted Desert Corridor</h2>
+            <div class="pane-actions">
+              <button class="btn btn-secondary" data-tippy-content="Export field data">Export</button>
+              <button class="btn btn-primary">Add Report</button>
+            </div>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="workspace-overview">
+              <div class="overview-block">
+                <h3 class="block-heading">Project Summary</h3>
+                <p>The Painted Desert Corridor connects three previously isolated trail systems through a 12.4-mile point-to-point route traversing the colorful badlands formations of the northern sector. This project involves trail construction, interpretive signage, and habitat corridor preservation for pronghorn migration.</p>
+              </div>
+              <div class="overview-grid">
+                <div class="overview-stat">
+                  <span class="overview-stat-value">12.4</span>
+                  <span class="overview-stat-label">Trail Miles</span>
+                </div>
+                <div class="overview-stat">
+                  <span class="overview-stat-value">$482K</span>
+                  <span class="overview-stat-label">Budget</span>
+                </div>
+                <div class="overview-stat">
+                  <span class="overview-stat-value">8</span>
+                  <span class="overview-stat-label">Rangers Assigned</span>
+                </div>
+                <div class="overview-stat">
+                  <span class="overview-stat-value">67%</span>
+                  <span class="overview-stat-label">Completion</span>
+                </div>
+              </div>
+              <div class="dried-earth-divider"></div>
+              <div class="overview-block">
+                <h3 class="block-heading">Recent Field Reports</h3>
+                <div class="field-report-list">
+                  <div class="field-report">
+                    <div class="report-header">
+                      <span class="report-author">Ranger J. Mesquite</span>
+                      <span class="report-date">Feb 12, 2026</span>
+                    </div>
+                    <p class="report-body">Completed GPS survey of the north ridge segment. Identified two areas where trail needs to route around a newly discovered kit fox den. Recommending 200ft buffer zone. Soil stability is excellent — compacted sandstone substrate.</p>
+                  </div>
+                  <div class="field-report">
+                    <div class="report-header">
+                      <span class="report-author">Ranger K. Sagebrush</span>
+                      <span class="report-date">Feb 10, 2026</span>
+                    </div>
+                    <p class="report-body">Interpretive panel content for stops 4-7 approved by the cultural resources team. Petroglyphs at mile marker 6.2 have been photographically documented and will be referenced in signage without revealing exact coordinates.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== KANBAN ========== -->
+    <section class="view-page" data-page="kanban">
+      <div class="split-pane-layout">
+        <div class="pane pane-full">
+          <div class="pane-header">
+            <h2 class="pane-title">Canyon Layers Board</h2>
+            <div class="pane-actions">
+              <button class="btn btn-primary">Add Task Block</button>
+            </div>
+          </div>
+          <div class="pane-body scroll-region kanban-scroll">
+            <div class="kanban-swimlanes">
+              <div class="kanban-lane canyon-layer layer-surface" id="kanban-backlog">
+                <div class="lane-header">
+                  <h3 class="lane-title">Basecamp</h3>
+                  <span class="lane-count">4</span>
+                </div>
+                <div class="lane-cards" data-sortable="true">
+                  <div class="kanban-card sandstone-block">
+                    <div class="card-weathered-edge"></div>
+                    <h4 class="card-title">Survey water crossing at mile 3.1</h4>
+                    <p class="card-desc">Measure seasonal flow rate and assess bridge feasibility</p>
+                    <div class="card-meta">
+                      <span class="card-tag">Hydrology</span>
+                      <span class="card-assignee">R. Cottonwood</span>
+                    </div>
+                  </div>
+                  <div class="kanban-card sandstone-block">
+                    <div class="card-weathered-edge"></div>
+                    <h4 class="card-title">Order trailhead kiosk materials</h4>
+                    <p class="card-desc">Weather-resistant cedar and recycled steel signage frame</p>
+                    <div class="card-meta">
+                      <span class="card-tag">Logistics</span>
+                      <span class="card-assignee">M. Juniper</span>
+                    </div>
+                  </div>
+                  <div class="kanban-card sandstone-block">
+                    <div class="card-weathered-edge"></div>
+                    <h4 class="card-title">Photograph raptor nesting sites</h4>
+                    <p class="card-desc">Document active nests within 500ft of proposed route</p>
+                    <div class="card-meta">
+                      <span class="card-tag">Wildlife</span>
+                      <span class="card-assignee">A. Hawk</span>
+                    </div>
+                  </div>
+                  <div class="kanban-card sandstone-block">
+                    <div class="card-weathered-edge"></div>
+                    <h4 class="card-title">Draft volunteer orientation guide</h4>
+                    <p class="card-desc">Safety protocols and Leave No Trace principles for trail crews</p>
+                    <div class="card-meta">
+                      <span class="card-tag">Education</span>
+                      <span class="card-assignee">L. Pinyon</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="kanban-lane canyon-layer layer-mid" id="kanban-active">
+                <div class="lane-header">
+                  <h3 class="lane-title">On Trail</h3>
+                  <span class="lane-count">3</span>
+                </div>
+                <div class="lane-cards" data-sortable="true">
+                  <div class="kanban-card sandstone-block">
+                    <div class="card-weathered-edge"></div>
+                    <h4 class="card-title">Install erosion control barriers</h4>
+                    <p class="card-desc">Rock check dams at switchback sections prone to washout</p>
+                    <div class="card-meta">
+                      <span class="card-tag">Construction</span>
+                      <span class="card-assignee">R. Sandstone</span>
+                    </div>
+                  </div>
+                  <div class="kanban-card sandstone-block">
+                    <div class="card-weathered-edge"></div>
+                    <h4 class="card-title">Map archaeological features</h4>
+                    <p class="card-desc">GIS overlay of cultural sites along corridor alignment</p>
+                    <div class="card-meta">
+                      <span class="card-tag">Cultural</span>
+                      <span class="card-assignee">D. Petroglyph</span>
+                    </div>
+                  </div>
+                  <div class="kanban-card sandstone-block">
+                    <div class="card-weathered-edge"></div>
+                    <h4 class="card-title">Clear vegetation along south segment</h4>
+                    <p class="card-desc">Remove invasive tamarisk while preserving native cottonwood</p>
+                    <div class="card-meta">
+                      <span class="card-tag">Restoration</span>
+                      <span class="card-assignee">B. Yucca</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="kanban-lane canyon-layer layer-deep" id="kanban-review">
+                <div class="lane-header">
+                  <h3 class="lane-title">Under Review</h3>
+                  <span class="lane-count">2</span>
+                </div>
+                <div class="lane-cards" data-sortable="true">
+                  <div class="kanban-card sandstone-block">
+                    <div class="card-weathered-edge"></div>
+                    <h4 class="card-title">Environmental impact assessment</h4>
+                    <p class="card-desc">Final review of NEPA compliance documentation for corridor</p>
+                    <div class="card-meta">
+                      <span class="card-tag">Compliance</span>
+                      <span class="card-assignee">J. Mesquite</span>
+                    </div>
+                  </div>
+                  <div class="kanban-card sandstone-block">
+                    <div class="card-weathered-edge"></div>
+                    <h4 class="card-title">Trail surface material testing</h4>
+                    <p class="card-desc">Lab results for decomposed granite vs. native soil compaction</p>
+                    <div class="card-meta">
+                      <span class="card-tag">Engineering</span>
+                      <span class="card-assignee">T. Granite</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="kanban-lane canyon-layer layer-floor" id="kanban-done">
+                <div class="lane-header">
+                  <h3 class="lane-title">Summit Reached</h3>
+                  <span class="lane-count">2</span>
+                </div>
+                <div class="lane-cards" data-sortable="true">
+                  <div class="kanban-card sandstone-block completed">
+                    <div class="card-weathered-edge"></div>
+                    <h4 class="card-title">Boundary survey completed</h4>
+                    <p class="card-desc">All 47 boundary markers placed and GPS-logged</p>
+                    <div class="card-meta">
+                      <span class="card-tag">Survey</span>
+                      <span class="card-assignee">K. Sagebrush</span>
+                    </div>
+                  </div>
+                  <div class="kanban-card sandstone-block completed">
+                    <div class="card-weathered-edge"></div>
+                    <h4 class="card-title">Trailhead parking design approved</h4>
+                    <p class="card-desc">12-vehicle lot with native plant screening accepted by board</p>
+                    <div class="card-meta">
+                      <span class="card-tag">Design</span>
+                      <span class="card-assignee">P. Adobe</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHITEBOARD ========== -->
+    <section class="view-page" data-page="whiteboard">
+      <div class="split-pane-layout">
+        <div class="pane pane-full">
+          <div class="pane-header">
+            <h2 class="pane-title">Desert Canvas</h2>
+            <div class="pane-actions">
+              <button class="btn btn-secondary">Add Node</button>
+              <button class="btn btn-secondary">Connect</button>
+              <button class="btn btn-primary">Save Layout</button>
+            </div>
+          </div>
+          <div class="pane-body whiteboard-canvas-container">
+            <div class="whiteboard-canvas" id="whiteboard-canvas">
+              <svg class="riverbed-connectors" id="riverbed-svg" width="100%" height="100%">
+                <path class="riverbed-path" d="M240,120 C300,120 300,200 360,220" fill="none" stroke="#d4c0a0" stroke-width="2" stroke-dasharray="6 4"/>
+                <path class="riverbed-path" d="M240,120 C280,160 320,280 360,320" fill="none" stroke="#d4c0a0" stroke-width="2" stroke-dasharray="6 4"/>
+                <path class="riverbed-path" d="M520,220 C580,220 580,140 640,140" fill="none" stroke="#d4c0a0" stroke-width="2" stroke-dasharray="6 4"/>
+                <path class="riverbed-path" d="M520,320 C580,320 600,240 640,240" fill="none" stroke="#d4c0a0" stroke-width="2" stroke-dasharray="6 4"/>
+              </svg>
+              <div class="sandstone-node" style="left:120px;top:80px" data-tippy-content="Central planning hub">
+                <div class="node-inner">
+                  <h4>Trail Network Plan</h4>
+                  <p>Master blueprint for interconnected trail system</p>
+                </div>
+              </div>
+              <div class="sandstone-node" style="left:360px;top:180px" data-tippy-content="Environmental concerns">
+                <div class="node-inner">
+                  <h4>Habitat Assessment</h4>
+                  <p>Wildlife corridors and sensitive areas mapping</p>
+                </div>
+              </div>
+              <div class="sandstone-node" style="left:360px;top:290px" data-tippy-content="Visitor experience design">
+                <div class="node-inner">
+                  <h4>Interpretive Program</h4>
+                  <p>Signage, audio tours, and educational content</p>
+                </div>
+              </div>
+              <div class="sandstone-node" style="left:640px;top:100px" data-tippy-content="Geospatial data layer">
+                <div class="node-inner">
+                  <h4>GIS Data Layer</h4>
+                  <p>Topographic and geological survey integration</p>
+                </div>
+              </div>
+              <div class="sandstone-node" style="left:640px;top:210px" data-tippy-content="Volunteer coordination">
+                <div class="node-inner">
+                  <h4>Volunteer Program</h4>
+                  <p>Trail crew scheduling and training protocols</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCHEMA PLANNER ========== -->
+    <section class="view-page" data-page="schema-planner">
+      <div class="split-pane-layout schema-layout">
+        <div class="pane pane-primary" data-resizable="true">
+          <div class="pane-header">
+            <h2 class="pane-title">Geological Survey Diagram</h2>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="schema-diagram" id="schema-diagram">
+              <svg class="fault-lines-svg" width="100%" height="500">
+                <line class="fault-line" x1="200" y1="80" x2="200" y2="180" stroke="#c4622a" stroke-width="2" stroke-dasharray="4 3"/>
+                <line class="fault-line" x1="200" y1="80" x2="450" y2="80" stroke="#c4622a" stroke-width="2" stroke-dasharray="4 3"/>
+                <line class="fault-line" x1="200" y1="280" x2="450" y2="280" stroke="#7a8a6a" stroke-width="2" stroke-dasharray="4 3"/>
+                <line class="fault-line" x1="450" y1="180" x2="450" y2="280" stroke="#7a8a6a" stroke-width="2" stroke-dasharray="4 3"/>
+              </svg>
+              <div class="rock-formation-entity" style="left:80px;top:30px">
+                <div class="formation-sample-header">Trail</div>
+                <div class="formation-fields">
+                  <div class="field-row"><span class="field-type">id</span> <span class="field-name">trail_id</span></div>
+                  <div class="field-row"><span class="field-type">str</span> <span class="field-name">name</span></div>
+                  <div class="field-row"><span class="field-type">float</span> <span class="field-name">distance_mi</span></div>
+                  <div class="field-row"><span class="field-type">int</span> <span class="field-name">elevation_ft</span></div>
+                  <div class="field-row"><span class="field-type">enum</span> <span class="field-name">difficulty</span></div>
+                  <div class="field-row"><span class="field-type">ref</span> <span class="field-name">sector_id</span></div>
+                </div>
+              </div>
+              <div class="rock-formation-entity" style="left:80px;top:230px">
+                <div class="formation-sample-header">Ranger</div>
+                <div class="formation-fields">
+                  <div class="field-row"><span class="field-type">id</span> <span class="field-name">ranger_id</span></div>
+                  <div class="field-row"><span class="field-type">str</span> <span class="field-name">name</span></div>
+                  <div class="field-row"><span class="field-type">str</span> <span class="field-name">station</span></div>
+                  <div class="field-row"><span class="field-type">date</span> <span class="field-name">certified_since</span></div>
+                </div>
+              </div>
+              <div class="rock-formation-entity" style="left:350px;top:30px">
+                <div class="formation-sample-header">Sector</div>
+                <div class="formation-fields">
+                  <div class="field-row"><span class="field-type">id</span> <span class="field-name">sector_id</span></div>
+                  <div class="field-row"><span class="field-type">str</span> <span class="field-name">name</span></div>
+                  <div class="field-row"><span class="field-type">geo</span> <span class="field-name">boundary_polygon</span></div>
+                  <div class="field-row"><span class="field-type">int</span> <span class="field-name">acreage</span></div>
+                </div>
+              </div>
+              <div class="rock-formation-entity" style="left:350px;top:230px">
+                <div class="formation-sample-header">Wildlife Observation</div>
+                <div class="formation-fields">
+                  <div class="field-row"><span class="field-type">id</span> <span class="field-name">observation_id</span></div>
+                  <div class="field-row"><span class="field-type">str</span> <span class="field-name">species</span></div>
+                  <div class="field-row"><span class="field-type">geo</span> <span class="field-name">location</span></div>
+                  <div class="field-row"><span class="field-type">ref</span> <span class="field-name">ranger_id</span></div>
+                  <div class="field-row"><span class="field-type">ref</span> <span class="field-name">trail_id</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pane-resizer" data-resizer="true"></div>
+        <div class="pane pane-secondary">
+          <div class="pane-header">
+            <h2 class="pane-title">Formation Details</h2>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="schema-detail-panel">
+              <h3 class="detail-entity-name">Trail</h3>
+              <p class="detail-desc">Core entity representing a managed trail within the park system. Each trail belongs to a sector and can have multiple associated wildlife observations, maintenance records, and ranger patrol assignments.</p>
+              <div class="detail-relationships">
+                <h4>Fault Lines (Relationships)</h4>
+                <div class="relationship-item">
+                  <span class="rel-type">belongs_to</span>
+                  <span class="rel-target">Sector</span>
+                </div>
+                <div class="relationship-item">
+                  <span class="rel-type">has_many</span>
+                  <span class="rel-target">Wildlife Observation</span>
+                </div>
+                <div class="relationship-item">
+                  <span class="rel-type">assigned_to</span>
+                  <span class="rel-target">Ranger (via Patrol)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIRECTORY TREE ========== -->
+    <section class="view-page" data-page="directory-tree">
+      <div class="split-pane-layout">
+        <div class="pane pane-sidebar canyon-cliff" data-resizable="true">
+          <div class="pane-header">
+            <h2 class="pane-title">Canyon Rim</h2>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="canyon-tree">
+              <div class="tree-branch depth-0">
+                <span class="tree-marker folder"></span>
+                <span class="tree-label">Mesa Trail National Park</span>
+                <div class="tree-children">
+                  <div class="tree-branch depth-1">
+                    <span class="tree-marker folder"></span>
+                    <span class="tree-label">North Sector</span>
+                    <div class="tree-children">
+                      <div class="tree-branch depth-2">
+                        <span class="tree-marker file"></span>
+                        <span class="tree-label">trail-survey-2026.gpx</span>
+                      </div>
+                      <div class="tree-branch depth-2">
+                        <span class="tree-marker file"></span>
+                        <span class="tree-label">erosion-report.pdf</span>
+                      </div>
+                      <div class="tree-branch depth-2">
+                        <span class="tree-marker file"></span>
+                        <span class="tree-label">wildlife-camera-log.csv</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tree-branch depth-1">
+                    <span class="tree-marker folder"></span>
+                    <span class="tree-label">South Sector</span>
+                    <div class="tree-children">
+                      <div class="tree-branch depth-2">
+                        <span class="tree-marker file"></span>
+                        <span class="tree-label">botanical-inventory.xlsx</span>
+                      </div>
+                      <div class="tree-branch depth-2">
+                        <span class="tree-marker folder"></span>
+                        <span class="tree-label">Photo Archives</span>
+                        <div class="tree-children">
+                          <div class="tree-branch depth-3">
+                            <span class="tree-marker file"></span>
+                            <span class="tree-label">sunset-arch-jan.jpg</span>
+                          </div>
+                          <div class="tree-branch depth-3">
+                            <span class="tree-marker file"></span>
+                            <span class="tree-label">petroglyph-panel-4.jpg</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tree-branch depth-1">
+                    <span class="tree-marker folder"></span>
+                    <span class="tree-label">Administration</span>
+                    <div class="tree-children">
+                      <div class="tree-branch depth-2">
+                        <span class="tree-marker file"></span>
+                        <span class="tree-label">budget-fy2026.xlsx</span>
+                      </div>
+                      <div class="tree-branch depth-2">
+                        <span class="tree-marker file"></span>
+                        <span class="tree-label">ranger-schedule-spring.pdf</span>
+                      </div>
+                      <div class="tree-branch depth-2">
+                        <span class="tree-marker file"></span>
+                        <span class="tree-label">nepa-compliance-checklist.docx</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pane-resizer" data-resizer="true"></div>
+        <div class="pane pane-main">
+          <div class="pane-header">
+            <h2 class="pane-title">File Preview</h2>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="file-preview-panel">
+              <div class="file-preview-placeholder">
+                <svg viewBox="0 0 64 64" width="48" height="48">
+                  <rect x="12" y="4" width="40" height="56" rx="4" fill="none" stroke="#d4c0a0" stroke-width="2"/>
+                  <line x1="20" y1="18" x2="44" y2="18" stroke="#d4c0a0" stroke-width="1.5"/>
+                  <line x1="20" y1="26" x2="38" y2="26" stroke="#d4c0a0" stroke-width="1.5"/>
+                  <line x1="20" y1="34" x2="42" y2="34" stroke="#d4c0a0" stroke-width="1.5"/>
+                  <line x1="20" y1="42" x2="32" y2="42" stroke="#d4c0a0" stroke-width="1.5"/>
+                </svg>
+                <p>Select a file from the canyon rim to preview its contents</p>
+              </div>
+              <div class="file-info-table hidden" id="file-info">
+                <div class="file-info-row">
+                  <span class="fi-label">Name</span>
+                  <span class="fi-value" id="fi-name">trail-survey-2026.gpx</span>
+                </div>
+                <div class="file-info-row">
+                  <span class="fi-label">Type</span>
+                  <span class="fi-value" id="fi-type">GPS Exchange Format</span>
+                </div>
+                <div class="file-info-row">
+                  <span class="fi-label">Size</span>
+                  <span class="fi-value" id="fi-size">2.4 MB</span>
+                </div>
+                <div class="file-info-row">
+                  <span class="fi-label">Modified</span>
+                  <span class="fi-value" id="fi-modified">Feb 14, 2026</span>
+                </div>
+                <div class="file-info-row">
+                  <span class="fi-label">Author</span>
+                  <span class="fi-value" id="fi-author">Ranger K. Sagebrush</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== IDEAS ========== -->
+    <section class="view-page" data-page="ideas">
+      <div class="split-pane-layout">
+        <div class="pane pane-full">
+          <div class="pane-header">
+            <h2 class="pane-title">Mesa Formation Ideas</h2>
+            <div class="pane-actions">
+              <button class="btn btn-primary">New Idea</button>
+            </div>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="ideas-masonry">
+              <div class="idea-card mesa-height-1">
+                <h4 class="idea-title">Augmented Reality Petroglyph Tour</h4>
+                <p class="idea-body">Develop an AR app that overlays interpretive animations onto petroglyph panels, showing what the ancient artists may have been depicting — hunting scenes, celestial events, and migration stories.</p>
+                <div class="idea-footer">
+                  <span class="idea-tag">Technology</span>
+                  <span class="idea-votes">14 upvotes</span>
+                </div>
+              </div>
+              <div class="idea-card mesa-height-2">
+                <h4 class="idea-title">Desert Dark Sky Observatory</h4>
+                <p class="idea-body">Build a small observatory platform at the highest mesa point for stargazing programs. Zero light pollution, perfect for night sky interpretation. Partner with local astronomy club for monthly events.</p>
+                <div class="idea-footer">
+                  <span class="idea-tag">Visitor Experience</span>
+                  <span class="idea-votes">23 upvotes</span>
+                </div>
+              </div>
+              <div class="idea-card mesa-height-1">
+                <h4 class="idea-title">Seed Bomb Trail Restoration</h4>
+                <p class="idea-body">Create native seed bomb kits visitors can toss into disturbed areas along trails, combining restoration with engagement.</p>
+                <div class="idea-footer">
+                  <span class="idea-tag">Restoration</span>
+                  <span class="idea-votes">9 upvotes</span>
+                </div>
+              </div>
+              <div class="idea-card mesa-height-3">
+                <h4 class="idea-title">Solar-Powered Trail Wayfinding</h4>
+                <p class="idea-body">Install low-profile solar-powered LED trail markers that activate at dusk for safer sunset hikes. Markers use warm amber light to minimize wildlife disruption. Each unit is self-contained with a 5-year battery life and weatherized sandstone-colored casing to blend with the landscape.</p>
+                <div class="idea-footer">
+                  <span class="idea-tag">Infrastructure</span>
+                  <span class="idea-votes">31 upvotes</span>
+                </div>
+              </div>
+              <div class="idea-card mesa-height-2">
+                <h4 class="idea-title">Fossil Discovery Trail</h4>
+                <p class="idea-body">Commission a short spur trail through the exposed Morrison Formation where visitors can see actual dinosaur fossils in situ. Interpretive panels explain how the desert landscape once looked like a lush floodplain.</p>
+                <div class="idea-footer">
+                  <span class="idea-tag">Education</span>
+                  <span class="idea-votes">19 upvotes</span>
+                </div>
+              </div>
+              <div class="idea-card mesa-height-1">
+                <h4 class="idea-title">Ranger Podcast Series</h4>
+                <p class="idea-body">Launch a monthly podcast where rangers share stories from the field, wildlife encounters, and conservation wins.</p>
+                <div class="idea-footer">
+                  <span class="idea-tag">Outreach</span>
+                  <span class="idea-votes">7 upvotes</span>
+                </div>
+              </div>
+              <div class="idea-card mesa-height-2">
+                <h4 class="idea-title">Coyote Creek Wildlife Underpass</h4>
+                <p class="idea-body">Install wildlife underpasses at three road crossings where camera data shows heavy coyote, deer, and tortoise movement. Reduces road mortality and reconnects fragmented habitat.</p>
+                <div class="idea-footer">
+                  <span class="idea-tag">Conservation</span>
+                  <span class="idea-votes">28 upvotes</span>
+                </div>
+              </div>
+              <div class="idea-card mesa-height-1">
+                <h4 class="idea-title">Sandstone Sculpture Garden</h4>
+                <p class="idea-body">Commission local artists to create temporary sandstone sculptures at the trailhead that erode naturally over a season.</p>
+                <div class="idea-footer">
+                  <span class="idea-tag">Art</span>
+                  <span class="idea-votes">12 upvotes</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== AI CHAT ========== -->
+    <section class="view-page" data-page="ai-chat">
+      <div class="split-pane-layout chat-layout">
+        <div class="pane pane-primary" data-resizable="true">
+          <div class="pane-header">
+            <h2 class="pane-title">Ranger Dispatch</h2>
+            <span class="pane-subtitle">Field Notes & Observations</span>
+          </div>
+          <div class="pane-body scroll-region" id="chat-scroll">
+            <div class="field-notes-thread">
+              <div class="field-note dispatch">
+                <div class="note-header">
+                  <span class="note-badge">DISPATCH</span>
+                  <span class="note-location">Station: Mesa HQ</span>
+                  <span class="note-timestamp">0842 hrs</span>
+                </div>
+                <div class="note-body">
+                  <p>Good morning, Ranger. How can I assist with today's field operations? I have access to trail conditions, weather forecasts, wildlife observation logs, and maintenance schedules.</p>
+                </div>
+              </div>
+              <div class="field-note ranger">
+                <div class="note-header">
+                  <span class="note-badge">FIELD NOTE</span>
+                  <span class="note-location">GPS: 36.8629 N, 111.3743 W</span>
+                  <span class="note-timestamp">0915 hrs</span>
+                </div>
+                <div class="note-body">
+                  <p>Dispatch, requesting trail condition update for Painted Desert Corridor north segment. Planning to take a crew out for erosion barrier installation today.</p>
+                </div>
+              </div>
+              <div class="field-note dispatch">
+                <div class="note-header">
+                  <span class="note-badge">DISPATCH</span>
+                  <span class="note-location">Station: Mesa HQ</span>
+                  <span class="note-timestamp">0917 hrs</span>
+                </div>
+                <div class="note-body">
+                  <p>Copy that. Painted Desert Corridor north segment report:</p>
+                  <ul class="dispatch-list">
+                    <li><strong>Trail Surface:</strong> Dry, compacted sandstone. No recent precipitation.</li>
+                    <li><strong>Temperature:</strong> Current 62 F, high expected 78 F.</li>
+                    <li><strong>Wind:</strong> SW 8-12 mph, gusts to 18 mph by 1400 hrs.</li>
+                    <li><strong>Hazards:</strong> Loose rock reported near mile marker 4.7. Flash flood watch expired yesterday.</li>
+                    <li><strong>Wildlife:</strong> Kit fox den active at mile 3.2 — maintain 200ft buffer.</li>
+                  </ul>
+                  <p>Recommend starting work early to avoid afternoon winds. Carry extra water — no reliable sources on the north segment.</p>
+                </div>
+              </div>
+              <div class="field-note ranger">
+                <div class="note-header">
+                  <span class="note-badge">FIELD NOTE</span>
+                  <span class="note-location">GPS: 36.8629 N, 111.3743 W</span>
+                  <span class="note-timestamp">0920 hrs</span>
+                </div>
+                <div class="note-body">
+                  <p>10-4. We'll bring 6 gallons per person. Can you pull the erosion barrier spec sheet for the rock check dam design? Need the recommended stone diameter range.</p>
+                </div>
+              </div>
+              <div class="field-note dispatch">
+                <div class="note-header">
+                  <span class="note-badge">DISPATCH</span>
+                  <span class="note-location">Station: Mesa HQ</span>
+                  <span class="note-timestamp">0922 hrs</span>
+                </div>
+                <div class="note-body">
+                  <p>Pulling spec sheet now. Per the 2025 Trail Standards Manual:</p>
+                  <div class="spec-block">
+                    <code>Rock Check Dam — Switchback Application</code>
+                    <code>Stone diameter: 8-14 inches (angular preferred)</code>
+                    <code>Dam height: 12-18 inches above grade</code>
+                    <code>Spacing: 15-25 ft on slopes > 8%</code>
+                    <code>Backfill: Native decomposed granite</code>
+                  </div>
+                  <p>I've flagged this task as "In Progress" on the Kanban board. Stay safe out there.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-bar">
+            <div class="input-location-stamp">
+              <svg viewBox="0 0 16 16" width="12" height="12"><circle cx="8" cy="6" r="3" fill="none" stroke="#7a8a6a" stroke-width="1.5"/><path d="M8 1C5 1 3 3.5 3 6.5S8 15 8 15s5-5.5 5-8.5S11 1 8 1z" fill="none" stroke="#7a8a6a" stroke-width="1.5"/></svg>
+              <span>Field Position Active</span>
+            </div>
+            <div class="chat-input-row">
+              <input type="text" class="chat-input" placeholder="Log observation or request dispatch...">
+              <button class="btn btn-primary chat-send-btn">Transmit</button>
+            </div>
+          </div>
+        </div>
+        <div class="pane-resizer" data-resizer="true"></div>
+        <div class="pane pane-secondary">
+          <div class="pane-header">
+            <h2 class="pane-title">Quick Reference</h2>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="reference-panel">
+              <div class="ref-section">
+                <h4 class="ref-heading">Radio Codes</h4>
+                <div class="ref-item"><span class="ref-code">10-4</span> Acknowledged</div>
+                <div class="ref-item"><span class="ref-code">10-7</span> Out of Service</div>
+                <div class="ref-item"><span class="ref-code">10-20</span> Location</div>
+                <div class="ref-item"><span class="ref-code">10-33</span> Emergency</div>
+              </div>
+              <div class="ref-section">
+                <h4 class="ref-heading">Today's Conditions</h4>
+                <div class="ref-item"><span class="ref-code">UV</span> Index 7 (High)</div>
+                <div class="ref-item"><span class="ref-code">AQI</span> 42 (Good)</div>
+                <div class="ref-item"><span class="ref-code">Fire</span> Risk: Moderate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS ========== -->
+    <section class="view-page" data-page="settings">
+      <div class="split-pane-layout">
+        <div class="pane pane-full">
+          <div class="pane-header">
+            <h2 class="pane-title">Trail Guide Configuration</h2>
+            <span class="pane-subtitle">Follow the waypoints to configure your workspace</span>
+          </div>
+          <div class="pane-body scroll-region">
+            <div class="settings-trail">
+              <div class="trail-step active" data-step="1">
+                <div class="step-marker">
+                  <span class="step-number">1</span>
+                </div>
+                <div class="step-content">
+                  <h3 class="step-title">Ranger Profile</h3>
+                  <p class="step-terrain">Terrain: Personal information and contact details</p>
+                  <div class="step-form">
+                    <div class="form-group">
+                      <label>Display Name</label>
+                      <input type="text" class="form-input" value="Sarah Sandstone">
+                    </div>
+                    <div class="form-group">
+                      <label>Station Assignment</label>
+                      <input type="text" class="form-input" value="Mesa Trail HQ — North Rim">
+                    </div>
+                    <div class="form-group">
+                      <label>Radio Callsign</label>
+                      <input type="text" class="form-input" value="Sandstone-7">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="trail-connector"></div>
+
+              <div class="trail-step" data-step="2">
+                <div class="step-marker">
+                  <span class="step-number">2</span>
+                </div>
+                <div class="step-content">
+                  <h3 class="step-title">Notification Preferences</h3>
+                  <p class="step-terrain">Terrain: Alert thresholds and dispatch channels</p>
+                  <div class="step-form">
+                    <div class="form-group toggle-group">
+                      <label>Weather Alerts</label>
+                      <div class="toggle-switch active" data-toggle="true">
+                        <div class="toggle-thumb"></div>
+                        <div class="toggle-dust-trail"></div>
+                      </div>
+                    </div>
+                    <div class="form-group toggle-group">
+                      <label>Wildlife Sighting Reports</label>
+                      <div class="toggle-switch active" data-toggle="true">
+                        <div class="toggle-thumb"></div>
+                        <div class="toggle-dust-trail"></div>
+                      </div>
+                    </div>
+                    <div class="form-group toggle-group">
+                      <label>Trail Condition Updates</label>
+                      <div class="toggle-switch" data-toggle="true">
+                        <div class="toggle-thumb"></div>
+                        <div class="toggle-dust-trail"></div>
+                      </div>
+                    </div>
+                    <div class="form-group toggle-group">
+                      <label>Visitor Incident Reports</label>
+                      <div class="toggle-switch active" data-toggle="true">
+                        <div class="toggle-thumb"></div>
+                        <div class="toggle-dust-trail"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="trail-connector"></div>
+
+              <div class="trail-step" data-step="3">
+                <div class="step-marker">
+                  <span class="step-number">3</span>
+                </div>
+                <div class="step-content">
+                  <h3 class="step-title">Map & Display</h3>
+                  <p class="step-terrain">Terrain: Visual preferences and data overlays</p>
+                  <div class="step-form">
+                    <div class="form-group">
+                      <label>Default Map Layer</label>
+                      <select class="form-select">
+                        <option>Topographic</option>
+                        <option>Satellite</option>
+                        <option>Trail Overlay</option>
+                        <option>Geological Survey</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Distance Units</label>
+                      <select class="form-select">
+                        <option>Miles</option>
+                        <option>Kilometers</option>
+                      </select>
+                    </div>
+                    <div class="form-group toggle-group">
+                      <label>Show Elevation Profiles</label>
+                      <div class="toggle-switch active" data-toggle="true">
+                        <div class="toggle-thumb"></div>
+                        <div class="toggle-dust-trail"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="trail-connector"></div>
+
+              <div class="trail-step" data-step="4">
+                <div class="step-marker">
+                  <span class="step-number">4</span>
+                </div>
+                <div class="step-content">
+                  <h3 class="step-title">Data & Sync</h3>
+                  <p class="step-terrain">Terrain: Field device synchronization and data export</p>
+                  <div class="step-form">
+                    <div class="form-group toggle-group">
+                      <label>Auto-sync GPS Data</label>
+                      <div class="toggle-switch active" data-toggle="true">
+                        <div class="toggle-thumb"></div>
+                        <div class="toggle-dust-trail"></div>
+                      </div>
+                    </div>
+                    <div class="form-group toggle-group">
+                      <label>Offline Mode Cache</label>
+                      <div class="toggle-switch" data-toggle="true">
+                        <div class="toggle-thumb"></div>
+                        <div class="toggle-dust-trail"></div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Export Format</label>
+                      <select class="form-select">
+                        <option>GPX (GPS Exchange)</option>
+                        <option>KML (Google Earth)</option>
+                        <option>GeoJSON</option>
+                        <option>Shapefile</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <button class="btn btn-primary" style="margin-top:8px">Save Configuration</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+{
+  "styleId": "retro-50s",
+  "pass": 3,
+  "profileId": "vertical-timeline",
+  "generatedAt": "2026-02-15T00:00:00.000Z",
+  "shell": {
+    "mode": "right-rail-nav",
+    "navPattern": "vertical-dots-timeline",
+    "contentFlow": "timeline-alternating",
+    "scrollMode": "scroll-snap-vertical",
+    "alignment": "center",
+    "heroTreatment": "timeline-hero-node",
+    "motionLanguage": "slide-up-cascade",
+    "density": "balanced",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "bg": "#1a1030",
+    "text": "#f5f0e8",
+    "surface": "#251a40",
+    "accent": "#ffe014",
+    "accent2": "#ff4488",
+    "border": "#3d2a5c"
+  },
+  "typography": {
+    "heading": "Righteous",
+    "body": "Poppins",
+    "mono": "Source Code Pro"
+  },
+  "contentPersona": "indie-movie-studio",
+  "variantSeed": "drive-in-movie-theater",
+  "librariesUsed": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "purpose": "Marquee chaser light rotation, scroll-triggered stagger reveals for storyboard cells and credit entries"
+    },
+    {
+      "name": "ScrollTrigger",
+      "version": "3.12.5",
+      "purpose": "GSAP plugin for scroll-driven animation triggers"
+    },
+    {
+      "name": "Canvas Confetti",
+      "version": "1.9.3",
+      "purpose": "Micro-feedback confetti burst on button clicks for star-rating-pop effect"
+    },
+    {
+      "name": "Splitting.js",
+      "version": "1.0.6",
+      "purpose": "Per-character text splitting for marquee title glow chase animation"
+    }
+  ],
+  "interactionProfile": {
+    "buttonHover": "marquee-light-chase",
+    "buttonClick": "projection-flash",
+    "cardHover": "projection-glow-brighten",
+    "pageTransition": "film-reel-wipe",
+    "scrollReveal": "fade-in-spotlight",
+    "navItemHover": "marquee-underline-chase",
+    "navItemActive": "now-showing-badge",
+    "inputFocus": "neon-yellow-glow",
+    "toggleSwitch": "film-switch-click",
+    "tooltips": "ticket-stub-popup",
+    "loadingState": "film-countdown-leader",
+    "idleAmbient": "projector-dust-particles",
+    "microFeedback": "star-rating-pop"
+  },
+  "views": [
+    {
+      "name": "dashboard",
+      "dataPage": "dashboard",
+      "components": ["marquee-header", "chaser-lights", "film-strip-divider", "ticket-stub-stats", "now-showing-hero", "timeline-alternating"],
+      "viewHint": "Movie marquee header with chaser lights, stat cards shaped like ticket stubs, and a film-strip divider between sections."
+    },
+    {
+      "name": "projects",
+      "dataPage": "projects",
+      "components": ["now-showing-section", "film-strip-row", "coming-soon-section", "poster-grid"],
+      "viewHint": "Now-showing/coming-soon split with current projects on the big screen and upcoming ones on poster cards."
+    },
+    {
+      "name": "project-workspace",
+      "dataPage": "project-workspace",
+      "components": ["cinematic-layout", "theater-curtains", "production-overview", "milestone-strip", "directors-notes"],
+      "viewHint": "Widescreen cinematic layout with dark sidebars like theater curtains framing a bright content screen."
+    },
+    {
+      "name": "kanban",
+      "dataPage": "kanban",
+      "components": ["kanban-aisles", "marquee-column-headers", "ticket-cards"],
+      "viewHint": "Vertical columns styled as movie-theater aisles with ticket-stub cards and marquee column headers."
+    },
+    {
+      "name": "whiteboard",
+      "dataPage": "whiteboard",
+      "components": ["storyboard-canvas", "storyboard-sequences", "film-frame-cells", "svg-sketches"],
+      "viewHint": "Storyboard canvas with film-frame cells arranged in cinematic sequences with scene numbers."
+    },
+    {
+      "name": "schema-planner",
+      "dataPage": "schema-planner",
+      "components": ["credits-blocks", "cast-list", "crew-credits", "department-credits", "relationship-svg"],
+      "viewHint": "Film credits format with entities as cast lists and relationships as crew credits."
+    },
+    {
+      "name": "directory-tree",
+      "dataPage": "directory-tree",
+      "components": ["credits-scroll-tree", "tree-categories", "tree-branches", "tree-leaves"],
+      "viewHint": "Movie credits scroll format with hierarchical indentation and category headers."
+    },
+    {
+      "name": "ideas",
+      "dataPage": "ideas",
+      "components": ["poster-masonry", "movie-poster-ideas", "genre-badges", "star-ratings"],
+      "viewHint": "Pinterest masonry styled as a wall of movie posters — each idea as a poster with title, tagline, and genre badge."
+    },
+    {
+      "name": "ai-chat",
+      "dataPage": "ai-chat",
+      "components": ["comic-panel-chat", "speech-bubbles", "character-avatars", "film-grain-overlay", "chat-input"],
+      "viewHint": "Comic panel layout with dramatic speech bubbles, film-grain texture, and dramatic lighting effects on messages."
+    },
+    {
+      "name": "settings",
+      "dataPage": "settings",
+      "components": ["control-panel", "equipment-sections", "toggle-switches", "dial-controls", "settings-inputs"],
+      "viewHint": "Projection-room control panel with large labeled switches, dial controls, and grouped equipment sections."
+    }
+  ],
+  "responsiveBreakpoints": {
+    "desktop": "769px and above",
+    "mobile": "768px and below",
+    "smallMobile": "480px and below"
+  },
+  "antiRepeatCompliance": [
+    "Dark purple+neon yellow palette instead of light pastel pink+mint (Pass 1)",
+    "Film reel/projector transitions instead of diner jukebox transitions (Pass 1)",
+    "Cinematic marquee purple+yellow instead of space-age googie turquoise+coral (Pass 2)",
+    "Marquee chaser lights and projector effects instead of atomic orbit animations (Pass 2)",
+    "Comic panel chat with film grain instead of diner speech bubble (Pass 1) or space-radio (Pass 2)"
+  ]
+}

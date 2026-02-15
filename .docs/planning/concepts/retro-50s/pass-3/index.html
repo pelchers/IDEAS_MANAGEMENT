@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starlight Pictures — Production Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- GSAP for marquee chaser lights & scroll-driven choreography -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <!-- Canvas Confetti for micro-feedback star pops -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
+  <!-- Splitting.js for per-character marquee text animation -->
+  <link rel="stylesheet" href="https://unpkg.com/splitting@1.0.6/dist/splitting.css">
+  <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.min.js" defer></script>
+</head>
+<body>
+
+  <!-- Projector dust particles ambient layer -->
+  <div id="dust-particles" class="dust-layer" aria-hidden="true"></div>
+
+  <!-- Film countdown loader overlay -->
+  <div id="film-loader" class="film-loader" aria-label="Loading">
+    <div class="countdown-circle">
+      <span class="countdown-number">5</span>
+    </div>
+  </div>
+
+  <!-- Page transition film-strip wipe overlay -->
+  <div id="film-wipe" class="film-wipe" aria-hidden="true">
+    <div class="sprocket-strip"></div>
+  </div>
+
+  <!-- Mobile hamburger toggle -->
+  <button class="mobile-hamburger" id="mobileMenuToggle" aria-label="Toggle navigation">
+    <span class="burger-bar"></span>
+    <span class="burger-bar"></span>
+    <span class="burger-bar"></span>
+  </button>
+
+  <!-- Main layout: content left, right-rail nav -->
+  <div class="app-shell">
+
+    <!-- Content area -->
+    <main class="content-area" id="contentArea">
+
+      <!-- ===== DASHBOARD ===== -->
+      <section class="view" data-page="dashboard">
+        <div class="view-inner">
+          <!-- Marquee header with chaser lights -->
+          <header class="marquee-header" data-splitting>
+            <div class="marquee-border">
+              <div class="chaser-lights" aria-hidden="true"></div>
+              <h1 class="marquee-title splitting-target">STARLIGHT PICTURES</h1>
+              <p class="marquee-subtitle">Production Dashboard</p>
+            </div>
+          </header>
+
+          <!-- Film-strip divider -->
+          <div class="film-strip-divider" aria-hidden="true">
+            <div class="sprocket"></div><div class="frame"></div>
+            <div class="sprocket"></div><div class="frame"></div>
+            <div class="sprocket"></div><div class="frame"></div>
+            <div class="sprocket"></div><div class="frame"></div>
+            <div class="sprocket"></div>
+          </div>
+
+          <!-- Ticket-stub stat cards -->
+          <div class="ticket-stats">
+            <div class="ticket-stub scroll-reveal">
+              <div class="ticket-left">
+                <span class="ticket-label">In Production</span>
+                <span class="ticket-value">7</span>
+              </div>
+              <div class="ticket-perf"></div>
+              <div class="ticket-right">
+                <span class="ticket-meta">Films</span>
+              </div>
+            </div>
+            <div class="ticket-stub scroll-reveal">
+              <div class="ticket-left">
+                <span class="ticket-label">Post-Production</span>
+                <span class="ticket-value">3</span>
+              </div>
+              <div class="ticket-perf"></div>
+              <div class="ticket-right">
+                <span class="ticket-meta">Editing</span>
+              </div>
+            </div>
+            <div class="ticket-stub scroll-reveal">
+              <div class="ticket-left">
+                <span class="ticket-label">Crew Members</span>
+                <span class="ticket-value">142</span>
+              </div>
+              <div class="ticket-perf"></div>
+              <div class="ticket-right">
+                <span class="ticket-meta">Active</span>
+              </div>
+            </div>
+            <div class="ticket-stub scroll-reveal">
+              <div class="ticket-left">
+                <span class="ticket-label">Budget Used</span>
+                <span class="ticket-value">68%</span>
+              </div>
+              <div class="ticket-perf"></div>
+              <div class="ticket-right">
+                <span class="ticket-meta">On Track</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Film-strip divider -->
+          <div class="film-strip-divider" aria-hidden="true">
+            <div class="sprocket"></div><div class="frame"></div>
+            <div class="sprocket"></div><div class="frame"></div>
+            <div class="sprocket"></div><div class="frame"></div>
+            <div class="sprocket"></div>
+          </div>
+
+          <!-- Now Showing hero (MUBI-inspired) -->
+          <div class="now-showing-hero scroll-reveal">
+            <div class="now-showing-badge-large">NOW SHOWING</div>
+            <div class="hero-film-card">
+              <div class="hero-backdrop">
+                <div class="projection-glow"></div>
+                <div class="hero-content">
+                  <span class="catalog-number">#SP-0047</span>
+                  <h2>The Neon Paradox</h2>
+                  <p class="hero-tagline">A neo-noir thriller set in a city that never sleeps and a detective who never wakes.</p>
+                  <div class="hero-meta">
+                    <span class="genre-badge">Neo-Noir</span>
+                    <span class="genre-badge">Thriller</span>
+                    <span class="countdown-badge">Wrapping in 12 days</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent activity timeline -->
+          <h3 class="section-heading scroll-reveal">Recent Dailies</h3>
+          <div class="timeline-alternating">
+            <div class="timeline-node left scroll-reveal">
+              <div class="timeline-card">
+                <span class="catalog-number">#DL-089</span>
+                <h4>Color grading approved for Act II</h4>
+                <p>The desaturated look for the warehouse scene got final sign-off from the director.</p>
+                <span class="timeline-date">Today, 3:42 PM</span>
+              </div>
+            </div>
+            <div class="timeline-node right scroll-reveal">
+              <div class="timeline-card">
+                <span class="catalog-number">#DL-088</span>
+                <h4>VFX plate delivery for rooftop chase</h4>
+                <p>24 VFX plates delivered. Compositing starts tomorrow morning.</p>
+                <span class="timeline-date">Today, 1:15 PM</span>
+              </div>
+            </div>
+            <div class="timeline-node left scroll-reveal">
+              <div class="timeline-card">
+                <span class="catalog-number">#DL-087</span>
+                <h4>ADR session booked for lead actor</h4>
+                <p>Studio B reserved for Tuesday. 14 lines need re-recording.</p>
+                <span class="timeline-date">Yesterday, 5:00 PM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PROJECTS ===== -->
+      <section class="view" data-page="projects">
+        <div class="view-inner">
+          <h1 class="view-title scroll-reveal">Our Films</h1>
+
+          <!-- Now Showing section -->
+          <div class="now-showing-section scroll-reveal">
+            <div class="section-marquee">
+              <span class="marquee-badge">NOW SHOWING</span>
+            </div>
+            <div class="film-strip-row">
+              <div class="film-poster-card projection-card">
+                <div class="poster-image poster-gradient-1">
+                  <span class="catalog-number">#SP-0047</span>
+                </div>
+                <h3>The Neon Paradox</h3>
+                <p class="poster-tagline">Neo-noir. 68% complete.</p>
+                <div class="poster-meta">
+                  <span class="genre-badge">Thriller</span>
+                  <span class="budget-tag">$4.2M</span>
+                </div>
+              </div>
+              <div class="film-poster-card projection-card">
+                <div class="poster-image poster-gradient-2">
+                  <span class="catalog-number">#SP-0046</span>
+                </div>
+                <h3>Echoes of Mercury</h3>
+                <p class="poster-tagline">Sci-fi drama. 45% complete.</p>
+                <div class="poster-meta">
+                  <span class="genre-badge">Sci-Fi</span>
+                  <span class="budget-tag">$6.8M</span>
+                </div>
+              </div>
+              <div class="film-poster-card projection-card">
+                <div class="poster-image poster-gradient-3">
+                  <span class="catalog-number">#SP-0045</span>
+                </div>
+                <h3>Velvet Ruin</h3>
+                <p class="poster-tagline">Period drama. 82% complete.</p>
+                <div class="poster-meta">
+                  <span class="genre-badge">Drama</span>
+                  <span class="budget-tag">$3.1M</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coming Soon section -->
+          <div class="coming-soon-section scroll-reveal">
+            <div class="section-marquee">
+              <span class="marquee-badge coming-soon">COMING SOON</span>
+            </div>
+            <div class="poster-grid">
+              <div class="poster-card-small projection-card">
+                <div class="poster-thumb poster-gradient-4">
+                  <span class="catalog-number">#SP-0048</span>
+                </div>
+                <h4>Glass Teeth</h4>
+                <p>Horror-comedy. Pre-production.</p>
+              </div>
+              <div class="poster-card-small projection-card">
+                <div class="poster-thumb poster-gradient-5">
+                  <span class="catalog-number">#SP-0049</span>
+                </div>
+                <h4>Last Stop, Jupiter</h4>
+                <p>Animated feature. Script phase.</p>
+              </div>
+              <div class="poster-card-small projection-card">
+                <div class="poster-thumb poster-gradient-6">
+                  <span class="catalog-number">#SP-0050</span>
+                </div>
+                <h4>The Understudies</h4>
+                <p>Mockumentary. Casting.</p>
+              </div>
+              <div class="poster-card-small projection-card">
+                <div class="poster-thumb poster-gradient-7">
+                  <span class="catalog-number">#SP-0051</span>
+                </div>
+                <h4>Borrowed Noon</h4>
+                <p>Western. Location scouting.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PROJECT WORKSPACE ===== -->
+      <section class="view" data-page="project-workspace">
+        <div class="view-inner">
+          <h1 class="view-title scroll-reveal">The Neon Paradox <span class="catalog-number">#SP-0047</span></h1>
+
+          <!-- Cinematic widescreen layout with dark sidebars as curtains -->
+          <div class="cinematic-layout">
+            <div class="theater-curtain-left" aria-hidden="true"></div>
+            <div class="screen-content">
+              <!-- Production info -->
+              <div class="production-overview scroll-reveal">
+                <div class="overview-header">
+                  <h2>Production Overview</h2>
+                  <span class="now-showing-badge-small">IN PRODUCTION</span>
+                </div>
+                <div class="overview-grid">
+                  <div class="overview-cell">
+                    <span class="cell-label">Director</span>
+                    <span class="cell-value">Mara Chen</span>
+                  </div>
+                  <div class="overview-cell">
+                    <span class="cell-label">Producer</span>
+                    <span class="cell-value">Felix Drummond</span>
+                  </div>
+                  <div class="overview-cell">
+                    <span class="cell-label">DP</span>
+                    <span class="cell-value">Kira Johanssen</span>
+                  </div>
+                  <div class="overview-cell">
+                    <span class="cell-label">Budget</span>
+                    <span class="cell-value">$4.2M</span>
+                  </div>
+                  <div class="overview-cell">
+                    <span class="cell-label">Schedule</span>
+                    <span class="cell-value">48 days / 72 total</span>
+                  </div>
+                  <div class="overview-cell">
+                    <span class="cell-label">Genre</span>
+                    <span class="cell-value">Neo-Noir / Thriller</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Milestones timeline -->
+              <h3 class="section-heading scroll-reveal">Production Milestones</h3>
+              <div class="milestone-strip scroll-reveal">
+                <div class="milestone done">
+                  <div class="milestone-dot"></div>
+                  <span>Script Lock</span>
+                </div>
+                <div class="milestone done">
+                  <div class="milestone-dot"></div>
+                  <span>Casting</span>
+                </div>
+                <div class="milestone done">
+                  <div class="milestone-dot"></div>
+                  <span>Principal Photography</span>
+                </div>
+                <div class="milestone active">
+                  <div class="milestone-dot"></div>
+                  <span>Post-Production</span>
+                </div>
+                <div class="milestone">
+                  <div class="milestone-dot"></div>
+                  <span>Sound Mix</span>
+                </div>
+                <div class="milestone">
+                  <div class="milestone-dot"></div>
+                  <span>Festival Submission</span>
+                </div>
+              </div>
+
+              <!-- Recent notes -->
+              <h3 class="section-heading scroll-reveal">Director's Notes</h3>
+              <div class="directors-notes scroll-reveal">
+                <div class="note-entry">
+                  <span class="note-time">Feb 14</span>
+                  <p>The rain machine for the alley scene needs to be angled 15 degrees more to camera-left. The puddle reflections are reading flat.</p>
+                </div>
+                <div class="note-entry">
+                  <span class="note-time">Feb 12</span>
+                  <p>I want the interrogation room to feel like the walls are breathing. Can we try a subtle lens distortion on the wide shots?</p>
+                </div>
+                <div class="note-entry">
+                  <span class="note-time">Feb 10</span>
+                  <p>The lead's monologue in Scene 47 needs to be re-blocked. She should be moving toward the window, not away from it.</p>
+                </div>
+              </div>
+            </div>
+            <div class="theater-curtain-right" aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== KANBAN ===== -->
+      <section class="view" data-page="kanban">
+        <div class="view-inner">
+          <h1 class="view-title scroll-reveal">Production Board</h1>
+          <div class="kanban-aisles">
+            <!-- Pre-Production aisle -->
+            <div class="kanban-aisle scroll-reveal">
+              <div class="aisle-header">
+                <div class="marquee-column-header">PRE-PRODUCTION</div>
+                <span class="aisle-count">3</span>
+              </div>
+              <div class="aisle-cards">
+                <div class="ticket-card projection-card">
+                  <span class="catalog-number">#TK-201</span>
+                  <h4>Location scout: Abandoned Factory</h4>
+                  <p>Need an industrial space with tall windows for the climax sequence.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">Locations</span>
+                    <span class="assignee">R. Torres</span>
+                  </div>
+                </div>
+                <div class="ticket-card projection-card">
+                  <span class="catalog-number">#TK-202</span>
+                  <h4>Costume fitting: Lead actress</h4>
+                  <p>Three looks needed: detective trench coat, gala dress, hospital gown.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">Wardrobe</span>
+                    <span class="assignee">L. Voss</span>
+                  </div>
+                </div>
+                <div class="ticket-card projection-card">
+                  <span class="catalog-number">#TK-203</span>
+                  <h4>Stunt choreography review</h4>
+                  <p>Rooftop chase sequence. Safety coordinator sign-off pending.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">Stunts</span>
+                    <span class="assignee">M. Park</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- In Production aisle -->
+            <div class="kanban-aisle scroll-reveal">
+              <div class="aisle-header">
+                <div class="marquee-column-header">SHOOTING</div>
+                <span class="aisle-count">4</span>
+              </div>
+              <div class="aisle-cards">
+                <div class="ticket-card projection-card">
+                  <span class="catalog-number">#TK-178</span>
+                  <h4>Scene 32: Interrogation room</h4>
+                  <p>Two-camera setup. Dialogue-heavy. Estimated 6 hours.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">Principal</span>
+                    <span class="assignee">M. Chen</span>
+                  </div>
+                </div>
+                <div class="ticket-card projection-card">
+                  <span class="catalog-number">#TK-179</span>
+                  <h4>Scene 33: Car chase insert shots</h4>
+                  <p>Close-ups of hands on steering wheel, gear shift, speedometer.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">B-Unit</span>
+                    <span class="assignee">K. Johanssen</span>
+                  </div>
+                </div>
+                <div class="ticket-card projection-card">
+                  <span class="catalog-number">#TK-180</span>
+                  <h4>Pickup: Scene 12 over-the-shoulder</h4>
+                  <p>The eyeline was wrong in the original take. Need matching light.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">Reshoots</span>
+                    <span class="assignee">M. Chen</span>
+                  </div>
+                </div>
+                <div class="ticket-card projection-card">
+                  <span class="catalog-number">#TK-181</span>
+                  <h4>Foley recording: Footsteps</h4>
+                  <p>Wet pavement footsteps for all exterior night scenes.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">Sound</span>
+                    <span class="assignee">D. Marsh</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Post-Production aisle -->
+            <div class="kanban-aisle scroll-reveal">
+              <div class="aisle-header">
+                <div class="marquee-column-header">POST-PRODUCTION</div>
+                <span class="aisle-count">3</span>
+              </div>
+              <div class="aisle-cards">
+                <div class="ticket-card projection-card">
+                  <span class="catalog-number">#TK-155</span>
+                  <h4>Color grade: Act I</h4>
+                  <p>Cold blues for office scenes, warm amber for flashbacks.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">Color</span>
+                    <span class="assignee">J. Wren</span>
+                  </div>
+                </div>
+                <div class="ticket-card projection-card">
+                  <span class="catalog-number">#TK-156</span>
+                  <h4>VFX: Neon sign composites</h4>
+                  <p>12 shots need CG neon signs added to the street exteriors.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">VFX</span>
+                    <span class="assignee">A. Singh</span>
+                  </div>
+                </div>
+                <div class="ticket-card projection-card">
+                  <span class="catalog-number">#TK-157</span>
+                  <h4>Rough cut screening notes</h4>
+                  <p>Compile feedback from the test audience screening last Friday.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">Editorial</span>
+                    <span class="assignee">F. Drummond</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Wrapped aisle -->
+            <div class="kanban-aisle scroll-reveal">
+              <div class="aisle-header">
+                <div class="marquee-column-header">WRAPPED</div>
+                <span class="aisle-count">2</span>
+              </div>
+              <div class="aisle-cards">
+                <div class="ticket-card projection-card wrapped">
+                  <span class="catalog-number">#TK-140</span>
+                  <h4>Score: Main theme recording</h4>
+                  <p>Orchestra session completed. 48-piece ensemble. Mastered.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">Music</span>
+                    <span class="assignee">N. Frost</span>
+                  </div>
+                </div>
+                <div class="ticket-card projection-card wrapped">
+                  <span class="catalog-number">#TK-138</span>
+                  <h4>Title sequence design</h4>
+                  <p>Animated neon-tube lettering with rain effect. Approved.</p>
+                  <div class="ticket-footer">
+                    <span class="genre-badge">Titles</span>
+                    <span class="assignee">S. Lee</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WHITEBOARD ===== -->
+      <section class="view" data-page="whiteboard">
+        <div class="view-inner">
+          <h1 class="view-title scroll-reveal">Storyboard Canvas</h1>
+          <div class="storyboard-canvas scroll-reveal">
+            <div class="storyboard-sequence">
+              <h3 class="sequence-label">Sequence A: Opening Chase</h3>
+              <div class="storyboard-frames">
+                <div class="storyboard-cell">
+                  <div class="frame-number">A-001</div>
+                  <div class="frame-sketch">
+                    <div class="sketch-placeholder">
+                      <svg viewBox="0 0 120 80" class="sketch-svg">
+                        <rect x="5" y="5" width="110" height="70" rx="3" fill="none" stroke="#ffe014" stroke-width="1" opacity="0.4"/>
+                        <circle cx="30" cy="40" r="12" fill="none" stroke="#ff4488" stroke-width="1"/>
+                        <line x1="45" y1="35" x2="100" y2="35" stroke="#f5f0e8" stroke-width="1" opacity="0.5"/>
+                        <line x1="45" y1="45" x2="85" y2="45" stroke="#f5f0e8" stroke-width="1" opacity="0.3"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="frame-note">Wide shot: Protagonist runs down rain-slicked alley. Camera dollies backward.</p>
+                </div>
+                <div class="storyboard-cell">
+                  <div class="frame-number">A-002</div>
+                  <div class="frame-sketch">
+                    <div class="sketch-placeholder">
+                      <svg viewBox="0 0 120 80" class="sketch-svg">
+                        <rect x="5" y="5" width="110" height="70" rx="3" fill="none" stroke="#ffe014" stroke-width="1" opacity="0.4"/>
+                        <rect x="20" y="15" width="40" height="50" rx="2" fill="none" stroke="#ff4488" stroke-width="1"/>
+                        <line x1="70" y1="25" x2="105" y2="25" stroke="#f5f0e8" stroke-width="1" opacity="0.5"/>
+                        <line x1="70" y1="40" x2="95" y2="40" stroke="#f5f0e8" stroke-width="1" opacity="0.3"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="frame-note">Close-up: Feet splashing through puddles. Neon reflections in the water.</p>
+                </div>
+                <div class="storyboard-cell">
+                  <div class="frame-number">A-003</div>
+                  <div class="frame-sketch">
+                    <div class="sketch-placeholder">
+                      <svg viewBox="0 0 120 80" class="sketch-svg">
+                        <rect x="5" y="5" width="110" height="70" rx="3" fill="none" stroke="#ffe014" stroke-width="1" opacity="0.4"/>
+                        <polygon points="60,10 110,45 60,75 10,45" fill="none" stroke="#ff4488" stroke-width="1"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="frame-note">Dutch angle: Pursuer's silhouette appears at end of alley. Lightning flash.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="storyboard-sequence">
+              <h3 class="sequence-label">Sequence B: The Interrogation</h3>
+              <div class="storyboard-frames">
+                <div class="storyboard-cell">
+                  <div class="frame-number">B-001</div>
+                  <div class="frame-sketch">
+                    <div class="sketch-placeholder">
+                      <svg viewBox="0 0 120 80" class="sketch-svg">
+                        <rect x="5" y="5" width="110" height="70" rx="3" fill="none" stroke="#ffe014" stroke-width="1" opacity="0.4"/>
+                        <circle cx="60" cy="30" r="15" fill="none" stroke="#ff4488" stroke-width="1"/>
+                        <line x1="20" y1="60" x2="100" y2="60" stroke="#f5f0e8" stroke-width="1" opacity="0.5"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="frame-note">Overhead shot: Single lamp casts cone of light on detective's desk.</p>
+                </div>
+                <div class="storyboard-cell">
+                  <div class="frame-number">B-002</div>
+                  <div class="frame-sketch">
+                    <div class="sketch-placeholder">
+                      <svg viewBox="0 0 120 80" class="sketch-svg">
+                        <rect x="5" y="5" width="110" height="70" rx="3" fill="none" stroke="#ffe014" stroke-width="1" opacity="0.4"/>
+                        <rect x="15" y="20" width="35" height="45" rx="2" fill="none" stroke="#ff4488" stroke-width="1"/>
+                        <rect x="70" y="20" width="35" height="45" rx="2" fill="none" stroke="#ffe014" stroke-width="1" opacity="0.5"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="frame-note">Two-shot: Detective and suspect face each other across the table. Split lighting.</p>
+                </div>
+                <div class="storyboard-cell">
+                  <div class="frame-number">B-003</div>
+                  <div class="frame-sketch">
+                    <div class="sketch-placeholder">
+                      <svg viewBox="0 0 120 80" class="sketch-svg">
+                        <rect x="5" y="5" width="110" height="70" rx="3" fill="none" stroke="#ffe014" stroke-width="1" opacity="0.4"/>
+                        <circle cx="40" cy="40" r="25" fill="none" stroke="#ff4488" stroke-width="1"/>
+                        <line x1="65" y1="40" x2="110" y2="40" stroke="#ffe014" stroke-width="2" opacity="0.6"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="frame-note">Extreme close-up: The suspect's eye. A tear catches the light.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SCHEMA PLANNER ===== -->
+      <section class="view" data-page="schema-planner">
+        <div class="view-inner">
+          <h1 class="view-title scroll-reveal">Production Credits Schema</h1>
+          <div class="credits-schema">
+            <!-- Cast list (entities) -->
+            <div class="credits-block scroll-reveal">
+              <div class="credits-category-header">CAST</div>
+              <div class="credits-entries">
+                <div class="credit-entry">
+                  <span class="credit-role">Detective Lila Cross</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Yuki Tanaka</span>
+                </div>
+                <div class="credit-entry">
+                  <span class="credit-role">The Architect</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Derek Osei</span>
+                </div>
+                <div class="credit-entry">
+                  <span class="credit-role">Chief Monroe</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Helen Varga</span>
+                </div>
+                <div class="credit-entry">
+                  <span class="credit-role">The Witness</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Leo Marchetti</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Crew credits (relationships) -->
+            <div class="credits-block scroll-reveal">
+              <div class="credits-category-header">CREW</div>
+              <div class="credits-entries">
+                <div class="credit-entry">
+                  <span class="credit-role">Director</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Mara Chen</span>
+                </div>
+                <div class="credit-entry">
+                  <span class="credit-role">Producer</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Felix Drummond</span>
+                </div>
+                <div class="credit-entry">
+                  <span class="credit-role">Director of Photography</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Kira Johanssen</span>
+                </div>
+                <div class="credit-entry">
+                  <span class="credit-role">Editor</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Jules Wren</span>
+                </div>
+                <div class="credit-entry">
+                  <span class="credit-role">Composer</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Nina Frost</span>
+                </div>
+                <div class="credit-entry">
+                  <span class="credit-role">Production Designer</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Sam Ortega</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Departments (additional relationships) -->
+            <div class="credits-block scroll-reveal">
+              <div class="credits-category-header">DEPARTMENTS</div>
+              <div class="credits-entries">
+                <div class="credit-entry">
+                  <span class="credit-role">VFX Supervisor</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Arjun Singh</span>
+                </div>
+                <div class="credit-entry">
+                  <span class="credit-role">Stunt Coordinator</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Min-Jun Park</span>
+                </div>
+                <div class="credit-entry">
+                  <span class="credit-role">Costume Designer</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Lena Voss</span>
+                </div>
+                <div class="credit-entry">
+                  <span class="credit-role">Sound Designer</span>
+                  <span class="credit-dots"></span>
+                  <span class="credit-name">Dana Marsh</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Entity Relationships diagram -->
+            <div class="schema-relationships scroll-reveal">
+              <h3 class="section-heading">Relationship Map</h3>
+              <div class="relationship-diagram">
+                <svg viewBox="0 0 600 200" class="relationship-svg">
+                  <defs>
+                    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                      <polygon points="0 0, 8 3, 0 6" fill="#ffe014"/>
+                    </marker>
+                  </defs>
+                  <!-- Nodes -->
+                  <rect x="20" y="70" width="120" height="60" rx="6" fill="#251a40" stroke="#ffe014" stroke-width="2"/>
+                  <text x="80" y="105" text-anchor="middle" fill="#f5f0e8" font-family="Righteous" font-size="12">Director</text>
+                  <rect x="240" y="20" width="120" height="60" rx="6" fill="#251a40" stroke="#ff4488" stroke-width="2"/>
+                  <text x="300" y="55" text-anchor="middle" fill="#f5f0e8" font-family="Righteous" font-size="12">Cast</text>
+                  <rect x="240" y="120" width="120" height="60" rx="6" fill="#251a40" stroke="#ff4488" stroke-width="2"/>
+                  <text x="300" y="155" text-anchor="middle" fill="#f5f0e8" font-family="Righteous" font-size="12">Crew</text>
+                  <rect x="460" y="70" width="120" height="60" rx="6" fill="#251a40" stroke="#ffe014" stroke-width="2"/>
+                  <text x="520" y="105" text-anchor="middle" fill="#f5f0e8" font-family="Righteous" font-size="12">Production</text>
+                  <!-- Connections -->
+                  <line x1="140" y1="90" x2="240" y2="50" stroke="#ffe014" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                  <line x1="140" y1="110" x2="240" y2="150" stroke="#ffe014" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                  <line x1="360" y1="50" x2="460" y2="90" stroke="#ff4488" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                  <line x1="360" y1="150" x2="460" y2="110" stroke="#ff4488" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== DIRECTORY TREE ===== -->
+      <section class="view" data-page="directory-tree">
+        <div class="view-inner">
+          <h1 class="view-title scroll-reveal">Production Files</h1>
+          <div class="credits-scroll-tree">
+            <div class="tree-category scroll-reveal">
+              <div class="tree-category-header">THE NEON PARADOX</div>
+              <div class="tree-items">
+                <div class="tree-branch">
+                  <div class="tree-folder">
+                    <span class="folder-icon">&#9659;</span>
+                    <span class="folder-name">01_Script</span>
+                  </div>
+                  <div class="tree-leaves">
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> NeonParadox_v12_FINAL.fdx</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> NeonParadox_v12_NOTES.pdf</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> scene_breakdown.xlsx</div>
+                  </div>
+                </div>
+                <div class="tree-branch">
+                  <div class="tree-folder">
+                    <span class="folder-icon">&#9659;</span>
+                    <span class="folder-name">02_Storyboards</span>
+                  </div>
+                  <div class="tree-leaves">
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> SeqA_Opening_Chase.pdf</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> SeqB_Interrogation.pdf</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> SeqC_Rooftop.pdf</div>
+                  </div>
+                </div>
+                <div class="tree-branch">
+                  <div class="tree-folder">
+                    <span class="folder-icon">&#9659;</span>
+                    <span class="folder-name">03_Dailies</span>
+                  </div>
+                  <div class="tree-leaves">
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> Day32_Scene12_Take4.mov</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> Day33_Scene32_Take2.mov</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> Day33_Scene33_Take1.mov</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> Day34_Pickups.mov</div>
+                  </div>
+                </div>
+                <div class="tree-branch">
+                  <div class="tree-folder">
+                    <span class="folder-icon">&#9659;</span>
+                    <span class="folder-name">04_VFX</span>
+                  </div>
+                  <div class="tree-leaves">
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> neon_sign_composite_v3.exr</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> rooftop_matte_painting.psd</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> rain_particle_sim.hip</div>
+                  </div>
+                </div>
+                <div class="tree-branch">
+                  <div class="tree-folder">
+                    <span class="folder-icon">&#9659;</span>
+                    <span class="folder-name">05_Sound</span>
+                  </div>
+                  <div class="tree-leaves">
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> main_theme_master.wav</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> foley_footsteps_wet.wav</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> ambience_rain_city.wav</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tree-category scroll-reveal">
+              <div class="tree-category-header">ECHOES OF MERCURY</div>
+              <div class="tree-items">
+                <div class="tree-branch">
+                  <div class="tree-folder">
+                    <span class="folder-icon">&#9659;</span>
+                    <span class="folder-name">01_Script</span>
+                  </div>
+                  <div class="tree-leaves">
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> EchoesOfMercury_v8.fdx</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> character_bible.pdf</div>
+                  </div>
+                </div>
+                <div class="tree-branch">
+                  <div class="tree-folder">
+                    <span class="folder-icon">&#9659;</span>
+                    <span class="folder-name">02_Concept_Art</span>
+                  </div>
+                  <div class="tree-leaves">
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> mercury_surface_v4.jpg</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> hab_module_interior.psd</div>
+                    <div class="tree-leaf"><span class="leaf-icon">&#9702;</span> spacesuit_design_final.ai</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== IDEAS ===== -->
+      <section class="view" data-page="ideas">
+        <div class="view-inner">
+          <h1 class="view-title scroll-reveal">Pitch Wall</h1>
+          <div class="poster-masonry">
+            <div class="movie-poster-idea projection-card scroll-reveal">
+              <div class="poster-art poster-gradient-8">
+                <span class="catalog-number">#PITCH-012</span>
+              </div>
+              <h3>The Collector's Wife</h3>
+              <p class="poster-tagline-idea">A woman discovers her husband's art collection is full of stolen masterpieces.</p>
+              <span class="genre-badge">Heist Drama</span>
+              <div class="poster-rating">
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star">&#9733;</span>
+              </div>
+            </div>
+            <div class="movie-poster-idea projection-card scroll-reveal">
+              <div class="poster-art poster-gradient-9">
+                <span class="catalog-number">#PITCH-013</span>
+              </div>
+              <h3>Frequency</h3>
+              <p class="poster-tagline-idea">A radio DJ in 1957 starts receiving broadcasts from 2025.</p>
+              <span class="genre-badge">Sci-Fi Romance</span>
+              <div class="poster-rating">
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+              </div>
+            </div>
+            <div class="movie-poster-idea projection-card scroll-reveal">
+              <div class="poster-art poster-gradient-10">
+                <span class="catalog-number">#PITCH-014</span>
+              </div>
+              <h3>Paper Tigers</h3>
+              <p class="poster-tagline-idea">Three retired martial artists must defend their Chinatown neighborhood from gentrification.</p>
+              <span class="genre-badge">Action Comedy</span>
+              <div class="poster-rating">
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star">&#9733;</span>
+                <span class="star">&#9733;</span>
+              </div>
+            </div>
+            <div class="movie-poster-idea projection-card scroll-reveal">
+              <div class="poster-art poster-gradient-11">
+                <span class="catalog-number">#PITCH-015</span>
+              </div>
+              <h3>The Last Lighthouse</h3>
+              <p class="poster-tagline-idea">Two strangers are trapped in a lighthouse during a storm that never ends.</p>
+              <span class="genre-badge">Psychological Horror</span>
+              <div class="poster-rating">
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star">&#9733;</span>
+              </div>
+            </div>
+            <div class="movie-poster-idea projection-card scroll-reveal">
+              <div class="poster-art poster-gradient-12">
+                <span class="catalog-number">#PITCH-016</span>
+              </div>
+              <h3>Overnight</h3>
+              <p class="poster-tagline-idea">A convenience store clerk solves neighborhood mysteries between the hours of 11 PM and 7 AM.</p>
+              <span class="genre-badge">Mystery Comedy</span>
+              <div class="poster-rating">
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star">&#9733;</span>
+                <span class="star">&#9733;</span>
+              </div>
+            </div>
+            <div class="movie-poster-idea projection-card scroll-reveal">
+              <div class="poster-art poster-gradient-13">
+                <span class="catalog-number">#PITCH-017</span>
+              </div>
+              <h3>The Understudies</h3>
+              <p class="poster-tagline-idea">A mockumentary about Broadway understudies who have never once gone on stage.</p>
+              <span class="genre-badge">Mockumentary</span>
+              <div class="poster-rating">
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+                <span class="star filled">&#9733;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== AI CHAT ===== -->
+      <section class="view" data-page="ai-chat">
+        <div class="view-inner">
+          <h1 class="view-title scroll-reveal">Script Doctor</h1>
+          <div class="comic-panel-chat scroll-reveal">
+            <div class="comic-row">
+              <div class="comic-panel user-panel">
+                <div class="speech-bubble user-bubble">
+                  <div class="bubble-tail-user"></div>
+                  <p>The third act feels flat. The detective's motivation isn't clear after the betrayal scene. How do we fix it?</p>
+                </div>
+                <div class="panel-character user-character">
+                  <div class="character-avatar user-avatar">MC</div>
+                  <span class="character-name">Mara Chen</span>
+                </div>
+              </div>
+            </div>
+            <div class="comic-row">
+              <div class="comic-panel ai-panel">
+                <div class="panel-character ai-character">
+                  <div class="character-avatar ai-avatar">SD</div>
+                  <span class="character-name">Script Doctor</span>
+                </div>
+                <div class="speech-bubble ai-bubble">
+                  <div class="bubble-tail-ai"></div>
+                  <p>The issue is that Lila's personal stakes vanish after Scene 47. Consider adding a callback to her opening monologue — she mentions her father's badge. If The Architect steals that badge in the betrayal scene, her pursuit becomes personal again, not just professional.</p>
+                </div>
+              </div>
+            </div>
+            <div class="comic-row">
+              <div class="comic-panel user-panel">
+                <div class="speech-bubble user-bubble">
+                  <div class="bubble-tail-user"></div>
+                  <p>I like that. But the pacing of the final confrontation still drags. It's 12 pages of dialogue with no physical tension.</p>
+                </div>
+                <div class="panel-character user-character">
+                  <div class="character-avatar user-avatar">MC</div>
+                  <span class="character-name">Mara Chen</span>
+                </div>
+              </div>
+            </div>
+            <div class="comic-row">
+              <div class="comic-panel ai-panel">
+                <div class="panel-character ai-character">
+                  <div class="character-avatar ai-avatar">SD</div>
+                  <span class="character-name">Script Doctor</span>
+                </div>
+                <div class="speech-bubble ai-bubble">
+                  <div class="bubble-tail-ai"></div>
+                  <p>Break the 12 pages into three intercut threads: Lila and The Architect talking in the warehouse, the bomb squad outside on a ticking clock, and flashback fragments of their first meeting. Each thread raises tension independently, and you can crosscut to create rhythm without adding action to the dialogue itself.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat input -->
+            <div class="chat-input-row">
+              <div class="chat-input-wrapper">
+                <input type="text" class="chat-input" placeholder="Ask the Script Doctor...">
+                <button class="chat-send-btn marquee-btn" data-tooltip="Send message">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SETTINGS ===== -->
+      <section class="view" data-page="settings">
+        <div class="view-inner">
+          <h1 class="view-title scroll-reveal">Projection Room</h1>
+          <div class="control-panel">
+            <!-- Playback section -->
+            <div class="equipment-section scroll-reveal">
+              <h3 class="equipment-label">PROJECTOR CONTROLS</h3>
+              <div class="control-row">
+                <div class="control-item">
+                  <label class="control-label">Dark Mode</label>
+                  <div class="toggle-switch" data-tooltip="Toggle theater lights">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                  </div>
+                </div>
+                <div class="control-item">
+                  <label class="control-label">Film Grain Overlay</label>
+                  <div class="toggle-switch" data-tooltip="Add vintage film grain texture">
+                    <input type="checkbox">
+                    <span class="toggle-slider"></span>
+                  </div>
+                </div>
+                <div class="control-item">
+                  <label class="control-label">Projector Dust Particles</label>
+                  <div class="toggle-switch" data-tooltip="Ambient floating particles">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Display section -->
+            <div class="equipment-section scroll-reveal">
+              <h3 class="equipment-label">DISPLAY CALIBRATION</h3>
+              <div class="control-row">
+                <div class="control-item full-width">
+                  <label class="control-label">Studio Name</label>
+                  <input type="text" class="settings-input" value="Starlight Pictures" placeholder="Your studio name">
+                </div>
+              </div>
+              <div class="control-row">
+                <div class="control-item full-width">
+                  <label class="control-label">Notification Email</label>
+                  <input type="email" class="settings-input" value="mara@starlightpictures.com" placeholder="Email address">
+                </div>
+              </div>
+              <div class="control-row">
+                <div class="control-item">
+                  <label class="control-label">Aspect Ratio</label>
+                  <select class="settings-select">
+                    <option>2.39:1 (Anamorphic)</option>
+                    <option selected>1.85:1 (Standard)</option>
+                    <option>1.33:1 (Academy)</option>
+                    <option>16:9 (HD)</option>
+                  </select>
+                </div>
+                <div class="control-item">
+                  <label class="control-label">Frame Rate</label>
+                  <select class="settings-select">
+                    <option selected>24 fps (Cinema)</option>
+                    <option>25 fps (PAL)</option>
+                    <option>30 fps (NTSC)</option>
+                    <option>48 fps (HFR)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sound section -->
+            <div class="equipment-section scroll-reveal">
+              <h3 class="equipment-label">SOUND BOOTH</h3>
+              <div class="control-row">
+                <div class="control-item">
+                  <label class="control-label">Interaction Sounds</label>
+                  <div class="toggle-switch" data-tooltip="Click and hover sound effects">
+                    <input type="checkbox">
+                    <span class="toggle-slider"></span>
+                  </div>
+                </div>
+                <div class="control-item">
+                  <label class="control-label">Auto-save Interval</label>
+                  <select class="settings-select">
+                    <option>Every 30 seconds</option>
+                    <option selected>Every 2 minutes</option>
+                    <option>Every 5 minutes</option>
+                    <option>Manual only</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Crew section -->
+            <div class="equipment-section scroll-reveal">
+              <h3 class="equipment-label">CREW ACCESS</h3>
+              <div class="control-row">
+                <div class="control-item">
+                  <label class="control-label">Public Screening Link</label>
+                  <div class="toggle-switch" data-tooltip="Allow external viewers">
+                    <input type="checkbox">
+                    <span class="toggle-slider"></span>
+                  </div>
+                </div>
+                <div class="control-item">
+                  <label class="control-label">Two-Factor Auth</label>
+                  <div class="toggle-switch" data-tooltip="Require 2FA for all crew">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="control-row">
+                <div class="control-item full-width">
+                  <button class="marquee-btn action-btn" data-tooltip="Save all projection room settings">Save Configuration</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Right-rail navigation with vertical dots timeline -->
+    <nav class="right-rail-nav" id="rightRailNav" aria-label="Main navigation">
+      <div class="nav-brand">
+        <span class="brand-star">&#9733;</span>
+        <span class="brand-text">SP</span>
+      </div>
+      <div class="nav-timeline">
+        <div class="timeline-line" aria-hidden="true"></div>
+        <button class="nav-dot" data-view="dashboard" data-tooltip="Dashboard">
+          <span class="dot-circle"></span>
+          <span class="dot-label">Dashboard</span>
+          <span class="now-showing-tag">NOW SHOWING</span>
+        </button>
+        <button class="nav-dot" data-view="projects" data-tooltip="Projects">
+          <span class="dot-circle"></span>
+          <span class="dot-label">Projects</span>
+          <span class="now-showing-tag">NOW SHOWING</span>
+        </button>
+        <button class="nav-dot" data-view="project-workspace" data-tooltip="Workspace">
+          <span class="dot-circle"></span>
+          <span class="dot-label">Workspace</span>
+          <span class="now-showing-tag">NOW SHOWING</span>
+        </button>
+        <button class="nav-dot" data-view="kanban" data-tooltip="Kanban">
+          <span class="dot-circle"></span>
+          <span class="dot-label">Kanban</span>
+          <span class="now-showing-tag">NOW SHOWING</span>
+        </button>
+        <button class="nav-dot" data-view="whiteboard" data-tooltip="Storyboard">
+          <span class="dot-circle"></span>
+          <span class="dot-label">Storyboard</span>
+          <span class="now-showing-tag">NOW SHOWING</span>
+        </button>
+        <button class="nav-dot" data-view="schema-planner" data-tooltip="Credits Schema">
+          <span class="dot-circle"></span>
+          <span class="dot-label">Schema</span>
+          <span class="now-showing-tag">NOW SHOWING</span>
+        </button>
+        <button class="nav-dot" data-view="directory-tree" data-tooltip="Files">
+          <span class="dot-circle"></span>
+          <span class="dot-label">Files</span>
+          <span class="now-showing-tag">NOW SHOWING</span>
+        </button>
+        <button class="nav-dot" data-view="ideas" data-tooltip="Pitch Wall">
+          <span class="dot-circle"></span>
+          <span class="dot-label">Pitches</span>
+          <span class="now-showing-tag">NOW SHOWING</span>
+        </button>
+        <button class="nav-dot" data-view="ai-chat" data-tooltip="Script Doctor">
+          <span class="dot-circle"></span>
+          <span class="dot-label">Script Dr.</span>
+          <span class="now-showing-tag">NOW SHOWING</span>
+        </button>
+        <button class="nav-dot" data-view="settings" data-tooltip="Settings">
+          <span class="dot-circle"></span>
+          <span class="dot-label">Settings</span>
+          <span class="now-showing-tag">NOW SHOWING</span>
+        </button>
+      </div>
+    </nav>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

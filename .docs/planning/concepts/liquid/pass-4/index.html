@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bloom &mdash; Wellness Idea Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Nunito+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.7/dist/tippy.css">
+  <link rel="stylesheet" href="https://unpkg.com/splitting@1.0.6/dist/splitting.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background canvas for color-wash-drift -->
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="paint-drip-loader">
+      <div class="drip-container">
+        <div class="drip drip-1"></div>
+        <div class="drip drip-2"></div>
+        <div class="drip drip-3"></div>
+      </div>
+      <span class="loading-text">Preparing your canvas&hellip;</span>
+    </div>
+  </div>
+
+  <!-- Page transition wash overlay -->
+  <div id="page-wash" class="page-wash" aria-hidden="true"></div>
+
+  <!-- Petal float micro-feedback container -->
+  <div id="petal-container" aria-hidden="true"></div>
+
+  <!-- Tooltip templates (soft-cloud) -->
+
+  <!-- App Shell: collapsible left sidebar + split-panel-detail -->
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-mark">
+          <svg viewBox="0 0 32 32" class="logo-svg" aria-label="Bloom logo">
+            <circle cx="16" cy="16" r="12" fill="none" stroke="#d4889a" stroke-width="1.5" opacity="0.5"/>
+            <circle cx="16" cy="12" r="4" fill="#d4889a" opacity="0.6"/>
+            <circle cx="12" cy="18" r="4" fill="#8baa8b" opacity="0.5"/>
+            <circle cx="20" cy="18" r="4" fill="#c7a4cc" opacity="0.5"/>
+          </svg>
+        </div>
+        <span class="logo-name">Bloom</span>
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M3 5h12M3 9h12M3 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <!-- Accordion Section: Overview -->
+        <div class="nav-accordion" data-accordion="overview">
+          <button class="accordion-trigger" aria-expanded="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Overview</span>
+            <svg class="accordion-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-panel" aria-hidden="false">
+            <button class="nav-item active" data-view="dashboard">
+              <span class="paint-dot"></span>
+              Dashboard
+            </button>
+          </div>
+        </div>
+
+        <!-- Accordion Section: Projects -->
+        <div class="nav-accordion" data-accordion="projects">
+          <button class="accordion-trigger" aria-expanded="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span>Projects</span>
+            <svg class="accordion-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-panel" aria-hidden="false">
+            <button class="nav-item" data-view="projects">
+              <span class="paint-dot"></span>
+              All Projects
+            </button>
+            <button class="nav-item" data-view="project-workspace">
+              <span class="paint-dot"></span>
+              Workspace
+            </button>
+            <button class="nav-item" data-view="kanban">
+              <span class="paint-dot"></span>
+              Kanban Board
+            </button>
+          </div>
+        </div>
+
+        <!-- Accordion Section: Planning -->
+        <div class="nav-accordion" data-accordion="planning">
+          <button class="accordion-trigger" aria-expanded="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span>Planning</span>
+            <svg class="accordion-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-panel" aria-hidden="false">
+            <button class="nav-item" data-view="whiteboard">
+              <span class="paint-dot"></span>
+              Whiteboard
+            </button>
+            <button class="nav-item" data-view="schema-planner">
+              <span class="paint-dot"></span>
+              Schema Planner
+            </button>
+            <button class="nav-item" data-view="directory-tree">
+              <span class="paint-dot"></span>
+              Directory Tree
+            </button>
+          </div>
+        </div>
+
+        <!-- Accordion Section: Creative -->
+        <div class="nav-accordion" data-accordion="creative">
+          <button class="accordion-trigger" aria-expanded="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Creative</span>
+            <svg class="accordion-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-panel" aria-hidden="false">
+            <button class="nav-item" data-view="ideas">
+              <span class="paint-dot"></span>
+              Ideas
+            </button>
+            <button class="nav-item" data-view="ai-chat">
+              <span class="paint-dot"></span>
+              AI Muse
+            </button>
+          </div>
+        </div>
+
+        <!-- Accordion Section: System -->
+        <div class="nav-accordion" data-accordion="system">
+          <button class="accordion-trigger" aria-expanded="false">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>System</span>
+            <svg class="accordion-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-panel collapsed" aria-hidden="true">
+            <button class="nav-item" data-view="settings">
+              <span class="paint-dot"></span>
+              Settings
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-pill">
+          <div class="user-avatar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <span class="user-name">Sage Whitfield</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile hamburger -->
+    <button class="mobile-hamburger" id="mobile-hamburger" aria-label="Open navigation">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+
+    <!-- Main Content (split-panel-detail) -->
+    <main class="main-content" id="main-content">
+
+      <!-- ==================== DASHBOARD ==================== -->
+      <section class="view" data-page="dashboard">
+        <header class="view-header">
+          <h1 class="view-title" data-splitting>Dashboard</h1>
+          <p class="view-subtitle">Your wellness practice at a glance</p>
+        </header>
+
+        <!-- Inline stats row (heroTreatment) -->
+        <div class="stats-row">
+          <div class="stat-panel wash-pink" data-tooltip="Active wellness programs">
+            <div class="stat-value">12</div>
+            <div class="stat-label">Active Programs</div>
+            <div class="stat-trend positive">+3 this month</div>
+          </div>
+          <div class="stat-panel wash-sage" data-tooltip="Total client sessions booked">
+            <div class="stat-value">248</div>
+            <div class="stat-label">Sessions Booked</div>
+            <div class="stat-trend positive">+18% vs last month</div>
+          </div>
+          <div class="stat-panel wash-lavender" data-tooltip="Ideas waiting for review">
+            <div class="stat-value">37</div>
+            <div class="stat-label">Ideas in Flow</div>
+            <div class="stat-trend neutral">Steady pace</div>
+          </div>
+          <div class="stat-panel wash-peach" data-tooltip="Team members across all programs">
+            <div class="stat-value">8</div>
+            <div class="stat-label">Team Members</div>
+            <div class="stat-trend positive">+1 new this week</div>
+          </div>
+        </div>
+
+        <div class="split-panels">
+          <div class="panel-left">
+            <div class="card wash-border-card">
+              <h3 class="card-title">Recent Activity</h3>
+              <ul class="activity-list">
+                <li class="activity-item">
+                  <span class="activity-dot sage"></span>
+                  <div class="activity-content">
+                    <strong>Morning Ritual Redesign</strong> moved to In Progress
+                    <time>2 hours ago</time>
+                  </div>
+                </li>
+                <li class="activity-item">
+                  <span class="activity-dot pink"></span>
+                  <div class="activity-content">
+                    <strong>Breathwork Sequence</strong> new idea submitted by Luna
+                    <time>4 hours ago</time>
+                  </div>
+                </li>
+                <li class="activity-item">
+                  <span class="activity-dot lavender"></span>
+                  <div class="activity-content">
+                    <strong>Sound Healing Workshop</strong> schema updated
+                    <time>Yesterday</time>
+                  </div>
+                </li>
+                <li class="activity-item">
+                  <span class="activity-dot sage"></span>
+                  <div class="activity-content">
+                    <strong>Herbal Tincture Guide</strong> completed review cycle
+                    <time>Yesterday</time>
+                  </div>
+                </li>
+                <li class="activity-item">
+                  <span class="activity-dot pink"></span>
+                  <div class="activity-content">
+                    <strong>Moon Phase Planner</strong> new files uploaded
+                    <time>2 days ago</time>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="panel-right">
+            <div class="card wash-border-card">
+              <h3 class="card-title">Upcoming Milestones</h3>
+              <div class="milestone-list">
+                <div class="milestone-item">
+                  <div class="milestone-bar" style="--progress: 85%; --wash-color: #d4889a;"></div>
+                  <div class="milestone-info">
+                    <span class="milestone-name">Spring Retreat Launch</span>
+                    <span class="milestone-date">Mar 21</span>
+                  </div>
+                </div>
+                <div class="milestone-item">
+                  <div class="milestone-bar" style="--progress: 62%; --wash-color: #8baa8b;"></div>
+                  <div class="milestone-info">
+                    <span class="milestone-name">Meditation App Beta</span>
+                    <span class="milestone-date">Apr 5</span>
+                  </div>
+                </div>
+                <div class="milestone-item">
+                  <div class="milestone-bar" style="--progress: 40%; --wash-color: #c7a4cc;"></div>
+                  <div class="milestone-info">
+                    <span class="milestone-name">Aromatherapy Collection</span>
+                    <span class="milestone-date">Apr 18</span>
+                  </div>
+                </div>
+                <div class="milestone-item">
+                  <div class="milestone-bar" style="--progress: 20%; --wash-color: #d4889a;"></div>
+                  <div class="milestone-info">
+                    <span class="milestone-name">Summer Solstice Event</span>
+                    <span class="milestone-date">Jun 21</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card wash-border-card" style="margin-top: 16px;">
+              <h3 class="card-title">Quick Notes</h3>
+              <div class="quick-note">
+                <p>Remember to finalize the crystal grid layout for the Spring Retreat welcome kit. Luna has the mockups ready for review.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PROJECTS ==================== -->
+      <section class="view" data-page="projects">
+        <header class="view-header">
+          <h1 class="view-title" data-splitting>Projects</h1>
+          <p class="view-subtitle">All wellness programs and initiatives</p>
+          <div class="view-actions">
+            <button class="btn btn-primary">New Project</button>
+            <div class="search-input-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" class="search-input" placeholder="Search projects...">
+            </div>
+          </div>
+        </header>
+
+        <div class="project-gallery">
+          <div class="project-card" data-tooltip="Lead: Sage Whitfield">
+            <div class="project-card-wash wash-pink-sage"></div>
+            <div class="project-card-body">
+              <h3>Morning Ritual Redesign</h3>
+              <p>Reimagining the morning wellness routine with breathwork, journaling, and gentle movement sequences.</p>
+              <div class="project-meta">
+                <span class="tag tag-pink">Wellness</span>
+                <span class="tag tag-sage">Active</span>
+                <span class="meta-text">8 tasks &middot; 3 members</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card" data-tooltip="Lead: Luna Rivers">
+            <div class="project-card-wash wash-sage-lavender"></div>
+            <div class="project-card-body">
+              <h3>Sound Healing Workshop</h3>
+              <p>Designing an immersive sound bath experience with singing bowls, tuning forks, and ambient nature recordings.</p>
+              <div class="project-meta">
+                <span class="tag tag-lavender">Workshop</span>
+                <span class="tag tag-sage">Active</span>
+                <span class="meta-text">12 tasks &middot; 4 members</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card" data-tooltip="Lead: River Stone">
+            <div class="project-card-wash wash-lavender-pink"></div>
+            <div class="project-card-body">
+              <h3>Herbal Tincture Guide</h3>
+              <p>Comprehensive botanical reference for creating seasonal tinctures, elixirs, and herbal blends.</p>
+              <div class="project-meta">
+                <span class="tag tag-pink">Botanical</span>
+                <span class="tag tag-peach">Review</span>
+                <span class="meta-text">15 tasks &middot; 2 members</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card" data-tooltip="Lead: Willow Chen">
+            <div class="project-card-wash wash-peach-sage"></div>
+            <div class="project-card-body">
+              <h3>Meditation App Beta</h3>
+              <p>Mobile app with guided meditations, nature soundscapes, and mindfulness tracking for daily practice.</p>
+              <div class="project-meta">
+                <span class="tag tag-sage">Digital</span>
+                <span class="tag tag-pink">Active</span>
+                <span class="meta-text">24 tasks &middot; 5 members</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card" data-tooltip="Lead: Sage Whitfield">
+            <div class="project-card-wash wash-sage-pink"></div>
+            <div class="project-card-body">
+              <h3>Spring Retreat Planning</h3>
+              <p>Three-day immersive retreat with yoga, forest bathing, cacao ceremony, and community circles.</p>
+              <div class="project-meta">
+                <span class="tag tag-lavender">Event</span>
+                <span class="tag tag-sage">Active</span>
+                <span class="meta-text">18 tasks &middot; 6 members</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card" data-tooltip="Lead: Luna Rivers">
+            <div class="project-card-wash wash-pink-lavender"></div>
+            <div class="project-card-body">
+              <h3>Aromatherapy Collection</h3>
+              <p>Curated essential oil blends for stress relief, focus, sleep, and seasonal transitions.</p>
+              <div class="project-meta">
+                <span class="tag tag-peach">Product</span>
+                <span class="tag tag-pink">Planning</span>
+                <span class="meta-text">10 tasks &middot; 3 members</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PROJECT WORKSPACE ==================== -->
+      <section class="view" data-page="project-workspace">
+        <header class="view-header">
+          <h1 class="view-title" data-splitting>Workspace</h1>
+          <p class="view-subtitle">Morning Ritual Redesign &mdash; Active workspace</p>
+        </header>
+
+        <div class="workspace-canvas">
+          <div class="workspace-section wash-section-pink">
+            <div class="brushstroke-divider"></div>
+            <h3>Overview</h3>
+            <p>This project aims to create a holistic morning ritual framework that integrates breathwork, gentle movement, journaling prompts, and mindful nourishment into a flowing 45-minute practice.</p>
+            <div class="workspace-meta-row">
+              <div class="ws-meta"><strong>Status:</strong> In Progress</div>
+              <div class="ws-meta"><strong>Sprint:</strong> Bloom Cycle 3</div>
+              <div class="ws-meta"><strong>Due:</strong> March 15, 2026</div>
+            </div>
+          </div>
+
+          <div class="workspace-split">
+            <div class="workspace-section wash-section-sage">
+              <div class="brushstroke-divider"></div>
+              <h3>Current Tasks</h3>
+              <ul class="task-checklist">
+                <li class="task-done"><span class="check-mark">&#10003;</span> Define breathwork sequence (4-7-8 pattern)</li>
+                <li class="task-done"><span class="check-mark">&#10003;</span> Select ambient nature soundscape</li>
+                <li class="task-active"><span class="check-ring"></span> Design journaling prompt cards</li>
+                <li class="task-pending"><span class="check-ring"></span> Photograph morning movement flow</li>
+                <li class="task-pending"><span class="check-ring"></span> Record guided meditation audio</li>
+                <li class="task-pending"><span class="check-ring"></span> Create nourishment recipe cards</li>
+              </ul>
+            </div>
+
+            <div class="workspace-section wash-section-lavender">
+              <div class="brushstroke-divider"></div>
+              <h3>Team Notes</h3>
+              <div class="note-entry">
+                <div class="note-author">Luna Rivers</div>
+                <p>The 4-7-8 breathing pattern tested beautifully in our pilot group. Participants reported feeling grounded within the first two minutes. Suggest we pair it with the cedar forest soundscape.</p>
+              </div>
+              <div class="note-entry">
+                <div class="note-author">River Stone</div>
+                <p>Journaling prompts should follow the theme of seasonal intention. Spring = planting seeds of change. I have 12 prompts drafted and ready for design layout.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="workspace-section wash-section-peach">
+            <div class="brushstroke-divider"></div>
+            <h3>Attachments</h3>
+            <div class="attachment-grid">
+              <div class="attachment-item">
+                <div class="attachment-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <span>breathwork-sequence.pdf</span>
+              </div>
+              <div class="attachment-item">
+                <div class="attachment-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </div>
+                <span>morning-light-mood.jpg</span>
+              </div>
+              <div class="attachment-item">
+                <div class="attachment-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                </div>
+                <span>cedar-forest-ambient.mp3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== KANBAN ==================== -->
+      <section class="view" data-page="kanban">
+        <header class="view-header">
+          <h1 class="view-title" data-splitting>Kanban</h1>
+          <p class="view-subtitle">Flow board for Morning Ritual Redesign</p>
+        </header>
+
+        <div class="kanban-board">
+          <div class="kanban-column">
+            <div class="kanban-column-header wash-col-pink">
+              <h3>Seeds <span class="col-count">3</span></h3>
+            </div>
+            <div class="kanban-cards" data-column="seeds">
+              <div class="kanban-card">
+                <div class="kanban-card-label tag-pink">Idea</div>
+                <h4>Gratitude Jar Ritual</h4>
+                <p>Morning gratitude practice with handwritten notes placed in a ceramic jar.</p>
+                <div class="kanban-card-footer"><span>Luna R.</span><span>Low</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="kanban-card-label tag-sage">Research</div>
+                <h4>Sun Salutation Variations</h4>
+                <p>Explore gentle sun salutation modifications for different mobility levels.</p>
+                <div class="kanban-card-footer"><span>River S.</span><span>Medium</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="kanban-card-label tag-lavender">Design</div>
+                <h4>Ritual Timer Interface</h4>
+                <p>Visual timer with nature-inspired animations for pacing each ritual segment.</p>
+                <div class="kanban-card-footer"><span>Willow C.</span><span>Medium</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-column-header wash-col-sage">
+              <h3>Sprouting <span class="col-count">2</span></h3>
+            </div>
+            <div class="kanban-cards" data-column="sprouting">
+              <div class="kanban-card">
+                <div class="kanban-card-label tag-pink">Content</div>
+                <h4>Journaling Prompt Cards</h4>
+                <p>Seasonal intention prompts for spring: planting seeds, tending growth, and gentle emergence.</p>
+                <div class="kanban-card-footer"><span>River S.</span><span>High</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="kanban-card-label tag-sage">Audio</div>
+                <h4>Guided Breathwork Recording</h4>
+                <p>Record the 4-7-8 breathing sequence with Luna's voiceover and ambient forest sounds.</p>
+                <div class="kanban-card-footer"><span>Luna R.</span><span>High</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-column-header wash-col-lavender">
+              <h3>Blooming <span class="col-count">2</span></h3>
+            </div>
+            <div class="kanban-cards" data-column="blooming">
+              <div class="kanban-card">
+                <div class="kanban-card-label tag-lavender">Production</div>
+                <h4>Movement Sequence Video</h4>
+                <p>Filming gentle morning movement flow in the garden studio with natural light.</p>
+                <div class="kanban-card-footer"><span>Sage W.</span><span>High</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="kanban-card-label tag-peach">Design</div>
+                <h4>Welcome Kit Packaging</h4>
+                <p>Eco-friendly packaging design with pressed flower motifs and seed paper inserts.</p>
+                <div class="kanban-card-footer"><span>Willow C.</span><span>Medium</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-column-header wash-col-peach">
+              <h3>Harvested <span class="col-count">2</span></h3>
+            </div>
+            <div class="kanban-cards" data-column="harvested">
+              <div class="kanban-card done">
+                <div class="kanban-card-label tag-sage">Complete</div>
+                <h4>Breathwork Sequence Design</h4>
+                <p>Finalized the 4-7-8 breathing pattern with visual cue cards and timing guides.</p>
+                <div class="kanban-card-footer"><span>Luna R.</span><span>Done</span></div>
+              </div>
+              <div class="kanban-card done">
+                <div class="kanban-card-label tag-sage">Complete</div>
+                <h4>Nature Soundscape Selection</h4>
+                <p>Cedar forest morning ambient track selected and licensed for the collection.</p>
+                <div class="kanban-card-footer"><span>Sage W.</span><span>Done</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== WHITEBOARD ==================== -->
+      <section class="view" data-page="whiteboard">
+        <header class="view-header">
+          <h1 class="view-title" data-splitting>Whiteboard</h1>
+          <p class="view-subtitle">Visual canvas for Spring Retreat ideation</p>
+        </header>
+
+        <div class="whiteboard-canvas">
+          <svg class="whiteboard-connections" width="100%" height="100%">
+            <path d="M200,120 C280,120 280,220 360,220" class="wb-connector stroke-pink" fill="none" stroke-width="2"/>
+            <path d="M200,120 C280,120 280,340 360,340" class="wb-connector stroke-sage" fill="none" stroke-width="2"/>
+            <path d="M520,220 C600,220 600,280 680,280" class="wb-connector stroke-lavender" fill="none" stroke-width="2"/>
+            <path d="M520,340 C600,340 600,280 680,280" class="wb-connector stroke-pink" fill="none" stroke-width="2"/>
+          </svg>
+
+          <div class="wb-node wb-node-center" style="left: 80px; top: 80px;">
+            <div class="wb-splatter pink"></div>
+            <div class="wb-node-content">
+              <h4>Spring Retreat</h4>
+              <p>Core vision &amp; theme</p>
+            </div>
+          </div>
+
+          <div class="wb-node" style="left: 300px; top: 180px;">
+            <div class="wb-splatter sage"></div>
+            <div class="wb-node-content">
+              <h4>Forest Bathing</h4>
+              <p>Guided nature immersion walk through old-growth cedar grove</p>
+            </div>
+          </div>
+
+          <div class="wb-node" style="left: 300px; top: 300px;">
+            <div class="wb-splatter lavender"></div>
+            <div class="wb-node-content">
+              <h4>Cacao Ceremony</h4>
+              <p>Heart-opening ceremonial cacao with intention setting</p>
+            </div>
+          </div>
+
+          <div class="wb-node" style="left: 560px; top: 240px;">
+            <div class="wb-splatter peach"></div>
+            <div class="wb-node-content">
+              <h4>Community Circle</h4>
+              <p>Evening sharing circles with candlelight and sound bowls</p>
+            </div>
+          </div>
+
+          <div class="wb-node" style="left: 140px; top: 420px;">
+            <div class="wb-splatter pink"></div>
+            <div class="wb-node-content">
+              <h4>Yoga at Dawn</h4>
+              <p>Sunrise vinyasa flow on the meadow overlooking the valley</p>
+            </div>
+          </div>
+
+          <div class="wb-node" style="left: 440px; top: 440px;">
+            <div class="wb-splatter sage"></div>
+            <div class="wb-node-content">
+              <h4>Herbal Workshop</h4>
+              <p>Making seasonal tinctures and flower essences together</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SCHEMA PLANNER ==================== -->
+      <section class="view" data-page="schema-planner">
+        <header class="view-header">
+          <h1 class="view-title" data-splitting>Schema Planner</h1>
+          <p class="view-subtitle">Data architecture for the Meditation App</p>
+        </header>
+
+        <div class="schema-canvas">
+          <svg class="schema-connections" width="100%" height="100%">
+            <line x1="250" y1="100" x2="450" y2="100" class="schema-line stroke-pink"/>
+            <line x1="250" y1="100" x2="250" y2="280" class="schema-line stroke-sage"/>
+            <line x1="450" y1="100" x2="450" y2="280" class="schema-line stroke-lavender"/>
+            <line x1="250" y1="280" x2="450" y2="280" class="schema-line stroke-peach"/>
+          </svg>
+
+          <div class="schema-entity" style="left: 60px; top: 50px;">
+            <div class="schema-entity-wash wash-pink"></div>
+            <h4>Practitioner</h4>
+            <ul class="schema-fields">
+              <li><code>id</code> <span>uuid</span></li>
+              <li><code>displayName</code> <span>string</span></li>
+              <li><code>email</code> <span>string</span></li>
+              <li><code>practiceLevel</code> <span>enum</span></li>
+              <li><code>joinedAt</code> <span>timestamp</span></li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left: 360px; top: 50px;">
+            <div class="schema-entity-wash wash-sage"></div>
+            <h4>Meditation</h4>
+            <ul class="schema-fields">
+              <li><code>id</code> <span>uuid</span></li>
+              <li><code>title</code> <span>string</span></li>
+              <li><code>duration</code> <span>int (min)</span></li>
+              <li><code>category</code> <span>enum</span></li>
+              <li><code>audioUrl</code> <span>string</span></li>
+              <li><code>guideName</code> <span>string</span></li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left: 60px; top: 230px;">
+            <div class="schema-entity-wash wash-lavender"></div>
+            <h4>Session</h4>
+            <ul class="schema-fields">
+              <li><code>id</code> <span>uuid</span></li>
+              <li><code>practitionerId</code> <span>fk</span></li>
+              <li><code>meditationId</code> <span>fk</span></li>
+              <li><code>startedAt</code> <span>timestamp</span></li>
+              <li><code>completedAt</code> <span>timestamp</span></li>
+              <li><code>moodBefore</code> <span>int 1-10</span></li>
+              <li><code>moodAfter</code> <span>int 1-10</span></li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left: 360px; top: 230px;">
+            <div class="schema-entity-wash wash-peach"></div>
+            <h4>Soundscape</h4>
+            <ul class="schema-fields">
+              <li><code>id</code> <span>uuid</span></li>
+              <li><code>name</code> <span>string</span></li>
+              <li><code>environment</code> <span>enum</span></li>
+              <li><code>loopDuration</code> <span>int (sec)</span></li>
+              <li><code>fileUrl</code> <span>string</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== DIRECTORY TREE ==================== -->
+      <section class="view" data-page="directory-tree">
+        <header class="view-header">
+          <h1 class="view-title" data-splitting>Directory Tree</h1>
+          <p class="view-subtitle">Project file structure for Spring Retreat</p>
+        </header>
+
+        <div class="tree-container">
+          <ul class="tree-root">
+            <li class="tree-branch">
+              <div class="tree-branch-label">
+                <span class="tree-dot pink"></span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                <span>spring-retreat/</span>
+              </div>
+              <ul>
+                <li class="tree-branch">
+                  <div class="tree-branch-label">
+                    <span class="tree-dot sage"></span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>planning/</span>
+                  </div>
+                  <ul>
+                    <li class="tree-leaf"><span class="tree-dot lavender"></span><span>retreat-overview.md</span></li>
+                    <li class="tree-leaf"><span class="tree-dot lavender"></span><span>venue-options.csv</span></li>
+                    <li class="tree-leaf"><span class="tree-dot lavender"></span><span>budget-forecast.xlsx</span></li>
+                    <li class="tree-leaf"><span class="tree-dot lavender"></span><span>timeline.md</span></li>
+                  </ul>
+                </li>
+                <li class="tree-branch">
+                  <div class="tree-branch-label">
+                    <span class="tree-dot sage"></span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>workshops/</span>
+                  </div>
+                  <ul>
+                    <li class="tree-leaf"><span class="tree-dot pink"></span><span>forest-bathing-guide.pdf</span></li>
+                    <li class="tree-leaf"><span class="tree-dot pink"></span><span>cacao-ceremony-script.md</span></li>
+                    <li class="tree-leaf"><span class="tree-dot pink"></span><span>herbal-tincture-recipes.md</span></li>
+                    <li class="tree-leaf"><span class="tree-dot pink"></span><span>sound-healing-playlist.json</span></li>
+                  </ul>
+                </li>
+                <li class="tree-branch">
+                  <div class="tree-branch-label">
+                    <span class="tree-dot sage"></span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>media/</span>
+                  </div>
+                  <ul>
+                    <li class="tree-leaf"><span class="tree-dot peach"></span><span>sunrise-yoga-photos/</span></li>
+                    <li class="tree-leaf"><span class="tree-dot peach"></span><span>venue-walkthrough.mp4</span></li>
+                    <li class="tree-leaf"><span class="tree-dot peach"></span><span>promotional-poster.svg</span></li>
+                  </ul>
+                </li>
+                <li class="tree-branch">
+                  <div class="tree-branch-label">
+                    <span class="tree-dot sage"></span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>logistics/</span>
+                  </div>
+                  <ul>
+                    <li class="tree-leaf"><span class="tree-dot lavender"></span><span>guest-list.csv</span></li>
+                    <li class="tree-leaf"><span class="tree-dot lavender"></span><span>meal-plan.md</span></li>
+                    <li class="tree-leaf"><span class="tree-dot lavender"></span><span>transport-details.md</span></li>
+                    <li class="tree-leaf"><span class="tree-dot lavender"></span><span>welcome-kit-contents.md</span></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ==================== IDEAS ==================== -->
+      <section class="view" data-page="ideas">
+        <header class="view-header">
+          <h1 class="view-title" data-splitting>Ideas</h1>
+          <p class="view-subtitle">Creative seeds waiting to bloom</p>
+          <div class="view-actions">
+            <button class="btn btn-primary">Capture Idea</button>
+          </div>
+        </header>
+
+        <div class="ideas-masonry">
+          <div class="idea-card wash-blend-pink-sage">
+            <h4>Crystal Grid Workshop</h4>
+            <p>Teach participants how to create crystal grids for intention setting. Include a take-home mini grid kit with tumbled stones and a printed layout guide.</p>
+            <div class="idea-footer">
+              <span class="idea-author">Luna Rivers</span>
+              <span class="idea-date">Feb 12</span>
+            </div>
+          </div>
+          <div class="idea-card wash-blend-sage-lavender">
+            <h4>Moon Phase Planner</h4>
+            <p>A beautiful printed planner that aligns project milestones and personal intentions with lunar cycles. New moon for planting seeds, full moon for celebrating harvests.</p>
+            <div class="idea-footer">
+              <span class="idea-author">Sage Whitfield</span>
+              <span class="idea-date">Feb 10</span>
+            </div>
+          </div>
+          <div class="idea-card wash-blend-lavender-pink">
+            <h4>Seasonal Tea Ceremony</h4>
+            <p>Quarterly tea ceremony events where the blend changes with the season. Spring = jasmine and rose. Summer = mint and lemongrass. Autumn = chai and turmeric. Winter = cinnamon and ginger.</p>
+            <div class="idea-footer">
+              <span class="idea-author">River Stone</span>
+              <span class="idea-date">Feb 8</span>
+            </div>
+          </div>
+          <div class="idea-card wash-blend-peach-sage">
+            <h4>Gratitude Postcards</h4>
+            <p>Hand-illustrated postcards with gratitude prompts. Clients write one each morning and mail it to someone they appreciate. Builds community and daily practice.</p>
+            <div class="idea-footer">
+              <span class="idea-author">Willow Chen</span>
+              <span class="idea-date">Feb 5</span>
+            </div>
+          </div>
+          <div class="idea-card wash-blend-pink-lavender">
+            <h4>Nature Sound Library</h4>
+            <p>Record original nature soundscapes from local forests, streams, and meadows. Offer as free downloads to build community and support meditation practice.</p>
+            <div class="idea-footer">
+              <span class="idea-author">Luna Rivers</span>
+              <span class="idea-date">Feb 3</span>
+            </div>
+          </div>
+          <div class="idea-card wash-blend-sage-pink">
+            <h4>Breathwork Microsite</h4>
+            <p>A single-page website with an interactive breathing guide. Visual circle that expands and contracts to pace the breath. Ambient background that shifts color with each cycle.</p>
+            <div class="idea-footer">
+              <span class="idea-author">Sage Whitfield</span>
+              <span class="idea-date">Jan 30</span>
+            </div>
+          </div>
+          <div class="idea-card wash-blend-lavender-sage">
+            <h4>Mindful Walking Guide</h4>
+            <p>Illustrated pocket guide for walking meditation. Includes awareness prompts for each sense, gentle pace guidance, and seasonal observation journaling pages.</p>
+            <div class="idea-footer">
+              <span class="idea-author">River Stone</span>
+              <span class="idea-date">Jan 28</span>
+            </div>
+          </div>
+          <div class="idea-card wash-blend-peach-lavender">
+            <h4>Community Garden Plot</h4>
+            <p>Partner with a local farm to create a community garden where retreat alumni can tend plants together. Monthly gatherings for planting, weeding, and harvesting with herbal tea service.</p>
+            <div class="idea-footer">
+              <span class="idea-author">Willow Chen</span>
+              <span class="idea-date">Jan 25</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== AI CHAT ==================== -->
+      <section class="view" data-page="ai-chat">
+        <header class="view-header">
+          <h1 class="view-title" data-splitting>AI Muse</h1>
+          <p class="view-subtitle">Your creative wellness companion</p>
+        </header>
+
+        <div class="chat-letter-container">
+          <div class="chat-messages" id="chat-messages">
+            <div class="chat-message ai-message">
+              <div class="message-paper">
+                <div class="brushstroke-msg-divider"></div>
+                <div class="message-author">Muse</div>
+                <p>Welcome, Sage. I have been reflecting on the Spring Retreat theme. The concept of emergence feels central to this season &mdash; the way dormant seeds crack open and reach toward light. How might we weave that metaphor through every touchpoint of the retreat experience?</p>
+                <time>Today, 9:15 AM</time>
+              </div>
+            </div>
+            <div class="chat-message user-message">
+              <div class="message-paper">
+                <div class="brushstroke-msg-divider"></div>
+                <div class="message-author">Sage</div>
+                <p>I love that. What if each day of the retreat represents a stage of the seed's journey? Day one is planting &mdash; setting intentions. Day two is germination &mdash; going inward with meditation and journaling. Day three is emergence &mdash; celebrating and sharing what has sprouted.</p>
+                <time>Today, 9:22 AM</time>
+              </div>
+            </div>
+            <div class="chat-message ai-message">
+              <div class="message-paper">
+                <div class="brushstroke-msg-divider"></div>
+                <div class="message-author">Muse</div>
+                <p>That is a beautiful arc. For the physical experience, consider: Day One could begin with participants literally planting seeds in small clay pots they will carry through the retreat. Day Two could involve a silent forest walk where they observe germination in nature. Day Three could culminate with each person sharing what emerged during their practice, while their planted seeds are beginning to sprout in the greenhouse.</p>
+                <time>Today, 9:28 AM</time>
+              </div>
+            </div>
+            <div class="chat-message user-message">
+              <div class="message-paper">
+                <div class="brushstroke-msg-divider"></div>
+                <div class="message-author">Sage</div>
+                <p>The clay pot idea is wonderful. We could use locally-sourced clay and have a brief pottery moment on Day One as part of the planting ritual.</p>
+                <time>Today, 9:35 AM</time>
+              </div>
+            </div>
+            <div class="chat-message ai-message">
+              <div class="message-paper">
+                <div class="brushstroke-msg-divider"></div>
+                <div class="message-author">Muse</div>
+                <p>Yes &mdash; and the imperfection of hand-formed clay connects to the watercolor aesthetic of your brand. No two pots would be alike, just as no two journeys of emergence are the same. I can draft a supply list and a brief facilitation script for the pottery-planting ritual if you would like.</p>
+                <time>Today, 9:40 AM</time>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-area">
+            <div class="chat-input-wrap">
+              <textarea class="chat-input" placeholder="Write to your Muse..." rows="2"></textarea>
+              <button class="chat-send-btn" data-tooltip="Send message">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SETTINGS ==================== -->
+      <section class="view" data-page="settings">
+        <header class="view-header">
+          <h1 class="view-title" data-splitting>Settings</h1>
+          <p class="view-subtitle">Personalize your Bloom experience</p>
+        </header>
+
+        <div class="settings-scroll">
+          <div class="settings-section wash-settings-pink">
+            <h3>Profile</h3>
+            <div class="setting-row">
+              <label class="setting-label">Display Name</label>
+              <input type="text" class="setting-input" value="Sage Whitfield">
+            </div>
+            <div class="setting-row">
+              <label class="setting-label">Email</label>
+              <input type="email" class="setting-input" value="sage@bloomwellness.co">
+            </div>
+            <div class="setting-row">
+              <label class="setting-label">Bio</label>
+              <textarea class="setting-textarea" rows="3">Wellness practitioner and retreat facilitator. Passionate about breathwork, herbalism, and community healing practices.</textarea>
+            </div>
+          </div>
+
+          <div class="settings-section wash-settings-sage">
+            <h3>Notifications</h3>
+            <div class="setting-row toggle-row">
+              <label class="setting-label">Email Notifications</label>
+              <div class="toggle-switch" data-toggle="email-notifs">
+                <div class="toggle-track">
+                  <div class="toggle-thumb"></div>
+                </div>
+              </div>
+            </div>
+            <div class="setting-row toggle-row">
+              <label class="setting-label">New Idea Alerts</label>
+              <div class="toggle-switch active" data-toggle="idea-alerts">
+                <div class="toggle-track">
+                  <div class="toggle-thumb"></div>
+                </div>
+              </div>
+            </div>
+            <div class="setting-row toggle-row">
+              <label class="setting-label">Weekly Digest</label>
+              <div class="toggle-switch active" data-toggle="weekly-digest">
+                <div class="toggle-track">
+                  <div class="toggle-thumb"></div>
+                </div>
+              </div>
+            </div>
+            <div class="setting-row toggle-row">
+              <label class="setting-label">Milestone Reminders</label>
+              <div class="toggle-switch" data-toggle="milestone-reminders">
+                <div class="toggle-track">
+                  <div class="toggle-thumb"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section wash-settings-lavender">
+            <h3>Appearance</h3>
+            <div class="setting-row toggle-row">
+              <label class="setting-label">Ambient Background Animation</label>
+              <div class="toggle-switch active" data-toggle="ambient-bg">
+                <div class="toggle-track">
+                  <div class="toggle-thumb"></div>
+                </div>
+              </div>
+            </div>
+            <div class="setting-row toggle-row">
+              <label class="setting-label">Page Transition Effects</label>
+              <div class="toggle-switch active" data-toggle="page-transitions">
+                <div class="toggle-track">
+                  <div class="toggle-thumb"></div>
+                </div>
+              </div>
+            </div>
+            <div class="setting-row">
+              <label class="setting-label">Sidebar Width</label>
+              <select class="setting-select">
+                <option>Compact</option>
+                <option selected>Standard</option>
+                <option>Wide</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-section wash-settings-peach">
+            <h3>Data &amp; Privacy</h3>
+            <div class="setting-row">
+              <label class="setting-label">Export All Data</label>
+              <button class="btn btn-secondary">Download Archive</button>
+            </div>
+            <div class="setting-row">
+              <label class="setting-label">Clear Local Cache</label>
+              <button class="btn btn-secondary">Clear Cache</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js"></script>
+  <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

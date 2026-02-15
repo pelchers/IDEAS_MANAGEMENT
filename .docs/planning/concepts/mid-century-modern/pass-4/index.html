@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Serenova — Luxury Hospitality Management</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
+  <!-- Phosphor Icons (thin weight for minimal aesthetic) -->
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/thin/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+
+  <!-- Tippy.js for whisper tooltips -->
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.7/dist/tippy.css" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================ -->
+  <!-- HAMBURGER TRIGGER (hidden-hamburger shell)   -->
+  <!-- ============================================ -->
+  <button class="hamburger-trigger" id="hamburgerTrigger" aria-label="Open navigation">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </button>
+
+  <!-- ============================================ -->
+  <!-- FULLSCREEN OVERLAY NAVIGATION                -->
+  <!-- ============================================ -->
+  <nav class="overlay-nav" id="overlayNav" aria-hidden="true">
+    <button class="overlay-close" id="overlayClose" aria-label="Close navigation">
+      <span class="close-line"></span>
+      <span class="close-line"></span>
+    </button>
+    <div class="overlay-nav-inner">
+      <ul class="overlay-nav-list">
+        <li><button class="nav-item active" data-view="dashboard" data-tippy-content="Overview & wellness metrics">Dashboard</button></li>
+        <li><button class="nav-item" data-view="projects" data-tippy-content="Property portfolio">Properties</button></li>
+        <li><button class="nav-item" data-view="project-workspace" data-tippy-content="Active property workspace">Workspace</button></li>
+        <li><button class="nav-item" data-view="kanban" data-tippy-content="Guest experience pipeline">Guest Flow</button></li>
+        <li><button class="nav-item" data-view="whiteboard" data-tippy-content="Concept & mood mapping">Mood Board</button></li>
+        <li><button class="nav-item" data-view="schema-planner" data-tippy-content="Service architecture">Service Map</button></li>
+        <li><button class="nav-item" data-view="directory-tree" data-tippy-content="Asset & resource library">Resources</button></li>
+        <li><button class="nav-item" data-view="ideas" data-tippy-content="Innovation journal">Journal</button></li>
+        <li><button class="nav-item" data-view="ai-chat" data-tippy-content="Concierge intelligence">Concierge AI</button></li>
+        <li><button class="nav-item" data-view="settings" data-tippy-content="Preferences & configuration">Settings</button></li>
+      </ul>
+      <div class="overlay-nav-footer">
+        <p class="overlay-brand">Serenova</p>
+        <p class="overlay-tagline">Where stillness becomes strategy</p>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================ -->
+  <!-- PAGE TRANSITION WHITE OVERLAY                -->
+  <!-- ============================================ -->
+  <div class="page-transition-overlay" id="pageTransitionOverlay"></div>
+
+  <!-- ============================================ -->
+  <!-- LOADING STATE — Stone Ripple                 -->
+  <!-- ============================================ -->
+  <div class="loading-state" id="loadingState">
+    <div class="stone-ripple">
+      <span class="ripple-ring"></span>
+      <span class="ripple-ring"></span>
+      <span class="ripple-ring"></span>
+      <span class="ripple-dot"></span>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- MICRO FEEDBACK TOAST                         -->
+  <!-- ============================================ -->
+  <div class="micro-feedback" id="microFeedback"></div>
+
+  <!-- ============================================ -->
+  <!-- MAIN CONTENT AREA                            -->
+  <!-- ============================================ -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ========== DASHBOARD ========== -->
+    <section class="page" data-page="dashboard">
+      <div class="page-inner editorial-columns">
+        <header class="page-header">
+          <span class="page-label">Overview</span>
+          <h1 class="page-title">The Stillness Report</h1>
+        </header>
+
+        <div class="dashboard-sculpture-grid">
+          <div class="sculpture-metric reveal-element" data-parallax="0.03">
+            <span class="metric-label">Guest Satisfaction</span>
+            <span class="metric-value">97.2<small>%</small></span>
+            <span class="metric-footnote">Across 4 properties this quarter</span>
+          </div>
+
+          <div class="sculpture-metric sculpture-metric--offset reveal-element" data-parallax="0.06">
+            <span class="metric-label">Occupancy Rate</span>
+            <span class="metric-value">84<small>%</small></span>
+            <span class="metric-footnote">February average, all suites</span>
+          </div>
+
+          <div class="sculpture-metric reveal-element" data-parallax="0.04">
+            <span class="metric-label">Revenue per Room</span>
+            <span class="metric-value">$1,240</span>
+            <span class="metric-footnote">RevPAR trailing 30 days</span>
+          </div>
+
+          <div class="sculpture-metric sculpture-metric--wide reveal-element" data-parallax="0.02">
+            <span class="metric-label">Wellness Bookings</span>
+            <span class="metric-value">342</span>
+            <span class="metric-footnote">Spa, meditation, and movement sessions</span>
+          </div>
+        </div>
+
+        <div class="dashboard-note reveal-element">
+          <p>The gardens at our Kyoto property have entered peak stillness season. Guest meditation bookings are up 23% since the stone garden renovation completed in January.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS (Properties) ========== -->
+    <section class="page" data-page="projects">
+      <div class="page-inner editorial-columns">
+        <header class="page-header">
+          <span class="page-label">Portfolio</span>
+          <h1 class="page-title">Properties</h1>
+        </header>
+
+        <div class="projects-list">
+          <article class="project-row reveal-element" data-parallax="0.03">
+            <div class="project-row-content">
+              <h2 class="project-name">Serenova Kyoto</h2>
+              <p class="project-description">A 24-suite sanctuary nestled in the Higashiyama hills. Stone gardens, cypress baths, and kaiseki dining curated by Chef Tanaka.</p>
+              <div class="project-meta">
+                <span class="meta-tag">24 Suites</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">Est. 2019</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">92% Occupancy</span>
+              </div>
+            </div>
+            <div class="project-row-action">
+              <button class="btn-subtle" data-tippy-content="Open workspace" onclick="window.location.hash='project-workspace'">View</button>
+            </div>
+          </article>
+
+          <hr class="thin-rule" />
+
+          <article class="project-row reveal-element" data-parallax="0.04">
+            <div class="project-row-content">
+              <h2 class="project-name">Serenova Santorini</h2>
+              <p class="project-description">Clifftop villas carved into volcanic stone. Infinity pools merge with the Aegean horizon. Silence is the primary amenity.</p>
+              <div class="project-meta">
+                <span class="meta-tag">16 Villas</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">Est. 2021</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">88% Occupancy</span>
+              </div>
+            </div>
+            <div class="project-row-action">
+              <button class="btn-subtle" data-tippy-content="Open workspace">View</button>
+            </div>
+          </article>
+
+          <hr class="thin-rule" />
+
+          <article class="project-row reveal-element" data-parallax="0.05">
+            <div class="project-row-content">
+              <h2 class="project-name">Serenova Marrakech</h2>
+              <p class="project-description">A restored riad in the medina with courtyard gardens, hammam rituals, and rooftop dining beneath Atlas Mountain sunsets.</p>
+              <div class="project-meta">
+                <span class="meta-tag">12 Rooms</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">Est. 2022</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">79% Occupancy</span>
+              </div>
+            </div>
+            <div class="project-row-action">
+              <button class="btn-subtle" data-tippy-content="Open workspace">View</button>
+            </div>
+          </article>
+
+          <hr class="thin-rule" />
+
+          <article class="project-row reveal-element" data-parallax="0.03">
+            <div class="project-row-content">
+              <h2 class="project-name">Serenova Big Sur</h2>
+              <p class="project-description">Pacific coast retreat where redwood forest meets ocean. Each cabin is a private universe with floor-to-ceiling glass and open-air soaking tubs.</p>
+              <div class="project-meta">
+                <span class="meta-tag">8 Cabins</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">Est. 2024</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">96% Occupancy</span>
+              </div>
+            </div>
+            <div class="project-row-action">
+              <button class="btn-subtle" data-tippy-content="Open workspace">View</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECT WORKSPACE ========== -->
+    <section class="page" data-page="project-workspace">
+      <div class="page-inner editorial-columns">
+        <header class="page-header">
+          <span class="page-label">Workspace</span>
+          <h1 class="page-title">Serenova Kyoto</h1>
+        </header>
+
+        <div class="workspace-asymmetric">
+          <div class="workspace-primary reveal-element">
+            <div class="workspace-section">
+              <h3 class="section-heading">Current Initiatives</h3>
+              <ul class="workspace-list">
+                <li class="workspace-list-item">
+                  <span class="item-status item-status--active"></span>
+                  <div>
+                    <span class="item-title">Spring Garden Renewal</span>
+                    <span class="item-detail">Moss garden replanting and stone path restoration. Completion: March 15</span>
+                  </div>
+                </li>
+                <li class="workspace-list-item">
+                  <span class="item-status item-status--pending"></span>
+                  <div>
+                    <span class="item-title">Onsen Temperature Calibration</span>
+                    <span class="item-detail">Seasonal adjustment of bath temperatures. Guest preference survey complete.</span>
+                  </div>
+                </li>
+                <li class="workspace-list-item">
+                  <span class="item-status item-status--active"></span>
+                  <div>
+                    <span class="item-title">Tea Ceremony Program Expansion</span>
+                    <span class="item-detail">Adding evening sessions with moonlight viewing. Awaiting ceramicist delivery.</span>
+                  </div>
+                </li>
+                <li class="workspace-list-item">
+                  <span class="item-status"></span>
+                  <div>
+                    <span class="item-title">Sound Design Update</span>
+                    <span class="item-detail">Replacing lobby ambient audio. New recordings from Arashiyama bamboo grove.</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="workspace-section">
+              <h3 class="section-heading">Recent Guest Notes</h3>
+              <blockquote class="guest-quote">
+                <p>"The silence here is not empty. It is full of everything the world has forgotten to listen to."</p>
+                <cite>Guest, Suite 7 — February 2026</cite>
+              </blockquote>
+            </div>
+          </div>
+
+          <div class="workspace-secondary reveal-element" data-parallax="0.04">
+            <div class="workspace-aside-card">
+              <span class="aside-label">Property Pulse</span>
+              <div class="aside-stat">
+                <span class="aside-stat-value">24</span>
+                <span class="aside-stat-label">Suites</span>
+              </div>
+              <div class="aside-stat">
+                <span class="aside-stat-value">18</span>
+                <span class="aside-stat-label">Occupied</span>
+              </div>
+              <div class="aside-stat">
+                <span class="aside-stat-value">6</span>
+                <span class="aside-stat-label">Available</span>
+              </div>
+              <hr class="thin-rule" />
+              <div class="aside-stat">
+                <span class="aside-stat-value">4.9</span>
+                <span class="aside-stat-label">Guest Rating</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== KANBAN (Guest Flow) ========== -->
+    <section class="page" data-page="kanban">
+      <div class="page-inner editorial-columns">
+        <header class="page-header">
+          <span class="page-label">Pipeline</span>
+          <h1 class="page-title">Guest Experience Flow</h1>
+        </header>
+
+        <div class="kanban-columns">
+          <div class="kanban-column reveal-element">
+            <h3 class="kanban-column-title">Inquiry</h3>
+            <div class="kanban-cards">
+              <div class="kanban-card" data-tippy-content="Received Feb 10">
+                <span class="card-guest">Mr. & Mrs. Haruki</span>
+                <span class="card-detail">Anniversary retreat, April 12-19</span>
+                <span class="card-tag">Suite Preference: Garden View</span>
+              </div>
+              <div class="kanban-card" data-tippy-content="Received Feb 13">
+                <span class="card-guest">Dr. Elena Vasquez</span>
+                <span class="card-detail">Wellness sabbatical, May 1-14</span>
+                <span class="card-tag">Special: Silent retreat program</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column reveal-element">
+            <h3 class="kanban-column-title">Confirmed</h3>
+            <div class="kanban-cards">
+              <div class="kanban-card" data-tippy-content="Confirmed Jan 28">
+                <span class="card-guest">The Lindberg Family</span>
+                <span class="card-detail">Family cultural immersion, Mar 5-12</span>
+                <span class="card-tag">Children's program requested</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column reveal-element">
+            <h3 class="kanban-column-title">In Residence</h3>
+            <div class="kanban-cards">
+              <div class="kanban-card card--active" data-tippy-content="Arrived Feb 8">
+                <span class="card-guest">Ms. Aiko Tanabe</span>
+                <span class="card-detail">Extended stay, Feb 8 - Mar 1</span>
+                <span class="card-tag">Daily meditation + onsen</span>
+              </div>
+              <div class="kanban-card card--active" data-tippy-content="Arrived Feb 12">
+                <span class="card-guest">Mr. James Whitfield</span>
+                <span class="card-detail">Writing retreat, Feb 12-22</span>
+                <span class="card-tag">Suite 11, No housekeeping before 2pm</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column reveal-element">
+            <h3 class="kanban-column-title">Post-Stay</h3>
+            <div class="kanban-cards">
+              <div class="kanban-card" data-tippy-content="Departed Feb 7">
+                <span class="card-guest">Mme. Dubois</span>
+                <span class="card-detail">Feedback pending, follow-up gift selected</span>
+                <span class="card-tag">Return guest — 4th visit</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHITEBOARD (Mood Board) ========== -->
+    <section class="page" data-page="whiteboard">
+      <div class="page-inner editorial-columns">
+        <header class="page-header">
+          <span class="page-label">Exploration</span>
+          <h1 class="page-title">Mood Board</h1>
+        </header>
+
+        <div class="whiteboard-canvas reveal-element">
+          <svg class="whiteboard-connections" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+            <line x1="200" y1="150" x2="500" y2="100" class="connection-line" />
+            <line x1="500" y1="100" x2="780" y2="200" class="connection-line" />
+            <line x1="200" y1="150" x2="350" y2="380" class="connection-line" />
+            <line x1="500" y1="100" x2="600" y2="400" class="connection-line" />
+            <line x1="780" y1="200" x2="600" y2="400" class="connection-line" />
+          </svg>
+
+          <div class="whiteboard-node" style="left: 14%; top: 18%;" data-tippy-content="Core philosophy">
+            <span class="node-label">Ma</span>
+            <span class="node-sublabel">The beauty of emptiness</span>
+          </div>
+
+          <div class="whiteboard-node" style="left: 42%; top: 8%;" data-tippy-content="Sensory direction">
+            <span class="node-label">Stone & Water</span>
+            <span class="node-sublabel">Tactile warmth, fluid calm</span>
+          </div>
+
+          <div class="whiteboard-node" style="left: 70%; top: 24%;" data-tippy-content="Guest emotion target">
+            <span class="node-label">Contemplation</span>
+            <span class="node-sublabel">Slow the breath, open the mind</span>
+          </div>
+
+          <div class="whiteboard-node" style="left: 28%; top: 56%;" data-tippy-content="Material palette">
+            <span class="node-label">Wabi-Sabi</span>
+            <span class="node-sublabel">Imperfect, incomplete, impermanent</span>
+          </div>
+
+          <div class="whiteboard-node" style="left: 52%; top: 62%;" data-tippy-content="Experience thread">
+            <span class="node-label">Ritual</span>
+            <span class="node-sublabel">Tea, bathing, walking, silence</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCHEMA PLANNER (Service Map) ========== -->
+    <section class="page" data-page="schema-planner">
+      <div class="page-inner editorial-columns">
+        <header class="page-header">
+          <span class="page-label">Architecture</span>
+          <h1 class="page-title">Service Map</h1>
+        </header>
+
+        <div class="schema-canvas reveal-element">
+          <svg class="schema-connections" viewBox="0 0 1000 650" preserveAspectRatio="xMidYMid meet">
+            <!-- Guest to Services -->
+            <line x1="500" y1="60" x2="180" y2="250" class="schema-line" />
+            <line x1="500" y1="60" x2="500" y2="250" class="schema-line" />
+            <line x1="500" y1="60" x2="820" y2="250" class="schema-line" />
+            <!-- Services to Operations -->
+            <line x1="180" y1="290" x2="300" y2="480" class="schema-line schema-line--light" />
+            <line x1="500" y1="290" x2="500" y2="480" class="schema-line schema-line--light" />
+            <line x1="820" y1="290" x2="700" y2="480" class="schema-line schema-line--light" />
+          </svg>
+
+          <div class="schema-entity schema-entity--primary" style="left: 42%; top: 2%;">
+            <span class="entity-name">Guest</span>
+            <div class="entity-fields">
+              <span>profile</span>
+              <span>preferences</span>
+              <span>history</span>
+            </div>
+          </div>
+
+          <div class="schema-entity" style="left: 8%; top: 32%;">
+            <span class="entity-name">Wellness</span>
+            <div class="entity-fields">
+              <span>spa</span>
+              <span>meditation</span>
+              <span>movement</span>
+            </div>
+          </div>
+
+          <div class="schema-entity" style="left: 40%; top: 32%;">
+            <span class="entity-name">Accommodation</span>
+            <div class="entity-fields">
+              <span>suite</span>
+              <span>amenities</span>
+              <span>turndown</span>
+            </div>
+          </div>
+
+          <div class="schema-entity" style="left: 72%; top: 32%;">
+            <span class="entity-name">Dining</span>
+            <div class="entity-fields">
+              <span>restaurant</span>
+              <span>room-service</span>
+              <span>dietary</span>
+            </div>
+          </div>
+
+          <div class="schema-entity schema-entity--secondary" style="left: 22%; top: 68%;">
+            <span class="entity-name">Staff Schedule</span>
+            <div class="entity-fields">
+              <span>shifts</span>
+              <span>assignments</span>
+            </div>
+          </div>
+
+          <div class="schema-entity schema-entity--secondary" style="left: 42%; top: 68%;">
+            <span class="entity-name">Inventory</span>
+            <div class="entity-fields">
+              <span>linens</span>
+              <span>amenity-stock</span>
+            </div>
+          </div>
+
+          <div class="schema-entity schema-entity--secondary" style="left: 62%; top: 68%;">
+            <span class="entity-name">Maintenance</span>
+            <div class="entity-fields">
+              <span>garden</span>
+              <span>facilities</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIRECTORY TREE (Resources) ========== -->
+    <section class="page" data-page="directory-tree">
+      <div class="page-inner editorial-columns">
+        <header class="page-header">
+          <span class="page-label">Library</span>
+          <h1 class="page-title">Resources</h1>
+        </header>
+
+        <div class="directory-tree reveal-element">
+          <ul class="tree-root">
+            <li class="tree-item tree-item--folder tree-item--open">
+              <span class="tree-toggle" role="button" tabindex="0">
+                <i class="ph-thin ph-folder-open"></i>
+                <span class="tree-label">Brand Guidelines</span>
+              </span>
+              <ul class="tree-children">
+                <li class="tree-item">
+                  <i class="ph-thin ph-file-pdf"></i>
+                  <span class="tree-label">Serenova — Visual Identity 2026.pdf</span>
+                </li>
+                <li class="tree-item">
+                  <i class="ph-thin ph-file-text"></i>
+                  <span class="tree-label">Tone of Voice Manual.pdf</span>
+                </li>
+                <li class="tree-item">
+                  <i class="ph-thin ph-palette"></i>
+                  <span class="tree-label">Color & Material Palette.pdf</span>
+                </li>
+              </ul>
+            </li>
+
+            <li class="tree-item tree-item--folder">
+              <span class="tree-toggle" role="button" tabindex="0">
+                <i class="ph-thin ph-folder"></i>
+                <span class="tree-label">Photography</span>
+              </span>
+              <ul class="tree-children" style="display:none;">
+                <li class="tree-item tree-item--folder">
+                  <span class="tree-toggle" role="button" tabindex="0">
+                    <i class="ph-thin ph-folder"></i>
+                    <span class="tree-label">Kyoto</span>
+                  </span>
+                  <ul class="tree-children" style="display:none;">
+                    <li class="tree-item"><i class="ph-thin ph-image"></i><span class="tree-label">garden-dawn-01.jpg</span></li>
+                    <li class="tree-item"><i class="ph-thin ph-image"></i><span class="tree-label">onsen-mist-02.jpg</span></li>
+                    <li class="tree-item"><i class="ph-thin ph-image"></i><span class="tree-label">tea-room-afternoon.jpg</span></li>
+                  </ul>
+                </li>
+                <li class="tree-item tree-item--folder">
+                  <span class="tree-toggle" role="button" tabindex="0">
+                    <i class="ph-thin ph-folder"></i>
+                    <span class="tree-label">Santorini</span>
+                  </span>
+                  <ul class="tree-children" style="display:none;">
+                    <li class="tree-item"><i class="ph-thin ph-image"></i><span class="tree-label">clifftop-sunset.jpg</span></li>
+                    <li class="tree-item"><i class="ph-thin ph-image"></i><span class="tree-label">infinity-pool-aegean.jpg</span></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li class="tree-item tree-item--folder">
+              <span class="tree-toggle" role="button" tabindex="0">
+                <i class="ph-thin ph-folder"></i>
+                <span class="tree-label">Operational Documents</span>
+              </span>
+              <ul class="tree-children" style="display:none;">
+                <li class="tree-item"><i class="ph-thin ph-file-text"></i><span class="tree-label">Guest Welcome Protocol.docx</span></li>
+                <li class="tree-item"><i class="ph-thin ph-file-text"></i><span class="tree-label">Turndown Service Checklist.docx</span></li>
+                <li class="tree-item"><i class="ph-thin ph-file-text"></i><span class="tree-label">Seasonal Menu Framework.xlsx</span></li>
+                <li class="tree-item"><i class="ph-thin ph-file-text"></i><span class="tree-label">Emergency Response Manual.pdf</span></li>
+              </ul>
+            </li>
+
+            <li class="tree-item tree-item--folder">
+              <span class="tree-toggle" role="button" tabindex="0">
+                <i class="ph-thin ph-folder"></i>
+                <span class="tree-label">Training Materials</span>
+              </span>
+              <ul class="tree-children" style="display:none;">
+                <li class="tree-item"><i class="ph-thin ph-video"></i><span class="tree-label">The Art of Silence — Staff Orientation.mp4</span></li>
+                <li class="tree-item"><i class="ph-thin ph-file-text"></i><span class="tree-label">Mindful Service Standards.pdf</span></li>
+                <li class="tree-item"><i class="ph-thin ph-file-text"></i><span class="tree-label">Tea Ceremony Procedures.pdf</span></li>
+              </ul>
+            </li>
+
+            <li class="tree-item tree-item--folder">
+              <span class="tree-toggle" role="button" tabindex="0">
+                <i class="ph-thin ph-folder"></i>
+                <span class="tree-label">Architecture & Renovation</span>
+              </span>
+              <ul class="tree-children" style="display:none;">
+                <li class="tree-item"><i class="ph-thin ph-blueprint"></i><span class="tree-label">Kyoto Phase 3 — Stone Garden Plans.dwg</span></li>
+                <li class="tree-item"><i class="ph-thin ph-blueprint"></i><span class="tree-label">Big Sur Cabin 9 — Foundation Specs.pdf</span></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== IDEAS (Journal) ========== -->
+    <section class="page" data-page="ideas">
+      <div class="page-inner editorial-columns">
+        <header class="page-header">
+          <span class="page-label">Innovation</span>
+          <h1 class="page-title">Journal</h1>
+        </header>
+
+        <div class="ideas-list">
+          <article class="idea-row reveal-element">
+            <h2 class="idea-title">Sound Bathing at Sunset</h2>
+            <p class="idea-description">Introduce singing bowl sessions on the Santorini terrace during golden hour. The acoustics of the caldera create a natural amphitheater.</p>
+            <span class="idea-date">February 14, 2026</span>
+          </article>
+
+          <hr class="thin-rule" />
+
+          <article class="idea-row reveal-element">
+            <h2 class="idea-title">Kintsukuroi Workshop</h2>
+            <p class="idea-description">Offer guests the experience of repairing broken ceramics with gold lacquer. A meditation on imperfection. Partner with Kyoto artisan Yamamoto-san.</p>
+            <span class="idea-date">February 11, 2026</span>
+          </article>
+
+          <hr class="thin-rule" />
+
+          <article class="idea-row reveal-element">
+            <h2 class="idea-title">Forest Bathing Concierge</h2>
+            <p class="idea-description">Dedicated staff member to guide guests through the Big Sur redwood trails in silence. No narration. Just presence and attention to the canopy.</p>
+            <span class="idea-date">February 8, 2026</span>
+          </article>
+
+          <hr class="thin-rule" />
+
+          <article class="idea-row reveal-element">
+            <h2 class="idea-title">Scent Memory Program</h2>
+            <p class="idea-description">Create a bespoke fragrance for each guest based on their stay preferences. Ship a small vial home so the scent triggers return visit desire.</p>
+            <span class="idea-date">February 3, 2026</span>
+          </article>
+
+          <hr class="thin-rule" />
+
+          <article class="idea-row reveal-element">
+            <h2 class="idea-title">Moonlight Stone Garden Viewings</h2>
+            <p class="idea-description">Open the Kyoto stone garden for exclusive late-night viewings under moonlight with warm sake service. Limit to 4 guests per evening.</p>
+            <span class="idea-date">January 29, 2026</span>
+          </article>
+        </div>
+
+        <div class="ideas-add reveal-element">
+          <button class="btn-primary" id="addIdeaBtn" data-tippy-content="Record a new thought">
+            <i class="ph-thin ph-plus"></i>
+            <span>New Entry</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== AI CHAT (Concierge AI) ========== -->
+    <section class="page" data-page="ai-chat">
+      <div class="page-inner editorial-columns">
+        <header class="page-header">
+          <span class="page-label">Intelligence</span>
+          <h1 class="page-title">Concierge AI</h1>
+        </header>
+
+        <div class="chat-gallery">
+          <div class="chat-message chat-message--system reveal-element">
+            <span class="chat-sender">Concierge</span>
+            <p class="chat-text">Good morning. I have reviewed overnight guest feedback from all four properties. Two items require your attention: a dietary preference update for Suite 7 at Kyoto, and a maintenance request for the infinity pool filtration system in Santorini.</p>
+            <span class="chat-time">8:15 AM</span>
+          </div>
+
+          <div class="chat-message chat-message--user reveal-element">
+            <span class="chat-sender">You</span>
+            <p class="chat-text">What is the sentiment trend for Kyoto this month compared to January?</p>
+            <span class="chat-time">8:22 AM</span>
+          </div>
+
+          <div class="chat-message chat-message--system reveal-element">
+            <span class="chat-sender">Concierge</span>
+            <p class="chat-text">February sentiment is 4.3% higher than January, driven primarily by positive mentions of the renovated stone garden. The phrase "profound stillness" appeared in 6 separate guest reviews this week. Wellness program satisfaction is also trending upward, with the new evening meditation sessions receiving unanimous praise.</p>
+            <span class="chat-time">8:22 AM</span>
+          </div>
+
+          <div class="chat-message chat-message--user reveal-element">
+            <span class="chat-sender">You</span>
+            <p class="chat-text">Excellent. Draft a brief note to the Kyoto team congratulating them on the garden feedback.</p>
+            <span class="chat-time">8:25 AM</span>
+          </div>
+
+          <div class="chat-message chat-message--system reveal-element">
+            <span class="chat-sender">Concierge</span>
+            <p class="chat-text">Draft prepared: "To the Kyoto team — The stone garden renovation has become a quiet conversation among our guests. Six reviews this week used the word 'profound.' This is the result of your attention and care. Thank you for making stillness something people travel across the world to experience." Shall I send this?</p>
+            <span class="chat-time">8:26 AM</span>
+          </div>
+        </div>
+
+        <div class="chat-input-area reveal-element">
+          <div class="chat-input-wrapper">
+            <input type="text" class="chat-input" placeholder="Ask the concierge..." />
+            <button class="chat-send" data-tippy-content="Send message">
+              <i class="ph-thin ph-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS ========== -->
+    <section class="page" data-page="settings">
+      <div class="page-inner editorial-columns">
+        <header class="page-header">
+          <span class="page-label">Preferences</span>
+          <h1 class="page-title">Settings</h1>
+        </header>
+
+        <div class="settings-scroll">
+          <div class="settings-section reveal-element">
+            <h3 class="section-heading">Profile</h3>
+            <div class="settings-field">
+              <label class="field-label">Display Name</label>
+              <input type="text" class="field-input" value="Haruto Nakamura" />
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Role</label>
+              <input type="text" class="field-input" value="Director of Guest Experience" readonly />
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Email</label>
+              <input type="email" class="field-input" value="haruto@serenova.com" />
+            </div>
+          </div>
+
+          <div class="settings-section reveal-element">
+            <h3 class="section-heading">Notifications</h3>
+            <div class="settings-toggle-row">
+              <span class="toggle-label">Guest arrival alerts</span>
+              <label class="toggle-switch">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="settings-toggle-row">
+              <span class="toggle-label">Maintenance requests</span>
+              <label class="toggle-switch">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="settings-toggle-row">
+              <span class="toggle-label">Wellness booking confirmations</span>
+              <label class="toggle-switch">
+                <input type="checkbox" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="settings-toggle-row">
+              <span class="toggle-label">Weekly sentiment digest</span>
+              <label class="toggle-switch">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-section reveal-element">
+            <h3 class="section-heading">Display</h3>
+            <div class="settings-field">
+              <label class="field-label">Language</label>
+              <select class="field-select">
+                <option selected>English</option>
+                <option>Japanese</option>
+                <option>French</option>
+                <option>Arabic</option>
+              </select>
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Date Format</label>
+              <select class="field-select">
+                <option selected>February 15, 2026</option>
+                <option>15/02/2026</option>
+                <option>2026-02-15</option>
+              </select>
+            </div>
+            <div class="settings-toggle-row">
+              <span class="toggle-label">Reduced motion</span>
+              <label class="toggle-switch">
+                <input type="checkbox" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-section reveal-element">
+            <h3 class="section-heading">Data & Privacy</h3>
+            <div class="settings-toggle-row">
+              <span class="toggle-label">Share analytics with property managers</span>
+              <label class="toggle-switch">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="settings-field">
+              <label class="field-label">Data retention period</label>
+              <select class="field-select">
+                <option>90 days</option>
+                <option selected>1 year</option>
+                <option>Indefinite</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-actions reveal-element">
+            <button class="btn-primary" id="saveSettingsBtn">Save Changes</button>
+            <button class="btn-subtle">Reset to Defaults</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================ -->
+  <!-- SCRIPTS                                      -->
+  <!-- ============================================ -->
+  <!-- GSAP + ScrollTrigger for parallax and cinematic motion -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- Lenis smooth scroll for luxury feel -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <!-- Tippy.js for whisper tooltips -->
+  <script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js"></script>
+  <!-- App -->
+  <script src="app.js"></script>
+</body>
+</html>

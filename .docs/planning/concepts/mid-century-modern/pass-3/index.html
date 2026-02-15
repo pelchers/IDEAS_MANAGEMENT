@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Girard Gallery — Idea Management</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Phosphor Icons (duotone variant for mid-century feel) -->
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+
+  <!-- Tippy.js for patterned tooltips -->
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.7/dist/tippy.css">
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Idle ambient: drifting geometric patterns -->
+  <div class="ambient-layer" aria-hidden="true">
+    <div class="ambient-shape ambient-shape--1"></div>
+    <div class="ambient-shape ambient-shape--2"></div>
+    <div class="ambient-shape ambient-shape--3"></div>
+    <div class="ambient-shape ambient-shape--4"></div>
+    <div class="ambient-shape ambient-shape--5"></div>
+  </div>
+
+  <!-- Loading overlay with kaleidoscope spinner -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="kaleidoscope">
+      <div class="kaleidoscope__piece kaleidoscope__piece--1"></div>
+      <div class="kaleidoscope__piece kaleidoscope__piece--2"></div>
+      <div class="kaleidoscope__piece kaleidoscope__piece--3"></div>
+      <div class="kaleidoscope__piece kaleidoscope__piece--4"></div>
+      <div class="kaleidoscope__piece kaleidoscope__piece--5"></div>
+      <div class="kaleidoscope__piece kaleidoscope__piece--6"></div>
+    </div>
+    <p class="loading-text">Curating your gallery&hellip;</p>
+  </div>
+
+  <!-- Micro feedback overlay -->
+  <div class="micro-feedback" id="microFeedback" aria-hidden="true">
+    <svg class="micro-star" viewBox="0 0 80 80" width="80" height="80">
+      <polygon points="40,5 48,30 75,30 53,47 61,72 40,56 19,72 27,47 5,30 32,30" fill="#d4a843" />
+    </svg>
+  </div>
+
+  <!-- Confetti canvas for button click bursts -->
+  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+  <!-- FLOATING PILL NAV (shellMode: floating-pill-nav) -->
+  <nav class="pill-nav" id="pillNav" role="navigation" aria-label="Main navigation">
+    <button class="pill-nav__hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="pill-nav__track" id="navTrack">
+      <button class="pill-nav__item pill-nav__item--active" data-view="dashboard" data-tooltip="Overview of exhibitions and metrics">
+        <i class="ph-duotone ph-squares-four"></i>
+        <span>Dashboard</span>
+      </button>
+      <button class="pill-nav__item" data-view="projects" data-tooltip="Browse exhibition collections">
+        <i class="ph-duotone ph-folder-simple"></i>
+        <span>Projects</span>
+      </button>
+      <button class="pill-nav__item" data-view="project-workspace" data-tooltip="Active exhibition workspace">
+        <i class="ph-duotone ph-palette"></i>
+        <span>Workspace</span>
+      </button>
+      <button class="pill-nav__item" data-view="kanban" data-tooltip="Task board for installations">
+        <i class="ph-duotone ph-kanban"></i>
+        <span>Kanban</span>
+      </button>
+      <button class="pill-nav__item" data-view="whiteboard" data-tooltip="Mood board and spatial planning">
+        <i class="ph-duotone ph-scribble-loop"></i>
+        <span>Whiteboard</span>
+      </button>
+      <button class="pill-nav__item" data-view="schema-planner" data-tooltip="Data architecture for collections">
+        <i class="ph-duotone ph-graph"></i>
+        <span>Schema</span>
+      </button>
+      <button class="pill-nav__item" data-view="directory-tree" data-tooltip="File and asset organizer">
+        <i class="ph-duotone ph-tree-structure"></i>
+        <span>Directory</span>
+      </button>
+      <button class="pill-nav__item" data-view="ideas" data-tooltip="Concept proposals and brainstorms">
+        <i class="ph-duotone ph-lightbulb"></i>
+        <span>Ideas</span>
+      </button>
+      <button class="pill-nav__item" data-view="ai-chat" data-tooltip="Curatorial AI assistant">
+        <i class="ph-duotone ph-chat-centered-dots"></i>
+        <span>AI Chat</span>
+      </button>
+      <button class="pill-nav__item" data-view="settings" data-tooltip="Gallery preferences">
+        <i class="ph-duotone ph-gear-six"></i>
+        <span>Settings</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT AREA (contentFlow: stacked-card-carousel) -->
+  <main class="carousel-shell" id="carouselShell">
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <section class="card-page" data-page="dashboard">
+      <header class="card-page__header">
+        <h1 class="card-page__title">Gallery Dashboard</h1>
+        <p class="card-page__subtitle">Current season overview &mdash; Spring 2026 exhibitions</p>
+      </header>
+
+      <!-- Collage layout with overlapping stat cards at slight angles -->
+      <div class="dashboard-collage">
+        <div class="stat-card stat-card--coral reveal-item" style="--angle: -2deg; --offset-x: 0; --offset-y: 0;">
+          <div class="stat-card__pattern" data-pattern="triangles"></div>
+          <div class="stat-card__content">
+            <span class="stat-card__label">Active Exhibitions</span>
+            <span class="stat-card__value">7</span>
+            <span class="stat-card__delta">+2 since January</span>
+          </div>
+        </div>
+        <div class="stat-card stat-card--olive reveal-item" style="--angle: 1.5deg; --offset-x: 10px; --offset-y: -8px;">
+          <div class="stat-card__pattern" data-pattern="circles"></div>
+          <div class="stat-card__content">
+            <span class="stat-card__label">Total Artworks</span>
+            <span class="stat-card__value">342</span>
+            <span class="stat-card__delta">48 newly acquired</span>
+          </div>
+        </div>
+        <div class="stat-card stat-card--gold reveal-item" style="--angle: -1deg; --offset-x: -5px; --offset-y: 4px;">
+          <div class="stat-card__pattern" data-pattern="diamonds"></div>
+          <div class="stat-card__content">
+            <span class="stat-card__label">Monthly Visitors</span>
+            <span class="stat-card__value">12.4K</span>
+            <span class="stat-card__delta">+18% growth</span>
+          </div>
+        </div>
+        <div class="stat-card stat-card--teal reveal-item" style="--angle: 2deg; --offset-x: 8px; --offset-y: -3px;">
+          <div class="stat-card__pattern" data-pattern="zigzag"></div>
+          <div class="stat-card__content">
+            <span class="stat-card__label">Curator Reviews</span>
+            <span class="stat-card__value">89</span>
+            <span class="stat-card__delta">14 pending approval</span>
+          </div>
+        </div>
+        <div class="stat-card stat-card--coral reveal-item" style="--angle: -0.5deg; --offset-x: -3px; --offset-y: 6px;">
+          <div class="stat-card__pattern" data-pattern="stripes"></div>
+          <div class="stat-card__content">
+            <span class="stat-card__label">Commission Revenue</span>
+            <span class="stat-card__value">$284K</span>
+            <span class="stat-card__delta">Q1 target: 92%</span>
+          </div>
+        </div>
+        <div class="stat-card stat-card--olive reveal-item" style="--angle: 1deg; --offset-x: 5px; --offset-y: -5px;">
+          <div class="stat-card__pattern" data-pattern="dots"></div>
+          <div class="stat-card__content">
+            <span class="stat-card__label">Loan Agreements</span>
+            <span class="stat-card__value">23</span>
+            <span class="stat-card__delta">5 institutions</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured card hero -->
+      <div class="featured-hero reveal-item">
+        <div class="featured-hero__pattern"></div>
+        <div class="featured-hero__content">
+          <span class="featured-hero__badge">Featured Exhibition</span>
+          <h2 class="featured-hero__title">Chromatic Geometries: The Girard Legacy</h2>
+          <p class="featured-hero__desc">A sweeping retrospective examining Alexander Girard's textile designs and their profound influence on contemporary graphic arts. Spanning 1952-1973, this collection showcases 86 original textile swatches, furniture textiles, and environmental design studies.</p>
+          <div class="featured-hero__meta">
+            <span><i class="ph-duotone ph-calendar-blank"></i> Mar 15 &ndash; Jun 28, 2026</span>
+            <span><i class="ph-duotone ph-map-pin"></i> Gallery Wing A &amp; B</span>
+            <span><i class="ph-duotone ph-eye"></i> 3,241 pre-registrations</span>
+          </div>
+          <button class="btn btn--primary" data-action="micro-feedback">View Exhibition Details</button>
+        </div>
+      </div>
+
+      <!-- Recent activity -->
+      <div class="activity-strip reveal-item">
+        <h3 class="section-title">Recent Curatorial Activity</h3>
+        <div class="activity-items">
+          <div class="activity-item">
+            <div class="activity-item__icon activity-item__icon--coral"><i class="ph-duotone ph-paint-brush"></i></div>
+            <div class="activity-item__body">
+              <strong>Elena Vasquez</strong> approved loan request for <em>"Sunburst Panel #7"</em>
+              <span class="activity-item__time">2 hours ago</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-item__icon activity-item__icon--olive"><i class="ph-duotone ph-camera"></i></div>
+            <div class="activity-item__body">
+              <strong>Marcus Chen</strong> uploaded 12 high-res scans to <em>Textile Archive</em>
+              <span class="activity-item__time">5 hours ago</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-item__icon activity-item__icon--gold"><i class="ph-duotone ph-note-pencil"></i></div>
+            <div class="activity-item__body">
+              <strong>Sofia Andersson</strong> updated wall placement for <em>"Folk Mosaic Triptych"</em>
+              <span class="activity-item__time">Yesterday</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-item__icon activity-item__icon--teal"><i class="ph-duotone ph-truck"></i></div>
+            <div class="activity-item__body">
+              <strong>Logistics</strong> confirmed shipment arrival: <em>Eames Office Collection</em>
+              <span class="activity-item__time">2 days ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECTS ==================== -->
+    <section class="card-page" data-page="projects">
+      <header class="card-page__header">
+        <h1 class="card-page__title">Exhibition Collections</h1>
+        <p class="card-page__subtitle">Curated exhibitions arranged salon-style</p>
+      </header>
+
+      <!-- Gallery wall layout: salon-style irregular hanging -->
+      <div class="salon-wall">
+        <div class="salon-card salon-card--large salon-card--coral reveal-item">
+          <div class="salon-card__frame">
+            <div class="salon-card__pattern" data-pattern="triangles"></div>
+            <div class="salon-card__inner">
+              <h3 class="salon-card__title">Chromatic Geometries</h3>
+              <p class="salon-card__medium">Mixed Media &bull; Textiles</p>
+              <div class="salon-card__meta">
+                <span>86 works</span>
+                <span>Wing A &amp; B</span>
+              </div>
+              <span class="salon-card__status salon-card__status--active">Now Showing</span>
+            </div>
+          </div>
+        </div>
+        <div class="salon-card salon-card--medium salon-card--olive reveal-item">
+          <div class="salon-card__frame">
+            <div class="salon-card__pattern" data-pattern="circles"></div>
+            <div class="salon-card__inner">
+              <h3 class="salon-card__title">Postwar Abstraction</h3>
+              <p class="salon-card__medium">Oil on Canvas &bull; Sculpture</p>
+              <div class="salon-card__meta">
+                <span>42 works</span>
+                <span>Gallery 3</span>
+              </div>
+              <span class="salon-card__status salon-card__status--active">Now Showing</span>
+            </div>
+          </div>
+        </div>
+        <div class="salon-card salon-card--small salon-card--gold reveal-item">
+          <div class="salon-card__frame">
+            <div class="salon-card__pattern" data-pattern="diamonds"></div>
+            <div class="salon-card__inner">
+              <h3 class="salon-card__title">New Materiality</h3>
+              <p class="salon-card__medium">Installation &bull; Digital</p>
+              <div class="salon-card__meta">
+                <span>18 works</span>
+                <span>Project Space</span>
+              </div>
+              <span class="salon-card__status salon-card__status--upcoming">Opening Soon</span>
+            </div>
+          </div>
+        </div>
+        <div class="salon-card salon-card--medium salon-card--teal reveal-item">
+          <div class="salon-card__frame">
+            <div class="salon-card__pattern" data-pattern="stripes"></div>
+            <div class="salon-card__inner">
+              <h3 class="salon-card__title">Objects of Desire</h3>
+              <p class="salon-card__medium">Industrial Design &bull; Furniture</p>
+              <div class="salon-card__meta">
+                <span>55 objects</span>
+                <span>Design Hall</span>
+              </div>
+              <span class="salon-card__status salon-card__status--active">Now Showing</span>
+            </div>
+          </div>
+        </div>
+        <div class="salon-card salon-card--small salon-card--coral reveal-item">
+          <div class="salon-card__frame">
+            <div class="salon-card__pattern" data-pattern="zigzag"></div>
+            <div class="salon-card__inner">
+              <h3 class="salon-card__title">Sonic Landscapes</h3>
+              <p class="salon-card__medium">Sound Art &bull; Video</p>
+              <div class="salon-card__meta">
+                <span>9 works</span>
+                <span>Media Lab</span>
+              </div>
+              <span class="salon-card__status salon-card__status--upcoming">Opening Soon</span>
+            </div>
+          </div>
+        </div>
+        <div class="salon-card salon-card--large salon-card--gold reveal-item">
+          <div class="salon-card__frame">
+            <div class="salon-card__pattern" data-pattern="dots"></div>
+            <div class="salon-card__inner">
+              <h3 class="salon-card__title">Form Follows Feeling</h3>
+              <p class="salon-card__medium">Architecture &bull; Models</p>
+              <div class="salon-card__meta">
+                <span>31 models</span>
+                <span>Atrium</span>
+              </div>
+              <span class="salon-card__status salon-card__status--planning">In Planning</span>
+            </div>
+          </div>
+        </div>
+        <div class="salon-card salon-card--medium salon-card--olive reveal-item">
+          <div class="salon-card__frame">
+            <div class="salon-card__pattern" data-pattern="triangles"></div>
+            <div class="salon-card__inner">
+              <h3 class="salon-card__title">The Paper Trail</h3>
+              <p class="salon-card__medium">Prints &bull; Works on Paper</p>
+              <div class="salon-card__meta">
+                <span>67 prints</span>
+                <span>Print Room</span>
+              </div>
+              <span class="salon-card__status salon-card__status--active">Now Showing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECT WORKSPACE ==================== -->
+    <section class="card-page" data-page="project-workspace">
+      <header class="card-page__header">
+        <h1 class="card-page__title">Exhibition Workspace</h1>
+        <p class="card-page__subtitle">Chromatic Geometries &mdash; Patchwork planning board</p>
+      </header>
+
+      <!-- Patchwork quilt layout with textile-seam borders -->
+      <div class="patchwork-quilt">
+        <div class="quilt-patch quilt-patch--coral quilt-patch--wide reveal-item">
+          <div class="quilt-patch__seam"></div>
+          <h3 class="quilt-patch__title">Exhibition Brief</h3>
+          <p>A comprehensive retrospective spanning two decades of Alexander Girard's textile innovations. The exhibition weaves together original fabric swatches, environmental design photographs, and restored furniture pieces to tell the story of mid-century pattern-making as a radical art form.</p>
+          <div class="quilt-patch__tags">
+            <span class="tag tag--coral">Retrospective</span>
+            <span class="tag tag--olive">Textiles</span>
+            <span class="tag tag--gold">Mid-Century</span>
+          </div>
+        </div>
+        <div class="quilt-patch quilt-patch--olive reveal-item">
+          <div class="quilt-patch__seam"></div>
+          <h3 class="quilt-patch__title">Timeline</h3>
+          <ul class="quilt-timeline">
+            <li class="quilt-timeline__item quilt-timeline__item--done"><span>Research Phase</span><em>Complete</em></li>
+            <li class="quilt-timeline__item quilt-timeline__item--active"><span>Loan Negotiations</span><em>In Progress</em></li>
+            <li class="quilt-timeline__item"><span>Installation Design</span><em>Pending</em></li>
+            <li class="quilt-timeline__item"><span>Catalog Production</span><em>Pending</em></li>
+            <li class="quilt-timeline__item"><span>Press Preview</span><em>Mar 12</em></li>
+            <li class="quilt-timeline__item"><span>Public Opening</span><em>Mar 15</em></li>
+          </ul>
+        </div>
+        <div class="quilt-patch quilt-patch--gold reveal-item">
+          <div class="quilt-patch__seam"></div>
+          <h3 class="quilt-patch__title">Budget Summary</h3>
+          <div class="budget-bars">
+            <div class="budget-bar">
+              <span class="budget-bar__label">Shipping &amp; Insurance</span>
+              <div class="budget-bar__track"><div class="budget-bar__fill budget-bar__fill--coral" style="width:78%"></div></div>
+              <span class="budget-bar__pct">78%</span>
+            </div>
+            <div class="budget-bar">
+              <span class="budget-bar__label">Installation</span>
+              <div class="budget-bar__track"><div class="budget-bar__fill budget-bar__fill--olive" style="width:45%"></div></div>
+              <span class="budget-bar__pct">45%</span>
+            </div>
+            <div class="budget-bar">
+              <span class="budget-bar__label">Marketing</span>
+              <div class="budget-bar__track"><div class="budget-bar__fill budget-bar__fill--gold" style="width:62%"></div></div>
+              <span class="budget-bar__pct">62%</span>
+            </div>
+            <div class="budget-bar">
+              <span class="budget-bar__label">Catalog Print</span>
+              <div class="budget-bar__track"><div class="budget-bar__fill budget-bar__fill--teal" style="width:20%"></div></div>
+              <span class="budget-bar__pct">20%</span>
+            </div>
+          </div>
+        </div>
+        <div class="quilt-patch quilt-patch--teal reveal-item">
+          <div class="quilt-patch__seam"></div>
+          <h3 class="quilt-patch__title">Team</h3>
+          <div class="team-list">
+            <div class="team-member"><span class="team-avatar team-avatar--coral">EV</span><div><strong>Elena Vasquez</strong><br>Lead Curator</div></div>
+            <div class="team-member"><span class="team-avatar team-avatar--olive">MC</span><div><strong>Marcus Chen</strong><br>Digital Archive</div></div>
+            <div class="team-member"><span class="team-avatar team-avatar--gold">SA</span><div><strong>Sofia Andersson</strong><br>Installation Design</div></div>
+            <div class="team-member"><span class="team-avatar team-avatar--teal">JK</span><div><strong>James Kowalski</strong><br>Conservation</div></div>
+          </div>
+        </div>
+        <div class="quilt-patch quilt-patch--coral quilt-patch--wide reveal-item">
+          <div class="quilt-patch__seam"></div>
+          <h3 class="quilt-patch__title">Key Artworks</h3>
+          <div class="artwork-chips">
+            <span class="artwork-chip"><i class="ph-duotone ph-frame-corners"></i> Sunburst Panel #7</span>
+            <span class="artwork-chip"><i class="ph-duotone ph-frame-corners"></i> Folk Mosaic Triptych</span>
+            <span class="artwork-chip"><i class="ph-duotone ph-frame-corners"></i> Geometric Migration Study</span>
+            <span class="artwork-chip"><i class="ph-duotone ph-frame-corners"></i> Environmental Textile: La Fonda del Sol</span>
+            <span class="artwork-chip"><i class="ph-duotone ph-frame-corners"></i> Wooden Doll Collection (12 pieces)</span>
+            <span class="artwork-chip"><i class="ph-duotone ph-frame-corners"></i> Pattern Sample Book 1958-1963</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== KANBAN ==================== -->
+    <section class="card-page" data-page="kanban">
+      <header class="card-page__header">
+        <h1 class="card-page__title">Installation Board</h1>
+        <p class="card-page__subtitle">Tasks organized by phase with geometric status markers</p>
+      </header>
+
+      <div class="kanban-board">
+        <div class="kanban-column kanban-column--coral">
+          <div class="kanban-column__header">
+            <svg class="kanban-status-shape" viewBox="0 0 20 20" width="20" height="20"><circle cx="10" cy="10" r="8" fill="#e05a4f"/></svg>
+            <h3>To Assess</h3>
+            <span class="kanban-count">4</span>
+          </div>
+          <div class="kanban-cards" data-kanban-col="assess">
+            <div class="kanban-card reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="triangles"></div>
+              <h4>Condition report: Sunburst Panel #7</h4>
+              <p>Conservation team needs to evaluate paint layer stability before transport from Herman Miller archives.</p>
+              <div class="kanban-card__footer"><span class="tag tag--coral">Conservation</span><span class="kanban-card__assignee">JK</span></div>
+            </div>
+            <div class="kanban-card reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="circles"></div>
+              <h4>Lighting design for Wing A alcoves</h4>
+              <p>Textile swatches require UV-filtered illumination at 50 lux maximum. Need vendor quotes.</p>
+              <div class="kanban-card__footer"><span class="tag tag--olive">Installation</span><span class="kanban-card__assignee">SA</span></div>
+            </div>
+            <div class="kanban-card reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="diamonds"></div>
+              <h4>Insurance valuation update</h4>
+              <p>Three recently acquired pieces need new appraisals before loan agreements finalize.</p>
+              <div class="kanban-card__footer"><span class="tag tag--gold">Admin</span><span class="kanban-card__assignee">EV</span></div>
+            </div>
+            <div class="kanban-card reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="stripes"></div>
+              <h4>Photography permissions: La Fonda del Sol</h4>
+              <p>Contact original restaurant archive for reproduction rights on environmental design photos.</p>
+              <div class="kanban-card__footer"><span class="tag tag--teal">Rights</span><span class="kanban-card__assignee">MC</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column kanban-column--olive">
+          <div class="kanban-column__header">
+            <svg class="kanban-status-shape" viewBox="0 0 20 20" width="20" height="20"><polygon points="10,2 18,18 2,18" fill="#6b8e23"/></svg>
+            <h3>In Progress</h3>
+            <span class="kanban-count">3</span>
+          </div>
+          <div class="kanban-cards" data-kanban-col="progress">
+            <div class="kanban-card reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="zigzag"></div>
+              <h4>Catalog essay draft</h4>
+              <p>4,500-word essay on Girard's relationship with Herman Miller and the textile-as-art movement. Due March 1.</p>
+              <div class="kanban-card__footer"><span class="tag tag--coral">Editorial</span><span class="kanban-card__assignee">EV</span></div>
+            </div>
+            <div class="kanban-card reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="dots"></div>
+              <h4>High-res textile scans batch 3</h4>
+              <p>Scanning remaining 24 fabric samples at 1200 DPI. Color calibration in progress.</p>
+              <div class="kanban-card__footer"><span class="tag tag--olive">Digital</span><span class="kanban-card__assignee">MC</span></div>
+            </div>
+            <div class="kanban-card reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="triangles"></div>
+              <h4>Wall layout mock-up Wing B</h4>
+              <p>1:20 scale model of proposed hanging arrangement with variable-height textile panels.</p>
+              <div class="kanban-card__footer"><span class="tag tag--gold">Installation</span><span class="kanban-card__assignee">SA</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column kanban-column--gold">
+          <div class="kanban-column__header">
+            <svg class="kanban-status-shape" viewBox="0 0 20 20" width="20" height="20"><rect x="3" y="3" width="14" height="14" fill="#d4a843"/></svg>
+            <h3>Review</h3>
+            <span class="kanban-count">2</span>
+          </div>
+          <div class="kanban-cards" data-kanban-col="review">
+            <div class="kanban-card reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="circles"></div>
+              <h4>Press release copy</h4>
+              <p>Final draft ready for director sign-off. Includes exhibition dates, artist bio, and ticket information.</p>
+              <div class="kanban-card__footer"><span class="tag tag--teal">Marketing</span><span class="kanban-card__assignee">EV</span></div>
+            </div>
+            <div class="kanban-card reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="stripes"></div>
+              <h4>Interactive kiosk prototype</h4>
+              <p>Touch-screen experience letting visitors explore pattern construction. Needs UX review.</p>
+              <div class="kanban-card__footer"><span class="tag tag--olive">Digital</span><span class="kanban-card__assignee">MC</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column kanban-column--teal">
+          <div class="kanban-column__header">
+            <svg class="kanban-status-shape" viewBox="0 0 20 20" width="20" height="20"><polygon points="10,2 19,8 16,18 4,18 1,8" fill="#2a9d8f"/></svg>
+            <h3>Complete</h3>
+            <span class="kanban-count">3</span>
+          </div>
+          <div class="kanban-cards" data-kanban-col="complete">
+            <div class="kanban-card kanban-card--done reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="diamonds"></div>
+              <h4>Loan agreement: Vitra Museum</h4>
+              <p>Signed. 12 pieces confirmed for 6-month loan period including Wooden Doll collection.</p>
+              <div class="kanban-card__footer"><span class="tag tag--gold">Admin</span><span class="kanban-card__assignee">EV</span></div>
+            </div>
+            <div class="kanban-card kanban-card--done reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="zigzag"></div>
+              <h4>Gallery floor plan approval</h4>
+              <p>Architectural review signed off. Fire code compliance verified for both wings.</p>
+              <div class="kanban-card__footer"><span class="tag tag--coral">Installation</span><span class="kanban-card__assignee">SA</span></div>
+            </div>
+            <div class="kanban-card kanban-card--done reveal-item" draggable="true">
+              <div class="kanban-card__pattern" data-pattern="dots"></div>
+              <h4>Exhibition identity design</h4>
+              <p>Logo, color palette, and typography system approved. Collateral templates distributed.</p>
+              <div class="kanban-card__footer"><span class="tag tag--teal">Design</span><span class="kanban-card__assignee">MC</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== WHITEBOARD ==================== -->
+    <section class="card-page" data-page="whiteboard">
+      <header class="card-page__header">
+        <h1 class="card-page__title">Mood Board</h1>
+        <p class="card-page__subtitle">Spatial planning and textile inspiration collage</p>
+      </header>
+
+      <div class="moodboard">
+        <div class="moodboard-item moodboard-item--note reveal-item" style="--x: 5%; --y: 5%; --rot: -3deg;">
+          <div class="moodboard-item__pin"></div>
+          <h4>Color Story</h4>
+          <p>Warm ivories and creams as the canvas. Coral, olive, gold, and teal as the bold voice. Never muted &mdash; always at full saturation.</p>
+        </div>
+        <div class="moodboard-item moodboard-item--swatch moodboard-item--swatch-coral reveal-item" style="--x: 40%; --y: 3%; --rot: 2deg;">
+          <div class="moodboard-item__pin"></div>
+          <div class="swatch-pattern" data-pattern="triangles"></div>
+          <span>Coral Triangles</span>
+        </div>
+        <div class="moodboard-item moodboard-item--swatch moodboard-item--swatch-olive reveal-item" style="--x: 60%; --y: 8%; --rot: -1deg;">
+          <div class="moodboard-item__pin"></div>
+          <div class="swatch-pattern" data-pattern="circles"></div>
+          <span>Olive Circles</span>
+        </div>
+        <div class="moodboard-item moodboard-item--note moodboard-item--note-gold reveal-item" style="--x: 2%; --y: 40%; --rot: 1deg;">
+          <div class="moodboard-item__pin"></div>
+          <h4>Layout Principles</h4>
+          <p>Irregular salon-style hanging. No grid. Pieces relate to each other through color echoes and geometric rhyming.</p>
+        </div>
+        <div class="moodboard-item moodboard-item--swatch moodboard-item--swatch-gold reveal-item" style="--x: 35%; --y: 38%; --rot: -2deg;">
+          <div class="moodboard-item__pin"></div>
+          <div class="swatch-pattern" data-pattern="diamonds"></div>
+          <span>Gold Diamonds</span>
+        </div>
+        <div class="moodboard-item moodboard-item--note reveal-item" style="--x: 58%; --y: 42%; --rot: 3deg;">
+          <div class="moodboard-item__pin"></div>
+          <h4>Typography</h4>
+          <p>Fraunces for headings &mdash; its optical size axis gives us warmth at display sizes. Outfit for body &mdash; geometric but friendly.</p>
+        </div>
+        <div class="moodboard-item moodboard-item--swatch moodboard-item--swatch-teal reveal-item" style="--x: 78%; --y: 35%; --rot: -1.5deg;">
+          <div class="moodboard-item__pin"></div>
+          <div class="swatch-pattern" data-pattern="stripes"></div>
+          <span>Teal Stripes</span>
+        </div>
+        <div class="moodboard-item moodboard-item--note moodboard-item--note-olive reveal-item" style="--x: 10%; --y: 70%; --rot: -1deg;">
+          <div class="moodboard-item__pin"></div>
+          <h4>Interaction Philosophy</h4>
+          <p>Every interaction should feel like placing a piece into a collage. Slight randomness in rotation. Pattern reveals on hover. Playful but intentional.</p>
+        </div>
+        <div class="moodboard-item moodboard-item--swatch moodboard-item--swatch-coral reveal-item" style="--x: 45%; --y: 72%; --rot: 2.5deg;">
+          <div class="moodboard-item__pin"></div>
+          <div class="swatch-pattern" data-pattern="zigzag"></div>
+          <span>Coral Zigzag</span>
+        </div>
+        <div class="moodboard-item moodboard-item--connector reveal-item" style="--x: 72%; --y: 68%; --rot: 0deg;">
+          <svg viewBox="0 0 160 80" width="160" height="80">
+            <path d="M10,40 Q40,10 80,40 Q120,70 150,40" stroke="#d4a843" stroke-width="3" fill="none" stroke-dasharray="8,4" class="folk-connector"/>
+            <circle cx="10" cy="40" r="6" fill="#e05a4f"/>
+            <circle cx="150" cy="40" r="6" fill="#6b8e23"/>
+            <polygon points="80,28 86,40 80,52 74,40" fill="#d4a843"/>
+          </svg>
+          <span>Folk-art connector</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCHEMA PLANNER ==================== -->
+    <section class="card-page" data-page="schema-planner">
+      <header class="card-page__header">
+        <h1 class="card-page__title">Collection Schema</h1>
+        <p class="card-page__subtitle">Data architecture with color-coded entity types</p>
+      </header>
+
+      <div class="schema-diagram">
+        <!-- SVG connection lines drawn behind -->
+        <svg class="schema-lines" viewBox="0 0 900 500" preserveAspectRatio="xMidYMid meet">
+          <path d="M200,100 C300,100 300,200 400,200" stroke="#e05a4f" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+          <path d="M200,100 C250,150 350,250 400,320" stroke="#6b8e23" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+          <path d="M600,200 C650,200 650,100 700,100" stroke="#d4a843" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+          <path d="M600,200 C650,250 650,320 700,340" stroke="#2a9d8f" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+          <path d="M400,320 C450,320 550,340 700,340" stroke="#e05a4f" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+          <path d="M200,100 C200,50 700,50 700,100" stroke="#d4a843" stroke-width="2" fill="none" stroke-dasharray="4,4" opacity="0.5"/>
+        </svg>
+
+        <div class="schema-entity schema-entity--coral reveal-item" style="--x: 5%; --y: 10%;">
+          <div class="schema-entity__badge"><svg viewBox="0 0 20 20" width="20" height="20"><circle cx="10" cy="10" r="8" fill="#e05a4f"/></svg> Collection</div>
+          <h4>Exhibition</h4>
+          <ul class="schema-fields">
+            <li><code>id</code> <span>uuid</span></li>
+            <li><code>title</code> <span>string</span></li>
+            <li><code>curator_id</code> <span>fk &rarr; Person</span></li>
+            <li><code>date_range</code> <span>daterange</span></li>
+            <li><code>wing</code> <span>enum</span></li>
+            <li><code>status</code> <span>enum</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity schema-entity--olive reveal-item" style="--x: 35%; --y: 25%;">
+          <div class="schema-entity__badge"><svg viewBox="0 0 20 20" width="20" height="20"><polygon points="10,2 18,18 2,18" fill="#6b8e23"/></svg> Asset</div>
+          <h4>Artwork</h4>
+          <ul class="schema-fields">
+            <li><code>id</code> <span>uuid</span></li>
+            <li><code>title</code> <span>string</span></li>
+            <li><code>medium</code> <span>string</span></li>
+            <li><code>dimensions</code> <span>jsonb</span></li>
+            <li><code>year_created</code> <span>int</span></li>
+            <li><code>condition</code> <span>enum</span></li>
+            <li><code>exhibition_id</code> <span>fk &rarr; Exhibition</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity schema-entity--gold reveal-item" style="--x: 65%; --y: 8%;">
+          <div class="schema-entity__badge"><svg viewBox="0 0 20 20" width="20" height="20"><rect x="3" y="3" width="14" height="14" fill="#d4a843"/></svg> Person</div>
+          <h4>Staff Member</h4>
+          <ul class="schema-fields">
+            <li><code>id</code> <span>uuid</span></li>
+            <li><code>name</code> <span>string</span></li>
+            <li><code>role</code> <span>enum</span></li>
+            <li><code>department</code> <span>string</span></li>
+            <li><code>email</code> <span>string</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity schema-entity--teal reveal-item" style="--x: 65%; --y: 50%;">
+          <div class="schema-entity__badge"><svg viewBox="0 0 20 20" width="20" height="20"><polygon points="10,2 19,8 16,18 4,18 1,8" fill="#2a9d8f"/></svg> Document</div>
+          <h4>Loan Agreement</h4>
+          <ul class="schema-fields">
+            <li><code>id</code> <span>uuid</span></li>
+            <li><code>lender</code> <span>string</span></li>
+            <li><code>artwork_ids</code> <span>uuid[]</span></li>
+            <li><code>start_date</code> <span>date</span></li>
+            <li><code>end_date</code> <span>date</span></li>
+            <li><code>insurance_value</code> <span>decimal</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity schema-entity--coral reveal-item" style="--x: 35%; --y: 55%;">
+          <div class="schema-entity__badge"><svg viewBox="0 0 20 20" width="20" height="20"><circle cx="10" cy="10" r="8" fill="#e05a4f"/></svg> Event</div>
+          <h4>Installation Task</h4>
+          <ul class="schema-fields">
+            <li><code>id</code> <span>uuid</span></li>
+            <li><code>artwork_id</code> <span>fk &rarr; Artwork</span></li>
+            <li><code>assignee_id</code> <span>fk &rarr; Staff</span></li>
+            <li><code>task_type</code> <span>enum</span></li>
+            <li><code>status</code> <span>enum</span></li>
+            <li><code>due_date</code> <span>date</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== DIRECTORY TREE ==================== -->
+    <section class="card-page" data-page="directory-tree">
+      <header class="card-page__header">
+        <h1 class="card-page__title">Asset Directory</h1>
+        <p class="card-page__subtitle">Illustrated tree with folk-art leaf motifs</p>
+      </header>
+
+      <div class="folk-tree">
+        <div class="folk-tree__root reveal-item">
+          <div class="folk-tree__node folk-tree__node--trunk">
+            <svg class="folk-leaf folk-leaf--trunk" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" fill="#d4a843"/><circle cx="12" cy="12" r="5" fill="#faf5eb"/></svg>
+            <span class="folk-tree__label">Gallery Archive</span>
+            <span class="folk-tree__meta">Root collection &mdash; 2.4 GB</span>
+          </div>
+
+          <div class="folk-tree__branch">
+            <div class="folk-tree__vine"></div>
+            <div class="folk-tree__node folk-tree__node--open reveal-item" data-tree-toggle>
+              <svg class="folk-leaf" viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 22,20 2,20" fill="#e05a4f"/></svg>
+              <span class="folk-tree__label">Chromatic Geometries</span>
+              <span class="folk-tree__meta">Exhibition assets &mdash; 1.1 GB</span>
+            </div>
+            <div class="folk-tree__children">
+              <div class="folk-tree__vine"></div>
+              <div class="folk-tree__node reveal-item">
+                <svg class="folk-leaf" viewBox="0 0 20 20" width="16" height="16"><rect x="2" y="2" width="16" height="16" rx="2" fill="#6b8e23"/></svg>
+                <span class="folk-tree__label">high-res-scans/</span>
+                <span class="folk-tree__meta">86 TIFF files &mdash; 820 MB</span>
+              </div>
+              <div class="folk-tree__node reveal-item">
+                <svg class="folk-leaf" viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="10" r="8" fill="#d4a843"/></svg>
+                <span class="folk-tree__label">catalog-essays/</span>
+                <span class="folk-tree__meta">4 documents &mdash; 2.3 MB</span>
+              </div>
+              <div class="folk-tree__node reveal-item">
+                <svg class="folk-leaf" viewBox="0 0 20 20" width="16" height="16"><polygon points="10,2 19,8 16,18 4,18 1,8" fill="#2a9d8f"/></svg>
+                <span class="folk-tree__label">installation-photos/</span>
+                <span class="folk-tree__meta">142 JPEGs &mdash; 290 MB</span>
+              </div>
+              <div class="folk-tree__node reveal-item">
+                <svg class="folk-leaf" viewBox="0 0 20 20" width="16" height="16"><polygon points="10,2 18,18 2,18" fill="#e05a4f"/></svg>
+                <span class="folk-tree__label">press-materials/</span>
+                <span class="folk-tree__meta">Press kit &amp; logos &mdash; 45 MB</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="folk-tree__branch">
+            <div class="folk-tree__vine"></div>
+            <div class="folk-tree__node folk-tree__node--open reveal-item" data-tree-toggle>
+              <svg class="folk-leaf" viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="2" width="20" height="20" rx="3" fill="#6b8e23"/></svg>
+              <span class="folk-tree__label">Postwar Abstraction</span>
+              <span class="folk-tree__meta">Exhibition assets &mdash; 680 MB</span>
+            </div>
+            <div class="folk-tree__children">
+              <div class="folk-tree__vine"></div>
+              <div class="folk-tree__node reveal-item">
+                <svg class="folk-leaf" viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="10" r="8" fill="#e05a4f"/></svg>
+                <span class="folk-tree__label">paintings/</span>
+                <span class="folk-tree__meta">28 high-res &mdash; 410 MB</span>
+              </div>
+              <div class="folk-tree__node reveal-item">
+                <svg class="folk-leaf" viewBox="0 0 20 20" width="16" height="16"><polygon points="10,2 19,8 16,18 4,18 1,8" fill="#d4a843"/></svg>
+                <span class="folk-tree__label">sculpture-3d-scans/</span>
+                <span class="folk-tree__meta">14 OBJ files &mdash; 230 MB</span>
+              </div>
+              <div class="folk-tree__node reveal-item">
+                <svg class="folk-leaf" viewBox="0 0 20 20" width="16" height="16"><rect x="2" y="2" width="16" height="16" rx="2" fill="#2a9d8f"/></svg>
+                <span class="folk-tree__label">provenance-docs/</span>
+                <span class="folk-tree__meta">42 PDFs &mdash; 40 MB</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="folk-tree__branch">
+            <div class="folk-tree__vine"></div>
+            <div class="folk-tree__node reveal-item" data-tree-toggle>
+              <svg class="folk-leaf" viewBox="0 0 24 24" width="20" height="20"><polygon points="12,2 22,20 2,20" fill="#d4a843"/></svg>
+              <span class="folk-tree__label">Shared Resources</span>
+              <span class="folk-tree__meta">Cross-exhibition &mdash; 320 MB</span>
+            </div>
+            <div class="folk-tree__children folk-tree__children--collapsed">
+              <div class="folk-tree__vine"></div>
+              <div class="folk-tree__node reveal-item">
+                <svg class="folk-leaf" viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="10" r="8" fill="#6b8e23"/></svg>
+                <span class="folk-tree__label">brand-assets/</span>
+                <span class="folk-tree__meta">Logos &amp; fonts &mdash; 15 MB</span>
+              </div>
+              <div class="folk-tree__node reveal-item">
+                <svg class="folk-leaf" viewBox="0 0 20 20" width="16" height="16"><rect x="2" y="2" width="16" height="16" rx="2" fill="#e05a4f"/></svg>
+                <span class="folk-tree__label">templates/</span>
+                <span class="folk-tree__meta">Label &amp; signage &mdash; 8 MB</span>
+              </div>
+              <div class="folk-tree__node reveal-item">
+                <svg class="folk-leaf" viewBox="0 0 20 20" width="16" height="16"><polygon points="10,2 18,18 2,18" fill="#d4a843"/></svg>
+                <span class="folk-tree__label">floor-plans/</span>
+                <span class="folk-tree__meta">DWG + PDF &mdash; 297 MB</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== IDEAS ==================== -->
+    <section class="card-page" data-page="ideas">
+      <header class="card-page__header">
+        <h1 class="card-page__title">Concept Proposals</h1>
+        <p class="card-page__subtitle">Each idea with a unique geometric pattern header</p>
+      </header>
+
+      <div class="ideas-grid">
+        <div class="idea-card reveal-item">
+          <div class="idea-card__header idea-card__header--coral" data-pattern="triangles"></div>
+          <div class="idea-card__body">
+            <h3 class="idea-card__title">Immersive Textile Room</h3>
+            <p>Transform Gallery Wing C into a floor-to-ceiling textile environment. Visitors walk through hanging fabric panels that respond to movement with subtle lighting changes. Reference: Olafur Eliasson's environmental installations.</p>
+            <div class="idea-card__footer">
+              <span class="idea-card__author"><span class="team-avatar team-avatar--coral team-avatar--sm">EV</span> Elena Vasquez</span>
+              <span class="idea-card__votes"><i class="ph-duotone ph-heart"></i> 14</span>
+            </div>
+          </div>
+        </div>
+        <div class="idea-card reveal-item">
+          <div class="idea-card__header idea-card__header--olive" data-pattern="circles"></div>
+          <div class="idea-card__body">
+            <h3 class="idea-card__title">Pattern Generator Kiosk</h3>
+            <p>Interactive touchscreen where visitors create their own Girard-inspired geometric patterns. Best patterns get printed on fabric and displayed in the gift shop. Bridges historical design with participatory art.</p>
+            <div class="idea-card__footer">
+              <span class="idea-card__author"><span class="team-avatar team-avatar--olive team-avatar--sm">MC</span> Marcus Chen</span>
+              <span class="idea-card__votes"><i class="ph-duotone ph-heart"></i> 22</span>
+            </div>
+          </div>
+        </div>
+        <div class="idea-card reveal-item">
+          <div class="idea-card__header idea-card__header--gold" data-pattern="diamonds"></div>
+          <div class="idea-card__body">
+            <h3 class="idea-card__title">Textile Sound Garden</h3>
+            <p>Commission sound artists to create compositions inspired by the rhythmic patterns in Girard's textiles. Each fabric pattern translates to a unique musical phrase. Play in designated listening alcoves.</p>
+            <div class="idea-card__footer">
+              <span class="idea-card__author"><span class="team-avatar team-avatar--gold team-avatar--sm">SA</span> Sofia Andersson</span>
+              <span class="idea-card__votes"><i class="ph-duotone ph-heart"></i> 9</span>
+            </div>
+          </div>
+        </div>
+        <div class="idea-card reveal-item">
+          <div class="idea-card__header idea-card__header--teal" data-pattern="stripes"></div>
+          <div class="idea-card__body">
+            <h3 class="idea-card__title">Children's Pattern Workshop</h3>
+            <p>Weekend workshop series where children aged 6-12 learn basic textile design principles using cut paper and stamps. Each session produces a collaborative wall hanging displayed in the education wing.</p>
+            <div class="idea-card__footer">
+              <span class="idea-card__author"><span class="team-avatar team-avatar--teal team-avatar--sm">JK</span> James Kowalski</span>
+              <span class="idea-card__votes"><i class="ph-duotone ph-heart"></i> 18</span>
+            </div>
+          </div>
+        </div>
+        <div class="idea-card reveal-item">
+          <div class="idea-card__header idea-card__header--coral" data-pattern="zigzag"></div>
+          <div class="idea-card__body">
+            <h3 class="idea-card__title">Curator-Led Night Tour</h3>
+            <p>Monthly after-hours tours with dramatic lighting changes that reveal how textiles transform under different illumination. Paired with cocktails inspired by Girard-era color palettes. Limited to 30 guests.</p>
+            <div class="idea-card__footer">
+              <span class="idea-card__author"><span class="team-avatar team-avatar--coral team-avatar--sm">EV</span> Elena Vasquez</span>
+              <span class="idea-card__votes"><i class="ph-duotone ph-heart"></i> 31</span>
+            </div>
+          </div>
+        </div>
+        <div class="idea-card reveal-item">
+          <div class="idea-card__header idea-card__header--olive" data-pattern="dots"></div>
+          <div class="idea-card__body">
+            <h3 class="idea-card__title">Digital Archive Portal</h3>
+            <p>High-resolution zoomable viewer for every textile swatch in the collection. Art history students worldwide can study weave structures, color mixing, and pattern repeats at microscopic detail.</p>
+            <div class="idea-card__footer">
+              <span class="idea-card__author"><span class="team-avatar team-avatar--olive team-avatar--sm">MC</span> Marcus Chen</span>
+              <span class="idea-card__votes"><i class="ph-duotone ph-heart"></i> 27</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== AI CHAT ==================== -->
+    <section class="card-page" data-page="ai-chat">
+      <header class="card-page__header">
+        <h1 class="card-page__title">Curatorial AI</h1>
+        <p class="card-page__subtitle">Illustrated letter format with decorative borders</p>
+      </header>
+
+      <div class="letter-chat">
+        <div class="letter-message letter-message--user reveal-item">
+          <div class="letter-message__border letter-message__border--coral"></div>
+          <div class="letter-message__content">
+            <span class="letter-initial letter-initial--coral">E</span>
+            <div class="letter-message__text">
+              <p>I need to write a 200-word wall label for the Sunburst Panel #7. It should convey the historical significance while remaining accessible to a general audience. The piece was created in 1958 for Herman Miller's textile division.</p>
+            </div>
+          </div>
+          <div class="letter-ornament">
+            <svg viewBox="0 0 120 12" width="120" height="12"><circle cx="10" cy="6" r="4" fill="#e05a4f"/><line x1="18" y1="6" x2="42" y2="6" stroke="#d4a843" stroke-width="1.5"/><polygon points="50,2 56,6 50,10 44,6" fill="#6b8e23"/><line x1="60" y1="6" x2="84" y2="6" stroke="#d4a843" stroke-width="1.5"/><rect x="88" y="2" width="8" height="8" fill="#2a9d8f"/><line x1="100" y1="6" x2="120" y2="6" stroke="#d4a843" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+
+        <div class="letter-message letter-message--ai reveal-item">
+          <div class="letter-message__border letter-message__border--olive"></div>
+          <div class="letter-message__content">
+            <span class="letter-initial letter-initial--olive">C</span>
+            <div class="letter-message__text">
+              <p><strong>Sunburst Panel #7</strong> (1958) stands as one of Alexander Girard's most accomplished translations of folk-art geometry into industrial textile design. Commissioned by Herman Miller's textile division during a period of radical experimentation, this panel demonstrates Girard's signature technique of layering concentric geometric forms&mdash;here, radiating wedges in coral, olive, and gold that evoke both solar imagery and the decorative traditions of Latin American craft.</p>
+              <p>Unlike his contemporaries who pursued pure abstraction, Girard insisted that pattern carry emotional warmth. The sunburst motif recurs throughout his body of work as a symbol of generative energy, appearing in textile designs, restaurant interiors, and the celebrated Wooden Doll series.</p>
+              <p>This particular panel was woven at the Alexander Girard Studio in Grosse Pointe, Michigan, using a custom loom configuration that allowed the characteristic sharp color transitions between radiating segments.</p>
+            </div>
+          </div>
+          <div class="letter-ornament">
+            <svg viewBox="0 0 120 12" width="120" height="12"><polygon points="6,2 12,6 6,10 0,6" fill="#6b8e23"/><line x1="16" y1="6" x2="40" y2="6" stroke="#d4a843" stroke-width="1.5"/><circle cx="48" cy="6" r="4" fill="#e05a4f"/><line x1="56" y1="6" x2="80" y2="6" stroke="#d4a843" stroke-width="1.5"/><polygon points="88,2 96,6 88,10" fill="#2a9d8f"/><line x1="100" y1="6" x2="120" y2="6" stroke="#d4a843" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+
+        <div class="letter-message letter-message--user reveal-item">
+          <div class="letter-message__border letter-message__border--coral"></div>
+          <div class="letter-message__content">
+            <span class="letter-initial letter-initial--coral">E</span>
+            <div class="letter-message__text">
+              <p>Excellent. Can you also suggest three companion pieces from our collection that would create a strong visual dialogue when hung alongside Sunburst Panel #7?</p>
+            </div>
+          </div>
+          <div class="letter-ornament">
+            <svg viewBox="0 0 120 12" width="120" height="12"><rect x="0" y="2" width="8" height="8" fill="#d4a843"/><line x1="12" y1="6" x2="36" y2="6" stroke="#e05a4f" stroke-width="1.5"/><circle cx="44" cy="6" r="4" fill="#6b8e23"/><line x1="52" y1="6" x2="76" y2="6" stroke="#e05a4f" stroke-width="1.5"/><polygon points="84,2 90,6 84,10 78,6" fill="#2a9d8f"/><line x1="94" y1="6" x2="120" y2="6" stroke="#e05a4f" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+
+        <div class="letter-message letter-message--ai reveal-item">
+          <div class="letter-message__border letter-message__border--olive"></div>
+          <div class="letter-message__content">
+            <span class="letter-initial letter-initial--olive">C</span>
+            <div class="letter-message__text">
+              <p>Based on color harmony, geometric vocabulary, and historical period, I recommend these three companion pieces:</p>
+              <p><strong>1. Geometric Migration Study</strong> (1961) &mdash; Shares the radiating geometry but in a horizontal migration pattern. The olive and teal palette complements without competing with the Sunburst's coral warmth.</p>
+              <p><strong>2. Folk Mosaic Triptych, Panel II</strong> (1959) &mdash; The central panel uses a grid-based approach to similar folk motifs, offering structural contrast to the Sunburst's radial composition.</p>
+              <p><strong>3. Pattern Sample Book Page 47</strong> (1962) &mdash; A smaller, intimate work that shows the design process. Displaying the working sample alongside the finished panel reveals Girard's iterative method.</p>
+            </div>
+          </div>
+          <div class="letter-ornament">
+            <svg viewBox="0 0 120 12" width="120" height="12"><circle cx="6" cy="6" r="4" fill="#d4a843"/><line x1="14" y1="6" x2="38" y2="6" stroke="#6b8e23" stroke-width="1.5"/><rect x="42" y="2" width="8" height="8" fill="#e05a4f"/><line x1="54" y1="6" x2="78" y2="6" stroke="#6b8e23" stroke-width="1.5"/><polygon points="86,2 92,6 86,10 80,6" fill="#d4a843"/><line x1="96" y1="6" x2="120" y2="6" stroke="#6b8e23" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+
+        <!-- Chat input -->
+        <div class="letter-input">
+          <div class="letter-input__border"></div>
+          <textarea class="letter-input__field" placeholder="Compose your curatorial inquiry..." rows="3"></textarea>
+          <button class="btn btn--primary letter-input__send" data-action="micro-feedback">
+            <i class="ph-duotone ph-paper-plane-tilt"></i> Send
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SETTINGS ==================== -->
+    <section class="card-page" data-page="settings">
+      <header class="card-page__header">
+        <h1 class="card-page__title">Gallery Preferences</h1>
+        <p class="card-page__subtitle">Configuration carriages &mdash; progress through each panel</p>
+      </header>
+
+      <!-- Wizard train of geometric carriages -->
+      <div class="settings-train">
+        <div class="train-track">
+          <div class="train-track__line"></div>
+          <button class="train-stop train-stop--active" data-settings-step="1">
+            <svg viewBox="0 0 28 28" width="28" height="28"><circle cx="14" cy="14" r="12" fill="#e05a4f"/><text x="14" y="18" text-anchor="middle" fill="#fff" font-size="12" font-family="Fraunces">1</text></svg>
+            <span>Profile</span>
+          </button>
+          <button class="train-stop" data-settings-step="2">
+            <svg viewBox="0 0 28 28" width="28" height="28"><polygon points="14,2 26,14 14,26 2,14" fill="#6b8e23"/><text x="14" y="18" text-anchor="middle" fill="#fff" font-size="12" font-family="Fraunces">2</text></svg>
+            <span>Display</span>
+          </button>
+          <button class="train-stop" data-settings-step="3">
+            <svg viewBox="0 0 28 28" width="28" height="28"><rect x="2" y="2" width="24" height="24" rx="3" fill="#d4a843"/><text x="14" y="18" text-anchor="middle" fill="#fff" font-size="12" font-family="Fraunces">3</text></svg>
+            <span>Notifications</span>
+          </button>
+          <button class="train-stop" data-settings-step="4">
+            <svg viewBox="0 0 28 28" width="28" height="28"><polygon points="14,2 24,10 20,24 8,24 4,10" fill="#2a9d8f"/><text x="14" y="18" text-anchor="middle" fill="#fff" font-size="12" font-family="Fraunces">4</text></svg>
+            <span>Access</span>
+          </button>
+        </div>
+
+        <!-- Settings panels (carriages) -->
+        <div class="train-carriage train-carriage--active" data-carriage="1">
+          <div class="carriage-pattern" data-pattern="triangles"></div>
+          <div class="carriage-content">
+            <h3>Gallery Profile</h3>
+            <div class="form-group">
+              <label class="form-label">Gallery Name</label>
+              <input type="text" class="form-input" value="Girard Contemporary Arts Center" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Director</label>
+              <input type="text" class="form-input" value="Elena Vasquez" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Time Zone</label>
+              <select class="form-input">
+                <option selected>America/New_York (EST)</option>
+                <option>America/Chicago (CST)</option>
+                <option>America/Los_Angeles (PST)</option>
+                <option>Europe/London (GMT)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Default Language</label>
+              <select class="form-input">
+                <option selected>English</option>
+                <option>Spanish</option>
+                <option>French</option>
+                <option>German</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="train-carriage" data-carriage="2">
+          <div class="carriage-pattern" data-pattern="circles"></div>
+          <div class="carriage-content">
+            <h3>Display Preferences</h3>
+            <div class="form-group">
+              <label class="form-label">Color Theme</label>
+              <div class="toggle-row">
+                <span>Ivory Canvas</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" />
+                  <span class="toggle-switch__track"><span class="toggle-switch__thumb"></span></span>
+                </label>
+                <span>Dark Gallery</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Card Density</label>
+              <div class="toggle-row">
+                <span>Spacious</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" />
+                  <span class="toggle-switch__track"><span class="toggle-switch__thumb"></span></span>
+                </label>
+                <span>Compact</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Animation Level</label>
+              <div class="toggle-row">
+                <span>Full</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" />
+                  <span class="toggle-switch__track"><span class="toggle-switch__thumb"></span></span>
+                </label>
+                <span>Reduced</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Pattern Backgrounds</label>
+              <div class="toggle-row">
+                <span>Show</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-switch__track"><span class="toggle-switch__thumb"></span></span>
+                </label>
+                <span>Hide</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="train-carriage" data-carriage="3">
+          <div class="carriage-pattern" data-pattern="diamonds"></div>
+          <div class="carriage-content">
+            <h3>Notification Settings</h3>
+            <div class="form-group">
+              <label class="form-label">Loan Agreement Updates</label>
+              <div class="toggle-row">
+                <span>Email</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-switch__track"><span class="toggle-switch__thumb"></span></span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">New Artwork Acquisitions</label>
+              <div class="toggle-row">
+                <span>Email</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-switch__track"><span class="toggle-switch__thumb"></span></span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Installation Task Assignments</label>
+              <div class="toggle-row">
+                <span>In-app</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-switch__track"><span class="toggle-switch__thumb"></span></span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Visitor Milestone Alerts</label>
+              <div class="toggle-row">
+                <span>Push</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" />
+                  <span class="toggle-switch__track"><span class="toggle-switch__thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="train-carriage" data-carriage="4">
+          <div class="carriage-pattern" data-pattern="stripes"></div>
+          <div class="carriage-content">
+            <h3>Access &amp; Permissions</h3>
+            <div class="form-group">
+              <label class="form-label">Two-Factor Authentication</label>
+              <div class="toggle-row">
+                <span>Enabled</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-switch__track"><span class="toggle-switch__thumb"></span></span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">API Access</label>
+              <div class="api-key-display">
+                <code class="form-code">gca_live_7f3k9m2x&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</code>
+                <button class="btn btn--small" data-action="micro-feedback">Regenerate</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Session Timeout</label>
+              <select class="form-input">
+                <option>30 minutes</option>
+                <option selected>2 hours</option>
+                <option>8 hours</option>
+                <option>Never</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Data Export</label>
+              <button class="btn btn--primary" data-action="micro-feedback"><i class="ph-duotone ph-download-simple"></i> Export Collection Data</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- GSAP for complex animation choreography -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+
+  <!-- Tippy.js for patterned tooltips -->
+  <script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js"></script>
+
+  <!-- SortableJS for kanban drag -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js"></script>
+
+  <!-- App JS -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,59 +1,59 @@
 {
   "conceptRoot": "C:\\Ideas\\IDEA-MANAGEMENT\\.docs\\planning\\concepts",
-  "threshold": 0.55,
-  "evaluatedAt": "2026-02-15T05:29:30.028Z",
-  "totalPasses": 20,
-  "maxSimilarity": 0.3143,
+  "threshold": 0.62,
+  "evaluatedAt": "2026-02-15T06:24:27.162Z",
+  "totalPasses": 30,
+  "maxSimilarity": 0.4722,
   "topPairs": [
+    {
+      "a": "brutalist/pass-1",
+      "b": "brutalist/pass-2",
+      "similarity": 0.4722
+    },
+    {
+      "a": "mid-century-modern/pass-1",
+      "b": "mid-century-modern/pass-2",
+      "similarity": 0.125
+    },
+    {
+      "a": "mid-century-modern/pass-1",
+      "b": "mid-century-modern/pass-3",
+      "similarity": 0.0976
+    },
+    {
+      "a": "ledger-editorial/pass-2",
+      "b": "playful-clay/pass-1",
+      "similarity": 0.0769
+    },
+    {
+      "a": "ledger-editorial/pass-2",
+      "b": "playful-clay/pass-2",
+      "similarity": 0.0769
+    },
     {
       "a": "ledger-editorial/pass-2",
       "b": "signal-brutalist/pass-2",
-      "similarity": 0.3143
+      "similarity": 0.0769
+    },
+    {
+      "a": "playful-clay/pass-1",
+      "b": "playful-clay/pass-2",
+      "similarity": 0.0769
     },
     {
       "a": "playful-clay/pass-1",
       "b": "signal-brutalist/pass-2",
-      "similarity": 0.3134
+      "similarity": 0.0769
+    },
+    {
+      "a": "playful-clay/pass-2",
+      "b": "signal-brutalist/pass-2",
+      "similarity": 0.0769
     },
     {
       "a": "ledger-editorial/pass-2",
-      "b": "playful-clay/pass-1",
-      "similarity": 0.2958
-    },
-    {
-      "a": "industrial-terminal/pass-1",
-      "b": "ledger-editorial/pass-1",
-      "similarity": 0.2917
-    },
-    {
-      "a": "industrial-terminal/pass-1",
-      "b": "playful-clay/pass-1",
-      "similarity": 0.2899
-    },
-    {
-      "a": "industrial-terminal/pass-1",
-      "b": "signal-brutalist/pass-2",
-      "similarity": 0.2899
-    },
-    {
-      "a": "aurora-glass/pass-2",
-      "b": "industrial-terminal/pass-1",
-      "similarity": 0.2877
-    },
-    {
-      "a": "industrial-terminal/pass-2",
-      "b": "ledger-editorial/pass-1",
-      "similarity": 0.2877
-    },
-    {
-      "a": "industrial-terminal/pass-2",
-      "b": "playful-clay/pass-1",
-      "similarity": 0.2857
-    },
-    {
-      "a": "industrial-terminal/pass-2",
-      "b": "signal-brutalist/pass-2",
-      "similarity": 0.2857
+      "b": "signal-brutalist/pass-1",
+      "similarity": 0.0714
     }
   ],
   "violations": []

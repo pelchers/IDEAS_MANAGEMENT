@@ -1,0 +1,119 @@
+{
+  "styleId": "brutalist",
+  "pass": 3,
+  "profileId": "terminal-console",
+  "generatedAt": "2026-02-15T12:00:00Z",
+  "uniquenessProfile": {
+    "shellMode": "no-chrome-fullscreen",
+    "navPattern": "keyboard-shortcut-only",
+    "contentFlow": "terminal-output-stream",
+    "scrollMode": "auto-scroll-bottom",
+    "alignment": "left",
+    "heroTreatment": "ascii-banner",
+    "motionLanguage": "typewriter-cascade",
+    "density": "compact",
+    "componentTone": "hard"
+  },
+  "palette": {
+    "bg": "#0a0a0a",
+    "text": "#33ff33",
+    "surface": "#111111",
+    "accent": "#00ff88",
+    "accent2": "#ffcc00",
+    "border": "#1a3a1a"
+  },
+  "typography": {
+    "heading": "IBM Plex Mono",
+    "body": "Share Tech Mono",
+    "mono": "Share Tech Mono"
+  },
+  "contentPersona": "cybersecurity-startup",
+  "interactionProfile": {
+    "buttonHover": "none",
+    "buttonClick": "flash-green-outline",
+    "cardHover": "cursor-blink-indicator",
+    "pageTransition": "terminal-clear-redraw",
+    "scrollReveal": "typewriter-line-print",
+    "navItemHover": "none",
+    "navItemActive": "arrow-cursor-prefix",
+    "inputFocus": "blinking-cursor-prompt",
+    "toggleSwitch": "text-toggle-on-off",
+    "tooltips": "man-page-popup",
+    "loadingState": "spinning-ascii-chars",
+    "idleAmbient": "scanline-flicker",
+    "microFeedback": "stdout-success-message"
+  },
+  "views": [
+    {
+      "name": "dashboard",
+      "hint": "ASCII bar charts and sparklines, key=value metrics table",
+      "implementation": "ASCII art banner hero, 4 metric bars with fill indicators, key=value system stats, 2 ASCII sparklines, tail-style alert log"
+    },
+    {
+      "name": "projects",
+      "hint": "ls -la file listing format",
+      "implementation": "Tabular ls output with permissions, status badges, modified dates, file sizes, and directory names"
+    },
+    {
+      "name": "project-workspace",
+      "hint": "Tmux-style split panes",
+      "implementation": "Two vertical panes separated by tmux status line. Top pane shows project README, bottom pane shows shell with git log and test results"
+    },
+    {
+      "name": "kanban",
+      "hint": "2x2 ASCII priority matrix",
+      "implementation": "Eisenhower matrix grid with Urgent/Not Urgent columns and Important/Not Important rows. Single-line task entries with status codes"
+    },
+    {
+      "name": "whiteboard",
+      "hint": "ASCII flowchart with box-drawing characters",
+      "implementation": "Network security architecture diagram using +--+ boxes and | pipes for connections, with a threat model flow from Internet to internal services"
+    },
+    {
+      "name": "schema-planner",
+      "hint": "CREATE TABLE SQL display",
+      "implementation": "Three SQL CREATE TABLE statements for threat_indicators, incident_reports, and analysts tables with typed columns and constraints"
+    },
+    {
+      "name": "directory-tree",
+      "hint": "tree command output with box-drawing characters",
+      "implementation": "Go project structure with +-- branch connectors, directory highlighting, file names, and size annotations"
+    },
+    {
+      "name": "ideas",
+      "hint": "Numbered search results list",
+      "implementation": "10 numbered ideas with title, one-line summary, category tags, vote counts, and dates"
+    },
+    {
+      "name": "ai-chat",
+      "hint": "Terminal REPL style",
+      "implementation": "User prompts after $ symbol, AI responses prefixed with =>, no chat bubbles, left-border accent on responses"
+    },
+    {
+      "name": "settings",
+      "hint": "INI-file config with [SECTION] headers",
+      "implementation": "4 INI sections (GENERAL, NOTIFICATIONS, SECURITY, SCANNING, APPEARANCE) with clickable [ON]/[OFF] toggles and cycling option values"
+    }
+  ],
+  "libraries": [
+    {
+      "name": "Typed.js",
+      "version": "2.1.0",
+      "cdn": "https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js",
+      "usage": "Available for typewriter text effects. Custom JS handles boot sequence and status bar typing for tighter terminal aesthetic control."
+    }
+  ],
+  "assets": [],
+  "antiRepeatCompliance": [
+    "No paper/red/light palette — uses black/green CRT",
+    "No Anton display font — uses monospace throughout",
+    "No newspaper/manifesto layout — uses terminal/CLI layout",
+    "No memo-format chat — uses REPL terminal chat",
+    "No swimlane kanban — uses Eisenhower priority matrix"
+  ],
+  "responsiveBreakpoints": [
+    { "name": "desktop", "minWidth": 769 },
+    { "name": "mobile", "maxWidth": 768 },
+    { "name": "small-mobile", "maxWidth": 480 }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "styleId": "liquid",
+  "pass": 4,
+  "layoutArchetype": "watercolor-wash",
+  "references": [
+    {
+      "name": "Squarespace",
+      "url": "https://www.squarespace.com",
+      "takeaway": "Use extra-soft box shadows (30px+ blur, 8% opacity) on all elevated elements to create the impression of content cards floating on a water surface with gentle diffused shadows beneath.",
+      "influencedElements": [
+        {
+          "element": "All cards (project cards, kanban cards, idea cards, stat panels)",
+          "implementation": "CSS --shadow-float: 0 8px 32px rgba(58,53,53,0.06) applied to every card surface. The 32px blur radius with 6% opacity creates the paper-floating-on-water effect. On hover, shadow deepens to 0 16px 48px with 12% opacity to enhance the floating sensation."
+        },
+        {
+          "element": "Workspace sections and settings panels",
+          "implementation": "Each panel uses var(--shadow-float) with an additional soft pink-tinted shadow (rgba(212,136,154,0.08)) that gives an almost watercolor edge-bleed impression where the shadow meets the background."
+        },
+        {
+          "element": "Page transition effect",
+          "implementation": "The watercolor-wash-wipe transition uses a smooth cross-dissolve approach inspired by Squarespace's template preview morphing — a radial gradient overlay sweeps across the viewport with soft edges, never a hard cut."
+        }
+      ]
+    },
+    {
+      "name": "Glossier",
+      "url": "https://www.glossier.com",
+      "takeaway": "Apply radial gradient washes as section backgrounds that fade from a tinted pastel center to white edges, mimicking the way watercolor pigment bleeds outward from a wet brush drop.",
+      "influencedElements": [
+        {
+          "element": "Dashboard stat panels (wash-pink, wash-sage, wash-lavender, wash-peach)",
+          "implementation": "Each stat panel uses a linear-gradient with a pastel color at 12% opacity fading to white at 80%, plus a radial gradient ::before pseudo-element that appears on hover — mimicking a second layer of watercolor wash bleeding from a corner."
+        },
+        {
+          "element": "Settings section backgrounds (wash-settings-pink through wash-settings-peach)",
+          "implementation": "Vertical linear gradients that start with a tinted pastel at the top (6-8% opacity), dissolve through white, and bleed into a different pastel at the bottom (3% opacity) — each section transitions into the next as a continuous watercolor wash."
+        },
+        {
+          "element": "Idea cards (wash-blend-* classes)",
+          "implementation": "Each idea card has a ::before pseudo-element with a two-color linear gradient at 8% opacity, giving every card a unique watercolor blend. Eight different blend combinations ensure no two cards look alike, inspired by Glossier's gradient washes."
+        },
+        {
+          "element": "All interactive elements",
+          "implementation": "Full pill-radius (border-radius: 999px) on buttons, inputs, search fields, tags, and toggle tracks — no sharp corners anywhere in interactive surfaces, following Glossier's organic rounded shape language."
+        }
+      ]
+    },
+    {
+      "name": "Goop",
+      "url": "https://goop.com",
+      "takeaway": "Let images bleed slightly outside their grid columns to overlap adjacent text areas by 20-40px, creating the soft irregular edges of watercolor where pigment seeps beyond the intended boundary.",
+      "influencedElements": [
+        {
+          "element": "Whiteboard paint-splatter nodes",
+          "implementation": "Each whiteboard node has a wb-splatter div positioned at inset: -8px that extends 8px beyond the node's content boundary with blur(8px) filter — the colored splatter bleeds outside the card edge exactly as watercolor seeps beyond an intended boundary."
+        },
+        {
+          "element": "Schema entity watercolor washes",
+          "implementation": "Entity cards have a schema-entity-wash positioned at inset: -6px that extends beyond the entity panel with blur(6px), creating the impression that the pastel background wash has bled slightly past the card edges into the surrounding canvas."
+        },
+        {
+          "element": "Chat messages on watercolor paper",
+          "implementation": "The AI chat uses an editorial long-form layout with generous line-height (1.75 on message text using Cormorant serif) and wide message padding — inspired by Goop's editorial typography. The handwritten letter format with serif body text at generous leading creates the editorial quality."
+        },
+        {
+          "element": "Button hover watercolor-bleed-fill",
+          "implementation": "The button ::before pseudo-element extends inset: -4px beyond the button boundary, so the radial gradient wash bleeds 4px past the button's visual edge on hover — a micro version of Goop's content-bleeding-beyond-grid principle."
+        }
+      ]
+    }
+  ]
+}

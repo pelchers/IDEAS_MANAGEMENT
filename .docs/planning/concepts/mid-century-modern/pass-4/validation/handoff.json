@@ -1,0 +1,151 @@
+{
+  "styleId": "mid-century-modern",
+  "pass": 4,
+  "variantSeed": "noguchi-sculpture-garden",
+  "contentPersona": "luxury-hotel-spa",
+  "brandName": "Serenova",
+  "uniquenessProfile": {
+    "profileId": "magazine-spread",
+    "shellMode": "hidden-hamburger",
+    "navPattern": "fullscreen-overlay-menu",
+    "contentFlow": "editorial-columns",
+    "scrollMode": "parallax-layers",
+    "alignment": "mixed",
+    "heroTreatment": "full-bleed-image",
+    "motionLanguage": "cinematic-fade",
+    "density": "spacious",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "bg": "#eee9e2",
+    "text": "#2d2a26",
+    "surface": "#f7f4ef",
+    "accent": "#7a8b6f",
+    "accent2": "#a09080",
+    "border": "#d1cbc2"
+  },
+  "typography": {
+    "heading": "Cormorant Garamond",
+    "body": "Jost",
+    "mono": "IBM Plex Mono",
+    "headingWeight": 300,
+    "bodyWeight": 300
+  },
+  "interactionProfile": {
+    "buttonHover": "opacity-shift-subtle",
+    "buttonClick": "stone-press-sink",
+    "cardHover": "shadow-diffuse-expand",
+    "pageTransition": "fade-through-white",
+    "scrollReveal": "slow-rise-with-opacity",
+    "navItemHover": "thin-line-extend",
+    "navItemActive": "accent-dot-indicator",
+    "inputFocus": "border-fade-sage",
+    "toggleSwitch": "smooth-slide-minimal",
+    "tooltips": "whisper-fade-in",
+    "loadingState": "stone-ripple-slow",
+    "idleAmbient": "none",
+    "microFeedback": "gentle-fade-confirm"
+  },
+  "views": [
+    {
+      "name": "dashboard",
+      "displayLabel": "The Stillness Report",
+      "layoutPattern": "sparse-sculpture-grid",
+      "keyComponents": ["sculpture-metric cards (4)", "editorial aside note"]
+    },
+    {
+      "name": "projects",
+      "displayLabel": "Properties",
+      "layoutPattern": "full-width-vertical-scroll",
+      "keyComponents": ["project-row articles", "thin-rule separators", "meta-tags"]
+    },
+    {
+      "name": "project-workspace",
+      "displayLabel": "Serenova Kyoto",
+      "layoutPattern": "asymmetric-two-panel",
+      "keyComponents": ["initiative list", "guest quote blockquote", "aside stat card"]
+    },
+    {
+      "name": "kanban",
+      "displayLabel": "Guest Experience Flow",
+      "layoutPattern": "four-column-extreme-spacing",
+      "keyComponents": ["kanban columns (4)", "guest cards with tags"]
+    },
+    {
+      "name": "whiteboard",
+      "displayLabel": "Mood Board",
+      "layoutPattern": "zen-garden-canvas",
+      "keyComponents": ["SVG connection lines", "positioned concept nodes"]
+    },
+    {
+      "name": "schema-planner",
+      "displayLabel": "Service Map",
+      "layoutPattern": "sculptural-entity-diagram",
+      "keyComponents": ["SVG connection lines", "entity cards with field lists"]
+    },
+    {
+      "name": "directory-tree",
+      "displayLabel": "Resources",
+      "layoutPattern": "indented-tree-sparse",
+      "keyComponents": ["collapsible folder tree", "Phosphor thin icons"]
+    },
+    {
+      "name": "ideas",
+      "displayLabel": "Journal",
+      "layoutPattern": "one-per-row-editorial",
+      "keyComponents": ["idea articles with serif titles", "thin-rule separators"]
+    },
+    {
+      "name": "ai-chat",
+      "displayLabel": "Concierge AI",
+      "layoutPattern": "gallery-catalog-messages",
+      "keyComponents": ["chat messages as exhibition text", "bottom-aligned input"]
+    },
+    {
+      "name": "settings",
+      "displayLabel": "Settings",
+      "layoutPattern": "single-scroll-vast-whitespace",
+      "keyComponents": ["profile fields", "notification toggles", "display preferences", "privacy section"]
+    }
+  ],
+  "librariesUsed": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "purpose": "Parallax layers and cinematic scroll-triggered reveals"
+    },
+    {
+      "name": "ScrollTrigger",
+      "version": "3.12.5",
+      "purpose": "GSAP plugin for scroll-driven animation triggers"
+    },
+    {
+      "name": "Lenis",
+      "version": "1.1.18",
+      "purpose": "Smooth scroll with luxury inertia physics"
+    },
+    {
+      "name": "Tippy.js",
+      "version": "6.3.7",
+      "purpose": "Whisper-fade tooltips styled as gallery placards"
+    },
+    {
+      "name": "Phosphor Icons",
+      "version": "2.1.1",
+      "purpose": "Thin-weight icons for directory tree and UI elements"
+    }
+  ],
+  "antiRepeatCompliance": {
+    "pass1-dense-credenza": "Used extreme negative space and sparse placement instead",
+    "pass2-radial-hub-spoke": "Used asymmetric offset editorial layout instead",
+    "pass3-vibrant-multicolor": "Used monochrome sage/stone with no decorative patterns",
+    "pass3-overlapping-collage": "Used isolated elements with maximum whitespace",
+    "pass3-wizard-settings": "Used sparse single-scroll settings"
+  },
+  "files": {
+    "html": "index.html",
+    "css": "style.css",
+    "js": "app.js",
+    "readme": "README.md"
+  }
+}

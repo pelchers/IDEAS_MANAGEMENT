@@ -1,0 +1,40 @@
+{
+  "styleId": "retro-50s",
+  "pass": 4,
+  "passVariant": "soda-fountain-pharmacy",
+  "references": [
+    {
+      "name": "Glossier",
+      "url": "https://www.glossier.com",
+      "takeaway": "Build the interface on a two-tone pastel palette (primary pastel + white) with product/content photography always shot on matching solid-color backgrounds for a candy-counter uniformity.",
+      "influence": {
+        "palette": "The entire interface is built on a two-tone foundation: warm cream (#f5f0e8) paired with clean white (#ffffff). Every card, panel, and surface exists in one of these two tones, creating the candy-counter uniformity described in the takeaway. The cream background acts like Glossier's blush pink — a warm, enveloping base that makes the white surface cards pop without harsh contrast.",
+        "surfaces": "All metric cards (specials board), project cards (menu board), and content panels use white on cream backgrounds — the same two-tone approach Glossier uses for product display against pastel backdrops.",
+        "copyTone": "UI copy is conversational and warm ('Good morning, Baker!', 'Pouring your order...', 'Today's Specials') — mirroring Glossier's friendly, advice-like voice rather than corporate language.",
+        "viewsAffected": ["dashboard", "projects", "settings"]
+      }
+    },
+    {
+      "name": "Sweetgreen",
+      "url": "https://www.sweetgreen.com",
+      "takeaway": "Display items as individual ingredients on a clean white counter — each component isolated with its own label, arranged in a build-your-own composition that invites mixing and matching.",
+      "influence": {
+        "schemaPlanner": "The schema planner view directly applies Sweetgreen's ingredient-forward display. Each entity (Recipe, Ingredient, Supplier, Baker) is presented as its own isolated 'recipe card' with fields listed as 'ingredients' with measurement annotations. The layout invites scanning and mixing — understanding how entities combine.",
+        "kanban": "Kanban columns are styled as 'ingredient shelves' with individual recipe cards as isolated items on a white background, each with its own label and decorative border. This mirrors Sweetgreen's component-as-object-on-white presentation.",
+        "directoryTree": "The menu directory isolates each item on its own line with dot-leaders to metadata (price, availability) — the same ingredient-forward, individually labeled approach.",
+        "viewsAffected": ["schema-planner", "kanban", "directory-tree"]
+      }
+    },
+    {
+      "name": "Milk Bar",
+      "url": "https://milkbarstore.com",
+      "takeaway": "Mix a hand-lettered or script display font for headings with a clean geometric sans-serif for body text, creating the chalkboard-menu-meets-printed-receipt duality of a soda fountain counter.",
+      "influence": {
+        "typography": "Cherry Bomb One (bubbly hand-lettered display) is used for all headings, creating the chalkboard-menu feel. Lato (clean geometric sans-serif) handles body text, creating the printed-receipt clarity. Courier Prime (monospace) adds a third layer for data annotations, receipts, and status badges — the receipt-tape output. This three-layer typography system directly implements the chalkboard-menu-meets-printed-receipt duality.",
+        "chalkboardHeaders": "Every view opens with a dark chalkboard header bar that uses the hand-lettered Cherry Bomb One font, directly evoking Milk Bar's menu-board aesthetic with its hand-drawn display type.",
+        "decorativeAccents": "Price-tag status badges on project cards, striped awning patterns, and the cherry-red dot markers act as 'sticker and badge elements' scattered as decorative accents — mirroring Milk Bar's playful starburst and flavor callout elements.",
+        "viewsAffected": ["dashboard", "projects", "project-workspace", "whiteboard", "ideas"]
+      }
+    }
+  ]
+}

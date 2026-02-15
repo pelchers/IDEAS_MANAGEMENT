@@ -1,0 +1,55 @@
+{
+  "style": "retro-50s",
+  "pass": "pass-3",
+  "requiredViews": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "desktop": {
+    "viewport": {
+      "width": 1536,
+      "height": 960
+    },
+    "screenshots": [
+      "validation/desktop/dashboard.png",
+      "validation/desktop/projects.png",
+      "validation/desktop/project-workspace.png",
+      "validation/desktop/kanban.png",
+      "validation/desktop/whiteboard.png",
+      "validation/desktop/schema-planner.png",
+      "validation/desktop/directory-tree.png",
+      "validation/desktop/ideas.png",
+      "validation/desktop/ai-chat.png",
+      "validation/desktop/settings.png"
+    ]
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844,
+      "deviceScaleFactor": 2,
+      "isMobile": true
+    },
+    "screenshots": [
+      "validation/mobile/dashboard.png",
+      "validation/mobile/projects.png",
+      "validation/mobile/project-workspace.png",
+      "validation/mobile/kanban.png",
+      "validation/mobile/whiteboard.png",
+      "validation/mobile/schema-planner.png",
+      "validation/mobile/directory-tree.png",
+      "validation/mobile/ideas.png",
+      "validation/mobile/ai-chat.png",
+      "validation/mobile/settings.png"
+    ]
+  },
+  "timestamp": "2026-02-15T06:23:59.680Z"
+}

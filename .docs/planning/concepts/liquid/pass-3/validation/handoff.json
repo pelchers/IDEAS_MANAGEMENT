@@ -1,0 +1,92 @@
+{
+  "styleId": "liquid",
+  "pass": 3,
+  "variantSeed": "mercury-metallic-liquid",
+  "profileId": "command-palette-center",
+  "uniquenessProfile": {
+    "shellMode": "minimal-top-bar",
+    "navPattern": "command-palette-modal",
+    "contentFlow": "centered-card-stack",
+    "scrollMode": "standard-scroll",
+    "alignment": "center",
+    "heroTreatment": "search-hero",
+    "motionLanguage": "modal-scale-in",
+    "density": "spacious",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "bg": "#18181b",
+    "text": "#e4e4e7",
+    "surface": "#27272a",
+    "accent": "#a78bfa",
+    "accent2": "#c0c0c0",
+    "border": "#3f3f46"
+  },
+  "typography": {
+    "heading": "Space Grotesk",
+    "body": "Inter",
+    "mono": "Fira Code"
+  },
+  "contentPersona": "fintech-platform",
+  "libraries": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
+      "usage": "Button magnetic snap, card hover micro-lifts, command palette scale-in, elastic easing"
+    },
+    {
+      "name": "GSAP ScrollTrigger",
+      "version": "3.12.5",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js",
+      "usage": "Scroll-driven metal-drop-coalesce reveal animations"
+    },
+    {
+      "name": "Tippy.js",
+      "version": "6.3.7",
+      "cdn": "https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js",
+      "usage": "Chrome bubble tooltips with custom mercury theme"
+    }
+  ],
+  "interactions": {
+    "buttonHover": "chrome-reflection-slide",
+    "buttonClick": "magnetic-snap-press",
+    "cardHover": "mercury-sheen-sweep",
+    "pageTransition": "mercury-split-reform",
+    "scrollReveal": "metal-drop-coalesce",
+    "navItemHover": "chrome-highlight-sweep",
+    "navItemActive": "violet-glow-indicator",
+    "inputFocus": "metallic-border-shine",
+    "toggleSwitch": "mercury-blob-slide",
+    "tooltips": "chrome-bubble-popup",
+    "loadingState": "mercury-flow-fill",
+    "idleAmbient": "chrome-light-drift",
+    "microFeedback": "metal-ding-flash"
+  },
+  "views": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "responsiveBreakpoints": {
+    "desktop": "769px+",
+    "tablet": "481px-768px",
+    "mobile": "<=480px"
+  },
+  "antiRepeatCompliance": {
+    "pass1-no-light-blobs": true,
+    "pass1-no-organic-morphing": true,
+    "pass2-no-ocean-blue": true,
+    "pass2-no-wave-animations": true,
+    "pass2-no-sonar-chat": true
+  },
+  "assetCount": 0,
+  "totalAssetSizeKb": 0
+}

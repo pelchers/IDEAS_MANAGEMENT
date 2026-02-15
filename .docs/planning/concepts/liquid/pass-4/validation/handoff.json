@@ -1,0 +1,92 @@
+{
+  "styleId": "liquid",
+  "pass": 4,
+  "variantSeed": "watercolor-wash-blend",
+  "uniquenessProfile": {
+    "profileId": "sidebar-accordion",
+    "shellMode": "collapsible-left-sidebar",
+    "navPattern": "accordion-sections",
+    "contentFlow": "split-panel-detail",
+    "scrollMode": "standard-scroll",
+    "alignment": "left",
+    "heroTreatment": "inline-stats-row",
+    "motionLanguage": "collapse-expand",
+    "density": "compact",
+    "componentTone": "hard"
+  },
+  "palette": {
+    "bg": "#fefcfa",
+    "text": "#3a3535",
+    "surface": "#ffffff",
+    "accent": "#d4889a",
+    "accent2": "#8baa8b",
+    "border": "#e8dde8",
+    "lavender": "#c7a4cc",
+    "peach": "#e8c4a0"
+  },
+  "typography": {
+    "heading": "Cormorant",
+    "body": "Nunito Sans",
+    "mono": "IBM Plex Mono"
+  },
+  "contentPersona": "wellness-lifestyle-brand",
+  "librariesUsed": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "plugins": ["ScrollTrigger"],
+      "purpose": "Core animation engine — scroll reveals, accordion motion, card hover lift, SVG connector drawing, chat message entrances"
+    },
+    {
+      "name": "Tippy.js",
+      "version": "6.3.7",
+      "purpose": "Soft-cloud tooltip popups with custom watercolor styling"
+    },
+    {
+      "name": "Splitting.js",
+      "version": "1.0.6",
+      "purpose": "Per-character cascade text reveal for view titles"
+    }
+  ],
+  "interactionsImplemented": {
+    "buttonHover": "watercolor-bleed-fill — CSS radial gradient follows cursor via JS position tracking",
+    "buttonClick": "paint-splatter-micro — JS-created splatter element at click point with burst animation",
+    "cardHover": "wash-border-bleed — CSS ::after gradient mask border that appears on hover",
+    "pageTransition": "watercolor-wash-wipe — Full-screen radial gradient overlay sweeps horizontally",
+    "scrollReveal": "paint-stroke-reveal — GSAP ScrollTrigger fade-up with staggered timing",
+    "navItemHover": "wash-highlight-appear — CSS radial gradient background appears behind nav item",
+    "navItemActive": "paint-dot-indicator — 6px accent dot with glow shadow",
+    "inputFocus": "soft-blush-border-glow — CSS border-color + box-shadow transition with gaussian blur",
+    "toggleSwitch": "smooth-slide-soft — GSAP-enhanced thumb slide with slow easing",
+    "tooltips": "soft-cloud-popup — Tippy.js with custom rounded cloud styling and blurred edge glow",
+    "loadingState": "paint-drip-fill — Three colored drip elements with staggered scaleY animation",
+    "idleAmbient": "color-wash-drift — Canvas-based slow-drifting radial gradient pastel blobs",
+    "microFeedback": "petal-float-away — JS-spawned petal shapes that float up and fade"
+  },
+  "viewsImplemented": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "responsiveBreakpoints": {
+    "mobile": "max-width: 768px",
+    "tablet": "769px - 1024px",
+    "desktop": "1025px+"
+  },
+  "navigationPattern": "hash-based routing with data-view buttons and data-page sections",
+  "assetsUsed": [],
+  "antiRepeatCompliance": [
+    "No blue-purple blob morphing (Pass 1) — uses soft pastel watercolor washes instead",
+    "No deep ocean dark theme (Pass 2) — uses light watercolor white canvas",
+    "No dark chrome/mercury metallic (Pass 3) — uses soft pastel painterly aesthetic",
+    "No magnetic snap interactions (Pass 3) — uses soft bleed and paint-stroke interactions",
+    "No terminal-sleek chrome chat (Pass 3) — uses handwritten letter watercolor chat"
+  ]
+}

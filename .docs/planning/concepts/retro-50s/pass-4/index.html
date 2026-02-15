@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweet Counter - Artisan Bakery & Cafe Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Lato:wght@300;400;700;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="straw-loader">
+      <div class="straw"></div>
+      <div class="bubble b1"></div>
+      <div class="bubble b2"></div>
+      <div class="bubble b3"></div>
+      <div class="bubble b4"></div>
+      <div class="bubble b5"></div>
+    </div>
+    <p class="loading-text">Pouring your order...</p>
+  </div>
+
+  <!-- Cherry success feedback -->
+  <div id="cherry-feedback" class="cherry-feedback" aria-hidden="true">
+    <svg width="32" height="32" viewBox="0 0 32 32">
+      <circle cx="16" cy="22" r="8" fill="#cc2233"/>
+      <path d="M16 14 Q20 4 24 2" stroke="#2a6e1a" stroke-width="2" fill="none"/>
+      <ellipse cx="22" cy="4" rx="4" ry="3" fill="#2a6e1a"/>
+    </svg>
+  </div>
+
+  <!-- Tooltip layer -->
+  <div id="tooltip-layer" class="tooltip-layer" aria-hidden="true">
+    <div class="recipe-card-tooltip">
+      <div class="tooltip-header"></div>
+      <div class="tooltip-body"></div>
+    </div>
+  </div>
+
+  <!-- Mobile hamburger -->
+  <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Open navigation">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- App Shell: centered single panel with floating bottom dock -->
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-icon"><i class="ph ph-cookie"></i></span>
+          <h1 class="logo-text">Sweet Counter</h1>
+        </div>
+        <div class="header-right">
+          <span class="header-greeting">Good morning, Baker!</span>
+          <div class="avatar-badge">
+            <span class="avatar-initials">MR</span>
+          </div>
+        </div>
+      </div>
+      <div class="awning-stripe"></div>
+    </header>
+
+    <main class="content-panel" id="content-panel">
+
+      <!-- ===== DASHBOARD ===== -->
+      <section class="view" data-page="dashboard">
+        <div class="view-inner receipt-roll">
+          <div class="chalkboard-header">
+            <h2>Today's Specials</h2>
+            <span class="chalk-date">February 15, 2026</span>
+          </div>
+
+          <div class="specials-board">
+            <div class="special-card" data-tooltip="Total active orders across all locations">
+              <div class="special-icon"><i class="ph ph-receipt"></i></div>
+              <div class="special-label">Active Orders</div>
+              <div class="special-value">247</div>
+              <div class="special-change positive">+12% today</div>
+            </div>
+            <div class="special-card" data-tooltip="Freshly baked items ready for display">
+              <div class="special-icon"><i class="ph ph-bread"></i></div>
+              <div class="special-label">Fresh Today</div>
+              <div class="special-value">86</div>
+              <div class="special-change positive">All stocked</div>
+            </div>
+            <div class="special-card" data-tooltip="Revenue from the register this morning">
+              <div class="special-icon"><i class="ph ph-coins"></i></div>
+              <div class="special-label">Morning Revenue</div>
+              <div class="special-value">$3,842</div>
+              <div class="special-change positive">+8% vs avg</div>
+            </div>
+            <div class="special-card" data-tooltip="Customer satisfaction from feedback cards">
+              <div class="special-icon"><i class="ph ph-smiley"></i></div>
+              <div class="special-label">Happy Cards</div>
+              <div class="special-value">98%</div>
+              <div class="special-change neutral">Holding steady</div>
+            </div>
+          </div>
+
+          <div class="receipt-section">
+            <h3 class="receipt-heading">Morning Receipt</h3>
+            <div class="receipt-paper">
+              <div class="receipt-line"><span>Sourdough Loaves baked</span><span class="dot-leader"></span><span>24</span></div>
+              <div class="receipt-line"><span>Croissant batches done</span><span class="dot-leader"></span><span>12</span></div>
+              <div class="receipt-line"><span>Espresso shots pulled</span><span class="dot-leader"></span><span>187</span></div>
+              <div class="receipt-line"><span>Custom cake orders</span><span class="dot-leader"></span><span>6</span></div>
+              <div class="receipt-line"><span>Pastry deliveries sent</span><span class="dot-leader"></span><span>14</span></div>
+              <div class="receipt-line total"><span>Total items served</span><span class="dot-leader"></span><span>243</span></div>
+            </div>
+          </div>
+
+          <div class="dashboard-row">
+            <div class="quick-tasks">
+              <h3 class="section-heading">Counter Tasks</h3>
+              <ul class="task-list">
+                <li class="task-item"><input type="checkbox"> Prep laminated dough for tomorrow's croissants</li>
+                <li class="task-item"><input type="checkbox" checked> Restock display case with morning muffins</li>
+                <li class="task-item"><input type="checkbox"> Call supplier re: organic flour delivery</li>
+                <li class="task-item"><input type="checkbox"> Update chalkboard menu with seasonal scones</li>
+                <li class="task-item"><input type="checkbox" checked> Clean espresso machine descale cycle</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PROJECTS ===== -->
+      <section class="view" data-page="projects">
+        <div class="view-inner receipt-roll">
+          <div class="chalkboard-header">
+            <h2>Daily Specials Board</h2>
+            <button class="btn-primary" data-action="add-project"><i class="ph ph-plus"></i> New Special</button>
+          </div>
+
+          <div class="menu-board-grid">
+            <div class="menu-card" data-tooltip="Our signature sourdough program">
+              <div class="menu-card-stripe"></div>
+              <div class="menu-card-body">
+                <h3 class="menu-card-title">Artisan Sourdough Program</h3>
+                <p class="menu-card-desc">Developing 6 new sourdough varieties with heritage grain starters from local farms.</p>
+                <div class="menu-card-footer">
+                  <span class="price-tag in-progress">In Progress</span>
+                  <span class="menu-meta">8 recipes &middot; 3 bakers</span>
+                </div>
+              </div>
+            </div>
+            <div class="menu-card" data-tooltip="Holiday seasonal menu launch">
+              <div class="menu-card-stripe cherry"></div>
+              <div class="menu-card-body">
+                <h3 class="menu-card-title">Spring Menu Launch</h3>
+                <p class="menu-card-desc">Seasonal pastries featuring lavender, lemon curd, and strawberry rhubarb.</p>
+                <div class="menu-card-footer">
+                  <span class="price-tag planning">Planning</span>
+                  <span class="menu-meta">12 items &middot; 5 bakers</span>
+                </div>
+              </div>
+            </div>
+            <div class="menu-card" data-tooltip="New cold brew and iced drinks">
+              <div class="menu-card-stripe blue"></div>
+              <div class="menu-card-body">
+                <h3 class="menu-card-title">Cold Brew Collection</h3>
+                <p class="menu-card-desc">New nitro cold brew flavors and refreshing iced tea lemonades for summer.</p>
+                <div class="menu-card-footer">
+                  <span class="price-tag complete">Complete</span>
+                  <span class="menu-meta">6 drinks &middot; 2 baristas</span>
+                </div>
+              </div>
+            </div>
+            <div class="menu-card" data-tooltip="Wedding cake portfolio expansion">
+              <div class="menu-card-stripe"></div>
+              <div class="menu-card-body">
+                <h3 class="menu-card-title">Wedding Cake Portfolio</h3>
+                <p class="menu-card-desc">Expanding custom wedding cake offerings with new fondant techniques and flavor pairings.</p>
+                <div class="menu-card-footer">
+                  <span class="price-tag in-progress">In Progress</span>
+                  <span class="menu-meta">15 designs &middot; 2 decorators</span>
+                </div>
+              </div>
+            </div>
+            <div class="menu-card" data-tooltip="Farm-to-table ingredient partnerships">
+              <div class="menu-card-stripe cherry"></div>
+              <div class="menu-card-body">
+                <h3 class="menu-card-title">Local Farm Partnerships</h3>
+                <p class="menu-card-desc">Building relationships with local farms for organic eggs, butter, and seasonal fruit.</p>
+                <div class="menu-card-footer">
+                  <span class="price-tag planning">Planning</span>
+                  <span class="menu-meta">4 farms &middot; 1 manager</span>
+                </div>
+              </div>
+            </div>
+            <div class="menu-card" data-tooltip="New storefront design for downtown">
+              <div class="menu-card-stripe blue"></div>
+              <div class="menu-card-body">
+                <h3 class="menu-card-title">Downtown Storefront Design</h3>
+                <p class="menu-card-desc">Designing the interior and display cases for our second location opening in June.</p>
+                <div class="menu-card-footer">
+                  <span class="price-tag in-progress">In Progress</span>
+                  <span class="menu-meta">22 tasks &middot; 4 team</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PROJECT WORKSPACE ===== -->
+      <section class="view" data-page="project-workspace">
+        <div class="view-inner receipt-roll">
+          <div class="chalkboard-header">
+            <h2>Artisan Sourdough Program</h2>
+          </div>
+
+          <div class="stool-tabs">
+            <button class="stool-tab active" data-ws-tab="overview">Overview</button>
+            <button class="stool-tab" data-ws-tab="recipes">Recipes</button>
+            <button class="stool-tab" data-ws-tab="timeline">Timeline</button>
+            <button class="stool-tab" data-ws-tab="notes">Notes</button>
+          </div>
+
+          <div class="counter-workspace">
+            <div class="ws-panel active" data-ws-panel="overview">
+              <div class="ws-stats-row">
+                <div class="ws-stat"><span class="ws-stat-num">8</span><span class="ws-stat-label">Recipes</span></div>
+                <div class="ws-stat"><span class="ws-stat-num">3</span><span class="ws-stat-label">Bakers</span></div>
+                <div class="ws-stat"><span class="ws-stat-num">62%</span><span class="ws-stat-label">Complete</span></div>
+                <div class="ws-stat"><span class="ws-stat-num">14d</span><span class="ws-stat-label">Remaining</span></div>
+              </div>
+              <div class="ws-description">
+                <h4>Project Brief</h4>
+                <p>We are developing six new sourdough varieties using heritage grain starters sourced from three local farms. Each recipe must pass a three-round tasting panel before joining the daily menu. Our head baker Marie is leading the project with apprentices Tom and Lila.</p>
+              </div>
+              <div class="ws-milestones">
+                <h4>Milestones</h4>
+                <div class="milestone done"><i class="ph ph-check-circle"></i> Starter cultures established</div>
+                <div class="milestone done"><i class="ph ph-check-circle"></i> Heritage grain sourced from Willowbrook Farm</div>
+                <div class="milestone active"><i class="ph ph-circle-half"></i> First tasting panel for Rye & Honey loaf</div>
+                <div class="milestone"><i class="ph ph-circle"></i> Full menu photography session</div>
+                <div class="milestone"><i class="ph ph-circle"></i> Soft launch with loyal customers</div>
+              </div>
+            </div>
+            <div class="ws-panel" data-ws-panel="recipes">
+              <div class="recipe-list">
+                <div class="recipe-item"><span class="recipe-name">Country Rye & Honey</span><span class="recipe-status done">Approved</span></div>
+                <div class="recipe-item"><span class="recipe-name">Spelt & Walnut Boule</span><span class="recipe-status done">Approved</span></div>
+                <div class="recipe-item"><span class="recipe-name">Einkorn Sesame</span><span class="recipe-status testing">Tasting</span></div>
+                <div class="recipe-item"><span class="recipe-name">Emmer Olive Rosemary</span><span class="recipe-status testing">Tasting</span></div>
+                <div class="recipe-item"><span class="recipe-name">Kamut Cranberry</span><span class="recipe-status draft">Drafting</span></div>
+                <div class="recipe-item"><span class="recipe-name">Red Fife Multigrain</span><span class="recipe-status draft">Drafting</span></div>
+                <div class="recipe-item"><span class="recipe-name">Buckwheat Fig</span><span class="recipe-status idea">Idea</span></div>
+                <div class="recipe-item"><span class="recipe-name">Triticale Sunflower</span><span class="recipe-status idea">Idea</span></div>
+              </div>
+            </div>
+            <div class="ws-panel" data-ws-panel="timeline">
+              <div class="timeline-bar">
+                <div class="timeline-segment done" style="width:35%">Sourcing</div>
+                <div class="timeline-segment done" style="width:27%">Development</div>
+                <div class="timeline-segment active" style="width:20%">Tasting</div>
+                <div class="timeline-segment" style="width:18%">Launch</div>
+              </div>
+              <p class="timeline-note">Estimated completion: March 1, 2026</p>
+            </div>
+            <div class="ws-panel" data-ws-panel="notes">
+              <div class="napkin-note">
+                <p>"The Einkorn Sesame needs 10 more minutes in the oven. Crust color was too pale at 425F. Try 440F next batch." — Marie</p>
+              </div>
+              <div class="napkin-note">
+                <p>"Willowbrook Farm can supply 200lbs/month of heritage grain. Price is $2.80/lb which fits our margin target." — Tom</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== KANBAN ===== -->
+      <section class="view" data-page="kanban">
+        <div class="view-inner receipt-roll">
+          <div class="chalkboard-header">
+            <h2>Recipe Board</h2>
+          </div>
+
+          <div class="kanban-shelves">
+            <div class="shelf-column">
+              <div class="shelf-header">Ingredients Needed</div>
+              <div class="shelf-cards">
+                <div class="recipe-card-k">
+                  <div class="rc-border"></div>
+                  <h4>Source organic vanilla beans</h4>
+                  <p>Find Madagascar bourbon vanilla at under $12/oz for the custard program.</p>
+                  <span class="rc-tag">Sourcing</span>
+                </div>
+                <div class="recipe-card-k">
+                  <div class="rc-border"></div>
+                  <h4>Order Belgian chocolate</h4>
+                  <p>Need 50lbs Callebaut 70% dark couverture for truffle line.</p>
+                  <span class="rc-tag">Sourcing</span>
+                </div>
+              </div>
+            </div>
+            <div class="shelf-column">
+              <div class="shelf-header">Prep & Mixing</div>
+              <div class="shelf-cards">
+                <div class="recipe-card-k">
+                  <div class="rc-border cherry"></div>
+                  <h4>Laminate croissant dough</h4>
+                  <p>Three-day lamination process for 48 croissants. Start Monday AM.</p>
+                  <span class="rc-tag urgent">Priority</span>
+                </div>
+                <div class="recipe-card-k">
+                  <div class="rc-border cherry"></div>
+                  <h4>Temper ganache filling</h4>
+                  <p>Dark chocolate ganache needs 24hr set before piping into eclairs.</p>
+                  <span class="rc-tag">Prep</span>
+                </div>
+                <div class="recipe-card-k">
+                  <div class="rc-border"></div>
+                  <h4>Ferment sourdough starters</h4>
+                  <p>Feed all six heritage starters. Check hydration levels at noon.</p>
+                  <span class="rc-tag">Daily</span>
+                </div>
+              </div>
+            </div>
+            <div class="shelf-column">
+              <div class="shelf-header">In the Oven</div>
+              <div class="shelf-cards">
+                <div class="recipe-card-k">
+                  <div class="rc-border blue"></div>
+                  <h4>Bake Country Rye batch</h4>
+                  <p>24 loaves at 440F, 35 min with steam. Score diamond pattern.</p>
+                  <span class="rc-tag">Baking</span>
+                </div>
+              </div>
+            </div>
+            <div class="shelf-column">
+              <div class="shelf-header">Ready to Serve</div>
+              <div class="shelf-cards">
+                <div class="recipe-card-k">
+                  <div class="rc-border blue"></div>
+                  <h4>Morning muffin display</h4>
+                  <p>Blueberry lemon, double chocolate, and maple pecan are cooled and ready.</p>
+                  <span class="rc-tag done">Done</span>
+                </div>
+                <div class="recipe-card-k">
+                  <div class="rc-border blue"></div>
+                  <h4>Espresso machine calibrated</h4>
+                  <p>Dialed in at 18g dose, 36g yield, 28 seconds. Crema looks perfect.</p>
+                  <span class="rc-tag done">Done</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WHITEBOARD ===== -->
+      <section class="view" data-page="whiteboard">
+        <div class="view-inner receipt-roll">
+          <div class="chalkboard-header">
+            <h2>Chalkboard Canvas</h2>
+            <div class="chalk-tools">
+              <button class="chalk-btn active" data-tool="chalk"><i class="ph ph-pencil-simple"></i></button>
+              <button class="chalk-btn" data-tool="eraser"><i class="ph ph-eraser"></i></button>
+              <button class="chalk-btn" data-tool="text"><i class="ph ph-text-t"></i></button>
+            </div>
+          </div>
+
+          <div class="chalkboard-canvas">
+            <div class="chalk-sticky" style="left:5%;top:8%">
+              <h4>Spring Menu Ideas</h4>
+              <p>Lavender honey scones, lemon curd danish, rhubarb galette</p>
+            </div>
+            <div class="chalk-sticky cherry-bg" style="left:55%;top:5%">
+              <h4>Customer Favorites</h4>
+              <p>Sourdough #1, Almond Croissant #2, Flat White #3</p>
+            </div>
+            <div class="chalk-sticky blue-bg" style="left:30%;top:45%">
+              <h4>New Location Checklist</h4>
+              <p>Permits, equipment order, staff hiring, menu design, soft launch date</p>
+            </div>
+            <div class="chalk-sticky" style="left:5%;top:60%">
+              <h4>Supplier Notes</h4>
+              <p>Willowbrook: grains. Sunny Acres: eggs & butter. River Bend: berries.</p>
+            </div>
+            <div class="chalk-sticky cherry-bg" style="left:60%;top:55%">
+              <h4>Training Schedule</h4>
+              <p>Mon: bread shaping, Wed: latte art, Fri: cake decorating basics</p>
+            </div>
+            <div class="chalk-line" style="left:25%;top:30%;width:30%;transform:rotate(-5deg)"></div>
+            <div class="chalk-line" style="left:50%;top:40%;width:20%;transform:rotate(8deg)"></div>
+            <div class="chalk-circle" style="left:42%;top:15%;width:60px;height:60px"></div>
+            <div class="eraser-smudge" style="left:70%;top:30%;width:80px;height:40px"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SCHEMA PLANNER ===== -->
+      <section class="view" data-page="schema-planner">
+        <div class="view-inner receipt-roll">
+          <div class="chalkboard-header">
+            <h2>Recipe Schema</h2>
+          </div>
+
+          <div class="schema-recipes">
+            <div class="schema-recipe-card">
+              <div class="schema-recipe-header">
+                <i class="ph ph-bowl-food"></i>
+                <h3>Recipe</h3>
+              </div>
+              <div class="ingredient-list">
+                <div class="ingredient-row"><span class="ing-name">name</span><span class="ing-measure">text, required</span></div>
+                <div class="ingredient-row"><span class="ing-name">category</span><span class="ing-measure">bread | pastry | drink</span></div>
+                <div class="ingredient-row"><span class="ing-name">prep_time</span><span class="ing-measure">minutes, integer</span></div>
+                <div class="ingredient-row"><span class="ing-name">bake_temp</span><span class="ing-measure">degrees F, integer</span></div>
+                <div class="ingredient-row"><span class="ing-name">yield_count</span><span class="ing-measure">units, integer</span></div>
+                <div class="ingredient-row"><span class="ing-name">cost_per_unit</span><span class="ing-measure">USD, decimal(2)</span></div>
+                <div class="ingredient-row"><span class="ing-name">status</span><span class="ing-measure">draft | testing | approved</span></div>
+              </div>
+            </div>
+
+            <div class="schema-recipe-card">
+              <div class="schema-recipe-header">
+                <i class="ph ph-package"></i>
+                <h3>Ingredient</h3>
+              </div>
+              <div class="ingredient-list">
+                <div class="ingredient-row"><span class="ing-name">name</span><span class="ing-measure">text, required</span></div>
+                <div class="ingredient-row"><span class="ing-name">supplier</span><span class="ing-measure">FK -> Supplier</span></div>
+                <div class="ingredient-row"><span class="ing-name">unit_price</span><span class="ing-measure">USD per lb, decimal</span></div>
+                <div class="ingredient-row"><span class="ing-name">stock_qty</span><span class="ing-measure">lbs, decimal</span></div>
+                <div class="ingredient-row"><span class="ing-name">organic</span><span class="ing-measure">boolean</span></div>
+                <div class="ingredient-row"><span class="ing-name">reorder_at</span><span class="ing-measure">lbs, threshold</span></div>
+              </div>
+            </div>
+
+            <div class="schema-recipe-card">
+              <div class="schema-recipe-header">
+                <i class="ph ph-truck"></i>
+                <h3>Supplier</h3>
+              </div>
+              <div class="ingredient-list">
+                <div class="ingredient-row"><span class="ing-name">farm_name</span><span class="ing-measure">text, required</span></div>
+                <div class="ingredient-row"><span class="ing-name">contact</span><span class="ing-measure">text, email</span></div>
+                <div class="ingredient-row"><span class="ing-name">delivery_day</span><span class="ing-measure">weekday enum</span></div>
+                <div class="ingredient-row"><span class="ing-name">min_order</span><span class="ing-measure">USD, decimal</span></div>
+                <div class="ingredient-row"><span class="ing-name">rating</span><span class="ing-measure">1-5 stars</span></div>
+              </div>
+            </div>
+
+            <div class="schema-recipe-card">
+              <div class="schema-recipe-header">
+                <i class="ph ph-user"></i>
+                <h3>Baker</h3>
+              </div>
+              <div class="ingredient-list">
+                <div class="ingredient-row"><span class="ing-name">name</span><span class="ing-measure">text, required</span></div>
+                <div class="ingredient-row"><span class="ing-name">role</span><span class="ing-measure">head | line | apprentice</span></div>
+                <div class="ingredient-row"><span class="ing-name">specialties</span><span class="ing-measure">text[], array</span></div>
+                <div class="ingredient-row"><span class="ing-name">shift</span><span class="ing-measure">morning | afternoon</span></div>
+                <div class="ingredient-row"><span class="ing-name">hire_date</span><span class="ing-measure">date</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="schema-connections">
+            <svg class="schema-svg" viewBox="0 0 800 100">
+              <line x1="100" y1="50" x2="300" y2="50" stroke="#cc2233" stroke-width="2" stroke-dasharray="6,4"/>
+              <line x1="300" y1="50" x2="500" y2="50" stroke="#88c8e8" stroke-width="2" stroke-dasharray="6,4"/>
+              <line x1="500" y1="50" x2="700" y2="50" stroke="#cc2233" stroke-width="2" stroke-dasharray="6,4"/>
+              <text x="200" y="45" fill="#2a1f1a" font-size="12" text-anchor="middle">has many</text>
+              <text x="400" y="45" fill="#2a1f1a" font-size="12" text-anchor="middle">supplied by</text>
+              <text x="600" y="45" fill="#2a1f1a" font-size="12" text-anchor="middle">assigned to</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== DIRECTORY TREE ===== -->
+      <section class="view" data-page="directory-tree">
+        <div class="view-inner receipt-roll">
+          <div class="chalkboard-header">
+            <h2>Menu Directory</h2>
+          </div>
+
+          <div class="menu-directory">
+            <div class="dir-section">
+              <h3 class="dir-category"><i class="ph ph-bread"></i> Breads & Loaves</h3>
+              <div class="dir-item"><span class="dir-name">Country Rye & Honey</span><span class="dot-leader"></span><span class="dir-meta">$6.50 &middot; Daily</span></div>
+              <div class="dir-item"><span class="dir-name">Spelt & Walnut Boule</span><span class="dot-leader"></span><span class="dir-meta">$7.00 &middot; Daily</span></div>
+              <div class="dir-item"><span class="dir-name">Classic Sourdough</span><span class="dot-leader"></span><span class="dir-meta">$5.50 &middot; Daily</span></div>
+              <div class="dir-item"><span class="dir-name">Focaccia Rosemary</span><span class="dot-leader"></span><span class="dir-meta">$8.00 &middot; Wed/Sat</span></div>
+            </div>
+            <div class="dir-section">
+              <h3 class="dir-category"><i class="ph ph-cookie"></i> Pastries & Sweets</h3>
+              <div class="dir-item"><span class="dir-name">Almond Croissant</span><span class="dot-leader"></span><span class="dir-meta">$4.50 &middot; Daily</span></div>
+              <div class="dir-item"><span class="dir-name">Pain au Chocolat</span><span class="dot-leader"></span><span class="dir-meta">$4.25 &middot; Daily</span></div>
+              <div class="dir-item"><span class="dir-name">Blueberry Lemon Muffin</span><span class="dot-leader"></span><span class="dir-meta">$3.75 &middot; Daily</span></div>
+              <div class="dir-item"><span class="dir-name">Maple Pecan Scone</span><span class="dot-leader"></span><span class="dir-meta">$3.50 &middot; Daily</span></div>
+              <div class="dir-item"><span class="dir-name">Seasonal Galette</span><span class="dot-leader"></span><span class="dir-meta">$5.00 &middot; Weekends</span></div>
+            </div>
+            <div class="dir-section">
+              <h3 class="dir-category"><i class="ph ph-coffee"></i> Drinks</h3>
+              <div class="dir-item"><span class="dir-name">Espresso</span><span class="dot-leader"></span><span class="dir-meta">$3.00 &middot; Always</span></div>
+              <div class="dir-item"><span class="dir-name">Flat White</span><span class="dot-leader"></span><span class="dir-meta">$4.50 &middot; Always</span></div>
+              <div class="dir-item"><span class="dir-name">Nitro Cold Brew</span><span class="dot-leader"></span><span class="dir-meta">$5.00 &middot; Always</span></div>
+              <div class="dir-item"><span class="dir-name">Lavender Latte</span><span class="dot-leader"></span><span class="dir-meta">$5.50 &middot; Seasonal</span></div>
+              <div class="dir-item"><span class="dir-name">Fresh Lemonade</span><span class="dot-leader"></span><span class="dir-meta">$3.50 &middot; Summer</span></div>
+            </div>
+            <div class="dir-section">
+              <h3 class="dir-category"><i class="ph ph-cake"></i> Custom Cakes</h3>
+              <div class="dir-item"><span class="dir-name">Classic Layer Cake</span><span class="dot-leader"></span><span class="dir-meta">From $45 &middot; 3-day lead</span></div>
+              <div class="dir-item"><span class="dir-name">Wedding Tier Cake</span><span class="dot-leader"></span><span class="dir-meta">From $250 &middot; 2-week lead</span></div>
+              <div class="dir-item"><span class="dir-name">Cupcake Dozen</span><span class="dot-leader"></span><span class="dir-meta">$36.00 &middot; 1-day lead</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== IDEAS ===== -->
+      <section class="view" data-page="ideas">
+        <div class="view-inner receipt-roll">
+          <div class="chalkboard-header">
+            <h2>Order Pad</h2>
+            <button class="btn-primary" data-action="add-idea"><i class="ph ph-plus"></i> New Idea</button>
+          </div>
+
+          <div class="order-pad">
+            <div class="order-header-row">
+              <span class="order-col-check"></span>
+              <span class="order-col-item">Item</span>
+              <span class="order-col-cat">Category</span>
+              <span class="order-col-priority">Priority</span>
+              <span class="order-col-votes">Votes</span>
+            </div>
+            <div class="order-line-item">
+              <input type="checkbox" class="order-check">
+              <span class="order-col-item">Gluten-free sourdough using rice flour starter</span>
+              <span class="order-col-cat">Recipe</span>
+              <span class="order-col-priority high">High</span>
+              <span class="order-col-votes">14</span>
+            </div>
+            <div class="order-line-item">
+              <input type="checkbox" class="order-check">
+              <span class="order-col-item">Monthly "Baker's Dozen" subscription box</span>
+              <span class="order-col-cat">Business</span>
+              <span class="order-col-priority high">High</span>
+              <span class="order-col-votes">22</span>
+            </div>
+            <div class="order-line-item">
+              <input type="checkbox" class="order-check" checked>
+              <span class="order-col-item">Sourdough pizza night every Friday</span>
+              <span class="order-col-cat">Events</span>
+              <span class="order-col-priority medium">Medium</span>
+              <span class="order-col-votes">18</span>
+            </div>
+            <div class="order-line-item">
+              <input type="checkbox" class="order-check">
+              <span class="order-col-item">Kids baking class on Saturday mornings</span>
+              <span class="order-col-cat">Events</span>
+              <span class="order-col-priority medium">Medium</span>
+              <span class="order-col-votes">11</span>
+            </div>
+            <div class="order-line-item">
+              <input type="checkbox" class="order-check">
+              <span class="order-col-item">Partner with local bookstore for cafe corner</span>
+              <span class="order-col-cat">Business</span>
+              <span class="order-col-priority low">Low</span>
+              <span class="order-col-votes">7</span>
+            </div>
+            <div class="order-line-item">
+              <input type="checkbox" class="order-check">
+              <span class="order-col-item">Sourdough starter kits for home bakers</span>
+              <span class="order-col-cat">Product</span>
+              <span class="order-col-priority medium">Medium</span>
+              <span class="order-col-votes">9</span>
+            </div>
+            <div class="order-line-item">
+              <input type="checkbox" class="order-check">
+              <span class="order-col-item">Seasonal jam line using local fruit</span>
+              <span class="order-col-cat">Product</span>
+              <span class="order-col-priority low">Low</span>
+              <span class="order-col-votes">5</span>
+            </div>
+            <div class="order-total-row">
+              <span>Total Ideas: 7</span>
+              <span>Votes Cast: 86</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== AI CHAT ===== -->
+      <section class="view" data-page="ai-chat">
+        <div class="view-inner receipt-roll">
+          <div class="chalkboard-header">
+            <h2>Counter Chat</h2>
+          </div>
+
+          <div class="napkin-chat">
+            <div class="napkin-message from-ai">
+              <div class="napkin-paper">
+                <span class="napkin-sender">Counter Assistant</span>
+                <p>Good morning! I noticed your sourdough starters are all at peak activity. The Country Rye culture is especially vigorous today — perfect timing for the tasting panel batch. Want me to draft a prep schedule for tomorrow's bake?</p>
+              </div>
+            </div>
+            <div class="napkin-message from-user">
+              <div class="napkin-paper user">
+                <span class="napkin-sender">You</span>
+                <p>Yes please! Also, can you calculate ingredient costs for a 24-loaf batch of the Country Rye? We need to check margins before the tasting.</p>
+              </div>
+            </div>
+            <div class="napkin-message from-ai">
+              <div class="napkin-paper">
+                <span class="napkin-sender">Counter Assistant</span>
+                <p>Here is the cost breakdown for 24 Country Rye loaves:</p>
+                <div class="napkin-receipt">
+                  <div class="receipt-line"><span>Heritage rye flour (12 lbs)</span><span>$33.60</span></div>
+                  <div class="receipt-line"><span>Bread flour (8 lbs)</span><span>$8.80</span></div>
+                  <div class="receipt-line"><span>Local honey (2 cups)</span><span>$9.40</span></div>
+                  <div class="receipt-line"><span>Salt, water, starter</span><span>$1.20</span></div>
+                  <div class="receipt-line total"><span>Cost per loaf</span><span>$2.21</span></div>
+                </div>
+                <p>At $6.50 retail, that is a 66% margin. Very healthy! I will have the prep schedule on your counter by 3 PM.</p>
+              </div>
+            </div>
+            <div class="napkin-message from-user">
+              <div class="napkin-paper user">
+                <span class="napkin-sender">You</span>
+                <p>Perfect margins. Also remind me to call Willowbrook Farm about next month's grain delivery.</p>
+              </div>
+            </div>
+            <div class="napkin-message from-ai">
+              <div class="napkin-paper">
+                <span class="napkin-sender">Counter Assistant</span>
+                <p>Reminder set for tomorrow at 10 AM: "Call Willowbrook Farm — confirm March heritage grain delivery (200 lbs at $2.80/lb)." I have also added it to your Counter Tasks on the dashboard.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-bar">
+            <input type="text" class="chat-input" placeholder="Write a note to the counter assistant...">
+            <button class="btn-send"><i class="ph ph-paper-plane-tilt"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SETTINGS ===== -->
+      <section class="view" data-page="settings">
+        <div class="view-inner receipt-roll">
+          <div class="chalkboard-header">
+            <h2>Fountain Controls</h2>
+          </div>
+
+          <div class="fountain-machine">
+            <div class="control-group">
+              <h3 class="group-label"><i class="ph ph-gauge"></i> Display Gauges</h3>
+              <div class="control-row">
+                <label class="control-label">Theme Mode</label>
+                <div class="soda-toggle" data-setting="theme">
+                  <div class="toggle-track">
+                    <div class="toggle-handle"></div>
+                  </div>
+                  <span class="toggle-label">Cream</span>
+                </div>
+              </div>
+              <div class="control-row">
+                <label class="control-label">Compact Layout</label>
+                <div class="soda-toggle" data-setting="compact">
+                  <div class="toggle-track">
+                    <div class="toggle-handle"></div>
+                  </div>
+                  <span class="toggle-label">Off</span>
+                </div>
+              </div>
+              <div class="control-row">
+                <label class="control-label">Animations</label>
+                <div class="soda-toggle active" data-setting="animations">
+                  <div class="toggle-track">
+                    <div class="toggle-handle"></div>
+                  </div>
+                  <span class="toggle-label">On</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <h3 class="group-label"><i class="ph ph-faders"></i> Tap Settings</h3>
+              <div class="control-row">
+                <label class="control-label">Bakery Name</label>
+                <input type="text" class="setting-input" value="Sweet Counter Bakery & Cafe">
+              </div>
+              <div class="control-row">
+                <label class="control-label">Location</label>
+                <input type="text" class="setting-input" value="123 Main Street, Millbrook">
+              </div>
+              <div class="control-row">
+                <label class="control-label">Opening Hours</label>
+                <input type="text" class="setting-input" value="6:00 AM - 4:00 PM">
+              </div>
+            </div>
+
+            <div class="control-group">
+              <h3 class="group-label"><i class="ph ph-bell"></i> Notification Taps</h3>
+              <div class="control-row">
+                <label class="control-label">Order Alerts</label>
+                <div class="soda-toggle active" data-setting="order-alerts">
+                  <div class="toggle-track">
+                    <div class="toggle-handle"></div>
+                  </div>
+                  <span class="toggle-label">On</span>
+                </div>
+              </div>
+              <div class="control-row">
+                <label class="control-label">Low Stock Warnings</label>
+                <div class="soda-toggle active" data-setting="stock-warnings">
+                  <div class="toggle-track">
+                    <div class="toggle-handle"></div>
+                  </div>
+                  <span class="toggle-label">On</span>
+                </div>
+              </div>
+              <div class="control-row">
+                <label class="control-label">Daily Summary Email</label>
+                <div class="soda-toggle" data-setting="daily-email">
+                  <div class="toggle-track">
+                    <div class="toggle-handle"></div>
+                  </div>
+                  <span class="toggle-label">Off</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <h3 class="group-label"><i class="ph ph-users"></i> Team & Permissions</h3>
+              <div class="team-list">
+                <div class="team-member">
+                  <span class="member-avatar">MR</span>
+                  <div class="member-info"><span class="member-name">Marie Rousseau</span><span class="member-role">Head Baker / Owner</span></div>
+                </div>
+                <div class="team-member">
+                  <span class="member-avatar">TK</span>
+                  <div class="member-info"><span class="member-name">Tom Kessler</span><span class="member-role">Line Baker</span></div>
+                </div>
+                <div class="team-member">
+                  <span class="member-avatar">LC</span>
+                  <div class="member-info"><span class="member-name">Lila Chen</span><span class="member-role">Apprentice Baker</span></div>
+                </div>
+                <div class="team-member">
+                  <span class="member-avatar">JW</span>
+                  <div class="member-info"><span class="member-name">Jake Wilson</span><span class="member-role">Barista Lead</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-actions">
+              <button class="btn-primary" data-action="save-settings">Save Changes</button>
+              <button class="btn-secondary">Reset to Defaults</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Floating Bottom Dock Navigation -->
+    <nav class="floating-dock" id="floating-dock">
+      <div class="dock-inner">
+        <button class="dock-item active" data-view="dashboard" data-tooltip="Today's Specials">
+          <i class="ph ph-storefront"></i>
+          <span class="dock-label">Counter</span>
+        </button>
+        <button class="dock-item" data-view="projects" data-tooltip="Daily Specials Board">
+          <i class="ph ph-clipboard-text"></i>
+          <span class="dock-label">Specials</span>
+        </button>
+        <button class="dock-item" data-view="project-workspace" data-tooltip="Project Workspace">
+          <i class="ph ph-oven"></i>
+          <span class="dock-label">Workspace</span>
+        </button>
+        <button class="dock-item" data-view="kanban" data-tooltip="Recipe Board">
+          <i class="ph ph-columns"></i>
+          <span class="dock-label">Board</span>
+        </button>
+        <button class="dock-item" data-view="whiteboard" data-tooltip="Chalkboard Canvas">
+          <i class="ph ph-chalkboard"></i>
+          <span class="dock-label">Chalkboard</span>
+        </button>
+        <button class="dock-item" data-view="schema-planner" data-tooltip="Recipe Schema">
+          <i class="ph ph-tree-structure"></i>
+          <span class="dock-label">Schema</span>
+        </button>
+        <button class="dock-item" data-view="directory-tree" data-tooltip="Menu Directory">
+          <i class="ph ph-list-bullets"></i>
+          <span class="dock-label">Menu</span>
+        </button>
+        <button class="dock-item" data-view="ideas" data-tooltip="Order Pad">
+          <i class="ph ph-lightbulb"></i>
+          <span class="dock-label">Ideas</span>
+        </button>
+        <button class="dock-item" data-view="ai-chat" data-tooltip="Counter Chat">
+          <i class="ph ph-chat-circle-dots"></i>
+          <span class="dock-label">Chat</span>
+        </button>
+        <button class="dock-item" data-view="settings" data-tooltip="Fountain Controls">
+          <i class="ph ph-gear"></i>
+          <span class="dock-label">Controls</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

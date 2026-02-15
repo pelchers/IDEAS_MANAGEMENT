@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "notes": "10 profiles for 10 passes. Each profile defines a structurally distinct layout shell so no two passes share the same layout architecture. Profiles are intentionally orthogonal to style families.",
+  "version": 2,
+  "notes": "20 profiles for up to 4 passes per style. Each profile defines a structurally distinct layout shell so no two passes share the same layout architecture. Profiles are intentionally orthogonal to style families.",
   "profiles": [
     {
       "profileId": "monolith-left-rail",
@@ -120,6 +120,126 @@
       "heroTreatment": "geological-header",
       "motionLanguage": "slow-emerge",
       "density": "dense",
+      "componentTone": "hard"
+    },
+    {
+      "profileId": "floating-dock-bar",
+      "shellMode": "floating-bottom-dock",
+      "navPattern": "icon-pill-dock",
+      "contentFlow": "centered-single-panel",
+      "scrollMode": "smooth-scroll",
+      "alignment": "center",
+      "heroTreatment": "gradient-hero-card",
+      "motionLanguage": "spring-bounce",
+      "density": "spacious",
+      "componentTone": "soft"
+    },
+    {
+      "profileId": "sidebar-accordion",
+      "shellMode": "collapsible-left-sidebar",
+      "navPattern": "accordion-sections",
+      "contentFlow": "split-panel-detail",
+      "scrollMode": "standard-scroll",
+      "alignment": "left",
+      "heroTreatment": "inline-stats-row",
+      "motionLanguage": "collapse-expand",
+      "density": "compact",
+      "componentTone": "hard"
+    },
+    {
+      "profileId": "tabbed-workbench",
+      "shellMode": "top-tab-strip",
+      "navPattern": "browser-tab-row",
+      "contentFlow": "full-width-panels",
+      "scrollMode": "snap-horizontal",
+      "alignment": "left",
+      "heroTreatment": "none",
+      "motionLanguage": "slide-left-right",
+      "density": "dense",
+      "componentTone": "hard"
+    },
+    {
+      "profileId": "command-palette-center",
+      "shellMode": "minimal-top-bar",
+      "navPattern": "command-palette-modal",
+      "contentFlow": "centered-card-stack",
+      "scrollMode": "standard-scroll",
+      "alignment": "center",
+      "heroTreatment": "search-hero",
+      "motionLanguage": "modal-scale-in",
+      "density": "spacious",
+      "componentTone": "soft"
+    },
+    {
+      "profileId": "magazine-spread",
+      "shellMode": "hidden-hamburger",
+      "navPattern": "fullscreen-overlay-menu",
+      "contentFlow": "editorial-columns",
+      "scrollMode": "parallax-layers",
+      "alignment": "mixed",
+      "heroTreatment": "full-bleed-image",
+      "motionLanguage": "cinematic-fade",
+      "density": "spacious",
+      "componentTone": "soft"
+    },
+    {
+      "profileId": "dashboard-grid-tiles",
+      "shellMode": "top-bar-minimal",
+      "navPattern": "icon-only-row",
+      "contentFlow": "auto-fit-tile-grid",
+      "scrollMode": "standard-scroll",
+      "alignment": "center",
+      "heroTreatment": "none",
+      "motionLanguage": "grid-reflow",
+      "density": "dense",
+      "componentTone": "hard"
+    },
+    {
+      "profileId": "vertical-timeline",
+      "shellMode": "right-rail-nav",
+      "navPattern": "vertical-dots-timeline",
+      "contentFlow": "timeline-alternating",
+      "scrollMode": "scroll-snap-vertical",
+      "alignment": "center",
+      "heroTreatment": "timeline-hero-node",
+      "motionLanguage": "slide-up-cascade",
+      "density": "balanced",
+      "componentTone": "soft"
+    },
+    {
+      "profileId": "split-pane-workspace",
+      "shellMode": "top-toolbar",
+      "navPattern": "toolbar-buttons",
+      "contentFlow": "resizable-split-panes",
+      "scrollMode": "independent-scroll-regions",
+      "alignment": "left",
+      "heroTreatment": "none",
+      "motionLanguage": "resize-drag",
+      "density": "compact",
+      "componentTone": "hard"
+    },
+    {
+      "profileId": "card-stack-carousel",
+      "shellMode": "floating-pill-nav",
+      "navPattern": "pill-toggle-group",
+      "contentFlow": "stacked-card-carousel",
+      "scrollMode": "swipe-horizontal",
+      "alignment": "center",
+      "heroTreatment": "featured-card-hero",
+      "motionLanguage": "card-flip-slide",
+      "density": "spacious",
+      "componentTone": "soft"
+    },
+    {
+      "profileId": "terminal-console",
+      "shellMode": "no-chrome-fullscreen",
+      "navPattern": "keyboard-shortcut-only",
+      "contentFlow": "terminal-output-stream",
+      "scrollMode": "auto-scroll-bottom",
+      "alignment": "left",
+      "heroTreatment": "ascii-banner",
+      "motionLanguage": "typewriter-cascade",
+      "density": "compact",
       "componentTone": "hard"
     }
   ]

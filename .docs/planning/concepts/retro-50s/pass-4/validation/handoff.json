@@ -1,0 +1,94 @@
+{
+  "styleId": "retro-50s",
+  "pass": 4,
+  "passVariant": "soda-fountain-pharmacy",
+  "uniquenessProfile": {
+    "profileId": "floating-dock-bar",
+    "shellMode": "floating-bottom-dock",
+    "navPattern": "icon-pill-dock",
+    "contentFlow": "centered-single-panel",
+    "scrollMode": "smooth-scroll",
+    "alignment": "center",
+    "heroTreatment": "gradient-hero-card",
+    "motionLanguage": "spring-bounce",
+    "density": "spacious",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "bg": "#f5f0e8",
+    "text": "#2a1f1a",
+    "surface": "#ffffff",
+    "accent": "#cc2233",
+    "accent2": "#88c8e8",
+    "border": "#d4cfc5"
+  },
+  "typography": {
+    "heading": "Cherry Bomb One",
+    "body": "Lato",
+    "mono": "Courier Prime"
+  },
+  "contentPersona": "artisan-bakery-cafe",
+  "interactionProfile": {
+    "buttonHover": "stripe-pattern-fill",
+    "buttonClick": "soda-fizz-burst",
+    "cardHover": "lift-slight-rotate",
+    "pageTransition": "receipt-roll-down",
+    "scrollReveal": "stagger-slide-in-right",
+    "navItemHover": "stool-spin-icon",
+    "navItemActive": "cherry-dot-marker",
+    "inputFocus": "blue-tint-border",
+    "toggleSwitch": "soda-tap-pull",
+    "tooltips": "recipe-card-popup",
+    "loadingState": "straw-bubbles-rise",
+    "idleAmbient": "none",
+    "microFeedback": "cherry-on-top-pop"
+  },
+  "views": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "libraries": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "purpose": "Spring-bounce motion language, scroll reveals, fizz particle animation, elastic toggle animation"
+    },
+    {
+      "name": "GSAP ScrollTrigger",
+      "version": "3.12.5",
+      "purpose": "Scroll-driven animation registration"
+    },
+    {
+      "name": "Canvas Confetti",
+      "version": "1.9.3",
+      "purpose": "Micro-feedback celebration bursts on task completion and save actions"
+    },
+    {
+      "name": "Phosphor Icons",
+      "version": "2.1.1",
+      "purpose": "Icon system for navigation dock, section headers, and entity indicators"
+    }
+  ],
+  "antiRepeatCompliance": [
+    "Uses powder blue + cherry red on cream (not pink+mint neon from Pass 1)",
+    "Uses floating bottom dock navigation (not jukebox selector from Pass 1)",
+    "Uses awning stripes and recipe-card shapes (not googie boomerangs from Pass 2)",
+    "Uses light cheerful soda shop palette (not dark purple cinema from Pass 3)",
+    "Uses receipt-roll and fizz-bubble transitions (not film-reel from Pass 3)",
+    "Uses handwritten napkin-note chat (not comic panel chat from Pass 3)"
+  ],
+  "files": {
+    "html": "index.html",
+    "css": "style.css",
+    "js": "app.js",
+    "readme": "README.md"
+  }
+}

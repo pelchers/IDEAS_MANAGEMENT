@@ -1,0 +1,82 @@
+{
+  "styleId": "slate",
+  "pass": 3,
+  "variantSeed": "obsidian-volcanic-glass",
+  "profileId": "tabbed-workbench",
+  "shellMode": "top-tab-strip",
+  "navPattern": "browser-tab-row",
+  "contentFlow": "full-width-panels",
+  "scrollMode": "snap-horizontal",
+  "alignment": "left",
+  "density": "dense",
+  "componentTone": "hard",
+  "motionLanguage": "slide-left-right",
+  "heroTreatment": "none",
+  "palette": {
+    "bg": "#0a0a0a",
+    "text": "#e8e0d8",
+    "surface": "#141414",
+    "accent": "#cc2200",
+    "accent2": "#ff6600",
+    "border": "#2a1a1a"
+  },
+  "typography": {
+    "heading": "Archivo Black",
+    "body": "Work Sans",
+    "mono": "Fira Code"
+  },
+  "contentPersona": "luxury-watchmaker",
+  "librariesUsed": [
+    {
+      "name": "Anime.js",
+      "version": "3.2.2",
+      "purpose": "Staggered entrance animations, ambient crack pulse, SVG magma vein animation, progress bar animation, tree item stagger"
+    },
+    {
+      "name": "SortableJS",
+      "version": "1.15.6",
+      "purpose": "Kanban card drag-and-drop between columns"
+    }
+  ],
+  "assetsDownloaded": [],
+  "interactionsImplemented": {
+    "buttonHover": "ember-glow-from-cracks",
+    "buttonClick": "magma-pulse-burst",
+    "cardHover": "obsidian-reflection-shift",
+    "pageTransition": "volcanic-crack-shatter",
+    "scrollReveal": "ember-rise-from-below",
+    "navItemHover": "crack-glow-reveal",
+    "navItemActive": "molten-underline-glow",
+    "inputFocus": "ember-border-glow",
+    "toggleSwitch": "lava-flow-slide",
+    "tooltips": "obsidian-shard-popup",
+    "loadingState": "magma-flow-fill",
+    "idleAmbient": "ember-crack-pulse",
+    "microFeedback": "ember-flare-success"
+  },
+  "views": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "antiRepeatCompliance": [
+    "No charcoal+amber carved console (pass 1) — uses pure black+molten red obsidian glass",
+    "No inner-shadow carved aesthetic (pass 1) — uses glass-reflection and volcanic-crack aesthetic",
+    "No layered strata with gold veins (pass 2) — uses obsidian glass with magma cracks",
+    "No geological strata depth (pass 2) — uses volcanic glass mirror surface",
+    "No timeline strip ideas (pass 2) — uses obsidian tile card grid"
+  ],
+  "files": {
+    "html": "index.html",
+    "css": "style.css",
+    "js": "app.js",
+    "readme": "README.md"
+  }
+}

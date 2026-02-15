@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MercuryFi - Liquid Metal Fintech Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Tippy.js for chrome bubble tooltips -->
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.7/dist/tippy.css" />
+</head>
+<body>
+
+  <!-- LOADING OVERLAY — mercury flow fill -->
+  <div id="loading-overlay">
+    <div class="loading-bar-track">
+      <div class="loading-bar-fill"></div>
+    </div>
+    <span class="loading-label">Loading MercuryFi</span>
+  </div>
+
+  <!-- IDLE AMBIENT — chrome light drift canvas -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- COMMAND PALETTE MODAL -->
+  <div id="command-palette-backdrop" class="command-palette-backdrop">
+    <div class="command-palette-modal">
+      <div class="command-palette-search">
+        <svg class="command-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="command-input" placeholder="Navigate to..." autocomplete="off" />
+        <kbd class="command-kbd">Ctrl+K</kbd>
+      </div>
+      <ul class="command-palette-list">
+        <li data-view="dashboard" class="command-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+          <span>Dashboard</span>
+          <kbd>1</kbd>
+        </li>
+        <li data-view="projects" class="command-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>Projects</span>
+          <kbd>2</kbd>
+        </li>
+        <li data-view="project-workspace" class="command-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span>Project Workspace</span>
+          <kbd>3</kbd>
+        </li>
+        <li data-view="kanban" class="command-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>
+          <span>Kanban Board</span>
+          <kbd>4</kbd>
+        </li>
+        <li data-view="whiteboard" class="command-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+          <span>Whiteboard</span>
+          <kbd>5</kbd>
+        </li>
+        <li data-view="schema-planner" class="command-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          <span>Schema Planner</span>
+          <kbd>6</kbd>
+        </li>
+        <li data-view="directory-tree" class="command-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+          <span>Directory Tree</span>
+          <kbd>7</kbd>
+        </li>
+        <li data-view="ideas" class="command-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
+          <span>Ideas</span>
+          <kbd>8</kbd>
+        </li>
+        <li data-view="ai-chat" class="command-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>AI Chat</span>
+          <kbd>9</kbd>
+        </li>
+        <li data-view="settings" class="command-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+          <kbd>0</kbd>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MICRO FEEDBACK OVERLAY -->
+  <div id="micro-feedback" class="micro-feedback">
+    <div class="micro-feedback-inner">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Action confirmed</span>
+    </div>
+  </div>
+
+  <!-- TOOLTIP TEMPLATE (chrome bubble) -->
+
+  <!-- TOP BAR (minimal-top-bar shell) -->
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <div class="mercury-logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="12" fill="url(#mercuryGrad)" />
+          <circle cx="10" cy="10" r="3" fill="rgba(255,255,255,0.25)" />
+          <defs>
+            <radialGradient id="mercuryGrad" cx="0.35" cy="0.35" r="0.65">
+              <stop offset="0%" stop-color="#e4e4e7"/>
+              <stop offset="50%" stop-color="#a1a1aa"/>
+              <stop offset="100%" stop-color="#52525b"/>
+            </radialGradient>
+          </defs>
+        </svg>
+        <span class="logo-text">MercuryFi</span>
+      </div>
+    </div>
+    <div class="top-bar-center">
+      <button class="nav-trigger" id="nav-trigger" data-tippy-content="Navigate (Ctrl+K)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Navigate...</span>
+        <kbd>Ctrl+K</kbd>
+      </button>
+    </div>
+    <div class="top-bar-right">
+      <button class="top-bar-icon-btn" data-tippy-content="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-dot"></span>
+      </button>
+      <div class="avatar-ring" data-tippy-content="Alex Chen, CFO">
+        <span>AC</span>
+      </div>
+      <!-- Mobile hamburger -->
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT AREA — centered-card-stack -->
+  <main class="main-content">
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <section data-page="dashboard" class="page-section">
+      <div class="page-card-stack">
+        <!-- Search hero -->
+        <div class="search-hero">
+          <h1 class="hero-heading">Good morning, Alex</h1>
+          <p class="hero-sub">Your portfolio is up <span class="accent-num">+3.72%</span> since yesterday</p>
+        </div>
+
+        <!-- Metric gauges row -->
+        <div class="metric-gauges">
+          <div class="gauge-card scroll-reveal">
+            <div class="gauge-bezel">
+              <div class="gauge-fill" data-pct="78"></div>
+              <span class="gauge-value">$2.47M</span>
+            </div>
+            <span class="gauge-label">Total AUM</span>
+          </div>
+          <div class="gauge-card scroll-reveal">
+            <div class="gauge-bezel">
+              <div class="gauge-fill" data-pct="62"></div>
+              <span class="gauge-value">847</span>
+            </div>
+            <span class="gauge-label">Active Accounts</span>
+          </div>
+          <div class="gauge-card scroll-reveal">
+            <div class="gauge-bezel">
+              <div class="gauge-fill" data-pct="91"></div>
+              <span class="gauge-value">99.7%</span>
+            </div>
+            <span class="gauge-label">Uptime SLA</span>
+          </div>
+          <div class="gauge-card scroll-reveal">
+            <div class="gauge-bezel">
+              <div class="gauge-fill" data-pct="45"></div>
+              <span class="gauge-value">$184K</span>
+            </div>
+            <span class="gauge-label">Monthly Revenue</span>
+          </div>
+        </div>
+
+        <!-- Data table with chrome header -->
+        <div class="chrome-table-card scroll-reveal">
+          <div class="chrome-table-header">
+            <h3>Recent Transactions</h3>
+            <button class="chrome-btn sm" data-tippy-content="Export to CSV">Export</button>
+          </div>
+          <table class="chrome-table">
+            <thead>
+              <tr>
+                <th>Transaction</th>
+                <th>Account</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Wire Transfer #4891</td><td>Apex Capital Fund</td><td class="mono">$125,000.00</td><td><span class="status-badge complete">Settled</span></td><td class="mono">14:23</td></tr>
+              <tr><td>ACH Deposit #7723</td><td>Meridian Ventures</td><td class="mono">$48,750.00</td><td><span class="status-badge complete">Settled</span></td><td class="mono">13:45</td></tr>
+              <tr><td>FX Conversion #3311</td><td>Nordic Growth LP</td><td class="mono">$312,400.00</td><td><span class="status-badge pending">Processing</span></td><td class="mono">12:58</td></tr>
+              <tr><td>Wire Transfer #4890</td><td>Zenith Partners</td><td class="mono">$89,200.00</td><td><span class="status-badge complete">Settled</span></td><td class="mono">11:32</td></tr>
+              <tr><td>Margin Call #0092</td><td>Ironclad Holdings</td><td class="mono">$67,500.00</td><td><span class="status-badge error">Flagged</span></td><td class="mono">10:15</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mercury progress bars -->
+        <div class="progress-section scroll-reveal">
+          <h3>Compliance Pipeline</h3>
+          <div class="mercury-progress-row">
+            <span class="progress-label">KYC Verification</span>
+            <div class="mercury-progress-track"><div class="mercury-progress-fill" data-width="82"></div></div>
+            <span class="progress-pct mono">82%</span>
+          </div>
+          <div class="mercury-progress-row">
+            <span class="progress-label">AML Screening</span>
+            <div class="mercury-progress-track"><div class="mercury-progress-fill" data-width="65"></div></div>
+            <span class="progress-pct mono">65%</span>
+          </div>
+          <div class="mercury-progress-row">
+            <span class="progress-label">Regulatory Filing</span>
+            <div class="mercury-progress-track"><div class="mercury-progress-fill" data-width="94"></div></div>
+            <span class="progress-pct mono">94%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECTS ==================== -->
+    <section data-page="projects" class="page-section">
+      <div class="page-card-stack">
+        <div class="page-title-row">
+          <h2>Fund Projects</h2>
+          <button class="chrome-btn">+ New Fund</button>
+        </div>
+
+        <div class="project-list">
+          <div class="project-row scroll-reveal">
+            <div class="project-row-left">
+              <div class="project-icon-circle">AP</div>
+              <div>
+                <h4>Apex Capital Fund III</h4>
+                <p class="sub-text">Growth equity fund targeting Series B fintech companies</p>
+              </div>
+            </div>
+            <span class="status-badge complete">Active</span>
+            <span class="project-meta mono">$847M AUM</span>
+            <span class="project-meta">24 positions</span>
+          </div>
+          <div class="project-row scroll-reveal">
+            <div class="project-row-left">
+              <div class="project-icon-circle">MV</div>
+              <div>
+                <h4>Meridian Venture Partners</h4>
+                <p class="sub-text">Early-stage venture fund focused on blockchain infrastructure</p>
+              </div>
+            </div>
+            <span class="status-badge pending">Deploying</span>
+            <span class="project-meta mono">$312M AUM</span>
+            <span class="project-meta">18 positions</span>
+          </div>
+          <div class="project-row scroll-reveal">
+            <div class="project-row-left">
+              <div class="project-icon-circle">NG</div>
+              <div>
+                <h4>Nordic Growth LP</h4>
+                <p class="sub-text">Cross-border payment infrastructure investments in Northern Europe</p>
+              </div>
+            </div>
+            <span class="status-badge complete">Active</span>
+            <span class="project-meta mono">$523M AUM</span>
+            <span class="project-meta">31 positions</span>
+          </div>
+          <div class="project-row scroll-reveal">
+            <div class="project-row-left">
+              <div class="project-icon-circle">ZP</div>
+              <div>
+                <h4>Zenith Partners Fund II</h4>
+                <p class="sub-text">Quantitative trading strategies and algorithmic market-making</p>
+              </div>
+            </div>
+            <span class="status-badge complete">Active</span>
+            <span class="project-meta mono">$1.2B AUM</span>
+            <span class="project-meta">42 positions</span>
+          </div>
+          <div class="project-row scroll-reveal">
+            <div class="project-row-left">
+              <div class="project-icon-circle">IH</div>
+              <div>
+                <h4>Ironclad Holdings</h4>
+                <p class="sub-text">Insurance-linked securities and catastrophe bond portfolio</p>
+              </div>
+            </div>
+            <span class="status-badge error">Under Review</span>
+            <span class="project-meta mono">$198M AUM</span>
+            <span class="project-meta">12 positions</span>
+          </div>
+          <div class="project-row scroll-reveal">
+            <div class="project-row-left">
+              <div class="project-icon-circle">SV</div>
+              <div>
+                <h4>Sterling Value Fund</h4>
+                <p class="sub-text">Deep value equities targeting undervalued banking sector assets</p>
+              </div>
+            </div>
+            <span class="status-badge pending">Fundraising</span>
+            <span class="project-meta mono">$75M AUM</span>
+            <span class="project-meta">8 positions</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECT WORKSPACE ==================== -->
+    <section data-page="project-workspace" class="page-section">
+      <div class="page-card-stack">
+        <div class="page-title-row">
+          <h2>Apex Capital Fund III</h2>
+          <div class="workspace-tabs">
+            <button class="ws-tab active">Overview</button>
+            <button class="ws-tab">Positions</button>
+            <button class="ws-tab">Transactions</button>
+            <button class="ws-tab">Analytics</button>
+          </div>
+        </div>
+
+        <div class="workspace-panels">
+          <div class="ws-panel-main scroll-reveal">
+            <div class="chrome-table-header">
+              <h3>Position Summary</h3>
+            </div>
+            <table class="chrome-table">
+              <thead>
+                <tr>
+                  <th>Asset</th>
+                  <th>Ticker</th>
+                  <th>Allocation</th>
+                  <th>P&L</th>
+                  <th>Risk Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>PayStream Inc.</td><td class="mono">PYST</td><td class="mono">18.4%</td><td class="accent-num">+12.3%</td><td><span class="risk-bar" data-risk="3"></span></td></tr>
+                <tr><td>LedgerNode Protocol</td><td class="mono">LNPR</td><td class="mono">14.2%</td><td class="accent-num">+8.7%</td><td><span class="risk-bar" data-risk="5"></span></td></tr>
+                <tr><td>VaultSecure Holdings</td><td class="mono">VSHL</td><td class="mono">11.8%</td><td class="error-num">-2.1%</td><td><span class="risk-bar" data-risk="2"></span></td></tr>
+                <tr><td>NexGen Banking Corp</td><td class="mono">NXGB</td><td class="mono">9.6%</td><td class="accent-num">+5.4%</td><td><span class="risk-bar" data-risk="4"></span></td></tr>
+                <tr><td>ClearBridge Payments</td><td class="mono">CBPX</td><td class="mono">8.1%</td><td class="accent-num">+15.8%</td><td><span class="risk-bar" data-risk="3"></span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ws-panel-side scroll-reveal">
+            <div class="chrome-table-header">
+              <h3>Fund Metrics</h3>
+            </div>
+            <div class="metric-list">
+              <div class="metric-item"><span>NAV</span><span class="mono">$847,231,400</span></div>
+              <div class="metric-item"><span>IRR (Net)</span><span class="mono accent-num">18.4%</span></div>
+              <div class="metric-item"><span>MOIC</span><span class="mono">2.3x</span></div>
+              <div class="metric-item"><span>DPI</span><span class="mono">1.4x</span></div>
+              <div class="metric-item"><span>Vintage Year</span><span class="mono">2023</span></div>
+              <div class="metric-item"><span>Drawdown</span><span class="mono">78%</span></div>
+            </div>
+            <div class="mercury-resize-handle" data-tippy-content="Drag to resize">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== KANBAN ==================== -->
+    <section data-page="kanban" class="page-section">
+      <div class="page-card-stack">
+        <div class="page-title-row">
+          <h2>Deal Pipeline</h2>
+          <button class="chrome-btn">+ Add Deal</button>
+        </div>
+
+        <div class="kanban-columns">
+          <div class="kanban-col scroll-reveal">
+            <div class="kanban-col-header">
+              <span class="col-dot sourcing"></span>
+              <h4>Sourcing</h4>
+              <span class="col-count">4</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <h5>SwiftLend Protocol</h5>
+                <p>Decentralized lending platform with cross-chain collateral support</p>
+                <div class="card-footer">
+                  <span class="tag">DeFi</span>
+                  <span class="mono card-amount">$15M ask</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <h5>NovaPay Systems</h5>
+                <p>B2B payment orchestration for emerging markets</p>
+                <div class="card-footer">
+                  <span class="tag">Payments</span>
+                  <span class="mono card-amount">$8M ask</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <h5>ChainGuard Security</h5>
+                <p>Real-time blockchain transaction monitoring and fraud detection</p>
+                <div class="card-footer">
+                  <span class="tag">Security</span>
+                  <span class="mono card-amount">$12M ask</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <h5>QuantEdge Analytics</h5>
+                <p>AI-driven risk modeling for derivatives portfolios</p>
+                <div class="card-footer">
+                  <span class="tag">Analytics</span>
+                  <span class="mono card-amount">$20M ask</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-col scroll-reveal">
+            <div class="kanban-col-header">
+              <span class="col-dot diligence"></span>
+              <h4>Due Diligence</h4>
+              <span class="col-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <h5>Meridian FX</h5>
+                <p>Real-time FX hedging engine for institutional portfolios</p>
+                <div class="card-footer">
+                  <span class="tag">FX</span>
+                  <span class="mono card-amount">$25M ask</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <h5>ClearVault</h5>
+                <p>Institutional-grade digital asset custody solution</p>
+                <div class="card-footer">
+                  <span class="tag">Custody</span>
+                  <span class="mono card-amount">$18M ask</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <h5>Apex Credit AI</h5>
+                <p>Machine learning credit scoring using alternative data</p>
+                <div class="card-footer">
+                  <span class="tag">Credit</span>
+                  <span class="mono card-amount">$10M ask</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-col scroll-reveal">
+            <div class="kanban-col-header">
+              <span class="col-dot termsheet"></span>
+              <h4>Term Sheet</h4>
+              <span class="col-count">2</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <h5>FrostBridge Capital</h5>
+                <p>Tokenized treasury bill platform for institutional liquidity</p>
+                <div class="card-footer">
+                  <span class="tag">Tokenization</span>
+                  <span class="mono card-amount">$30M ask</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <h5>PulseNet Banking</h5>
+                <p>Neo-banking API infrastructure for embedded finance</p>
+                <div class="card-footer">
+                  <span class="tag">BaaS</span>
+                  <span class="mono card-amount">$22M ask</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-col scroll-reveal">
+            <div class="kanban-col-header">
+              <span class="col-dot closed"></span>
+              <h4>Closed</h4>
+              <span class="col-count">2</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <h5>PayStream Inc.</h5>
+                <p>Cross-border payment rails with instant settlement</p>
+                <div class="card-footer">
+                  <span class="tag">Payments</span>
+                  <span class="mono card-amount">$35M invested</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <h5>LedgerNode Protocol</h5>
+                <p>Enterprise-grade distributed ledger for trade settlement</p>
+                <div class="card-footer">
+                  <span class="tag">DLT</span>
+                  <span class="mono card-amount">$28M invested</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== WHITEBOARD ==================== -->
+    <section data-page="whiteboard" class="page-section">
+      <div class="page-card-stack">
+        <div class="page-title-row">
+          <h2>Strategy Whiteboard</h2>
+          <div class="wb-toolbar">
+            <button class="chrome-btn sm active">Select</button>
+            <button class="chrome-btn sm">Draw</button>
+            <button class="chrome-btn sm">Connect</button>
+            <button class="chrome-btn sm">Text</button>
+          </div>
+        </div>
+
+        <div class="whiteboard-canvas">
+          <svg class="wb-connectors" width="100%" height="100%">
+            <line x1="200" y1="120" x2="460" y2="120" class="wb-connector"/>
+            <line x1="200" y1="120" x2="200" y2="300" class="wb-connector"/>
+            <line x1="460" y1="120" x2="460" y2="300" class="wb-connector"/>
+            <line x1="200" y1="300" x2="460" y2="300" class="wb-connector"/>
+            <circle cx="200" cy="120" r="4" class="wb-junction"/>
+            <circle cx="460" cy="120" r="4" class="wb-junction"/>
+            <circle cx="200" cy="300" r="4" class="wb-junction"/>
+            <circle cx="460" cy="300" r="4" class="wb-junction"/>
+          </svg>
+
+          <div class="wb-node" style="left:120px;top:70px" data-tippy-content="Market Analysis">
+            <div class="wb-node-header">Market Analysis</div>
+            <div class="wb-node-body">Evaluate TAM/SAM for payment infrastructure in APAC region. $420B addressable market.</div>
+          </div>
+          <div class="wb-node" style="left:380px;top:70px" data-tippy-content="Risk Assessment">
+            <div class="wb-node-header">Risk Assessment</div>
+            <div class="wb-node-body">Regulatory exposure in 6 jurisdictions. Counterparty risk mitigated by on-chain escrow.</div>
+          </div>
+          <div class="wb-node" style="left:120px;top:250px" data-tippy-content="Revenue Model">
+            <div class="wb-node-header">Revenue Model</div>
+            <div class="wb-node-body">Transaction fee: 0.15bps. API subscription: $25K/mo enterprise tier. Break-even at 847K TPS.</div>
+          </div>
+          <div class="wb-node" style="left:380px;top:250px" data-tippy-content="Exit Strategy">
+            <div class="wb-node-header">Exit Strategy</div>
+            <div class="wb-node-body">Strategic acquisition by tier-1 bank or IPO at 15x revenue multiple. Target: 2027 Q3.</div>
+          </div>
+          <div class="wb-node" style="left:250px;top:420px" data-tippy-content="Key Thesis">
+            <div class="wb-node-header">Key Thesis</div>
+            <div class="wb-node-body">Cross-border B2B payments will shift to on-chain settlement within 5 years. First-mover captures 30% market share.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCHEMA PLANNER ==================== -->
+    <section data-page="schema-planner" class="page-section">
+      <div class="page-card-stack">
+        <div class="page-title-row">
+          <h2>Data Schema</h2>
+          <button class="chrome-btn">+ Add Entity</button>
+        </div>
+
+        <div class="schema-canvas">
+          <svg class="schema-connectors" width="100%" height="100%">
+            <path d="M280,130 C350,130 350,130 420,130" class="schema-line"/>
+            <path d="M280,130 C280,250 280,250 280,310" class="schema-line"/>
+            <path d="M560,130 C560,250 560,250 420,310" class="schema-line"/>
+            <circle cx="280" cy="130" r="5" class="schema-junction"/>
+            <circle cx="420" cy="130" r="5" class="schema-junction"/>
+            <circle cx="560" cy="130" r="5" class="schema-junction"/>
+            <circle cx="280" cy="310" r="5" class="schema-junction"/>
+            <circle cx="420" cy="310" r="5" class="schema-junction"/>
+          </svg>
+
+          <div class="schema-entity scroll-reveal" style="left:140px;top:60px">
+            <div class="schema-entity-header">Account</div>
+            <ul class="schema-fields">
+              <li><span class="field-key">PK</span> account_id <span class="field-type">uuid</span></li>
+              <li>account_name <span class="field-type">varchar(255)</span></li>
+              <li>account_type <span class="field-type">enum</span></li>
+              <li>balance <span class="field-type">decimal(18,2)</span></li>
+              <li>currency <span class="field-type">char(3)</span></li>
+              <li>status <span class="field-type">enum</span></li>
+            </ul>
+          </div>
+
+          <div class="schema-entity scroll-reveal" style="left:380px;top:60px">
+            <div class="schema-entity-header">Transaction</div>
+            <ul class="schema-fields">
+              <li><span class="field-key">PK</span> tx_id <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> from_account <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> to_account <span class="field-type">uuid</span></li>
+              <li>amount <span class="field-type">decimal(18,2)</span></li>
+              <li>tx_type <span class="field-type">enum</span></li>
+              <li>settled_at <span class="field-type">timestamp</span></li>
+            </ul>
+          </div>
+
+          <div class="schema-entity scroll-reveal" style="left:140px;top:250px">
+            <div class="schema-entity-header">Compliance</div>
+            <ul class="schema-fields">
+              <li><span class="field-key">PK</span> check_id <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> account_id <span class="field-type">uuid</span></li>
+              <li>check_type <span class="field-type">enum</span></li>
+              <li>result <span class="field-type">enum</span></li>
+              <li>reviewed_by <span class="field-type">varchar(128)</span></li>
+            </ul>
+          </div>
+
+          <div class="schema-entity scroll-reveal" style="left:380px;top:250px">
+            <div class="schema-entity-header">Ledger Entry</div>
+            <ul class="schema-fields">
+              <li><span class="field-key">PK</span> entry_id <span class="field-type">uuid</span></li>
+              <li><span class="field-key">FK</span> tx_id <span class="field-type">uuid</span></li>
+              <li>debit <span class="field-type">decimal(18,2)</span></li>
+              <li>credit <span class="field-type">decimal(18,2)</span></li>
+              <li>posted_at <span class="field-type">timestamp</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== DIRECTORY TREE ==================== -->
+    <section data-page="directory-tree" class="page-section">
+      <div class="page-card-stack">
+        <div class="page-title-row">
+          <h2>Repository Structure</h2>
+          <button class="chrome-btn sm">Collapse All</button>
+        </div>
+
+        <div class="dir-tree scroll-reveal">
+          <div class="tree-item root open">
+            <span class="tree-toggle"></span>
+            <span class="tree-icon folder"></span>
+            <span class="tree-name">mercuryfi-platform/</span>
+          </div>
+          <div class="tree-children">
+            <div class="tree-item open">
+              <span class="tree-toggle"></span>
+              <span class="tree-icon folder"></span>
+              <span class="tree-name">src/</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-item open">
+                <span class="tree-toggle"></span>
+                <span class="tree-icon folder"></span>
+                <span class="tree-name">api/</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">accounts.controller.ts</span><span class="tree-meta mono">4.2 KB</span></div>
+                <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">transactions.controller.ts</span><span class="tree-meta mono">6.8 KB</span></div>
+                <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">compliance.controller.ts</span><span class="tree-meta mono">3.1 KB</span></div>
+                <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">ledger.controller.ts</span><span class="tree-meta mono">5.4 KB</span></div>
+              </div>
+              <div class="tree-item open">
+                <span class="tree-toggle"></span>
+                <span class="tree-icon folder"></span>
+                <span class="tree-name">services/</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">settlement.engine.ts</span><span class="tree-meta mono">12.3 KB</span></div>
+                <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">risk.scoring.ts</span><span class="tree-meta mono">8.7 KB</span></div>
+                <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">fx.hedging.ts</span><span class="tree-meta mono">7.1 KB</span></div>
+                <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">kyc.pipeline.ts</span><span class="tree-meta mono">5.9 KB</span></div>
+              </div>
+              <div class="tree-item open">
+                <span class="tree-toggle"></span>
+                <span class="tree-icon folder"></span>
+                <span class="tree-name">models/</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">account.model.ts</span><span class="tree-meta mono">2.1 KB</span></div>
+                <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">transaction.model.ts</span><span class="tree-meta mono">3.4 KB</span></div>
+                <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">ledger-entry.model.ts</span><span class="tree-meta mono">1.8 KB</span></div>
+              </div>
+            </div>
+            <div class="tree-item open">
+              <span class="tree-toggle"></span>
+              <span class="tree-icon folder"></span>
+              <span class="tree-name">config/</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">database.config.ts</span><span class="tree-meta mono">1.2 KB</span></div>
+              <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">redis.config.ts</span><span class="tree-meta mono">0.8 KB</span></div>
+              <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">kafka.config.ts</span><span class="tree-meta mono">1.4 KB</span></div>
+            </div>
+            <div class="tree-item open">
+              <span class="tree-toggle"></span>
+              <span class="tree-icon folder"></span>
+              <span class="tree-name">tests/</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">settlement.spec.ts</span><span class="tree-meta mono">9.2 KB</span></div>
+              <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">compliance.spec.ts</span><span class="tree-meta mono">6.5 KB</span></div>
+            </div>
+            <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">package.json</span><span class="tree-meta mono">2.3 KB</span></div>
+            <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">tsconfig.json</span><span class="tree-meta mono">0.6 KB</span></div>
+            <div class="tree-item file"><span class="tree-icon file-icon"></span><span class="tree-name">Dockerfile</span><span class="tree-meta mono">0.9 KB</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== IDEAS ==================== -->
+    <section data-page="ideas" class="page-section">
+      <div class="page-card-stack">
+        <div class="page-title-row">
+          <h2>Investment Thesis Ideas</h2>
+          <button class="chrome-btn">+ New Idea</button>
+        </div>
+
+        <div class="ideas-list">
+          <div class="idea-entry scroll-reveal">
+            <div class="idea-priority-bar high"></div>
+            <div class="idea-content">
+              <h4>Embedded Finance API Consolidation</h4>
+              <p>Acquire 3-4 niche BaaS providers and unify APIs into a single embedded finance platform. Target: $2B TAM by 2027.</p>
+              <div class="idea-tags">
+                <span class="idea-tag violet">Strategy</span>
+                <span class="idea-tag silver">M&A</span>
+              </div>
+            </div>
+            <div class="idea-meta">
+              <span class="mono">Feb 12</span>
+              <span class="idea-score" data-tippy-content="Conviction score">92</span>
+            </div>
+          </div>
+          <div class="idea-entry scroll-reveal">
+            <div class="idea-priority-bar high"></div>
+            <div class="idea-content">
+              <h4>Tokenized Treasury Bill Market-Making</h4>
+              <p>Build automated market-making infrastructure for tokenized T-bills. $500B+ in demand from crypto-native treasuries.</p>
+              <div class="idea-tags">
+                <span class="idea-tag violet">Product</span>
+                <span class="idea-tag silver">DeFi</span>
+              </div>
+            </div>
+            <div class="idea-meta">
+              <span class="mono">Feb 10</span>
+              <span class="idea-score" data-tippy-content="Conviction score">88</span>
+            </div>
+          </div>
+          <div class="idea-entry scroll-reveal">
+            <div class="idea-priority-bar medium"></div>
+            <div class="idea-content">
+              <h4>AI-Powered Compliance Automation</h4>
+              <p>Replace manual KYC/AML review with LLM-driven document analysis. Reduce compliance costs by 60% across portfolio companies.</p>
+              <div class="idea-tags">
+                <span class="idea-tag violet">Operations</span>
+                <span class="idea-tag silver">AI</span>
+              </div>
+            </div>
+            <div class="idea-meta">
+              <span class="mono">Feb 8</span>
+              <span class="idea-score" data-tippy-content="Conviction score">75</span>
+            </div>
+          </div>
+          <div class="idea-entry scroll-reveal">
+            <div class="idea-priority-bar medium"></div>
+            <div class="idea-content">
+              <h4>Cross-Border Settlement Network</h4>
+              <p>Launch a multi-bank settlement network using distributed ledger tech. Target: 10 banking partners across 4 continents.</p>
+              <div class="idea-tags">
+                <span class="idea-tag violet">Infrastructure</span>
+                <span class="idea-tag silver">Partnerships</span>
+              </div>
+            </div>
+            <div class="idea-meta">
+              <span class="mono">Feb 5</span>
+              <span class="idea-score" data-tippy-content="Conviction score">71</span>
+            </div>
+          </div>
+          <div class="idea-entry scroll-reveal">
+            <div class="idea-priority-bar low"></div>
+            <div class="idea-content">
+              <h4>Synthetic Asset Derivatives Platform</h4>
+              <p>Create a regulated platform for synthetic derivatives exposure to illiquid assets. Requires FSA approval in 3 jurisdictions.</p>
+              <div class="idea-tags">
+                <span class="idea-tag violet">Research</span>
+                <span class="idea-tag silver">Regulatory</span>
+              </div>
+            </div>
+            <div class="idea-meta">
+              <span class="mono">Feb 1</span>
+              <span class="idea-score" data-tippy-content="Conviction score">54</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== AI CHAT ==================== -->
+    <section data-page="ai-chat" class="page-section">
+      <div class="page-card-stack">
+        <div class="page-title-row">
+          <h2>Mercury AI Terminal</h2>
+          <div class="chat-model-badge mono">GPT-4 Turbo</div>
+        </div>
+
+        <div class="chat-terminal">
+          <div class="chat-messages">
+            <div class="chat-msg user scroll-reveal">
+              <div class="chat-sender-badge user-badge">AC</div>
+              <div class="chat-bubble user-bubble">
+                <p>Analyze the risk exposure of our Apex Capital Fund III positions, focusing on concentration risk and correlation to macro rates.</p>
+              </div>
+              <span class="chat-time mono">14:31</span>
+            </div>
+            <div class="chat-msg ai scroll-reveal">
+              <div class="chat-sender-badge ai-badge">Hg</div>
+              <div class="chat-bubble ai-bubble">
+                <p>Analyzing Apex Capital Fund III risk profile:</p>
+                <p><strong>Concentration Risk:</strong> Your top 3 positions (PayStream, LedgerNode, VaultSecure) represent 44.4% of NAV. This exceeds the 40% guideline threshold by 4.4 percentage points. Recommend trimming PYST allocation by 3% and redistributing to lower-correlation assets.</p>
+                <p><strong>Rates Correlation:</strong> The portfolio has a 0.72 beta to 10Y Treasury yields. LedgerNode Protocol (0.91 beta) and NexGen Banking (0.85 beta) are the primary drivers. A 50bps rate hike would impact NAV by approximately -2.8% based on historical sensitivity.</p>
+                <p><strong>Recommendation:</strong> Consider adding exposure to payment infrastructure plays with lower duration sensitivity. ClearBridge Payments has only 0.23 rates beta and is currently your best diversifier.</p>
+              </div>
+              <span class="chat-time mono">14:31</span>
+            </div>
+            <div class="chat-msg user scroll-reveal">
+              <div class="chat-sender-badge user-badge">AC</div>
+              <div class="chat-bubble user-bubble">
+                <p>What's the optimal hedge ratio if we expect the Fed to hold rates through Q3 2026?</p>
+              </div>
+              <span class="chat-time mono">14:33</span>
+            </div>
+            <div class="chat-msg ai scroll-reveal">
+              <div class="chat-sender-badge ai-badge">Hg</div>
+              <div class="chat-bubble ai-bubble">
+                <p>Under a rates-hold scenario through Q3 2026:</p>
+                <p><strong>Optimal Hedge Ratio:</strong> 0.45x notional via 2Y Treasury futures. This neutralizes 78% of your rates exposure while preserving upside from credit spread tightening.</p>
+                <p><strong>Cost:</strong> Estimated carry cost of $1.2M/quarter at current futures pricing. Net impact to IRR: -0.3% annualized.</p>
+                <p><strong>Alternative:</strong> Interest rate collar (buy 4.5% cap, sell 3.75% floor) costs $890K but limits downside to -1.4% NAV impact. This preserves more upside if rates unexpectedly drop.</p>
+              </div>
+              <span class="chat-time mono">14:34</span>
+            </div>
+          </div>
+
+          <!-- Mercury typing indicator -->
+          <div class="typing-indicator" id="typing-indicator" style="display:none;">
+            <div class="chat-sender-badge ai-badge">Hg</div>
+            <div class="typing-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <div class="chat-input-area">
+            <input type="text" class="chat-input" placeholder="Ask Mercury AI..." />
+            <button class="chrome-btn chat-send" data-tippy-content="Send message">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SETTINGS ==================== -->
+    <section data-page="settings" class="page-section">
+      <div class="page-card-stack">
+        <div class="page-title-row">
+          <h2>Settings</h2>
+        </div>
+
+        <div class="settings-sections">
+          <div class="settings-group scroll-reveal">
+            <div class="settings-group-header">
+              <h3>Account</h3>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Display Name</h4>
+                <p>Your name as shown across the platform</p>
+              </div>
+              <input type="text" class="chrome-input" value="Alex Chen" />
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Email</h4>
+                <p>Primary contact for notifications and alerts</p>
+              </div>
+              <input type="text" class="chrome-input" value="alex.chen@mercuryfi.com" />
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Role</h4>
+                <p>Your permission level within the organization</p>
+              </div>
+              <span class="chrome-badge">Chief Financial Officer</span>
+            </div>
+          </div>
+
+          <div class="settings-group scroll-reveal">
+            <div class="settings-group-header">
+              <h3>Preferences</h3>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Dark Mode</h4>
+                <p>Use dark interface theme across all views</p>
+              </div>
+              <label class="mercury-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Real-time Alerts</h4>
+                <p>Push notifications for margin calls and compliance flags</p>
+              </div>
+              <label class="mercury-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Ambient Animations</h4>
+                <p>Enable chrome light drift and idle animations</p>
+              </div>
+              <label class="mercury-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Transaction Confirmations</h4>
+                <p>Show metallic flash feedback on completed actions</p>
+              </div>
+              <label class="mercury-toggle">
+                <input type="checkbox" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-group scroll-reveal">
+            <div class="settings-group-header">
+              <h3>Security</h3>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Two-Factor Authentication</h4>
+                <p>Require hardware key or TOTP for every login</p>
+              </div>
+              <label class="mercury-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Session Timeout</h4>
+                <p>Auto-lock after inactivity period</p>
+              </div>
+              <select class="chrome-select">
+                <option>15 minutes</option>
+                <option selected>30 minutes</option>
+                <option>1 hour</option>
+                <option>4 hours</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>API Key</h4>
+                <p>Your personal API access token</p>
+              </div>
+              <div class="api-key-row">
+                <code class="mono api-key">mfi_sk_live_••••••••••••3x9K</code>
+                <button class="chrome-btn sm">Reveal</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-group scroll-reveal">
+            <div class="settings-group-header">
+              <h3>Data & Integrations</h3>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Bloomberg Terminal</h4>
+                <p>Real-time market data and analytics feed</p>
+              </div>
+              <span class="status-badge complete">Connected</span>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Refinitiv Eikon</h4>
+                <p>Alternative data and ESG scoring integration</p>
+              </div>
+              <span class="status-badge pending">Configuring</span>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Export Format</h4>
+                <p>Default format for data exports and reports</p>
+              </div>
+              <select class="chrome-select">
+                <option selected>CSV</option>
+                <option>JSON</option>
+                <option>XLSX</option>
+                <option>PDF</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- GSAP for liquid motion animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- Tippy.js for chrome bubble tooltips -->
+  <script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

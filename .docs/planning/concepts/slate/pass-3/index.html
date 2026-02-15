@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Obsidian Forge — Horological Command</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Anime.js — staggered reveals, volcanic crack animations, ember glow pulses -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" defer></script>
+  <!-- SortableJS — kanban card drag-and-drop -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js" defer></script>
+</head>
+<body>
+
+  <!-- ========== TOP TAB STRIP (browser-tab-row nav) ========== -->
+  <header class="tab-strip" id="tabStrip">
+    <div class="tab-strip__brand">
+      <svg class="brand-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 2L2 8v12l12 6 12-6V8L14 2z" stroke="#cc2200" stroke-width="1.5" fill="none"/>
+        <path d="M14 8l-6 3v6l6 3 6-3v-6l-6-3z" fill="#cc2200" opacity="0.6"/>
+        <circle cx="14" cy="14" r="2" fill="#ff6600"/>
+      </svg>
+      <span class="brand-name">Obsidian<span class="brand-accent">Forge</span></span>
+    </div>
+    <nav class="tab-strip__tabs" id="mainTabs" role="tablist">
+      <button class="tab-btn active" data-view="dashboard" role="tab" aria-selected="true">
+        <svg class="tab-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 6a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zm10 0a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="tab-btn" data-view="projects" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
+        <span>Projects</span>
+      </button>
+      <button class="tab-btn" data-view="project-workspace" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5z"/></svg>
+        <span>Workspace</span>
+      </button>
+      <button class="tab-btn" data-view="kanban" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm6-6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm2 8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z"/></svg>
+        <span>Kanban</span>
+      </button>
+      <button class="tab-btn" data-view="whiteboard" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm0 2h12v10H4V5z"/></svg>
+        <span>Whiteboard</span>
+      </button>
+      <button class="tab-btn" data-view="schema-planner" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm8 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V4zm-8 8a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1v-4z"/></svg>
+        <span>Schema</span>
+      </button>
+      <button class="tab-btn" data-view="directory-tree" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z"/><path d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H8a2 2 0 01-2-2v-2z"/></svg>
+        <span>Files</span>
+      </button>
+      <button class="tab-btn" data-view="ideas" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/></svg>
+        <span>Ideas</span>
+      </button>
+      <button class="tab-btn" data-view="ai-chat" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7z"/></svg>
+        <span>AI Chat</span>
+      </button>
+      <button class="tab-btn" data-view="settings" role="tab" aria-selected="false">
+        <svg class="tab-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+    <button class="tab-strip__mobile-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+    </button>
+  </header>
+
+  <!-- ========== MOBILE NAV OVERLAY ========== -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay">
+    <nav class="mobile-nav-list" id="mobileNavList">
+      <button class="mobile-nav-item active" data-view="dashboard">Dashboard</button>
+      <button class="mobile-nav-item" data-view="projects">Projects</button>
+      <button class="mobile-nav-item" data-view="project-workspace">Workspace</button>
+      <button class="mobile-nav-item" data-view="kanban">Kanban</button>
+      <button class="mobile-nav-item" data-view="whiteboard">Whiteboard</button>
+      <button class="mobile-nav-item" data-view="schema-planner">Schema</button>
+      <button class="mobile-nav-item" data-view="directory-tree">Files</button>
+      <button class="mobile-nav-item" data-view="ideas">Ideas</button>
+      <button class="mobile-nav-item" data-view="ai-chat">AI Chat</button>
+      <button class="mobile-nav-item" data-view="settings">Settings</button>
+    </nav>
+  </div>
+
+  <!-- ========== MAIN CONTENT SHELL ========== -->
+  <main class="content-shell" id="contentShell">
+
+    <!-- Ambient volcanic crack overlay -->
+    <div class="ambient-cracks" id="ambientCracks"></div>
+
+    <!-- TOOLTIP ELEMENT -->
+    <div class="obsidian-tooltip" id="obsidianTooltip" aria-hidden="true"></div>
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <section class="view-panel active" data-page="dashboard">
+      <div class="view-inner">
+        <div class="view-header">
+          <h1 class="view-title engraved-text">Master Workshop</h1>
+          <p class="view-subtitle">Horological operations at a glance</p>
+        </div>
+
+        <div class="dashboard-metrics">
+          <div class="metric-card glass-card" data-tooltip="Active timepiece commissions">
+            <div class="metric-value ember-glow">14</div>
+            <div class="metric-label">Active Commissions</div>
+            <div class="metric-trend trend-up">+3 this quarter</div>
+            <div class="card-reflection"></div>
+          </div>
+          <div class="metric-card glass-card" data-tooltip="Movements in final adjustment">
+            <div class="metric-value ember-glow">7</div>
+            <div class="metric-label">In Final Regulation</div>
+            <div class="metric-trend trend-up">+2 this week</div>
+            <div class="card-reflection"></div>
+          </div>
+          <div class="metric-card glass-card" data-tooltip="Components awaiting inspection">
+            <div class="metric-value">238</div>
+            <div class="metric-label">Parts in QC Queue</div>
+            <div class="metric-trend trend-neutral">Stable</div>
+            <div class="card-reflection"></div>
+          </div>
+          <div class="metric-card glass-card" data-tooltip="Revenue this quarter in CHF">
+            <div class="metric-value">2.4M</div>
+            <div class="metric-label">Revenue (CHF)</div>
+            <div class="metric-trend trend-up">+18% YoY</div>
+            <div class="card-reflection"></div>
+          </div>
+        </div>
+
+        <div class="volcanic-divider"></div>
+
+        <div class="dashboard-sections">
+          <div class="dash-section">
+            <h2 class="section-heading engraved-text">Recent Activity</h2>
+            <ul class="activity-feed">
+              <li class="activity-item"><span class="activity-dot dot-red"></span><span class="activity-text">Tourbillon Ref. 7042 movement completed micro-adjustment — <span class="mono-tag">2h ago</span></span></li>
+              <li class="activity-item"><span class="activity-dot dot-orange"></span><span class="activity-text">Grand Complication dial engraving approved by master engraver — <span class="mono-tag">4h ago</span></span></li>
+              <li class="activity-item"><span class="activity-dot dot-red"></span><span class="activity-text">Perpetual Calendar Ref. 5200 mainspring torque test passed — <span class="mono-tag">6h ago</span></span></li>
+              <li class="activity-item"><span class="activity-dot dot-orange"></span><span class="activity-text">Minute Repeater acoustic chamber resonance calibrated — <span class="mono-tag">1d ago</span></span></li>
+              <li class="activity-item"><span class="activity-dot dot-red"></span><span class="activity-text">Skeleton movement Ref. 3310 bridge polishing complete — <span class="mono-tag">1d ago</span></span></li>
+            </ul>
+          </div>
+          <div class="dash-section">
+            <h2 class="section-heading engraved-text">Upcoming Deadlines</h2>
+            <ul class="deadline-list">
+              <li class="deadline-item glass-card"><span class="deadline-date ember-glow">Feb 18</span><span class="deadline-text">Ref. 7042 Tourbillon — Client presentation</span><div class="card-reflection"></div></li>
+              <li class="deadline-item glass-card"><span class="deadline-date">Feb 22</span><span class="deadline-text">Grand Complication — Case fitting</span><div class="card-reflection"></div></li>
+              <li class="deadline-item glass-card"><span class="deadline-date">Mar 01</span><span class="deadline-text">Ref. 5200 — COSC certification submission</span><div class="card-reflection"></div></li>
+              <li class="deadline-item glass-card"><span class="deadline-date">Mar 10</span><span class="deadline-text">Minute Repeater — Final acoustic test</span><div class="card-reflection"></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECTS ==================== -->
+    <section class="view-panel" data-page="projects">
+      <div class="view-inner">
+        <div class="view-header">
+          <h1 class="view-title engraved-text">Timepiece Commissions</h1>
+          <p class="view-subtitle">Active horological projects</p>
+        </div>
+
+        <div class="projects-list">
+          <div class="project-row glass-card" data-tooltip="Commissioned: Geneva, Switzerland">
+            <div class="project-status-dot dot-red"></div>
+            <div class="project-info">
+              <h3 class="project-name">Tourbillon Ref. 7042</h3>
+              <p class="project-desc">Flying tourbillon with 72-hour power reserve, hand-guilloched dial</p>
+            </div>
+            <div class="project-meta">
+              <span class="meta-tag">Movement Assembly</span>
+              <span class="meta-progress"><span class="progress-fill" style="width:78%"></span></span>
+            </div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="project-row glass-card" data-tooltip="Commissioned: Dubai, UAE">
+            <div class="project-status-dot dot-orange"></div>
+            <div class="project-info">
+              <h3 class="project-name">Grand Complication Perpetuelle</h3>
+              <p class="project-desc">Perpetual calendar, minute repeater, split-seconds chronograph</p>
+            </div>
+            <div class="project-meta">
+              <span class="meta-tag">Dial Finishing</span>
+              <span class="meta-progress"><span class="progress-fill" style="width:52%"></span></span>
+            </div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="project-row glass-card" data-tooltip="Commissioned: Tokyo, Japan">
+            <div class="project-status-dot dot-red"></div>
+            <div class="project-info">
+              <h3 class="project-name">Perpetual Calendar Ref. 5200</h3>
+              <p class="project-desc">Ultra-thin perpetual calendar with moon phase indicator</p>
+            </div>
+            <div class="project-meta">
+              <span class="meta-tag">Testing</span>
+              <span class="meta-progress"><span class="progress-fill" style="width:91%"></span></span>
+            </div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="project-row glass-card" data-tooltip="Commissioned: New York, USA">
+            <div class="project-status-dot dot-orange"></div>
+            <div class="project-info">
+              <h3 class="project-name">Minute Repeater Classique</h3>
+              <p class="project-desc">Cathedral gong minute repeater with enamel dial</p>
+            </div>
+            <div class="project-meta">
+              <span class="meta-tag">Acoustic Tuning</span>
+              <span class="meta-progress"><span class="progress-fill" style="width:64%"></span></span>
+            </div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="project-row glass-card" data-tooltip="Commissioned: London, UK">
+            <div class="project-status-dot dot-red"></div>
+            <div class="project-info">
+              <h3 class="project-name">Skeleton Movement Ref. 3310</h3>
+              <p class="project-desc">Hand-engraved open-worked movement with sapphire bridges</p>
+            </div>
+            <div class="project-meta">
+              <span class="meta-tag">Engraving</span>
+              <span class="meta-progress"><span class="progress-fill" style="width:35%"></span></span>
+            </div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="project-row glass-card" data-tooltip="Commissioned: Singapore">
+            <div class="project-status-dot dot-orange"></div>
+            <div class="project-info">
+              <h3 class="project-name">World Time Voyageur</h3>
+              <p class="project-desc">24 timezone display with cloisonne enamel world map</p>
+            </div>
+            <div class="project-meta">
+              <span class="meta-tag">Enamel Work</span>
+              <span class="meta-progress"><span class="progress-fill" style="width:22%"></span></span>
+            </div>
+            <div class="card-reflection"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECT WORKSPACE ==================== -->
+    <section class="view-panel" data-page="project-workspace">
+      <div class="view-inner">
+        <div class="view-header">
+          <h1 class="view-title engraved-text">Ref. 7042 Workspace</h1>
+          <p class="view-subtitle">Tourbillon Commission — Active workspace</p>
+        </div>
+
+        <div class="workspace-grid">
+          <div class="workspace-panel glass-card" id="wsOverview">
+            <h3 class="panel-heading">Commission Overview</h3>
+            <div class="volcanic-crack-border"></div>
+            <div class="ws-detail-list">
+              <div class="ws-detail"><span class="detail-label">Client</span><span class="detail-value">Maison Gauthier, Geneva</span></div>
+              <div class="ws-detail"><span class="detail-label">Reference</span><span class="detail-value mono-tag">REF-7042-TBN</span></div>
+              <div class="ws-detail"><span class="detail-label">Movement</span><span class="detail-value">Cal. OF-7042, 253 components</span></div>
+              <div class="ws-detail"><span class="detail-label">Case Material</span><span class="detail-value">950 Platinum, 40mm</span></div>
+              <div class="ws-detail"><span class="detail-label">Power Reserve</span><span class="detail-value ember-glow">72 hours</span></div>
+              <div class="ws-detail"><span class="detail-label">Target Accuracy</span><span class="detail-value">-2/+4 sec/day</span></div>
+            </div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="workspace-panel glass-card" id="wsTimeline">
+            <h3 class="panel-heading">Production Timeline</h3>
+            <div class="volcanic-crack-border"></div>
+            <div class="timeline-track">
+              <div class="timeline-node completed"><span class="node-marker"></span><span class="node-label">Design approved</span></div>
+              <div class="timeline-node completed"><span class="node-marker"></span><span class="node-label">Component machining</span></div>
+              <div class="timeline-node completed"><span class="node-marker"></span><span class="node-label">Bridge decoration</span></div>
+              <div class="timeline-node active"><span class="node-marker ember-pulse"></span><span class="node-label">Movement assembly</span></div>
+              <div class="timeline-node"><span class="node-marker"></span><span class="node-label">Regulation</span></div>
+              <div class="timeline-node"><span class="node-marker"></span><span class="node-label">Casing</span></div>
+              <div class="timeline-node"><span class="node-marker"></span><span class="node-label">Final QC</span></div>
+            </div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="workspace-panel glass-card" id="wsNotes">
+            <h3 class="panel-heading">Workshop Notes</h3>
+            <div class="volcanic-crack-border"></div>
+            <div class="notes-content">
+              <div class="note-entry"><span class="note-time mono-tag">14:32</span><span class="note-text">Balance wheel frequency verified at 28,800 vph. Amplitude consistent at 285 degrees in dial-up position.</span></div>
+              <div class="note-entry"><span class="note-time mono-tag">11:15</span><span class="note-text">Tourbillon cage rotation smooth — 60-second revolution within 0.2s tolerance. Escapement fork polished.</span></div>
+              <div class="note-entry"><span class="note-time mono-tag">09:40</span><span class="note-text">Mainspring barrel assembled. Torque curve measured — 72h reserve confirmed with ±5% variance.</span></div>
+            </div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="workspace-panel glass-card" id="wsTeam">
+            <h3 class="panel-heading">Atelier Team</h3>
+            <div class="volcanic-crack-border"></div>
+            <div class="team-roster">
+              <div class="team-member"><div class="member-avatar ember-border">JD</div><div class="member-info"><span class="member-name">Jean Delacroix</span><span class="member-role">Master Watchmaker</span></div></div>
+              <div class="team-member"><div class="member-avatar">HS</div><div class="member-info"><span class="member-name">Hiroshi Sato</span><span class="member-role">Movement Finisher</span></div></div>
+              <div class="team-member"><div class="member-avatar">LB</div><div class="member-info"><span class="member-name">Lucie Bonnet</span><span class="member-role">Engraver</span></div></div>
+              <div class="team-member"><div class="member-avatar">MK</div><div class="member-info"><span class="member-name">Marcus Klein</span><span class="member-role">QC Inspector</span></div></div>
+            </div>
+            <div class="card-reflection"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== KANBAN ==================== -->
+    <section class="view-panel" data-page="kanban">
+      <div class="view-inner">
+        <div class="view-header">
+          <h1 class="view-title engraved-text">Atelier Workflow</h1>
+          <p class="view-subtitle">Drag obsidian cards between stages</p>
+        </div>
+
+        <div class="kanban-board">
+          <div class="kanban-col">
+            <div class="kanban-col-header volcanic-crack-header">
+              <h3>Incoming</h3>
+              <span class="col-count">3</span>
+            </div>
+            <div class="kanban-cards" data-col="incoming">
+              <div class="kanban-card glass-card" draggable="true">
+                <div class="card-priority priority-high"></div>
+                <h4 class="card-title">Source sapphire crystal blanks</h4>
+                <p class="card-body">Contact Saint-Gobain for 40mm domed sapphire with AR coating specs</p>
+                <span class="card-tag">Procurement</span>
+                <div class="card-reflection"></div>
+              </div>
+              <div class="kanban-card glass-card" draggable="true">
+                <div class="card-priority priority-medium"></div>
+                <h4 class="card-title">Enamel dial color samples</h4>
+                <p class="card-body">Prepare three grand feu enamel swatches — midnight blue, ivory, noir</p>
+                <span class="card-tag">Design</span>
+                <div class="card-reflection"></div>
+              </div>
+              <div class="kanban-card glass-card" draggable="true">
+                <div class="card-priority priority-low"></div>
+                <h4 class="card-title">Client presentation deck</h4>
+                <p class="card-body">Photograph current movement state for Geneva showing</p>
+                <span class="card-tag">Client Relations</span>
+                <div class="card-reflection"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-col">
+            <div class="kanban-col-header volcanic-crack-header">
+              <h3>In Progress</h3>
+              <span class="col-count">2</span>
+            </div>
+            <div class="kanban-cards" data-col="progress">
+              <div class="kanban-card glass-card" draggable="true">
+                <div class="card-priority priority-high"></div>
+                <h4 class="card-title">Balance wheel adjustment</h4>
+                <p class="card-body">Fine-tune balance spring terminal curve for improved isochronism</p>
+                <span class="card-tag">Assembly</span>
+                <div class="card-reflection"></div>
+              </div>
+              <div class="kanban-card glass-card" draggable="true">
+                <div class="card-priority priority-medium"></div>
+                <h4 class="card-title">Bridge beveling and polishing</h4>
+                <p class="card-body">Apply anglage to all bridge edges — 45-degree internal angles</p>
+                <span class="card-tag">Finishing</span>
+                <div class="card-reflection"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-col">
+            <div class="kanban-col-header volcanic-crack-header">
+              <h3>Review</h3>
+              <span class="col-count">2</span>
+            </div>
+            <div class="kanban-cards" data-col="review">
+              <div class="kanban-card glass-card" draggable="true">
+                <div class="card-priority priority-high"></div>
+                <h4 class="card-title">Mainspring torque analysis</h4>
+                <p class="card-body">Validate 72h power reserve curve under 6-position testing</p>
+                <span class="card-tag">Quality Control</span>
+                <div class="card-reflection"></div>
+              </div>
+              <div class="kanban-card glass-card" draggable="true">
+                <div class="card-priority priority-medium"></div>
+                <h4 class="card-title">Crown mechanism prototype</h4>
+                <p class="card-body">Test screw-down crown with dual gasket system for 100m WR</p>
+                <span class="card-tag">Engineering</span>
+                <div class="card-reflection"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-col">
+            <div class="kanban-col-header volcanic-crack-header">
+              <h3>Completed</h3>
+              <span class="col-count">2</span>
+            </div>
+            <div class="kanban-cards" data-col="done">
+              <div class="kanban-card glass-card completed-card" draggable="true">
+                <div class="card-priority priority-done"></div>
+                <h4 class="card-title">Escapement pallet stone setting</h4>
+                <p class="card-body">Ruby pallet stones set with correct impulse angle — verified under 40x</p>
+                <span class="card-tag">Assembly</span>
+                <div class="card-reflection"></div>
+              </div>
+              <div class="kanban-card glass-card completed-card" draggable="true">
+                <div class="card-priority priority-done"></div>
+                <h4 class="card-title">Rotor weight machining</h4>
+                <p class="card-body">22k gold oscillating weight CNC milled and hand-finished</p>
+                <span class="card-tag">Manufacturing</span>
+                <div class="card-reflection"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== WHITEBOARD ==================== -->
+    <section class="view-panel" data-page="whiteboard">
+      <div class="view-inner">
+        <div class="view-header">
+          <h1 class="view-title engraved-text">Design Canvas</h1>
+          <p class="view-subtitle">Visual planning surface</p>
+        </div>
+
+        <div class="whiteboard-canvas" id="whiteboardCanvas">
+          <svg class="wb-connections" id="wbConnections" width="100%" height="100%">
+            <defs>
+              <linearGradient id="magmaLine" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#cc2200"/>
+                <stop offset="50%" stop-color="#ff6600"/>
+                <stop offset="100%" stop-color="#cc2200"/>
+              </linearGradient>
+              <filter id="glowFilter">
+                <feGaussianBlur stdDeviation="3" result="glow"/>
+                <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <line x1="200" y1="120" x2="500" y2="120" stroke="url(#magmaLine)" stroke-width="2" filter="url(#glowFilter)" class="magma-vein"/>
+            <line x1="200" y1="120" x2="200" y2="300" stroke="url(#magmaLine)" stroke-width="2" filter="url(#glowFilter)" class="magma-vein"/>
+            <line x1="500" y1="120" x2="500" y2="300" stroke="url(#magmaLine)" stroke-width="2" filter="url(#glowFilter)" class="magma-vein"/>
+            <line x1="200" y1="300" x2="350" y2="430" stroke="url(#magmaLine)" stroke-width="2" filter="url(#glowFilter)" class="magma-vein"/>
+            <line x1="500" y1="300" x2="350" y2="430" stroke="url(#magmaLine)" stroke-width="2" filter="url(#glowFilter)" class="magma-vein"/>
+          </svg>
+          <div class="wb-node glass-card" style="left:120px;top:70px;">
+            <div class="node-title">Movement Architecture</div>
+            <div class="node-body">Cal. OF-7042 automatic with flying tourbillon at 6 o'clock</div>
+            <div class="card-reflection"></div>
+          </div>
+          <div class="wb-node glass-card" style="left:420px;top:70px;">
+            <div class="node-title">Case Design</div>
+            <div class="node-body">950 Pt, 40mm, polished bezel, brushed flanks, exhibition caseback</div>
+            <div class="card-reflection"></div>
+          </div>
+          <div class="wb-node glass-card" style="left:120px;top:250px;">
+            <div class="node-title">Dial Concept</div>
+            <div class="node-body">Guilloched sunburst from center, applied hour markers in white gold</div>
+            <div class="card-reflection"></div>
+          </div>
+          <div class="wb-node glass-card" style="left:420px;top:250px;">
+            <div class="node-title">Strap Options</div>
+            <div class="node-body">Hand-stitched alligator in midnight blue, platinum deployant clasp</div>
+            <div class="card-reflection"></div>
+          </div>
+          <div class="wb-node glass-card" style="left:260px;top:390px;">
+            <div class="node-title">Client Specifications</div>
+            <div class="node-body">Personalized rotor engraving, sapphire dial window at tourbillon</div>
+            <div class="card-reflection"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCHEMA PLANNER ==================== -->
+    <section class="view-panel" data-page="schema-planner">
+      <div class="view-inner">
+        <div class="view-header">
+          <h1 class="view-title engraved-text">Movement Schema</h1>
+          <p class="view-subtitle">Component relationship diagram</p>
+        </div>
+
+        <div class="schema-canvas">
+          <svg class="schema-lines" width="100%" height="100%">
+            <line x1="250" y1="80" x2="250" y2="200" stroke="url(#magmaLine)" stroke-width="2" filter="url(#glowFilter)" class="magma-vein"/>
+            <line x1="250" y1="200" x2="100" y2="340" stroke="url(#magmaLine)" stroke-width="2" filter="url(#glowFilter)" class="magma-vein"/>
+            <line x1="250" y1="200" x2="400" y2="340" stroke="url(#magmaLine)" stroke-width="2" filter="url(#glowFilter)" class="magma-vein"/>
+            <line x1="550" y1="80" x2="550" y2="200" stroke="url(#magmaLine)" stroke-width="2" filter="url(#glowFilter)" class="magma-vein"/>
+            <line x1="550" y1="200" x2="550" y2="340" stroke="url(#magmaLine)" stroke-width="2" filter="url(#glowFilter)" class="magma-vein"/>
+            <line x1="400" y1="340" x2="550" y2="340" stroke="url(#magmaLine)" stroke-width="1.5" filter="url(#glowFilter)" class="magma-vein"/>
+          </svg>
+
+          <div class="schema-entity volcanic-entity" style="left:160px;top:30px;">
+            <div class="entity-header">Mainspring Barrel</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-key">torque</span><span class="field-type mono-tag">float</span></div>
+              <div class="field"><span class="field-key">material</span><span class="field-type mono-tag">Nivaflex</span></div>
+              <div class="field"><span class="field-key">turns</span><span class="field-type mono-tag">int</span></div>
+            </div>
+          </div>
+
+          <div class="schema-entity volcanic-entity" style="left:160px;top:170px;">
+            <div class="entity-header">Gear Train</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-key">ratio</span><span class="field-type mono-tag">1:8</span></div>
+              <div class="field"><span class="field-key">wheels</span><span class="field-type mono-tag">4</span></div>
+              <div class="field"><span class="field-key">jewels</span><span class="field-type mono-tag">ruby</span></div>
+            </div>
+          </div>
+
+          <div class="schema-entity volcanic-entity" style="left:20px;top:310px;">
+            <div class="entity-header">Escapement</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-key">type</span><span class="field-type mono-tag">Swiss Lever</span></div>
+              <div class="field"><span class="field-key">frequency</span><span class="field-type mono-tag">4Hz</span></div>
+            </div>
+          </div>
+
+          <div class="schema-entity volcanic-entity" style="left:310px;top:310px;">
+            <div class="entity-header">Tourbillon Cage</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-key">rotation</span><span class="field-type mono-tag">60s</span></div>
+              <div class="field"><span class="field-key">weight</span><span class="field-type mono-tag">0.3g</span></div>
+              <div class="field"><span class="field-key">material</span><span class="field-type mono-tag">Titanium</span></div>
+            </div>
+          </div>
+
+          <div class="schema-entity volcanic-entity" style="left:460px;top:30px;">
+            <div class="entity-header">Rotor Assembly</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-key">mass</span><span class="field-type mono-tag">22k gold</span></div>
+              <div class="field"><span class="field-key">bearing</span><span class="field-type mono-tag">ceramic</span></div>
+            </div>
+          </div>
+
+          <div class="schema-entity volcanic-entity" style="left:460px;top:170px;">
+            <div class="entity-header">Winding System</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-key">direction</span><span class="field-type mono-tag">bi-dir</span></div>
+              <div class="field"><span class="field-key">efficiency</span><span class="field-type mono-tag">94%</span></div>
+            </div>
+          </div>
+
+          <div class="schema-entity volcanic-entity" style="left:460px;top:310px;">
+            <div class="entity-header">Balance Wheel</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-key">inertia</span><span class="field-type mono-tag">10.2 mg*cm2</span></div>
+              <div class="field"><span class="field-key">amplitude</span><span class="field-type mono-tag">285deg</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== DIRECTORY TREE ==================== -->
+    <section class="view-panel" data-page="directory-tree">
+      <div class="view-inner">
+        <div class="view-header">
+          <h1 class="view-title engraved-text">Document Vault</h1>
+          <p class="view-subtitle">Technical archive structure</p>
+        </div>
+
+        <div class="tree-container">
+          <ul class="file-tree">
+            <li class="tree-branch">
+              <button class="branch-toggle expanded" data-tooltip="Tourbillon commission files">
+                <span class="toggle-icon ember-indicator"></span>
+                <span class="branch-label">Ref-7042-Tourbillon</span>
+              </button>
+              <ul class="tree-children open">
+                <li class="tree-branch">
+                  <button class="branch-toggle expanded">
+                    <span class="toggle-icon ember-indicator"></span>
+                    <span class="branch-label">01-Design</span>
+                  </button>
+                  <ul class="tree-children open">
+                    <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">movement-cal-7042.dwg</span><span class="leaf-meta mono-tag">2.4 MB</span></li>
+                    <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">case-platinum-40mm.stp</span><span class="leaf-meta mono-tag">1.8 MB</span></li>
+                    <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">dial-guilloché-pattern.ai</span><span class="leaf-meta mono-tag">890 KB</span></li>
+                  </ul>
+                </li>
+                <li class="tree-branch">
+                  <button class="branch-toggle">
+                    <span class="toggle-icon ember-indicator"></span>
+                    <span class="branch-label">02-Manufacturing</span>
+                  </button>
+                  <ul class="tree-children">
+                    <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">cnc-bridge-program.nc</span><span class="leaf-meta mono-tag">340 KB</span></li>
+                    <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">escapement-specs.pdf</span><span class="leaf-meta mono-tag">1.2 MB</span></li>
+                  </ul>
+                </li>
+                <li class="tree-branch">
+                  <button class="branch-toggle">
+                    <span class="toggle-icon ember-indicator"></span>
+                    <span class="branch-label">03-Quality-Control</span>
+                  </button>
+                  <ul class="tree-children">
+                    <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">timing-results-6pos.csv</span><span class="leaf-meta mono-tag">45 KB</span></li>
+                    <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">amplitude-log.json</span><span class="leaf-meta mono-tag">12 KB</span></li>
+                    <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">waterproof-test.pdf</span><span class="leaf-meta mono-tag">780 KB</span></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="tree-branch">
+              <button class="branch-toggle" data-tooltip="Grand Complication files">
+                <span class="toggle-icon ember-indicator"></span>
+                <span class="branch-label">Grand-Complication-Perpetuelle</span>
+              </button>
+              <ul class="tree-children">
+                <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">complication-stack.pdf</span><span class="leaf-meta mono-tag">5.2 MB</span></li>
+                <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">repeater-gong-analysis.wav</span><span class="leaf-meta mono-tag">3.1 MB</span></li>
+              </ul>
+            </li>
+            <li class="tree-branch">
+              <button class="branch-toggle" data-tooltip="Perpetual Calendar files">
+                <span class="toggle-icon ember-indicator"></span>
+                <span class="branch-label">Ref-5200-Perpetual-Calendar</span>
+              </button>
+              <ul class="tree-children">
+                <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">moon-phase-disc.ai</span><span class="leaf-meta mono-tag">1.1 MB</span></li>
+                <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">calendar-mechanism.stp</span><span class="leaf-meta mono-tag">4.3 MB</span></li>
+              </ul>
+            </li>
+            <li class="tree-branch">
+              <button class="branch-toggle" data-tooltip="Shared resources">
+                <span class="toggle-icon ember-indicator"></span>
+                <span class="branch-label">_Shared-Resources</span>
+              </button>
+              <ul class="tree-children">
+                <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">supplier-contacts.xlsx</span><span class="leaf-meta mono-tag">120 KB</span></li>
+                <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">material-certifications.pdf</span><span class="leaf-meta mono-tag">2.8 MB</span></li>
+                <li class="tree-leaf"><span class="leaf-icon"></span><span class="leaf-name">brand-guidelines-2026.pdf</span><span class="leaf-meta mono-tag">6.5 MB</span></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== IDEAS ==================== -->
+    <section class="view-panel" data-page="ideas">
+      <div class="view-inner">
+        <div class="view-header">
+          <h1 class="view-title engraved-text">Innovation Vault</h1>
+          <p class="view-subtitle">Horological concepts and breakthroughs</p>
+        </div>
+
+        <div class="ideas-grid">
+          <div class="idea-tile glass-card" data-tooltip="Innovation priority: High">
+            <div class="idea-category ember-glow">Movement</div>
+            <h3 class="idea-title">Silicon Escapement Wheel</h3>
+            <p class="idea-body">Replace steel lever escapement with monocrystalline silicon. Zero lubrication needed, anti-magnetic, lighter mass for improved isochronism. Could extend service intervals from 5 to 10 years.</p>
+            <div class="idea-meta"><span class="mono-tag">Feasibility: 8/10</span></div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="idea-tile glass-card" data-tooltip="Innovation priority: Medium">
+            <div class="idea-category">Materials</div>
+            <h3 class="idea-title">Carbon Composite Bridges</h3>
+            <p class="idea-body">Forged carbon composite for movement bridges — 60% weight reduction while maintaining rigidity. Creates unique marbled visual pattern on each piece, making every watch truly one-of-one.</p>
+            <div class="idea-meta"><span class="mono-tag">Feasibility: 6/10</span></div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="idea-tile glass-card" data-tooltip="Innovation priority: High">
+            <div class="idea-category ember-glow">Complication</div>
+            <h3 class="idea-title">Dual-Time Tourbillon</h3>
+            <p class="idea-body">Two independently regulated tourbillons displaying home and travel time. Differential gear system allows independent setting. World first in flying configuration under 42mm case.</p>
+            <div class="idea-meta"><span class="mono-tag">Feasibility: 4/10</span></div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="idea-tile glass-card" data-tooltip="Innovation priority: Medium">
+            <div class="idea-category">Dial Art</div>
+            <h3 class="idea-title">Meteorite Dial Integration</h3>
+            <p class="idea-body">Source Muonionalusta meteorite for dial material. Natural Widmanstatten patterns visible after acid etching. Each dial has a unique crystalline structure formed over 4.5 billion years.</p>
+            <div class="idea-meta"><span class="mono-tag">Feasibility: 9/10</span></div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="idea-tile glass-card" data-tooltip="Innovation priority: Low">
+            <div class="idea-category">Sustainability</div>
+            <h3 class="idea-title">Reclaimed Gold Program</h3>
+            <p class="idea-body">Partner with ethical refineries to use 100% reclaimed gold for rotors and cases. Full chain-of-custody certification. Marketing angle: luxury without extraction.</p>
+            <div class="idea-meta"><span class="mono-tag">Feasibility: 7/10</span></div>
+            <div class="card-reflection"></div>
+          </div>
+
+          <div class="idea-tile glass-card" data-tooltip="Innovation priority: High">
+            <div class="idea-category ember-glow">Technology</div>
+            <h3 class="idea-title">QR-Linked Digital Twin</h3>
+            <p class="idea-body">Micro-engraved QR code on caseback links to a digital twin — complete production history, timing data, service records, provenance chain. Blockchain-verified ownership transfer.</p>
+            <div class="idea-meta"><span class="mono-tag">Feasibility: 8/10</span></div>
+            <div class="card-reflection"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== AI CHAT ==================== -->
+    <section class="view-panel" data-page="ai-chat">
+      <div class="view-inner">
+        <div class="view-header">
+          <h1 class="view-title engraved-text">Forge Intelligence</h1>
+          <p class="view-subtitle">Horological AI assistant</p>
+        </div>
+
+        <div class="chat-container">
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg msg-user obsidian-msg">
+              <div class="msg-avatar">JD</div>
+              <div class="msg-content">
+                <div class="msg-text">What is the optimal balance spring material for a 4Hz flying tourbillon with minimal thermal drift?</div>
+                <div class="msg-time mono-tag">14:22</div>
+              </div>
+            </div>
+            <div class="chat-msg msg-ai ember-msg">
+              <div class="msg-avatar forge-avatar">
+                <svg viewBox="0 0 20 20" fill="#ff6600"><path d="M10 2L2 7v6l8 5 8-5V7L10 2z"/></svg>
+              </div>
+              <div class="msg-content">
+                <div class="msg-text heated-text">For a 4Hz flying tourbillon, I recommend <strong>Nivarox Spiraflex</strong> — a silicon-based hairspring with a thermocompensation coefficient near zero. Key advantages:
+
+                <br><br><strong>Thermal stability:</strong> Silicon's CTE is 2.6 ppm/K vs. 12 ppm/K for Nivarox alloy — reducing rate variation from ±5 sec/day to ±1 sec/day across 8-38C.
+
+                <br><br><strong>Weight reduction:</strong> Silicon density (2.33 g/cm3) vs. NiSpan-C (8.1 g/cm3) reduces cage momentum by ~15%, improving positional accuracy.
+
+                <br><br><strong>Anti-magnetic:</strong> Inherently non-ferromagnetic, eliminating the need for a soft iron inner case.</div>
+                <div class="msg-time mono-tag">14:22</div>
+              </div>
+            </div>
+            <div class="chat-msg msg-user obsidian-msg">
+              <div class="msg-avatar">JD</div>
+              <div class="msg-content">
+                <div class="msg-text">What about the brittleness concern? We had a silicon pallet fork fracture during shock testing last quarter.</div>
+                <div class="msg-time mono-tag">14:25</div>
+              </div>
+            </div>
+            <div class="chat-msg msg-ai ember-msg">
+              <div class="msg-avatar forge-avatar">
+                <svg viewBox="0 0 20 20" fill="#ff6600"><path d="M10 2L2 7v6l8 5 8-5V7L10 2z"/></svg>
+              </div>
+              <div class="msg-content">
+                <div class="msg-text heated-text">Valid concern. Two mitigation paths:
+
+                <br><br><strong>1. DRIE-optimized geometry:</strong> Use Deep Reactive Ion Etching to create stress-relief fillets at attachment points. Patek Philippe's approach with Spiromax reduced fracture rates by 80%.
+
+                <br><br><strong>2. Hybrid approach:</strong> Silicon hairspring paired with traditional Glucydur balance wheel and metal pallet fork. You get the thermal benefits of silicon where it matters most (the spring) without exposing brittle material to the highest shock loads (the escapement).
+
+                <br><br>Given your Ref. 7042's 253-component complexity, I'd recommend Path 2 for this commission and Path 1 for future iterations once we validate the geometry.</div>
+                <div class="msg-time mono-tag">14:26</div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" class="chat-input" placeholder="Ask the Forge Intelligence..." id="chatInput" />
+            <button class="chat-send-btn" id="chatSendBtn" data-tooltip="Send message">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SETTINGS ==================== -->
+    <section class="view-panel" data-page="settings">
+      <div class="view-inner">
+        <div class="view-header">
+          <h1 class="view-title engraved-text">Control Panel</h1>
+          <p class="view-subtitle">System configuration</p>
+        </div>
+
+        <div class="settings-sections">
+          <div class="settings-group">
+            <h2 class="settings-group-title">Workshop Preferences</h2>
+            <div class="volcanic-divider"></div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Dark Forge Mode</span>
+                <span class="setting-desc">Keep workshop interface at maximum darkness</span>
+              </div>
+              <label class="lava-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span><span class="lava-trail"></span></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Ambient Ember Glow</span>
+                <span class="setting-desc">Subtle volcanic crack animations in background</span>
+              </div>
+              <label class="lava-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span><span class="lava-trail"></span></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Sound Notifications</span>
+                <span class="setting-desc">Acoustic alerts for task completions</span>
+              </div>
+              <label class="lava-toggle">
+                <input type="checkbox" />
+                <span class="toggle-track"><span class="toggle-thumb"></span><span class="lava-trail"></span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h2 class="settings-group-title">Measurement Units</h2>
+            <div class="volcanic-divider"></div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Dimension System</span>
+                <span class="setting-desc">Choose between metric and imperial units</span>
+              </div>
+              <select class="obsidian-select">
+                <option>Metric (mm)</option>
+                <option>Imperial (in)</option>
+                <option>Ligne (''') — Swiss Horological</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Timing Display</span>
+                <span class="setting-desc">Format for timing machine readouts</span>
+              </div>
+              <select class="obsidian-select">
+                <option>Seconds/Day</option>
+                <option>Milliseconds/Day</option>
+                <option>Beat Error (ms)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h2 class="settings-group-title">Data & Sync</h2>
+            <div class="volcanic-divider"></div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Auto-Backup Interval</span>
+                <span class="setting-desc">Frequency of data vault backups</span>
+              </div>
+              <select class="obsidian-select">
+                <option>Every 30 minutes</option>
+                <option>Every hour</option>
+                <option>Every 6 hours</option>
+                <option>Daily</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Sync with Timing Machine</span>
+                <span class="setting-desc">Real-time data from Witschi chronoscope</span>
+              </div>
+              <label class="lava-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span><span class="lava-trail"></span></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Export Format</span>
+                <span class="setting-desc">Default file format for data exports</span>
+              </div>
+              <select class="obsidian-select">
+                <option>JSON</option>
+                <option>CSV</option>
+                <option>PDF Report</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h2 class="settings-group-title">Forge Intelligence</h2>
+            <div class="volcanic-divider"></div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">AI Model</span>
+                <span class="setting-desc">Language model for technical assistance</span>
+              </div>
+              <select class="obsidian-select">
+                <option>Forge-7B (Fast)</option>
+                <option>Forge-70B (Precise)</option>
+                <option>Forge-Expert (Horological)</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Context Memory</span>
+                <span class="setting-desc">Retain conversation history across sessions</span>
+              </div>
+              <label class="lava-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span><span class="lava-trail"></span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="magma-loader">
+      <div class="magma-bar"><div class="magma-fill"></div></div>
+      <span class="loading-text mono-tag">Forging interface...</span>
+    </div>
+  </div>
+
+  <!-- Micro-feedback toast -->
+  <div class="ember-toast" id="emberToast" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

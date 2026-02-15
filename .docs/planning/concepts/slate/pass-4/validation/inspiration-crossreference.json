@@ -1,0 +1,51 @@
+{
+  "passId": "slate-pass-4",
+  "layoutArchetype": "sandstone-desert-mesa",
+  "references": [
+    {
+      "name": "Patagonia",
+      "url": "https://www.patagonia.com",
+      "takeaway": "Use full-bleed landscape photographs as section backgrounds with text overlaid, and derive the entire UI color palette from the natural tones in those photographs (sand, sage, stone, sky).",
+      "howApplied": [
+        "The entire UI palette is derived from natural desert landscape tones: #f0e6d6 (sand), #c4622a (terracotta/red rock), #7a8a6a (sage vegetation), #d4c0a0 (dry clay). Every color references a physical material found in the desert environment.",
+        "The Dashboard view uses landscape-scale visual storytelling: stat formations are presented as mesa landforms at different heights, giving the dashboard a topographic quality rather than a flat grid of numbers.",
+        "Activism/mission content (conservation, wildlife protection, trail stewardship) is given equal visual weight throughout — the Kanban tasks, Ideas, and Chat all foreground conservation work alongside operational tasks, mirroring Patagonia's editorial-operational blend."
+      ],
+      "specificElements": [
+        "Palette colors #f0e6d6, #c4622a, #7a8a6a, #d4c0a0 all derived from sandstone canyon photography tones",
+        "Mesa-height stat formations in Dashboard view mimic landscape elevation profiles",
+        "Content persona centers conservation, wildlife observation, and trail stewardship themes throughout all views"
+      ]
+    },
+    {
+      "name": "Allbirds",
+      "url": "https://www.allbirds.com",
+      "takeaway": "Give each content category its own warm earth-tone background (sandstone beige, mesa red, sage green, sky blue) and tell a material story for each — what it is, where it comes from, how it feels.",
+      "howApplied": [
+        "Each Kanban lane has its own earth-tone identity via the canyon-layer depth system: the Basecamp lane uses terracotta top border (#c4622a), On Trail uses sage (#7a8a6a), Under Review uses amber (#c49a2a), and Summit Reached uses clay (#d4c0a0). This gives each category its own material identity.",
+        "The warm neutral background (#f0e6d6) throughout the application mirrors Allbirds' unbleached cotton/raw linen feeling. The surface cards (#f8f0e4) sit slightly lighter, creating depth through material warmth rather than stark contrast.",
+        "The Schema Planner view tells a 'material story' for each entity — entities are presented as rock formation samples with geological field types, and relationships are fault lines. This gives the data model a tangible, physical material quality."
+      ],
+      "specificElements": [
+        "Canyon layer depth system on Kanban lanes — each lane has its own warm earth-tone border (terracotta, sage, amber, clay)",
+        "Background #f0e6d6 replicates the warm neutral feeling of natural unbleached materials",
+        "Rock formation entity blocks in Schema Planner tell the 'material story' of each data entity"
+      ]
+    },
+    {
+      "name": "National Park Foundation",
+      "url": "https://www.nationalparks.org",
+      "takeaway": "Use WPA-poster-inspired illustrated badges and trail-marker iconography as section headers and navigation waypoints, giving the layout the feel of a trail map through a sandstone canyon.",
+      "howApplied": [
+        "The Projects view is structured as a literal trail map with SVG winding path and circular waypoint markers positioned along the route, directly referencing the park-finder map interface with terrain-based visual navigation.",
+        "The Settings view is designed as a trail guide wizard where each step is a numbered trail marker waypoint with 'terrain descriptions' explaining the content of each section, using the language and structure of trail guide publications.",
+        "Navigation toolbar buttons use small iconic SVGs and compact labeling inspired by park trail sign design — functional, identifiable at a glance, with terracotta active indicators that reference painted trail blazes."
+      ],
+      "specificElements": [
+        "Projects view: winding SVG trail path with circle waypoint markers, elevation and distance metadata per project",
+        "Settings view: numbered waypoint markers (1-4) connected by trail connector lines, 'Terrain:' descriptions for each section",
+        "Toolbar navigation: compact icon + label format inspired by park wayfinding signage, terracotta active indicator bar as trail blaze"
+      ]
+    }
+  ]
+}

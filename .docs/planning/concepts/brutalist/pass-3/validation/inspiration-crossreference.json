@@ -1,0 +1,38 @@
+{
+  "styleId": "brutalist",
+  "pass": 3,
+  "layoutArchetype": "terminal-command-line",
+  "references": [
+    {
+      "name": "GitHub CLI",
+      "url": "https://cli.github.com",
+      "takeaway": "Frame the entire interface inside a terminal-window chrome with title-bar dots, dark background, and monospaced font—then render all content as if it were stdout output.",
+      "influence": {
+        "titleBar": "The terminal title bar with traffic-light dots (red/yellow/green), dark background, and monospaced PID badge directly mirrors GitHub CLI's terminal showcase chrome. The title bar text shows a running command (`vaultctl@sentinel:~$ ideamgr --interactive`) exactly like GitHub CLI demonstrates its tool.",
+        "contentRendering": "All view content renders as stdout: the projects view uses `ls -la` output format, the workspace uses git log output, the ideas list mimics grep results. This follows GitHub CLI's pattern of presenting everything as terminal command output.",
+        "syntaxHighlighting": "SQL schema view uses semantic syntax coloring (yellow for keywords, green for types, pink for table names) similar to GitHub CLI's syntax-highlighted code blocks with line numbers as primary content."
+      }
+    },
+    {
+      "name": "Warp Terminal",
+      "url": "https://www.warp.dev",
+      "takeaway": "Group content into command-block units: each block has a prompt line (the heading), a command (the action), and an output region (the content), visually separated by horizontal rules.",
+      "influence": {
+        "blockGrouping": "Every view follows the command-block pattern: a view header shows the 'command' being run (e.g., `$ ls -la /vault/projects/`), followed by the 'output' region containing the actual data. This mirrors Warp's block-based command grouping where each command+output pair is a discrete visual unit.",
+        "statusBar": "The status bar at the top of the content area shows the current 'command' being typed with a blinking cursor, inspired by Warp's rich command prompt with autocomplete styling.",
+        "semanticColors": "The color system uses green for success/active, red for errors, yellow for warnings — matching Warp's IDE-grade semantic syntax coloring approach. Alert log entries use [OK], [WARN], [ERR] prefixes with corresponding colors."
+      }
+    },
+    {
+      "name": "Cool Retro Term",
+      "url": "https://github.com/Swordfish90/cool-retro-term",
+      "takeaway": "Apply a subtle CRT scan-line overlay and phosphor text-shadow glow to the monospaced type, giving the interface the warm analog texture of a vintage terminal.",
+      "influence": {
+        "scanlines": "A full-screen CSS overlay using `repeating-linear-gradient` creates visible horizontal scanlines (2px transparent / 2px semi-black), directly inspired by Cool Retro Term's CRT phosphor scanline texture.",
+        "phosphorGlow": "All green text has `text-shadow: 0 0 4px rgba(51, 255, 51, 0.4)` creating the characteristic phosphor glow effect. The ASCII banner has a stronger pulsing glow that breathes between 0.3 and 0.7 opacity, simulating phosphor persistence.",
+        "flickerEffect": "A random CRT flicker animation fires every 3-8 seconds, briefly flashing a green overlay across the screen. This simulates the micro-flicker of a vintage CRT monitor, directly drawn from Cool Retro Term's screen instability effects.",
+        "bootSequence": "The initial boot sequence types out system initialization messages character-by-character with a spinning ASCII character loader, inspired by Cool Retro Term's character-by-character text rendering that simulates serial terminal output speed."
+      }
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "styleId": "slate",
+  "pass": 3,
+  "references": [
+    {
+      "name": "Apple Watch Ultra",
+      "url": "https://www.apple.com/apple-watch-ultra",
+      "takeaway": "Use a single high-voltage accent color on an otherwise pure black canvas, reserving it exclusively for critical interactive elements so each colored pixel feels precious.",
+      "applicationInDesign": [
+        {
+          "element": "Global accent strategy",
+          "description": "Molten red (#cc2200) and ember orange (#ff6600) are the ONLY non-neutral colors in the entire UI. They appear exclusively on interactive elements: active tab underlines, status indicators, progress bars, priority dots, and hover states. The background is true black (#0a0a0a), not dark grey — creating maximum contrast when accent color appears."
+        },
+        {
+          "element": "Metric card ember-glow values",
+          "description": "Dashboard metric values marked as critical (Active Commissions, In Final Regulation) use the accent red with a text-shadow glow, making them stand out like the orange safety accent on the Apple Watch Ultra's interface. Non-critical metrics remain in neutral white."
+        },
+        {
+          "element": "Interactive element scarcity",
+          "description": "Accent color is withheld from decorative elements. Only active states, hover feedback, and priority indicators receive color. This makes every colored pixel feel intentional and precious, matching the Apple Watch Ultra's sparing use of #FF6B00."
+        }
+      ]
+    },
+    {
+      "name": "Rolex",
+      "url": "https://www.rolex.com",
+      "takeaway": "Apply a subtle vertical gradient to display headings simulating light catching engraved text on a polished obsidian surface.",
+      "applicationInDesign": [
+        {
+          "element": "Engraved text treatment (.engraved-text class)",
+          "description": "All major headings (view titles, section headings, card titles) use a top-to-bottom gradient from pure white (#ffffff) to 70% grey (#b0a899 / #a09890). This is applied via background-clip: text, simulating the way light falls across engraved metal — bright at the top edge where light catches, darker below where it falls into shadow. Directly implements the Rolex metallic headline effect."
+        },
+        {
+          "element": "True black backgrounds",
+          "description": "The background uses #0a0a0a (near-true-black) with no dark-grey compromises. Surface cards use #141414 — still extremely dark. This mirrors Rolex's commitment to #000000 backgrounds for maximum contrast, creating the same premium weight."
+        },
+        {
+          "element": "Slow, deliberate animation timing",
+          "description": "Card reflection slides use 700ms transitions. Ambient crack pulses run on 6-8 second cycles. Loading animations are 2s+. Nothing is snappy or bouncy — everything moves with the slow, cinematic precision of Rolex's watch detail photography reveals."
+        }
+      ]
+    },
+    {
+      "name": "Byredo",
+      "url": "https://www.byredo.com",
+      "takeaway": "Create extreme typographic scale contrast — pair 11px uppercase metadata labels directly adjacent to 100px+ display headlines.",
+      "applicationInDesign": [
+        {
+          "element": "View headers",
+          "description": "View titles use clamp(28px, 4vw, 42px) Archivo Black, immediately followed by 13px uppercase subtitle text in Work Sans. This creates a strong scale jump within adjacent elements. Dashboard metric values at 36px sit directly above 12px uppercase labels and 11px mono metadata."
+        },
+        {
+          "element": "Card content hierarchy",
+          "description": "Project cards pair 15px Archivo Black headings with 12px body text and 11px meta tags. Schema entity headers at 12px uppercase sit above 10px mono field types. The Byredo-inspired scale contrast is applied throughout: big display text paired with tiny metadata, no medium sizes in between."
+        },
+        {
+          "element": "Mono tag metadata",
+          "description": "Technical values (timestamps, file sizes, reference codes) use 11px Fira Code in subdued grey, placed directly beside larger body text. This creates the jeweler's-loupe-vs-naked-eye contrast Byredo achieves between its 11px metadata and 120px display type."
+        }
+      ]
+    }
+  ]
+}

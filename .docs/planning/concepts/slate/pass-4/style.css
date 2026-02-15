@@ -1,0 +1,2257 @@
+/* ==========================================================================
+   Mesa Trail Manager — Sandstone Desert Workspace
+   Pass 4: Slate Style — Split-Pane Workspace with Top Toolbar
+   Palette: Sand #f0e6d6, Text #3a2a1a, Surface #f8f0e4,
+            Accent #c4622a (terracotta), Accent2 #7a8a6a (sage), Border #d4c0a0
+   Typography: Bitter (heading), Libre Franklin (body), Source Code Pro (mono)
+   ========================================================================== */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #f0e6d6;
+  --text: #3a2a1a;
+  --surface: #f8f0e4;
+  --accent: #c4622a;
+  --accent2: #7a8a6a;
+  --border: #d4c0a0;
+  --surface-deep: #e8d8c2;
+  --surface-darker: #ddd0bc;
+  --sand-light: #f5ece0;
+  --terracotta-light: #e8835a;
+  --sage-light: #9aaa8a;
+  --shadow-warm: rgba(58, 42, 26, 0.12);
+  --shadow-canyon: rgba(58, 42, 26, 0.22);
+  --font-heading: 'Bitter', serif;
+  --font-body: 'Libre Franklin', sans-serif;
+  --font-mono: 'Source Code Pro', monospace;
+  --toolbar-height: 48px;
+  --transition-base: 0.25s ease;
+}
+
+html {
+  font-size: 14px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* Sandstone noise texture via CSS */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* --- Heat Shimmer Ambient Effect --- */
+.heat-shimmer-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+}
+
+.heat-shimmer-layer.active {
+  opacity: 1;
+  background: linear-gradient(
+    0deg,
+    transparent 0%,
+    transparent 45%,
+    rgba(240, 230, 214, 0.015) 50%,
+    transparent 55%,
+    transparent 100%
+  );
+  background-size: 100% 12px;
+  animation: heatShimmer 4s ease-in-out infinite;
+}
+
+@keyframes heatShimmer {
+  0%, 100% { background-position: 0 0; opacity: 0; }
+  50% { background-position: 0 6px; opacity: 1; }
+}
+
+/* --- Dust Puff Click Effect --- */
+.dust-puff-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+.dust-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- Micro-Feedback Toast --- */
+.micro-feedback {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--surface);
+  border: 1px solid var(--accent2);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px var(--shadow-warm);
+  z-index: 10001;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.micro-feedback.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+.micro-feedback.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sage-check {
+  flex-shrink: 0;
+}
+
+.feedback-msg {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--accent2);
+  font-weight: 500;
+}
+
+/* --- Loading Overlay (Sand Hourglass) --- */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000;
+  transition: opacity 0.6s ease;
+}
+
+.loading-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hourglass-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.hourglass-frame {
+  width: 40px;
+  height: 60px;
+  position: relative;
+}
+
+.hourglass-top,
+.hourglass-bottom {
+  position: absolute;
+  left: 4px;
+  width: 32px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.hourglass-top {
+  top: 0;
+  border-top: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+  border-radius: 4px 4px 0 0;
+}
+
+.hourglass-top::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  background: var(--border);
+  animation: sandDrain 2s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.hourglass-bottom {
+  bottom: 0;
+  border-bottom: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+  border-radius: 0 0 4px 4px;
+}
+
+.hourglass-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 0%;
+  background: var(--border);
+  animation: sandFill 2s ease-in-out infinite;
+}
+
+.hourglass-sand {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 12px;
+  background: var(--border);
+  animation: sandStream 2s ease-in-out infinite;
+}
+
+@keyframes sandDrain {
+  0% { height: 100%; }
+  100% { height: 0%; }
+}
+
+@keyframes sandFill {
+  0% { height: 0%; }
+  100% { height: 100%; }
+}
+
+@keyframes sandStream {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.loading-text {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  color: var(--text);
+  opacity: 0.6;
+  letter-spacing: 0.5px;
+}
+
+/* --- Top Toolbar --- */
+.top-toolbar {
+  height: var(--toolbar-height);
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 8px;
+  flex-shrink: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px var(--shadow-warm);
+  /* Weathered edge bottom */
+  position: relative;
+}
+
+.top-toolbar::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border) 0px,
+    var(--border) 3px,
+    transparent 3px,
+    transparent 7px
+  );
+  opacity: 0.4;
+}
+
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 16px;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+
+.toolbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  overflow-x: auto;
+  flex: 1;
+  scrollbar-width: none;
+}
+
+.toolbar-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 3px;
+  white-space: nowrap;
+  transition: background var(--transition-base), color var(--transition-base);
+  position: relative;
+}
+
+/* Sand texture reveal on hover */
+.toolbar-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"), var(--surface-deep);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  z-index: -1;
+}
+
+/* navItemHover: warm-sand-highlight */
+.toolbar-btn:hover::before {
+  opacity: 1;
+}
+
+.toolbar-btn:hover {
+  color: var(--accent);
+}
+
+/* navItemActive: terracotta-bar-indicator */
+.toolbar-btn.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.toolbar-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 6px;
+  right: 6px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 3px 3px 0 0;
+}
+
+.toolbar-btn svg {
+  flex-shrink: 0;
+}
+
+/* Toolbar actions (search + user) */
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.toolbar-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  transition: border-color var(--transition-base);
+}
+
+.toolbar-search:focus-within {
+  border-color: var(--accent);
+}
+
+.search-input {
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text);
+  width: 140px;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: var(--border);
+}
+
+.user-badge {
+  cursor: pointer;
+}
+
+.avatar-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* --- Mobile Menu --- */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.hamburger-line {
+  width: 20px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 1px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.mobile-menu-toggle.open .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+
+.mobile-menu-toggle.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle.open .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(4px, -4px);
+}
+
+.mobile-nav-drawer {
+  display: none;
+  position: fixed;
+  top: var(--toolbar-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(58, 42, 26, 0.4);
+  z-index: 99;
+}
+
+.mobile-nav-drawer.open {
+  display: block;
+}
+
+.mobile-nav-inner {
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  padding: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* --- Main Content Area --- */
+.split-pane-container {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- View Pages --- */
+.view-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  opacity: 0;
+}
+
+.view-page.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Wind erosion page transition */
+.view-page.eroding-out {
+  animation: erodeOut 0.4s ease-in forwards;
+}
+
+.view-page.eroding-in {
+  display: block;
+  animation: erodeIn 0.4s ease-out forwards;
+}
+
+@keyframes erodeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.98) translateX(20px);
+    filter: blur(3px);
+  }
+}
+
+@keyframes erodeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.98) translateX(-20px);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* --- Split Pane Layout --- */
+.split-pane-layout {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.pane-primary {
+  flex: 1 1 60%;
+}
+
+.pane-secondary {
+  flex: 0 0 320px;
+}
+
+.pane-sidebar {
+  flex: 0 0 220px;
+}
+
+.pane-main {
+  flex: 1 1 auto;
+}
+
+.pane-full {
+  flex: 1;
+}
+
+/* --- Pane Resizer --- */
+.pane-resizer {
+  width: 5px;
+  background: var(--border);
+  cursor: col-resize;
+  flex-shrink: 0;
+  position: relative;
+  transition: background var(--transition-base);
+}
+
+.pane-resizer:hover,
+.pane-resizer.dragging {
+  background: var(--accent);
+}
+
+.pane-resizer::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3px;
+  height: 32px;
+  border-left: 1px solid rgba(58, 42, 26, 0.2);
+  border-right: 1px solid rgba(58, 42, 26, 0.2);
+}
+
+/* --- Pane Header --- */
+.pane-header {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.pane-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pane-subtitle {
+  font-size: 0.78rem;
+  color: var(--border);
+  font-weight: 400;
+}
+
+.pane-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+
+/* --- Pane Body / Scroll Region --- */
+.pane-body {
+  flex: 1;
+  overflow: hidden;
+  padding: 16px;
+  background: var(--bg);
+}
+
+.scroll-region {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.scroll-region::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-region::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-region::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+/* --- Scroll Reveal: Rise from canyon floor --- */
+.canyon-rise {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.canyon-rise.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Buttons --- */
+.btn {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+/* buttonHover: sand-texture-reveal */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='80' height='80' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.btn:hover::before {
+  opacity: 1;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--surface);
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--terracotta-light);
+  border-color: var(--terracotta-light);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  background: var(--surface-deep);
+}
+
+/* --- Dried Earth Divider --- */
+.dried-earth-divider {
+  height: 3px;
+  margin: 16px 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border) 0px,
+    var(--border) 8px,
+    transparent 8px,
+    transparent 12px,
+    var(--surface-darker) 12px,
+    var(--surface-darker) 16px,
+    transparent 16px,
+    transparent 20px
+  );
+  opacity: 0.6;
+}
+
+/* --- Section Heading --- */
+.section-heading {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* =====================================================================
+   DASHBOARD VIEW
+   ===================================================================== */
+
+.mesa-stat-formations {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  padding-bottom: 8px;
+}
+
+.stat-formation {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px 4px 0 0;
+  padding: 14px 12px 10px;
+  position: relative;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+/* cardHover: canyon-shadow-deepen */
+.stat-formation:hover {
+  box-shadow: 0 8px 24px var(--shadow-canyon);
+  transform: translateY(-2px);
+}
+
+.stat-tall { min-height: 140px; }
+.stat-medium { min-height: 110px; }
+.stat-short { min-height: 90px; }
+
+.formation-cap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 4px 4px 0 0;
+}
+
+.formation-value {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.formation-label {
+  font-size: 0.78rem;
+  color: var(--text);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.formation-change {
+  font-size: 0.7rem;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.formation-change.up { color: var(--accent2); }
+.formation-change.neutral { color: var(--border); }
+
+/* Activity list */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 3px;
+  transition: background var(--transition-base);
+}
+
+.activity-item:hover {
+  background: var(--surface);
+}
+
+.activity-marker {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.activity-marker.terracotta { background: var(--accent); }
+.activity-marker.sage { background: var(--accent2); }
+
+.activity-content {
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.activity-content strong {
+  color: var(--accent);
+}
+
+.activity-time {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--border);
+  margin-top: 2px;
+}
+
+/* Metric bars */
+.metric-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.metric-bar-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bar-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.bar-track {
+  height: 8px;
+  background: var(--surface-deep);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 4px;
+  transition: width 1s ease;
+  position: relative;
+}
+
+.bar-fill.sage { background: var(--accent2); }
+.bar-fill.warning { background: #c49a2a; }
+
+.bar-fill::after {
+  content: attr(data-value);
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
+  color: var(--surface);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Events */
+.event-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  margin-bottom: 6px;
+  border-radius: 0 3px 3px 0;
+  transition: box-shadow var(--transition-base);
+}
+
+.event-card:hover {
+  box-shadow: 0 4px 12px var(--shadow-canyon);
+}
+
+.event-date {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.event-name {
+  font-size: 0.82rem;
+}
+
+/* =====================================================================
+   PROJECTS VIEW — Trail Map Layout
+   ===================================================================== */
+
+.trail-map-layout {
+  position: relative;
+  min-height: 500px;
+  padding: 20px;
+}
+
+.trail-path-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.trail-waypoints {
+  position: relative;
+  width: 100%;
+  height: 500px;
+}
+
+.waypoint {
+  position: absolute;
+  left: var(--wp-x);
+  top: var(--wp-y);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.waypoint-marker {
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border: 3px solid var(--surface);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px var(--shadow-canyon);
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.waypoint-card {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  min-width: 180px;
+  max-width: 220px;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.waypoint-card:hover {
+  box-shadow: 0 8px 20px var(--shadow-canyon);
+  transform: translateY(-3px);
+}
+
+.waypoint-name {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.waypoint-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 0.72rem;
+  color: var(--text);
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
+.waypoint-status {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.waypoint-status.active {
+  background: rgba(122, 138, 106, 0.15);
+  color: var(--accent2);
+}
+
+.waypoint-status.planning {
+  background: rgba(196, 98, 42, 0.12);
+  color: var(--accent);
+}
+
+.waypoint-status.review {
+  background: rgba(196, 154, 42, 0.15);
+  color: #a07a20;
+}
+
+/* =====================================================================
+   PROJECT WORKSPACE — Canyon Layout
+   ===================================================================== */
+
+.canyon-cliff {
+  background: var(--surface);
+  border-right: none;
+}
+
+.canyon-cliff .pane-body {
+  background: var(--surface);
+  padding: 8px;
+}
+
+.cliff-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cliff-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition: background var(--transition-base);
+  position: relative;
+}
+
+.cliff-nav-item:hover {
+  background: var(--surface-deep);
+}
+
+.cliff-nav-item.active {
+  background: var(--bg);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.cliff-nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 0 2px 2px 0;
+}
+
+.cliff-marker {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.cliff-nav-item.active .cliff-marker {
+  background: var(--accent);
+}
+
+/* Workspace overview */
+.overview-block {
+  margin-bottom: 16px;
+}
+
+.block-heading {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.overview-block p {
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.overview-stat {
+  background: var(--surface);
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  text-align: center;
+  transition: box-shadow var(--transition-base);
+}
+
+.overview-stat:hover {
+  box-shadow: 0 6px 16px var(--shadow-canyon);
+}
+
+.overview-stat-value {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  display: block;
+}
+
+.overview-stat-label {
+  font-size: 0.72rem;
+  color: var(--text);
+  opacity: 0.7;
+  margin-top: 2px;
+  display: block;
+}
+
+/* Field reports */
+.field-report {
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.report-author {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.report-date {
+  font-size: 0.72rem;
+  color: var(--border);
+}
+
+.report-body {
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+/* =====================================================================
+   KANBAN — Canyon Layers
+   ===================================================================== */
+
+.kanban-scroll {
+  overflow-x: auto;
+  padding: 12px;
+}
+
+.kanban-swimlanes {
+  display: flex;
+  gap: 12px;
+  min-height: 100%;
+  align-items: stretch;
+}
+
+.kanban-lane {
+  flex: 0 0 280px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.lane-header {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+}
+
+.lane-title {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.lane-count {
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: var(--surface-deep);
+  padding: 2px 8px;
+  border-radius: 10px;
+  color: var(--text);
+}
+
+/* Canyon depth styling */
+.layer-surface { border-top: 3px solid var(--accent); }
+.layer-mid { border-top: 3px solid var(--accent2); }
+.layer-deep { border-top: 3px solid #c49a2a; }
+.layer-floor { border-top: 3px solid var(--border); }
+
+.lane-cards {
+  flex: 1;
+  padding: 8px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.kanban-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 10px 12px;
+  cursor: grab;
+  position: relative;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+/* Weathered edge */
+.card-weathered-edge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(135deg, var(--bg) 50%, var(--border) 50%);
+  border-radius: 0 3px 0 0;
+}
+
+/* cardHover: canyon-shadow-deepen */
+.kanban-card:hover {
+  box-shadow: 0 6px 18px var(--shadow-canyon);
+  transform: translateY(-2px);
+}
+
+.kanban-card.completed {
+  opacity: 0.6;
+}
+
+.kanban-card.sortable-ghost {
+  opacity: 0.4;
+  background: var(--surface-deep);
+}
+
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.card-desc {
+  font-size: 0.75rem;
+  color: var(--text);
+  opacity: 0.8;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-tag {
+  font-size: 0.68rem;
+  padding: 2px 6px;
+  background: rgba(196, 98, 42, 0.1);
+  color: var(--accent);
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.card-assignee {
+  font-size: 0.68rem;
+  color: var(--accent2);
+  font-weight: 500;
+}
+
+/* =====================================================================
+   WHITEBOARD — Desert Canvas
+   ===================================================================== */
+
+.whiteboard-canvas-container {
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.whiteboard-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  /* Sandy desert background pattern */
+  background:
+    radial-gradient(circle at 20% 80%, rgba(196, 98, 42, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(122, 138, 106, 0.04) 0%, transparent 50%),
+    var(--bg);
+}
+
+.riverbed-connectors {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.riverbed-path {
+  stroke-dashoffset: 0;
+}
+
+.sandstone-node {
+  position: absolute;
+  z-index: 2;
+  width: 160px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: move;
+  transition: box-shadow var(--transition-base);
+  /* Weathered edge effect */
+  box-shadow: 2px 3px 0 var(--surface-deep);
+}
+
+.sandstone-node:hover {
+  box-shadow: 4px 6px 20px var(--shadow-canyon);
+}
+
+.node-inner {
+  padding: 12px;
+}
+
+.node-inner h4 {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.node-inner p {
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--text);
+  opacity: 0.8;
+}
+
+/* =====================================================================
+   SCHEMA PLANNER — Geological Survey
+   ===================================================================== */
+
+.schema-diagram {
+  position: relative;
+  min-height: 450px;
+  padding: 16px;
+}
+
+.fault-lines-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.rock-formation-entity {
+  position: absolute;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  min-width: 200px;
+  z-index: 2;
+  transition: box-shadow var(--transition-base);
+}
+
+.rock-formation-entity:hover {
+  box-shadow: 0 6px 20px var(--shadow-canyon);
+}
+
+.formation-sample-header {
+  padding: 8px 12px;
+  background: var(--accent);
+  color: var(--surface);
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: 2px 2px 0 0;
+}
+
+.formation-fields {
+  padding: 6px 0;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 12px;
+  font-size: 0.75rem;
+  border-bottom: 1px solid var(--sand-light);
+}
+
+.field-row:last-child {
+  border-bottom: none;
+}
+
+.field-type {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent2);
+  background: rgba(122, 138, 106, 0.1);
+  padding: 1px 4px;
+  border-radius: 2px;
+  min-width: 32px;
+  text-align: center;
+}
+
+.field-name {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text);
+}
+
+/* Schema detail panel */
+.schema-detail-panel {
+  padding: 4px;
+}
+
+.detail-entity-name {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.detail-desc {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.detail-relationships h4 {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.relationship-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--sand-light);
+}
+
+.rel-type {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent2);
+  background: rgba(122, 138, 106, 0.1);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.rel-target {
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+/* =====================================================================
+   DIRECTORY TREE — Canyon Rim
+   ===================================================================== */
+
+.canyon-tree {
+  padding: 8px;
+}
+
+.tree-branch {
+  position: relative;
+  margin-left: 0;
+}
+
+.tree-branch .tree-branch {
+  margin-left: 18px;
+  border-left: 1px solid var(--border);
+  padding-left: 0;
+}
+
+.tree-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background var(--transition-base);
+}
+
+.tree-label:hover {
+  background: var(--surface-deep);
+}
+
+.tree-marker {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.tree-marker.folder {
+  background: var(--accent);
+}
+
+.tree-marker.file {
+  background: var(--border);
+}
+
+.tree-children {
+  padding-top: 2px;
+}
+
+/* File preview panel */
+.file-preview-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.file-preview-placeholder {
+  text-align: center;
+  color: var(--border);
+}
+
+.file-preview-placeholder p {
+  margin-top: 12px;
+  font-size: 0.82rem;
+}
+
+.file-info-table {
+  width: 100%;
+}
+
+.file-info-row {
+  display: flex;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--sand-light);
+  font-size: 0.82rem;
+}
+
+.fi-label {
+  flex: 0 0 100px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.fi-value {
+  color: var(--text);
+  opacity: 0.8;
+}
+
+/* =====================================================================
+   IDEAS — Mesa Masonry
+   ===================================================================== */
+
+.ideas-masonry {
+  columns: 3;
+  column-gap: 12px;
+}
+
+.idea-card {
+  break-inside: avoid;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 14px;
+  margin-bottom: 12px;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+  /* Sandstone texture overlay */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* cardHover: canyon-shadow-deepen */
+.idea-card:hover {
+  box-shadow: 0 8px 24px var(--shadow-canyon);
+  transform: translateY(-3px);
+}
+
+.idea-title {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.idea-body {
+  font-size: 0.78rem;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.idea-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.idea-tag {
+  font-size: 0.68rem;
+  padding: 2px 6px;
+  background: rgba(122, 138, 106, 0.12);
+  color: var(--accent2);
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.idea-votes {
+  font-size: 0.68rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* =====================================================================
+   AI CHAT — Ranger Dispatch
+   ===================================================================== */
+
+.chat-layout {
+  flex-direction: row;
+}
+
+.field-notes-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+
+.field-note {
+  padding: 12px 14px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.field-note.dispatch {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent2);
+}
+
+.field-note.ranger {
+  background: rgba(196, 98, 42, 0.06);
+  border: 1px solid rgba(196, 98, 42, 0.2);
+  border-left: 3px solid var(--accent);
+}
+
+.note-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.note-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+
+.dispatch .note-badge {
+  background: rgba(122, 138, 106, 0.15);
+  color: var(--accent2);
+}
+
+.ranger .note-badge {
+  background: rgba(196, 98, 42, 0.12);
+  color: var(--accent);
+}
+
+.note-location {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text);
+  opacity: 0.5;
+}
+
+.note-timestamp {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--border);
+  margin-left: auto;
+}
+
+.note-body {
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.note-body p {
+  margin-bottom: 6px;
+}
+
+.dispatch-list {
+  list-style: none;
+  padding: 6px 0;
+}
+
+.dispatch-list li {
+  font-size: 0.8rem;
+  padding: 3px 0;
+  padding-left: 14px;
+  position: relative;
+}
+
+.dispatch-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent2);
+}
+
+.spec-block {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 10px 12px;
+  margin: 8px 0;
+}
+
+.spec-block code {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* Chat input */
+.chat-input-bar {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.input-location-stamp {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 0.68rem;
+  color: var(--accent2);
+  font-weight: 500;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  transition: border-color var(--transition-base);
+}
+
+/* inputFocus: warm-border-terracotta */
+.chat-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(196, 98, 42, 0.15);
+}
+
+.chat-send-btn {
+  flex-shrink: 0;
+}
+
+/* Quick reference panel */
+.reference-panel {
+  padding: 4px;
+}
+
+.ref-section {
+  margin-bottom: 16px;
+}
+
+.ref-heading {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--accent);
+}
+
+.ref-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 0.78rem;
+}
+
+.ref-code {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent2);
+  background: rgba(122, 138, 106, 0.1);
+  padding: 1px 6px;
+  border-radius: 2px;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* =====================================================================
+   SETTINGS — Trail Guide Wizard
+   ===================================================================== */
+
+.settings-trail {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px 0;
+}
+
+.trail-step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.step-marker {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition-base);
+}
+
+.trail-step.active .step-marker {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.step-number {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.trail-step.active .step-number {
+  color: var(--surface);
+}
+
+.step-content {
+  flex: 1;
+  padding-bottom: 8px;
+}
+
+.step-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.step-terrain {
+  font-size: 0.72rem;
+  color: var(--border);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.step-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trail-connector {
+  width: 2px;
+  height: 24px;
+  background: var(--border);
+  margin-left: 17px;
+  margin: 4px 0 4px 17px;
+}
+
+/* Forms */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-group label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.form-input,
+.form-select {
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+/* inputFocus: warm-border-terracotta */
+.form-input:focus,
+.form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(196, 98, 42, 0.15);
+}
+
+.toggle-group {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --- Toggle Switch: slide-with-dust-trail --- */
+.toggle-switch {
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: var(--surface-deep);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  position: relative;
+  transition: background var(--transition-base);
+  flex-shrink: 0;
+}
+
+.toggle-switch.active {
+  background: var(--accent2);
+  border-color: var(--accent2);
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 1px 3px var(--shadow-warm);
+  transition: left 0.3s ease;
+}
+
+.toggle-switch.active .toggle-thumb {
+  left: 22px;
+}
+
+.toggle-dust-trail {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10px;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--border), transparent);
+  border-radius: 1px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.toggle-switch.active .toggle-dust-trail {
+  width: 14px;
+  opacity: 0.4;
+}
+
+/* --- Tooltips: Weathered plaque style --- */
+.tippy-box {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 3px !important;
+  font-family: var(--font-body) !important;
+  font-size: 0.75rem !important;
+  box-shadow: 0 4px 12px var(--shadow-canyon) !important;
+  padding: 2px 4px !important;
+  /* Weathered plaque look */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='60' height='60' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E") !important;
+}
+
+.tippy-arrow {
+  color: var(--surface) !important;
+}
+
+/* --- Skeleton Loading Shimmer --- */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-deep) 25%, var(--surface) 50%, var(--surface-deep) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease infinite;
+  border-radius: 3px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* --- Hidden utility --- */
+.hidden {
+  display: none !important;
+}
+
+/* =====================================================================
+   RESPONSIVE — Mobile (max-width: 768px)
+   ===================================================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --toolbar-height: 52px;
+  }
+
+  .toolbar-nav {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .toolbar-search {
+    display: none;
+  }
+
+  .mobile-nav-inner .toolbar-btn {
+    display: flex;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Split panes stack vertically on mobile */
+  .split-pane-layout {
+    flex-direction: column;
+  }
+
+  .pane-sidebar,
+  .pane-secondary {
+    flex: 0 0 auto;
+    max-height: 250px;
+  }
+
+  .pane-resizer {
+    width: 100%;
+    height: 5px;
+    cursor: row-resize;
+  }
+
+  /* Dashboard stats */
+  .mesa-stat-formations {
+    flex-wrap: wrap;
+  }
+
+  .stat-formation {
+    flex: 1 1 45%;
+    min-height: 80px;
+  }
+
+  /* Overview grid */
+  .overview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Kanban horizontal scroll */
+  .kanban-lane {
+    flex: 0 0 260px;
+  }
+
+  /* Ideas single column */
+  .ideas-masonry {
+    columns: 1;
+  }
+
+  /* Trail map waypoints stack */
+  .trail-map-layout {
+    min-height: auto;
+  }
+
+  .trail-path-svg {
+    display: none;
+  }
+
+  .trail-waypoints {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .waypoint {
+    position: relative;
+    left: auto !important;
+    top: auto !important;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .waypoint-card {
+    margin-top: 0;
+    min-width: 0;
+    max-width: none;
+    flex: 1;
+  }
+
+  /* Chat layout */
+  .chat-layout {
+    flex-direction: column;
+  }
+
+  /* Settings */
+  .settings-trail {
+    padding: 12px;
+  }
+
+  /* Schema */
+  .schema-layout {
+    flex-direction: column;
+  }
+
+  .schema-diagram {
+    min-height: 350px;
+    overflow-x: auto;
+  }
+
+  .rock-formation-entity {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    margin-bottom: 12px;
+  }
+
+  .fault-lines-svg {
+    display: none;
+  }
+
+  /* Whiteboard */
+  .whiteboard-canvas {
+    overflow: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-formation {
+    flex: 1 1 100%;
+  }
+
+  .overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ideas-masonry {
+    columns: 1;
+  }
+
+  .kanban-lane {
+    flex: 0 0 240px;
+  }
+}

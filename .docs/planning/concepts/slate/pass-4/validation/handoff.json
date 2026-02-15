@@ -1,0 +1,104 @@
+{
+  "passId": "slate-pass-4",
+  "styleId": "slate",
+  "pass": 4,
+  "variantSeed": "sandstone-desert-mesa",
+  "generatedAt": "2026-02-15T00:00:00Z",
+  "uniquenessProfile": {
+    "profileId": "split-pane-workspace",
+    "shellMode": "top-toolbar",
+    "navPattern": "toolbar-buttons",
+    "contentFlow": "resizable-split-panes",
+    "scrollMode": "independent-scroll-regions",
+    "alignment": "left",
+    "heroTreatment": "none",
+    "motionLanguage": "resize-drag",
+    "density": "compact",
+    "componentTone": "hard"
+  },
+  "palette": {
+    "bg": "#f0e6d6",
+    "text": "#3a2a1a",
+    "surface": "#f8f0e4",
+    "accent": "#c4622a",
+    "accent2": "#7a8a6a",
+    "border": "#d4c0a0"
+  },
+  "typography": {
+    "heading": "Bitter",
+    "body": "Libre Franklin",
+    "mono": "Source Code Pro"
+  },
+  "contentPersona": "national-park-outdoor-brand",
+  "librariesUsed": [
+    {
+      "name": "Anime.js",
+      "version": "3.2.2",
+      "purpose": "Particle dust puffs, SVG path drawing, bar chart animations, scroll reveal stagger, toggle dust trail, micro-feedback checkmark"
+    },
+    {
+      "name": "SortableJS",
+      "version": "1.15.6",
+      "purpose": "Kanban card drag-and-drop between canyon layer lanes"
+    },
+    {
+      "name": "Tippy.js",
+      "version": "6.3.7",
+      "purpose": "Weathered plaque-styled tooltips on navigation, nodes, and badges"
+    }
+  ],
+  "interactionsImplemented": [
+    "buttonHover:sand-texture-reveal",
+    "buttonClick:dust-puff-micro",
+    "cardHover:canyon-shadow-deepen",
+    "pageTransition:wind-erosion-reveal",
+    "scrollReveal:rise-from-canyon-floor",
+    "navItemHover:warm-sand-highlight",
+    "navItemActive:terracotta-bar-indicator",
+    "inputFocus:warm-border-terracotta",
+    "toggleSwitch:slide-with-dust-trail",
+    "tooltips:weathered-plaque-popup",
+    "loadingState:sand-hourglass-flow",
+    "idleAmbient:heat-shimmer-subtle",
+    "microFeedback:sage-checkmark-fade"
+  ],
+  "viewsImplemented": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "viewHintCompliance": {
+    "dashboard": "Mesa formation stat cards at different heights, terracotta accents on key metrics, dried-earth dividers",
+    "projects": "Trail map layout with waypoints along winding SVG path, elevation and distance metadata per waypoint",
+    "project-workspace": "Canyon layout with sidebar cliffs and main content valley, weathered panel borders, resizable split",
+    "kanban": "Horizontal swimlanes as canyon layers at different depths, sandstone block cards with weathered edge corners",
+    "whiteboard": "Desert canvas with sandstone nodes and dried-riverbed SVG connector paths",
+    "schema-planner": "Geological survey diagram with rock formation entity blocks and fault line relationship connectors",
+    "directory-tree": "Canyon-rim hierarchy with branching trails, terracotta folder markers, collapsible branches",
+    "ideas": "Pinterest masonry with sandstone-textured cards at varying heights like mesa formations",
+    "ai-chat": "Park ranger dispatch format with field notes, GPS location stamps, radio codes, and spec blocks",
+    "settings": "Trail guide wizard with numbered waypoint markers, trail connector lines, terrain descriptions"
+  },
+  "antiRepeatCompliance": [
+    "Used warm sand outdoor landscape instead of dark charcoal carved interior (Pass 1)",
+    "Used warm sunlit mesa surface instead of dark layered strata underground (Pass 2)",
+    "Used warm sandstone with sage/terracotta instead of pure black obsidian with fire/magma (Pass 3)",
+    "Used weathered erosion and canyon depth instead of glass reflections and volcanic cracks (Pass 3)",
+    "Used park ranger field notes chat instead of forge communication chat (Pass 3)"
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

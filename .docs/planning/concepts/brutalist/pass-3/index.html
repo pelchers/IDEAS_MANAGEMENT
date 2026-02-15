@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VAULTCTL // Cybersecurity Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- CRT Scanline Overlay -->
+  <div id="scanlines" aria-hidden="true"></div>
+  <div id="crt-flicker" aria-hidden="true"></div>
+
+  <!-- ASCII Loading Boot Sequence -->
+  <div id="boot-screen">
+    <pre id="boot-text"></pre>
+    <div id="boot-spinner">|</div>
+  </div>
+
+  <!-- Terminal Chrome -->
+  <div id="terminal-shell">
+    <!-- Title Bar -->
+    <header id="terminal-titlebar">
+      <span class="titlebar-dots">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+      </span>
+      <span class="titlebar-text">vaultctl@sentinel:~$ ideamgr --interactive</span>
+      <span class="titlebar-right">
+        <span id="clock"></span>
+        <span class="titlebar-badge">PID 31337</span>
+      </span>
+    </header>
+
+    <!-- Main Terminal Body -->
+    <div id="terminal-body">
+      <!-- Navigation Sidebar (keyboard shortcut list) -->
+      <nav id="nav-sidebar" role="navigation" aria-label="Main navigation">
+        <div class="nav-header">MODULES</div>
+        <button data-view="dashboard" class="nav-item active" data-key="1">
+          <span class="nav-key">[1]</span>
+          <span class="nav-arrow">&gt;</span>
+          <span class="nav-label">dashboard</span>
+        </button>
+        <button data-view="projects" class="nav-item" data-key="2">
+          <span class="nav-key">[2]</span>
+          <span class="nav-arrow">&nbsp;</span>
+          <span class="nav-label">projects</span>
+        </button>
+        <button data-view="project-workspace" class="nav-item" data-key="3">
+          <span class="nav-key">[3]</span>
+          <span class="nav-arrow">&nbsp;</span>
+          <span class="nav-label">workspace</span>
+        </button>
+        <button data-view="kanban" class="nav-item" data-key="4">
+          <span class="nav-key">[4]</span>
+          <span class="nav-arrow">&nbsp;</span>
+          <span class="nav-label">kanban</span>
+        </button>
+        <button data-view="whiteboard" class="nav-item" data-key="5">
+          <span class="nav-key">[5]</span>
+          <span class="nav-arrow">&nbsp;</span>
+          <span class="nav-label">whiteboard</span>
+        </button>
+        <button data-view="schema-planner" class="nav-item" data-key="6">
+          <span class="nav-key">[6]</span>
+          <span class="nav-arrow">&nbsp;</span>
+          <span class="nav-label">schema</span>
+        </button>
+        <button data-view="directory-tree" class="nav-item" data-key="7">
+          <span class="nav-key">[7]</span>
+          <span class="nav-arrow">&nbsp;</span>
+          <span class="nav-label">tree</span>
+        </button>
+        <button data-view="ideas" class="nav-item" data-key="8">
+          <span class="nav-key">[8]</span>
+          <span class="nav-arrow">&nbsp;</span>
+          <span class="nav-label">ideas</span>
+        </button>
+        <button data-view="ai-chat" class="nav-item" data-key="9">
+          <span class="nav-key">[9]</span>
+          <span class="nav-arrow">&nbsp;</span>
+          <span class="nav-label">ai-chat</span>
+        </button>
+        <button data-view="settings" class="nav-item" data-key="0">
+          <span class="nav-key">[0]</span>
+          <span class="nav-arrow">&nbsp;</span>
+          <span class="nav-label">settings</span>
+        </button>
+        <div class="nav-footer">
+          <span class="nav-key">[H]</span> help
+          <br>
+          <span class="nav-key">[Q]</span> quit
+        </div>
+      </nav>
+
+      <!-- Content Area -->
+      <main id="content-area">
+        <!-- Status Bar -->
+        <div id="status-bar">
+          <span class="status-left">
+            <span class="status-prompt">vaultctl&gt;</span>
+            <span id="status-command"></span>
+            <span class="status-cursor blink">_</span>
+          </span>
+          <span class="status-right">
+            <span id="status-uptime">UP 847d 14h</span>
+            <span class="status-sep">|</span>
+            <span id="status-threats">THREATS: 0</span>
+            <span class="status-sep">|</span>
+            <span id="status-agents">AGENTS: 12</span>
+          </span>
+        </div>
+
+        <!-- ========== DASHBOARD ========== -->
+        <section data-page="dashboard" class="view active">
+          <div class="view-header">
+            <pre class="ascii-banner">
+ _    _____   __  ____   __________  __
+| |  / /   | / / / / /  /_  __/ __ \/ /
+| | / / /| |/ / / / /    / / / /   / /
+| |/ / ___ / /_/ / /____/ / / /___/ /___
+|___/_/  |_\____/_____/___/  \____/_____/
+            </pre>
+            <div class="view-subtitle">// SENTINEL DASHBOARD v4.2.1 // CYBERSECURITY COMMAND CENTER</div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="metric-block">
+              <div class="metric-label">THREAT_LEVEL</div>
+              <div class="metric-bar">
+                <span class="bar-fill" style="width:23%"></span>
+                <span class="bar-value">LOW [==........] 23%</span>
+              </div>
+            </div>
+            <div class="metric-block">
+              <div class="metric-label">FIREWALL_STATUS</div>
+              <div class="metric-bar">
+                <span class="bar-fill bar-fill-accent" style="width:100%"></span>
+                <span class="bar-value">ACTIVE [==========] 100%</span>
+              </div>
+            </div>
+            <div class="metric-block">
+              <div class="metric-label">INTRUSION_ATTEMPTS_24H</div>
+              <div class="metric-bar">
+                <span class="bar-fill bar-fill-warn" style="width:67%"></span>
+                <span class="bar-value">HIGH [======....] 1,847</span>
+              </div>
+            </div>
+            <div class="metric-block">
+              <div class="metric-label">ENCRYPTION_COVERAGE</div>
+              <div class="metric-bar">
+                <span class="bar-fill bar-fill-accent" style="width:94%"></span>
+                <span class="bar-value">OK   [=========.] 94%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-table">
+            <div class="table-header">SYSTEM_METRICS (key=value)</div>
+            <pre class="kv-output">
+active_sessions    = 342
+blocked_ips        = 2,891
+ssl_certs_valid    = 47/48
+vpn_connections    = 128
+avg_response_ms    = 12.4
+packets_inspected  = 14,209,381
+zero_day_patches   = 3 pending
+last_scan          = 2026-02-15T08:41:22Z
+compliance_score   = 97.2%
+soc_analysts_online= 8</pre>
+          </div>
+
+          <div class="dashboard-sparklines">
+            <div class="sparkline-block">
+              <div class="sparkline-label">NETWORK_TRAFFIC (24h)</div>
+              <pre class="sparkline-ascii">
+    *
+   **    *
+  ***   **  *       *
+ ****  *** **      **   *
+***** *********  ****  ***
+***********************
+00  04  08  12  16  20  24</pre>
+            </div>
+            <div class="sparkline-block">
+              <div class="sparkline-label">INCIDENT_RESPONSE (7d)</div>
+              <pre class="sparkline-ascii">
+         *
+        **
+  *    ***
+ **   ****
+***  *****  *
+************** *
+Mo Tu We Th Fr Sa Su</pre>
+            </div>
+          </div>
+
+          <div class="recent-alerts">
+            <div class="table-header">RECENT_ALERTS (tail -5 /var/log/sentinel)</div>
+            <pre class="log-output">
+<span class="log-warn">[WARN]</span>  02-15 08:39:11  Brute-force attempt on SSH port 22 from 198.51.100.42
+<span class="log-ok">[OK]</span>    02-15 08:37:55  TLS certificate renewed for api.vault.internal
+<span class="log-err">[ERR]</span>   02-15 08:35:02  Failed auth token refresh for service:pentest-bot
+<span class="log-ok">[OK]</span>    02-15 08:33:18  Vulnerability scan completed - 0 critical findings
+<span class="log-warn">[WARN]</span>  02-15 08:30:44  Unusual egress traffic spike on subnet 10.0.3.0/24</pre>
+          </div>
+        </section>
+
+        <!-- ========== PROJECTS ========== -->
+        <section data-page="projects" class="view">
+          <div class="view-header">
+            <div class="view-title">$ ls -la /vault/projects/</div>
+          </div>
+
+          <div class="ls-output">
+            <pre class="ls-header">total 10
+drwxr-xr-x  STATUS     MODIFIED            SIZE     NAME</pre>
+            <div class="ls-row" tabindex="0">
+              <pre>drwxr-xr-x  <span class="status-active">[ACTIVE]</span>   2026-02-14 19:22    4.2MB    project-sentinel-shield/</pre>
+            </div>
+            <div class="ls-row" tabindex="0">
+              <pre>drwxr-xr-x  <span class="status-active">[ACTIVE]</span>   2026-02-13 11:05    2.8MB    project-zero-trust-mesh/</pre>
+            </div>
+            <div class="ls-row" tabindex="0">
+              <pre>drwxr-xr-x  <span class="status-warn">[REVIEW]</span>  2026-02-12 08:30    6.1MB    project-cryptovault-v3/</pre>
+            </div>
+            <div class="ls-row" tabindex="0">
+              <pre>drwxr-xr-x  <span class="status-active">[ACTIVE]</span>   2026-02-10 22:14    1.9MB    project-darknet-scanner/</pre>
+            </div>
+            <div class="ls-row" tabindex="0">
+              <pre>drwxr-xr-x  <span class="status-stale">[STALE]</span>   2026-01-28 16:43    3.5MB    project-phishing-shield/</pre>
+            </div>
+            <div class="ls-row" tabindex="0">
+              <pre>drwxr-xr-x  <span class="status-active">[ACTIVE]</span>   2026-02-15 07:11    5.7MB    project-siem-overhaul/</pre>
+            </div>
+            <div class="ls-row" tabindex="0">
+              <pre>drwxr-xr-x  <span class="status-warn">[REVIEW]</span>  2026-02-09 14:55    2.3MB    project-endpoint-hardening/</pre>
+            </div>
+            <div class="ls-row" tabindex="0">
+              <pre>drwxr-xr-x  <span class="status-done">[DONE]</span>    2026-02-01 09:30    4.8MB    project-ransomware-playbook/</pre>
+            </div>
+            <div class="ls-row" tabindex="0">
+              <pre>drwxr-xr-x  <span class="status-active">[ACTIVE]</span>   2026-02-14 20:02    1.4MB    project-api-gateway-auth/</pre>
+            </div>
+            <div class="ls-row" tabindex="0">
+              <pre>drwxr-xr-x  <span class="status-stale">[STALE]</span>   2026-01-15 12:00    7.2MB    project-legacy-migration/</pre>
+            </div>
+          </div>
+
+          <div class="projects-footer">
+            <pre>10 projects | 6 active | 2 in review | 1 done | 1 stale
+$ <span class="blink">_</span></pre>
+          </div>
+        </section>
+
+        <!-- ========== PROJECT WORKSPACE ========== -->
+        <section data-page="project-workspace" class="view">
+          <div class="view-header">
+            <div class="view-title">$ tmux attach -t sentinel-shield</div>
+          </div>
+
+          <div class="tmux-container">
+            <div class="tmux-pane tmux-pane-top">
+              <div class="tmux-pane-header">--- sentinel-shield/README.md [1/3] ---</div>
+              <pre class="tmux-content">
+# PROJECT: SENTINEL SHIELD
+# Status: ACTIVE | Sprint: 14 | Team: 6 engineers
+# Deadline: 2026-03-01 | Budget: $240,000
+
+## OBJECTIVE
+Build an AI-powered intrusion detection system that correlates
+network anomalies with threat intelligence feeds in real-time.
+
+## CURRENT SPRINT GOALS
+  [x] Implement packet capture pipeline
+  [x] Integrate MITRE ATT&CK framework mappings
+  [ ] Deploy ML anomaly detection model v2
+  [ ] Configure alerting thresholds per severity tier
+  [ ] Load-test with 10Gbps synthetic traffic
+
+## KEY METRICS
+  detection_accuracy  = 96.8%
+  false_positive_rate = 2.1%
+  avg_detection_ms    = 34
+  coverage_protocols  = TCP,UDP,ICMP,DNS,HTTP(S)
+
+## TEAM
+  lead    = Sarah Chen (security-architect)
+  ml      = Dmitri Volkov (ml-engineer)
+  backend = Kai Tanaka, Priya Sharma (go-developers)
+  devops  = Marcus Webb (infra-sre)
+  qa      = Lin Zhang (pen-tester)</pre>
+            </div>
+            <div class="tmux-divider">---[sentinel-shield]--- pane 1/2 --- Ctrl+B to switch ---</div>
+            <div class="tmux-pane tmux-pane-bottom">
+              <div class="tmux-pane-header">--- shell [2/3] ---</div>
+              <pre class="tmux-content tmux-shell">
+<span class="prompt">sentinel-shield $</span> git log --oneline -5
+<span class="cmd-output">a3f2c1d Fix false positive in DNS tunneling detection
+8b91e4f Add STIX/TAXII feed connector
+c7d0a23 Refactor packet parser for IPv6 support
+1e5f8b2 Update ML model weights (v2.0.1-rc)
+9a2d7c6 Add Prometheus metrics endpoint</span>
+
+<span class="prompt">sentinel-shield $</span> make test
+<span class="cmd-output">Running test suite...
+  [PASS] test_packet_capture        (0.23s)
+  [PASS] test_anomaly_scoring       (1.42s)
+  [PASS] test_alert_routing         (0.08s)
+  [FAIL] test_high_throughput       (timeout)
+  [PASS] test_mitre_mapping         (0.31s)
+
+4 passed, 1 failed | Total: 2.04s</span>
+
+<span class="prompt">sentinel-shield $</span> <span class="blink">_</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== KANBAN ========== -->
+        <section data-page="kanban" class="view">
+          <div class="view-header">
+            <div class="view-title">$ cat /vault/kanban/priority-matrix.tbl</div>
+          </div>
+
+          <div class="priority-matrix">
+            <div class="matrix-header-row">
+              <div class="matrix-corner"></div>
+              <div class="matrix-col-header">URGENT</div>
+              <div class="matrix-col-header">NOT URGENT</div>
+            </div>
+            <div class="matrix-row">
+              <div class="matrix-row-header">IMPORTANT</div>
+              <div class="matrix-cell cell-critical">
+                <div class="cell-header">P0 // DO FIRST</div>
+                <div class="task-entry"><span class="task-code">[SEC-101]</span> Patch Log4j variant in auth service <span class="task-status status-wip">WIP</span></div>
+                <div class="task-entry"><span class="task-code">[SEC-089]</span> Rotate compromised API keys <span class="task-status status-wip">WIP</span></div>
+                <div class="task-entry"><span class="task-code">[SEC-112]</span> Deploy WAF rule for SQLi vector <span class="task-status status-todo">TODO</span></div>
+              </div>
+              <div class="matrix-cell cell-plan">
+                <div class="cell-header">P1 // SCHEDULE</div>
+                <div class="task-entry"><span class="task-code">[SEC-095]</span> Migrate to ed25519 SSH keys <span class="task-status status-todo">TODO</span></div>
+                <div class="task-entry"><span class="task-code">[SEC-103]</span> Implement mTLS between services <span class="task-status status-wip">WIP</span></div>
+                <div class="task-entry"><span class="task-code">[SEC-108]</span> SOC2 compliance audit prep <span class="task-status status-todo">TODO</span></div>
+              </div>
+            </div>
+            <div class="matrix-row">
+              <div class="matrix-row-header">NOT IMPORTANT</div>
+              <div class="matrix-cell cell-delegate">
+                <div class="cell-header">P2 // DELEGATE</div>
+                <div class="task-entry"><span class="task-code">[SEC-077]</span> Update employee security training <span class="task-status status-done">DONE</span></div>
+                <div class="task-entry"><span class="task-code">[SEC-099]</span> Vendor security questionnaire <span class="task-status status-wip">WIP</span></div>
+              </div>
+              <div class="matrix-cell cell-backlog">
+                <div class="cell-header">P3 // BACKLOG</div>
+                <div class="task-entry"><span class="task-code">[SEC-061]</span> Evaluate new SAST tool options <span class="task-status status-todo">TODO</span></div>
+                <div class="task-entry"><span class="task-code">[SEC-084]</span> Refactor legacy auth middleware <span class="task-status status-stale">STALE</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-summary">
+            <pre>SUMMARY: 10 tasks | 4 WIP | 4 TODO | 1 DONE | 1 STALE
+$ <span class="blink">_</span></pre>
+          </div>
+        </section>
+
+        <!-- ========== WHITEBOARD ========== -->
+        <section data-page="whiteboard" class="view">
+          <div class="view-header">
+            <div class="view-title">$ cat /vault/whiteboard/threat-model.flow</div>
+          </div>
+
+          <div class="flowchart-container">
+            <pre class="ascii-flowchart">
+                           +---------------------+
+                           |   INTERNET TRAFFIC  |
+                           |  (untrusted zone)   |
+                           +----------+----------+
+                                      |
+                                      v
+                           +----------+----------+
+                           |    EDGE FIREWALL    |
+                           |   rules: 2,341      |
+                           +----------+----------+
+                                      |
+                        +-------------+-------------+
+                        |                           |
+                        v                           v
+              +---------+---------+       +---------+---------+
+              |   WAF / REVERSE   |       |   VPN GATEWAY     |
+              |   PROXY (nginx)   |       |   (WireGuard)     |
+              +---------+---------+       +---------+---------+
+                        |                           |
+                        v                           v
+              +---------+---------+       +---------+---------+
+              |  LOAD BALANCER    |       |  INTERNAL MESH    |
+              |  (HAProxy)        |       |  (Consul+Envoy)   |
+              +---------+---------+       +---------+---------+
+                        |                           |
+            +-----------+-----------+               |
+            |           |           |               |
+            v           v           v               v
+    +-------+--+ +------+---+ +----+-----+ +-------+--------+
+    | API SVC  | | AUTH SVC | | DATA SVC | | ADMIN CONSOLE  |
+    | port:8080| | port:8443| | port:5432| | port:9090      |
+    +-------+--+ +------+---+ +----+-----+ +-------+--------+
+            |           |           |               |
+            +-----+-----+-----+----+               |
+                  |           |                     |
+                  v           v                     v
+          +-------+---+ +----+------+      +-------+--------+
+          |  REDIS     | | POSTGRES |      |  AUDIT LOG     |
+          |  (cache)   | | (primary)|      |  (immutable)   |
+          +------------+ +----------+      +----------------+
+
+    LEGEND:  ---> data flow   |  vertical connection
+             +--+ node boundary
+            </pre>
+          </div>
+
+          <div class="whiteboard-notes">
+            <pre>
+NOTES:
+  - All east-west traffic encrypted via mTLS
+  - Audit log is append-only with WORM storage
+  - WAF rules auto-updated from threat intel feeds
+  - Zero-trust: every request authenticated, no implicit trust
+
+$ <span class="blink">_</span></pre>
+          </div>
+        </section>
+
+        <!-- ========== SCHEMA PLANNER ========== -->
+        <section data-page="schema-planner" class="view">
+          <div class="view-header">
+            <div class="view-title">$ cat /vault/schema/threat_intelligence.sql</div>
+          </div>
+
+          <div class="sql-schema">
+            <pre class="sql-output">
+<span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">threat_indicators</span> (
+    id              <span class="sql-type">UUID</span>            <span class="sql-constraint">PRIMARY KEY DEFAULT gen_random_uuid()</span>,
+    indicator_type  <span class="sql-type">VARCHAR(50)</span>     <span class="sql-constraint">NOT NULL CHECK (indicator_type IN ('ip','domain','hash','url','email'))</span>,
+    value           <span class="sql-type">TEXT</span>            <span class="sql-constraint">NOT NULL</span>,
+    severity        <span class="sql-type">INTEGER</span>         <span class="sql-constraint">NOT NULL CHECK (severity BETWEEN 1 AND 10)</span>,
+    source          <span class="sql-type">VARCHAR(100)</span>    <span class="sql-constraint">NOT NULL</span>,
+    first_seen      <span class="sql-type">TIMESTAMPTZ</span>     <span class="sql-constraint">NOT NULL DEFAULT now()</span>,
+    last_seen       <span class="sql-type">TIMESTAMPTZ</span>     <span class="sql-constraint">NOT NULL DEFAULT now()</span>,
+    confidence      <span class="sql-type">DECIMAL(3,2)</span>    <span class="sql-constraint">CHECK (confidence BETWEEN 0 AND 1)</span>,
+    tags            <span class="sql-type">TEXT[]</span>          <span class="sql-constraint">DEFAULT '{}'</span>,
+    is_active       <span class="sql-type">BOOLEAN</span>         <span class="sql-constraint">DEFAULT true</span>
+);
+
+<span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">incident_reports</span> (
+    id              <span class="sql-type">UUID</span>            <span class="sql-constraint">PRIMARY KEY DEFAULT gen_random_uuid()</span>,
+    title           <span class="sql-type">VARCHAR(200)</span>    <span class="sql-constraint">NOT NULL</span>,
+    severity        <span class="sql-type">VARCHAR(10)</span>     <span class="sql-constraint">NOT NULL CHECK (severity IN ('critical','high','medium','low','info'))</span>,
+    status          <span class="sql-type">VARCHAR(20)</span>     <span class="sql-constraint">NOT NULL DEFAULT 'open'</span>,
+    reported_by     <span class="sql-type">UUID</span>            <span class="sql-constraint">REFERENCES analysts(id)</span>,
+    assigned_to     <span class="sql-type">UUID</span>            <span class="sql-constraint">REFERENCES analysts(id)</span>,
+    created_at      <span class="sql-type">TIMESTAMPTZ</span>     <span class="sql-constraint">NOT NULL DEFAULT now()</span>,
+    resolved_at     <span class="sql-type">TIMESTAMPTZ</span>,
+    mitre_techniques<span class="sql-type">TEXT[]</span>          <span class="sql-constraint">DEFAULT '{}'</span>,
+    evidence_refs   <span class="sql-type">JSONB</span>           <span class="sql-constraint">DEFAULT '[]'</span>
+);
+
+<span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">analysts</span> (
+    id              <span class="sql-type">UUID</span>            <span class="sql-constraint">PRIMARY KEY DEFAULT gen_random_uuid()</span>,
+    handle          <span class="sql-type">VARCHAR(50)</span>     <span class="sql-constraint">UNIQUE NOT NULL</span>,
+    clearance       <span class="sql-type">VARCHAR(20)</span>     <span class="sql-constraint">NOT NULL CHECK (clearance IN ('L1','L2','L3','admin'))</span>,
+    specialization  <span class="sql-type">VARCHAR(100)</span>,
+    active          <span class="sql-type">BOOLEAN</span>         <span class="sql-constraint">DEFAULT true</span>,
+    last_login      <span class="sql-type">TIMESTAMPTZ</span>
+);
+
+<span class="sql-keyword">CREATE INDEX</span> idx_indicators_type ON threat_indicators(indicator_type);
+<span class="sql-keyword">CREATE INDEX</span> idx_indicators_severity ON threat_indicators(severity <span class="sql-constraint">DESC</span>);
+<span class="sql-keyword">CREATE INDEX</span> idx_incidents_status ON incident_reports(status) <span class="sql-constraint">WHERE status != 'resolved'</span>;
+</pre>
+          </div>
+
+          <div class="schema-footer">
+            <pre>-- 3 tables, 4 indexes, 2 foreign keys
+-- Run: psql -f threat_intelligence.sql vault_db
+$ <span class="blink">_</span></pre>
+          </div>
+        </section>
+
+        <!-- ========== DIRECTORY TREE ========== -->
+        <section data-page="directory-tree" class="view">
+          <div class="view-header">
+            <div class="view-title">$ tree /vault/sentinel-shield/ -L 3</div>
+          </div>
+
+          <div class="tree-output">
+            <pre class="tree-content">
+/vault/sentinel-shield/
+<span class="tree-branch">|</span>
+<span class="tree-branch">+--</span> <span class="tree-dir">cmd/</span>
+<span class="tree-branch">|   +--</span> <span class="tree-dir">sentinel/</span>
+<span class="tree-branch">|   |   +--</span> <span class="tree-file">main.go</span>              <span class="tree-size">2.1K</span>
+<span class="tree-branch">|   |   +--</span> <span class="tree-file">config.go</span>            <span class="tree-size">1.8K</span>
+<span class="tree-branch">|   +--</span> <span class="tree-dir">scanner/</span>
+<span class="tree-branch">|       +--</span> <span class="tree-file">main.go</span>              <span class="tree-size">3.4K</span>
+<span class="tree-branch">|</span>
+<span class="tree-branch">+--</span> <span class="tree-dir">internal/</span>
+<span class="tree-branch">|   +--</span> <span class="tree-dir">capture/</span>
+<span class="tree-branch">|   |   +--</span> <span class="tree-file">packet.go</span>            <span class="tree-size">4.7K</span>
+<span class="tree-branch">|   |   +--</span> <span class="tree-file">filter.go</span>            <span class="tree-size">2.3K</span>
+<span class="tree-branch">|   |   +--</span> <span class="tree-file">reassemble.go</span>        <span class="tree-size">5.1K</span>
+<span class="tree-branch">|   +--</span> <span class="tree-dir">detect/</span>
+<span class="tree-branch">|   |   +--</span> <span class="tree-file">anomaly.go</span>           <span class="tree-size">8.2K</span>
+<span class="tree-branch">|   |   +--</span> <span class="tree-file">signature.go</span>         <span class="tree-size">3.9K</span>
+<span class="tree-branch">|   |   +--</span> <span class="tree-file">ml_model.go</span>          <span class="tree-size">6.6K</span>
+<span class="tree-branch">|   +--</span> <span class="tree-dir">alert/</span>
+<span class="tree-branch">|   |   +--</span> <span class="tree-file">router.go</span>            <span class="tree-size">2.8K</span>
+<span class="tree-branch">|   |   +--</span> <span class="tree-file">escalation.go</span>        <span class="tree-size">1.9K</span>
+<span class="tree-branch">|   +--</span> <span class="tree-dir">intel/</span>
+<span class="tree-branch">|       +--</span> <span class="tree-file">stix_parser.go</span>       <span class="tree-size">4.1K</span>
+<span class="tree-branch">|       +--</span> <span class="tree-file">taxii_client.go</span>      <span class="tree-size">3.3K</span>
+<span class="tree-branch">|       +--</span> <span class="tree-file">feed_aggregator.go</span>   <span class="tree-size">5.8K</span>
+<span class="tree-branch">|</span>
+<span class="tree-branch">+--</span> <span class="tree-dir">deploy/</span>
+<span class="tree-branch">|   +--</span> <span class="tree-file">Dockerfile</span>             <span class="tree-size">0.8K</span>
+<span class="tree-branch">|   +--</span> <span class="tree-file">docker-compose.yml</span>     <span class="tree-size">1.2K</span>
+<span class="tree-branch">|   +--</span> <span class="tree-dir">k8s/</span>
+<span class="tree-branch">|       +--</span> <span class="tree-file">deployment.yaml</span>      <span class="tree-size">2.4K</span>
+<span class="tree-branch">|       +--</span> <span class="tree-file">service.yaml</span>         <span class="tree-size">0.6K</span>
+<span class="tree-branch">|       +--</span> <span class="tree-file">ingress.yaml</span>         <span class="tree-size">0.9K</span>
+<span class="tree-branch">|</span>
+<span class="tree-branch">+--</span> <span class="tree-dir">test/</span>
+<span class="tree-branch">|   +--</span> <span class="tree-file">capture_test.go</span>        <span class="tree-size">3.1K</span>
+<span class="tree-branch">|   +--</span> <span class="tree-file">detect_test.go</span>         <span class="tree-size">4.5K</span>
+<span class="tree-branch">|   +--</span> <span class="tree-file">integration_test.go</span>    <span class="tree-size">6.2K</span>
+<span class="tree-branch">|</span>
+<span class="tree-branch">+--</span> <span class="tree-file">go.mod</span>                     <span class="tree-size">0.4K</span>
+<span class="tree-branch">+--</span> <span class="tree-file">go.sum</span>                     <span class="tree-size">12.1K</span>
+<span class="tree-branch">+--</span> <span class="tree-file">Makefile</span>                   <span class="tree-size">1.1K</span>
+<span class="tree-branch">+--</span> <span class="tree-file">README.md</span>                  <span class="tree-size">3.8K</span>
+
+4 directories, 23 files, 92.2K total</pre>
+          </div>
+        </section>
+
+        <!-- ========== IDEAS ========== -->
+        <section data-page="ideas" class="view">
+          <div class="view-header">
+            <div class="view-title">$ grep -rn "" /vault/ideas/ --include="*.idea" | head -12</div>
+          </div>
+
+          <div class="ideas-list">
+            <div class="idea-entry" tabindex="0">
+              <pre><span class="idea-num"> 1.</span> <span class="idea-title">Honeypot-as-a-Service Platform</span>
+    Deploy configurable honeypots across cloud providers to detect lateral movement.
+    <span class="idea-tag">[deception]</span> <span class="idea-tag">[cloud]</span> <span class="idea-tag">[detection]</span> <span class="idea-votes">votes=14</span> <span class="idea-date">2026-02-12</span></pre>
+            </div>
+            <div class="idea-entry" tabindex="0">
+              <pre><span class="idea-num"> 2.</span> <span class="idea-title">AI-Powered Phishing Email Classifier</span>
+    Fine-tune LLM to detect spear-phishing with context-aware analysis of sender patterns.
+    <span class="idea-tag">[ml]</span> <span class="idea-tag">[email-sec]</span> <span class="idea-tag">[nlp]</span> <span class="idea-votes">votes=22</span> <span class="idea-date">2026-02-10</span></pre>
+            </div>
+            <div class="idea-entry" tabindex="0">
+              <pre><span class="idea-num"> 3.</span> <span class="idea-title">Automated Compliance Evidence Collector</span>
+    Continuously gather SOC2/ISO27001 evidence from infrastructure and generate audit-ready reports.
+    <span class="idea-tag">[compliance]</span> <span class="idea-tag">[automation]</span> <span class="idea-votes">votes=18</span> <span class="idea-date">2026-02-08</span></pre>
+            </div>
+            <div class="idea-entry" tabindex="0">
+              <pre><span class="idea-num"> 4.</span> <span class="idea-title">Supply Chain Dependency Risk Scorer</span>
+    Real-time risk scoring for npm/pip/cargo dependencies based on maintainer reputation and CVE history.
+    <span class="idea-tag">[supply-chain]</span> <span class="idea-tag">[scoring]</span> <span class="idea-tag">[oss]</span> <span class="idea-votes">votes=31</span> <span class="idea-date">2026-02-06</span></pre>
+            </div>
+            <div class="idea-entry" tabindex="0">
+              <pre><span class="idea-num"> 5.</span> <span class="idea-title">Zero-Knowledge Proof Auth Module</span>
+    Implement ZKP-based authentication that proves identity without exposing credentials.
+    <span class="idea-tag">[cryptography]</span> <span class="idea-tag">[auth]</span> <span class="idea-tag">[privacy]</span> <span class="idea-votes">votes=9</span> <span class="idea-date">2026-02-04</span></pre>
+            </div>
+            <div class="idea-entry" tabindex="0">
+              <pre><span class="idea-num"> 6.</span> <span class="idea-title">Threat Intel Feed Deduplication Engine</span>
+    Merge overlapping IOCs from multiple threat feeds into a single normalized stream.
+    <span class="idea-tag">[intel]</span> <span class="idea-tag">[data-pipeline]</span> <span class="idea-votes">votes=11</span> <span class="idea-date">2026-02-01</span></pre>
+            </div>
+            <div class="idea-entry" tabindex="0">
+              <pre><span class="idea-num"> 7.</span> <span class="idea-title">Browser Extension Vulnerability Scanner</span>
+    Analyze installed browser extensions for known CVEs and excessive permissions.
+    <span class="idea-tag">[browser]</span> <span class="idea-tag">[scanning]</span> <span class="idea-tag">[endpoint]</span> <span class="idea-votes">votes=7</span> <span class="idea-date">2026-01-29</span></pre>
+            </div>
+            <div class="idea-entry" tabindex="0">
+              <pre><span class="idea-num"> 8.</span> <span class="idea-title">Encrypted DNS-over-HTTPS Gateway</span>
+    Company-wide DoH gateway that logs queries for threat detection while preserving privacy.
+    <span class="idea-tag">[dns]</span> <span class="idea-tag">[privacy]</span> <span class="idea-tag">[network]</span> <span class="idea-votes">votes=15</span> <span class="idea-date">2026-01-25</span></pre>
+            </div>
+            <div class="idea-entry" tabindex="0">
+              <pre><span class="idea-num"> 9.</span> <span class="idea-title">Kubernetes RBAC Audit Visualizer</span>
+    Graph-based visualization of K8s RBAC policies to identify over-permissioned service accounts.
+    <span class="idea-tag">[k8s]</span> <span class="idea-tag">[rbac]</span> <span class="idea-tag">[visualization]</span> <span class="idea-votes">votes=19</span> <span class="idea-date">2026-01-22</span></pre>
+            </div>
+            <div class="idea-entry" tabindex="0">
+              <pre><span class="idea-num">10.</span> <span class="idea-title">Red Team Scenario Generator</span>
+    AI-generated attack scenarios based on current infrastructure topology for tabletop exercises.
+    <span class="idea-tag">[red-team]</span> <span class="idea-tag">[ai]</span> <span class="idea-tag">[training]</span> <span class="idea-votes">votes=26</span> <span class="idea-date">2026-01-18</span></pre>
+            </div>
+          </div>
+
+          <div class="ideas-footer">
+            <pre>10 results | sorted by date DESC | total votes: 172
+$ <span class="blink">_</span></pre>
+          </div>
+        </section>
+
+        <!-- ========== AI CHAT ========== -->
+        <section data-page="ai-chat" class="view">
+          <div class="view-header">
+            <div class="view-title">$ sentinel-ai --model gpt-sec-4 --context vault</div>
+          </div>
+
+          <div class="chat-repl">
+            <div class="chat-line">
+              <pre><span class="chat-prompt">$</span> What are the top 3 vulnerabilities we should prioritize this sprint?</pre>
+            </div>
+            <div class="chat-line chat-response">
+              <pre><span class="chat-arrow">=&gt;</span> Based on current threat intelligence and your infrastructure scan results:
+
+   1. <span class="chat-highlight">CVE-2026-0142 (Log4j variant)</span> - CVSS 9.8
+      Affects: auth-service v2.3.1
+      Impact: Remote code execution via crafted JNDI lookup
+      Fix: Upgrade to auth-service v2.3.2 (patch available)
+
+   2. <span class="chat-highlight">Misconfigured S3 bucket ACLs</span> - CVSS 7.5
+      Affects: vault-backups-prod bucket
+      Impact: Public read access to encrypted backup manifests
+      Fix: Apply bucket policy from deploy/s3-lockdown.json
+
+   3. <span class="chat-highlight">Expired TLS certificate</span> - CVSS 5.3
+      Affects: internal-api.vault.local
+      Impact: Man-in-the-middle on internal API traffic
+      Fix: Renew via certbot or trigger auto-renewal pipeline
+
+   Estimated remediation time: 4-6 hours for all three.</pre>
+            </div>
+            <div class="chat-line">
+              <pre><span class="chat-prompt">$</span> Generate a MITRE ATT&CK mapping for the Log4j variant.</pre>
+            </div>
+            <div class="chat-line chat-response">
+              <pre><span class="chat-arrow">=&gt;</span> MITRE ATT&CK Mapping for CVE-2026-0142:
+
+   Tactic              | Technique                | ID
+   --------------------|--------------------------|----------
+   Initial Access      | Exploit Public App       | T1190
+   Execution           | Command & Scripting      | T1059.004
+   Persistence         | Server Software Comp.    | T1505.003
+   Defense Evasion     | Obfuscated Files         | T1027
+   C2                  | Application Layer Proto  | T1071.001
+
+   Recommended detection rules have been staged in
+   /vault/rules/log4j-variant-2026.sigma</pre>
+            </div>
+            <div class="chat-line">
+              <pre><span class="chat-prompt">$</span> <span id="chat-cursor" class="blink">_</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== SETTINGS ========== -->
+        <section data-page="settings" class="view">
+          <div class="view-header">
+            <div class="view-title">$ cat /etc/vaultctl/sentinel.ini</div>
+          </div>
+
+          <div class="settings-ini">
+            <pre class="ini-content">
+<span class="ini-section">[GENERAL]</span>
+org_name            = Vault Security Inc.
+environment         = production
+log_level           = <span class="ini-editable" data-key="log_level" data-options="debug,info,warn,error">info</span>
+timezone            = UTC
+locale              = en-US
+auto_update         = <span class="ini-toggle" data-key="auto_update">[ON]</span>
+
+<span class="ini-section">[NOTIFICATIONS]</span>
+email_alerts        = <span class="ini-toggle" data-key="email_alerts">[ON]</span>
+slack_webhook       = <span class="ini-editable" data-key="slack_webhook" data-options="">https://hooks.slack.com/T04****</span>
+pagerduty_enabled   = <span class="ini-toggle" data-key="pagerduty">[OFF]</span>
+alert_threshold     = <span class="ini-editable" data-key="alert_threshold" data-options="low,medium,high,critical">high</span>
+digest_frequency    = <span class="ini-editable" data-key="digest_freq" data-options="realtime,hourly,daily,weekly">daily</span>
+
+<span class="ini-section">[SECURITY]</span>
+mfa_required        = <span class="ini-toggle" data-key="mfa_required">[ON]</span>
+session_timeout_min = <span class="ini-editable" data-key="session_timeout" data-options="15,30,60,120">30</span>
+password_policy     = <span class="ini-editable" data-key="password_policy" data-options="basic,strong,paranoid">paranoid</span>
+ip_allowlist        = 10.0.0.0/8, 172.16.0.0/12
+failed_login_lockout= <span class="ini-editable" data-key="lockout" data-options="3,5,10">5</span>
+audit_logging       = <span class="ini-toggle" data-key="audit_logging">[ON]</span>
+
+<span class="ini-section">[SCANNING]</span>
+auto_scan_enabled   = <span class="ini-toggle" data-key="auto_scan">[ON]</span>
+scan_interval_hours = <span class="ini-editable" data-key="scan_interval" data-options="1,4,12,24">4</span>
+scan_depth          = <span class="ini-editable" data-key="scan_depth" data-options="quick,standard,deep,paranoid">deep</span>
+exclude_paths       = /tmp, /var/cache, /dev
+max_concurrent_scans= <span class="ini-editable" data-key="max_scans" data-options="1,2,4,8">4</span>
+
+<span class="ini-section">[APPEARANCE]</span>
+theme               = <span class="ini-editable" data-key="theme" data-options="phosphor-green,amber,white,blue">phosphor-green</span>
+crt_scanlines       = <span class="ini-toggle" data-key="crt_scanlines">[ON]</span>
+font_size           = <span class="ini-editable" data-key="font_size" data-options="12,14,16,18">14</span>
+show_clock          = <span class="ini-toggle" data-key="show_clock">[ON]</span>
+</pre>
+          </div>
+
+          <div class="settings-footer">
+            <pre>; Changes auto-saved to /etc/vaultctl/sentinel.ini
+; Restart required for [SECURITY] changes
+$ <span class="blink">_</span></pre>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Footer Status Line -->
+    <footer id="terminal-footer">
+      <span class="footer-left">VAULTCTL v4.2.1 | sentinel-shield</span>
+      <span class="footer-center" id="micro-feedback"></span>
+      <span class="footer-right">
+        <span id="footer-keys">1-0:nav | H:help | Q:quit | /:search</span>
+      </span>
+    </footer>
+  </div>
+
+  <!-- Man-page Tooltip -->
+  <div id="man-tooltip" class="man-tooltip hidden" role="tooltip">
+    <div class="man-header">MANUAL</div>
+    <div class="man-body"></div>
+  </div>
+
+  <!-- Help Modal -->
+  <div id="help-modal" class="modal hidden">
+    <div class="modal-content">
+      <pre class="help-text">
+VAULTCTL(1)                  SENTINEL MANUAL                  VAULTCTL(1)
+
+NAME
+    vaultctl - Cybersecurity Idea Management Terminal
+
+SYNOPSIS
+    vaultctl [--interactive] [--module MODULE]
+
+KEYBOARD SHORTCUTS
+    1-9, 0     Navigate to module by number
+    H          Show this help page
+    Q / Esc    Close modal / Go back
+    /          Focus search
+    Tab        Cycle focus within current view
+    Enter      Activate focused element
+    Ctrl+K     Command palette (coming soon)
+
+MODULES
+    [1] dashboard        System overview and threat metrics
+    [2] projects         List all security projects
+    [3] workspace        Tmux-style project workspace
+    [4] kanban           Priority matrix task board
+    [5] whiteboard       ASCII threat model flowcharts
+    [6] schema           Database schema planner
+    [7] tree             Project directory tree view
+    [8] ideas            Security idea backlog
+    [9] ai-chat          AI security assistant REPL
+    [0] settings         Configuration editor
+
+VERSION
+    4.2.1 (2026-02-15)
+
+                          Press Q or Esc to close
+      </pre>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

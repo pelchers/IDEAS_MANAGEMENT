@@ -1,0 +1,72 @@
+{
+  "styleId": "retro-50s",
+  "pass": 3,
+  "crossReferences": [
+    {
+      "reference": "A24 Films",
+      "url": "https://a24films.com",
+      "takeaway": "Present content items in a horizontal-scroll film-strip row with each card showing a cinematic still, and use dramatic dark backgrounds with spotlight text treatment for section headers.",
+      "influences": [
+        {
+          "view": "projects",
+          "element": "film-strip-row",
+          "description": "The Now Showing section uses a horizontal-scroll film-strip row where each project card has a full-bleed gradient poster art area. The cards scroll horizontally with snap alignment, directly mirroring A24's filmography browsing pattern."
+        },
+        {
+          "view": "dashboard",
+          "element": "now-showing-hero",
+          "description": "The featured film hero card uses a dramatic dark gradient background (linear-gradient from deep purple to near-black) with a projection-glow radial gradient overlay. The title, tagline, and metadata are overlaid in cinematic title-card style with generous padding."
+        },
+        {
+          "view": "all",
+          "element": "section-heading",
+          "description": "All section headings use spotlight text treatment — Righteous font in neon yellow with text-shadow glow against the deep purple background, creating the effect of marquee lettering lit against darkness."
+        }
+      ]
+    },
+    {
+      "reference": "MUBI",
+      "url": "https://mubi.com",
+      "takeaway": "Use a 'now showing' hero pattern: one featured item gets the full marquee treatment (large image, editorial blurb, countdown/date) while supporting items queue below in categorized rows.",
+      "influences": [
+        {
+          "view": "dashboard",
+          "element": "now-showing-hero",
+          "description": "The dashboard features a single 'NOW SHOWING' hero card for The Neon Paradox with full marquee treatment: large backdrop, editorial tagline ('A neo-noir thriller set in a city that never sleeps...'), genre badges, and a countdown badge ('Wrapping in 12 days') that creates temporal urgency just like MUBI's 'leaving in X days' pattern."
+        },
+        {
+          "view": "projects",
+          "element": "now-showing/coming-soon split",
+          "description": "The projects view is split into 'NOW SHOWING' (large horizontal film-strip cards for active productions) and 'COMING SOON' (smaller poster grid for upcoming films). This directly mirrors MUBI's categorized carousel approach with curatorial headlines."
+        },
+        {
+          "view": "dashboard",
+          "element": "now-showing-badge-large",
+          "description": "The 'NOW SHOWING' badge that tops the hero card serves as the curatorial headline, acting as a tab-like header that establishes the section's temporal context — what's actively happening versus what's queued."
+        }
+      ]
+    },
+    {
+      "reference": "The Criterion Collection",
+      "url": "https://www.criterion.com",
+      "takeaway": "Assign each content item a visible sequential catalog number (like Criterion spine numbers) displayed prominently, creating a collector's index that implies completeness and curation.",
+      "influences": [
+        {
+          "view": "all",
+          "element": "catalog-number",
+          "description": "Every content item across the entire application has a visible catalog number styled in Source Code Pro monospace font. Projects use '#SP-XXXX' (Starlight Pictures catalog), tasks use '#TK-XXX', dailies use '#DL-XXX', and pitches use '#PITCH-XXX'. These are displayed in a muted but consistent style, creating a collector's index feel throughout."
+        },
+        {
+          "view": "ideas",
+          "element": "movie-poster-idea catalog numbers",
+          "description": "Each pitch on the Pitch Wall shows its catalog number (#PITCH-012 through #PITCH-017) in the poster art area, mirroring how Criterion spine numbers appear on physical covers. The sequential numbering implies a curated collection of ideas that has been built over time."
+        },
+        {
+          "view": "schema-planner",
+          "element": "credits format",
+          "description": "The schema planner uses a film credits format where each entity is displayed with a role, dotted connecting line, and name — similar to how Criterion gives editorial essays and supplementary material equal visual weight alongside the primary content. The credits format treats production relationships as first-class data."
+        }
+      ]
+    }
+  ]
+}

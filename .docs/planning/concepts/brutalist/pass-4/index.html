@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MERIDIAN CIVIL | Project Command Center</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Inconsolata:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js"></script>
+<script src="https://unpkg.com/splitting@1.0.6/dist/splitting.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/splitting@1.0.6/dist/splitting.css">
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div id="loading-overlay" class="loading-overlay">
+  <div class="loading-barrier">
+    <div class="barrier-stripe"></div>
+    <div class="barrier-stripe"></div>
+    <div class="barrier-stripe"></div>
+  </div>
+  <span class="loading-text">INITIALIZING SITE COMMAND...</span>
+</div>
+
+<!-- MICRO-FEEDBACK STAMP -->
+<div id="micro-feedback" class="micro-feedback hidden">
+  <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+    <path class="stamp-check" d="M10 20 L17 28 L30 12" stroke="#ff6600" stroke-width="4" stroke-linecap="square" fill="none"/>
+  </svg>
+  <span>APPROVED</span>
+</div>
+
+<!-- TOP BAR (shell: top-bar-minimal) -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-mark">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect x="2" y="2" width="10" height="10" stroke="#ff6600" stroke-width="2" fill="none"/>
+        <rect x="16" y="2" width="10" height="10" stroke="#ff6600" stroke-width="2" fill="none"/>
+        <rect x="2" y="16" width="10" height="10" stroke="#ff6600" stroke-width="2" fill="none"/>
+        <rect x="16" y="16" width="10" height="10" fill="#ff6600"/>
+      </svg>
+    </div>
+    <span class="brand-name">MERIDIAN CIVIL</span>
+    <span class="brand-tag">// PROJECT COMMAND</span>
+  </div>
+
+  <!-- NAV: icon-only-row -->
+  <nav class="topbar-nav" id="main-nav">
+    <button class="nav-btn active" data-view="dashboard" data-tooltip="Dashboard">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="2" width="7" height="7"/><rect x="11" y="2" width="7" height="7"/>
+        <rect x="2" y="11" width="7" height="7"/><rect x="11" y="11" width="7" height="7"/>
+      </svg>
+    </button>
+    <button class="nav-btn" data-view="projects" data-tooltip="Projects">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 5h14M3 10h14M3 15h10"/><circle cx="17" cy="15" r="2"/>
+      </svg>
+    </button>
+    <button class="nav-btn" data-view="project-workspace" data-tooltip="Workspace">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="2" width="16" height="16"/><line x1="12" y1="2" x2="12" y2="18"/>
+        <line x1="2" y1="10" x2="12" y2="10"/>
+      </svg>
+    </button>
+    <button class="nav-btn" data-view="kanban" data-tooltip="Kanban">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="2" width="4" height="16"/><rect x="8" y="2" width="4" height="10"/>
+        <rect x="14" y="2" width="4" height="13"/>
+      </svg>
+    </button>
+    <button class="nav-btn" data-view="whiteboard" data-tooltip="Whiteboard">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="2" width="16" height="16"/><path d="M5 15L8 8L12 12L15 5"/>
+      </svg>
+    </button>
+    <button class="nav-btn" data-view="schema-planner" data-tooltip="Schema">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="5" cy="5" r="2.5"/><circle cx="15" cy="5" r="2.5"/>
+        <circle cx="10" cy="15" r="2.5"/><line x1="7" y1="6" x2="13" y2="6"/>
+        <line x1="6" y1="7" x2="9" y2="13"/><line x1="14" y1="7" x2="11" y2="13"/>
+      </svg>
+    </button>
+    <button class="nav-btn" data-view="directory-tree" data-tooltip="Directory">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 4v12M4 8h4M4 12h4M10 8v8M10 12h4M10 16h4"/>
+      </svg>
+    </button>
+    <button class="nav-btn" data-view="ideas" data-tooltip="Ideas">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="10" cy="8" r="5"/><path d="M8 13v3h4v-3"/>
+        <line x1="10" y1="5" x2="10" y2="3"/>
+      </svg>
+    </button>
+    <button class="nav-btn" data-view="ai-chat" data-tooltip="Dispatch">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 3h14v10H7l-4 4V3z"/>
+        <line x1="7" y1="7" x2="13" y2="7"/><line x1="7" y1="10" x2="11" y2="10"/>
+      </svg>
+    </button>
+    <button class="nav-btn" data-view="settings" data-tooltip="Settings">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="10" cy="10" r="3"/><path d="M10 2v3M10 15v3M2 10h3M15 10h3M4.2 4.2l2.1 2.1M13.7 13.7l2.1 2.1M4.2 15.8l2.1-2.1M13.7 6.3l2.1-2.1"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- MOBILE HAMBURGER -->
+  <button class="hamburger" id="hamburger-btn" aria-label="Open navigation">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="topbar-meta">
+    <span class="meta-label">SITE:</span>
+    <span class="meta-value">RIVERFRONT-NORTH</span>
+    <span class="meta-divider">|</span>
+    <span class="meta-label">SHIFT:</span>
+    <span class="meta-value">DAY-02</span>
+  </div>
+</header>
+
+<!-- MOBILE NAV DRAWER -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="mobile-drawer-inner">
+    <button class="mobile-nav-btn active" data-view="dashboard">DASHBOARD</button>
+    <button class="mobile-nav-btn" data-view="projects">PROJECTS</button>
+    <button class="mobile-nav-btn" data-view="project-workspace">WORKSPACE</button>
+    <button class="mobile-nav-btn" data-view="kanban">KANBAN</button>
+    <button class="mobile-nav-btn" data-view="whiteboard">WHITEBOARD</button>
+    <button class="mobile-nav-btn" data-view="schema-planner">SCHEMA</button>
+    <button class="mobile-nav-btn" data-view="directory-tree">DIRECTORY</button>
+    <button class="mobile-nav-btn" data-view="ideas">IDEAS</button>
+    <button class="mobile-nav-btn" data-view="ai-chat">DISPATCH</button>
+    <button class="mobile-nav-btn" data-view="settings">SETTINGS</button>
+  </div>
+</div>
+
+<!-- TOOLTIP -->
+<div id="tooltip" class="tooltip hidden">
+  <span class="tooltip-text"></span>
+  <div class="tooltip-line"></div>
+</div>
+
+<!-- MAIN CONTENT AREA -->
+<main class="content-shell" id="content-shell">
+
+  <!-- ========== DASHBOARD ========== -->
+  <section class="page active" data-page="dashboard">
+    <div class="page-header">
+      <h1 class="page-title" data-splitting>SITE COMMAND DASHBOARD</h1>
+      <div class="page-annotation">REF: MC-DASH-001 // UPDATED: 2026-02-15 08:00</div>
+    </div>
+
+    <div class="tile-grid dashboard-grid">
+      <!-- stat tiles -->
+      <div class="stat-tile scroll-reveal">
+        <div class="stat-label">ACTIVE STRUCTURES</div>
+        <div class="stat-value">14</div>
+        <div class="stat-unit">units</div>
+        <div class="stat-annotation">+2 vs. last quarter</div>
+      </div>
+      <div class="stat-tile scroll-reveal">
+        <div class="stat-label">POURED CONCRETE</div>
+        <div class="stat-value">8,420</div>
+        <div class="stat-unit">m<sup>3</sup></div>
+        <div class="stat-annotation">Target: 10,000 m3</div>
+      </div>
+      <div class="stat-tile scroll-reveal">
+        <div class="stat-label">CREW ON SITE</div>
+        <div class="stat-value">237</div>
+        <div class="stat-unit">workers</div>
+        <div class="stat-annotation">3 shifts rotating</div>
+      </div>
+      <div class="stat-tile scroll-reveal">
+        <div class="stat-label">SAFETY INCIDENTS</div>
+        <div class="stat-value">0</div>
+        <div class="stat-unit">YTD</div>
+        <div class="stat-annotation">312 days incident-free</div>
+      </div>
+      <div class="stat-tile scroll-reveal">
+        <div class="stat-label">BUDGET UTILIZED</div>
+        <div class="stat-value">67%</div>
+        <div class="stat-unit">of $48M</div>
+        <div class="stat-annotation">On track per schedule</div>
+      </div>
+      <div class="stat-tile scroll-reveal">
+        <div class="stat-label">COMPLETION</div>
+        <div class="stat-value">42%</div>
+        <div class="stat-unit">overall</div>
+        <div class="stat-annotation">Phase 2 of 4</div>
+      </div>
+
+      <!-- data table tile -->
+      <div class="table-tile scroll-reveal">
+        <div class="table-header">
+          <span class="table-title">RECENT SITE DISPATCHES</span>
+          <span class="table-ref">// REF: LOG-024</span>
+        </div>
+        <table class="blueprint-table">
+          <thead>
+            <tr>
+              <th>TIMESTAMP</th>
+              <th>ZONE</th>
+              <th>TYPE</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>08:14</td><td>ZONE-A3</td><td>CONCRETE POUR</td><td class="status-active">IN PROGRESS</td></tr>
+            <tr><td>07:52</td><td>ZONE-B1</td><td>REBAR INSTALL</td><td class="status-complete">COMPLETE</td></tr>
+            <tr><td>07:30</td><td>ZONE-C2</td><td>SOIL TEST</td><td class="status-pending">PENDING LAB</td></tr>
+            <tr><td>07:15</td><td>ZONE-A1</td><td>CRANE SETUP</td><td class="status-active">IN PROGRESS</td></tr>
+            <tr><td>06:45</td><td>ZONE-D4</td><td>SURVEY</td><td class="status-complete">COMPLETE</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- schedule tile -->
+      <div class="schedule-tile scroll-reveal">
+        <div class="table-header">
+          <span class="table-title">PHASE SCHEDULE</span>
+          <span class="table-ref">// GANTT-COMPRESSED</span>
+        </div>
+        <div class="mini-gantt">
+          <div class="gantt-row">
+            <span class="gantt-label">FOUNDATION</span>
+            <div class="gantt-bar-track"><div class="gantt-bar" style="width:100%;background:#ff6600"></div></div>
+            <span class="gantt-pct">100%</span>
+          </div>
+          <div class="gantt-row">
+            <span class="gantt-label">STRUCTURAL</span>
+            <div class="gantt-bar-track"><div class="gantt-bar" style="width:68%;background:#ff6600"></div></div>
+            <span class="gantt-pct">68%</span>
+          </div>
+          <div class="gantt-row">
+            <span class="gantt-label">MEP ROUGH</span>
+            <div class="gantt-bar-track"><div class="gantt-bar" style="width:25%;background:#2a4a7a"></div></div>
+            <span class="gantt-pct">25%</span>
+          </div>
+          <div class="gantt-row">
+            <span class="gantt-label">ENVELOPE</span>
+            <div class="gantt-bar-track"><div class="gantt-bar" style="width:10%;background:#2a4a7a"></div></div>
+            <span class="gantt-pct">10%</span>
+          </div>
+          <div class="gantt-row">
+            <span class="gantt-label">FINISHES</span>
+            <div class="gantt-bar-track"><div class="gantt-bar" style="width:0%"></div></div>
+            <span class="gantt-pct">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROJECTS ========== -->
+  <section class="page" data-page="projects">
+    <div class="page-header">
+      <h1 class="page-title" data-splitting>ACTIVE PROJECTS</h1>
+      <div class="page-annotation">REF: MC-PROJ-001 // PORTFOLIO VIEW</div>
+    </div>
+
+    <div class="gantt-timeline scroll-reveal">
+      <div class="gantt-timeline-header">
+        <div class="gantt-col-name">PROJECT</div>
+        <div class="gantt-months">
+          <span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span>
+          <span>JUL</span><span>AUG</span><span>SEP</span><span>OCT</span><span>NOV</span><span>DEC</span>
+        </div>
+      </div>
+
+      <div class="gantt-timeline-row scroll-reveal">
+        <div class="gantt-col-name">
+          <span class="project-code">MC-2601</span>
+          <span class="project-name">RIVERFRONT NORTH BRIDGE</span>
+        </div>
+        <div class="gantt-months">
+          <div class="gantt-strip" style="left:0%;width:75%;" data-phase="Design + Construction">
+            <div class="gantt-strip-fill orange"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gantt-timeline-row scroll-reveal">
+        <div class="gantt-col-name">
+          <span class="project-code">MC-2602</span>
+          <span class="project-name">HARBOR SEAWALL RETROFIT</span>
+        </div>
+        <div class="gantt-months">
+          <div class="gantt-strip" style="left:8%;width:58%;" data-phase="Marine Works">
+            <div class="gantt-strip-fill white"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gantt-timeline-row scroll-reveal">
+        <div class="gantt-col-name">
+          <span class="project-code">MC-2603</span>
+          <span class="project-name">DOWNTOWN TUNNEL BORE</span>
+        </div>
+        <div class="gantt-months">
+          <div class="gantt-strip" style="left:16%;width:66%;" data-phase="TBM Operations">
+            <div class="gantt-strip-fill orange"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gantt-timeline-row scroll-reveal">
+        <div class="gantt-col-name">
+          <span class="project-code">MC-2604</span>
+          <span class="project-name">AIRPORT RUNWAY 3L EXT</span>
+        </div>
+        <div class="gantt-months">
+          <div class="gantt-strip" style="left:25%;width:50%;" data-phase="Paving + Markings">
+            <div class="gantt-strip-fill white"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gantt-timeline-row scroll-reveal">
+        <div class="gantt-col-name">
+          <span class="project-code">MC-2605</span>
+          <span class="project-name">EASTSIDE WATER MAIN</span>
+        </div>
+        <div class="gantt-months">
+          <div class="gantt-strip" style="left:33%;width:42%;" data-phase="Pipe Laying">
+            <div class="gantt-strip-fill orange"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gantt-timeline-row scroll-reveal">
+        <div class="gantt-col-name">
+          <span class="project-code">MC-2606</span>
+          <span class="project-name">LEVEE REINFORCEMENT PH3</span>
+        </div>
+        <div class="gantt-months">
+          <div class="gantt-strip" style="left:0%;width:33%;" data-phase="Earthworks">
+            <div class="gantt-strip-fill white"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gantt-timeline-row scroll-reveal">
+        <div class="gantt-col-name">
+          <span class="project-code">MC-2607</span>
+          <span class="project-name">CIVIC CENTER FOUNDATION</span>
+        </div>
+        <div class="gantt-months">
+          <div class="gantt-strip" style="left:42%;width:50%;" data-phase="Deep Foundation">
+            <div class="gantt-strip-fill orange"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROJECT WORKSPACE ========== -->
+  <section class="page" data-page="project-workspace">
+    <div class="page-header">
+      <h1 class="page-title" data-splitting>PROJECT WORKSPACE</h1>
+      <div class="page-annotation">REF: MC-2601 // RIVERFRONT NORTH BRIDGE</div>
+    </div>
+
+    <div class="workspace-layout">
+      <div class="workspace-main scroll-reveal">
+        <div class="drafting-area">
+          <div class="drafting-title">CONSTRUCTION DRAWING AREA</div>
+          <div class="drafting-content">
+            <div class="drawing-block">
+              <div class="block-label">PIER CAP DETAIL // SECTION A-A</div>
+              <div class="block-body">
+                <div class="drawing-placeholder">
+                  <svg width="100%" height="180" viewBox="0 0 400 180" fill="none">
+                    <line x1="50" y1="140" x2="350" y2="140" stroke="#2a4a7a" stroke-width="2"/>
+                    <rect x="80" y="60" width="240" height="80" stroke="#ff6600" stroke-width="2" fill="none" stroke-dasharray="6 3"/>
+                    <rect x="120" y="80" width="40" height="60" stroke="#e8edf3" stroke-width="1.5" fill="none"/>
+                    <rect x="240" y="80" width="40" height="60" stroke="#e8edf3" stroke-width="1.5" fill="none"/>
+                    <line x1="80" y1="50" x2="320" y2="50" stroke="#ff6600" stroke-width="1"/>
+                    <line x1="80" y1="47" x2="80" y2="53" stroke="#ff6600" stroke-width="1"/>
+                    <line x1="320" y1="47" x2="320" y2="53" stroke="#ff6600" stroke-width="1"/>
+                    <text x="200" y="46" text-anchor="middle" fill="#ff6600" font-size="10" font-family="Inconsolata">12,400 mm</text>
+                    <line x1="40" y1="60" x2="40" y2="140" stroke="#ff6600" stroke-width="1"/>
+                    <line x1="37" y1="60" x2="43" y2="60" stroke="#ff6600" stroke-width="1"/>
+                    <line x1="37" y1="140" x2="43" y2="140" stroke="#ff6600" stroke-width="1"/>
+                    <text x="35" y="105" text-anchor="end" fill="#ff6600" font-size="10" font-family="Inconsolata" transform="rotate(-90 35 105)">4,200 mm</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="drawing-block">
+              <div class="block-label">ABUTMENT PROFILE // SECTION B-B</div>
+              <div class="block-body">
+                <div class="drawing-placeholder">
+                  <svg width="100%" height="140" viewBox="0 0 400 140" fill="none">
+                    <polygon points="100,120 150,30 250,30 300,120" stroke="#e8edf3" stroke-width="1.5" fill="none"/>
+                    <line x1="50" y1="120" x2="350" y2="120" stroke="#2a4a7a" stroke-width="2"/>
+                    <rect x="160" y="50" width="80" height="70" stroke="#ff6600" stroke-width="1.5" fill="none" stroke-dasharray="4 2"/>
+                    <text x="200" y="90" text-anchor="middle" fill="#ff6600" font-size="9" font-family="Inconsolata">REBAR CAGE</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="workspace-sidebar scroll-reveal">
+        <div class="sidebar-section">
+          <div class="sidebar-title">DIMENSIONS</div>
+          <div class="dim-row"><span class="dim-label">SPAN LENGTH</span><span class="dim-val">185.0 m</span></div>
+          <div class="dim-row"><span class="dim-label">DECK WIDTH</span><span class="dim-val">24.4 m</span></div>
+          <div class="dim-row"><span class="dim-label">CLEARANCE</span><span class="dim-val">15.2 m</span></div>
+          <div class="dim-row"><span class="dim-label">PIER HEIGHT</span><span class="dim-val">22.8 m</span></div>
+          <div class="dim-row"><span class="dim-label">PILE DEPTH</span><span class="dim-val">38.0 m</span></div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">MATERIALS</div>
+          <div class="dim-row"><span class="dim-label">CONCRETE</span><span class="dim-val">C50/60</span></div>
+          <div class="dim-row"><span class="dim-label">REBAR</span><span class="dim-val">B500B</span></div>
+          <div class="dim-row"><span class="dim-label">PRESTRESS</span><span class="dim-val">Y1860S7</span></div>
+          <div class="dim-row"><span class="dim-label">BEARINGS</span><span class="dim-val">POT TYPE</span></div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">RESPONSIBLE</div>
+          <div class="dim-row"><span class="dim-label">LEAD ENG.</span><span class="dim-val">R. VASQUEZ</span></div>
+          <div class="dim-row"><span class="dim-label">REVIEWER</span><span class="dim-val">K. NAKAMURA</span></div>
+          <div class="dim-row"><span class="dim-label">APPROVED</span><span class="dim-val">J. MARTINEZ</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== KANBAN ========== -->
+  <section class="page" data-page="kanban">
+    <div class="page-header">
+      <h1 class="page-title" data-splitting>TASK BOARD</h1>
+      <div class="page-annotation">REF: MC-KAN-001 // ZONE-BASED TRACKING</div>
+    </div>
+
+    <div class="kanban-board">
+      <div class="kanban-zone scroll-reveal">
+        <div class="zone-header">
+          <span class="zone-marker">A</span>
+          <span class="zone-title">QUEUED</span>
+          <span class="zone-count">4</span>
+        </div>
+        <div class="kanban-cards" id="kanban-queued">
+          <div class="kanban-card">
+            <div class="card-ref">TSK-0041</div>
+            <div class="card-title">Soil compaction test Zone D4</div>
+            <div class="card-meta"><span class="card-tag">GEOTECH</span><span class="card-assignee">M. Chen</span></div>
+          </div>
+          <div class="kanban-card">
+            <div class="card-ref">TSK-0042</div>
+            <div class="card-title">Order #8 rebar shipment</div>
+            <div class="card-meta"><span class="card-tag">PROCUREMENT</span><span class="card-assignee">A. Okafor</span></div>
+          </div>
+          <div class="kanban-card">
+            <div class="card-ref">TSK-0043</div>
+            <div class="card-title">Update crane lift plan for pier 3</div>
+            <div class="card-meta"><span class="card-tag">SAFETY</span><span class="card-assignee">L. Petrov</span></div>
+          </div>
+          <div class="kanban-card">
+            <div class="card-ref">TSK-0044</div>
+            <div class="card-title">Submit drainage permits to city</div>
+            <div class="card-meta"><span class="card-tag">PERMITS</span><span class="card-assignee">S. Ahmed</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kanban-zone scroll-reveal">
+        <div class="zone-header">
+          <span class="zone-marker">B</span>
+          <span class="zone-title">IN PROGRESS</span>
+          <span class="zone-count">3</span>
+        </div>
+        <div class="kanban-cards" id="kanban-progress">
+          <div class="kanban-card">
+            <div class="card-ref">TSK-0038</div>
+            <div class="card-title">Pour pier cap formwork section A-A</div>
+            <div class="card-meta"><span class="card-tag">CONCRETE</span><span class="card-assignee">R. Vasquez</span></div>
+          </div>
+          <div class="kanban-card">
+            <div class="card-ref">TSK-0039</div>
+            <div class="card-title">Install temporary shoring grid B1-B4</div>
+            <div class="card-meta"><span class="card-tag">STRUCTURAL</span><span class="card-assignee">T. Brennan</span></div>
+          </div>
+          <div class="kanban-card">
+            <div class="card-ref">TSK-0040</div>
+            <div class="card-title">Survey alignment check pier footings</div>
+            <div class="card-meta"><span class="card-tag">SURVEY</span><span class="card-assignee">J. Okoye</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kanban-zone scroll-reveal">
+        <div class="zone-header">
+          <span class="zone-marker">C</span>
+          <span class="zone-title">REVIEW</span>
+          <span class="zone-count">2</span>
+        </div>
+        <div class="kanban-cards" id="kanban-review">
+          <div class="kanban-card">
+            <div class="card-ref">TSK-0035</div>
+            <div class="card-title">Pile load test report 14-day results</div>
+            <div class="card-meta"><span class="card-tag">TESTING</span><span class="card-assignee">K. Nakamura</span></div>
+          </div>
+          <div class="kanban-card">
+            <div class="card-ref">TSK-0036</div>
+            <div class="card-title">Environmental compliance zone C2 audit</div>
+            <div class="card-meta"><span class="card-tag">ENVIRO</span><span class="card-assignee">P. Durand</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kanban-zone scroll-reveal">
+        <div class="zone-header">
+          <span class="zone-marker">D</span>
+          <span class="zone-title">COMPLETE</span>
+          <span class="zone-count">3</span>
+        </div>
+        <div class="kanban-cards" id="kanban-complete">
+          <div class="kanban-card done">
+            <div class="card-ref">TSK-0032</div>
+            <div class="card-title">Demolish existing abutment west side</div>
+            <div class="card-meta"><span class="card-tag">DEMOLITION</span><span class="card-assignee">R. Vasquez</span></div>
+          </div>
+          <div class="kanban-card done">
+            <div class="card-ref">TSK-0033</div>
+            <div class="card-title">Deliver and inspect bearing assemblies</div>
+            <div class="card-meta"><span class="card-tag">PROCUREMENT</span><span class="card-assignee">A. Okafor</span></div>
+          </div>
+          <div class="kanban-card done">
+            <div class="card-ref">TSK-0034</div>
+            <div class="card-title">Dewatering pump installation complete</div>
+            <div class="card-meta"><span class="card-tag">UTILITIES</span><span class="card-assignee">M. Chen</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== WHITEBOARD ========== -->
+  <section class="page" data-page="whiteboard">
+    <div class="page-header">
+      <h1 class="page-title" data-splitting>TECHNICAL DRAWING</h1>
+      <div class="page-annotation">REF: MC-WB-001 // SNAP-TO-GRID CANVAS</div>
+    </div>
+
+    <div class="whiteboard-container scroll-reveal">
+      <div class="ruler-top">
+        <span>0</span><span>100</span><span>200</span><span>300</span><span>400</span><span>500</span><span>600</span><span>700</span><span>800</span>
+      </div>
+      <div class="whiteboard-body">
+        <div class="ruler-side">
+          <span>0</span><span>50</span><span>100</span><span>150</span><span>200</span><span>250</span><span>300</span><span>350</span><span>400</span>
+        </div>
+        <div class="canvas-area" id="whiteboard-canvas">
+          <canvas id="rough-canvas" width="800" height="500"></canvas>
+          <div class="wb-node" style="left:80px;top:60px" data-label="SITE PREP">
+            <div class="node-inner">SITE PREP</div>
+            <div class="node-ref">WB-01</div>
+          </div>
+          <div class="wb-node" style="left:300px;top:60px" data-label="EXCAVATION">
+            <div class="node-inner">EXCAVATION</div>
+            <div class="node-ref">WB-02</div>
+          </div>
+          <div class="wb-node" style="left:540px;top:60px" data-label="FOUNDATION">
+            <div class="node-inner">FOUNDATION</div>
+            <div class="node-ref">WB-03</div>
+          </div>
+          <div class="wb-node" style="left:180px;top:200px" data-label="CONCRETE POUR">
+            <div class="node-inner">CONCRETE POUR</div>
+            <div class="node-ref">WB-04</div>
+          </div>
+          <div class="wb-node" style="left:440px;top:200px" data-label="STEEL ERECTION">
+            <div class="node-inner">STEEL ERECTION</div>
+            <div class="node-ref">WB-05</div>
+          </div>
+          <div class="wb-node" style="left:300px;top:350px" data-label="DECK PLACEMENT">
+            <div class="node-inner">DECK PLACEMENT</div>
+            <div class="node-ref">WB-06</div>
+          </div>
+          <div class="protractor-guide" style="left:300px;top:200px">
+            <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+              <path d="M50 50 L50 10 A40 40 0 0 1 90 50 Z" stroke="#2a4a7a" stroke-width="0.5" fill="none" opacity="0.4"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SCHEMA PLANNER ========== -->
+  <section class="page" data-page="schema-planner">
+    <div class="page-header">
+      <h1 class="page-title" data-splitting>SCHEMA PLANNER</h1>
+      <div class="page-annotation">REF: MC-SCH-001 // WIRING DIAGRAM</div>
+    </div>
+
+    <div class="schema-container scroll-reveal">
+      <canvas id="schema-canvas" width="900" height="520"></canvas>
+      <div class="terminal-block" style="left:40px;top:40px">
+        <div class="tb-header">PROJECT</div>
+        <div class="tb-field"><span class="field-pin"></span>id: INT (PK)</div>
+        <div class="tb-field"><span class="field-pin"></span>name: VARCHAR(120)</div>
+        <div class="tb-field"><span class="field-pin"></span>code: CHAR(8)</div>
+        <div class="tb-field"><span class="field-pin"></span>status: ENUM</div>
+        <div class="tb-field"><span class="field-pin"></span>start_date: DATE</div>
+      </div>
+      <div class="terminal-block" style="left:340px;top:30px">
+        <div class="tb-header">TASK</div>
+        <div class="tb-field"><span class="field-pin"></span>id: INT (PK)</div>
+        <div class="tb-field"><span class="field-pin"></span>project_id: INT (FK)</div>
+        <div class="tb-field"><span class="field-pin"></span>title: VARCHAR(200)</div>
+        <div class="tb-field"><span class="field-pin"></span>zone: VARCHAR(10)</div>
+        <div class="tb-field"><span class="field-pin"></span>assigned_to: INT (FK)</div>
+        <div class="tb-field"><span class="field-pin"></span>status: ENUM</div>
+      </div>
+      <div class="terminal-block" style="left:640px;top:50px">
+        <div class="tb-header">CREW MEMBER</div>
+        <div class="tb-field"><span class="field-pin"></span>id: INT (PK)</div>
+        <div class="tb-field"><span class="field-pin"></span>name: VARCHAR(80)</div>
+        <div class="tb-field"><span class="field-pin"></span>role: ENUM</div>
+        <div class="tb-field"><span class="field-pin"></span>cert_level: INT</div>
+      </div>
+      <div class="terminal-block" style="left:40px;top:300px">
+        <div class="tb-header">MATERIAL</div>
+        <div class="tb-field"><span class="field-pin"></span>id: INT (PK)</div>
+        <div class="tb-field"><span class="field-pin"></span>name: VARCHAR(100)</div>
+        <div class="tb-field"><span class="field-pin"></span>spec: VARCHAR(50)</div>
+        <div class="tb-field"><span class="field-pin"></span>qty_on_site: DECIMAL</div>
+        <div class="tb-field"><span class="field-pin"></span>unit: VARCHAR(10)</div>
+      </div>
+      <div class="terminal-block" style="left:380px;top:320px">
+        <div class="tb-header">INSPECTION</div>
+        <div class="tb-field"><span class="field-pin"></span>id: INT (PK)</div>
+        <div class="tb-field"><span class="field-pin"></span>task_id: INT (FK)</div>
+        <div class="tb-field"><span class="field-pin"></span>inspector_id: INT (FK)</div>
+        <div class="tb-field"><span class="field-pin"></span>result: ENUM</div>
+        <div class="tb-field"><span class="field-pin"></span>notes: TEXT</div>
+      </div>
+      <div class="terminal-block" style="left:660px;top:300px">
+        <div class="tb-header">EQUIPMENT</div>
+        <div class="tb-field"><span class="field-pin"></span>id: INT (PK)</div>
+        <div class="tb-field"><span class="field-pin"></span>type: VARCHAR(60)</div>
+        <div class="tb-field"><span class="field-pin"></span>serial: CHAR(12)</div>
+        <div class="tb-field"><span class="field-pin"></span>status: ENUM</div>
+        <div class="tb-field"><span class="field-pin"></span>zone: VARCHAR(10)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DIRECTORY TREE ========== -->
+  <section class="page" data-page="directory-tree">
+    <div class="page-header">
+      <h1 class="page-title" data-splitting>SITE DIRECTORY</h1>
+      <div class="page-annotation">REF: MC-DIR-001 // DOCUMENT HIERARCHY</div>
+    </div>
+
+    <div class="directory-container scroll-reveal">
+      <div class="dir-entry level-0">
+        <span class="dir-icon">+</span>
+        <span class="dir-ref">[RM-001]</span>
+        <span class="dir-name">RIVERFRONT NORTH BRIDGE</span>
+        <span class="dir-type">PROJECT ROOT</span>
+      </div>
+      <div class="dir-entry level-1">
+        <span class="dir-icon">+</span>
+        <span class="dir-ref">[RM-010]</span>
+        <span class="dir-name">01-DESIGN</span>
+        <span class="dir-type">SECTION</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[DWG-101]</span>
+        <span class="dir-name">GENERAL ARRANGEMENT.dwg</span>
+        <span class="dir-type">DRAWING</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[DWG-102]</span>
+        <span class="dir-name">PIER DETAIL SECTION A-A.dwg</span>
+        <span class="dir-type">DRAWING</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[DWG-103]</span>
+        <span class="dir-name">ABUTMENT PROFILE B-B.dwg</span>
+        <span class="dir-type">DRAWING</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[CAL-104]</span>
+        <span class="dir-name">STRUCTURAL CALC PACKAGE.pdf</span>
+        <span class="dir-type">REPORT</span>
+      </div>
+      <div class="dir-entry level-1">
+        <span class="dir-icon">+</span>
+        <span class="dir-ref">[RM-020]</span>
+        <span class="dir-name">02-GEOTECH</span>
+        <span class="dir-type">SECTION</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[GEO-201]</span>
+        <span class="dir-name">BOREHOLE LOG BH-01 TO BH-12.pdf</span>
+        <span class="dir-type">REPORT</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[GEO-202]</span>
+        <span class="dir-name">SOIL CLASSIFICATION.xlsx</span>
+        <span class="dir-type">DATA</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[GEO-203]</span>
+        <span class="dir-name">PILE LOAD TEST RESULTS.pdf</span>
+        <span class="dir-type">REPORT</span>
+      </div>
+      <div class="dir-entry level-1">
+        <span class="dir-icon">+</span>
+        <span class="dir-ref">[RM-030]</span>
+        <span class="dir-name">03-CONSTRUCTION</span>
+        <span class="dir-type">SECTION</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[CON-301]</span>
+        <span class="dir-name">CRANE LIFT PLAN REV.03.pdf</span>
+        <span class="dir-type">PLAN</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[CON-302]</span>
+        <span class="dir-name">CONCRETE MIX DESIGN C50-60.pdf</span>
+        <span class="dir-type">SPEC</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[CON-303]</span>
+        <span class="dir-name">TEMPORARY WORKS METHOD STMT.pdf</span>
+        <span class="dir-type">METHOD</span>
+      </div>
+      <div class="dir-entry level-1">
+        <span class="dir-icon">+</span>
+        <span class="dir-ref">[RM-040]</span>
+        <span class="dir-name">04-SAFETY</span>
+        <span class="dir-type">SECTION</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[SAF-401]</span>
+        <span class="dir-name">RISK ASSESSMENT MATRIX.xlsx</span>
+        <span class="dir-type">MATRIX</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[SAF-402]</span>
+        <span class="dir-name">EMERGENCY RESPONSE PLAN.pdf</span>
+        <span class="dir-type">PLAN</span>
+      </div>
+      <div class="dir-entry level-1">
+        <span class="dir-icon">+</span>
+        <span class="dir-ref">[RM-050]</span>
+        <span class="dir-name">05-ENVIRONMENTAL</span>
+        <span class="dir-type">SECTION</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[ENV-501]</span>
+        <span class="dir-name">WATER QUALITY MONITORING.xlsx</span>
+        <span class="dir-type">DATA</span>
+      </div>
+      <div class="dir-entry level-2">
+        <span class="dir-icon">&mdash;</span>
+        <span class="dir-ref">[ENV-502]</span>
+        <span class="dir-name">NOISE IMPACT ASSESSMENT.pdf</span>
+        <span class="dir-type">REPORT</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== IDEAS ========== -->
+  <section class="page" data-page="ideas">
+    <div class="page-header">
+      <h1 class="page-title" data-splitting>INNOVATION LOG</h1>
+      <div class="page-annotation">REF: MC-IDEAS-001 // PRIORITY BUBBLE CHART</div>
+    </div>
+
+    <div class="ideas-container scroll-reveal">
+      <div class="bubble-chart-area">
+        <div class="axis-y">
+          <span class="axis-label">IMPACT</span>
+          <span>HIGH</span>
+          <span>MED</span>
+          <span>LOW</span>
+        </div>
+        <div class="bubble-grid" id="bubble-grid">
+          <div class="axis-x">
+            <span>LOW</span>
+            <span>MED</span>
+            <span>HIGH</span>
+            <span class="axis-label">FEASIBILITY</span>
+          </div>
+          <!-- bubbles positioned via inline style -->
+          <div class="idea-bubble size-lg" style="left:68%;top:12%" data-idea="Prefabricated bridge deck segments to cut installation time by 40%">
+            <span class="bubble-label">PRECAST DECK</span>
+          </div>
+          <div class="idea-bubble size-md" style="left:72%;top:38%" data-idea="Drone-based daily survey instead of manual GPS shots">
+            <span class="bubble-label">DRONE SURVEY</span>
+          </div>
+          <div class="idea-bubble size-sm" style="left:30%;top:18%" data-idea="Self-healing concrete additive for pier caps">
+            <span class="bubble-label">SELF-HEAL MIX</span>
+          </div>
+          <div class="idea-bubble size-md" style="left:52%;top:52%" data-idea="Digital twin model updated from real-time sensors">
+            <span class="bubble-label">DIGITAL TWIN</span>
+          </div>
+          <div class="idea-bubble size-sm" style="left:15%;top:60%" data-idea="Automated rebar tying robots for repetitive cage work">
+            <span class="bubble-label">REBAR ROBOT</span>
+          </div>
+          <div class="idea-bubble size-lg" style="left:80%;top:65%" data-idea="Modular formwork system reusable across all pier caps">
+            <span class="bubble-label">MOD FORMWORK</span>
+          </div>
+          <div class="idea-bubble size-sm" style="left:42%;top:78%" data-idea="Solar-powered site lighting grid to reduce diesel generators">
+            <span class="bubble-label">SOLAR GRID</span>
+          </div>
+          <div class="idea-bubble size-md" style="left:22%;top:40%" data-idea="Machine learning crack detection on existing structures">
+            <span class="bubble-label">ML INSPECT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== AI CHAT (DISPATCH) ========== -->
+  <section class="page" data-page="ai-chat">
+    <div class="page-header">
+      <h1 class="page-title" data-splitting>SITE DISPATCH</h1>
+      <div class="page-annotation">REF: MC-DISP-001 // RADIO CHANNEL ALPHA</div>
+    </div>
+
+    <div class="dispatch-container">
+      <div class="dispatch-log scroll-reveal" id="dispatch-log">
+        <div class="dispatch-msg incoming">
+          <div class="msg-header">
+            <span class="callsign">CMD-BASE</span>
+            <span class="msg-time">06:45:12</span>
+            <span class="msg-freq">CH-ALPHA</span>
+          </div>
+          <div class="msg-body">All crews, morning brief: weather clear, wind 12 kph NW. Concrete pour authorized for Zone A3 Pier 2. Crane C-04 cleared for lifts above 20T. Stay on channel.</div>
+        </div>
+
+        <div class="dispatch-msg outgoing">
+          <div class="msg-header">
+            <span class="callsign">FIELD-07</span>
+            <span class="msg-time">06:48:33</span>
+            <span class="msg-freq">CH-ALPHA</span>
+          </div>
+          <div class="msg-body">CMD-BASE, FIELD-07 copy. Rebar cage inspection complete on Pier 2 footing. 42 bars verified, torque specs confirmed. Ready for formwork closure. Over.</div>
+        </div>
+
+        <div class="dispatch-msg incoming">
+          <div class="msg-header">
+            <span class="callsign">CMD-BASE</span>
+            <span class="msg-time">06:52:08</span>
+            <span class="msg-freq">CH-ALPHA</span>
+          </div>
+          <div class="msg-body">FIELD-07, acknowledged. Formwork crew dispatched to your position. ETA 15 minutes. Keep zone secured. Over.</div>
+        </div>
+
+        <div class="dispatch-msg outgoing">
+          <div class="msg-header">
+            <span class="callsign">SURVEY-03</span>
+            <span class="msg-time">07:15:44</span>
+            <span class="msg-freq">CH-ALPHA</span>
+          </div>
+          <div class="msg-body">CMD-BASE, SURVEY-03 reporting. Alignment check on west abutment shows 3mm deviation east. Within tolerance but flagging for monitoring. GPS log uploaded to server. Over.</div>
+        </div>
+
+        <div class="dispatch-msg incoming">
+          <div class="msg-header">
+            <span class="callsign">CMD-BASE</span>
+            <span class="msg-time">07:18:02</span>
+            <span class="msg-freq">CH-ALPHA</span>
+          </div>
+          <div class="msg-body">SURVEY-03, copy that. Flagging for K. Nakamura review. Maintain monitoring frequency at 4-hour intervals. Out.</div>
+        </div>
+
+        <div class="dispatch-msg system">
+          <div class="msg-header">
+            <span class="callsign">AI-ASSIST</span>
+            <span class="msg-time">07:20:00</span>
+            <span class="msg-freq">AUTO</span>
+          </div>
+          <div class="msg-body">AUTOMATED ANALYSIS: West abutment deviation trend shows +0.8mm/week over last 3 readings. Recommend installing tiltmeter for continuous monitoring. Historical data suggests thermal expansion as primary factor. Confidence: 87%.</div>
+        </div>
+      </div>
+
+      <div class="dispatch-input-area">
+        <div class="input-callsign">OPERATOR</div>
+        <input type="text" class="dispatch-input" id="dispatch-input" placeholder="Enter dispatch message...">
+        <button class="dispatch-send" id="dispatch-send">TRANSMIT</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SETTINGS ========== -->
+  <section class="page" data-page="settings">
+    <div class="page-header">
+      <h1 class="page-title" data-splitting>CONFIGURATION</h1>
+      <div class="page-annotation">REF: MC-CFG-001 // SETUP WIZARD</div>
+    </div>
+
+    <div class="settings-wizard">
+      <div class="wizard-progress">
+        <div class="wizard-step completed" data-step="1">
+          <span class="step-num">01</span>
+          <span class="step-label">SITE PROFILE</span>
+        </div>
+        <div class="wizard-step active" data-step="2">
+          <span class="step-num">02</span>
+          <span class="step-label">CREW ACCESS</span>
+        </div>
+        <div class="wizard-step" data-step="3">
+          <span class="step-num">03</span>
+          <span class="step-label">NOTIFICATIONS</span>
+        </div>
+        <div class="wizard-step" data-step="4">
+          <span class="step-num">04</span>
+          <span class="step-label">INTEGRATIONS</span>
+        </div>
+        <div class="wizard-step" data-step="5">
+          <span class="step-num">05</span>
+          <span class="step-label">DEPLOY</span>
+        </div>
+      </div>
+
+      <div class="wizard-body scroll-reveal">
+        <!-- Phase 1: SITE PROFILE (completed) -->
+        <div class="wizard-section completed-section" id="wizard-phase-1">
+          <div class="section-marker">PHASE 01 // SITE PROFILE</div>
+          <div class="section-status">COMPLETE</div>
+          <div class="setting-row">
+            <span class="setting-label">PROJECT NAME</span>
+            <span class="setting-value">RIVERFRONT NORTH BRIDGE</span>
+          </div>
+          <div class="setting-row">
+            <span class="setting-label">SITE CODE</span>
+            <span class="setting-value">MC-2601</span>
+          </div>
+          <div class="setting-row">
+            <span class="setting-label">REGION</span>
+            <span class="setting-value">PACIFIC NORTHWEST</span>
+          </div>
+        </div>
+
+        <!-- Phase 2: CREW ACCESS (active) -->
+        <div class="wizard-section active-section" id="wizard-phase-2">
+          <div class="section-marker">PHASE 02 // CREW ACCESS</div>
+          <div class="section-status in-progress">IN PROGRESS</div>
+
+          <div class="form-group">
+            <label class="form-label">SITE MANAGER</label>
+            <input type="text" class="form-input" value="J. Martinez" placeholder="Enter name...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">MAX CREW SIZE</label>
+            <input type="number" class="form-input" value="300" placeholder="Enter number...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">SHIFT PATTERN</label>
+            <div class="toggle-group">
+              <span class="toggle-label">2 SHIFTS</span>
+              <div class="toggle-switch active" data-toggle="shift-pattern">
+                <div class="toggle-lever"></div>
+              </div>
+              <span class="toggle-label">3 SHIFTS</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">VISITOR ACCESS</label>
+            <div class="toggle-group">
+              <span class="toggle-label">RESTRICTED</span>
+              <div class="toggle-switch" data-toggle="visitor-access">
+                <div class="toggle-lever"></div>
+              </div>
+              <span class="toggle-label">OPEN</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">SAFETY BRIEFING FREQUENCY</label>
+            <input type="text" class="form-input" value="Daily 06:00" placeholder="Schedule...">
+          </div>
+        </div>
+
+        <!-- Phase 3: NOTIFICATIONS -->
+        <div class="wizard-section" id="wizard-phase-3">
+          <div class="section-marker">PHASE 03 // NOTIFICATIONS</div>
+          <div class="section-status pending">PENDING</div>
+          <div class="form-group">
+            <label class="form-label">INCIDENT ALERTS</label>
+            <div class="toggle-group">
+              <span class="toggle-label">OFF</span>
+              <div class="toggle-switch active" data-toggle="incident-alerts">
+                <div class="toggle-lever"></div>
+              </div>
+              <span class="toggle-label">ON</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">WEATHER WARNINGS</label>
+            <div class="toggle-group">
+              <span class="toggle-label">OFF</span>
+              <div class="toggle-switch active" data-toggle="weather-warnings">
+                <div class="toggle-lever"></div>
+              </div>
+              <span class="toggle-label">ON</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">DAILY REPORT EMAIL</label>
+            <input type="email" class="form-input" placeholder="Enter email...">
+          </div>
+        </div>
+
+        <!-- Phase 4: INTEGRATIONS -->
+        <div class="wizard-section" id="wizard-phase-4">
+          <div class="section-marker">PHASE 04 // INTEGRATIONS</div>
+          <div class="section-status pending">PENDING</div>
+          <div class="form-group">
+            <label class="form-label">BIM MODEL SYNC</label>
+            <div class="toggle-group">
+              <span class="toggle-label">OFF</span>
+              <div class="toggle-switch" data-toggle="bim-sync">
+                <div class="toggle-lever"></div>
+              </div>
+              <span class="toggle-label">ON</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">GPS TRACKER FEED</label>
+            <div class="toggle-group">
+              <span class="toggle-label">OFF</span>
+              <div class="toggle-switch active" data-toggle="gps-tracker">
+                <div class="toggle-lever"></div>
+              </div>
+              <span class="toggle-label">ON</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">DRONE API ENDPOINT</label>
+            <input type="text" class="form-input" value="https://api.meridian.dev/drone/v2" placeholder="URL...">
+          </div>
+        </div>
+
+        <!-- Phase 5: DEPLOY -->
+        <div class="wizard-section" id="wizard-phase-5">
+          <div class="section-marker">PHASE 05 // DEPLOY</div>
+          <div class="section-status pending">PENDING</div>
+          <div class="deploy-summary">
+            <p>Review all phases before deploying configuration to the field network. Once deployed, changes require supervisor approval.</p>
+            <button class="btn-primary btn-deploy" id="deploy-btn">DEPLOY TO FIELD</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

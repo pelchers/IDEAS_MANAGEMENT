@@ -1,0 +1,99 @@
+{
+  "styleId": "liquid",
+  "pass": 3,
+  "references": [
+    {
+      "name": "Nothing Technology",
+      "url": "https://nothing.tech",
+      "takeaway": "Use a transparent-layer design language where UI surfaces appear as clear glass panels with visible structural elements (grids, wires, dots) beneath them, like a see-through phone back.",
+      "influence": {
+        "applied": true,
+        "elements": [
+          {
+            "description": "The top bar uses backdrop-filter blur creating a frosted glass effect where the ambient canvas orbs are visible through the header, giving a transparent-layer feel.",
+            "cssProperty": "backdrop-filter: blur(16px); background: rgba(24,24,27,0.85)",
+            "location": ".top-bar"
+          },
+          {
+            "description": "The command palette modal has a blurred backdrop that reveals the underlying page content through a semi-transparent overlay, channeling the see-through aesthetic.",
+            "cssProperty": "backdrop-filter: blur(4px); background: rgba(0,0,0,0.6)",
+            "location": ".command-palette-backdrop"
+          },
+          {
+            "description": "Tooltips use backdrop-filter blur to create a glass-panel appearance floating above the surface, with visible structural border lines beneath.",
+            "cssProperty": "backdrop-filter: blur(8px) on .tippy-box",
+            "location": "Tippy.js tooltip overrides"
+          },
+          {
+            "description": "The ambient canvas with drifting chrome orbs acts as a 'visible structural element' layer beneath all UI surfaces, similar to seeing internal components through a transparent phone back.",
+            "location": "#ambient-canvas with radial gradient orbs"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Teenage Engineering",
+      "url": "https://teenage.engineering",
+      "takeaway": "Present content items as precision-machined components with technical specification overlays — measurement lines, material callouts, and part-number labels that make each element feel engineered.",
+      "influence": {
+        "applied": true,
+        "elements": [
+          {
+            "description": "Schema planner entities display fields with PK/FK key badges and type annotations (uuid, varchar, decimal, timestamp), mimicking technical specification callouts on engineered components.",
+            "location": ".schema-entity with .field-key and .field-type labels"
+          },
+          {
+            "description": "Directory tree files display file sizes in monospaced type (4.2 KB, 12.3 KB), treating code files as precision components with specification metadata.",
+            "location": ".tree-meta in directory-tree view"
+          },
+          {
+            "description": "Workspace panel metrics display financial data with precise decimal formatting ($847,231,400, 18.4%, 2.3x) in monospaced type, creating a technical readout aesthetic reminiscent of hardware spec overlays.",
+            "location": ".metric-item in project-workspace"
+          },
+          {
+            "description": "Dashboard gauge cards use circular bezels with metallic borders that evoke precision-machined instrument gauges, with numerical readouts centered inside.",
+            "location": ".gauge-bezel with conic-gradient fill and .gauge-value"
+          },
+          {
+            "description": "Kanban cards show deal amounts in monospaced type with currency formatting ($15M ask), treating each deal card as a component with a specification label.",
+            "location": ".card-amount in kanban cards"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Bang & Olufsen",
+      "url": "https://www.bang-olufsen.com",
+      "takeaway": "Apply metallic gradient fills to card surfaces and interactive elements — linear gradients from dark-grey to light-grey that simulate brushed aluminum when combined with a subtle noise texture.",
+      "influence": {
+        "applied": true,
+        "elements": [
+          {
+            "description": "The primary chrome gradient token (--chrome-light) uses a multi-stop linear gradient from light zinc through mid-grey to dark grey and back, simulating brushed aluminum across headings, logos, avatars, and gauge bezels.",
+            "cssProperty": "background: linear-gradient(135deg, #d4d4d8 0%, #a1a1aa 40%, #71717a 60%, #a1a1aa 100%)",
+            "location": ":root --chrome-light, applied to .logo-text, .hero-heading, .avatar-ring, .gauge-bezel, .project-icon-circle, .user-badge"
+          },
+          {
+            "description": "The chrome surface gradient (--chrome-surface) provides a darker metallic treatment for table headers, kanban column headers, and settings group headers, simulating anodized aluminum with side lighting.",
+            "cssProperty": "background: linear-gradient(145deg, #3f3f46 0%, #27272a 50%, #3f3f46 100%)",
+            "location": ":root --chrome-surface, applied to .chrome-table-header, .kanban-col-header, .settings-group-header"
+          },
+          {
+            "description": "The chrome sheen sweep (--chrome-sheen) is a diagonal gradient with a bright center band that slides across card surfaces on hover, replicating the light-catching behavior of polished metal under side lighting.",
+            "cssProperty": "background: linear-gradient(105deg, transparent 0%, rgba(228,228,231,0.08) 45%, rgba(228,228,231,0.15) 50%, rgba(228,228,231,0.08) 55%, transparent 100%)",
+            "location": "::after pseudo-elements on .gauge-card, .project-row, .kanban-card, .idea-entry, .command-item, .nav-trigger, .chrome-btn"
+          },
+          {
+            "description": "Toggle thumbs in their checked state use a violet-to-light-violet gradient, applying the same metallic fill language to interactive controls.",
+            "cssProperty": "background: linear-gradient(135deg, var(--accent) 0%, #c4b5fd 100%)",
+            "location": ".mercury-toggle input:checked + .toggle-track .toggle-thumb"
+          },
+          {
+            "description": "The overall dark gallery aesthetic — dark charcoal backgrounds (#18181b) with elements emerging from darkness and lit by metallic highlights — directly channels Bang & Olufsen's product-on-void presentation style.",
+            "location": "Global body background and surface treatment"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "passId": "mid-century-modern-pass-3",
+  "styleId": "mid-century-modern",
+  "pass": 3,
+  "variantSeed": "girard-textile-collage",
+  "generatedAt": "2026-02-15T00:00:00.000Z",
+  "uniquenessProfile": {
+    "profileId": "card-stack-carousel",
+    "shellMode": "floating-pill-nav",
+    "navPattern": "pill-toggle-group",
+    "contentFlow": "stacked-card-carousel",
+    "scrollMode": "swipe-horizontal",
+    "alignment": "center",
+    "heroTreatment": "featured-card-hero",
+    "motionLanguage": "card-flip-slide",
+    "density": "spacious",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "bg": "#faf5eb",
+    "text": "#1a1a1a",
+    "surface": "#ffffff",
+    "accent": "#e05a4f",
+    "accent2": "#6b8e23",
+    "border": "#d4a843",
+    "teal": "#2a9d8f"
+  },
+  "typography": {
+    "heading": "Fraunces",
+    "body": "Outfit",
+    "mono": "JetBrains Mono"
+  },
+  "contentPersona": "contemporary-art-gallery",
+  "views": [
+    {
+      "name": "dashboard",
+      "layout": "collage-overlapping-stat-cards-with-featured-hero",
+      "components": ["stat-card-angled", "featured-hero-card", "activity-strip"],
+      "interactionsUsed": ["scrollReveal", "cardHover", "buttonClick", "microFeedback"]
+    },
+    {
+      "name": "projects",
+      "layout": "salon-wall-irregular-grid",
+      "components": ["salon-card-framed", "status-badge"],
+      "interactionsUsed": ["scrollReveal", "cardHover"]
+    },
+    {
+      "name": "project-workspace",
+      "layout": "patchwork-quilt-grid",
+      "components": ["quilt-patch", "seam-border", "timeline", "budget-bars", "team-list", "artwork-chips"],
+      "interactionsUsed": ["scrollReveal"]
+    },
+    {
+      "name": "kanban",
+      "layout": "four-column-status-board",
+      "components": ["kanban-column", "kanban-card-draggable", "geometric-status-shape"],
+      "interactionsUsed": ["scrollReveal", "cardHover", "microFeedback"]
+    },
+    {
+      "name": "whiteboard",
+      "layout": "absolute-positioned-mood-board",
+      "components": ["pinned-note", "textile-swatch", "folk-art-connector"],
+      "interactionsUsed": ["scrollReveal"]
+    },
+    {
+      "name": "schema-planner",
+      "layout": "absolute-positioned-entity-diagram",
+      "components": ["schema-entity-card", "dashed-connection-lines", "geometric-type-badge"],
+      "interactionsUsed": ["scrollReveal", "idleAmbient"]
+    },
+    {
+      "name": "directory-tree",
+      "layout": "nested-tree-with-folk-art-leaves",
+      "components": ["tree-node", "folk-leaf-icon", "decorative-vine-line"],
+      "interactionsUsed": ["scrollReveal"]
+    },
+    {
+      "name": "ideas",
+      "layout": "two-column-patterned-card-grid",
+      "components": ["idea-card-with-pattern-header", "vote-count", "author-avatar"],
+      "interactionsUsed": ["scrollReveal", "cardHover"]
+    },
+    {
+      "name": "ai-chat",
+      "layout": "vertical-letter-stack",
+      "components": ["letter-message", "colored-initial", "ornamental-divider", "chat-input"],
+      "interactionsUsed": ["scrollReveal", "buttonClick", "microFeedback"]
+    },
+    {
+      "name": "settings",
+      "layout": "train-carriage-wizard",
+      "components": ["train-track", "geometric-stop", "carriage-panel", "toggle-switch", "form-input"],
+      "interactionsUsed": ["toggleSwitch", "inputFocus", "buttonClick", "microFeedback"]
+    }
+  ],
+  "interactionProfile": {
+    "buttonHover": "pattern-fill-reveal",
+    "buttonClick": "confetti-burst-micro",
+    "cardHover": "border-color-cycle",
+    "pageTransition": "collage-shuffle",
+    "scrollReveal": "stagger-scale-rotate",
+    "navItemHover": "color-swatch-appear",
+    "navItemActive": "bold-weight-shift + decorative-border-bottom",
+    "inputFocus": "border-pattern-activate",
+    "toggleSwitch": "shape-morph-toggle",
+    "tooltips": "patterned-tooltip-box",
+    "loadingState": "kaleidoscope-spin",
+    "idleAmbient": "pattern-drift-subtle",
+    "microFeedback": "shape-pop-success"
+  },
+  "librariesUsed": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "purpose": "Ambient animation choreography, schema line animation, input focus polish"
+    },
+    {
+      "name": "GSAP Flip",
+      "version": "3.12.5",
+      "purpose": "Card-flip-slide motion language for page transitions"
+    },
+    {
+      "name": "Tippy.js",
+      "version": "6.3.7",
+      "purpose": "Patterned tooltip boxes on navigation items"
+    },
+    {
+      "name": "SortableJS",
+      "version": "1.15.6",
+      "purpose": "Kanban card drag-and-drop reordering"
+    },
+    {
+      "name": "Phosphor Icons (Duotone)",
+      "version": "2.1.1",
+      "purpose": "Navigation and UI icons with mid-century duotone aesthetic"
+    }
+  ],
+  "assetsDownloaded": [],
+  "antiRepeatCompliance": [
+    "Used vibrant 4-color simultaneous palette instead of restrained warm amber/olive (Pass 1)",
+    "Used overlapping collage dashboard instead of shelf-like dashboard (Pass 1)",
+    "Used irregular collage grid layouts instead of hub-spoke radial (Pass 2)",
+    "Used patterned card grid for ideas instead of bubble chart (Pass 2)",
+    "Used illustrated letter format for chat instead of comic panel (Pass 2)"
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

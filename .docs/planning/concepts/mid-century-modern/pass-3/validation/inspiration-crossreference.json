@@ -1,0 +1,92 @@
+{
+  "passId": "mid-century-modern-pass-3",
+  "layoutArchetype": "alexander-girard-textile",
+  "references": [
+    {
+      "name": "Marimekko",
+      "url": "https://www.marimekko.com",
+      "takeaway": "Use bold repeating geometric patterns (circles, stripes, chevrons) as background fills for alternating content sections, creating a textile-patchwork rhythm down the page.",
+      "howApplied": [
+        {
+          "element": "Geometric SVG pattern backgrounds (6 patterns: triangles, circles, diamonds, zigzag, stripes, dots)",
+          "view": "All views",
+          "description": "Every card, column header, and content section uses one of six repeating geometric SVG patterns as a background fill via data-pattern attributes. These patterns tile like Marimekko fabric prints, creating the patchwork effect across the entire interface. Each pattern is encoded as inline SVG in CSS for zero HTTP requests."
+        },
+        {
+          "element": "Stat card collage on dashboard",
+          "view": "Dashboard",
+          "description": "Six stat cards are arranged in a 3-column grid with intentional rotation angles and offsets, each with a different pattern background and accent color border. The overlapping, slightly-rotated arrangement creates the patchwork textile rhythm Marimekko achieves in their product grid layouts."
+        },
+        {
+          "element": "Idea card pattern headers",
+          "view": "Ideas",
+          "description": "Each idea card has a unique geometric pattern strip at the top, creating a grid where every card has distinct visual identity through its pattern — directly inspired by Marimekko's product thumbnails inheriting fabric patterns as backgrounds."
+        },
+        {
+          "element": "Strong primary-color palette with zero pastels or gradients",
+          "view": "All views",
+          "description": "The palette uses fully saturated coral (#e05a4f), olive (#6b8e23), gold (#d4a843), and teal (#2a9d8f) with no pastel variants, softened tints, or gradients. This direct, bold color usage mirrors Marimekko's commitment to strong primary colors."
+        }
+      ]
+    },
+    {
+      "name": "Hermes",
+      "url": "https://www.hermes.com",
+      "takeaway": "Introduce hand-illustrated decorative borders and divider elements between sections — line-art motifs that feel drawn by hand rather than generated, echoing textile print registration marks.",
+      "howApplied": [
+        {
+          "element": "Patchwork quilt seam borders",
+          "view": "Project Workspace",
+          "description": "Every quilt patch section has a decorative seam border at its top edge — a repeating linear gradient alternating between coral, olive, gold, and teal segments. These seams function like the hand-crafted registration marks between textile print runs, separating content sections with artisanal precision."
+        },
+        {
+          "element": "Ornamental SVG dividers in AI chat",
+          "view": "AI Chat",
+          "description": "Each chat message is separated by an inline SVG ornamental divider featuring circles, diamonds, rectangles, and connecting lines in accent colors. These feel hand-illustrated, like the decorative borders in Hermes editorial storytelling layouts. Each divider uses a different sequence of geometric shapes."
+        },
+        {
+          "element": "Decorative nav active indicator",
+          "view": "Navigation (all views)",
+          "description": "The active navigation item has a decorative geometric border at its bottom — a repeating pattern of coral, olive, and gold segments that echoes textile print registration marks rather than a simple solid underline."
+        },
+        {
+          "element": "Folk-art connectors on whiteboard",
+          "view": "Whiteboard",
+          "description": "The mood board features hand-drawn-style SVG connector elements with dashed curves, geometric shapes at endpoints (circles, triangles, diamonds), and folk-art motifs that feel sketched rather than programmatically generated."
+        },
+        {
+          "element": "Cream and ivory canvas with signature accent",
+          "view": "All views",
+          "description": "Following Hermes' approach of using cream/white as the canvas with a single strong brand accent, this design uses ivory #faf5eb as the base with coral as the primary signature accent, while olive, gold, and teal provide supporting roles."
+        }
+      ]
+    },
+    {
+      "name": "Cooper Hewitt Smithsonian Design Museum",
+      "url": "https://www.cooperhewitt.org",
+      "takeaway": "Use a variable-size mosaic grid where featured items span 2 or 3 columns and secondary items fill 1 column, creating the quilt-like compositional rhythm of a textile sample book.",
+      "howApplied": [
+        {
+          "element": "Salon-wall variable-size project cards",
+          "view": "Projects",
+          "description": "The exhibition collection grid uses three card sizes — large (2-column span), medium (1-column), and small (1-column) — arranged in a 3-column grid. Featured exhibitions get the large treatment while secondary shows fill smaller spaces, creating the mosaic rhythm of Cooper Hewitt's collection grid with its hero 2x-width items."
+        },
+        {
+          "element": "Rich metadata tags on cards",
+          "view": "Projects, Kanban, Ideas",
+          "description": "Project cards display multiple metadata dimensions simultaneously — medium type, work count, gallery location, and status — echoing Cooper Hewitt's collection grid that shows era, material, origin, and designer on each item card. Kanban cards show geometric status markers, assignees, and category tags."
+        },
+        {
+          "element": "Dashboard stat cards as variable-sized collage",
+          "view": "Dashboard",
+          "description": "The dashboard's overlapping stat cards at different angles and sizes create a variable-density composition similar to Cooper Hewitt's mixed-size collection grid, where the visual hierarchy is established through size and position rather than strict grid alignment."
+        },
+        {
+          "element": "Schema planner with type badges",
+          "view": "Schema Planner",
+          "description": "Each entity card in the schema planner has a geometric type badge (circle for Collection, triangle for Asset, square for Person, pentagon for Document) with associated accent colors — a taxonomy visualization approach inspired by Cooper Hewitt's rich metadata-driven collection browsing."
+        }
+      ]
+    }
+  ]
+}
