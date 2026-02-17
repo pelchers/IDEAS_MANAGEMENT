@@ -1,0 +1,16 @@
+{
+  "references": [
+    {
+      "name": "Underground Archive Aesthetic",
+      "url": "https://www.natural-history-museum.org",
+      "appliedTo": "Overall cavern-archive concept",
+      "howApplied": "Museum specimen cataloging applied to project data display"
+    },
+    {
+      "name": "Geological Stratigraphy UI",
+      "url": "https://dribbble.com/tags/geology",
+      "appliedTo": "Accordion navigation depth metaphor",
+      "howApplied": "Each accordion section represents a different geological stratum/depth"
+    }
+  ]
+}

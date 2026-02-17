@@ -1,0 +1,254 @@
+{
+  "passId": "liquid-pass-7",
+  "styleId": "liquid",
+  "styleLabel": "Liquid Motion",
+  "pass": 7,
+  "variantSeed": "editorial-ink-flow",
+  "generatedAt": "2026-02-16T00:00:00Z",
+  "contentPersona": "ink-master-editor",
+  "uniquenessProfile": {
+    "profileId": "magazine-spread",
+    "shellMode": "hidden-hamburger",
+    "navPattern": "fullscreen-overlay-menu",
+    "contentFlow": "editorial-columns",
+    "scrollMode": "parallax-layers",
+    "alignment": "mixed",
+    "heroTreatment": "full-bleed-image",
+    "motionLanguage": "cinematic-fade",
+    "density": "spacious",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "bg": "#0a0a14",
+    "text": "#e8e0f0",
+    "surface": "#14142a",
+    "accent": "#7b68ee",
+    "accent2": "#00d4aa",
+    "border": "#2a2a4a"
+  },
+  "typography": {
+    "heading": "Cormorant Garamond",
+    "body": "Inter",
+    "mono": "Fira Code"
+  },
+  "libraries": [],
+  "interactions": {
+    "buttonHover": "ink-spread-watercolor-bleed — CSS radial gradient expands from center behind text, accent color intensifies",
+    "buttonClick": "ink-splash-ripple — JS-created ripple element emanates from click point with ink gradient dissolution",
+    "cardHover": "edge-soften-content-sharpen — card border fades to softer glow, text color sharpens via CSS transition",
+    "pageTransition": "cinematic-ink-wash — Three-layer CSS transform overlay sweeps left-to-right with staggered timing",
+    "scrollReveal": "ink-puddle-materialize — Elements fade in and rise from translateY with staggered delays per element index",
+    "navItemHover": "ink-underline-draw — CSS ::after pseudo-element width animates from 0 to full from left origin",
+    "navItemActive": "full-ink-wash-background — Linear gradient background with accent opacity behind nav text",
+    "inputFocus": "liquid-border-flow — Border-color transition with expanding box-shadow glow ring animation",
+    "toggleSwitch": "mercury-blob-slide — CSS spring-eased translateX on ::before pseudo with color transition on track",
+    "tooltips": "not implemented (kept minimal for editorial aesthetic)",
+    "loadingState": "ink-drop-pulse — Three dots with staggered scale/opacity keyframe animation",
+    "idleAmbient": "ink-particle-drift — Canvas-based floating particles with dual accent colors and life cycle",
+    "microFeedback": "ink-glow-flash — Brief box-shadow pulse with accent color on successful actions"
+  },
+  "views": [
+    {
+      "id": "dashboard",
+      "label": "Dashboard",
+      "navSelector": "[data-view='dashboard']",
+      "contentSelector": "[data-page='dashboard']",
+      "contentElements": [
+        "Editorial spread header with two-column greeting and pullquote",
+        "4 stat cards with ink-line top accent and trend indicators",
+        "5-item activity feed with monospace timestamps",
+        "4 quick action buttons with ink ripple",
+        "3-item deadline sidebar with accent dates"
+      ]
+    },
+    {
+      "id": "projects",
+      "label": "Projects",
+      "navSelector": "[data-view='projects']",
+      "contentSelector": "[data-page='projects']",
+      "contentElements": [
+        "Search toolbar with liquid-focus input and Create New button",
+        "6 project cards in 3-column grid with status dots",
+        "Each card has title, description, tech stack tags, and collaborator counts"
+      ]
+    },
+    {
+      "id": "project-workspace",
+      "label": "Workspace",
+      "navSelector": "[data-view='project-workspace']",
+      "contentSelector": "[data-page='project-workspace']",
+      "contentElements": [
+        "Sidebar navigation with 6 section links and active state",
+        "Metadata table with 5 rows (status, created, modified, stack, collaborators)",
+        "5-item goal list with completion state indicators",
+        "Full project description editorial paragraph"
+      ]
+    },
+    {
+      "id": "kanban",
+      "label": "Kanban",
+      "navSelector": "[data-view='kanban']",
+      "contentSelector": "[data-page='kanban']",
+      "contentElements": [
+        "4-column kanban board (Backlog: 3, In Progress: 2, Review: 2, Done: 3)",
+        "10 total kanban cards with title, description, priority badge, and category tag",
+        "Column headers with card count badges",
+        "Done cards with reduced opacity"
+      ]
+    },
+    {
+      "id": "whiteboard",
+      "label": "Whiteboard",
+      "navSelector": "[data-view='whiteboard']",
+      "contentSelector": "[data-page='whiteboard']",
+      "contentElements": [
+        "Toolbar with 6 tool buttons (select, container, connection, text, zoom in/out)",
+        "5 draggable containers with titles and notes",
+        "4 SVG ink-blur filtered connection paths",
+        "Animated dashed stroke lines"
+      ]
+    },
+    {
+      "id": "schema-planner",
+      "label": "Schema Planner",
+      "navSelector": "[data-view='schema-planner']",
+      "contentSelector": "[data-page='schema-planner']",
+      "contentElements": [
+        "5 entity nodes (User, Project, KanbanCard, Idea, Whiteboard)",
+        "Each entity has PK/FK markers and typed field lists",
+        "6 SVG dashed relationship lines with ink-blur filter",
+        "5 relationship label annotations"
+      ]
+    },
+    {
+      "id": "directory-tree",
+      "label": "Directory Tree",
+      "navSelector": "[data-view='directory-tree']",
+      "contentSelector": "[data-page='directory-tree']",
+      "contentElements": [
+        "Two-column editorial layout with tree and preview",
+        "16 tree items across 4 depth levels with folder/file icons",
+        "File sizes displayed in monospace",
+        "Code preview panel with syntax-highlighted TypeScript schema"
+      ]
+    },
+    {
+      "id": "ideas",
+      "label": "Ideas",
+      "navSelector": "[data-view='ideas']",
+      "contentSelector": "[data-page='ideas']",
+      "contentElements": [
+        "Idea capture form with title, description, tags, and priority select",
+        "5 idea cards with title, description, priority badge, tags, and date",
+        "Full Save Idea button with ink ripple"
+      ]
+    },
+    {
+      "id": "ai-chat",
+      "label": "AI Chat",
+      "navSelector": "[data-view='ai-chat']",
+      "contentSelector": "[data-page='ai-chat']",
+      "contentElements": [
+        "6 chat messages (3 AI, 3 user) in alternating layout",
+        "AI avatar with accent gradient",
+        "4 tool action cards (add_idea, 2x update_kanban, generate_tree)",
+        "Code block with generated directory tree",
+        "Chat input with send button"
+      ]
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "navSelector": "[data-view='settings']",
+      "contentSelector": "[data-page='settings']",
+      "contentElements": [
+        "5 settings tabs (Account, Subscription, Preferences, Integrations, Data)",
+        "Account: name, email, avatar upload, bio textarea",
+        "Subscription: Pro Plan card with price, 5 features, renewal date",
+        "Preferences: 4 toggle switches, 1 select dropdown",
+        "Integrations: 4 service rows with connected/disconnected status",
+        "Data: Export, Import, and Delete Account sections"
+      ]
+    }
+  ],
+  "responsiveBreakpoints": {
+    "desktop": "1200px+",
+    "tablet": "769px-1199px",
+    "mobile": "391px-768px",
+    "smallMobile": "<=390px"
+  },
+  "files": [
+    {
+      "name": "index.html",
+      "description": "Complete SPA with all 10 views using data-view/data-page attributes, fullscreen overlay nav, ink wash transition overlay, ambient canvas"
+    },
+    {
+      "name": "style.css",
+      "description": "CSS custom properties, editorial typography, fullscreen nav styling, ink-wash transition layers, parallax support, responsive breakpoints at 1200/768/390px"
+    },
+    {
+      "name": "app.js",
+      "description": "Vanilla JS: hash routing, hamburger toggle, ink-wash page transitions, scroll reveal with stagger, ink ripple clicks, parallax, settings tabs, canvas ambient particles"
+    },
+    {
+      "name": "README.md",
+      "description": "Design decisions documentation"
+    },
+    {
+      "name": "validation/handoff.json",
+      "description": "This structural metadata file"
+    },
+    {
+      "name": "validation/inspiration-crossreference.json",
+      "description": "Inspiration sources and differentiation from previous passes"
+    }
+  ],
+  "designTokens": {
+    "colors": {
+      "--bg": "#0a0a14",
+      "--text": "#e8e0f0",
+      "--surface": "#14142a",
+      "--accent": "#7b68ee",
+      "--accent2": "#00d4aa",
+      "--border": "#2a2a4a",
+      "--text-muted": "rgba(232, 224, 240, 0.5)",
+      "--text-dim": "rgba(232, 224, 240, 0.3)"
+    },
+    "fonts": {
+      "--font-heading": "'Cormorant Garamond', Georgia, serif",
+      "--font-body": "'Inter', sans-serif",
+      "--font-mono": "'Fira Code', monospace"
+    },
+    "spacing": {
+      "--page-gutter": "3rem",
+      "--editorial-gap": "4rem"
+    },
+    "radii": {
+      "--radius-sm": "4px",
+      "--radius-md": "8px",
+      "--radius-lg": "12px"
+    },
+    "transitions": {
+      "--ease-ink": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+      "--ease-cinematic": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "--ease-spring": "cubic-bezier(0.34, 1.56, 0.64, 1)"
+    },
+    "shadows": {
+      "--shadow-ink": "0 4px 24px rgba(123, 104, 238, 0.08)",
+      "--shadow-deep": "0 8px 32px rgba(0, 0, 0, 0.5)",
+      "--shadow-card": "0 2px 12px rgba(0, 0, 0, 0.3)"
+    }
+  },
+  "differentiationFromPreviousPasses": {
+    "pass1-blob-morph": "No blob shapes, no organic border-radius morphing, no bento grid. Uses sharp editorial columns with traditional card layouts.",
+    "pass2-wave-current": "No wave/ocean metaphor, no horizontal stream bar, no SVG wave dividers. Uses fullscreen overlay menu and editorial column flow.",
+    "pass3-mercury-metallic": "No chrome reflections, no command palette modal, no metallic sheens. Uses soft ink-flow gradients and serif editorial typography.",
+    "pass4-watercolor-wash": "No light theme, no accordion sidebar, no pastel palette. Uses dark editorial layout with Cormorant Garamond heading font.",
+    "pass5-neon-plasma": "No neon colors, no tab bar navigation, no DJ/music metaphor. Uses magazine-spread layout with hidden hamburger navigation.",
+    "pass6-ink-calligraphy": "No left rail navigation, no engraved items, no calligraphy letter metaphor. Uses fullscreen overlay nav with editorial magazine spreads and editorial columns."
+  },
+  "noBackgroundImages": true,
+  "noExternalAnimationLibraries": true,
+  "vanillaJsOnly": true,
+  "totalExternalDependencies": 0
+}

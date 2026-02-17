@@ -1,0 +1,119 @@
+{
+  "pass": 7,
+  "style": "liquid",
+  "variantSeed": "editorial-ink-flow",
+  "inspirationSources": [
+    {
+      "source": "High-fashion editorial magazine layouts (Vogue, W Magazine)",
+      "elementsBorrowed": "Multi-column content flow, generous whitespace, serif headline typography, kicker/standfirst/pullquote hierarchy",
+      "adaptation": "Applied magazine editorial structure to a data-driven SPA. Kickers label each section, headlines use Cormorant Garamond italic for emphasis, standfirst paragraphs provide context in muted tones."
+    },
+    {
+      "source": "Japanese ink wash painting (sumi-e)",
+      "elementsBorrowed": "Flowing ink particle aesthetic, ink-blur SVG filters, dark backgrounds with luminous accents",
+      "adaptation": "Canvas-based ink particle drift creates ambient background texture. SVG connection lines use Gaussian blur filter to simulate ink bleeding on paper. Dark palette (#0a0a14) serves as wet black paper."
+    },
+    {
+      "source": "Swiss typographic design / International Typographic Style",
+      "elementsBorrowed": "Systematic grid layout, monospace numbering, strict typographic hierarchy with editorial kicker-headline-standfirst pattern",
+      "adaptation": "Navigation uses numbered items (01-10) in monospace. Content follows strict editorial hierarchy. Grid system is systematic but softened with generous spacing."
+    },
+    {
+      "source": "Cinematic title sequences (Saul Bass, Kyle Cooper)",
+      "elementsBorrowed": "Three-layer ink wash page transitions with staggered timing, dramatic reveal animations",
+      "adaptation": "Page transitions use three CSS layers that sweep across the viewport with staggered delays, creating a cinematic wipe effect reminiscent of film title sequences."
+    },
+    {
+      "source": "Fullscreen overlay navigation (Stripe, Apple special events)",
+      "elementsBorrowed": "Hidden hamburger revealing full-screen navigation with large typography and radial gradient backgrounds",
+      "adaptation": "Navigation is completely hidden behind a circular hamburger button. When opened, a full-viewport overlay reveals all 10 views with large serif typography, ink-wash gradient background, and editorial masthead."
+    }
+  ],
+  "uniqueDesignElements": [
+    "Fullscreen overlay menu with dual radial ink-wash gradients and editorial masthead (Issue VII, Vol. VII, No. 1)",
+    "Three-layer cinematic ink wash page transition with staggered CSS transforms",
+    "Editorial two-column spread header with pullquote on dashboard",
+    "Magazine-style kicker + headline + standfirst typographic hierarchy across all views",
+    "Canvas-based ambient ink particle drift with dual-color lifecycle particles",
+    "Ink ripple click feedback with JS-created gradient splash elements",
+    "Spring-eased mercury toggle switches using CSS cubic-bezier(0.34, 1.56, 0.64, 1)",
+    "Monospace numbered navigation items (01-10) with ink underline draw animation",
+    "SVG connection lines with feGaussianBlur ink-bleed filter",
+    "Staggered scroll reveal with per-element index-based delay calculation"
+  ],
+  "differentiationFromPriorPasses": {
+    "navigation": {
+      "pass1": "Floating blob nav (left sidebar)",
+      "pass2": "Horizontal top stream bar",
+      "pass3": "Minimal top bar + command palette modal",
+      "pass4": "Collapsible left sidebar with accordions",
+      "pass5": "Protruding top stone tabs",
+      "pass6": "Recessed left rail with engraved items",
+      "pass7": "Hidden hamburger with fullscreen overlay menu — completely hidden navigation revealed by a single button, editorial magazine menu layout"
+    },
+    "contentFlow": {
+      "pass1": "Fluid bento grid",
+      "pass2": "Current-like horizontal slide-in",
+      "pass3": "Centered card stack",
+      "pass4": "Split panel detail",
+      "pass5": "Depth stacked layers",
+      "pass6": "Etched panels",
+      "pass7": "Editorial columns — magazine-spread layout with multi-column content, editorial typographic hierarchy, generous whitespace"
+    },
+    "motionLanguage": {
+      "pass1": "Liquid morph with GSAP",
+      "pass2": "Wave undulation with GSAP",
+      "pass3": "Modal scale-in with GSAP",
+      "pass4": "Collapse-expand with GSAP",
+      "pass5": "Slow emerge with GSAP",
+      "pass6": "Subtle fade with GSAP + Splitting.js",
+      "pass7": "Cinematic fade with vanilla JS — no external animation libraries, three-layer ink wash transitions, staggered CSS reveals"
+    },
+    "typography": {
+      "pass1": "Syne + Manrope",
+      "pass2": "Syne + Manrope",
+      "pass3": "Space Grotesk + Inter",
+      "pass4": "Cormorant + Nunito Sans",
+      "pass5": "Syncopate + Lexend",
+      "pass6": "Playfair Display + Source Sans 3",
+      "pass7": "Cormorant Garamond + Inter — italic serif for editorial emphasis, paired with clean sans-serif body"
+    },
+    "palette": {
+      "pass1": "Light blue (#f0f4ff) with blue accents",
+      "pass2": "Deep ocean (#0a1628) with cyan accents",
+      "pass3": "Zinc dark (#18181b) with violet/silver",
+      "pass4": "Warm white (#fefcfa) with rose/sage",
+      "pass5": "Deep purple (#0c0820) with cyan/magenta",
+      "pass6": "Navy (#0a1628) with white/gold",
+      "pass7": "Midnight ink (#0a0a14) with medium slate blue (#7b68ee) and caribbean green (#00d4aa) — unique purple-green accent pairing on near-black"
+    },
+    "density": {
+      "pass1": "Balanced",
+      "pass2": "Balanced",
+      "pass3": "Spacious",
+      "pass4": "Compact",
+      "pass5": "Dense",
+      "pass6": "Compact",
+      "pass7": "Spacious — generous editorial whitespace, magazine-grade breathing room between sections"
+    }
+  },
+  "antiRepeatCompliance": {
+    "no-blob-morph-surfaces": true,
+    "no-floating-blob-nav": true,
+    "no-organic-blob-buttons": true,
+    "no-fluid-bento": true,
+    "no-wave-current-stream": true,
+    "no-horizontal-stream-bar": true,
+    "no-wave-stacked-content": true,
+    "no-mercury-droplet-fusion": true,
+    "no-metallic-chrome-reflections": true,
+    "no-aurora-plasma-flow": true,
+    "no-northern-lights-gradients": true,
+    "no-plasma-ribbons": true,
+    "no-deep-ocean-bioluminescence": true,
+    "no-deep-sea-darkness": true,
+    "no-lava-lamp-psychedelic": true,
+    "no-color-cycling": true,
+    "no-groovy-retro": true
+  }
+}

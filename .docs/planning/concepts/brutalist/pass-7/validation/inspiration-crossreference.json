@@ -1,0 +1,64 @@
+{
+  "conceptTitle": "Punched-Card-Data-Wall",
+  "styleFamily": "Brutalist",
+  "pass": 7,
+  "inspirationSources": [
+    {
+      "reference": "IBM System/360 punched card format",
+      "application": "The rectangular punch card as the atomic UI component — each card has a header row (dark bar), data fields in fixed-width columns, and a footer with metadata. The rigid geometry and reference numbering system derive from physical card formatting conventions.",
+      "category": "computing-history"
+    },
+    {
+      "reference": "1970s mainframe operator console displays",
+      "application": "Dense monospaced data readouts, system status indicators, operator greeting conventions, reference numbering on every element (STAT-001, ENT-002), and the overall information-first layout philosophy.",
+      "category": "computing-history"
+    },
+    {
+      "reference": "Data center monitoring walls",
+      "application": "The data wall grid layout concept — multiple rectangular panels arranged in a rigid grid filling the full viewport, each showing a different metric or data stream. No whitespace wasted.",
+      "category": "architecture"
+    },
+    {
+      "reference": "Brutalist web design (anti-decoration principle)",
+      "application": "Zero border-radius, raw structural borders, exposed grid, monumental typography, no gradients, no rounded corners, no shadows except hard-edge drop shadows on hover.",
+      "category": "design-movement"
+    },
+    {
+      "reference": "IBM Plex Mono typeface design rationale",
+      "application": "Selected for its readability at small sizes in dense data presentations. IBM Plex was designed for technical documentation and data-heavy interfaces — directly aligned with the mainframe operator persona.",
+      "category": "typography"
+    },
+    {
+      "reference": "Courier Prime typeface",
+      "application": "Used for headings to evoke typewriter/teletype output — the primary output device of mainframe-era computing. Gives headings an authoritative, machine-generated quality.",
+      "category": "typography"
+    },
+    {
+      "reference": "Browser tab UI pattern",
+      "application": "The top tab strip navigation is modeled on web browser tab bars — a workbench metaphor where each tab is a different view/tool, and the currently active tab appears connected to the content below.",
+      "category": "ui-pattern"
+    },
+    {
+      "reference": "Binary toggle switch (0/1)",
+      "application": "Settings toggles display binary 0/1 values instead of conventional on/off switches, reinforcing the mainframe computing metaphor where everything reduces to binary state.",
+      "category": "interaction-design"
+    },
+    {
+      "reference": "Scanline display effect",
+      "application": "Subtle horizontal line overlay (1px at 2% opacity) across the entire viewport, referencing CRT monitor scanlines without resorting to the green-on-black terminal aesthetic that was explicitly avoided.",
+      "category": "visual-effect"
+    }
+  ],
+  "antiRepeatVerification": {
+    "passed": true,
+    "avoidedElements": [
+      "No concrete slab or paper textures — uses flat color surfaces only",
+      "No stamp grids, numbered badges, or postal motifs — uses typed reference numbers instead",
+      "No CRT green-on-black or phosphor glow — warm off-white palette with dark borders",
+      "No blueprint grid or construction zone orange — orange is accent-only, no grid background",
+      "No torn paper, collage, or zine aesthetic — clean rectangular geometry throughout",
+      "No corrugated steel, barcode labels, hazmat stripes, or warehouse containers — data processing metaphor, not industrial"
+    ]
+  },
+  "distinctionFromPriorPasses": "This pass is unique through its punched-card atomic component model, browser-tab-row navigation, mainframe operator content persona, binary toggle switches, reference numbering system on all elements, and warm off-white/dark-border palette that avoids all previously used brutalist textures and motifs."
+}

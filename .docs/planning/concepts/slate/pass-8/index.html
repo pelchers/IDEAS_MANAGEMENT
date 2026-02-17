@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDEA-MANAGEMENT | Mine Shaft Terminal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Source+Code+Pro:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="terminal-shell">
+
+    <!-- ASCII Banner -->
+    <header id="mine-banner">
+<pre class="ascii-art" aria-hidden="true">
+ _______ _______ _______ _______    _______ _______ _______ _______ _______
+|   |   |_     _|    |  |    ___|  |   _   |   |   |   _   |    ___|_     _|
+|       |_|   |_|       |    ___|  |       |       |       |    ___| |   |
+|__|_|__|_______|__|____|_______|  |___|___|___|___|___|___|___|     |___|
+
+  DEPTH: 1,247m  |  SECTOR: ALPHA-7  |  SHIFT: 03  |  STATUS: OPERATIONAL
+  =========================================================================
+</pre>
+      <div class="system-line">[MINE-CTRL v4.2.1] Foreman terminal active. All shafts nominal. Type or select command.</div>
+    </header>
+
+    <!-- Navigation Command Bar -->
+    <nav id="cmd-nav" role="navigation" aria-label="Main navigation">
+      <div class="nav-label">NAVIGATION COMMANDS:</div>
+      <div class="nav-keys">
+        <button class="cmd-key active" data-view="dashboard" data-shortcut="1" title="Press 1"><span class="key-badge">1</span> DASHBOARD</button>
+        <button class="cmd-key" data-view="projects" data-shortcut="2" title="Press 2"><span class="key-badge">2</span> PROJECTS</button>
+        <button class="cmd-key" data-view="project-workspace" data-shortcut="3" title="Press 3"><span class="key-badge">3</span> WORKSPACE</button>
+        <button class="cmd-key" data-view="kanban" data-shortcut="4" title="Press 4"><span class="key-badge">4</span> KANBAN</button>
+        <button class="cmd-key" data-view="whiteboard" data-shortcut="5" title="Press 5"><span class="key-badge">5</span> WHITEBOARD</button>
+        <button class="cmd-key" data-view="schema-planner" data-shortcut="6" title="Press 6"><span class="key-badge">6</span> SCHEMA</button>
+        <button class="cmd-key" data-view="directory-tree" data-shortcut="7" title="Press 7"><span class="key-badge">7</span> DIRECTORY</button>
+        <button class="cmd-key" data-view="ideas" data-shortcut="8" title="Press 8"><span class="key-badge">8</span> IDEAS</button>
+        <button class="cmd-key" data-view="ai-chat" data-shortcut="9" title="Press 9"><span class="key-badge">9</span> AI CHAT</button>
+        <button class="cmd-key" data-view="settings" data-shortcut="0" title="Press 0"><span class="key-badge">0</span> SETTINGS</button>
+      </div>
+    </nav>
+
+    <!-- Terminal Output Area -->
+    <main id="terminal-output" role="main">
+
+      <!-- ============================================ -->
+      <!-- VIEW 1: DASHBOARD -->
+      <!-- ============================================ -->
+      <section class="view-panel" data-page="dashboard">
+        <div class="cmd-echo">&gt; SHOW DASHBOARD --depth=full</div>
+        <div class="output-block">
+          <div class="section-header">MINE STATUS REPORT</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <div class="greeting-line">Good shift, Foreman. All systems nominal at depth 1,247m.</div>
+          <div class="greeting-line dim">Last inspection: 2026-02-16 04:32:17 UTC | Next blast: 06:00 UTC</div>
+
+          <div class="spacer"></div>
+          <div class="section-header">OPERATIONAL METRICS</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <div class="stat-grid">
+            <div class="stat-cell">
+              <div class="stat-label">ACTIVE PROJECTS</div>
+              <div class="stat-value accent">12</div>
+              <div class="stat-bar"><div class="stat-fill" style="width:75%"></div></div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-label">IDEAS IN HOPPER</div>
+              <div class="stat-value accent">47</div>
+              <div class="stat-bar"><div class="stat-fill" style="width:62%"></div></div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-label">CARDS IN MOTION</div>
+              <div class="stat-value accent">23</div>
+              <div class="stat-bar"><div class="stat-fill" style="width:48%"></div></div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-label">SCHEMA ENTITIES</div>
+              <div class="stat-value accent">8</div>
+              <div class="stat-bar"><div class="stat-fill" style="width:33%"></div></div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-label">TEAM MEMBERS</div>
+              <div class="stat-value accent2">6</div>
+              <div class="stat-bar"><div class="stat-fill green" style="width:85%"></div></div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-label">UPTIME</div>
+              <div class="stat-value accent2">99.7%</div>
+              <div class="stat-bar"><div class="stat-fill green" style="width:99%"></div></div>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+          <div class="section-header">RECENT ACTIVITY LOG</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <div class="activity-log">
+            <div class="log-entry"><span class="timestamp">[02:14:33]</span> <span class="log-user">@elena</span> moved card <span class="accent">"Set up Clerk authentication"</span> to <span class="accent2">Review</span></div>
+            <div class="log-entry"><span class="timestamp">[02:11:07]</span> <span class="log-user">@marcus</span> added idea <span class="accent">"Implement drag-drop upload"</span> [priority: HIGH]</div>
+            <div class="log-entry"><span class="timestamp">[01:58:42]</span> <span class="log-user">@sarah</span> created project <span class="accent">"Campus Learning App"</span></div>
+            <div class="log-entry"><span class="timestamp">[01:45:19]</span> <span class="log-user">@dev-bot</span> generated directory tree for <span class="accent">"RepoSaver Backup Tool"</span></div>
+            <div class="log-entry"><span class="timestamp">[01:33:55]</span> <span class="log-user">@james</span> linked entity <span class="accent">User</span> -> <span class="accent">Project</span> in schema</div>
+            <div class="log-entry"><span class="timestamp">[01:20:08]</span> <span class="log-user">@elena</span> updated whiteboard node <span class="accent">"Auth Flow"</span></div>
+            <div class="log-entry"><span class="timestamp">[01:12:44]</span> <span class="log-user">@system</span> backup completed. <span class="micro-ok">[OK]</span></div>
+          </div>
+
+          <div class="spacer"></div>
+          <div class="section-header">QUICK ACTIONS</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <div class="quick-actions">
+            <button class="terminal-btn" data-action="new-project">[N] New Project</button>
+            <button class="terminal-btn" data-action="new-idea">[I] Capture Idea</button>
+            <button class="terminal-btn" data-action="open-chat">[C] Open AI Chat</button>
+            <button class="terminal-btn" data-action="view-kanban">[K] View Kanban</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- VIEW 2: PROJECTS -->
+      <!-- ============================================ -->
+      <section class="view-panel" data-page="projects" style="display:none">
+        <div class="cmd-echo">&gt; LIST PROJECTS --all --sort=status</div>
+        <div class="output-block">
+          <div class="section-header">PROJECT REGISTRY</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <div class="search-bar">
+            <span class="prompt">&gt; SEARCH:</span>
+            <input type="text" class="terminal-input" id="project-search" placeholder="enter project name or tag..." autocomplete="off">
+          </div>
+
+          <div class="spacer"></div>
+
+          <div class="project-table">
+            <div class="table-header">
+              <span class="col-id">ID</span>
+              <span class="col-name">PROJECT NAME</span>
+              <span class="col-status">STATUS</span>
+              <span class="col-cards">CARDS</span>
+              <span class="col-ideas">IDEAS</span>
+              <span class="col-team">TEAM</span>
+            </div>
+            <div class="table-row" data-project="wavz">
+              <span class="col-id dim">PRJ-001</span>
+              <span class="col-name accent">Wavz.fm Music Platform</span>
+              <span class="col-status status-active">ACTIVE</span>
+              <span class="col-cards">14</span>
+              <span class="col-ideas">22</span>
+              <span class="col-team">4</span>
+            </div>
+            <div class="table-row" data-project="campus">
+              <span class="col-id dim">PRJ-002</span>
+              <span class="col-name accent">Campus Learning App</span>
+              <span class="col-status status-active">ACTIVE</span>
+              <span class="col-cards">9</span>
+              <span class="col-ideas">15</span>
+              <span class="col-team">3</span>
+            </div>
+            <div class="table-row" data-project="repo">
+              <span class="col-id dim">PRJ-003</span>
+              <span class="col-name accent">RepoSaver Backup Tool</span>
+              <span class="col-status status-review">REVIEW</span>
+              <span class="col-cards">7</span>
+              <span class="col-ideas">10</span>
+              <span class="col-team">2</span>
+            </div>
+            <div class="table-row" data-project="fleet">
+              <span class="col-id dim">PRJ-004</span>
+              <span class="col-name accent">Fleet Tracker Dashboard</span>
+              <span class="col-status status-planning">PLANNING</span>
+              <span class="col-cards">3</span>
+              <span class="col-ideas">8</span>
+              <span class="col-team">2</span>
+            </div>
+            <div class="table-row" data-project="invoice">
+              <span class="col-id dim">PRJ-005</span>
+              <span class="col-name accent">InvoiceForge SaaS</span>
+              <span class="col-status status-active">ACTIVE</span>
+              <span class="col-cards">11</span>
+              <span class="col-ideas">19</span>
+              <span class="col-team">5</span>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+          <div class="table-footer">Showing 5 of 12 projects. Use arrows to scroll. [Enter] to open.</div>
+
+          <div class="spacer"></div>
+          <button class="terminal-btn">[+] CREATE NEW PROJECT</button>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- VIEW 3: PROJECT WORKSPACE -->
+      <!-- ============================================ -->
+      <section class="view-panel" data-page="project-workspace" style="display:none">
+        <div class="cmd-echo">&gt; OPEN PROJECT "Wavz.fm Music Platform" --workspace</div>
+        <div class="output-block">
+          <div class="section-header">PROJECT WORKSPACE: WAVZ.FM MUSIC PLATFORM</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <div class="workspace-split">
+            <div class="workspace-nav">
+              <div class="section-sub-header">SHAFT NAVIGATION</div>
+              <div class="folder-tree-mini">
+                <div class="tree-item active"><span class="tree-icon">[>]</span> Overview</div>
+                <div class="tree-item"><span class="tree-icon">[.]</span> Goals</div>
+                <div class="tree-item"><span class="tree-icon">[.]</span> Tech Stack</div>
+                <div class="tree-item"><span class="tree-icon">[.]</span> Collaborators</div>
+                <div class="tree-item"><span class="tree-icon">[.]</span> Activity</div>
+                <div class="tree-item"><span class="tree-icon">[.]</span> Settings</div>
+              </div>
+            </div>
+
+            <div class="workspace-content">
+              <div class="section-sub-header">ASSAY REPORT</div>
+
+              <div class="meta-grid">
+                <div class="meta-row"><span class="meta-label">Name:</span><span class="meta-value accent">Wavz.fm Music Platform</span></div>
+                <div class="meta-row"><span class="meta-label">Slug:</span><span class="meta-value dim">wavz-fm</span></div>
+                <div class="meta-row"><span class="meta-label">Status:</span><span class="meta-value status-active">ACTIVE</span></div>
+                <div class="meta-row"><span class="meta-label">Created:</span><span class="meta-value dim">2026-01-15</span></div>
+                <div class="meta-row"><span class="meta-label">Last Modified:</span><span class="meta-value dim">2026-02-16 02:14:33</span></div>
+              </div>
+
+              <div class="spacer"></div>
+              <div class="section-sub-header">DESCRIPTION</div>
+              <div class="text-block">A streaming music platform with social discovery features. Users create stations, follow curators, and discover music through AI-driven recommendations. Built with Next.js, Convex, and Clerk authentication.</div>
+
+              <div class="spacer"></div>
+              <div class="section-sub-header">TAGS</div>
+              <div class="tag-row">
+                <span class="tag">[music]</span>
+                <span class="tag">[streaming]</span>
+                <span class="tag">[social]</span>
+                <span class="tag">[ai]</span>
+                <span class="tag">[nextjs]</span>
+              </div>
+
+              <div class="spacer"></div>
+              <div class="section-sub-header">TECH STACK</div>
+              <div class="stack-list">
+                <div class="stack-item"><span class="dim">Frontend:</span> Next.js 15 + TypeScript</div>
+                <div class="stack-item"><span class="dim">Backend:</span> Convex</div>
+                <div class="stack-item"><span class="dim">Auth:</span> Clerk</div>
+                <div class="stack-item"><span class="dim">Payments:</span> Stripe</div>
+                <div class="stack-item"><span class="dim">UI:</span> shadcn/ui + Tailwind CSS</div>
+              </div>
+
+              <div class="spacer"></div>
+              <div class="section-sub-header">COLLABORATORS</div>
+              <div class="collab-list">
+                <div class="collab-item"><span class="accent">@elena</span> <span class="dim">- Lead Developer</span></div>
+                <div class="collab-item"><span class="accent">@marcus</span> <span class="dim">- Backend Engineer</span></div>
+                <div class="collab-item"><span class="accent">@sarah</span> <span class="dim">- Designer</span></div>
+                <div class="collab-item"><span class="accent">@james</span> <span class="dim">- PM</span></div>
+              </div>
+
+              <div class="spacer"></div>
+              <div class="section-sub-header">GOALS</div>
+              <div class="goals-list">
+                <div class="goal-item"><span class="accent2">[x]</span> Set up project scaffold</div>
+                <div class="goal-item"><span class="accent2">[x]</span> Implement authentication flow</div>
+                <div class="goal-item"><span class="accent">[ ]</span> Build music player component</div>
+                <div class="goal-item"><span class="accent">[ ]</span> Integrate AI recommendation engine</div>
+                <div class="goal-item"><span class="accent">[ ]</span> Launch beta to 100 users</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- VIEW 4: KANBAN -->
+      <!-- ============================================ -->
+      <section class="view-panel" data-page="kanban" style="display:none">
+        <div class="cmd-echo">&gt; SHOW KANBAN --project="Wavz.fm" --board=main</div>
+        <div class="output-block">
+          <div class="section-header">KANBAN BOARD: WAVZ.FM MUSIC PLATFORM</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <div class="kanban-board">
+            <!-- BACKLOG -->
+            <div class="kanban-column">
+              <div class="column-header">BACKLOG <span class="column-count">(3)</span></div>
+              <div class="column-sep">--------------------</div>
+              <div class="kanban-card">
+                <div class="card-id dim">KAN-012</div>
+                <div class="card-title accent">Design playlist sharing UI</div>
+                <div class="card-meta"><span class="dim">Priority:</span> <span class="priority-med">MED</span></div>
+                <div class="card-assignee"><span class="dim">Assigned:</span> @sarah</div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-id dim">KAN-015</div>
+                <div class="card-title accent">Add dark mode toggle</div>
+                <div class="card-meta"><span class="dim">Priority:</span> <span class="priority-low">LOW</span></div>
+                <div class="card-assignee"><span class="dim">Assigned:</span> --</div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-id dim">KAN-018</div>
+                <div class="card-title accent">Implement drag-drop upload</div>
+                <div class="card-meta"><span class="dim">Priority:</span> <span class="priority-high">HIGH</span></div>
+                <div class="card-assignee"><span class="dim">Assigned:</span> @marcus</div>
+              </div>
+            </div>
+
+            <!-- IN PROGRESS -->
+            <div class="kanban-column">
+              <div class="column-header">IN PROGRESS <span class="column-count">(2)</span></div>
+              <div class="column-sep">--------------------</div>
+              <div class="kanban-card">
+                <div class="card-id dim">KAN-008</div>
+                <div class="card-title accent">Build music player component</div>
+                <div class="card-meta"><span class="dim">Priority:</span> <span class="priority-high">HIGH</span></div>
+                <div class="card-assignee"><span class="dim">Assigned:</span> @elena</div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-id dim">KAN-011</div>
+                <div class="card-title accent">Design kanban drag-drop UX</div>
+                <div class="card-meta"><span class="dim">Priority:</span> <span class="priority-med">MED</span></div>
+                <div class="card-assignee"><span class="dim">Assigned:</span> @sarah</div>
+              </div>
+            </div>
+
+            <!-- REVIEW -->
+            <div class="kanban-column">
+              <div class="column-header">REVIEW <span class="column-count">(2)</span></div>
+              <div class="column-sep">--------------------</div>
+              <div class="kanban-card">
+                <div class="card-id dim">KAN-005</div>
+                <div class="card-title accent">Set up Clerk authentication</div>
+                <div class="card-meta"><span class="dim">Priority:</span> <span class="priority-high">HIGH</span></div>
+                <div class="card-assignee"><span class="dim">Assigned:</span> @elena</div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-id dim">KAN-007</div>
+                <div class="card-title accent">Configure Convex schema</div>
+                <div class="card-meta"><span class="dim">Priority:</span> <span class="priority-med">MED</span></div>
+                <div class="card-assignee"><span class="dim">Assigned:</span> @marcus</div>
+              </div>
+            </div>
+
+            <!-- DONE -->
+            <div class="kanban-column">
+              <div class="column-header">DONE <span class="column-count">(3)</span></div>
+              <div class="column-sep">--------------------</div>
+              <div class="kanban-card done">
+                <div class="card-id dim">KAN-001</div>
+                <div class="card-title">Initialize Next.js project</div>
+                <div class="card-meta"><span class="dim">Completed:</span> 2026-02-10</div>
+              </div>
+              <div class="kanban-card done">
+                <div class="card-id dim">KAN-002</div>
+                <div class="card-title">Set up Tailwind + shadcn</div>
+                <div class="card-meta"><span class="dim">Completed:</span> 2026-02-11</div>
+              </div>
+              <div class="kanban-card done">
+                <div class="card-id dim">KAN-003</div>
+                <div class="card-title">Create project repository</div>
+                <div class="card-meta"><span class="dim">Completed:</span> 2026-02-09</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- VIEW 5: WHITEBOARD -->
+      <!-- ============================================ -->
+      <section class="view-panel" data-page="whiteboard" style="display:none">
+        <div class="cmd-echo">&gt; OPEN WHITEBOARD --project="Wavz.fm" --canvas=main</div>
+        <div class="output-block">
+          <div class="section-header">WHITEBOARD: WAVZ.FM ARCHITECTURE MAP</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <div class="wb-toolbar">
+            <span class="toolbar-label">TOOLS:</span>
+            <button class="terminal-btn small active">[S] Select</button>
+            <button class="terminal-btn small">[D] Draw</button>
+            <button class="terminal-btn small">[T] Text</button>
+            <button class="terminal-btn small">[L] Link</button>
+            <button class="terminal-btn small">[Z] Zoom</button>
+            <button class="terminal-btn small">[X] Delete</button>
+          </div>
+
+          <div class="whiteboard-canvas">
+            <div class="wb-node" style="left:5%;top:8%">
+              <div class="wb-node-header">AUTH FLOW</div>
+              <div class="wb-node-body">
+                <div>Clerk integration</div>
+                <div>OAuth providers</div>
+                <div>Session management</div>
+              </div>
+            </div>
+
+            <div class="wb-node" style="left:40%;top:5%">
+              <div class="wb-node-header">API LAYER</div>
+              <div class="wb-node-body">
+                <div>Convex functions</div>
+                <div>Real-time subscriptions</div>
+                <div>File storage</div>
+              </div>
+            </div>
+
+            <div class="wb-node" style="left:72%;top:8%">
+              <div class="wb-node-header">FRONTEND</div>
+              <div class="wb-node-body">
+                <div>Next.js App Router</div>
+                <div>React Server Comp.</div>
+                <div>Tailwind + shadcn</div>
+              </div>
+            </div>
+
+            <div class="wb-node" style="left:5%;top:50%">
+              <div class="wb-node-header">MUSIC ENGINE</div>
+              <div class="wb-node-body">
+                <div>Audio streaming</div>
+                <div>Waveform rendering</div>
+                <div>Queue management</div>
+              </div>
+            </div>
+
+            <div class="wb-node" style="left:40%;top:48%">
+              <div class="wb-node-header">AI / ML</div>
+              <div class="wb-node-body">
+                <div>Recommendation algo</div>
+                <div>Taste profiling</div>
+                <div>Collaborative filter</div>
+              </div>
+            </div>
+
+            <div class="wb-node" style="left:72%;top:50%">
+              <div class="wb-node-header">PAYMENTS</div>
+              <div class="wb-node-body">
+                <div>Stripe integration</div>
+                <div>Subscription tiers</div>
+                <div>Usage metering</div>
+              </div>
+            </div>
+
+            <!-- SVG Connection Lines -->
+            <svg class="wb-connections" viewBox="0 0 1000 500" preserveAspectRatio="none">
+              <line x1="220" y1="60" x2="400" y2="50" class="wb-line"/>
+              <line x1="580" y1="50" x2="720" y2="60" class="wb-line"/>
+              <line x1="130" y1="120" x2="130" y2="250" class="wb-line"/>
+              <line x1="480" y1="120" x2="480" y2="240" class="wb-line"/>
+              <line x1="800" y1="120" x2="800" y2="250" class="wb-line"/>
+              <line x1="220" y1="300" x2="400" y2="280" class="wb-line"/>
+              <line x1="580" y1="280" x2="720" y2="300" class="wb-line"/>
+            </svg>
+          </div>
+
+          <div class="spacer"></div>
+          <div class="wb-status"><span class="dim">Canvas: 2400x1600 | Nodes: 6 | Links: 7 | Zoom: 100%</span></div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- VIEW 6: SCHEMA PLANNER -->
+      <!-- ============================================ -->
+      <section class="view-panel" data-page="schema-planner" style="display:none">
+        <div class="cmd-echo">&gt; SHOW SCHEMA --project="Wavz.fm" --format=entities</div>
+        <div class="output-block">
+          <div class="section-header">SCHEMA PLANNER: ENTITY MAP</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <div class="schema-grid">
+            <div class="entity-block">
+              <div class="entity-header">USER</div>
+              <div class="entity-sep">--------------------</div>
+              <div class="entity-field"><span class="field-key">PK</span> id <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> name <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> email <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> avatar <span class="field-type dim">string?</span></div>
+              <div class="entity-field"><span class="field-null"></span> role <span class="field-type dim">enum</span></div>
+              <div class="entity-field"><span class="field-null"></span> createdAt <span class="field-type dim">datetime</span></div>
+            </div>
+
+            <div class="entity-block">
+              <div class="entity-header">PROJECT</div>
+              <div class="entity-sep">--------------------</div>
+              <div class="entity-field"><span class="field-key">PK</span> id <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> name <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> slug <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> description <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> status <span class="field-type dim">enum</span></div>
+              <div class="entity-field"><span class="field-fk">FK</span> ownerId <span class="field-type dim">-> User</span></div>
+              <div class="entity-field"><span class="field-null"></span> tags <span class="field-type dim">string[]</span></div>
+            </div>
+
+            <div class="entity-block">
+              <div class="entity-header">IDEA</div>
+              <div class="entity-sep">--------------------</div>
+              <div class="entity-field"><span class="field-key">PK</span> id <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> title <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> description <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> priority <span class="field-type dim">enum</span></div>
+              <div class="entity-field"><span class="field-null"></span> tags <span class="field-type dim">string[]</span></div>
+              <div class="entity-field"><span class="field-fk">FK</span> projectId <span class="field-type dim">-> Project</span></div>
+              <div class="entity-field"><span class="field-fk">FK</span> authorId <span class="field-type dim">-> User</span></div>
+            </div>
+
+            <div class="entity-block">
+              <div class="entity-header">KANBAN_CARD</div>
+              <div class="entity-sep">--------------------</div>
+              <div class="entity-field"><span class="field-key">PK</span> id <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> title <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> column <span class="field-type dim">enum</span></div>
+              <div class="entity-field"><span class="field-null"></span> priority <span class="field-type dim">enum</span></div>
+              <div class="entity-field"><span class="field-null"></span> position <span class="field-type dim">number</span></div>
+              <div class="entity-field"><span class="field-fk">FK</span> projectId <span class="field-type dim">-> Project</span></div>
+              <div class="entity-field"><span class="field-fk">FK</span> assigneeId <span class="field-type dim">-> User</span></div>
+              <div class="entity-field"><span class="field-fk">FK</span> ideaId <span class="field-type dim">-> Idea?</span></div>
+            </div>
+
+            <div class="entity-block">
+              <div class="entity-header">WHITEBOARD_NODE</div>
+              <div class="entity-sep">--------------------</div>
+              <div class="entity-field"><span class="field-key">PK</span> id <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> label <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> content <span class="field-type dim">string</span></div>
+              <div class="entity-field"><span class="field-null"></span> x <span class="field-type dim">number</span></div>
+              <div class="entity-field"><span class="field-null"></span> y <span class="field-type dim">number</span></div>
+              <div class="entity-field"><span class="field-fk">FK</span> projectId <span class="field-type dim">-> Project</span></div>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+          <div class="section-sub-header">RELATIONSHIPS</div>
+          <div class="separator-thin">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</div>
+          <div class="relation-list">
+            <div class="relation-item"><span class="accent">User</span> <span class="dim">1---*</span> <span class="accent">Project</span> <span class="dim">(owner)</span></div>
+            <div class="relation-item"><span class="accent">User</span> <span class="dim">1---*</span> <span class="accent">Idea</span> <span class="dim">(author)</span></div>
+            <div class="relation-item"><span class="accent">Project</span> <span class="dim">1---*</span> <span class="accent">Idea</span> <span class="dim">(contains)</span></div>
+            <div class="relation-item"><span class="accent">Project</span> <span class="dim">1---*</span> <span class="accent">KanbanCard</span> <span class="dim">(board)</span></div>
+            <div class="relation-item"><span class="accent">Idea</span> <span class="dim">0..1--1</span> <span class="accent">KanbanCard</span> <span class="dim">(promoted)</span></div>
+            <div class="relation-item"><span class="accent">User</span> <span class="dim">1---*</span> <span class="accent">KanbanCard</span> <span class="dim">(assignee)</span></div>
+            <div class="relation-item"><span class="accent">Project</span> <span class="dim">1---*</span> <span class="accent">WhiteboardNode</span> <span class="dim">(canvas)</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- VIEW 7: DIRECTORY TREE -->
+      <!-- ============================================ -->
+      <section class="view-panel" data-page="directory-tree" style="display:none">
+        <div class="cmd-echo">&gt; TREE "Wavz.fm Music Platform" --depth=3</div>
+        <div class="output-block">
+          <div class="section-header">DIRECTORY TREE: WAVZ.FM</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <div class="dir-tree">
+            <div class="tree-line"><span class="tree-folder accent">wavz-fm/</span></div>
+            <div class="tree-line depth-1"><span class="tree-branch">|-- </span><span class="tree-folder accent">src/</span></div>
+            <div class="tree-line depth-2"><span class="tree-branch">|   |-- </span><span class="tree-folder accent">app/</span></div>
+            <div class="tree-line depth-3"><span class="tree-branch">|   |   |-- </span><span class="tree-file">layout.tsx</span></div>
+            <div class="tree-line depth-3"><span class="tree-branch">|   |   |-- </span><span class="tree-file">page.tsx</span></div>
+            <div class="tree-line depth-3"><span class="tree-branch">|   |   |-- </span><span class="tree-file">globals.css</span></div>
+            <div class="tree-line depth-3 expandable" data-expand="app-routes"><span class="tree-branch">|   |   |-- </span><span class="tree-folder accent">(routes)/</span> <span class="expand-hint dim">[+]</span></div>
+            <div class="tree-children" id="app-routes" style="display:none">
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-folder accent">dashboard/</span></div>
+              <div class="tree-line depth-5"><span class="tree-branch">|   |   |   |   |-- </span><span class="tree-file">page.tsx</span></div>
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-folder accent">projects/</span></div>
+              <div class="tree-line depth-5"><span class="tree-branch">|   |   |   |   |-- </span><span class="tree-file">page.tsx</span></div>
+              <div class="tree-line depth-5"><span class="tree-branch">|   |   |   |   |-- </span><span class="tree-folder accent">[slug]/</span></div>
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-folder accent">kanban/</span></div>
+              <div class="tree-line depth-5"><span class="tree-branch">|   |   |   |   |-- </span><span class="tree-file">page.tsx</span></div>
+            </div>
+            <div class="tree-line depth-2"><span class="tree-branch">|   |-- </span><span class="tree-folder accent">components/</span></div>
+            <div class="tree-line depth-3 expandable" data-expand="components-ui"><span class="tree-branch">|   |   |-- </span><span class="tree-folder accent">ui/</span> <span class="expand-hint dim">[+]</span></div>
+            <div class="tree-children" id="components-ui" style="display:none">
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-file">button.tsx</span></div>
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-file">card.tsx</span></div>
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-file">input.tsx</span></div>
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-file">dialog.tsx</span></div>
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-file">dropdown.tsx</span></div>
+            </div>
+            <div class="tree-line depth-3 expandable" data-expand="components-feat"><span class="tree-branch">|   |   |-- </span><span class="tree-folder accent">features/</span> <span class="expand-hint dim">[+]</span></div>
+            <div class="tree-children" id="components-feat" style="display:none">
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-file">MusicPlayer.tsx</span></div>
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-file">KanbanBoard.tsx</span></div>
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-file">Whiteboard.tsx</span></div>
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-file">SchemaPlanner.tsx</span></div>
+              <div class="tree-line depth-4"><span class="tree-branch">|   |   |   |-- </span><span class="tree-file">IdeaCapture.tsx</span></div>
+            </div>
+            <div class="tree-line depth-2"><span class="tree-branch">|   |-- </span><span class="tree-folder accent">lib/</span></div>
+            <div class="tree-line depth-3"><span class="tree-branch">|   |   |-- </span><span class="tree-file">utils.ts</span></div>
+            <div class="tree-line depth-3"><span class="tree-branch">|   |   |-- </span><span class="tree-file">convex.ts</span></div>
+            <div class="tree-line depth-2"><span class="tree-branch">|   |-- </span><span class="tree-folder accent">hooks/</span></div>
+            <div class="tree-line depth-3"><span class="tree-branch">|   |   |-- </span><span class="tree-file">useProjects.ts</span></div>
+            <div class="tree-line depth-3"><span class="tree-branch">|   |   |-- </span><span class="tree-file">useKanban.ts</span></div>
+            <div class="tree-line depth-1"><span class="tree-branch">|-- </span><span class="tree-folder accent">convex/</span></div>
+            <div class="tree-line depth-2"><span class="tree-branch">|   |-- </span><span class="tree-file">schema.ts</span></div>
+            <div class="tree-line depth-2"><span class="tree-branch">|   |-- </span><span class="tree-file">projects.ts</span></div>
+            <div class="tree-line depth-2"><span class="tree-branch">|   |-- </span><span class="tree-file">ideas.ts</span></div>
+            <div class="tree-line depth-2"><span class="tree-branch">|   |-- </span><span class="tree-file">kanban.ts</span></div>
+            <div class="tree-line depth-1"><span class="tree-branch">|-- </span><span class="tree-file dim">package.json</span></div>
+            <div class="tree-line depth-1"><span class="tree-branch">|-- </span><span class="tree-file dim">tsconfig.json</span></div>
+            <div class="tree-line depth-1"><span class="tree-branch">|-- </span><span class="tree-file dim">tailwind.config.ts</span></div>
+            <div class="tree-line depth-1"><span class="tree-branch">|-- </span><span class="tree-file dim">next.config.mjs</span></div>
+            <div class="tree-line depth-1"><span class="tree-branch">`-- </span><span class="tree-file dim">.env.local</span></div>
+          </div>
+
+          <div class="spacer"></div>
+          <div class="tree-summary dim">4 directories, 22 files | Click [+] folders to expand.</div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- VIEW 8: IDEAS -->
+      <!-- ============================================ -->
+      <section class="view-panel" data-page="ideas" style="display:none">
+        <div class="cmd-echo">&gt; IDEAS --list --project="Wavz.fm"</div>
+        <div class="output-block">
+          <div class="section-header">IDEAS CAPTURE & REGISTRY</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <div class="idea-capture">
+            <div class="section-sub-header">SUBMIT NEW IDEA</div>
+            <div class="capture-form">
+              <div class="form-row">
+                <span class="prompt">&gt; TITLE:</span>
+                <input type="text" class="terminal-input" id="idea-title" placeholder="describe your idea..." autocomplete="off">
+              </div>
+              <div class="form-row">
+                <span class="prompt">&gt; DESC:</span>
+                <input type="text" class="terminal-input" id="idea-desc" placeholder="optional details..." autocomplete="off">
+              </div>
+              <div class="form-row">
+                <span class="prompt">&gt; PRIORITY:</span>
+                <span class="priority-select">
+                  <button class="priority-btn" data-priority="low">[L]OW</button>
+                  <button class="priority-btn active" data-priority="med">[M]ED</button>
+                  <button class="priority-btn" data-priority="high">[H]IGH</button>
+                </span>
+              </div>
+              <div class="form-row">
+                <span class="prompt">&gt; TAGS:</span>
+                <input type="text" class="terminal-input" id="idea-tags" placeholder="comma-separated tags..." autocomplete="off">
+              </div>
+              <div class="form-actions">
+                <button class="terminal-btn">[ENTER] Submit Idea</button>
+                <button class="terminal-btn dim">[ESC] Clear</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+          <div class="section-sub-header">IDEA LOG</div>
+          <div class="separator-thin">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</div>
+
+          <div class="idea-list">
+            <div class="idea-entry">
+              <span class="idea-id dim">IDX-047</span>
+              <span class="priority-high">HIGH</span>
+              <span class="idea-title accent">Implement drag-drop upload</span>
+              <span class="idea-tags dim">[upload] [ux]</span>
+              <span class="idea-status accent2">[ACTIVE]</span>
+            </div>
+            <div class="idea-entry">
+              <span class="idea-id dim">IDX-046</span>
+              <span class="priority-high">HIGH</span>
+              <span class="idea-title accent">AI-powered music recommendations</span>
+              <span class="idea-tags dim">[ai] [feature]</span>
+              <span class="idea-status accent2">[ACTIVE]</span>
+            </div>
+            <div class="idea-entry">
+              <span class="idea-id dim">IDX-045</span>
+              <span class="priority-med"> MED</span>
+              <span class="idea-title accent">Social sharing for playlists</span>
+              <span class="idea-tags dim">[social] [sharing]</span>
+              <span class="idea-status accent2">[ACTIVE]</span>
+            </div>
+            <div class="idea-entry">
+              <span class="idea-id dim">IDX-044</span>
+              <span class="priority-med"> MED</span>
+              <span class="idea-title accent">Offline mode with service workers</span>
+              <span class="idea-tags dim">[pwa] [offline]</span>
+              <span class="idea-status dim">[PARKED]</span>
+            </div>
+            <div class="idea-entry">
+              <span class="idea-id dim">IDX-043</span>
+              <span class="priority-low"> LOW</span>
+              <span class="idea-title accent">Add dark mode toggle</span>
+              <span class="idea-tags dim">[ui] [theme]</span>
+              <span class="idea-status accent2">[ACTIVE]</span>
+            </div>
+            <div class="idea-entry promoted">
+              <span class="idea-id dim">IDX-042</span>
+              <span class="priority-high">HIGH</span>
+              <span class="idea-title">Build music player component</span>
+              <span class="idea-tags dim">[core] [player]</span>
+              <span class="idea-status">[PROMOTED -> KAN-008]</span>
+            </div>
+            <div class="idea-entry promoted">
+              <span class="idea-id dim">IDX-041</span>
+              <span class="priority-high">HIGH</span>
+              <span class="idea-title">Set up Clerk authentication</span>
+              <span class="idea-tags dim">[auth] [setup]</span>
+              <span class="idea-status">[PROMOTED -> KAN-005]</span>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+          <div class="idea-footer dim">7 ideas shown | 5 active | 2 promoted to kanban | [P] to promote selected</div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- VIEW 9: AI CHAT -->
+      <!-- ============================================ -->
+      <section class="view-panel" data-page="ai-chat" style="display:none">
+        <div class="cmd-echo">&gt; CHAT --ai --mode=assistant</div>
+        <div class="output-block">
+          <div class="section-header">AI MINE ASSISTANT</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+          <div class="chat-info dim">Connected to AI shaft. Model: claude-3.5-sonnet | Context: Wavz.fm</div>
+
+          <div class="chat-log">
+            <div class="chat-message user">
+              <div class="chat-sender">[FOREMAN] <span class="timestamp">02:30:14</span></div>
+              <div class="chat-text">What are the highest priority items I should focus on today?</div>
+            </div>
+
+            <div class="chat-message ai">
+              <div class="chat-sender accent2">[AI-ASSIST] <span class="timestamp">02:30:16</span></div>
+              <div class="chat-text">Based on your current board state, I recommend focusing on these three items:
+
+1. <span class="accent">KAN-005: Set up Clerk authentication</span> -- Currently in Review, needs sign-off
+2. <span class="accent">KAN-008: Build music player component</span> -- In Progress, HIGH priority
+3. <span class="accent">IDX-047: Implement drag-drop upload</span> -- HIGH priority idea, not yet on board
+
+Shall I promote IDX-047 to a kanban card?</div>
+            </div>
+
+            <div class="chat-message user">
+              <div class="chat-sender">[FOREMAN] <span class="timestamp">02:31:02</span></div>
+              <div class="chat-text">Yes, promote that idea to the kanban board in Backlog.</div>
+            </div>
+
+            <div class="chat-message ai">
+              <div class="chat-sender accent2">[AI-ASSIST] <span class="timestamp">02:31:04</span></div>
+              <div class="chat-text">Executing command...
+<span class="tool-action">> add_kanban_card("Implement drag-drop upload", column="backlog", priority="high", source="IDX-047")</span>
+<span class="micro-ok">[OK]</span> Card KAN-019 created in Backlog from idea IDX-047.
+<span class="tool-action">> update_idea(id="IDX-047", status="promoted", linked_card="KAN-019")</span>
+<span class="micro-ok">[OK]</span> Idea IDX-047 marked as promoted.</div>
+            </div>
+
+            <div class="chat-message user">
+              <div class="chat-sender">[FOREMAN] <span class="timestamp">02:32:15</span></div>
+              <div class="chat-text">I need a new idea logged: "Implement real-time collaboration with WebSocket cursors"</div>
+            </div>
+
+            <div class="chat-message ai">
+              <div class="chat-sender accent2">[AI-ASSIST] <span class="timestamp">02:32:17</span></div>
+              <div class="chat-text">Logging new idea to the hopper...
+<span class="tool-action">> add_idea(title="Implement real-time collaboration with WebSocket cursors", priority="high", tags=["collab","websocket","realtime"])</span>
+<span class="micro-ok">[OK]</span> Idea IDX-048 added to project "Wavz.fm Music Platform".</div>
+            </div>
+
+            <div class="chat-message user">
+              <div class="chat-sender">[FOREMAN] <span class="timestamp">02:33:40</span></div>
+              <div class="chat-text">Generate a directory tree for the authentication module.</div>
+            </div>
+
+            <div class="chat-message ai">
+              <div class="chat-sender accent2">[AI-ASSIST] <span class="timestamp">02:33:42</span></div>
+              <div class="chat-text">Generating directory structure...
+<span class="tool-action">> generate_tree(module="auth", template="nextjs-clerk")</span>
+<span class="micro-ok">[OK]</span> Tree generated:
+<span class="tree-output">
+  src/auth/
+  |-- middleware.ts
+  |-- providers/
+  |   |-- ClerkProvider.tsx
+  |   `-- AuthContext.tsx
+  |-- hooks/
+  |   |-- useAuth.ts
+  |   `-- useUser.ts
+  |-- components/
+  |   |-- SignIn.tsx
+  |   |-- SignUp.tsx
+  |   `-- UserButton.tsx
+  `-- lib/
+      `-- clerk.ts
+</span>
+8 files generated across 4 directories.</div>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+          <div class="chat-input-area">
+            <span class="prompt">&gt; </span>
+            <input type="text" class="terminal-input chat-input" id="chat-input" placeholder="type command or question..." autocomplete="off">
+            <button class="terminal-btn">[SEND]</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- VIEW 10: SETTINGS -->
+      <!-- ============================================ -->
+      <section class="view-panel" data-page="settings" style="display:none">
+        <div class="cmd-echo">&gt; CONFIG --show --all</div>
+        <div class="output-block">
+          <div class="section-header">SYSTEM CONFIGURATION</div>
+          <div class="separator">------------------------------------------------------------------------</div>
+
+          <!-- Account -->
+          <div class="settings-group">
+            <div class="section-sub-header">ACCOUNT</div>
+            <div class="separator-thin">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</div>
+            <div class="setting-row">
+              <span class="setting-label">Display Name:</span>
+              <span class="setting-value">Foreman Rodriguez</span>
+              <button class="terminal-btn small">[EDIT]</button>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Email:</span>
+              <span class="setting-value dim">foreman@mineshaft.dev</span>
+              <button class="terminal-btn small">[EDIT]</button>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Role:</span>
+              <span class="setting-value accent">Administrator</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">2FA Status:</span>
+              <span class="setting-value accent2">[ON]</span>
+            </div>
+          </div>
+
+          <!-- Subscription -->
+          <div class="settings-group">
+            <div class="section-sub-header">SUBSCRIPTION</div>
+            <div class="separator-thin">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</div>
+            <div class="setting-row">
+              <span class="setting-label">Plan:</span>
+              <span class="setting-value accent">PRO</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Billing Cycle:</span>
+              <span class="setting-value">Monthly - $29/mo</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Next Invoice:</span>
+              <span class="setting-value dim">2026-03-15</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Payment Method:</span>
+              <span class="setting-value dim">Visa ****4242</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Usage:</span>
+              <span class="setting-value">8 of 25 projects used</span>
+              <div class="stat-bar inline"><div class="stat-fill" style="width:32%"></div></div>
+            </div>
+            <div class="setting-actions">
+              <button class="terminal-btn">[U] Upgrade Plan</button>
+              <button class="terminal-btn dim">[M] Manage Billing</button>
+            </div>
+          </div>
+
+          <!-- Preferences -->
+          <div class="settings-group">
+            <div class="section-sub-header">PREFERENCES</div>
+            <div class="separator-thin">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</div>
+            <div class="setting-row">
+              <span class="setting-label">Theme:</span>
+              <span class="setting-toggle"><button class="toggle-btn active">[DARK]</button> / <button class="toggle-btn">[LIGHT]</button></span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Notifications:</span>
+              <span class="setting-toggle-text accent2">[ON]</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Email Digests:</span>
+              <span class="setting-toggle-text accent2">[ON]</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Sound Effects:</span>
+              <span class="setting-toggle-text dim">[OFF]</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Auto-save:</span>
+              <span class="setting-toggle-text accent2">[ON]</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Language:</span>
+              <span class="setting-value">English (US)</span>
+            </div>
+          </div>
+
+          <!-- Integrations -->
+          <div class="settings-group">
+            <div class="section-sub-header">INTEGRATIONS</div>
+            <div class="separator-thin">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</div>
+            <div class="setting-row">
+              <span class="setting-label">GitHub:</span>
+              <span class="setting-value accent2">Connected</span>
+              <span class="dim">(@foreman-dev)</span>
+              <button class="terminal-btn small">[DISCONNECT]</button>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Slack:</span>
+              <span class="setting-value accent2">Connected</span>
+              <span class="dim">(#mine-shaft)</span>
+              <button class="terminal-btn small">[DISCONNECT]</button>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Figma:</span>
+              <span class="setting-value dim">Not Connected</span>
+              <button class="terminal-btn small">[CONNECT]</button>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Linear:</span>
+              <span class="setting-value dim">Not Connected</span>
+              <button class="terminal-btn small">[CONNECT]</button>
+            </div>
+          </div>
+
+          <!-- Data -->
+          <div class="settings-group">
+            <div class="section-sub-header">DATA MANAGEMENT</div>
+            <div class="separator-thin">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</div>
+            <div class="setting-row">
+              <span class="setting-label">Storage Used:</span>
+              <span class="setting-value">2.4 GB of 10 GB</span>
+              <div class="stat-bar inline"><div class="stat-fill" style="width:24%"></div></div>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Last Backup:</span>
+              <span class="setting-value dim">2026-02-16 01:12:44 UTC</span>
+            </div>
+            <div class="setting-actions">
+              <button class="terminal-btn">[E] Export All Data</button>
+              <button class="terminal-btn">[B] Backup Now</button>
+              <button class="terminal-btn danger">[!] Delete Account</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Idle Cursor -->
+      <div id="idle-cursor" class="blink">_</div>
+
+    </main>
+
+    <!-- Status Bar -->
+    <footer id="status-bar">
+      <span class="status-left">DEPTH: 1,247m | SECTOR: ALPHA-7 | SHIFT: 03</span>
+      <span class="status-center" id="status-message">READY</span>
+      <span class="status-right"><span id="clock">04:32:17</span> UTC</span>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

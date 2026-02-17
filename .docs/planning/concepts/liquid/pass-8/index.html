@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IDEA-MANAGEMENT — Aquarium Control Station</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800&family=Work+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ambient Bubbles -->
+  <div class="ambient-bubbles" aria-hidden="true">
+    <span class="bubble bubble-1"></span>
+    <span class="bubble bubble-2"></span>
+    <span class="bubble bubble-3"></span>
+  </div>
+
+  <!-- Top Toolbar -->
+  <header class="toolbar" role="navigation" aria-label="Main navigation">
+    <div class="toolbar-brand">
+      <svg class="brand-icon" viewBox="0 0 28 28" width="28" height="28" fill="none">
+        <circle cx="14" cy="14" r="12" stroke="#00e5cc" stroke-width="2" opacity=".6"/>
+        <path d="M9 18 Q14 6 19 18" stroke="#00e5cc" stroke-width="2" fill="none"/>
+        <circle cx="14" cy="14" r="3" fill="#00e5cc" opacity=".4"/>
+      </svg>
+      <span class="brand-name">IDEA-MGMT</span>
+    </div>
+    <nav class="toolbar-nav" id="toolbarNav">
+      <button class="toolbar-btn active" data-target="dashboard">
+        <svg viewBox="0 0 20 20" width="16" height="16"><rect x="2" y="2" width="7" height="7" rx="1" fill="currentColor"/><rect x="11" y="2" width="7" height="4" rx="1" fill="currentColor"/><rect x="2" y="11" width="7" height="4" rx="1" fill="currentColor"/><rect x="11" y="8" width="7" height="7" rx="1" fill="currentColor"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="toolbar-btn" data-target="projects">
+        <svg viewBox="0 0 20 20" width="16" height="16"><path d="M3 4h5l2 2h7a1 1 0 011 1v9a1 1 0 01-1 1H3a1 1 0 01-1-1V5a1 1 0 011-1z" fill="currentColor"/></svg>
+        <span>Projects</span>
+      </button>
+      <button class="toolbar-btn" data-target="project-workspace">
+        <svg viewBox="0 0 20 20" width="16" height="16"><rect x="2" y="3" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="8" y1="3" x2="8" y2="17" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>Workspace</span>
+      </button>
+      <button class="toolbar-btn" data-target="kanban">
+        <svg viewBox="0 0 20 20" width="16" height="16"><rect x="2" y="3" width="4" height="14" rx="1" fill="currentColor"/><rect x="8" y="3" width="4" height="10" rx="1" fill="currentColor"/><rect x="14" y="3" width="4" height="12" rx="1" fill="currentColor"/></svg>
+        <span>Kanban</span>
+      </button>
+      <button class="toolbar-btn" data-target="whiteboard">
+        <svg viewBox="0 0 20 20" width="16" height="16"><rect x="2" y="2" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="7" cy="8" r="2" fill="currentColor"/><circle cx="14" cy="12" r="2" fill="currentColor"/><line x1="9" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>Whiteboard</span>
+      </button>
+      <button class="toolbar-btn" data-target="schema">
+        <svg viewBox="0 0 20 20" width="16" height="16"><rect x="1" y="4" width="7" height="5" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="12" y="4" width="7" height="5" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="6" y="12" width="7" height="5" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><line x1="8" y1="6.5" x2="12" y2="6.5" stroke="currentColor" stroke-width="1.2"/><line x1="9.5" y1="12" x2="5" y2="9" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span>Schema</span>
+      </button>
+      <button class="toolbar-btn" data-target="directory">
+        <svg viewBox="0 0 20 20" width="16" height="16"><path d="M4 4v12h12" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="8" y1="7" x2="15" y2="7" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="10" x2="13" y2="10" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="13" x2="14" y2="13" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span>Tree</span>
+      </button>
+      <button class="toolbar-btn" data-target="ideas">
+        <svg viewBox="0 0 20 20" width="16" height="16"><path d="M10 2a6 6 0 014 10.5V15a1 1 0 01-1 1H7a1 1 0 01-1-1v-2.5A6 6 0 0110 2z" fill="currentColor"/><rect x="7" y="16" width="6" height="2" rx="1" fill="currentColor"/></svg>
+        <span>Ideas</span>
+      </button>
+      <button class="toolbar-btn" data-target="ai-chat">
+        <svg viewBox="0 0 20 20" width="16" height="16"><path d="M4 4h12a1 1 0 011 1v8a1 1 0 01-1 1H8l-3 3v-3H4a1 1 0 01-1-1V5a1 1 0 011-1z" fill="currentColor"/></svg>
+        <span>AI Chat</span>
+      </button>
+      <button class="toolbar-btn" data-target="settings">
+        <svg viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M10 1v3M10 16v3M1 10h3M16 10h3M3.5 3.5l2 2M14.5 14.5l2 2M3.5 16.5l2-2M14.5 5.5l2-2" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+    <div class="toolbar-right">
+      <button class="toolbar-icon-btn" title="Notifications">
+        <svg viewBox="0 0 20 20" width="18" height="18"><path d="M10 2a5 5 0 015 5v3l2 2H3l2-2V7a5 5 0 015-5z" fill="currentColor"/><path d="M8 17a2 2 0 004 0" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+        <span class="notif-badge">3</span>
+      </button>
+      <div class="toolbar-avatar" title="Aquarium Tech">AT</div>
+    </div>
+    <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" width="22" height="22"><line x1="4" y1="6" x2="20" y2="6" stroke="currentColor" stroke-width="2"/><line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" stroke-width="2"/><line x1="4" y1="18" x2="20" y2="18" stroke="currentColor" stroke-width="2"/></svg>
+    </button>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="split-container" id="mainContent">
+
+    <!-- ============ DASHBOARD ============ -->
+    <section class="view active" data-view="dashboard" data-page="dashboard">
+      <div class="pane pane-left" data-pane="left">
+        <div class="pane-header">
+          <h2 class="pane-title">Station Overview</h2>
+        </div>
+        <div class="pane-body">
+          <div class="greeting-block">
+            <h1 class="greeting-heading">Good morning, Technician</h1>
+            <p class="greeting-sub">Marine Research Station &mdash; All systems nominal</p>
+          </div>
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-value">12</div>
+              <div class="stat-label">Active Projects</div>
+              <div class="stat-bar"><div class="stat-bar-fill" style="width:72%"></div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">47</div>
+              <div class="stat-label">Total Ideas</div>
+              <div class="stat-bar"><div class="stat-bar-fill" style="width:58%"></div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">8</div>
+              <div class="stat-label">In Progress</div>
+              <div class="stat-bar"><div class="stat-bar-fill" style="width:40%"></div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">23</div>
+              <div class="stat-label">Completed</div>
+              <div class="stat-bar"><div class="stat-bar-fill" style="width:85%"></div></div>
+            </div>
+          </div>
+          <div class="quick-actions">
+            <h3 class="section-label">Quick Actions</h3>
+            <div class="action-row">
+              <button class="action-btn" data-nav="ideas"><svg viewBox="0 0 16 16" width="14" height="14"><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="2"/><line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="2"/></svg> New Idea</button>
+              <button class="action-btn" data-nav="projects"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M2 3h4l2 2h6v8H2z" fill="currentColor"/></svg> New Project</button>
+              <button class="action-btn" data-nav="ai-chat"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 3h10a1 1 0 011 1v6a1 1 0 01-1 1H6l-2 2v-2H3a1 1 0 01-1-1V4a1 1 0 011-1z" fill="currentColor"/></svg> AI Chat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pane-divider" aria-hidden="true"><div class="divider-line"></div></div>
+      <div class="pane pane-right" data-pane="right">
+        <div class="pane-header">
+          <h2 class="pane-title">Activity Feed</h2>
+        </div>
+        <div class="pane-body">
+          <ul class="activity-list">
+            <li class="activity-item">
+              <span class="activity-dot dot-accent"></span>
+              <div class="activity-content">
+                <p class="activity-text"><strong>Wavz.fm Music Platform</strong> &mdash; New idea "Real-time waveform vis" captured</p>
+                <time class="activity-time">2 min ago</time>
+              </div>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot dot-accent2"></span>
+              <div class="activity-content">
+                <p class="activity-text"><strong>Campus Learning App</strong> &mdash; Kanban card "Design quiz module" moved to Review</p>
+                <time class="activity-time">18 min ago</time>
+              </div>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot dot-accent"></span>
+              <div class="activity-content">
+                <p class="activity-text"><strong>RepoSaver Backup Tool</strong> &mdash; Schema entity "BackupJob" added</p>
+                <time class="activity-time">45 min ago</time>
+              </div>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot dot-accent2"></span>
+              <div class="activity-content">
+                <p class="activity-text"><strong>Wavz.fm Music Platform</strong> &mdash; Directory tree generated for /api routes</p>
+                <time class="activity-time">1 hr ago</time>
+              </div>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot dot-accent"></span>
+              <div class="activity-content">
+                <p class="activity-text"><strong>Campus Learning App</strong> &mdash; AI Chat generated 3 new ideas</p>
+                <time class="activity-time">2 hr ago</time>
+              </div>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot dot-accent2"></span>
+              <div class="activity-content">
+                <p class="activity-text"><strong>RepoSaver Backup Tool</strong> &mdash; Project status changed to Active</p>
+                <time class="activity-time">3 hr ago</time>
+              </div>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot dot-accent"></span>
+              <div class="activity-content">
+                <p class="activity-text"><strong>Wavz.fm Music Platform</strong> &mdash; Whiteboard container "Audio Pipeline" linked</p>
+                <time class="activity-time">5 hr ago</time>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROJECTS ============ -->
+    <section class="view" data-view="projects" data-page="projects">
+      <div class="pane pane-left" data-pane="left">
+        <div class="pane-header">
+          <h2 class="pane-title">Projects</h2>
+          <div class="pane-toolbar">
+            <input type="text" class="search-input" placeholder="Search projects..." />
+          </div>
+        </div>
+        <div class="pane-body">
+          <div class="project-list">
+            <div class="project-list-item selected" data-project="wavz">
+              <div class="project-list-status status-active"></div>
+              <div class="project-list-info">
+                <h4 class="project-list-name">Wavz.fm Music Platform</h4>
+                <p class="project-list-desc">Streaming audio platform with social features</p>
+                <div class="project-list-tags">
+                  <span class="tag">Next.js</span><span class="tag">Audio</span><span class="tag">Social</span>
+                </div>
+              </div>
+            </div>
+            <div class="project-list-item" data-project="campus">
+              <div class="project-list-status status-active"></div>
+              <div class="project-list-info">
+                <h4 class="project-list-name">Campus Learning App</h4>
+                <p class="project-list-desc">Educational platform for university courses</p>
+                <div class="project-list-tags">
+                  <span class="tag">React</span><span class="tag">Education</span>
+                </div>
+              </div>
+            </div>
+            <div class="project-list-item" data-project="repo">
+              <div class="project-list-status status-planning"></div>
+              <div class="project-list-info">
+                <h4 class="project-list-name">RepoSaver Backup Tool</h4>
+                <p class="project-list-desc">Automated repository backup with scheduling</p>
+                <div class="project-list-tags">
+                  <span class="tag">CLI</span><span class="tag">Backup</span><span class="tag">Go</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="action-btn full-width" style="margin-top:12px"><svg viewBox="0 0 16 16" width="14" height="14"><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="2"/><line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="2"/></svg> Create New Project</button>
+        </div>
+      </div>
+      <div class="pane-divider" aria-hidden="true"><div class="divider-line"></div></div>
+      <div class="pane pane-right" data-pane="right">
+        <div class="pane-header">
+          <h2 class="pane-title">Project Detail</h2>
+        </div>
+        <div class="pane-body">
+          <div class="project-detail">
+            <h3 class="detail-title">Wavz.fm Music Platform</h3>
+            <div class="detail-meta">
+              <span class="meta-badge badge-active">Active</span>
+              <span class="meta-text">Created Feb 1, 2026</span>
+            </div>
+            <p class="detail-desc">A streaming audio platform with real-time waveform visualization, collaborative playlists, and social listening features. Built with Next.js and Convex for real-time capabilities.</p>
+            <div class="detail-section">
+              <h4 class="detail-section-title">Goals</h4>
+              <ul class="detail-list">
+                <li>Launch MVP with core streaming</li>
+                <li>Implement real-time collaborative playlists</li>
+                <li>Build social features (follow, share)</li>
+                <li>Integrate audio analysis pipeline</li>
+              </ul>
+            </div>
+            <div class="detail-section">
+              <h4 class="detail-section-title">Tech Stack</h4>
+              <div class="tech-tags">
+                <span class="tech-tag">Next.js 15</span>
+                <span class="tech-tag">Convex</span>
+                <span class="tech-tag">Clerk</span>
+                <span class="tech-tag">Tailwind CSS</span>
+                <span class="tech-tag">Web Audio API</span>
+              </div>
+            </div>
+            <div class="detail-section">
+              <h4 class="detail-section-title">Collaborators</h4>
+              <div class="collab-row">
+                <div class="collab-avatar" style="background:#00e5cc">JM</div>
+                <div class="collab-avatar" style="background:#ff6b9d">SR</div>
+                <div class="collab-avatar" style="background:#5b8def">KL</div>
+              </div>
+            </div>
+            <div class="detail-section">
+              <h4 class="detail-section-title">Statistics</h4>
+              <div class="mini-stats">
+                <div class="mini-stat"><span class="mini-val">14</span><span class="mini-lbl">Ideas</span></div>
+                <div class="mini-stat"><span class="mini-val">8</span><span class="mini-lbl">Kanban Cards</span></div>
+                <div class="mini-stat"><span class="mini-val">5</span><span class="mini-lbl">Entities</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROJECT WORKSPACE ============ -->
+    <section class="view" data-view="project-workspace" data-page="project-workspace">
+      <div class="pane pane-left pane-narrow" data-pane="left">
+        <div class="pane-header">
+          <h2 class="pane-title">Wavz.fm</h2>
+        </div>
+        <div class="pane-body">
+          <nav class="workspace-nav">
+            <button class="ws-nav-item active">
+              <svg viewBox="0 0 16 16" width="14" height="14"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/><line x1="1" y1="5" x2="15" y2="5" stroke="currentColor" stroke-width="1.2"/></svg>
+              Overview
+            </button>
+            <button class="ws-nav-item" data-nav="kanban">
+              <svg viewBox="0 0 16 16" width="14" height="14"><rect x="1" y="2" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="6.25" y="2" width="3.5" height="8" rx="1" fill="currentColor"/><rect x="11.5" y="2" width="3.5" height="10" rx="1" fill="currentColor"/></svg>
+              Kanban Board
+            </button>
+            <button class="ws-nav-item" data-nav="whiteboard">
+              <svg viewBox="0 0 16 16" width="14" height="14"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="5" cy="6" r="1.5" fill="currentColor"/><circle cx="11" cy="10" r="1.5" fill="currentColor"/><line x1="6.5" y1="6" x2="9.5" y2="10" stroke="currentColor" stroke-width="1"/></svg>
+              Whiteboard
+            </button>
+            <button class="ws-nav-item" data-nav="schema">
+              <svg viewBox="0 0 16 16" width="14" height="14"><rect x="1" y="3" width="5" height="4" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><rect x="10" y="3" width="5" height="4" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><rect x="5" y="10" width="5" height="4" rx="1" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+              Schema Planner
+            </button>
+            <button class="ws-nav-item" data-nav="directory">
+              <svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 3v10h10" stroke="currentColor" stroke-width="1.2" fill="none"/><line x1="6" y1="6" x2="12" y2="6" stroke="currentColor" stroke-width="1"/><line x1="6" y1="9" x2="11" y2="9" stroke="currentColor" stroke-width="1"/></svg>
+              Directory Tree
+            </button>
+            <button class="ws-nav-item" data-nav="ideas">
+              <svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 1a5 5 0 013.5 8.5V12a1 1 0 01-1 1h-5a1 1 0 01-1-1V9.5A5 5 0 018 1z" fill="currentColor"/><rect x="6" y="13" width="4" height="1.5" rx=".5" fill="currentColor"/></svg>
+              Ideas
+            </button>
+          </nav>
+          <div class="ws-metadata">
+            <h4 class="meta-heading">Project Info</h4>
+            <div class="meta-row"><span class="meta-key">Status</span><span class="meta-badge badge-active">Active</span></div>
+            <div class="meta-row"><span class="meta-key">Created</span><span class="meta-val">Feb 1, 2026</span></div>
+            <div class="meta-row"><span class="meta-key">Updated</span><span class="meta-val">Feb 16, 2026</span></div>
+            <div class="meta-row"><span class="meta-key">Team</span><span class="meta-val">3 members</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="pane-divider" aria-hidden="true"><div class="divider-line"></div></div>
+      <div class="pane pane-right pane-wide" data-pane="right">
+        <div class="pane-header">
+          <h2 class="pane-title">Project Overview</h2>
+        </div>
+        <div class="pane-body">
+          <div class="ws-overview">
+            <div class="ws-desc-block">
+              <h3>Wavz.fm Music Platform</h3>
+              <p>A streaming audio platform with real-time waveform visualization, collaborative playlists, and social listening features. The platform targets indie musicians and music enthusiasts looking for a community-driven listening experience.</p>
+            </div>
+            <div class="ws-overview-grid">
+              <div class="ws-overview-card">
+                <div class="ws-overview-card-header">
+                  <svg viewBox="0 0 16 16" width="16" height="16"><path d="M8 1a5 5 0 013.5 8.5V12a1 1 0 01-1 1h-5a1 1 0 01-1-1V9.5A5 5 0 018 1z" fill="#00e5cc"/></svg>
+                  <span>Ideas</span>
+                </div>
+                <div class="ws-overview-card-val">14</div>
+                <p class="ws-overview-card-sub">3 high priority</p>
+              </div>
+              <div class="ws-overview-card">
+                <div class="ws-overview-card-header">
+                  <svg viewBox="0 0 16 16" width="16" height="16"><rect x="1" y="2" width="3.5" height="12" rx="1" fill="#00e5cc"/><rect x="6.25" y="2" width="3.5" height="8" rx="1" fill="#00e5cc"/><rect x="11.5" y="2" width="3.5" height="10" rx="1" fill="#00e5cc"/></svg>
+                  <span>Kanban Cards</span>
+                </div>
+                <div class="ws-overview-card-val">8</div>
+                <p class="ws-overview-card-sub">2 in review</p>
+              </div>
+              <div class="ws-overview-card">
+                <div class="ws-overview-card-header">
+                  <svg viewBox="0 0 16 16" width="16" height="16"><rect x="1" y="3" width="5" height="4" rx="1" stroke="#00e5cc" stroke-width="1.2" fill="none"/><rect x="10" y="3" width="5" height="4" rx="1" stroke="#00e5cc" stroke-width="1.2" fill="none"/></svg>
+                  <span>Entities</span>
+                </div>
+                <div class="ws-overview-card-val">5</div>
+                <p class="ws-overview-card-sub">12 relationships</p>
+              </div>
+              <div class="ws-overview-card">
+                <div class="ws-overview-card-header">
+                  <svg viewBox="0 0 16 16" width="16" height="16"><rect x="2" y="2" width="12" height="12" rx="2" stroke="#00e5cc" stroke-width="1.2" fill="none"/><circle cx="6" cy="7" r="1.5" fill="#00e5cc"/><circle cx="11" cy="10" r="1.5" fill="#00e5cc"/></svg>
+                  <span>Whiteboard</span>
+                </div>
+                <div class="ws-overview-card-val">6</div>
+                <p class="ws-overview-card-sub">containers</p>
+              </div>
+            </div>
+            <div class="ws-recent">
+              <h4 class="section-label">Recent Activity</h4>
+              <ul class="ws-recent-list">
+                <li><span class="ws-recent-dot"></span> Added idea "Real-time waveform vis" <time>2 min ago</time></li>
+                <li><span class="ws-recent-dot"></span> Updated kanban card "Audio pipeline" <time>1 hr ago</time></li>
+                <li><span class="ws-recent-dot"></span> New entity "Playlist" created <time>3 hr ago</time></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ KANBAN ============ -->
+    <section class="view" data-view="kanban" data-page="kanban">
+      <div class="pane pane-full" data-pane="full">
+        <div class="pane-header">
+          <h2 class="pane-title">Kanban Board &mdash; Wavz.fm</h2>
+          <div class="pane-toolbar">
+            <button class="action-btn sm">+ Add Card</button>
+          </div>
+        </div>
+        <div class="pane-body">
+          <div class="kanban-board">
+            <div class="kanban-column">
+              <div class="kanban-col-header">
+                <span class="kanban-col-title">Backlog</span>
+                <span class="kanban-col-count">3</span>
+              </div>
+              <div class="kanban-cards">
+                <div class="kanban-card">
+                  <h4 class="kcard-title">Set up Clerk authentication</h4>
+                  <p class="kcard-desc">Integrate Clerk for user sign-up, login, and session management</p>
+                  <div class="kcard-footer">
+                    <span class="kcard-tag">Auth</span>
+                    <span class="kcard-priority priority-high">High</span>
+                  </div>
+                </div>
+                <div class="kanban-card">
+                  <h4 class="kcard-title">Design audio player component</h4>
+                  <p class="kcard-desc">Create reusable audio player with waveform visualization</p>
+                  <div class="kcard-footer">
+                    <span class="kcard-tag">UI</span>
+                    <span class="kcard-priority priority-med">Medium</span>
+                  </div>
+                </div>
+                <div class="kanban-card">
+                  <h4 class="kcard-title">Set up Stripe billing</h4>
+                  <p class="kcard-desc">Integrate subscription management and payment processing</p>
+                  <div class="kcard-footer">
+                    <span class="kcard-tag">Payments</span>
+                    <span class="kcard-priority priority-low">Low</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="kanban-column">
+              <div class="kanban-col-header">
+                <span class="kanban-col-title">In Progress</span>
+                <span class="kanban-col-count">2</span>
+              </div>
+              <div class="kanban-cards">
+                <div class="kanban-card">
+                  <h4 class="kcard-title">Build playlist CRUD API</h4>
+                  <p class="kcard-desc">Convex mutations and queries for playlist management</p>
+                  <div class="kcard-footer">
+                    <span class="kcard-tag">Backend</span>
+                    <span class="kcard-priority priority-high">High</span>
+                  </div>
+                </div>
+                <div class="kanban-card">
+                  <h4 class="kcard-title">Design kanban drag-drop UX</h4>
+                  <p class="kcard-desc">Implement smooth drag-and-drop between kanban columns</p>
+                  <div class="kcard-footer">
+                    <span class="kcard-tag">UX</span>
+                    <span class="kcard-priority priority-med">Medium</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="kanban-column">
+              <div class="kanban-col-header">
+                <span class="kanban-col-title">Review</span>
+                <span class="kanban-col-count">2</span>
+              </div>
+              <div class="kanban-cards">
+                <div class="kanban-card">
+                  <h4 class="kcard-title">Design quiz module</h4>
+                  <p class="kcard-desc">Interactive quiz interface with progress tracking</p>
+                  <div class="kcard-footer">
+                    <span class="kcard-tag">Feature</span>
+                    <span class="kcard-priority priority-med">Medium</span>
+                  </div>
+                </div>
+                <div class="kanban-card">
+                  <h4 class="kcard-title">User profile page</h4>
+                  <p class="kcard-desc">Profile display with listening history and playlists</p>
+                  <div class="kcard-footer">
+                    <span class="kcard-tag">UI</span>
+                    <span class="kcard-priority priority-low">Low</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="kanban-column">
+              <div class="kanban-col-header">
+                <span class="kanban-col-title">Done</span>
+                <span class="kanban-col-count">3</span>
+              </div>
+              <div class="kanban-cards">
+                <div class="kanban-card done">
+                  <h4 class="kcard-title">Project scaffolding</h4>
+                  <p class="kcard-desc">Initialize Next.js project with Convex backend</p>
+                  <div class="kcard-footer">
+                    <span class="kcard-tag">Setup</span>
+                  </div>
+                </div>
+                <div class="kanban-card done">
+                  <h4 class="kcard-title">Design system tokens</h4>
+                  <p class="kcard-desc">Establish color, spacing, and typography tokens</p>
+                  <div class="kcard-footer">
+                    <span class="kcard-tag">Design</span>
+                  </div>
+                </div>
+                <div class="kanban-card done">
+                  <h4 class="kcard-title">Database schema v1</h4>
+                  <p class="kcard-desc">Define initial Convex schema for core entities</p>
+                  <div class="kcard-footer">
+                    <span class="kcard-tag">Backend</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHITEBOARD ============ -->
+    <section class="view" data-view="whiteboard" data-page="whiteboard">
+      <div class="pane pane-full" data-pane="full">
+        <div class="pane-header">
+          <h2 class="pane-title">Whiteboard &mdash; Wavz.fm Architecture</h2>
+          <div class="pane-toolbar">
+            <button class="wb-tool active" title="Select"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 2l10 6-5 1-2 5z" fill="currentColor"/></svg></button>
+            <button class="wb-tool" title="Add Container"><svg viewBox="0 0 16 16" width="14" height="14"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></button>
+            <button class="wb-tool" title="Connect"><svg viewBox="0 0 16 16" width="14" height="14"><line x1="3" y1="13" x2="13" y2="3" stroke="currentColor" stroke-width="1.5"/><circle cx="13" cy="3" r="2" fill="currentColor"/></svg></button>
+            <button class="wb-tool" title="Text"><svg viewBox="0 0 16 16" width="14" height="14"><text x="4" y="12" font-size="12" font-weight="700" fill="currentColor">T</text></svg></button>
+            <span class="wb-divider"></span>
+            <button class="wb-tool" title="Zoom In"><svg viewBox="0 0 16 16" width="14" height="14"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="11" y1="11" x2="14" y2="14" stroke="currentColor" stroke-width="1.5"/><line x1="5" y1="7" x2="9" y2="7" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="5" x2="7" y2="9" stroke="currentColor" stroke-width="1.2"/></svg></button>
+            <button class="wb-tool" title="Zoom Out"><svg viewBox="0 0 16 16" width="14" height="14"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="11" y1="11" x2="14" y2="14" stroke="currentColor" stroke-width="1.5"/><line x1="5" y1="7" x2="9" y2="7" stroke="currentColor" stroke-width="1.2"/></svg></button>
+          </div>
+        </div>
+        <div class="pane-body wb-canvas-wrap">
+          <div class="wb-canvas" id="whiteboardCanvas">
+            <!-- SVG Connections -->
+            <svg class="wb-connections" width="100%" height="100%">
+              <line x1="230" y1="90" x2="420" y2="90" stroke="#00e5cc" stroke-width="2" stroke-dasharray="6,3" opacity=".5"/>
+              <line x1="140" y1="130" x2="140" y2="250" stroke="#00e5cc" stroke-width="2" stroke-dasharray="6,3" opacity=".5"/>
+              <line x1="230" y1="290" x2="420" y2="200" stroke="#ff6b9d" stroke-width="2" stroke-dasharray="6,3" opacity=".5"/>
+              <line x1="560" y1="130" x2="560" y2="250" stroke="#00e5cc" stroke-width="2" stroke-dasharray="6,3" opacity=".5"/>
+              <line x1="650" y1="290" x2="750" y2="200" stroke="#ff6b9d" stroke-width="2" stroke-dasharray="6,3" opacity=".5"/>
+            </svg>
+            <!-- Containers -->
+            <div class="wb-container" style="left:40px;top:40px;width:190px;">
+              <div class="wb-container-header">Frontend Layer</div>
+              <div class="wb-container-body">
+                <p>Next.js App Router</p>
+                <p>React Components</p>
+                <p>Tailwind CSS</p>
+              </div>
+            </div>
+            <div class="wb-container" style="left:420px;top:40px;width:190px;">
+              <div class="wb-container-header">Audio Pipeline</div>
+              <div class="wb-container-body">
+                <p>Web Audio API</p>
+                <p>Waveform Renderer</p>
+                <p>Streaming Codec</p>
+              </div>
+            </div>
+            <div class="wb-container" style="left:40px;top:250px;width:190px;">
+              <div class="wb-container-header">Backend API</div>
+              <div class="wb-container-body">
+                <p>Convex Functions</p>
+                <p>Real-time Subscriptions</p>
+                <p>File Storage</p>
+              </div>
+            </div>
+            <div class="wb-container" style="left:420px;top:200px;width:190px;">
+              <div class="wb-container-header">Auth & Payments</div>
+              <div class="wb-container-body">
+                <p>Clerk Auth</p>
+                <p>Stripe Billing</p>
+                <p>Webhook Handlers</p>
+              </div>
+            </div>
+            <div class="wb-container" style="left:700px;top:40px;width:190px;">
+              <div class="wb-container-header">CDN & Storage</div>
+              <div class="wb-container-body">
+                <p>Audio File Storage</p>
+                <p>Image CDN</p>
+                <p>Cache Layer</p>
+              </div>
+            </div>
+            <div class="wb-container" style="left:700px;top:250px;width:190px;">
+              <div class="wb-container-header">Analytics</div>
+              <div class="wb-container-body">
+                <p>Play Counts</p>
+                <p>User Engagement</p>
+                <p>Revenue Tracking</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCHEMA PLANNER ============ -->
+    <section class="view" data-view="schema" data-page="schema">
+      <div class="pane pane-left" data-pane="left">
+        <div class="pane-header">
+          <h2 class="pane-title">Entities</h2>
+          <div class="pane-toolbar">
+            <button class="action-btn sm">+ Add Entity</button>
+          </div>
+        </div>
+        <div class="pane-body">
+          <div class="entity-list">
+            <div class="entity-list-item selected">
+              <svg viewBox="0 0 16 16" width="14" height="14"><rect x="2" y="2" width="12" height="12" rx="2" fill="#00e5cc" opacity=".3"/><rect x="2" y="2" width="12" height="12" rx="2" stroke="#00e5cc" stroke-width="1.2" fill="none"/></svg>
+              <span>User</span>
+            </div>
+            <div class="entity-list-item">
+              <svg viewBox="0 0 16 16" width="14" height="14"><rect x="2" y="2" width="12" height="12" rx="2" fill="#ff6b9d" opacity=".3"/><rect x="2" y="2" width="12" height="12" rx="2" stroke="#ff6b9d" stroke-width="1.2" fill="none"/></svg>
+              <span>Project</span>
+            </div>
+            <div class="entity-list-item">
+              <svg viewBox="0 0 16 16" width="14" height="14"><rect x="2" y="2" width="12" height="12" rx="2" fill="#5b8def" opacity=".3"/><rect x="2" y="2" width="12" height="12" rx="2" stroke="#5b8def" stroke-width="1.2" fill="none"/></svg>
+              <span>Idea</span>
+            </div>
+            <div class="entity-list-item">
+              <svg viewBox="0 0 16 16" width="14" height="14"><rect x="2" y="2" width="12" height="12" rx="2" fill="#f0c040" opacity=".3"/><rect x="2" y="2" width="12" height="12" rx="2" stroke="#f0c040" stroke-width="1.2" fill="none"/></svg>
+              <span>KanbanCard</span>
+            </div>
+            <div class="entity-list-item">
+              <svg viewBox="0 0 16 16" width="14" height="14"><rect x="2" y="2" width="12" height="12" rx="2" fill="#a78bfa" opacity=".3"/><rect x="2" y="2" width="12" height="12" rx="2" stroke="#a78bfa" stroke-width="1.2" fill="none"/></svg>
+              <span>Playlist</span>
+            </div>
+          </div>
+          <div class="entity-relations">
+            <h4 class="section-label">Relationships</h4>
+            <ul class="relation-list">
+              <li><code>User</code> <span class="rel-arrow">1:N</span> <code>Project</code></li>
+              <li><code>Project</code> <span class="rel-arrow">1:N</span> <code>Idea</code></li>
+              <li><code>Project</code> <span class="rel-arrow">1:N</span> <code>KanbanCard</code></li>
+              <li><code>User</code> <span class="rel-arrow">N:M</span> <code>Playlist</code></li>
+              <li><code>Idea</code> <span class="rel-arrow">1:1</span> <code>KanbanCard</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="pane-divider" aria-hidden="true"><div class="divider-line"></div></div>
+      <div class="pane pane-right" data-pane="right">
+        <div class="pane-header">
+          <h2 class="pane-title">Entity Detail &mdash; User</h2>
+        </div>
+        <div class="pane-body">
+          <div class="entity-detail">
+            <table class="entity-table">
+              <thead>
+                <tr><th>Field</th><th>Type</th><th>Constraints</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>id</code></td><td><span class="type-badge">Id</span></td><td>primary key</td></tr>
+                <tr><td><code>clerkId</code></td><td><span class="type-badge">string</span></td><td>unique, indexed</td></tr>
+                <tr><td><code>email</code></td><td><span class="type-badge">string</span></td><td>unique</td></tr>
+                <tr><td><code>name</code></td><td><span class="type-badge">string</span></td><td>required</td></tr>
+                <tr><td><code>avatarUrl</code></td><td><span class="type-badge">string</span></td><td>optional</td></tr>
+                <tr><td><code>role</code></td><td><span class="type-badge">enum</span></td><td>admin | member | viewer</td></tr>
+                <tr><td><code>createdAt</code></td><td><span class="type-badge">number</span></td><td>timestamp</td></tr>
+              </tbody>
+            </table>
+            <div class="entity-visual">
+              <h4 class="section-label">Visual Schema</h4>
+              <div class="schema-diagram">
+                <div class="schema-node node-active">
+                  <div class="schema-node-title">User</div>
+                  <div class="schema-node-fields">
+                    <span>id: Id</span>
+                    <span>clerkId: string</span>
+                    <span>email: string</span>
+                    <span>name: string</span>
+                    <span>role: enum</span>
+                  </div>
+                </div>
+                <div class="schema-link-h">
+                  <svg width="60" height="30"><line x1="0" y1="15" x2="60" y2="15" stroke="#00e5cc" stroke-width="2"/><polygon points="55,10 60,15 55,20" fill="#00e5cc"/></svg>
+                  <span class="link-label">1:N</span>
+                </div>
+                <div class="schema-node">
+                  <div class="schema-node-title">Project</div>
+                  <div class="schema-node-fields">
+                    <span>id: Id</span>
+                    <span>name: string</span>
+                    <span>slug: string</span>
+                    <span>ownerId: Id</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DIRECTORY TREE ============ -->
+    <section class="view" data-view="directory" data-page="directory">
+      <div class="pane pane-left" data-pane="left">
+        <div class="pane-header">
+          <h2 class="pane-title">Directory Tree</h2>
+          <div class="pane-toolbar">
+            <button class="action-btn sm">Generate</button>
+          </div>
+        </div>
+        <div class="pane-body">
+          <div class="dir-tree">
+            <div class="dir-item dir-folder open" data-depth="0">
+              <span class="dir-icon">&#9662;</span>
+              <span class="dir-name">wavz-fm/</span>
+            </div>
+            <div class="dir-item dir-folder open" data-depth="1">
+              <span class="dir-icon">&#9662;</span>
+              <span class="dir-name">src/</span>
+            </div>
+            <div class="dir-item dir-folder open" data-depth="2">
+              <span class="dir-icon">&#9662;</span>
+              <span class="dir-name">app/</span>
+            </div>
+            <div class="dir-item dir-file" data-depth="3">
+              <span class="dir-icon file-icon">&#9654;</span>
+              <span class="dir-name">layout.tsx</span>
+            </div>
+            <div class="dir-item dir-file" data-depth="3">
+              <span class="dir-icon file-icon">&#9654;</span>
+              <span class="dir-name">page.tsx</span>
+            </div>
+            <div class="dir-item dir-folder open" data-depth="3">
+              <span class="dir-icon">&#9662;</span>
+              <span class="dir-name">dashboard/</span>
+            </div>
+            <div class="dir-item dir-file" data-depth="4">
+              <span class="dir-icon file-icon">&#9654;</span>
+              <span class="dir-name">page.tsx</span>
+            </div>
+            <div class="dir-item dir-folder" data-depth="3">
+              <span class="dir-icon">&#9656;</span>
+              <span class="dir-name">projects/</span>
+            </div>
+            <div class="dir-item dir-folder" data-depth="3">
+              <span class="dir-icon">&#9656;</span>
+              <span class="dir-name">kanban/</span>
+            </div>
+            <div class="dir-item dir-folder open" data-depth="3">
+              <span class="dir-icon">&#9662;</span>
+              <span class="dir-name">api/</span>
+            </div>
+            <div class="dir-item dir-folder" data-depth="4">
+              <span class="dir-icon">&#9656;</span>
+              <span class="dir-name">webhooks/</span>
+            </div>
+            <div class="dir-item dir-folder open" data-depth="2">
+              <span class="dir-icon">&#9662;</span>
+              <span class="dir-name">components/</span>
+            </div>
+            <div class="dir-item dir-file" data-depth="3">
+              <span class="dir-icon file-icon">&#9654;</span>
+              <span class="dir-name">AudioPlayer.tsx</span>
+            </div>
+            <div class="dir-item dir-file" data-depth="3">
+              <span class="dir-icon file-icon">&#9654;</span>
+              <span class="dir-name">WaveformVis.tsx</span>
+            </div>
+            <div class="dir-item dir-file" data-depth="3">
+              <span class="dir-icon file-icon">&#9654;</span>
+              <span class="dir-name">PlaylistCard.tsx</span>
+            </div>
+            <div class="dir-item dir-folder open" data-depth="2">
+              <span class="dir-icon">&#9662;</span>
+              <span class="dir-name">lib/</span>
+            </div>
+            <div class="dir-item dir-file" data-depth="3">
+              <span class="dir-icon file-icon">&#9654;</span>
+              <span class="dir-name">utils.ts</span>
+            </div>
+            <div class="dir-item dir-file" data-depth="3">
+              <span class="dir-icon file-icon">&#9654;</span>
+              <span class="dir-name">audio.ts</span>
+            </div>
+            <div class="dir-item dir-folder" data-depth="1">
+              <span class="dir-icon">&#9656;</span>
+              <span class="dir-name">convex/</span>
+            </div>
+            <div class="dir-item dir-file" data-depth="1">
+              <span class="dir-icon file-icon">&#9654;</span>
+              <span class="dir-name">package.json</span>
+            </div>
+            <div class="dir-item dir-file" data-depth="1">
+              <span class="dir-icon file-icon">&#9654;</span>
+              <span class="dir-name">tsconfig.json</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pane-divider" aria-hidden="true"><div class="divider-line"></div></div>
+      <div class="pane pane-right" data-pane="right">
+        <div class="pane-header">
+          <h2 class="pane-title">File Preview</h2>
+        </div>
+        <div class="pane-body">
+          <div class="file-preview">
+            <div class="file-preview-header">
+              <span class="file-preview-name">layout.tsx</span>
+              <span class="file-preview-path">src/app/layout.tsx</span>
+            </div>
+            <pre class="file-preview-code"><code><span class="code-kw">import</span> <span class="code-str">'./globals.css'</span>
+<span class="code-kw">import</span> { ClerkProvider } <span class="code-kw">from</span> <span class="code-str">'@clerk/nextjs'</span>
+<span class="code-kw">import</span> { ConvexProviderWithClerk } <span class="code-kw">from</span> <span class="code-str">'convex/react-clerk'</span>
+
+<span class="code-kw">export default function</span> <span class="code-fn">RootLayout</span>({
+  children
+}: {
+  children: React.ReactNode
+}) {
+  <span class="code-kw">return</span> (
+    &lt;<span class="code-tag">ClerkProvider</span>&gt;
+      &lt;<span class="code-tag">ConvexProviderWithClerk</span>&gt;
+        &lt;<span class="code-tag">html</span> lang=<span class="code-str">"en"</span>&gt;
+          &lt;<span class="code-tag">body</span>&gt;{children}&lt;/<span class="code-tag">body</span>&gt;
+        &lt;/<span class="code-tag">html</span>&gt;
+      &lt;/<span class="code-tag">ConvexProviderWithClerk</span>&gt;
+    &lt;/<span class="code-tag">ClerkProvider</span>&gt;
+  )
+}</code></pre>
+            <div class="file-info-panel">
+              <h4 class="section-label">File Info</h4>
+              <div class="file-info-row"><span>Type</span><span>TypeScript React</span></div>
+              <div class="file-info-row"><span>Size</span><span>412 bytes</span></div>
+              <div class="file-info-row"><span>Modified</span><span>Feb 14, 2026</span></div>
+              <div class="file-info-row"><span>Template</span><span>Next.js Layout</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ IDEAS ============ -->
+    <section class="view" data-view="ideas" data-page="ideas">
+      <div class="pane pane-left" data-pane="left">
+        <div class="pane-header">
+          <h2 class="pane-title">Capture Idea</h2>
+        </div>
+        <div class="pane-body">
+          <form class="idea-form" onsubmit="return false;">
+            <div class="form-group">
+              <label class="form-label">Title</label>
+              <input type="text" class="form-input" placeholder="Enter idea title..." value="Add dark mode toggle" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <textarea class="form-textarea" rows="4" placeholder="Describe your idea...">Allow users to switch between light and dark themes with system preference detection and manual override.</textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tags</label>
+              <div class="tag-input-row">
+                <span class="tag removable">UI <button class="tag-remove">&times;</button></span>
+                <span class="tag removable">UX <button class="tag-remove">&times;</button></span>
+                <span class="tag removable">Theme <button class="tag-remove">&times;</button></span>
+                <input type="text" class="tag-input" placeholder="Add tag..." />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority</label>
+              <div class="priority-selector">
+                <button class="pri-btn">Low</button>
+                <button class="pri-btn active">Medium</button>
+                <button class="pri-btn">High</button>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="action-btn primary">Save Idea</button>
+              <button class="action-btn">Promote to Kanban</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="pane-divider" aria-hidden="true"><div class="divider-line"></div></div>
+      <div class="pane pane-right" data-pane="right">
+        <div class="pane-header">
+          <h2 class="pane-title">Ideas List</h2>
+          <div class="pane-toolbar">
+            <input type="text" class="search-input" placeholder="Filter ideas..." />
+          </div>
+        </div>
+        <div class="pane-body">
+          <ul class="ideas-list">
+            <li class="idea-item">
+              <div class="idea-header">
+                <h4 class="idea-title">Add dark mode toggle</h4>
+                <span class="kcard-priority priority-med">Medium</span>
+              </div>
+              <p class="idea-desc">Allow users to switch between light and dark themes</p>
+              <div class="idea-tags">
+                <span class="tag">UI</span><span class="tag">UX</span><span class="tag">Theme</span>
+              </div>
+            </li>
+            <li class="idea-item">
+              <div class="idea-header">
+                <h4 class="idea-title">Implement drag-drop upload</h4>
+                <span class="kcard-priority priority-high">High</span>
+              </div>
+              <p class="idea-desc">Drag and drop audio files for upload with progress</p>
+              <div class="idea-tags">
+                <span class="tag">Upload</span><span class="tag">UX</span>
+              </div>
+            </li>
+            <li class="idea-item">
+              <div class="idea-header">
+                <h4 class="idea-title">Real-time waveform visualization</h4>
+                <span class="kcard-priority priority-high">High</span>
+              </div>
+              <p class="idea-desc">Live waveform rendering during audio playback</p>
+              <div class="idea-tags">
+                <span class="tag">Audio</span><span class="tag">Visualization</span>
+              </div>
+            </li>
+            <li class="idea-item">
+              <div class="idea-header">
+                <h4 class="idea-title">Collaborative playlist editing</h4>
+                <span class="kcard-priority priority-med">Medium</span>
+              </div>
+              <p class="idea-desc">Allow multiple users to add/remove tracks in real-time</p>
+              <div class="idea-tags">
+                <span class="tag">Social</span><span class="tag">Real-time</span>
+              </div>
+            </li>
+            <li class="idea-item">
+              <div class="idea-header">
+                <h4 class="idea-title">Audio fingerprinting</h4>
+                <span class="kcard-priority priority-low">Low</span>
+              </div>
+              <p class="idea-desc">Detect duplicate audio uploads via acoustic fingerprinting</p>
+              <div class="idea-tags">
+                <span class="tag">Backend</span><span class="tag">Audio</span>
+              </div>
+            </li>
+            <li class="idea-item">
+              <div class="idea-header">
+                <h4 class="idea-title">Keyboard shortcuts system</h4>
+                <span class="kcard-priority priority-low">Low</span>
+              </div>
+              <p class="idea-desc">Global keyboard shortcuts for navigation and playback</p>
+              <div class="idea-tags">
+                <span class="tag">UX</span><span class="tag">Accessibility</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AI CHAT ============ -->
+    <section class="view" data-view="ai-chat" data-page="ai-chat">
+      <div class="pane pane-left pane-narrow" data-pane="left">
+        <div class="pane-header">
+          <h2 class="pane-title">Sessions</h2>
+        </div>
+        <div class="pane-body">
+          <div class="chat-sessions">
+            <div class="chat-session active">
+              <span class="chat-session-icon">&#9679;</span>
+              <div>
+                <h4>Wavz.fm Planning</h4>
+                <p>Active &middot; 6 messages</p>
+              </div>
+            </div>
+            <div class="chat-session">
+              <span class="chat-session-icon dim">&#9679;</span>
+              <div>
+                <h4>Campus App Ideas</h4>
+                <p>Yesterday &middot; 12 messages</p>
+              </div>
+            </div>
+            <div class="chat-session">
+              <span class="chat-session-icon dim">&#9679;</span>
+              <div>
+                <h4>RepoSaver Architecture</h4>
+                <p>Feb 12 &middot; 8 messages</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pane-divider" aria-hidden="true"><div class="divider-line"></div></div>
+      <div class="pane pane-right pane-wide" data-pane="right">
+        <div class="pane-header">
+          <h2 class="pane-title">AI Chat &mdash; Wavz.fm Planning</h2>
+        </div>
+        <div class="pane-body chat-body">
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg user-msg">
+              <div class="chat-avatar user-avatar">AT</div>
+              <div class="chat-bubble">
+                <p>Help me brainstorm features for the Wavz.fm music streaming platform. Focus on social and real-time capabilities.</p>
+              </div>
+            </div>
+            <div class="chat-msg ai-msg">
+              <div class="chat-avatar ai-avatar">AI</div>
+              <div class="chat-bubble">
+                <p>Great project! Here are some feature ideas for Wavz.fm's social and real-time capabilities:</p>
+                <ul>
+                  <li><strong>Live Listening Rooms</strong> &mdash; Synchronized playback where users listen together</li>
+                  <li><strong>Real-time Waveform Comments</strong> &mdash; Timestamp-based comments on tracks</li>
+                  <li><strong>Collaborative Playlists</strong> &mdash; Multiple users curate a shared playlist</li>
+                </ul>
+                <p>Want me to add these as ideas to the project?</p>
+              </div>
+            </div>
+            <div class="chat-msg user-msg">
+              <div class="chat-avatar user-avatar">AT</div>
+              <div class="chat-bubble">
+                <p>Yes, add all three as ideas with high priority.</p>
+              </div>
+            </div>
+            <div class="chat-msg ai-msg">
+              <div class="chat-avatar ai-avatar">AI</div>
+              <div class="chat-bubble">
+                <div class="tool-action">
+                  <span class="tool-icon">&#9881;</span>
+                  <span class="tool-label">add_idea</span>
+                  <span class="tool-status success">&#10003; Added 3 ideas</span>
+                </div>
+                <p>Done! I've added all three ideas to the Wavz.fm project with high priority. They're now visible in your Ideas view.</p>
+              </div>
+            </div>
+            <div class="chat-msg user-msg">
+              <div class="chat-avatar user-avatar">AT</div>
+              <div class="chat-bubble">
+                <p>Now create kanban cards for "Live Listening Rooms" and move it to In Progress.</p>
+              </div>
+            </div>
+            <div class="chat-msg ai-msg">
+              <div class="chat-avatar ai-avatar">AI</div>
+              <div class="chat-bubble">
+                <div class="tool-action">
+                  <span class="tool-icon">&#9881;</span>
+                  <span class="tool-label">update_kanban</span>
+                  <span class="tool-status success">&#10003; Card created & moved</span>
+                </div>
+                <p>Created kanban card "Live Listening Rooms" and moved it to the In Progress column. The card is linked to the original idea for traceability.</p>
+              </div>
+            </div>
+            <div class="chat-msg user-msg">
+              <div class="chat-avatar user-avatar">AT</div>
+              <div class="chat-bubble">
+                <p>Generate a directory tree for the audio streaming module.</p>
+              </div>
+            </div>
+            <div class="chat-msg ai-msg">
+              <div class="chat-avatar ai-avatar">AI</div>
+              <div class="chat-bubble">
+                <div class="tool-action">
+                  <span class="tool-icon">&#9881;</span>
+                  <span class="tool-label">generate_tree</span>
+                  <span class="tool-status success">&#10003; Tree generated</span>
+                </div>
+                <pre class="chat-code">src/modules/audio/
+  ├── components/
+  │   ├── AudioPlayer.tsx
+  │   ├── WaveformCanvas.tsx
+  │   └── VolumeControl.tsx
+  ├── hooks/
+  │   ├── useAudioContext.ts
+  │   └── usePlayback.ts
+  ├── lib/
+  │   ├── codec.ts
+  │   └── streaming.ts
+  └── index.ts</pre>
+                <p>The tree has been added to your Directory Tree view. It follows Next.js module conventions with separate concerns for components, hooks, and library code.</p>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" class="chat-input" placeholder="Ask the AI assistant..." />
+            <button class="chat-send-btn">
+              <svg viewBox="0 0 20 20" width="18" height="18"><path d="M2 10l16-8-4 8 4 8z" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SETTINGS ============ -->
+    <section class="view" data-view="settings" data-page="settings">
+      <div class="pane pane-left pane-narrow" data-pane="left">
+        <div class="pane-header">
+          <h2 class="pane-title">Settings</h2>
+        </div>
+        <div class="pane-body">
+          <nav class="settings-nav">
+            <button class="settings-nav-item active" data-settings-tab="account">
+              <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="8" cy="5" r="3" fill="currentColor"/><path d="M2 14a6 6 0 0112 0" fill="currentColor" opacity=".5"/></svg>
+              Account
+            </button>
+            <button class="settings-nav-item" data-settings-tab="subscription">
+              <svg viewBox="0 0 16 16" width="14" height="14"><rect x="1" y="4" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/><line x1="1" y1="7" x2="15" y2="7" stroke="currentColor" stroke-width="1.2"/></svg>
+              Subscription
+            </button>
+            <button class="settings-nav-item" data-settings-tab="preferences">
+              <svg viewBox="0 0 16 16" width="14" height="14"><line x1="2" y1="4" x2="14" y2="4" stroke="currentColor" stroke-width="1.5"/><line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.5"/><line x1="2" y1="12" x2="14" y2="12" stroke="currentColor" stroke-width="1.5"/><circle cx="5" cy="4" r="1.5" fill="currentColor"/><circle cx="10" cy="8" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/></svg>
+              Preferences
+            </button>
+            <button class="settings-nav-item" data-settings-tab="integrations">
+              <svg viewBox="0 0 16 16" width="14" height="14"><rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+              Integrations
+            </button>
+            <button class="settings-nav-item" data-settings-tab="data">
+              <svg viewBox="0 0 16 16" width="14" height="14"><ellipse cx="8" cy="4" rx="6" ry="2.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M2 4v8c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V4" stroke="currentColor" stroke-width="1.2" fill="none"/><ellipse cx="8" cy="8" rx="6" ry="2.5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+              Data
+            </button>
+          </nav>
+        </div>
+      </div>
+      <div class="pane-divider" aria-hidden="true"><div class="divider-line"></div></div>
+      <div class="pane pane-right pane-wide" data-pane="right">
+        <div class="pane-header">
+          <h2 class="pane-title" id="settingsPaneTitle">Account Settings</h2>
+        </div>
+        <div class="pane-body">
+          <!-- Account -->
+          <div class="settings-panel active" data-settings-panel="account">
+            <div class="settings-section">
+              <h3 class="settings-heading">Profile</h3>
+              <div class="settings-form-grid">
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" class="form-input" value="Aquarium Technician" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-input" value="tech@marinelab.io" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Role</label>
+                  <input type="text" class="form-input" value="Lead Technician" disabled />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Timezone</label>
+                  <select class="form-select">
+                    <option>UTC-8 (Pacific)</option>
+                    <option selected>UTC-5 (Eastern)</option>
+                    <option>UTC+0 (London)</option>
+                    <option>UTC+9 (Tokyo)</option>
+                  </select>
+                </div>
+              </div>
+              <button class="action-btn primary" style="margin-top:12px">Save Profile</button>
+            </div>
+            <div class="settings-section">
+              <h3 class="settings-heading">Security</h3>
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Two-Factor Authentication</h4>
+                  <p>Add an extra layer of security to your account</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Session Management</h4>
+                  <p>3 active sessions</p>
+                </div>
+                <button class="action-btn sm">Manage</button>
+              </div>
+            </div>
+          </div>
+          <!-- Subscription -->
+          <div class="settings-panel" data-settings-panel="subscription">
+            <div class="settings-section">
+              <h3 class="settings-heading">Current Plan</h3>
+              <div class="plan-card">
+                <div class="plan-badge">Pro</div>
+                <div class="plan-price">$29<span>/month</span></div>
+                <ul class="plan-features">
+                  <li>Unlimited projects</li>
+                  <li>AI chat with tool actions</li>
+                  <li>Schema planner</li>
+                  <li>Priority support</li>
+                </ul>
+                <p class="plan-renewal">Next renewal: Mar 1, 2026</p>
+              </div>
+              <button class="action-btn" style="margin-top:12px">Change Plan</button>
+            </div>
+            <div class="settings-section">
+              <h3 class="settings-heading">Billing History</h3>
+              <table class="billing-table">
+                <thead><tr><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Feb 1, 2026</td><td>$29.00</td><td><span class="status-pill paid">Paid</span></td></tr>
+                  <tr><td>Jan 1, 2026</td><td>$29.00</td><td><span class="status-pill paid">Paid</span></td></tr>
+                  <tr><td>Dec 1, 2025</td><td>$29.00</td><td><span class="status-pill paid">Paid</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Preferences -->
+          <div class="settings-panel" data-settings-panel="preferences">
+            <div class="settings-section">
+              <h3 class="settings-heading">Appearance</h3>
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Theme</h4>
+                  <p>Choose your preferred visual theme</p>
+                </div>
+                <select class="form-select inline">
+                  <option>System</option>
+                  <option selected>Dark (Aquarium)</option>
+                  <option>Light</option>
+                </select>
+              </div>
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Compact Mode</h4>
+                  <p>Reduce spacing for information density</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Ambient Animations</h4>
+                  <p>Show subtle bubble animations</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            <div class="settings-section">
+              <h3 class="settings-heading">Notifications</h3>
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Email Notifications</h4>
+                  <p>Receive updates about project activity</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Push Notifications</h4>
+                  <p>Browser push for kanban updates</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- Integrations -->
+          <div class="settings-panel" data-settings-panel="integrations">
+            <div class="settings-section">
+              <h3 class="settings-heading">Connected Services</h3>
+              <div class="integration-grid">
+                <div class="integration-card connected">
+                  <div class="integration-icon">
+                    <svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#00e5cc"/></svg>
+                  </div>
+                  <h4>GitHub</h4>
+                  <p class="integration-status">Connected</p>
+                  <button class="action-btn sm">Configure</button>
+                </div>
+                <div class="integration-card connected">
+                  <div class="integration-icon">
+                    <svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#00e5cc"/></svg>
+                  </div>
+                  <h4>Clerk</h4>
+                  <p class="integration-status">Connected</p>
+                  <button class="action-btn sm">Configure</button>
+                </div>
+                <div class="integration-card">
+                  <div class="integration-icon">
+                    <svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="10" stroke="#5b8def" stroke-width="2" fill="none"/><line x1="12" y1="8" x2="12" y2="16" stroke="#5b8def" stroke-width="2"/><line x1="8" y1="12" x2="16" y2="12" stroke="#5b8def" stroke-width="2"/></svg>
+                  </div>
+                  <h4>Stripe</h4>
+                  <p class="integration-status">Not connected</p>
+                  <button class="action-btn sm primary">Connect</button>
+                </div>
+                <div class="integration-card">
+                  <div class="integration-icon">
+                    <svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="10" stroke="#5b8def" stroke-width="2" fill="none"/><line x1="12" y1="8" x2="12" y2="16" stroke="#5b8def" stroke-width="2"/><line x1="8" y1="12" x2="16" y2="12" stroke="#5b8def" stroke-width="2"/></svg>
+                  </div>
+                  <h4>Vercel</h4>
+                  <p class="integration-status">Not connected</p>
+                  <button class="action-btn sm primary">Connect</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Data -->
+          <div class="settings-panel" data-settings-panel="data">
+            <div class="settings-section">
+              <h3 class="settings-heading">Export Data</h3>
+              <p class="settings-desc">Download all your projects, ideas, and configuration data.</p>
+              <div class="export-options">
+                <button class="action-btn">Export as JSON</button>
+                <button class="action-btn">Export as CSV</button>
+              </div>
+            </div>
+            <div class="settings-section">
+              <h3 class="settings-heading">Import Data</h3>
+              <p class="settings-desc">Import projects and ideas from another platform.</p>
+              <div class="import-zone">
+                <p>Drop file here or click to browse</p>
+                <span>Supports .json and .csv files</span>
+              </div>
+            </div>
+            <div class="settings-section danger-zone">
+              <h3 class="settings-heading">Danger Zone</h3>
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Delete All Data</h4>
+                  <p>Permanently remove all projects, ideas, and settings</p>
+                </div>
+                <button class="action-btn danger">Delete All</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay" aria-hidden="true">
+    <div class="loading-wave">
+      <div class="loading-wave-bar"></div>
+    </div>
+  </div>
+
+  <!-- Success Flash -->
+  <div class="success-flash" id="successFlash" aria-hidden="true">
+    <svg viewBox="0 0 20 20" width="16" height="16"><path d="M5 10l3 3 7-7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+    <span>Action completed</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

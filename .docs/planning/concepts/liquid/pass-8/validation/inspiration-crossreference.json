@@ -1,0 +1,43 @@
+{
+  "concept": "liquid-pass-8",
+  "variantSeed": "split-pane-aquarium",
+  "designLineage": {
+    "primaryInspiration": "Marine biology research station control panels — dual-monitor instrument setups where each screen independently displays different data feeds from tank monitoring systems",
+    "secondaryInspiration": "Laboratory SCADA interfaces — industrial process monitoring with resizable pane layouts, real-time data feeds, and muted alarm indicators",
+    "tertiaryInspiration": "Aquarium observation decks — the feeling of looking through thick glass at fluid systems, with hard structural frames (steel, concrete) surrounding organic content (water, life)"
+  },
+  "differentiationFromOtherPasses": {
+    "vsPass1": "Pass 1 used blob morphing and organic shapes. Pass 8 uses hard rectangular split panes with rigid engineering geometry. No organic shapes anywhere.",
+    "vsPass2": "Pass 2 used wave current streaming and horizontal flow layouts. Pass 8 uses static split panes with vertical dividers and independent scroll regions.",
+    "vsPass3": "Pass 3 used mercury droplet metallic effects. Pass 8 uses flat matte surfaces with minimal gradients, no metallic sheen.",
+    "vsPass4": "Pass 4 used aurora plasma ribbons. Pass 8 has no gradient ribbons or aurora effects — only subtle pulsing divider lines.",
+    "vsPass5": "Pass 5 used deep ocean bioluminescence as a theme. Pass 8 uses aquarium monitoring as a metaphor — the bioluminescence is limited to accent colors on borders, not ambient lighting.",
+    "vsPass6": "Pass 6 used lava lamp psychedelic cycling. Pass 8 is strictly monochromatic teal with controlled pink accent, no cycling or color animation.",
+    "vsPass7": "Pass 7 used editorial ink flow with cinematic fades. Pass 8 uses rapid loading-wave transitions and staggered element reveals, no editorial columns or cinematic approach."
+  },
+  "structuralUniqueness": {
+    "navApproach": "Horizontal toolbar with icon+label buttons — no sidebar, no hamburger overlay, no bottom tab bar, no floating nav. This is a thin utilitarian toolbar reminiscent of engineering software.",
+    "contentLayout": "Resizable split-pane layout with draggable dividers — unlike grid, bento, column, card-grid, or single-scroll approaches used in other passes.",
+    "scrollBehavior": "Independent scroll regions per pane — left and right panes scroll independently. No page-level scrolling at all.",
+    "dividerDesign": "Animated vertical divider lines that pulse with accent color gradient — a unique structural element not present in any other pass.",
+    "mobileAdaptation": "Panes stack vertically with horizontal dividers — maintains the split-pane mental model even on mobile, just reoriented."
+  },
+  "visualLanguageUniqueness": {
+    "colorApplication": "Deep teal monochrome with bioluminescent cyan accents on interactive elements only. Pink accent used sparingly for secondary status indicators.",
+    "surfaceTreatment": "Flat matte panels with subtle elevation via 1px borders only — no shadows, no gradients on surfaces, no frosted glass.",
+    "motionPhilosophy": "Resize-drag as primary motion language — the act of resizing panes is the central interactive metaphor. Secondary motion is staggered reveal (elements surfacing from depth).",
+    "typographicApproach": "Technical/engineering typography (Exo 2) paired with utilitarian body text (Work Sans). Heavy use of monospace (JetBrains Mono) for data display."
+  },
+  "antiRepeatVerification": {
+    "blobMorph": "NOT USED — all shapes are rectangular with small border-radius",
+    "waveStream": "NOT USED — no horizontal wave or stream animations",
+    "mercuryDroplet": "NOT USED — no metallic or chrome effects",
+    "auroraPlasma": "NOT USED — no gradient ribbons or plasma effects",
+    "deepOceanBioluminescence": "NOT USED — aquarium theme is about monitoring/control, not underwater immersion",
+    "lavaLamp": "NOT USED — no color cycling or psychedelic effects",
+    "editorialInkFlow": "NOT USED — no editorial columns or ink-based transitions",
+    "hamburgerMenu": "NOT USED — toolbar buttons are always visible on desktop; mobile uses wrapped row, not overlay",
+    "fullscreenOverlay": "NOT USED — transitions use brief loading wave, not full-screen takes",
+    "cinematicFade": "NOT USED — transitions are quick loading bars, not cinematic fades"
+  }
+}

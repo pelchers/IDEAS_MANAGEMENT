@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDEA-MANAGEMENT — Showroom Curator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient warm light overlay -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <!-- Main content area -->
+  <main class="exhibit-stage">
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="page" data-page="dashboard">
+      <div class="page-inner">
+        <header class="exhibit-header">
+          <span class="exhibit-label">Exhibit A</span>
+          <h1>Good afternoon, curator.</h1>
+          <p class="exhibit-subtitle">Your showroom at a glance — February 16, 2026</p>
+        </header>
+
+        <div class="hero-gradient-card">
+          <div class="hero-stats-row">
+            <div class="hero-stat">
+              <span class="hero-stat-value">12</span>
+              <span class="hero-stat-label">Active Projects</span>
+            </div>
+            <div class="hero-stat">
+              <span class="hero-stat-value">87</span>
+              <span class="hero-stat-label">Ideas Captured</span>
+            </div>
+            <div class="hero-stat">
+              <span class="hero-stat-value">34</span>
+              <span class="hero-stat-label">Kanban Cards</span>
+            </div>
+            <div class="hero-stat">
+              <span class="hero-stat-value">6</span>
+              <span class="hero-stat-label">Collaborators</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="specimen-card">
+            <h3 class="specimen-label">Recent Activity</h3>
+            <ul class="activity-list">
+              <li class="activity-item">
+                <span class="activity-dot"></span>
+                <div class="activity-text">
+                  <strong>Wavz.fm Music Platform</strong> moved to Review
+                  <span class="activity-time">2 hours ago</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot"></span>
+                <div class="activity-text">
+                  <strong>Add dark mode toggle</strong> idea promoted to Kanban
+                  <span class="activity-time">4 hours ago</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot"></span>
+                <div class="activity-text">
+                  <strong>Campus Learning App</strong> schema updated with 3 entities
+                  <span class="activity-time">Yesterday</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot"></span>
+                <div class="activity-text">
+                  <strong>RepoSaver Backup Tool</strong> directory tree generated
+                  <span class="activity-time">Yesterday</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot"></span>
+                <div class="activity-text">
+                  <strong>Storyboarder Video Editor</strong> created by Elena
+                  <span class="activity-time">2 days ago</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="specimen-card">
+            <h3 class="specimen-label">Quick Actions</h3>
+            <div class="quick-actions">
+              <button class="action-btn action-primary">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                New Project
+              </button>
+              <button class="action-btn">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg>
+                Capture Idea
+              </button>
+              <button class="action-btn">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+                Open Kanban
+              </button>
+              <button class="action-btn">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                AI Chat
+              </button>
+            </div>
+          </div>
+
+          <div class="specimen-card">
+            <h3 class="specimen-label">Project Progress</h3>
+            <div class="progress-items">
+              <div class="progress-row">
+                <span class="progress-name">Wavz.fm Music Platform</span>
+                <div class="progress-bar"><div class="progress-fill" style="width: 72%"></div></div>
+                <span class="progress-pct">72%</span>
+              </div>
+              <div class="progress-row">
+                <span class="progress-name">Campus Learning App</span>
+                <div class="progress-bar"><div class="progress-fill" style="width: 45%"></div></div>
+                <span class="progress-pct">45%</span>
+              </div>
+              <div class="progress-row">
+                <span class="progress-name">RepoSaver Backup Tool</span>
+                <div class="progress-bar"><div class="progress-fill" style="width: 88%"></div></div>
+                <span class="progress-pct">88%</span>
+              </div>
+              <div class="progress-row">
+                <span class="progress-name">Storyboarder Video Editor</span>
+                <div class="progress-bar"><div class="progress-fill" style="width: 18%"></div></div>
+                <span class="progress-pct">18%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section class="page" data-page="projects">
+      <div class="page-inner">
+        <header class="exhibit-header">
+          <span class="exhibit-label">Exhibit B</span>
+          <h1>Projects Collection</h1>
+          <p class="exhibit-subtitle">Browse the curated gallery of active and archived works</p>
+        </header>
+
+        <div class="projects-toolbar">
+          <div class="search-field">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search projects..." class="search-input">
+          </div>
+          <div class="filter-pills">
+            <button class="filter-pill active">All</button>
+            <button class="filter-pill">Active</button>
+            <button class="filter-pill">Archived</button>
+          </div>
+          <button class="action-btn action-primary">
+            <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create New Project
+          </button>
+        </div>
+
+        <div class="projects-grid">
+          <div class="project-card">
+            <div class="project-card-header">
+              <span class="project-status status-active"></span>
+              <h3 class="project-title">Wavz.fm Music Platform</h3>
+            </div>
+            <p class="project-desc">A collaborative music streaming and discovery platform with social playlists, artist tools, and live session features.</p>
+            <div class="project-meta">
+              <span class="meta-tag">React</span>
+              <span class="meta-tag">Node.js</span>
+              <span class="meta-tag">WebRTC</span>
+            </div>
+            <div class="project-footer">
+              <span class="project-collab">4 collaborators</span>
+              <span class="project-date">Updated 2h ago</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-card-header">
+              <span class="project-status status-active"></span>
+              <h3 class="project-title">Campus Learning App</h3>
+            </div>
+            <p class="project-desc">Mobile-first education platform with course management, peer tutoring, and AI-assisted study planning.</p>
+            <div class="project-meta">
+              <span class="meta-tag">Next.js</span>
+              <span class="meta-tag">Convex</span>
+              <span class="meta-tag">Clerk</span>
+            </div>
+            <div class="project-footer">
+              <span class="project-collab">3 collaborators</span>
+              <span class="project-date">Updated yesterday</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-card-header">
+              <span class="project-status status-active"></span>
+              <h3 class="project-title">RepoSaver Backup Tool</h3>
+            </div>
+            <p class="project-desc">Automated GitHub repository backup service with incremental snapshots, encryption, and cloud storage integration.</p>
+            <div class="project-meta">
+              <span class="meta-tag">Go</span>
+              <span class="meta-tag">AWS S3</span>
+              <span class="meta-tag">CLI</span>
+            </div>
+            <div class="project-footer">
+              <span class="project-collab">2 collaborators</span>
+              <span class="project-date">Updated yesterday</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-card-header">
+              <span class="project-status status-active"></span>
+              <h3 class="project-title">Storyboarder Video Editor</h3>
+            </div>
+            <p class="project-desc">Drag-and-drop storyboard creation tool with timeline editing, asset library, and team collaboration.</p>
+            <div class="project-meta">
+              <span class="meta-tag">Electron</span>
+              <span class="meta-tag">FFmpeg</span>
+              <span class="meta-tag">Canvas</span>
+            </div>
+            <div class="project-footer">
+              <span class="project-collab">5 collaborators</span>
+              <span class="project-date">Updated 2 days ago</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-card-header">
+              <span class="project-status status-archived"></span>
+              <h3 class="project-title">TaskFlow CLI</h3>
+            </div>
+            <p class="project-desc">Command-line task management tool with Git integration, time tracking, and Markdown reports.</p>
+            <div class="project-meta">
+              <span class="meta-tag">Rust</span>
+              <span class="meta-tag">SQLite</span>
+            </div>
+            <div class="project-footer">
+              <span class="project-collab">1 collaborator</span>
+              <span class="project-date">Archived Dec 2025</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-card-header">
+              <span class="project-status status-archived"></span>
+              <h3 class="project-title">SnapReceipt Scanner</h3>
+            </div>
+            <p class="project-desc">Mobile receipt scanning app with OCR, expense categorization, and QuickBooks sync.</p>
+            <div class="project-meta">
+              <span class="meta-tag">Swift</span>
+              <span class="meta-tag">Vision</span>
+              <span class="meta-tag">CoreML</span>
+            </div>
+            <div class="project-footer">
+              <span class="project-collab">2 collaborators</span>
+              <span class="project-date">Archived Nov 2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECT WORKSPACE ===== -->
+    <section class="page" data-page="project-workspace">
+      <div class="page-inner">
+        <header class="exhibit-header">
+          <span class="exhibit-label">Exhibit C</span>
+          <h1>Wavz.fm Music Platform</h1>
+          <nav class="breadcrumbs">
+            <a href="#" data-view="projects" class="breadcrumb-link">Projects</a>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-current">Wavz.fm Music Platform</span>
+          </nav>
+        </header>
+
+        <div class="workspace-layout">
+          <aside class="workspace-nav">
+            <h3 class="workspace-nav-title">Project Files</h3>
+            <ul class="workspace-folder-list">
+              <li class="folder-item folder-open">
+                <span class="folder-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                </span>
+                <span class="folder-name">src</span>
+              </li>
+              <li class="folder-item sub-item">
+                <span class="file-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                </span>
+                <span class="folder-name">index.tsx</span>
+              </li>
+              <li class="folder-item sub-item">
+                <span class="file-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                </span>
+                <span class="folder-name">app.tsx</span>
+              </li>
+              <li class="folder-item">
+                <span class="folder-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                </span>
+                <span class="folder-name">components</span>
+              </li>
+              <li class="folder-item">
+                <span class="folder-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                </span>
+                <span class="folder-name">convex</span>
+              </li>
+              <li class="folder-item">
+                <span class="folder-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                </span>
+                <span class="folder-name">package.json</span>
+              </li>
+              <li class="folder-item">
+                <span class="folder-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                </span>
+                <span class="folder-name">tsconfig.json</span>
+              </li>
+            </ul>
+          </aside>
+
+          <div class="workspace-main">
+            <div class="workspace-meta-card">
+              <h3 class="specimen-label">Project Metadata</h3>
+              <div class="meta-grid">
+                <div class="meta-field">
+                  <span class="meta-key">Name</span>
+                  <span class="meta-value">Wavz.fm Music Platform</span>
+                </div>
+                <div class="meta-field">
+                  <span class="meta-key">Slug</span>
+                  <span class="meta-value mono-text">wavz-fm</span>
+                </div>
+                <div class="meta-field">
+                  <span class="meta-key">Status</span>
+                  <span class="meta-value"><span class="status-badge badge-active">Active</span></span>
+                </div>
+                <div class="meta-field">
+                  <span class="meta-key">Description</span>
+                  <span class="meta-value">Collaborative music streaming and discovery platform</span>
+                </div>
+                <div class="meta-field">
+                  <span class="meta-key">Tech Stack</span>
+                  <span class="meta-value">
+                    <span class="meta-tag">React</span>
+                    <span class="meta-tag">Node.js</span>
+                    <span class="meta-tag">WebRTC</span>
+                    <span class="meta-tag">PostgreSQL</span>
+                  </span>
+                </div>
+                <div class="meta-field">
+                  <span class="meta-key">Tags</span>
+                  <span class="meta-value">
+                    <span class="meta-tag">music</span>
+                    <span class="meta-tag">streaming</span>
+                    <span class="meta-tag">social</span>
+                  </span>
+                </div>
+                <div class="meta-field">
+                  <span class="meta-key">Collaborators</span>
+                  <span class="meta-value">Marcus, Elena, Jonas, Priya</span>
+                </div>
+                <div class="meta-field">
+                  <span class="meta-key">Goals</span>
+                  <span class="meta-value">Launch MVP by Q2 2026, 10k users by Q3</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="workspace-tasks-card">
+              <h3 class="specimen-label">Active Tasks</h3>
+              <ul class="task-list">
+                <li class="task-item">
+                  <span class="task-check"></span>
+                  <span class="task-text">Set up Clerk authentication flow</span>
+                  <span class="task-priority priority-high">High</span>
+                </li>
+                <li class="task-item">
+                  <span class="task-check checked"></span>
+                  <span class="task-text done">Configure Convex schema for playlists</span>
+                  <span class="task-priority priority-medium">Medium</span>
+                </li>
+                <li class="task-item">
+                  <span class="task-check"></span>
+                  <span class="task-text">Design WebRTC live session UI</span>
+                  <span class="task-priority priority-high">High</span>
+                </li>
+                <li class="task-item">
+                  <span class="task-check checked"></span>
+                  <span class="task-text done">Write Stripe webhook handler</span>
+                  <span class="task-priority priority-low">Low</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KANBAN ===== -->
+    <section class="page" data-page="kanban">
+      <div class="page-inner">
+        <header class="exhibit-header">
+          <span class="exhibit-label">Exhibit D</span>
+          <h1>Kanban Board</h1>
+          <p class="exhibit-subtitle">Wavz.fm Music Platform — task flow visualization</p>
+        </header>
+
+        <div class="kanban-board">
+          <div class="kanban-column" data-column="backlog">
+            <div class="kanban-col-header">
+              <h3 class="kanban-col-title">Backlog</h3>
+              <span class="kanban-col-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card" draggable="true">
+                <div class="kanban-card-labels">
+                  <span class="kanban-label label-feature">Feature</span>
+                </div>
+                <h4 class="kanban-card-title">Implement drag-drop upload</h4>
+                <p class="kanban-card-desc">Allow users to drag audio files directly into the playlist editor for instant upload.</p>
+                <div class="kanban-card-footer">
+                  <span class="kanban-priority priority-medium">Medium</span>
+                  <span class="kanban-due">Due Mar 1</span>
+                </div>
+              </div>
+              <div class="kanban-card" draggable="true">
+                <div class="kanban-card-labels">
+                  <span class="kanban-label label-research">Research</span>
+                </div>
+                <h4 class="kanban-card-title">Research vector search for AI embeddings</h4>
+                <p class="kanban-card-desc">Evaluate Pinecone vs. pgvector for song recommendation embeddings.</p>
+                <div class="kanban-card-footer">
+                  <span class="kanban-priority priority-low">Low</span>
+                  <span class="kanban-due">Due Mar 15</span>
+                </div>
+              </div>
+              <div class="kanban-card" draggable="true">
+                <div class="kanban-card-labels">
+                  <span class="kanban-label label-design">Design</span>
+                </div>
+                <h4 class="kanban-card-title">Design mobile player controls</h4>
+                <p class="kanban-card-desc">Create responsive audio player with gesture controls for mobile users.</p>
+                <div class="kanban-card-footer">
+                  <span class="kanban-priority priority-high">High</span>
+                  <span class="kanban-due">Due Feb 28</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column" data-column="in-progress">
+            <div class="kanban-col-header">
+              <h3 class="kanban-col-title">In Progress</h3>
+              <span class="kanban-col-count">2</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card" draggable="true">
+                <div class="kanban-card-labels">
+                  <span class="kanban-label label-feature">Feature</span>
+                </div>
+                <h4 class="kanban-card-title">Set up Clerk authentication</h4>
+                <p class="kanban-card-desc">Integrate Clerk for user sign-up, login, and session management.</p>
+                <div class="kanban-card-footer">
+                  <span class="kanban-priority priority-high">High</span>
+                  <span class="kanban-assignee">Marcus</span>
+                </div>
+              </div>
+              <div class="kanban-card" draggable="true">
+                <div class="kanban-card-labels">
+                  <span class="kanban-label label-design">Design</span>
+                </div>
+                <h4 class="kanban-card-title">Design kanban drag-drop UX</h4>
+                <p class="kanban-card-desc">Create smooth drag-and-drop interactions for the kanban board view.</p>
+                <div class="kanban-card-footer">
+                  <span class="kanban-priority priority-medium">Medium</span>
+                  <span class="kanban-assignee">Elena</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column" data-column="review">
+            <div class="kanban-col-header">
+              <h3 class="kanban-col-title">Review</h3>
+              <span class="kanban-col-count">2</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card" draggable="true">
+                <div class="kanban-card-labels">
+                  <span class="kanban-label label-bug">Bug Fix</span>
+                </div>
+                <h4 class="kanban-card-title">Fix audio playback stuttering</h4>
+                <p class="kanban-card-desc">Buffer management issue causing playback gaps on slow connections.</p>
+                <div class="kanban-card-footer">
+                  <span class="kanban-priority priority-high">High</span>
+                  <span class="kanban-assignee">Jonas</span>
+                </div>
+              </div>
+              <div class="kanban-card" draggable="true">
+                <div class="kanban-card-labels">
+                  <span class="kanban-label label-feature">Feature</span>
+                </div>
+                <h4 class="kanban-card-title">Write Stripe webhook handler</h4>
+                <p class="kanban-card-desc">Handle subscription events: created, updated, cancelled, payment_failed.</p>
+                <div class="kanban-card-footer">
+                  <span class="kanban-priority priority-medium">Medium</span>
+                  <span class="kanban-assignee">Priya</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column" data-column="done">
+            <div class="kanban-col-header">
+              <h3 class="kanban-col-title">Done</h3>
+              <span class="kanban-col-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card card-done" draggable="true">
+                <h4 class="kanban-card-title">Configure Convex schema</h4>
+                <div class="kanban-card-footer">
+                  <span class="kanban-priority priority-medium">Medium</span>
+                  <span class="kanban-assignee">Marcus</span>
+                </div>
+              </div>
+              <div class="kanban-card card-done" draggable="true">
+                <h4 class="kanban-card-title">Set up CI/CD pipeline</h4>
+                <div class="kanban-card-footer">
+                  <span class="kanban-priority priority-low">Low</span>
+                  <span class="kanban-assignee">Jonas</span>
+                </div>
+              </div>
+              <div class="kanban-card card-done" draggable="true">
+                <h4 class="kanban-card-title">Design system tokens</h4>
+                <div class="kanban-card-footer">
+                  <span class="kanban-priority priority-low">Low</span>
+                  <span class="kanban-assignee">Elena</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHITEBOARD ===== -->
+    <section class="page" data-page="whiteboard">
+      <div class="page-inner page-inner-full">
+        <header class="exhibit-header">
+          <span class="exhibit-label">Exhibit E</span>
+          <h1>Whiteboard</h1>
+          <p class="exhibit-subtitle">Infinite canvas for visual planning and brainstorming</p>
+        </header>
+
+        <div class="whiteboard-toolbar">
+          <button class="wb-tool active" title="Select">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51z"/></svg>
+          </button>
+          <button class="wb-tool" title="Add Container">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          </button>
+          <button class="wb-tool" title="Add Text">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4,7 4,4 20,4 20,7"/><line x1="9.5" y1="4" x2="9.5" y2="20"/><line x1="7" y1="20" x2="12" y2="20"/></svg>
+          </button>
+          <button class="wb-tool" title="Draw Line">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="19" y2="5"/></svg>
+          </button>
+          <div class="wb-tool-sep"></div>
+          <button class="wb-tool" title="Zoom In">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          </button>
+          <button class="wb-tool" title="Zoom Out">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          </button>
+          <span class="wb-zoom-level">100%</span>
+        </div>
+
+        <div class="whiteboard-canvas">
+          <svg class="wb-connections" width="100%" height="100%">
+            <line x1="220" y1="100" x2="420" y2="180" class="wb-line"/>
+            <line x1="220" y1="130" x2="420" y2="330" class="wb-line"/>
+            <line x1="620" y1="200" x2="420" y2="200" class="wb-line"/>
+            <line x1="420" y1="350" x2="620" y2="420" class="wb-line"/>
+          </svg>
+
+          <div class="wb-node" style="left: 60px; top: 60px;" draggable="true">
+            <div class="wb-node-header">User Flows</div>
+            <div class="wb-node-body">
+              <p>Sign up, login, onboarding, playlist creation, social sharing</p>
+            </div>
+          </div>
+
+          <div class="wb-node" style="left: 340px; top: 140px;" draggable="true">
+            <div class="wb-node-header">Core Features</div>
+            <div class="wb-node-body">
+              <ul>
+                <li>Music streaming</li>
+                <li>Playlist management</li>
+                <li>Live sessions</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="wb-node" style="left: 540px; top: 120px;" draggable="true">
+            <div class="wb-node-header">Tech Stack</div>
+            <div class="wb-node-body">
+              <p>React, Convex, Clerk, Stripe, WebRTC</p>
+            </div>
+          </div>
+
+          <div class="wb-node wb-node-accent" style="left: 340px; top: 300px;" draggable="true">
+            <div class="wb-node-header">MVP Scope</div>
+            <div class="wb-node-body">
+              <p>Basic streaming + playlists + social profiles. No live sessions in V1.</p>
+            </div>
+          </div>
+
+          <div class="wb-node" style="left: 540px; top: 360px;" draggable="true">
+            <div class="wb-node-header">Revenue Model</div>
+            <div class="wb-node-body">
+              <p>Freemium: Free tier + Pro ($9/mo) + Team ($29/mo)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SCHEMA PLANNER ===== -->
+    <section class="page" data-page="schema-planner">
+      <div class="page-inner page-inner-full">
+        <header class="exhibit-header">
+          <span class="exhibit-label">Exhibit F</span>
+          <h1>Schema Planner</h1>
+          <p class="exhibit-subtitle">Data model architecture — entity relationships and field definitions</p>
+        </header>
+
+        <div class="schema-canvas">
+          <svg class="schema-connections" width="100%" height="100%">
+            <path d="M 280 120 C 350 120, 350 90, 420 90" class="schema-line"/>
+            <path d="M 280 150 C 350 150, 350 250, 420 250" class="schema-line"/>
+            <path d="M 280 170 C 380 170, 380 420, 420 420" class="schema-line"/>
+            <path d="M 620 110 C 690 110, 690 260, 620 260" class="schema-line"/>
+            <path d="M 620 430 C 700 430, 700 280, 620 280" class="schema-line"/>
+          </svg>
+
+          <div class="schema-entity" style="left: 40px; top: 60px;">
+            <div class="entity-header">User</div>
+            <ul class="entity-fields">
+              <li class="field-pk"><span class="field-badge">PK</span> id: string</li>
+              <li>email: string</li>
+              <li>displayName: string</li>
+              <li>avatarUrl: string</li>
+              <li>role: enum</li>
+              <li>createdAt: datetime</li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left: 340px; top: 30px;">
+            <div class="entity-header">Project</div>
+            <ul class="entity-fields">
+              <li class="field-pk"><span class="field-badge">PK</span> id: string</li>
+              <li class="field-fk"><span class="field-badge fk">FK</span> ownerId: string</li>
+              <li>name: string</li>
+              <li>slug: string</li>
+              <li>description: string</li>
+              <li>status: enum</li>
+              <li>tags: string[]</li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left: 340px; top: 200px;">
+            <div class="entity-header">Idea</div>
+            <ul class="entity-fields">
+              <li class="field-pk"><span class="field-badge">PK</span> id: string</li>
+              <li class="field-fk"><span class="field-badge fk">FK</span> projectId: string</li>
+              <li class="field-fk"><span class="field-badge fk">FK</span> authorId: string</li>
+              <li>title: string</li>
+              <li>description: string</li>
+              <li>priority: enum</li>
+              <li>tags: string[]</li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left: 340px; top: 380px;">
+            <div class="entity-header">KanbanCard</div>
+            <ul class="entity-fields">
+              <li class="field-pk"><span class="field-badge">PK</span> id: string</li>
+              <li class="field-fk"><span class="field-badge fk">FK</span> columnId: string</li>
+              <li class="field-fk"><span class="field-badge fk">FK</span> assigneeId: string</li>
+              <li>title: string</li>
+              <li>description: string</li>
+              <li>priority: enum</li>
+              <li>dueDate: datetime</li>
+              <li>labels: string[]</li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left: 640px; top: 120px;">
+            <div class="entity-header">KanbanColumn</div>
+            <ul class="entity-fields">
+              <li class="field-pk"><span class="field-badge">PK</span> id: string</li>
+              <li class="field-fk"><span class="field-badge fk">FK</span> projectId: string</li>
+              <li>name: string</li>
+              <li>order: number</li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left: 640px; top: 310px;">
+            <div class="entity-header">AuditLog</div>
+            <ul class="entity-fields">
+              <li class="field-pk"><span class="field-badge">PK</span> id: string</li>
+              <li class="field-fk"><span class="field-badge fk">FK</span> userId: string</li>
+              <li>action: string</li>
+              <li>targetType: string</li>
+              <li>targetId: string</li>
+              <li>timestamp: datetime</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DIRECTORY TREE ===== -->
+    <section class="page" data-page="directory-tree">
+      <div class="page-inner">
+        <header class="exhibit-header">
+          <span class="exhibit-label">Exhibit G</span>
+          <h1>Directory Tree</h1>
+          <p class="exhibit-subtitle">Template-driven folder structure for Wavz.fm</p>
+        </header>
+
+        <div class="tree-toolbar">
+          <button class="action-btn action-primary">
+            <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21 5,3"/></svg>
+            Generate Tree
+          </button>
+          <button class="action-btn">
+            <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Preview
+          </button>
+          <button class="action-btn">
+            <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+        </div>
+
+        <div class="tree-container">
+          <ul class="dir-tree">
+            <li class="tree-folder open">
+              <span class="tree-toggle">
+                <svg class="tree-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+              </span>
+              <span class="tree-icon tree-icon-folder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+              </span>
+              <span class="tree-name">wavz-fm/</span>
+              <ul class="tree-children">
+                <li class="tree-folder open">
+                  <span class="tree-toggle">
+                    <svg class="tree-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                  </span>
+                  <span class="tree-icon tree-icon-folder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                  </span>
+                  <span class="tree-name">src/</span>
+                  <ul class="tree-children">
+                    <li class="tree-folder">
+                      <span class="tree-toggle">
+                        <svg class="tree-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                      </span>
+                      <span class="tree-icon tree-icon-folder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                      </span>
+                      <span class="tree-name">components/</span>
+                      <ul class="tree-children">
+                        <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">Player.tsx</span></li>
+                        <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">Playlist.tsx</span></li>
+                        <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">NavBar.tsx</span></li>
+                      </ul>
+                    </li>
+                    <li class="tree-folder">
+                      <span class="tree-toggle">
+                        <svg class="tree-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                      </span>
+                      <span class="tree-icon tree-icon-folder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                      </span>
+                      <span class="tree-name">hooks/</span>
+                      <ul class="tree-children">
+                        <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">useAudio.ts</span></li>
+                        <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">useAuth.ts</span></li>
+                      </ul>
+                    </li>
+                    <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">app.tsx</span></li>
+                    <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">index.tsx</span></li>
+                  </ul>
+                </li>
+                <li class="tree-folder">
+                  <span class="tree-toggle">
+                    <svg class="tree-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                  </span>
+                  <span class="tree-icon tree-icon-folder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                  </span>
+                  <span class="tree-name">convex/</span>
+                  <ul class="tree-children">
+                    <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">schema.ts</span></li>
+                    <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">playlists.ts</span></li>
+                    <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">users.ts</span></li>
+                  </ul>
+                </li>
+                <li class="tree-folder">
+                  <span class="tree-toggle">
+                    <svg class="tree-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                  </span>
+                  <span class="tree-icon tree-icon-folder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                  </span>
+                  <span class="tree-name">public/</span>
+                  <ul class="tree-children">
+                    <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">favicon.ico</span></li>
+                    <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">manifest.json</span></li>
+                  </ul>
+                </li>
+                <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">package.json</span></li>
+                <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">tsconfig.json</span></li>
+                <li class="tree-file"><span class="tree-icon tree-icon-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></span><span class="tree-name">.gitignore</span></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== IDEAS ===== -->
+    <section class="page" data-page="ideas">
+      <div class="page-inner">
+        <header class="exhibit-header">
+          <span class="exhibit-label">Exhibit H</span>
+          <h1>Ideas</h1>
+          <p class="exhibit-subtitle">Capture, curate, and promote raw ideas into actionable work</p>
+        </header>
+
+        <div class="idea-capture-form">
+          <input type="text" class="idea-input" placeholder="What's on your mind? Capture an idea...">
+          <div class="idea-form-row">
+            <select class="idea-select">
+              <option>Priority: Medium</option>
+              <option>Priority: High</option>
+              <option>Priority: Low</option>
+            </select>
+            <input type="text" class="idea-tag-input" placeholder="Add tags (comma separated)">
+            <button class="action-btn action-primary">Capture Idea</button>
+          </div>
+        </div>
+
+        <div class="ideas-list">
+          <div class="idea-card">
+            <div class="idea-card-main">
+              <h3 class="idea-title">Add dark mode toggle</h3>
+              <p class="idea-desc">Implement a system-aware dark mode with manual override toggle in settings. Use CSS custom properties for seamless switching.</p>
+              <div class="idea-tags">
+                <span class="idea-tag">UI</span>
+                <span class="idea-tag">accessibility</span>
+              </div>
+            </div>
+            <div class="idea-card-side">
+              <span class="idea-priority priority-high">High</span>
+              <button class="promote-btn">Promote to Kanban</button>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-card-main">
+              <h3 class="idea-title">Implement drag-drop upload</h3>
+              <p class="idea-desc">Allow users to drag audio files directly into the playlist editor. Support mp3, wav, flac. Show upload progress with waveform preview.</p>
+              <div class="idea-tags">
+                <span class="idea-tag">feature</span>
+                <span class="idea-tag">upload</span>
+                <span class="idea-tag">UX</span>
+              </div>
+            </div>
+            <div class="idea-card-side">
+              <span class="idea-priority priority-medium">Medium</span>
+              <button class="promote-btn">Promote to Kanban</button>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-card-main">
+              <h3 class="idea-title">Research vector search for AI embeddings</h3>
+              <p class="idea-desc">Evaluate Pinecone, pgvector, and Weaviate for song recommendation embeddings. Need sub-100ms query time for real-time suggestions.</p>
+              <div class="idea-tags">
+                <span class="idea-tag">AI</span>
+                <span class="idea-tag">research</span>
+                <span class="idea-tag">backend</span>
+              </div>
+            </div>
+            <div class="idea-card-side">
+              <span class="idea-priority priority-low">Low</span>
+              <button class="promote-btn">Promote to Kanban</button>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-card-main">
+              <h3 class="idea-title">Social sharing deep links</h3>
+              <p class="idea-desc">Generate shareable URLs for playlists and tracks that include rich OG meta tags for social media previews.</p>
+              <div class="idea-tags">
+                <span class="idea-tag">social</span>
+                <span class="idea-tag">marketing</span>
+              </div>
+            </div>
+            <div class="idea-card-side">
+              <span class="idea-priority priority-medium">Medium</span>
+              <button class="promote-btn">Promote to Kanban</button>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-card-main">
+              <h3 class="idea-title">Collaborative playlist editing</h3>
+              <p class="idea-desc">Real-time collaborative playlist editing with conflict resolution. Show cursors of other users editing the same playlist.</p>
+              <div class="idea-tags">
+                <span class="idea-tag">collaboration</span>
+                <span class="idea-tag">real-time</span>
+              </div>
+            </div>
+            <div class="idea-card-side">
+              <span class="idea-priority priority-high">High</span>
+              <button class="promote-btn">Promote to Kanban</button>
+            </div>
+          </div>
+
+          <div class="idea-card idea-promoted">
+            <div class="idea-card-main">
+              <h3 class="idea-title">Keyboard shortcuts for player</h3>
+              <p class="idea-desc">Space for play/pause, arrow keys for seek, M for mute. Show shortcut overlay with ? key.</p>
+              <div class="idea-tags">
+                <span class="idea-tag">UX</span>
+                <span class="idea-tag">accessibility</span>
+              </div>
+            </div>
+            <div class="idea-card-side">
+              <span class="idea-priority priority-low">Low</span>
+              <span class="promoted-badge">Promoted</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== AI CHAT ===== -->
+    <section class="page" data-page="ai-chat">
+      <div class="page-inner">
+        <header class="exhibit-header">
+          <span class="exhibit-label">Exhibit I</span>
+          <h1>AI Chat</h1>
+          <p class="exhibit-subtitle">Your intelligent assistant for project planning and ideation</p>
+        </header>
+
+        <div class="chat-container">
+          <div class="chat-messages">
+            <div class="chat-msg msg-ai">
+              <div class="msg-avatar">AI</div>
+              <div class="msg-content">
+                <p>Good afternoon! I'm your project assistant. I can help you capture ideas, update kanban cards, generate directory trees, and more. What would you like to work on today?</p>
+              </div>
+            </div>
+
+            <div class="chat-msg msg-user">
+              <div class="msg-content">
+                <p>I need to add a new idea for the Wavz.fm project about implementing offline mode for mobile users.</p>
+              </div>
+              <div class="msg-avatar">You</div>
+            </div>
+
+            <div class="chat-msg msg-ai">
+              <div class="msg-content">
+                <p>Great idea! I'll capture that for you right away.</p>
+                <div class="tool-action">
+                  <span class="tool-badge">add_idea</span>
+                  <div class="tool-detail">
+                    <span class="tool-field">Title:</span> Implement offline mode for mobile
+                    <br>
+                    <span class="tool-field">Priority:</span> High
+                    <br>
+                    <span class="tool-field">Tags:</span> mobile, offline, PWA
+                  </div>
+                </div>
+                <p>Done! The idea "Implement offline mode for mobile" has been added with high priority. Would you like to promote it to a kanban card?</p>
+              </div>
+            </div>
+
+            <div class="chat-msg msg-user">
+              <div class="msg-content">
+                <p>Yes, promote it and assign it to Jonas. Also, can you move the "Fix audio playback stuttering" card to Done?</p>
+              </div>
+              <div class="msg-avatar">You</div>
+            </div>
+
+            <div class="chat-msg msg-ai">
+              <div class="msg-content">
+                <p>I'll handle both actions for you.</p>
+                <div class="tool-action">
+                  <span class="tool-badge">update_kanban</span>
+                  <div class="tool-detail">
+                    <span class="tool-field">Action:</span> Promote idea to kanban card
+                    <br>
+                    <span class="tool-field">Card:</span> Implement offline mode for mobile
+                    <br>
+                    <span class="tool-field">Column:</span> Backlog
+                    <br>
+                    <span class="tool-field">Assignee:</span> Jonas
+                  </div>
+                </div>
+                <div class="tool-action">
+                  <span class="tool-badge">update_kanban</span>
+                  <div class="tool-detail">
+                    <span class="tool-field">Action:</span> Move card
+                    <br>
+                    <span class="tool-field">Card:</span> Fix audio playback stuttering
+                    <br>
+                    <span class="tool-field">From:</span> Review
+                    <br>
+                    <span class="tool-field">To:</span> Done
+                  </div>
+                </div>
+                <p>Both actions completed. The offline mode card is now in Backlog assigned to Jonas, and the playback fix has been moved to Done.</p>
+              </div>
+            </div>
+
+            <div class="chat-msg msg-user">
+              <div class="msg-content">
+                <p>Can you generate a directory tree for the mobile app module?</p>
+              </div>
+              <div class="msg-avatar">You</div>
+            </div>
+
+            <div class="chat-msg msg-ai">
+              <div class="msg-content">
+                <div class="tool-action">
+                  <span class="tool-badge">generate_tree</span>
+                  <div class="tool-detail">
+                    <span class="tool-field">Module:</span> mobile-app
+                    <br>
+                    <span class="tool-field">Template:</span> react-native-standard
+                  </div>
+                </div>
+                <p>Here's the generated structure for the mobile module:</p>
+                <pre class="chat-code"><code>mobile/
+  src/
+    screens/
+      HomeScreen.tsx
+      PlayerScreen.tsx
+      ProfileScreen.tsx
+    components/
+      MiniPlayer.tsx
+      TrackCard.tsx
+    services/
+      offlineSync.ts
+      audioService.ts
+    navigation/
+      AppNavigator.tsx
+  app.json
+  package.json</code></pre>
+                <p>The tree has been added to your directory structure. You can preview it in the Directory Tree view.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-bar">
+            <input type="text" class="chat-input" placeholder="Ask the AI assistant anything...">
+            <button class="chat-send-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9 22,2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SETTINGS ===== -->
+    <section class="page" data-page="settings">
+      <div class="page-inner">
+        <header class="exhibit-header">
+          <span class="exhibit-label">Exhibit J</span>
+          <h1>Settings</h1>
+          <p class="exhibit-subtitle">Configure your workspace, account, and preferences</p>
+        </header>
+
+        <div class="settings-sections">
+          <!-- Account -->
+          <div class="settings-group">
+            <h3 class="settings-group-title">Account</h3>
+            <div class="settings-field">
+              <label class="settings-label">Display Name</label>
+              <input type="text" class="settings-input" value="Curator">
+            </div>
+            <div class="settings-field">
+              <label class="settings-label">Email</label>
+              <input type="email" class="settings-input" value="curator@ideamgmt.com">
+            </div>
+            <div class="settings-field">
+              <label class="settings-label">Avatar</label>
+              <div class="avatar-upload">
+                <div class="avatar-preview">C</div>
+                <button class="action-btn">Change Avatar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subscription -->
+          <div class="settings-group">
+            <h3 class="settings-group-title">Subscription</h3>
+            <div class="plan-cards">
+              <div class="plan-card">
+                <h4 class="plan-name">Free</h4>
+                <p class="plan-price">$0/mo</p>
+                <ul class="plan-features">
+                  <li>3 projects</li>
+                  <li>Basic kanban</li>
+                  <li>100 ideas</li>
+                </ul>
+              </div>
+              <div class="plan-card plan-active">
+                <span class="plan-current-badge">Current</span>
+                <h4 class="plan-name">Pro</h4>
+                <p class="plan-price">$12/mo</p>
+                <ul class="plan-features">
+                  <li>Unlimited projects</li>
+                  <li>AI chat assistant</li>
+                  <li>Schema planner</li>
+                  <li>Priority support</li>
+                </ul>
+              </div>
+              <div class="plan-card">
+                <h4 class="plan-name">Team</h4>
+                <p class="plan-price">$29/mo</p>
+                <ul class="plan-features">
+                  <li>Everything in Pro</li>
+                  <li>10 collaborators</li>
+                  <li>Audit logs</li>
+                  <li>SSO integration</li>
+                </ul>
+                <button class="action-btn action-primary">Upgrade</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preferences -->
+          <div class="settings-group">
+            <h3 class="settings-group-title">Preferences</h3>
+            <div class="settings-toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Dark Mode</span>
+                <span class="toggle-desc">Switch to dark theme across all views</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="settings-toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Email Notifications</span>
+                <span class="toggle-desc">Receive email alerts for project activity</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="settings-toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Sound Effects</span>
+                <span class="toggle-desc">Play sounds on card moves and notifications</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="settings-toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Compact View</span>
+                <span class="toggle-desc">Reduce spacing and show more content per screen</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Integrations -->
+          <div class="settings-group">
+            <h3 class="settings-group-title">Integrations</h3>
+            <div class="integration-row">
+              <div class="integration-info">
+                <span class="integration-name">GitHub</span>
+                <span class="integration-status connected">Connected</span>
+              </div>
+              <button class="action-btn">Disconnect</button>
+            </div>
+            <div class="integration-row">
+              <div class="integration-info">
+                <span class="integration-name">Slack</span>
+                <span class="integration-status">Not connected</span>
+              </div>
+              <button class="action-btn action-primary">Connect</button>
+            </div>
+            <div class="integration-row">
+              <div class="integration-info">
+                <span class="integration-name">Figma</span>
+                <span class="integration-status">Not connected</span>
+              </div>
+              <button class="action-btn action-primary">Connect</button>
+            </div>
+          </div>
+
+          <!-- Data & Privacy -->
+          <div class="settings-group">
+            <h3 class="settings-group-title">Data & Privacy</h3>
+            <div class="settings-field">
+              <label class="settings-label">Export Data</label>
+              <button class="action-btn">Download All Data (JSON)</button>
+            </div>
+            <div class="settings-field danger-zone">
+              <label class="settings-label danger-label">Danger Zone</label>
+              <p class="danger-desc">Permanently delete your account and all associated data. This action cannot be undone.</p>
+              <button class="action-btn action-danger">Delete Account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating Dock Navigation -->
+  <nav class="floating-dock" role="navigation" aria-label="Main navigation">
+    <div class="dock-inner">
+      <button class="dock-item active" data-view="dashboard" title="Dashboard">
+        <span class="dock-pill">
+          <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </span>
+        <span class="dock-label">Dashboard</span>
+      </button>
+      <button class="dock-item" data-view="projects" title="Projects">
+        <span class="dock-pill">
+          <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+        </span>
+        <span class="dock-label">Projects</span>
+      </button>
+      <button class="dock-item" data-view="project-workspace" title="Workspace">
+        <span class="dock-pill">
+          <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </span>
+        <span class="dock-label">Workspace</span>
+      </button>
+      <button class="dock-item" data-view="kanban" title="Kanban">
+        <span class="dock-pill">
+          <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+        </span>
+        <span class="dock-label">Kanban</span>
+      </button>
+      <button class="dock-item" data-view="whiteboard" title="Whiteboard">
+        <span class="dock-pill">
+          <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        </span>
+        <span class="dock-label">Whiteboard</span>
+      </button>
+      <button class="dock-item" data-view="schema-planner" title="Schema">
+        <span class="dock-pill">
+          <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><path d="M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+        </span>
+        <span class="dock-label">Schema</span>
+      </button>
+      <button class="dock-item" data-view="directory-tree" title="Directory">
+        <span class="dock-pill">
+          <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4,6 4,18"/><polyline points="4,10 12,10"/><polyline points="4,14 12,14"/><polyline points="4,18 12,18"/><rect x="12" y="8" width="8" height="4" rx="1"/><rect x="12" y="12" width="8" height="4" rx="1"/><rect x="12" y="16" width="8" height="4" rx="1"/></svg>
+        </span>
+        <span class="dock-label">Directory</span>
+      </button>
+      <button class="dock-item" data-view="ideas" title="Ideas">
+        <span class="dock-pill">
+          <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18h6m-5 2h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>
+        </span>
+        <span class="dock-label">Ideas</span>
+      </button>
+      <button class="dock-item" data-view="ai-chat" title="AI Chat">
+        <span class="dock-pill">
+          <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </span>
+        <span class="dock-label">Chat</span>
+      </button>
+      <button class="dock-item" data-view="settings" title="Settings">
+        <span class="dock-pill">
+          <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        </span>
+        <span class="dock-label">Settings</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Loading indicator -->
+  <div class="loading-dots" id="loadingDots" aria-hidden="true">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

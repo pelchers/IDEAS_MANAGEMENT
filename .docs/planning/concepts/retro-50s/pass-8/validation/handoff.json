@@ -1,0 +1,161 @@
+{
+  "pass": 8,
+  "style": "retro-50s",
+  "variantSeed": "command-palette-automat",
+  "generatedAt": "2026-02-16T00:00:00.000Z",
+  "uniquenessProfile": {
+    "shellMode": "minimal-top-bar",
+    "navPattern": "command-palette-modal",
+    "contentFlow": "centered-card-stack",
+    "scrollMode": "standard-scroll",
+    "alignment": "center",
+    "heroTreatment": "search-hero",
+    "motionLanguage": "modal-scale-in",
+    "density": "spacious",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "bg": "#f5f0e8",
+    "text": "#1a1a2e",
+    "surface": "#e8f5e8",
+    "accent": "#00897b",
+    "accent2": "#ff7043",
+    "border": "#b0bec5"
+  },
+  "typography": {
+    "heading": "Righteous",
+    "body": "Nunito",
+    "mono": "Courier Prime"
+  },
+  "interactionProfile": {
+    "buttonHover": "chrome-shine-sweep-left-to-right",
+    "buttonClick": "coin-drop-depress-with-ding-flash",
+    "cardHover": "glass-door-lift-with-backlight",
+    "pageTransition": "modal-scale-in-from-center",
+    "scrollReveal": "slide-up-from-behind-counter",
+    "navItemHover": "chrome-highlight-sweep",
+    "navItemActive": "mint-green-fill-white-text",
+    "inputFocus": "command-palette-scale-in-search-pulse",
+    "toggleSwitch": "mechanical-flip-with-snap",
+    "tooltips": "cream-tooltip-mint-border",
+    "loadingState": "coin-spinning-animation",
+    "idleAmbient": "chrome-shimmer-line",
+    "microFeedback": "ding-flash-checkmark-toast"
+  },
+  "views": [
+    {
+      "id": "dashboard",
+      "label": "Dashboard",
+      "content": ["greeting", "search-hero", "4-stat-cards", "quick-actions", "activity-feed", "goals-progress"]
+    },
+    {
+      "id": "projects",
+      "label": "Projects",
+      "content": ["search-hero", "filter-tags", "4-project-cards", "create-new-placeholder"]
+    },
+    {
+      "id": "project-workspace",
+      "label": "Project Workspace",
+      "content": ["project-header", "folder-sidebar-nav", "metadata-grid", "goals-checklist", "tags"]
+    },
+    {
+      "id": "kanban",
+      "label": "Kanban Board",
+      "content": ["4-columns", "backlog-3-cards", "in-progress-2-cards", "review-2-cards", "done-3-cards"]
+    },
+    {
+      "id": "whiteboard",
+      "label": "Whiteboard",
+      "content": ["toolbar", "5-draggable-nodes", "connector-lines"]
+    },
+    {
+      "id": "schema-planner",
+      "label": "Schema Planner",
+      "content": ["5-entity-nodes", "relationship-arrows", "pk-fk-fields"]
+    },
+    {
+      "id": "directory-tree",
+      "label": "Directory Tree",
+      "content": ["expandable-tree", "folder-icons", "file-sizes", "toggle-collapse"]
+    },
+    {
+      "id": "ideas",
+      "label": "Ideas",
+      "content": ["capture-form", "6-idea-items", "priority-dots", "promote-actions", "filter-tags"]
+    },
+    {
+      "id": "ai-chat",
+      "label": "AI Chat",
+      "content": ["6-message-exchanges", "3-tool-actions", "chat-input-bar"]
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "content": ["5-tab-sections", "account-profile", "subscription-plan", "preferences-toggles", "integrations-cards", "data-management"]
+    }
+  ],
+  "responsiveBreakpoints": {
+    "desktop": "1536px",
+    "tablet": "1024px",
+    "mobile": "640px"
+  },
+  "externalDependencies": [
+    {
+      "name": "Phosphor Icons",
+      "version": "2.1.1",
+      "cdn": "https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css",
+      "purpose": "Icon system"
+    },
+    {
+      "name": "Google Fonts (Righteous, Nunito, Courier Prime)",
+      "version": "n/a",
+      "cdn": "https://fonts.googleapis.com",
+      "purpose": "Typography"
+    }
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ],
+  "antiRepeatCompliance": {
+    "avoidedElements": [
+      "diner booth",
+      "jukebox",
+      "chrome trim decorative borders",
+      "vinyl",
+      "googie swoosh",
+      "parabolic header",
+      "angled tabs",
+      "boomerang",
+      "drive-in",
+      "marquee neon",
+      "speaker-box",
+      "ranch house",
+      "butterfly roof",
+      "terrazzo",
+      "rocket dashboard",
+      "radar sweep",
+      "mission control",
+      "tiki lounge",
+      "bamboo",
+      "palm frond",
+      "carousel fairground",
+      "pill nav",
+      "stacked carousel",
+      "cotton candy pastels"
+    ],
+    "usedInstead": [
+      "automat vending wall metaphor",
+      "command palette modal navigation",
+      "minimal top bar shell",
+      "centered card stack layout",
+      "glass window card hover effect",
+      "coin-drop interaction metaphor",
+      "chrome shimmer ambient effect"
+    ]
+  }
+}

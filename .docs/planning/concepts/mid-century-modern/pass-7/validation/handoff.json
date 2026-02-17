@@ -1,0 +1,182 @@
+{
+  "passId": "mid-century-modern-pass-7",
+  "styleId": "mid-century-modern",
+  "pass": 7,
+  "variantSeed": "floating-dock-lounge",
+  "contentPersona": "showroom-curator",
+  "generatedDate": "2026-02-16",
+  "uniquenessProfile": {
+    "profileId": "floating-dock-bar",
+    "shellMode": "floating-bottom-dock",
+    "navPattern": "icon-pill-dock",
+    "contentFlow": "centered-single-panel",
+    "scrollMode": "smooth-scroll",
+    "alignment": "center",
+    "heroTreatment": "gradient-hero-card",
+    "motionLanguage": "spring-bounce",
+    "density": "spacious",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "bg": "#faf5eb",
+    "text": "#3d2b1f",
+    "surface": "#f0e6d3",
+    "accent": "#c46b2e",
+    "accent2": "#2d6b4f",
+    "border": "#c4b49a"
+  },
+  "typography": {
+    "heading": "Playfair Display",
+    "body": "Source Serif 4",
+    "mono": "JetBrains Mono"
+  },
+  "interactionProfile": {
+    "buttonHover": "warm-glow-shadow-expand",
+    "buttonClick": "spring-press-release-scale-0.97-1.02-1.0",
+    "cardHover": "lift-warm-shadow-bloom-rotate-0.5deg",
+    "pageTransition": "spring-bounce-from-bottom",
+    "scrollReveal": "fade-up-staggered-80ms",
+    "navItemHover": "pill-background-warm-tint",
+    "navItemActive": "pill-filled-accent-icon-white",
+    "inputFocus": "warm-golden-border-glow",
+    "toggleSwitch": "smooth-slide-spring",
+    "tooltips": "cream-tooltip-serif-thin-border",
+    "loadingState": "three-bouncing-dots-organic",
+    "idleAmbient": "subtle-warm-light-flicker",
+    "microFeedback": "warm-pulse-on-success"
+  },
+  "views": [
+    {
+      "id": "dashboard",
+      "displayLabel": "Good afternoon, curator.",
+      "layoutPattern": "gradient-hero-card-with-stats-specimen-grid",
+      "keyComponents": [
+        "amber-to-green gradient hero card with 4 stats",
+        "2-column specimen-card grid: activity list + quick actions",
+        "full-width progress bar card with project percentages"
+      ]
+    },
+    {
+      "id": "projects",
+      "displayLabel": "Projects Collection",
+      "layoutPattern": "toolbar-filter-plus-2-column-card-grid",
+      "keyComponents": [
+        "pill-shaped search bar with filter pills (All/Active/Archived)",
+        "6 project cards with status dots, tech stack tags, metadata",
+        "Create New Project action button"
+      ]
+    },
+    {
+      "id": "project-workspace",
+      "displayLabel": "Wavz.fm Music Platform",
+      "layoutPattern": "sidebar-folder-nav-plus-main-meta-tasks",
+      "keyComponents": [
+        "left folder navigation panel (sticky)",
+        "right panel with metadata grid and task checklist",
+        "breadcrumb navigation back to projects"
+      ]
+    },
+    {
+      "id": "kanban",
+      "displayLabel": "Kanban Board",
+      "layoutPattern": "4-column-drag-drop-board",
+      "keyComponents": [
+        "Backlog (3 cards), In Progress (2), Review (2), Done (3)",
+        "drag-and-drop between columns with count updates",
+        "label badges (Feature/Research/Design/Bug Fix)"
+      ]
+    },
+    {
+      "id": "whiteboard",
+      "displayLabel": "Whiteboard",
+      "layoutPattern": "toolbar-plus-canvas-with-nodes",
+      "keyComponents": [
+        "centered pill toolbar (select/container/text/line/zoom)",
+        "5 draggable nodes with SVG dashed connections",
+        "canvas area with white background"
+      ]
+    },
+    {
+      "id": "schema-planner",
+      "displayLabel": "Schema Planner",
+      "layoutPattern": "positioned-entity-diagram-with-svg-connections",
+      "keyComponents": [
+        "6 entity cards (User, Project, Idea, KanbanCard, KanbanColumn, AuditLog)",
+        "SVG curved connection paths between entities",
+        "PK/FK badges with color-coded field types"
+      ]
+    },
+    {
+      "id": "directory-tree",
+      "displayLabel": "Directory Tree",
+      "layoutPattern": "toolbar-plus-expandable-tree",
+      "keyComponents": [
+        "Generate/Preview/Export action buttons",
+        "nested folder tree with toggle arrows",
+        "folder and file SVG icons"
+      ]
+    },
+    {
+      "id": "ideas",
+      "displayLabel": "Ideas",
+      "layoutPattern": "capture-form-plus-vertical-card-list",
+      "keyComponents": [
+        "quick-capture form with priority select and tag input",
+        "6 idea cards with title, description, tags, priority, promote button",
+        "promoted state with dashed border and badge"
+      ]
+    },
+    {
+      "id": "ai-chat",
+      "displayLabel": "AI Chat",
+      "layoutPattern": "message-list-plus-input-bar",
+      "keyComponents": [
+        "6 messages (3 user, 3 AI) with avatar bubbles",
+        "tool action blocks (add_idea, update_kanban, generate_tree)",
+        "code block in dark theme",
+        "bottom input bar with send button"
+      ]
+    },
+    {
+      "id": "settings",
+      "displayLabel": "Settings",
+      "layoutPattern": "grouped-settings-panels",
+      "keyComponents": [
+        "Account (name, email, avatar)",
+        "Subscription (Free/Pro/Team cards with current badge)",
+        "Preferences (4 toggle switches)",
+        "Integrations (GitHub connected, Slack/Figma not connected)",
+        "Data & Privacy (export, danger zone)"
+      ]
+    }
+  ],
+  "librariesUsed": [],
+  "assetsDownloaded": [],
+  "antiRepeatCompliance": [
+    "Pass 1 used horizontal shelf nav with walnut panels — this pass uses floating bottom dock with pill icons and centered panel",
+    "Pass 2 used radial hub-spoke with orbital rings and Saarinen tulip geometry — this pass uses simple centered layout with spring bounce transitions",
+    "Pass 3 used floating pill nav with stacked card carousel and Girard textile collage — this pass uses bottom dock with vertical scroll and museum specimen aesthetic",
+    "Pass 4 used hidden hamburger with fullscreen overlay and Noguchi zen garden — this pass uses always-visible dock with warm gradient hero",
+    "Pass 5 used same structural profile (floating-dock-bar) but with completely different execution: Lora+Karla typography vs Playfair Display+Source Serif 4, blush/salmon palette vs amber/green, Danish hygge/cozy persona vs design showroom/museum curator, letter-writing chat vs avatar-bubble chat, bookshelf spines projects vs card grid projects, knit-pattern textures vs clean pill shapes",
+    "Pass 6 used collapsible left sidebar with accordion sections and pop art Warhol aesthetic — this pass uses centered single panel with warm organic tones"
+  ],
+  "differentiationFromPass5": {
+    "typography": "Playfair Display + Source Serif 4 (high-end editorial serif pair) vs Lora + Karla (warm casual pair)",
+    "palette": "Amber #c46b2e + Forest green #2d6b4f (showroom warmth) vs Blush #d4927a + Tan #a08060 (hygge cozy)",
+    "persona": "Museum showroom curator with exhibit labels vs Danish hygge with knit textures and candlelight",
+    "heroCard": "Amber-to-green gradient hero card vs weather-widget stat cards",
+    "projectsLayout": "2-column card grid with search/filter toolbar vs bookshelf spines with list view",
+    "chatLayout": "Avatar-bubble messages with tool action blocks vs letter-writing format with wax-seal timestamps",
+    "settingsLayout": "Grouped panels with plan comparison cards vs cozy control panel with knit dividers",
+    "motionFeel": "Clean spring bounce (museum precision) vs soft curtain draw (textile warmth)",
+    "interactionTone": "Professional warm glow vs intimate candlelight dance"
+  },
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

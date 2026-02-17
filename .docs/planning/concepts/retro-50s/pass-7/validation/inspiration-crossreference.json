@@ -1,0 +1,69 @@
+{
+  "concept": "retro-50s",
+  "pass": 7,
+  "variantSeed": "carousel-fairground-ride",
+  "inspirationSources": [
+    {
+      "source": "1950s Amusement Park Carousels",
+      "elements": "Circular motion, ride numbering, ticket-based navigation, whimsical joy",
+      "adaptation": "Navigation pills styled as ride tickets; each view is a numbered ride with a fairground barker introduction. No literal carousel imagery or circular rotating layouts — the carousel feeling comes from horizontal card-flip transitions and the ticket metaphor.",
+      "differentiator": "Unlike a literal carousel UI, this uses pill-toggle navigation and card-based content grids rather than a rotating element."
+    },
+    {
+      "source": "Cotton Candy and Carnival Food Aesthetics",
+      "elements": "Pastel pinks, mints, lemons, soft blues — the visual palette of carnival treats",
+      "adaptation": "Each stat card uses a different candy-inspired border color (cotton-candy pink, mint-swirl green, lemon-drop yellow, blueberry blue). The overall palette is warm cream with pastel accents.",
+      "differentiator": "Colors are used for functional differentiation (stat categories, priority levels) rather than purely decorative. No food imagery or textures."
+    },
+    {
+      "source": "Fairground Game Booths",
+      "elements": "Prize displays, balloon pops, spinning wheels, score displays",
+      "adaptation": "Ideas view is themed as a 'Balloon Pop' booth. The loading state uses a spinning prize wheel. Stat numbers animate with a spinning counter effect. Star burst emoji appears as micro-feedback.",
+      "differentiator": "Game booth metaphors are applied to functional UI patterns (form submission, loading states, notifications) rather than creating literal game interfaces."
+    },
+    {
+      "source": "Pill-Shaped UI Components (Modern SaaS)",
+      "elements": "Rounded pill buttons, toggle groups, floating action bars",
+      "adaptation": "The entire navigation system uses pill-shaped tickets. Priority selectors, tag badges, and action buttons all use the pill/capsule shape. This creates a cohesive rounded vocabulary.",
+      "differentiator": "Pills are combined with dashed borders and pastel fills to evoke carnival ticket perforations, distinguishing from standard SaaS pill components."
+    },
+    {
+      "source": "1950s Typography — Rounded Display Fonts",
+      "elements": "Bubbly, friendly, hand-lettered sign painting",
+      "adaptation": "Fredoka One provides the bubbly, rounded heading style. Quicksand's geometric roundness for body text maintains the friendly tone while ensuring readability.",
+      "differentiator": "Typography choices are distinct from all prior passes — not using Nunito (P1/P2), Poppins (P3), Lato (P4), Cabin (P5), or Atkinson Hyperlegible (P6)."
+    },
+    {
+      "source": "Card-Based UI Patterns (Trello, Notion)",
+      "elements": "Card grids, drag-and-drop cards, card hover states",
+      "adaptation": "Cards are the primary content unit across all views. Cards lift and tilt on hover (like being picked up), flip between views, and bounce in on scroll reveal.",
+      "differentiator": "Card interactions use carnival-style exaggeration (tilt, bounce, squash-and-stretch) rather than subtle material design elevation changes."
+    }
+  ],
+  "crossReferenceWithPriorPasses": {
+    "pass1_chrome-diner-jukebox": {
+      "overlap": "Both use rounded, playful aesthetics",
+      "differentiation": "P1 uses a bottom jukebox bar, diner-themed panels, vinyl record cards. P7 uses floating top pill nav, fairground ride tickets, prize card layouts. P1 uses chrome trim and checkerboard patterns (anti-repeat items) — P7 uses none of these."
+    },
+    "pass2_atomic-age-googie": {
+      "overlap": "None significant",
+      "differentiation": "P2 uses space-age googie with boomerang shapes, parabolic curves, starbursts, orbital rings, dark navy panels. P7 uses soft pastels, pill shapes, card-based layouts with no geometric flourishes."
+    },
+    "pass3_drive-in-movie-theater": {
+      "overlap": "None significant",
+      "differentiation": "P3 uses dark purple palette, film marquee with chaser lights, cinematic widescreen layouts, film-reel transitions. P7 uses warm cream palette, carnival ride badges, card carousel layouts, card-flip transitions."
+    },
+    "pass4_soda-fountain-pharmacy": {
+      "overlap": "Both use light palettes with soft colors",
+      "differentiation": "P4 uses cherry red + powder blue, floating bottom dock, awning stripe patterns, recipe-card shapes. P7 uses pink + mint on peach cream, floating top pill nav, carnival ticket patterns, prize card shapes."
+    },
+    "pass5_motel-neon-roadside": {
+      "overlap": "None significant",
+      "differentiation": "P5 uses dark asphalt palette, command-palette navigation, neon glow effects, roadside motel metaphor. P7 uses warm pastel palette, pill toggle navigation, pastel shadow blooms, fairground carousel metaphor."
+    },
+    "pass6_kitchen-appliance-pastel": {
+      "overlap": "Both use warm, soft aesthetics",
+      "differentiation": "P6 uses avocado green + harvest gold + copper, right-rail vertical dots timeline, kitchen appliance metaphor, recipe-box flip transitions. P7 uses cotton-candy pink + mint teal, floating top pill toggle, fairground carousel metaphor, horizontal card-flip transitions."
+    }
+  }
+}

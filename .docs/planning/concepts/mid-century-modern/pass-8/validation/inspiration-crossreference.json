@@ -1,0 +1,127 @@
+{
+  "style": "mid-century-modern",
+  "pass": 8,
+  "variantSeed": "timeline-exhibit-walkthrough",
+  "generatedDate": "2026-02-16",
+  "inspirationSources": {
+    "primary": {
+      "name": "Mid-Century Museum Retrospective Exhibition Design",
+      "description": "Inspired by chronologically-organized museum exhibitions where visitors walk through sequential rooms, each representing a different era or theme. The vertical timeline navigation mimics the experience of moving through gallery spaces in order, with each room telling a distinct chapter of the story.",
+      "elements_borrowed": [
+        "Sequential room numbering with Roman numerals",
+        "Exhibit placard-style labels and descriptions",
+        "Museum-quality card presentations with generous spacing",
+        "Docent-like descriptive prose for each view section",
+        "Timeline spine as the primary organizational metaphor"
+      ]
+    },
+    "secondary": [
+      {
+        "name": "Charles and Ray Eames timeline exhibitions",
+        "description": "The Eames Office is known for creating timeline-based exhibitions that present complex information in a linear, digestible format. Their approach to mixing photography, typography, and objects in a timeline format informs the alternating left-right content layout.",
+        "elements_borrowed": [
+          "Alternating side presentation of content nodes",
+          "Clean serif typography for exhibit labels",
+          "Warm, inviting color palette",
+          "Information hierarchy through size and position"
+        ]
+      },
+      {
+        "name": "Vitra Design Museum exhibition catalogs",
+        "description": "The Vitra Design Museum's approach to cataloging furniture design history influenced the card-based content presentation and the way each project, idea, or entity is treated as a museum specimen worthy of examination.",
+        "elements_borrowed": [
+          "Specimen card layouts with label/title/body structure",
+          "Generous white space between displayed items",
+          "Mono-spaced label typography for classification",
+          "Warm paper-like background tones"
+        ]
+      },
+      {
+        "name": "Vertical timeline navigation patterns",
+        "description": "Vertical dot-based timeline navigation seen in modern web portfolios and annual report sites, adapted here as a right-rail navigation system where each dot represents an exhibit room.",
+        "elements_borrowed": [
+          "Connected dot navigation with spine line",
+          "Tooltip labels on hover",
+          "Active state fill transition",
+          "Compact vertical space utilization"
+        ]
+      }
+    ]
+  },
+  "crossReferenceWithPreviousPasses": {
+    "pass-1": {
+      "seed": "eames-lounge-workspace",
+      "layout": "credenza-shelf (horizontal shelf nav)",
+      "differentiators": [
+        "Pass 8 uses right-rail timeline nav instead of horizontal shelf",
+        "Pass 8 uses DM Serif Display instead of Playfair Display",
+        "Pass 8 uses museum docent persona instead of warm workspace",
+        "Pass 8 uses timeline-alternating content flow instead of card grid",
+        "Pass 8 uses slide-up cascade motion instead of subtle ease transitions"
+      ]
+    },
+    "pass-2": {
+      "seed": "saarinen-tulip-dashboard",
+      "layout": "radial center hub with orbital rings",
+      "differentiators": [
+        "Pass 8 uses linear vertical timeline instead of radial hub",
+        "Pass 8 uses right-rail nav instead of orbital ring navigation",
+        "Pass 8 uses DM Serif Display + Lato instead of Playfair Display + DM Sans",
+        "Pass 8 uses amber/terracotta palette instead of warm white + orange",
+        "Pass 8 uses sequential room metaphor instead of central hub metaphor"
+      ]
+    },
+    "pass-3": {
+      "seed": "girard-textile-collage",
+      "layout": "stacked-card-carousel with floating pill nav",
+      "differentiators": [
+        "Pass 8 uses vertical timeline dots instead of pill toggle group",
+        "Pass 8 uses timeline-alternating flow instead of stacked-card carousel",
+        "Pass 8 uses scroll-snap-vertical instead of swipe-horizontal",
+        "Pass 8 uses DM Serif Display instead of Fraunces",
+        "Pass 8 uses muted terracotta palette instead of bold textile colors"
+      ]
+    },
+    "pass-4": {
+      "seed": "noguchi-sculpture-garden",
+      "layout": "hidden hamburger with fullscreen overlay menu",
+      "differentiators": [
+        "Pass 8 uses always-visible right-rail nav instead of hidden hamburger",
+        "Pass 8 uses timeline-alternating instead of editorial columns",
+        "Pass 8 uses slide-up cascade instead of cinematic fade",
+        "Pass 8 uses DM Serif Display instead of Cormorant Garamond",
+        "Pass 8 uses museum docent persona instead of luxury hotel spa"
+      ]
+    },
+    "pass-5": {
+      "seed": "danish-hygge-warmth",
+      "layout": "floating bottom dock with icon pill dock",
+      "differentiators": [
+        "Pass 8 uses right-rail timeline instead of bottom dock",
+        "Pass 8 uses vertical dots instead of pill icons",
+        "Pass 8 uses slide-up cascade instead of spring bounce",
+        "Pass 8 uses DM Serif Display instead of Lora",
+        "Pass 8 uses museum docent persona instead of Scandinavian brand"
+      ]
+    },
+    "pass-6": {
+      "seed": "pop-art-warhol-screen-print",
+      "layout": "collapsible left sidebar with accordion sections",
+      "differentiators": [
+        "Pass 8 uses right-rail timeline instead of left sidebar accordion",
+        "Pass 8 uses balanced density instead of compact",
+        "Pass 8 uses soft component tone instead of hard",
+        "Pass 8 uses DM Serif Display instead of Bebas Neue",
+        "Pass 8 uses warm cream palette instead of high-contrast pop art"
+      ]
+    }
+  },
+  "uniquenessVerification": {
+    "shellMode": "right-rail-nav — NOT used in any previous pass (P1: top shelf, P2: radial hub, P3: floating pill, P4: hidden hamburger, P5: bottom dock, P6: left sidebar)",
+    "navPattern": "vertical-dots-timeline — NOT used in any previous pass (P1: icon-label row, P2: orbital ring, P3: pill toggle, P4: fullscreen overlay, P5: icon pill dock, P6: accordion)",
+    "contentFlow": "timeline-alternating — NOT used in any previous pass (P1: card grid, P2: radial sectors, P3: stacked carousel, P4: editorial columns, P5: centered single panel, P6: split panel detail)",
+    "typography": "DM Serif Display + Lato + IBM Plex Mono — unique combination not used in any previous pass",
+    "colorPalette": "bg #f8f3ea, accent #b8632e, accent2 #3a7c5f — distinct from all previous pass palettes",
+    "motionLanguage": "slide-up-cascade — NOT used in any previous pass (P1: subtle ease, P2: orbital float, P3: card-flip-slide, P4: cinematic-fade, P5: spring-bounce, P6: collapse-expand)"
+  }
+}

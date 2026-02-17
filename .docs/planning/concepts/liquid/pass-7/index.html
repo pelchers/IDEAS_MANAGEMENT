@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IDEA-MANAGEMENT | Liquid Pass 7 — Editorial Ink Flow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ink particle ambient background -->
+  <canvas id="ink-ambient" aria-hidden="true"></canvas>
+
+  <!-- Hamburger Toggle -->
+  <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false">
+    <span class="hamburger__line"></span>
+    <span class="hamburger__line"></span>
+    <span class="hamburger__line"></span>
+  </button>
+
+  <!-- Fullscreen Overlay Navigation -->
+  <nav class="overlay-nav" id="overlayNav" aria-hidden="true">
+    <div class="overlay-nav__ink-wash"></div>
+    <div class="overlay-nav__content">
+      <div class="overlay-nav__masthead">
+        <span class="overlay-nav__issue">Issue VII</span>
+        <span class="overlay-nav__title">IDEA-MANAGEMENT</span>
+        <span class="overlay-nav__subtitle">The Editorial Suite</span>
+      </div>
+      <ul class="overlay-nav__list">
+        <li><a href="#dashboard" class="overlay-nav__link active" data-view="dashboard"><span class="overlay-nav__num">01</span><span class="overlay-nav__label">Dashboard</span></a></li>
+        <li><a href="#projects" class="overlay-nav__link" data-view="projects"><span class="overlay-nav__num">02</span><span class="overlay-nav__label">Projects</span></a></li>
+        <li><a href="#project-workspace" class="overlay-nav__link" data-view="project-workspace"><span class="overlay-nav__num">03</span><span class="overlay-nav__label">Workspace</span></a></li>
+        <li><a href="#kanban" class="overlay-nav__link" data-view="kanban"><span class="overlay-nav__num">04</span><span class="overlay-nav__label">Kanban</span></a></li>
+        <li><a href="#whiteboard" class="overlay-nav__link" data-view="whiteboard"><span class="overlay-nav__num">05</span><span class="overlay-nav__label">Whiteboard</span></a></li>
+        <li><a href="#schema-planner" class="overlay-nav__link" data-view="schema-planner"><span class="overlay-nav__num">06</span><span class="overlay-nav__label">Schema Planner</span></a></li>
+        <li><a href="#directory-tree" class="overlay-nav__link" data-view="directory-tree"><span class="overlay-nav__num">07</span><span class="overlay-nav__label">Directory Tree</span></a></li>
+        <li><a href="#ideas" class="overlay-nav__link" data-view="ideas"><span class="overlay-nav__num">08</span><span class="overlay-nav__label">Ideas</span></a></li>
+        <li><a href="#ai-chat" class="overlay-nav__link" data-view="ai-chat"><span class="overlay-nav__num">09</span><span class="overlay-nav__label">AI Chat</span></a></li>
+        <li><a href="#settings" class="overlay-nav__link" data-view="settings"><span class="overlay-nav__num">10</span><span class="overlay-nav__label">Settings</span></a></li>
+      </ul>
+      <div class="overlay-nav__footer">
+        <span>February 2026</span>
+        <span class="overlay-nav__dot"></span>
+        <span>Vol. VII, No. 1</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Ink Wash Transition Overlay -->
+  <div class="ink-wash-overlay" id="inkWashOverlay" aria-hidden="true">
+    <div class="ink-wash-overlay__layer ink-wash-overlay__layer--1"></div>
+    <div class="ink-wash-overlay__layer ink-wash-overlay__layer--2"></div>
+    <div class="ink-wash-overlay__layer ink-wash-overlay__layer--3"></div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="editorial-main" id="editorialMain">
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <section class="page" data-page="dashboard">
+      <div class="page__inner">
+        <header class="editorial-header">
+          <div class="editorial-header__spread">
+            <div class="editorial-header__col editorial-header__col--left">
+              <p class="editorial-kicker">The Opening Spread</p>
+              <h1 class="editorial-headline">Good evening,<br /><em>Editor.</em></h1>
+              <p class="editorial-standfirst">Your creative empire at a glance. Four metrics that matter, the latest movements across your projects, and actions that demand attention.</p>
+            </div>
+            <div class="editorial-header__col editorial-header__col--right">
+              <div class="editorial-pullquote">
+                <blockquote>&ldquo;Every great idea begins as an ink stain on the page of possibility.&rdquo;</blockquote>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="stats-editorial">
+          <div class="stat-card" data-parallax="0.02">
+            <span class="stat-card__number">12</span>
+            <span class="stat-card__label">Active Projects</span>
+            <span class="stat-card__trend stat-card__trend--up">+3 this month</span>
+          </div>
+          <div class="stat-card" data-parallax="0.04">
+            <span class="stat-card__number">47</span>
+            <span class="stat-card__label">Ideas Captured</span>
+            <span class="stat-card__trend stat-card__trend--up">+11 this week</span>
+          </div>
+          <div class="stat-card" data-parallax="0.03">
+            <span class="stat-card__number">89%</span>
+            <span class="stat-card__label">Sprint Progress</span>
+            <span class="stat-card__trend stat-card__trend--neutral">On track</span>
+          </div>
+          <div class="stat-card" data-parallax="0.05">
+            <span class="stat-card__number">5</span>
+            <span class="stat-card__label">Pending Reviews</span>
+            <span class="stat-card__trend stat-card__trend--down">-2 since yesterday</span>
+          </div>
+        </div>
+
+        <div class="editorial-columns editorial-columns--two">
+          <div class="editorial-col">
+            <h2 class="section-title">Recent Activity</h2>
+            <div class="activity-feed">
+              <div class="activity-item">
+                <span class="activity-item__time">2m ago</span>
+                <p class="activity-item__text">New idea <strong>&ldquo;Add dark mode toggle&rdquo;</strong> captured in Wavz.fm</p>
+              </div>
+              <div class="activity-item">
+                <span class="activity-item__time">18m ago</span>
+                <p class="activity-item__text">Kanban card <strong>&ldquo;Design drag-drop UX&rdquo;</strong> moved to Review</p>
+              </div>
+              <div class="activity-item">
+                <span class="activity-item__time">1h ago</span>
+                <p class="activity-item__text">Schema entity <strong>User</strong> updated with 2 new fields</p>
+              </div>
+              <div class="activity-item">
+                <span class="activity-item__time">3h ago</span>
+                <p class="activity-item__text">Directory tree generated for <strong>Campus Learning App</strong></p>
+              </div>
+              <div class="activity-item">
+                <span class="activity-item__time">5h ago</span>
+                <p class="activity-item__text">AI Chat session completed: 12 actions executed</p>
+              </div>
+            </div>
+          </div>
+          <div class="editorial-col">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="quick-actions">
+              <button class="btn btn--primary btn--ink" data-ripple>
+                <span class="btn__text">New Project</span>
+              </button>
+              <button class="btn btn--secondary btn--ink" data-ripple>
+                <span class="btn__text">Capture Idea</span>
+              </button>
+              <button class="btn btn--secondary btn--ink" data-ripple>
+                <span class="btn__text">Open AI Chat</span>
+              </button>
+              <button class="btn btn--secondary btn--ink" data-ripple>
+                <span class="btn__text">View Kanban</span>
+              </button>
+            </div>
+            <div class="editorial-aside">
+              <h3 class="aside-title">Upcoming Deadlines</h3>
+              <ul class="deadline-list">
+                <li class="deadline-item">
+                  <span class="deadline-item__date">Feb 18</span>
+                  <span class="deadline-item__text">Wavz.fm MVP launch review</span>
+                </li>
+                <li class="deadline-item">
+                  <span class="deadline-item__date">Feb 22</span>
+                  <span class="deadline-item__text">Campus App wireframe sign-off</span>
+                </li>
+                <li class="deadline-item">
+                  <span class="deadline-item__date">Mar 01</span>
+                  <span class="deadline-item__text">RepoSaver beta release</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECTS ==================== -->
+    <section class="page" data-page="projects" style="display:none">
+      <div class="page__inner">
+        <header class="editorial-header">
+          <p class="editorial-kicker">The Collection</p>
+          <h1 class="editorial-headline">Projects</h1>
+          <p class="editorial-standfirst">Every endeavor, catalogued with editorial precision. Browse, search, and launch new creative ventures.</p>
+        </header>
+
+        <div class="projects-toolbar">
+          <div class="search-field">
+            <svg class="search-field__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="search-field__input" placeholder="Search projects..." />
+          </div>
+          <button class="btn btn--primary btn--ink" data-ripple>
+            <span class="btn__text">+ Create New</span>
+          </button>
+        </div>
+
+        <div class="project-grid">
+          <article class="project-card" data-parallax="0.02">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--active"></span>
+              <h3 class="project-card__title">Wavz.fm Music Platform</h3>
+            </div>
+            <p class="project-card__desc">A next-gen music streaming platform with social features, artist tools, and AI-powered discovery. Built for independent musicians.</p>
+            <div class="project-card__tags">
+              <span class="tag">Next.js</span>
+              <span class="tag">Convex</span>
+              <span class="tag">Stripe</span>
+            </div>
+            <div class="project-card__meta">
+              <span>8 ideas</span>
+              <span class="project-card__dot"></span>
+              <span>3 collaborators</span>
+            </div>
+          </article>
+
+          <article class="project-card" data-parallax="0.03">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--active"></span>
+              <h3 class="project-card__title">Campus Learning App</h3>
+            </div>
+            <p class="project-card__desc">Mobile-first learning management system designed for university students. Features include course tracking, study groups, and grade analytics.</p>
+            <div class="project-card__tags">
+              <span class="tag">React Native</span>
+              <span class="tag">Firebase</span>
+              <span class="tag">AI</span>
+            </div>
+            <div class="project-card__meta">
+              <span>14 ideas</span>
+              <span class="project-card__dot"></span>
+              <span>5 collaborators</span>
+            </div>
+          </article>
+
+          <article class="project-card" data-parallax="0.04">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--planning"></span>
+              <h3 class="project-card__title">RepoSaver Backup Tool</h3>
+            </div>
+            <p class="project-card__desc">Automated GitHub repository backup service with versioning, scheduled exports, and cloud storage integration. Peace of mind for developers.</p>
+            <div class="project-card__tags">
+              <span class="tag">Go</span>
+              <span class="tag">AWS S3</span>
+              <span class="tag">CLI</span>
+            </div>
+            <div class="project-card__meta">
+              <span>6 ideas</span>
+              <span class="project-card__dot"></span>
+              <span>2 collaborators</span>
+            </div>
+          </article>
+
+          <article class="project-card" data-parallax="0.02">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--paused"></span>
+              <h3 class="project-card__title">FitTrack Dashboard</h3>
+            </div>
+            <p class="project-card__desc">Health and fitness tracking dashboard with wearable integration, meal planning, and workout analytics for personal trainers.</p>
+            <div class="project-card__tags">
+              <span class="tag">Vue.js</span>
+              <span class="tag">D3.js</span>
+              <span class="tag">HealthKit</span>
+            </div>
+            <div class="project-card__meta">
+              <span>11 ideas</span>
+              <span class="project-card__dot"></span>
+              <span>4 collaborators</span>
+            </div>
+          </article>
+
+          <article class="project-card" data-parallax="0.05">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--active"></span>
+              <h3 class="project-card__title">Folio CMS</h3>
+            </div>
+            <p class="project-card__desc">Headless content management system optimized for creative portfolios. Drag-and-drop layout builder with theming engine.</p>
+            <div class="project-card__tags">
+              <span class="tag">Astro</span>
+              <span class="tag">Sanity</span>
+              <span class="tag">Vercel</span>
+            </div>
+            <div class="project-card__meta">
+              <span>9 ideas</span>
+              <span class="project-card__dot"></span>
+              <span>2 collaborators</span>
+            </div>
+          </article>
+
+          <article class="project-card" data-parallax="0.03">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--completed"></span>
+              <h3 class="project-card__title">InvoiceBot</h3>
+            </div>
+            <p class="project-card__desc">AI-powered invoice generation and management tool for freelancers. Automates client billing, payment reminders, and tax calculations.</p>
+            <div class="project-card__tags">
+              <span class="tag">Python</span>
+              <span class="tag">FastAPI</span>
+              <span class="tag">Stripe</span>
+            </div>
+            <div class="project-card__meta">
+              <span>5 ideas</span>
+              <span class="project-card__dot"></span>
+              <span>1 collaborator</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECT WORKSPACE ==================== -->
+    <section class="page" data-page="project-workspace" style="display:none">
+      <div class="page__inner">
+        <header class="editorial-header">
+          <p class="editorial-kicker">Deep Dive</p>
+          <h1 class="editorial-headline">Wavz.fm<br /><em>Music Platform</em></h1>
+          <p class="editorial-standfirst">The complete dossier. Navigate the project's anatomy, from folder structure to metadata, with the confidence of a seasoned editor reviewing a manuscript.</p>
+        </header>
+
+        <div class="editorial-columns editorial-columns--sidebar">
+          <aside class="workspace-nav">
+            <h3 class="workspace-nav__title">Sections</h3>
+            <ul class="workspace-nav__list">
+              <li class="workspace-nav__item workspace-nav__item--active">Overview</li>
+              <li class="workspace-nav__item">Architecture</li>
+              <li class="workspace-nav__item">Components</li>
+              <li class="workspace-nav__item">API Routes</li>
+              <li class="workspace-nav__item">Database</li>
+              <li class="workspace-nav__item">Deployment</li>
+            </ul>
+          </aside>
+          <div class="workspace-content">
+            <div class="workspace-metadata">
+              <div class="metadata-row">
+                <span class="metadata-row__label">Status</span>
+                <span class="metadata-row__value"><span class="status-badge status-badge--active">Active</span></span>
+              </div>
+              <div class="metadata-row">
+                <span class="metadata-row__label">Created</span>
+                <span class="metadata-row__value">January 15, 2026</span>
+              </div>
+              <div class="metadata-row">
+                <span class="metadata-row__label">Last Modified</span>
+                <span class="metadata-row__value">February 16, 2026</span>
+              </div>
+              <div class="metadata-row">
+                <span class="metadata-row__label">Tech Stack</span>
+                <span class="metadata-row__value">Next.js, Convex, Clerk, Stripe, Tailwind</span>
+              </div>
+              <div class="metadata-row">
+                <span class="metadata-row__label">Collaborators</span>
+                <span class="metadata-row__value">Sarah Chen, Marcus Lee, Aisha Patel</span>
+              </div>
+            </div>
+
+            <div class="workspace-section">
+              <h3 class="section-title">Project Goals</h3>
+              <ul class="goal-list">
+                <li class="goal-item goal-item--complete">Launch MVP with core streaming features</li>
+                <li class="goal-item goal-item--complete">Implement Clerk authentication flow</li>
+                <li class="goal-item goal-item--progress">Build artist dashboard with analytics</li>
+                <li class="goal-item goal-item--pending">Integrate Stripe for subscription billing</li>
+                <li class="goal-item goal-item--pending">Deploy to production with CI/CD pipeline</li>
+              </ul>
+            </div>
+
+            <div class="workspace-section">
+              <h3 class="section-title">Description</h3>
+              <p class="editorial-body">Wavz.fm is a next-generation music streaming platform designed specifically for independent musicians. The platform provides artist-first tools including real-time analytics, fan engagement features, and a fair revenue-sharing model. The frontend is built with Next.js App Router and styled with Tailwind CSS, while the backend leverages Convex for real-time data synchronization. Authentication is handled through Clerk, and payments are processed via Stripe Connect.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== KANBAN ==================== -->
+    <section class="page" data-page="kanban" style="display:none">
+      <div class="page__inner">
+        <header class="editorial-header">
+          <p class="editorial-kicker">The Production Board</p>
+          <h1 class="editorial-headline">Kanban</h1>
+          <p class="editorial-standfirst">The rhythm of production. Each column a chapter, each card a story moving toward completion.</p>
+        </header>
+
+        <div class="kanban-board">
+          <div class="kanban-column">
+            <div class="kanban-column__header">
+              <h3 class="kanban-column__title">Backlog</h3>
+              <span class="kanban-column__count">3</span>
+            </div>
+            <div class="kanban-column__cards">
+              <div class="kanban-card" data-parallax="0.02">
+                <h4 class="kanban-card__title">Implement drag-drop upload</h4>
+                <p class="kanban-card__desc">Allow users to drag files directly into the upload zone with progress indicators.</p>
+                <div class="kanban-card__footer">
+                  <span class="kanban-card__priority kanban-card__priority--high">High</span>
+                  <span class="kanban-card__tag">Frontend</span>
+                </div>
+              </div>
+              <div class="kanban-card" data-parallax="0.03">
+                <h4 class="kanban-card__title">Add playlist sharing</h4>
+                <p class="kanban-card__desc">Enable users to share curated playlists via link or social media embed.</p>
+                <div class="kanban-card__footer">
+                  <span class="kanban-card__priority kanban-card__priority--medium">Medium</span>
+                  <span class="kanban-card__tag">Feature</span>
+                </div>
+              </div>
+              <div class="kanban-card" data-parallax="0.02">
+                <h4 class="kanban-card__title">Email notification system</h4>
+                <p class="kanban-card__desc">Set up transactional email service for account alerts and weekly digest.</p>
+                <div class="kanban-card__footer">
+                  <span class="kanban-card__priority kanban-card__priority--low">Low</span>
+                  <span class="kanban-card__tag">Backend</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-column__header">
+              <h3 class="kanban-column__title">In Progress</h3>
+              <span class="kanban-column__count">2</span>
+            </div>
+            <div class="kanban-column__cards">
+              <div class="kanban-card" data-parallax="0.04">
+                <h4 class="kanban-card__title">Set up Clerk authentication</h4>
+                <p class="kanban-card__desc">Integrate Clerk for user sign-up, sign-in, and session management across the app.</p>
+                <div class="kanban-card__footer">
+                  <span class="kanban-card__priority kanban-card__priority--high">High</span>
+                  <span class="kanban-card__tag">Auth</span>
+                </div>
+              </div>
+              <div class="kanban-card" data-parallax="0.03">
+                <h4 class="kanban-card__title">Design kanban drag-drop UX</h4>
+                <p class="kanban-card__desc">Create smooth drag-and-drop interactions for moving cards between columns.</p>
+                <div class="kanban-card__footer">
+                  <span class="kanban-card__priority kanban-card__priority--high">High</span>
+                  <span class="kanban-card__tag">UX</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-column__header">
+              <h3 class="kanban-column__title">Review</h3>
+              <span class="kanban-column__count">2</span>
+            </div>
+            <div class="kanban-column__cards">
+              <div class="kanban-card" data-parallax="0.02">
+                <h4 class="kanban-card__title">Landing page redesign</h4>
+                <p class="kanban-card__desc">Refresh the public-facing landing page with new hero, testimonials, and CTA.</p>
+                <div class="kanban-card__footer">
+                  <span class="kanban-card__priority kanban-card__priority--medium">Medium</span>
+                  <span class="kanban-card__tag">Design</span>
+                </div>
+              </div>
+              <div class="kanban-card" data-parallax="0.03">
+                <h4 class="kanban-card__title">API rate limiting</h4>
+                <p class="kanban-card__desc">Implement rate limiting middleware to protect endpoints from abuse.</p>
+                <div class="kanban-card__footer">
+                  <span class="kanban-card__priority kanban-card__priority--high">High</span>
+                  <span class="kanban-card__tag">Security</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-column__header">
+              <h3 class="kanban-column__title">Done</h3>
+              <span class="kanban-column__count">3</span>
+            </div>
+            <div class="kanban-column__cards">
+              <div class="kanban-card kanban-card--done" data-parallax="0.02">
+                <h4 class="kanban-card__title">Database schema design</h4>
+                <p class="kanban-card__desc">Design and implement core Convex schema for users, tracks, and playlists.</p>
+                <div class="kanban-card__footer">
+                  <span class="kanban-card__priority kanban-card__priority--high">High</span>
+                  <span class="kanban-card__tag">Database</span>
+                </div>
+              </div>
+              <div class="kanban-card kanban-card--done" data-parallax="0.03">
+                <h4 class="kanban-card__title">CI/CD pipeline setup</h4>
+                <p class="kanban-card__desc">Configure GitHub Actions for automated testing and Vercel deployment.</p>
+                <div class="kanban-card__footer">
+                  <span class="kanban-card__priority kanban-card__priority--medium">Medium</span>
+                  <span class="kanban-card__tag">DevOps</span>
+                </div>
+              </div>
+              <div class="kanban-card kanban-card--done" data-parallax="0.04">
+                <h4 class="kanban-card__title">Component library setup</h4>
+                <p class="kanban-card__desc">Initialize shadcn/ui with Tailwind CSS and create base component set.</p>
+                <div class="kanban-card__footer">
+                  <span class="kanban-card__priority kanban-card__priority--medium">Medium</span>
+                  <span class="kanban-card__tag">Frontend</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== WHITEBOARD ==================== -->
+    <section class="page" data-page="whiteboard" style="display:none">
+      <div class="page__inner page__inner--full">
+        <header class="editorial-header editorial-header--compact">
+          <p class="editorial-kicker">The Canvas</p>
+          <h1 class="editorial-headline">Whiteboard</h1>
+        </header>
+
+        <div class="whiteboard-canvas">
+          <div class="whiteboard-toolbar">
+            <button class="toolbar-btn toolbar-btn--active" title="Select">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+            </button>
+            <button class="toolbar-btn" title="Add Container">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+            </button>
+            <button class="toolbar-btn" title="Add Connection">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <button class="toolbar-btn" title="Add Text">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9.5" y1="20" x2="14.5" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+            </button>
+            <div class="toolbar-divider"></div>
+            <button class="toolbar-btn" title="Zoom In">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </button>
+            <button class="toolbar-btn" title="Zoom Out">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </button>
+          </div>
+
+          <div class="whiteboard-area">
+            <!-- SVG Link Lines -->
+            <svg class="whiteboard-svg" viewBox="0 0 900 500" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="inkBlur">
+                  <feGaussianBlur stdDeviation="1.5" />
+                </filter>
+              </defs>
+              <path d="M200,120 C280,120 280,200 360,200" fill="none" stroke="#7b68ee" stroke-width="2" filter="url(#inkBlur)" class="wb-link" />
+              <path d="M200,120 C200,200 120,280 200,320" fill="none" stroke="#00d4aa" stroke-width="2" filter="url(#inkBlur)" class="wb-link" />
+              <path d="M520,200 C600,200 600,120 680,120" fill="none" stroke="#7b68ee" stroke-width="2" filter="url(#inkBlur)" class="wb-link" />
+              <path d="M520,200 C600,200 600,320 680,340" fill="none" stroke="#00d4aa" stroke-width="2" filter="url(#inkBlur)" class="wb-link" />
+            </svg>
+
+            <div class="wb-container" style="left:100px;top:70px">
+              <h4 class="wb-container__title">User Research</h4>
+              <p class="wb-container__note">Interview 10 indie musicians about their streaming pain points. Focus on revenue transparency.</p>
+            </div>
+            <div class="wb-container wb-container--accent" style="left:300px;top:160px">
+              <h4 class="wb-container__title">Core Features</h4>
+              <p class="wb-container__note">Streaming player, artist dashboard, playlist curation, social sharing, and payment integration.</p>
+            </div>
+            <div class="wb-container" style="left:100px;top:280px">
+              <h4 class="wb-container__title">Tech Stack</h4>
+              <p class="wb-container__note">Next.js + Convex + Clerk + Stripe. Deploy on Vercel. CDN for audio files.</p>
+            </div>
+            <div class="wb-container wb-container--accent2" style="left:580px;top:70px">
+              <h4 class="wb-container__title">Revenue Model</h4>
+              <p class="wb-container__note">Freemium: free tier with ads, premium at $9.99/mo. Artist payouts via Stripe Connect.</p>
+            </div>
+            <div class="wb-container" style="left:580px;top:290px">
+              <h4 class="wb-container__title">Launch Timeline</h4>
+              <p class="wb-container__note">Alpha: March 2026. Beta: May 2026. Public launch: July 2026.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCHEMA PLANNER ==================== -->
+    <section class="page" data-page="schema-planner" style="display:none">
+      <div class="page__inner page__inner--full">
+        <header class="editorial-header editorial-header--compact">
+          <p class="editorial-kicker">The Blueprint</p>
+          <h1 class="editorial-headline">Schema Planner</h1>
+        </header>
+
+        <div class="schema-canvas">
+          <svg class="schema-svg" viewBox="0 0 1000 520" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <filter id="schemaBlur">
+                <feGaussianBlur stdDeviation="1" />
+              </filter>
+            </defs>
+            <!-- Relationship Lines -->
+            <path d="M250,120 L400,120" fill="none" stroke="#7b68ee" stroke-width="2" stroke-dasharray="6,4" filter="url(#schemaBlur)" class="schema-line" />
+            <path d="M250,120 L250,280" fill="none" stroke="#00d4aa" stroke-width="2" stroke-dasharray="6,4" filter="url(#schemaBlur)" class="schema-line" />
+            <path d="M620,120 L400,120" fill="none" stroke="#7b68ee" stroke-width="2" stroke-dasharray="6,4" filter="url(#schemaBlur)" class="schema-line" />
+            <path d="M620,120 L620,280" fill="none" stroke="#00d4aa" stroke-width="2" stroke-dasharray="6,4" filter="url(#schemaBlur)" class="schema-line" />
+            <path d="M400,200 L400,280" fill="none" stroke="#7b68ee" stroke-width="2" stroke-dasharray="6,4" filter="url(#schemaBlur)" class="schema-line" />
+            <!-- Relationship labels -->
+            <text x="320" y="108" fill="#7b68ee" font-size="11" font-family="Fira Code" opacity="0.7">has many</text>
+            <text x="200" y="200" fill="#00d4aa" font-size="11" font-family="Fira Code" opacity="0.7">creates</text>
+            <text x="505" y="108" fill="#7b68ee" font-size="11" font-family="Fira Code" opacity="0.7">belongs to</text>
+            <text x="630" y="200" fill="#00d4aa" font-size="11" font-family="Fira Code" opacity="0.7">contains</text>
+            <text x="410" y="240" fill="#7b68ee" font-size="11" font-family="Fira Code" opacity="0.7">promoted from</text>
+          </svg>
+
+          <div class="schema-entity" style="left:60px;top:50px">
+            <div class="schema-entity__header">User</div>
+            <ul class="schema-entity__fields">
+              <li><span class="field-key">PK</span> id: string</li>
+              <li>email: string</li>
+              <li>name: string</li>
+              <li>avatarUrl: string</li>
+              <li>role: enum</li>
+              <li>createdAt: datetime</li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left:320px;top:50px">
+            <div class="schema-entity__header schema-entity__header--accent">Project</div>
+            <ul class="schema-entity__fields">
+              <li><span class="field-key">PK</span> id: string</li>
+              <li><span class="field-key">FK</span> ownerId: string</li>
+              <li>name: string</li>
+              <li>slug: string</li>
+              <li>description: text</li>
+              <li>status: enum</li>
+              <li>tags: string[]</li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left:560px;top:50px">
+            <div class="schema-entity__header">KanbanCard</div>
+            <ul class="schema-entity__fields">
+              <li><span class="field-key">PK</span> id: string</li>
+              <li><span class="field-key">FK</span> projectId: string</li>
+              <li>title: string</li>
+              <li>column: enum</li>
+              <li>priority: enum</li>
+              <li>order: number</li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left:120px;top:300px">
+            <div class="schema-entity__header schema-entity__header--accent2">Idea</div>
+            <ul class="schema-entity__fields">
+              <li><span class="field-key">PK</span> id: string</li>
+              <li><span class="field-key">FK</span> userId: string</li>
+              <li>title: string</li>
+              <li>description: text</li>
+              <li>tags: string[]</li>
+              <li>priority: enum</li>
+            </ul>
+          </div>
+
+          <div class="schema-entity" style="left:400px;top:300px">
+            <div class="schema-entity__header">Whiteboard</div>
+            <ul class="schema-entity__fields">
+              <li><span class="field-key">PK</span> id: string</li>
+              <li><span class="field-key">FK</span> projectId: string</li>
+              <li>nodes: json[]</li>
+              <li>connections: json[]</li>
+              <li>viewport: json</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== DIRECTORY TREE ==================== -->
+    <section class="page" data-page="directory-tree" style="display:none">
+      <div class="page__inner">
+        <header class="editorial-header">
+          <p class="editorial-kicker">The Index</p>
+          <h1 class="editorial-headline">Directory Tree</h1>
+          <p class="editorial-standfirst">The architectural skeleton. Every folder, every file, laid bare with typographic clarity.</p>
+        </header>
+
+        <div class="editorial-columns editorial-columns--two">
+          <div class="editorial-col">
+            <div class="tree-container">
+              <div class="tree-item tree-item--folder tree-item--open" data-depth="0">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                <span class="tree-item__name">wavz-fm/</span>
+              </div>
+              <div class="tree-item tree-item--folder tree-item--open" data-depth="1">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                <span class="tree-item__name">src/</span>
+              </div>
+              <div class="tree-item tree-item--folder tree-item--open" data-depth="2">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                <span class="tree-item__name">app/</span>
+              </div>
+              <div class="tree-item tree-item--file" data-depth="3">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+                <span class="tree-item__name">layout.tsx</span>
+                <span class="tree-item__size">2.4 KB</span>
+              </div>
+              <div class="tree-item tree-item--file" data-depth="3">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+                <span class="tree-item__name">page.tsx</span>
+                <span class="tree-item__size">1.8 KB</span>
+              </div>
+              <div class="tree-item tree-item--folder" data-depth="3">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                <span class="tree-item__name">dashboard/</span>
+              </div>
+              <div class="tree-item tree-item--folder" data-depth="3">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                <span class="tree-item__name">projects/</span>
+              </div>
+              <div class="tree-item tree-item--folder tree-item--open" data-depth="2">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                <span class="tree-item__name">components/</span>
+              </div>
+              <div class="tree-item tree-item--file" data-depth="3">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+                <span class="tree-item__name">Player.tsx</span>
+                <span class="tree-item__size">4.2 KB</span>
+              </div>
+              <div class="tree-item tree-item--file" data-depth="3">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+                <span class="tree-item__name">Sidebar.tsx</span>
+                <span class="tree-item__size">3.1 KB</span>
+              </div>
+              <div class="tree-item tree-item--file" data-depth="3">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+                <span class="tree-item__name">TrackCard.tsx</span>
+                <span class="tree-item__size">2.7 KB</span>
+              </div>
+              <div class="tree-item tree-item--folder tree-item--open" data-depth="2">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                <span class="tree-item__name">convex/</span>
+              </div>
+              <div class="tree-item tree-item--file" data-depth="3">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+                <span class="tree-item__name">schema.ts</span>
+                <span class="tree-item__size">3.5 KB</span>
+              </div>
+              <div class="tree-item tree-item--file" data-depth="3">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+                <span class="tree-item__name">mutations.ts</span>
+                <span class="tree-item__size">5.8 KB</span>
+              </div>
+              <div class="tree-item tree-item--file" data-depth="0">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+                <span class="tree-item__name">package.json</span>
+                <span class="tree-item__size">1.2 KB</span>
+              </div>
+              <div class="tree-item tree-item--file" data-depth="0">
+                <span class="tree-item__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+                <span class="tree-item__name">tsconfig.json</span>
+                <span class="tree-item__size">0.8 KB</span>
+              </div>
+            </div>
+          </div>
+          <div class="editorial-col">
+            <div class="tree-preview">
+              <h3 class="section-title">File Preview</h3>
+              <div class="tree-preview__file">
+                <div class="tree-preview__header">
+                  <span class="tree-preview__filename">schema.ts</span>
+                  <span class="tree-preview__lang">TypeScript</span>
+                </div>
+                <pre class="tree-preview__code"><code>import { defineSchema, defineTable } from "convex/server";
+import { v } from "convex/values";
+
+export default defineSchema({
+  users: defineTable({
+    email: v.string(),
+    name: v.string(),
+    avatarUrl: v.optional(v.string()),
+    role: v.union(
+      v.literal("admin"),
+      v.literal("member")
+    ),
+  }),
+  projects: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    ownerId: v.id("users"),
+    status: v.string(),
+  }),
+});</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== IDEAS ==================== -->
+    <section class="page" data-page="ideas" style="display:none">
+      <div class="page__inner">
+        <header class="editorial-header">
+          <p class="editorial-kicker">The Vault</p>
+          <h1 class="editorial-headline">Ideas</h1>
+          <p class="editorial-standfirst">Raw inspiration, captured before it evaporates. Each idea is a seed waiting for the right project to take root.</p>
+        </header>
+
+        <div class="ideas-capture">
+          <div class="capture-form">
+            <h3 class="section-title">Capture a New Idea</h3>
+            <div class="form-group">
+              <label class="form-label" for="ideaTitle">Title</label>
+              <input type="text" id="ideaTitle" class="form-input" placeholder="What's the idea?" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ideaDesc">Description</label>
+              <textarea id="ideaDesc" class="form-textarea" rows="3" placeholder="Describe the idea in detail..."></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group form-group--half">
+                <label class="form-label" for="ideaTags">Tags</label>
+                <input type="text" id="ideaTags" class="form-input" placeholder="e.g. UX, Frontend" />
+              </div>
+              <div class="form-group form-group--half">
+                <label class="form-label" for="ideaPriority">Priority</label>
+                <select id="ideaPriority" class="form-select">
+                  <option>Low</option>
+                  <option>Medium</option>
+                  <option selected>High</option>
+                  <option>Critical</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn--primary btn--ink btn--full" data-ripple>
+              <span class="btn__text">Save Idea</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="ideas-list">
+          <h3 class="section-title">All Ideas</h3>
+
+          <article class="idea-card" data-parallax="0.02">
+            <div class="idea-card__header">
+              <h4 class="idea-card__title">Add dark mode toggle</h4>
+              <span class="idea-card__priority idea-card__priority--high">High</span>
+            </div>
+            <p class="idea-card__desc">Implement a system-aware dark mode toggle that persists user preference. Use CSS custom properties for theme switching with smooth transitions.</p>
+            <div class="idea-card__footer">
+              <div class="idea-card__tags">
+                <span class="tag tag--small">UX</span>
+                <span class="tag tag--small">Frontend</span>
+              </div>
+              <span class="idea-card__date">Feb 16</span>
+            </div>
+          </article>
+
+          <article class="idea-card" data-parallax="0.03">
+            <div class="idea-card__header">
+              <h4 class="idea-card__title">Implement drag-drop upload</h4>
+              <span class="idea-card__priority idea-card__priority--medium">Medium</span>
+            </div>
+            <p class="idea-card__desc">Users should be able to drag audio files directly into the browser window. Show a visual drop zone with waveform preview before confirming upload.</p>
+            <div class="idea-card__footer">
+              <div class="idea-card__tags">
+                <span class="tag tag--small">Feature</span>
+                <span class="tag tag--small">Upload</span>
+              </div>
+              <span class="idea-card__date">Feb 15</span>
+            </div>
+          </article>
+
+          <article class="idea-card" data-parallax="0.02">
+            <div class="idea-card__header">
+              <h4 class="idea-card__title">AI-powered tag suggestions</h4>
+              <span class="idea-card__priority idea-card__priority--low">Low</span>
+            </div>
+            <p class="idea-card__desc">When creating a new idea, analyze the description text and automatically suggest relevant tags using a lightweight NLP model.</p>
+            <div class="idea-card__footer">
+              <div class="idea-card__tags">
+                <span class="tag tag--small">AI</span>
+                <span class="tag tag--small">Enhancement</span>
+              </div>
+              <span class="idea-card__date">Feb 14</span>
+            </div>
+          </article>
+
+          <article class="idea-card" data-parallax="0.04">
+            <div class="idea-card__header">
+              <h4 class="idea-card__title">Keyboard shortcut system</h4>
+              <span class="idea-card__priority idea-card__priority--medium">Medium</span>
+            </div>
+            <p class="idea-card__desc">Add comprehensive keyboard shortcuts for power users. Include a cheat sheet overlay triggered by pressing &lsquo;?&rsquo; and customizable key bindings in settings.</p>
+            <div class="idea-card__footer">
+              <div class="idea-card__tags">
+                <span class="tag tag--small">DX</span>
+                <span class="tag tag--small">Accessibility</span>
+              </div>
+              <span class="idea-card__date">Feb 12</span>
+            </div>
+          </article>
+
+          <article class="idea-card" data-parallax="0.03">
+            <div class="idea-card__header">
+              <h4 class="idea-card__title">Real-time collaboration cursors</h4>
+              <span class="idea-card__priority idea-card__priority--high">High</span>
+            </div>
+            <p class="idea-card__desc">Show other collaborators' cursor positions in real-time on the whiteboard and kanban views. Use Convex subscriptions for live state sync.</p>
+            <div class="idea-card__footer">
+              <div class="idea-card__tags">
+                <span class="tag tag--small">Collab</span>
+                <span class="tag tag--small">Real-time</span>
+              </div>
+              <span class="idea-card__date">Feb 10</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== AI CHAT ==================== -->
+    <section class="page" data-page="ai-chat" style="display:none">
+      <div class="page__inner">
+        <header class="editorial-header editorial-header--compact">
+          <p class="editorial-kicker">The Correspondent</p>
+          <h1 class="editorial-headline">AI Chat</h1>
+        </header>
+
+        <div class="chat-container">
+          <div class="chat-messages">
+            <div class="chat-message chat-message--ai">
+              <div class="chat-message__avatar">AI</div>
+              <div class="chat-message__content">
+                <p>Good evening, Editor. I'm your AI planning assistant. I can help you capture ideas, manage your kanban board, generate directory trees, and more. What would you like to work on?</p>
+              </div>
+              <span class="chat-message__time">6:30 PM</span>
+            </div>
+
+            <div class="chat-message chat-message--user">
+              <div class="chat-message__content">
+                <p>I need to add a new idea for the Wavz.fm project. It's about implementing a collaborative playlist feature where multiple users can add tracks in real-time.</p>
+              </div>
+              <span class="chat-message__time">6:31 PM</span>
+            </div>
+
+            <div class="chat-message chat-message--ai">
+              <div class="chat-message__content">
+                <p>I'll capture that idea right away.</p>
+                <div class="chat-tool-action">
+                  <span class="chat-tool-action__icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                  </span>
+                  <span class="chat-tool-action__label">add_idea</span>
+                  <span class="chat-tool-action__detail">title: "Collaborative playlist feature", priority: High, tags: [Real-time, Social]</span>
+                </div>
+                <p>Done! I've added "Collaborative playlist feature" as a high-priority idea with Real-time and Social tags. Would you like to promote it to a kanban card?</p>
+              </div>
+              <span class="chat-message__time">6:31 PM</span>
+            </div>
+
+            <div class="chat-message chat-message--user">
+              <div class="chat-message__content">
+                <p>Yes, add it to the Backlog column. Also, move the "Design kanban drag-drop UX" card to the Review column.</p>
+              </div>
+              <span class="chat-message__time">6:32 PM</span>
+            </div>
+
+            <div class="chat-message chat-message--ai">
+              <div class="chat-message__content">
+                <p>Two actions completed:</p>
+                <div class="chat-tool-action">
+                  <span class="chat-tool-action__icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+                  </span>
+                  <span class="chat-tool-action__label">update_kanban</span>
+                  <span class="chat-tool-action__detail">Added "Collaborative playlist feature" to Backlog</span>
+                </div>
+                <div class="chat-tool-action">
+                  <span class="chat-tool-action__icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  </span>
+                  <span class="chat-tool-action__label">update_kanban</span>
+                  <span class="chat-tool-action__detail">Moved "Design kanban drag-drop UX" from In Progress to Review</span>
+                </div>
+                <p>Both changes are live. Your kanban board now reflects the updated card positions.</p>
+              </div>
+              <span class="chat-message__time">6:32 PM</span>
+            </div>
+
+            <div class="chat-message chat-message--user">
+              <div class="chat-message__content">
+                <p>Great. Can you generate a directory tree for a new microservice that handles the real-time playlist sync?</p>
+              </div>
+              <span class="chat-message__time">6:33 PM</span>
+            </div>
+
+            <div class="chat-message chat-message--ai">
+              <div class="chat-message__content">
+                <p>Here's a clean service structure for the playlist sync microservice:</p>
+                <div class="chat-tool-action">
+                  <span class="chat-tool-action__icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  </span>
+                  <span class="chat-tool-action__label">generate_tree</span>
+                  <span class="chat-tool-action__detail">playlist-sync-service/ with src/, tests/, config/, and docker files</span>
+                </div>
+                <pre class="chat-code"><code>playlist-sync-service/
+  src/
+    handlers/
+      websocket.ts
+      playlist.ts
+    middleware/
+      auth.ts
+      rateLimit.ts
+    services/
+      syncEngine.ts
+      conflictResolver.ts
+    index.ts
+  tests/
+    handlers.test.ts
+    sync.test.ts
+  Dockerfile
+  package.json</code></pre>
+                <p>The tree has been generated. The sync engine uses WebSocket connections for real-time updates with a conflict resolution layer for concurrent edits.</p>
+              </div>
+              <span class="chat-message__time">6:34 PM</span>
+            </div>
+          </div>
+
+          <div class="chat-input-area">
+            <input type="text" class="chat-input" placeholder="Ask the AI assistant..." />
+            <button class="chat-send btn--ink" data-ripple>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SETTINGS ==================== -->
+    <section class="page" data-page="settings" style="display:none">
+      <div class="page__inner">
+        <header class="editorial-header">
+          <p class="editorial-kicker">The Masthead</p>
+          <h1 class="editorial-headline">Settings</h1>
+          <p class="editorial-standfirst">Fine-tune every detail. Your preferences, your rules, your editorial standards.</p>
+        </header>
+
+        <div class="settings-layout">
+          <nav class="settings-tabs">
+            <button class="settings-tab settings-tab--active" data-settings-tab="account">Account</button>
+            <button class="settings-tab" data-settings-tab="subscription">Subscription</button>
+            <button class="settings-tab" data-settings-tab="preferences">Preferences</button>
+            <button class="settings-tab" data-settings-tab="integrations">Integrations</button>
+            <button class="settings-tab" data-settings-tab="data">Data</button>
+          </nav>
+
+          <div class="settings-panel settings-panel--active" data-settings-panel="account">
+            <h3 class="section-title">Account Details</h3>
+            <div class="form-group">
+              <label class="form-label">Display Name</label>
+              <input type="text" class="form-input" value="Editor-in-Chief" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-input" value="editor@ideamgmt.com" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Avatar</label>
+              <div class="avatar-upload">
+                <div class="avatar-upload__preview">EC</div>
+                <button class="btn btn--secondary btn--ink btn--sm" data-ripple>
+                  <span class="btn__text">Change Avatar</span>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bio</label>
+              <textarea class="form-textarea" rows="3">Creative technologist and idea architect. Building the future, one project at a time.</textarea>
+            </div>
+            <button class="btn btn--primary btn--ink" data-ripple>
+              <span class="btn__text">Save Changes</span>
+            </button>
+          </div>
+
+          <div class="settings-panel" data-settings-panel="subscription">
+            <h3 class="section-title">Subscription</h3>
+            <div class="subscription-card">
+              <div class="subscription-card__header">
+                <span class="subscription-card__plan">Pro Plan</span>
+                <span class="subscription-card__price">$19<span class="subscription-card__period">/month</span></span>
+              </div>
+              <ul class="subscription-card__features">
+                <li>Unlimited projects</li>
+                <li>AI Chat with tool actions</li>
+                <li>Priority support</li>
+                <li>Custom integrations</li>
+                <li>Advanced analytics</li>
+              </ul>
+              <div class="subscription-card__footer">
+                <span class="subscription-card__renew">Renews March 16, 2026</span>
+                <button class="btn btn--secondary btn--ink btn--sm" data-ripple>
+                  <span class="btn__text">Manage Subscription</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-panel" data-settings-panel="preferences">
+            <h3 class="section-title">Preferences</h3>
+            <div class="setting-row">
+              <div class="setting-row__info">
+                <span class="setting-row__label">Dark Mode</span>
+                <span class="setting-row__desc">Use the dark editorial theme</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" class="toggle__input" checked />
+                <span class="toggle__slider"></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-row__info">
+                <span class="setting-row__label">Motion Effects</span>
+                <span class="setting-row__desc">Enable ink-flow animations and transitions</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" class="toggle__input" checked />
+                <span class="toggle__slider"></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-row__info">
+                <span class="setting-row__label">Compact Mode</span>
+                <span class="setting-row__desc">Reduce spacing for denser layouts</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" class="toggle__input" />
+                <span class="toggle__slider"></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-row__info">
+                <span class="setting-row__label">Email Notifications</span>
+                <span class="setting-row__desc">Receive email updates about project activity</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" class="toggle__input" checked />
+                <span class="toggle__slider"></span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Default View</label>
+              <select class="form-select">
+                <option selected>Dashboard</option>
+                <option>Projects</option>
+                <option>Kanban</option>
+                <option>Ideas</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-panel" data-settings-panel="integrations">
+            <h3 class="section-title">Integrations</h3>
+            <div class="integration-row">
+              <div class="integration-row__info">
+                <span class="integration-row__name">GitHub</span>
+                <span class="integration-row__status integration-row__status--connected">Connected</span>
+              </div>
+              <button class="btn btn--secondary btn--ink btn--sm" data-ripple>
+                <span class="btn__text">Configure</span>
+              </button>
+            </div>
+            <div class="integration-row">
+              <div class="integration-row__info">
+                <span class="integration-row__name">Slack</span>
+                <span class="integration-row__status integration-row__status--connected">Connected</span>
+              </div>
+              <button class="btn btn--secondary btn--ink btn--sm" data-ripple>
+                <span class="btn__text">Configure</span>
+              </button>
+            </div>
+            <div class="integration-row">
+              <div class="integration-row__info">
+                <span class="integration-row__name">Figma</span>
+                <span class="integration-row__status integration-row__status--disconnected">Not Connected</span>
+              </div>
+              <button class="btn btn--primary btn--ink btn--sm" data-ripple>
+                <span class="btn__text">Connect</span>
+              </button>
+            </div>
+            <div class="integration-row">
+              <div class="integration-row__info">
+                <span class="integration-row__name">Linear</span>
+                <span class="integration-row__status integration-row__status--disconnected">Not Connected</span>
+              </div>
+              <button class="btn btn--primary btn--ink btn--sm" data-ripple>
+                <span class="btn__text">Connect</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="settings-panel" data-settings-panel="data">
+            <h3 class="section-title">Data Management</h3>
+            <div class="data-section">
+              <h4 class="data-section__title">Export</h4>
+              <p class="data-section__desc">Download all your projects, ideas, and settings as a JSON archive.</p>
+              <button class="btn btn--secondary btn--ink" data-ripple>
+                <span class="btn__text">Export All Data</span>
+              </button>
+            </div>
+            <div class="data-section">
+              <h4 class="data-section__title">Import</h4>
+              <p class="data-section__desc">Import data from a previously exported JSON archive or from supported third-party tools.</p>
+              <button class="btn btn--secondary btn--ink" data-ripple>
+                <span class="btn__text">Import Data</span>
+              </button>
+            </div>
+            <div class="data-section data-section--danger">
+              <h4 class="data-section__title">Danger Zone</h4>
+              <p class="data-section__desc">Permanently delete your account and all associated data. This action cannot be undone.</p>
+              <button class="btn btn--danger btn--ink" data-ripple>
+                <span class="btn__text">Delete Account</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

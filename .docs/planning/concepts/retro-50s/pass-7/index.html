@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDEA-MANAGEMENT | Carnival Carousel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient confetti canvas -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay" class="loading-overlay" aria-hidden="true">
+    <div class="prize-wheel">
+      <div class="wheel-inner">
+        <div class="wheel-segment s1"></div>
+        <div class="wheel-segment s2"></div>
+        <div class="wheel-segment s3"></div>
+        <div class="wheel-segment s4"></div>
+        <div class="wheel-segment s5"></div>
+        <div class="wheel-segment s6"></div>
+      </div>
+      <div class="wheel-pointer"></div>
+    </div>
+    <p class="loading-text">Spinning up the ride...</p>
+  </div>
+
+  <!-- Floating Pill Nav (Ride Tickets) -->
+  <nav class="pill-nav" role="navigation" aria-label="Main navigation">
+    <div class="pill-nav-inner">
+      <button class="pill-ticket active" data-view="dashboard" aria-current="page">
+        <i class="ph ph-house"></i>
+        <span>Home</span>
+      </button>
+      <button class="pill-ticket" data-view="projects">
+        <i class="ph ph-folders"></i>
+        <span>Projects</span>
+      </button>
+      <button class="pill-ticket" data-view="project-workspace">
+        <i class="ph ph-briefcase"></i>
+        <span>Workspace</span>
+      </button>
+      <button class="pill-ticket" data-view="kanban">
+        <i class="ph ph-kanban"></i>
+        <span>Kanban</span>
+      </button>
+      <button class="pill-ticket" data-view="whiteboard">
+        <i class="ph ph-pencil-circle"></i>
+        <span>Whiteboard</span>
+      </button>
+      <button class="pill-ticket" data-view="schema-planner">
+        <i class="ph ph-graph"></i>
+        <span>Schema</span>
+      </button>
+      <button class="pill-ticket" data-view="directory-tree">
+        <i class="ph ph-tree-structure"></i>
+        <span>Directory</span>
+      </button>
+      <button class="pill-ticket" data-view="ideas">
+        <i class="ph ph-lightbulb"></i>
+        <span>Ideas</span>
+      </button>
+      <button class="pill-ticket" data-view="ai-chat">
+        <i class="ph ph-robot"></i>
+        <span>AI Chat</span>
+      </button>
+      <button class="pill-ticket" data-view="settings">
+        <i class="ph ph-gear"></i>
+        <span>Settings</span>
+      </button>
+    </div>
+    <!-- Mobile hamburger -->
+    <button class="mobile-menu-toggle" aria-label="Toggle menu">
+      <i class="ph ph-list"></i>
+    </button>
+  </nav>
+
+  <!-- Main content area -->
+  <main class="carousel-stage">
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <section class="view-panel" data-view="dashboard" data-page="dashboard">
+      <div class="view-content">
+        <div class="ride-header">
+          <div class="ride-badge">RIDE #1</div>
+          <h1>Welcome to the Grand Carousel!</h1>
+          <p class="ride-subtitle">Step right up, folks! Here's your panoramic view of all the action at the fairground today.</p>
+        </div>
+
+        <div class="stats-carousel">
+          <div class="stat-card cotton-candy">
+            <div class="stat-wheel">
+              <div class="spin-number" data-target="24">0</div>
+            </div>
+            <div class="stat-label">Active Projects</div>
+            <div class="stat-trend up"><i class="ph ph-trend-up"></i> +3 this week</div>
+          </div>
+          <div class="stat-card mint-swirl">
+            <div class="stat-wheel">
+              <div class="spin-number" data-target="147">0</div>
+            </div>
+            <div class="stat-label">Total Ideas</div>
+            <div class="stat-trend up"><i class="ph ph-trend-up"></i> +12 new</div>
+          </div>
+          <div class="stat-card lemon-drop">
+            <div class="stat-wheel">
+              <div class="spin-number" data-target="38">0</div>
+            </div>
+            <div class="stat-label">Tasks in Progress</div>
+            <div class="stat-trend neutral"><i class="ph ph-minus"></i> Steady</div>
+          </div>
+          <div class="stat-card blueberry">
+            <div class="stat-wheel">
+              <div class="spin-number" data-target="92">0</div>
+            </div>
+            <div class="stat-label">Completion Rate</div>
+            <div class="stat-trend up"><i class="ph ph-trend-up"></i> +5%</div>
+          </div>
+        </div>
+
+        <div class="dashboard-duo">
+          <div class="card-carousel-panel">
+            <h2><i class="ph ph-clock-clockwise"></i> Recent Activity</h2>
+            <ul class="activity-feed">
+              <li class="activity-item">
+                <span class="activity-icon"><i class="ph ph-plus-circle"></i></span>
+                <div class="activity-body">
+                  <strong>New idea added</strong> — "Add dark mode toggle" in Wavz.fm Music Platform
+                  <span class="activity-time">2 min ago</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-icon"><i class="ph ph-arrow-right"></i></span>
+                <div class="activity-body">
+                  <strong>Card moved</strong> — "Design kanban drag-drop UX" to Review
+                  <span class="activity-time">15 min ago</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-icon"><i class="ph ph-check-circle"></i></span>
+                <div class="activity-body">
+                  <strong>Task completed</strong> — "Set up Clerk authentication"
+                  <span class="activity-time">1 hr ago</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-icon"><i class="ph ph-users"></i></span>
+                <div class="activity-body">
+                  <strong>Collaborator joined</strong> — Sarah Chen joined Campus Learning App
+                  <span class="activity-time">3 hrs ago</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-icon"><i class="ph ph-git-branch"></i></span>
+                <div class="activity-body">
+                  <strong>Schema updated</strong> — Added "Notification" entity to RepoSaver
+                  <span class="activity-time">Yesterday</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card-carousel-panel">
+            <h2><i class="ph ph-rocket-launch"></i> Quick Actions</h2>
+            <div class="quick-actions-grid">
+              <button class="quick-action-btn">
+                <i class="ph ph-plus"></i>
+                <span>New Project</span>
+              </button>
+              <button class="quick-action-btn">
+                <i class="ph ph-lightbulb"></i>
+                <span>Capture Idea</span>
+              </button>
+              <button class="quick-action-btn">
+                <i class="ph ph-kanban"></i>
+                <span>Open Kanban</span>
+              </button>
+              <button class="quick-action-btn">
+                <i class="ph ph-robot"></i>
+                <span>Ask AI</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECTS ==================== -->
+    <section class="view-panel" data-view="projects" data-page="projects">
+      <div class="view-content">
+        <div class="ride-header">
+          <div class="ride-badge">RIDE #2</div>
+          <h1>The Project Pavilion</h1>
+          <p class="ride-subtitle">Step right up and browse the finest collection of projects this side of the midway!</p>
+        </div>
+
+        <div class="projects-toolbar">
+          <div class="search-fairground">
+            <i class="ph ph-magnifying-glass"></i>
+            <input type="text" placeholder="Search projects..." class="fairground-input">
+          </div>
+          <button class="btn-primary create-new-btn">
+            <i class="ph ph-plus"></i> Create New Project
+          </button>
+        </div>
+
+        <div class="project-cards-carousel">
+          <div class="project-card prize-card">
+            <div class="prize-ribbon">Active</div>
+            <div class="prize-card-header">
+              <div class="project-avatar" style="background: linear-gradient(135deg, #ff6b9d, #ff9a76);">W</div>
+              <div>
+                <h3>Wavz.fm Music Platform</h3>
+                <span class="project-slug">wavz-fm</span>
+              </div>
+            </div>
+            <p class="project-desc">A social music streaming platform with collaborative playlists, live DJ sessions, and waveform visualizations.</p>
+            <div class="project-meta">
+              <span class="meta-chip"><i class="ph ph-tag"></i> React, Node.js, WebAudio</span>
+              <span class="meta-chip"><i class="ph ph-users"></i> 4 collaborators</span>
+            </div>
+            <div class="prize-progress">
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 68%"></div>
+              </div>
+              <span class="progress-label">68% Complete</span>
+            </div>
+          </div>
+
+          <div class="project-card prize-card">
+            <div class="prize-ribbon ribbon-new">New</div>
+            <div class="prize-card-header">
+              <div class="project-avatar" style="background: linear-gradient(135deg, #4ecdc4, #44a8a0);">C</div>
+              <div>
+                <h3>Campus Learning App</h3>
+                <span class="project-slug">campus-learn</span>
+              </div>
+            </div>
+            <p class="project-desc">An interactive learning management system for university students with AI-powered study recommendations.</p>
+            <div class="project-meta">
+              <span class="meta-chip"><i class="ph ph-tag"></i> Next.js, Convex, Clerk</span>
+              <span class="meta-chip"><i class="ph ph-users"></i> 3 collaborators</span>
+            </div>
+            <div class="prize-progress">
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 25%"></div>
+              </div>
+              <span class="progress-label">25% Complete</span>
+            </div>
+          </div>
+
+          <div class="project-card prize-card">
+            <div class="prize-ribbon ribbon-review">Review</div>
+            <div class="prize-card-header">
+              <div class="project-avatar" style="background: linear-gradient(135deg, #a78bfa, #8b5cf6);">R</div>
+              <div>
+                <h3>RepoSaver Backup Tool</h3>
+                <span class="project-slug">reposaver</span>
+              </div>
+            </div>
+            <p class="project-desc">Automated GitHub repository backup with scheduled snapshots, diff reports, and cloud sync integration.</p>
+            <div class="project-meta">
+              <span class="meta-chip"><i class="ph ph-tag"></i> Go, Docker, AWS S3</span>
+              <span class="meta-chip"><i class="ph ph-users"></i> 2 collaborators</span>
+            </div>
+            <div class="prize-progress">
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 85%"></div>
+              </div>
+              <span class="progress-label">85% Complete</span>
+            </div>
+          </div>
+
+          <div class="project-card prize-card card-create-new">
+            <div class="create-new-inner">
+              <div class="create-plus-icon"><i class="ph ph-plus-circle"></i></div>
+              <h3>Start a New Attraction</h3>
+              <p>Create a brand new project and watch the show begin!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECT WORKSPACE ==================== -->
+    <section class="view-panel" data-view="project-workspace" data-page="project-workspace">
+      <div class="view-content">
+        <div class="ride-header">
+          <div class="ride-badge">RIDE #3</div>
+          <h1>Wavz.fm Workshop Tent</h1>
+          <p class="ride-subtitle">Inside the big top! Here's everything you need to know about this fantastic attraction.</p>
+        </div>
+
+        <div class="workspace-layout">
+          <aside class="workspace-sidebar">
+            <h3><i class="ph ph-folder-open"></i> Project Navigation</h3>
+            <ul class="sidebar-nav-list">
+              <li class="sidebar-item active"><i class="ph ph-house"></i> Overview</li>
+              <li class="sidebar-item"><i class="ph ph-kanban"></i> Kanban Board</li>
+              <li class="sidebar-item"><i class="ph ph-lightbulb"></i> Ideas (12)</li>
+              <li class="sidebar-item"><i class="ph ph-pencil-circle"></i> Whiteboard</li>
+              <li class="sidebar-item"><i class="ph ph-graph"></i> Schema</li>
+              <li class="sidebar-item"><i class="ph ph-tree-structure"></i> Directory</li>
+              <li class="sidebar-item"><i class="ph ph-gear"></i> Settings</li>
+            </ul>
+          </aside>
+
+          <div class="workspace-main">
+            <div class="workspace-meta-card">
+              <div class="meta-row">
+                <span class="meta-key">Status</span>
+                <span class="status-badge active-badge">Active</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-key">Created</span>
+                <span class="meta-value">Jan 15, 2026</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-key">Tech Stack</span>
+                <div class="stack-chips">
+                  <span class="stack-chip">React</span>
+                  <span class="stack-chip">Node.js</span>
+                  <span class="stack-chip">WebAudio API</span>
+                  <span class="stack-chip">PostgreSQL</span>
+                </div>
+              </div>
+              <div class="meta-row">
+                <span class="meta-key">Goals</span>
+                <ul class="goals-list">
+                  <li><i class="ph ph-check-circle"></i> Launch MVP with core streaming</li>
+                  <li><i class="ph ph-circle"></i> Implement collaborative playlists</li>
+                  <li><i class="ph ph-circle"></i> Add live DJ session support</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="workspace-description">
+              <h3>Project Description</h3>
+              <p>Wavz.fm is a social music streaming platform that brings people together through sound. Features include real-time collaborative playlists, live DJ sessions with chat, waveform-driven visualizations, and AI-powered music discovery.</p>
+            </div>
+
+            <div class="workspace-collaborators">
+              <h3><i class="ph ph-users"></i> Collaborators</h3>
+              <div class="collab-row">
+                <div class="collab-avatar" style="background:#ff6b9d;">AJ</div>
+                <div class="collab-avatar" style="background:#4ecdc4;">SC</div>
+                <div class="collab-avatar" style="background:#a78bfa;">MR</div>
+                <div class="collab-avatar" style="background:#f59e0b;">KL</div>
+                <button class="collab-add"><i class="ph ph-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== KANBAN ==================== -->
+    <section class="view-panel" data-view="kanban" data-page="kanban">
+      <div class="view-content">
+        <div class="ride-header">
+          <div class="ride-badge">RIDE #4</div>
+          <h1>The Kanban Carousel</h1>
+          <p class="ride-subtitle">Round and round the cards go! Watch your tasks spin from Backlog all the way to Done!</p>
+        </div>
+
+        <div class="kanban-board">
+          <div class="kanban-column">
+            <div class="column-header backlog-header">
+              <span class="column-count">3</span>
+              <h3>Backlog</h3>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-priority priority-high">High</div>
+                <h4>Implement drag-drop upload</h4>
+                <p>Add file upload with drag-and-drop support for audio tracks</p>
+                <div class="card-footer">
+                  <span class="card-tag">Feature</span>
+                  <div class="card-assignee" style="background:#ff6b9d;">AJ</div>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-priority priority-medium">Med</div>
+                <h4>Add playlist sharing</h4>
+                <p>Generate shareable links for collaborative playlists</p>
+                <div class="card-footer">
+                  <span class="card-tag">Feature</span>
+                  <div class="card-assignee" style="background:#4ecdc4;">SC</div>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-priority priority-low">Low</div>
+                <h4>Update onboarding flow</h4>
+                <p>Redesign welcome screens with new brand assets</p>
+                <div class="card-footer">
+                  <span class="card-tag">Design</span>
+                  <div class="card-assignee" style="background:#a78bfa;">MR</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="column-header progress-header">
+              <span class="column-count">2</span>
+              <h3>In Progress</h3>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-priority priority-high">High</div>
+                <h4>Set up Clerk authentication</h4>
+                <p>Integrate Clerk for user auth with social login providers</p>
+                <div class="card-footer">
+                  <span class="card-tag">Backend</span>
+                  <div class="card-assignee" style="background:#ff6b9d;">AJ</div>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-priority priority-medium">Med</div>
+                <h4>Design kanban drag-drop UX</h4>
+                <p>Create interaction patterns for card movement between columns</p>
+                <div class="card-footer">
+                  <span class="card-tag">Design</span>
+                  <div class="card-assignee" style="background:#a78bfa;">MR</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="column-header review-header">
+              <span class="column-count">2</span>
+              <h3>Review</h3>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-priority priority-medium">Med</div>
+                <h4>Waveform visualizer component</h4>
+                <p>Real-time audio waveform rendering using WebAudio API</p>
+                <div class="card-footer">
+                  <span class="card-tag">Frontend</span>
+                  <div class="card-assignee" style="background:#4ecdc4;">SC</div>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-priority priority-low">Low</div>
+                <h4>User profile page</h4>
+                <p>Display user info, listening history, and favorite tracks</p>
+                <div class="card-footer">
+                  <span class="card-tag">Frontend</span>
+                  <div class="card-assignee" style="background:#f59e0b;">KL</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="column-header done-header">
+              <span class="column-count">3</span>
+              <h3>Done</h3>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card card-done">
+                <h4><i class="ph ph-check-circle"></i> Project scaffolding</h4>
+                <p>Initialize Next.js app with Convex backend</p>
+                <div class="card-footer">
+                  <span class="card-tag">Setup</span>
+                  <div class="card-assignee" style="background:#ff6b9d;">AJ</div>
+                </div>
+              </div>
+              <div class="kanban-card card-done">
+                <h4><i class="ph ph-check-circle"></i> Design system tokens</h4>
+                <p>Define colors, typography, spacing tokens</p>
+                <div class="card-footer">
+                  <span class="card-tag">Design</span>
+                  <div class="card-assignee" style="background:#a78bfa;">MR</div>
+                </div>
+              </div>
+              <div class="kanban-card card-done">
+                <h4><i class="ph ph-check-circle"></i> Database schema v1</h4>
+                <p>Define initial Convex schema for users and tracks</p>
+                <div class="card-footer">
+                  <span class="card-tag">Backend</span>
+                  <div class="card-assignee" style="background:#4ecdc4;">SC</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== WHITEBOARD ==================== -->
+    <section class="view-panel" data-view="whiteboard" data-page="whiteboard">
+      <div class="view-content">
+        <div class="ride-header">
+          <div class="ride-badge">RIDE #5</div>
+          <h1>The Whiteboard Wonderland</h1>
+          <p class="ride-subtitle">An infinite canvas of possibilities! Drag, connect, and dream up your wildest attractions!</p>
+        </div>
+
+        <div class="whiteboard-toolbar">
+          <button class="tool-btn active" title="Select"><i class="ph ph-cursor"></i></button>
+          <button class="tool-btn" title="Add Container"><i class="ph ph-rectangle"></i></button>
+          <button class="tool-btn" title="Add Text"><i class="ph ph-text-t"></i></button>
+          <button class="tool-btn" title="Draw Line"><i class="ph ph-line-segment"></i></button>
+          <button class="tool-btn" title="Sticky Note"><i class="ph ph-note"></i></button>
+          <div class="tool-divider"></div>
+          <button class="tool-btn" title="Undo"><i class="ph ph-arrow-counter-clockwise"></i></button>
+          <button class="tool-btn" title="Redo"><i class="ph ph-arrow-clockwise"></i></button>
+          <div class="tool-divider"></div>
+          <button class="tool-btn" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
+          <button class="tool-btn" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
+        </div>
+
+        <div class="whiteboard-canvas">
+          <svg class="canvas-connections" width="100%" height="100%">
+            <line x1="260" y1="120" x2="460" y2="200" class="connection-line"/>
+            <line x1="260" y1="120" x2="130" y2="300" class="connection-line"/>
+            <line x1="540" y1="200" x2="540" y2="350" class="connection-line"/>
+          </svg>
+          <div class="wb-container" style="left: 60px; top: 60px;" data-draggable>
+            <div class="wb-container-header">User Flows</div>
+            <div class="wb-container-body">
+              <p>Sign up > Onboarding > Dashboard > First playlist creation</p>
+            </div>
+          </div>
+          <div class="wb-container wb-container-alt" style="left: 380px; top: 140px;" data-draggable>
+            <div class="wb-container-header">Audio Engine</div>
+            <div class="wb-container-body">
+              <p>WebAudio API > Waveform render > Real-time streaming > EQ controls</p>
+            </div>
+          </div>
+          <div class="wb-container wb-container-accent" style="left: 50px; top: 260px;" data-draggable>
+            <div class="wb-container-header">Social Features</div>
+            <div class="wb-container-body">
+              <p>Follow system > Collaborative playlists > Live chat > Activity feed</p>
+            </div>
+          </div>
+          <div class="wb-container" style="left: 420px; top: 320px;" data-draggable>
+            <div class="wb-container-header">Monetization</div>
+            <div class="wb-container-body">
+              <p>Stripe subscriptions > Premium features > Artist payouts</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCHEMA PLANNER ==================== -->
+    <section class="view-panel" data-view="schema-planner" data-page="schema-planner">
+      <div class="view-content">
+        <div class="ride-header">
+          <div class="ride-badge">RIDE #6</div>
+          <h1>The Schema Spectacular</h1>
+          <p class="ride-subtitle">Behold the magnificent architecture! Every entity connected in perfect carnival harmony!</p>
+        </div>
+
+        <div class="schema-canvas">
+          <svg class="schema-connections" width="100%" height="100%">
+            <path d="M 280 100 Q 360 60 440 100" class="schema-line" />
+            <path d="M 160 180 Q 160 260 200 320" class="schema-line" />
+            <path d="M 560 180 Q 560 260 520 320" class="schema-line" />
+            <path d="M 280 340 Q 360 380 440 340" class="schema-line" />
+          </svg>
+
+          <div class="entity-node" style="left: 40px; top: 40px;">
+            <div class="entity-header">
+              <i class="ph ph-user"></i> User
+            </div>
+            <ul class="entity-fields">
+              <li><span class="field-badge pk">PK</span> id <span class="field-type">string</span></li>
+              <li>name <span class="field-type">string</span></li>
+              <li>email <span class="field-type">string</span></li>
+              <li>avatar <span class="field-type">string</span></li>
+              <li>role <span class="field-type">enum</span></li>
+              <li>createdAt <span class="field-type">datetime</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-node" style="left: 360px; top: 40px;">
+            <div class="entity-header entity-header-alt">
+              <i class="ph ph-folder"></i> Project
+            </div>
+            <ul class="entity-fields">
+              <li><span class="field-badge pk">PK</span> id <span class="field-type">string</span></li>
+              <li><span class="field-badge fk">FK</span> ownerId <span class="field-type">string</span></li>
+              <li>name <span class="field-type">string</span></li>
+              <li>slug <span class="field-type">string</span></li>
+              <li>description <span class="field-type">text</span></li>
+              <li>status <span class="field-type">enum</span></li>
+              <li>tags <span class="field-type">string[]</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-node" style="left: 40px; top: 280px;">
+            <div class="entity-header entity-header-accent">
+              <i class="ph ph-lightbulb"></i> Idea
+            </div>
+            <ul class="entity-fields">
+              <li><span class="field-badge pk">PK</span> id <span class="field-type">string</span></li>
+              <li><span class="field-badge fk">FK</span> projectId <span class="field-type">string</span></li>
+              <li>title <span class="field-type">string</span></li>
+              <li>description <span class="field-type">text</span></li>
+              <li>priority <span class="field-type">enum</span></li>
+              <li>tags <span class="field-type">string[]</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-node" style="left: 360px; top: 280px;">
+            <div class="entity-header entity-header-warm">
+              <i class="ph ph-kanban"></i> KanbanCard
+            </div>
+            <ul class="entity-fields">
+              <li><span class="field-badge pk">PK</span> id <span class="field-type">string</span></li>
+              <li><span class="field-badge fk">FK</span> projectId <span class="field-type">string</span></li>
+              <li><span class="field-badge fk">FK</span> ideaId <span class="field-type">string?</span></li>
+              <li>title <span class="field-type">string</span></li>
+              <li>column <span class="field-type">enum</span></li>
+              <li>assignee <span class="field-type">string</span></li>
+              <li>order <span class="field-type">number</span></li>
+            </ul>
+          </div>
+
+          <div class="entity-node" style="left: 200px; top: 500px;">
+            <div class="entity-header">
+              <i class="ph ph-chats-circle"></i> ChatMessage
+            </div>
+            <ul class="entity-fields">
+              <li><span class="field-badge pk">PK</span> id <span class="field-type">string</span></li>
+              <li><span class="field-badge fk">FK</span> projectId <span class="field-type">string</span></li>
+              <li>role <span class="field-type">enum</span></li>
+              <li>content <span class="field-type">text</span></li>
+              <li>toolCalls <span class="field-type">json?</span></li>
+              <li>createdAt <span class="field-type">datetime</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== DIRECTORY TREE ==================== -->
+    <section class="view-panel" data-view="directory-tree" data-page="directory-tree">
+      <div class="view-content">
+        <div class="ride-header">
+          <div class="ride-badge">RIDE #7</div>
+          <h1>The Directory Ferris Wheel</h1>
+          <p class="ride-subtitle">See the whole fairground from up top! Every file and folder, perfectly organized for your viewing pleasure!</p>
+        </div>
+
+        <div class="tree-container">
+          <div class="tree-header">
+            <h3><i class="ph ph-tree-structure"></i> wavz-fm/</h3>
+            <button class="btn-small"><i class="ph ph-plus"></i> Generate Template</button>
+          </div>
+
+          <ul class="directory-tree-list">
+            <li class="tree-node tree-folder open">
+              <span class="tree-toggle"><i class="ph ph-caret-down"></i></span>
+              <i class="ph ph-folder-open tree-icon"></i>
+              <span class="tree-label">src/</span>
+              <ul class="tree-children">
+                <li class="tree-node tree-folder open">
+                  <span class="tree-toggle"><i class="ph ph-caret-down"></i></span>
+                  <i class="ph ph-folder-open tree-icon"></i>
+                  <span class="tree-label">app/</span>
+                  <ul class="tree-children">
+                    <li class="tree-node tree-file">
+                      <i class="ph ph-file-ts tree-icon"></i>
+                      <span class="tree-label">layout.tsx</span>
+                      <span class="tree-size">2.4 KB</span>
+                    </li>
+                    <li class="tree-node tree-file">
+                      <i class="ph ph-file-ts tree-icon"></i>
+                      <span class="tree-label">page.tsx</span>
+                      <span class="tree-size">1.8 KB</span>
+                    </li>
+                    <li class="tree-node tree-folder">
+                      <span class="tree-toggle"><i class="ph ph-caret-right"></i></span>
+                      <i class="ph ph-folder tree-icon"></i>
+                      <span class="tree-label">dashboard/</span>
+                    </li>
+                    <li class="tree-node tree-folder">
+                      <span class="tree-toggle"><i class="ph ph-caret-right"></i></span>
+                      <i class="ph ph-folder tree-icon"></i>
+                      <span class="tree-label">projects/</span>
+                    </li>
+                    <li class="tree-node tree-folder">
+                      <span class="tree-toggle"><i class="ph ph-caret-right"></i></span>
+                      <i class="ph ph-folder tree-icon"></i>
+                      <span class="tree-label">kanban/</span>
+                    </li>
+                  </ul>
+                </li>
+                <li class="tree-node tree-folder open">
+                  <span class="tree-toggle"><i class="ph ph-caret-down"></i></span>
+                  <i class="ph ph-folder-open tree-icon"></i>
+                  <span class="tree-label">components/</span>
+                  <ul class="tree-children">
+                    <li class="tree-node tree-file">
+                      <i class="ph ph-file-ts tree-icon"></i>
+                      <span class="tree-label">Navbar.tsx</span>
+                      <span class="tree-size">3.1 KB</span>
+                    </li>
+                    <li class="tree-node tree-file">
+                      <i class="ph ph-file-ts tree-icon"></i>
+                      <span class="tree-label">KanbanBoard.tsx</span>
+                      <span class="tree-size">5.7 KB</span>
+                    </li>
+                    <li class="tree-node tree-file">
+                      <i class="ph ph-file-ts tree-icon"></i>
+                      <span class="tree-label">Waveform.tsx</span>
+                      <span class="tree-size">4.2 KB</span>
+                    </li>
+                  </ul>
+                </li>
+                <li class="tree-node tree-folder">
+                  <span class="tree-toggle"><i class="ph ph-caret-right"></i></span>
+                  <i class="ph ph-folder tree-icon"></i>
+                  <span class="tree-label">lib/</span>
+                </li>
+                <li class="tree-node tree-folder">
+                  <span class="tree-toggle"><i class="ph ph-caret-right"></i></span>
+                  <i class="ph ph-folder tree-icon"></i>
+                  <span class="tree-label">hooks/</span>
+                </li>
+              </ul>
+            </li>
+            <li class="tree-node tree-folder">
+              <span class="tree-toggle"><i class="ph ph-caret-right"></i></span>
+              <i class="ph ph-folder tree-icon"></i>
+              <span class="tree-label">convex/</span>
+            </li>
+            <li class="tree-node tree-folder">
+              <span class="tree-toggle"><i class="ph ph-caret-right"></i></span>
+              <i class="ph ph-folder tree-icon"></i>
+              <span class="tree-label">public/</span>
+            </li>
+            <li class="tree-node tree-file">
+              <i class="ph ph-file tree-icon"></i>
+              <span class="tree-label">package.json</span>
+              <span class="tree-size">1.2 KB</span>
+            </li>
+            <li class="tree-node tree-file">
+              <i class="ph ph-file tree-icon"></i>
+              <span class="tree-label">tsconfig.json</span>
+              <span class="tree-size">0.8 KB</span>
+            </li>
+            <li class="tree-node tree-file">
+              <i class="ph ph-file tree-icon"></i>
+              <span class="tree-label">tailwind.config.ts</span>
+              <span class="tree-size">1.5 KB</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== IDEAS ==================== -->
+    <section class="view-panel" data-view="ideas" data-page="ideas">
+      <div class="view-content">
+        <div class="ride-header">
+          <div class="ride-badge">RIDE #8</div>
+          <h1>The Idea Balloon Pop</h1>
+          <p class="ride-subtitle">Pop a balloon and grab a brilliant idea! Every one's a winner at this booth!</p>
+        </div>
+
+        <div class="idea-capture-form">
+          <div class="capture-card">
+            <h3><i class="ph ph-sparkle"></i> Pop a New Idea!</h3>
+            <div class="form-group">
+              <label for="idea-title">What's the big idea?</label>
+              <input type="text" id="idea-title" class="fairground-input" placeholder="Name your brilliant idea...">
+            </div>
+            <div class="form-group">
+              <label for="idea-desc">Tell us more!</label>
+              <textarea id="idea-desc" class="fairground-textarea" placeholder="Describe your idea in detail..." rows="3"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Priority</label>
+                <div class="priority-pills">
+                  <button class="priority-pill pill-low">Low</button>
+                  <button class="priority-pill pill-medium active">Medium</button>
+                  <button class="priority-pill pill-high">High</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="idea-tags">Tags</label>
+                <input type="text" id="idea-tags" class="fairground-input" placeholder="feature, ui, backend...">
+              </div>
+            </div>
+            <button class="btn-primary submit-idea-btn">
+              <i class="ph ph-confetti"></i> Submit Idea!
+            </button>
+          </div>
+        </div>
+
+        <div class="ideas-list">
+          <div class="idea-balloon-card">
+            <div class="balloon-priority priority-high">High</div>
+            <h4>Add dark mode toggle</h4>
+            <p>Implement a system-aware dark mode with manual override toggle in the header navigation.</p>
+            <div class="balloon-meta">
+              <span class="balloon-tag">UI</span>
+              <span class="balloon-tag">Feature</span>
+              <span class="balloon-votes"><i class="ph ph-heart"></i> 8</span>
+            </div>
+          </div>
+
+          <div class="idea-balloon-card">
+            <div class="balloon-priority priority-high">High</div>
+            <h4>Implement drag-drop upload</h4>
+            <p>Allow users to drag files directly onto the project workspace for instant upload and processing.</p>
+            <div class="balloon-meta">
+              <span class="balloon-tag">UX</span>
+              <span class="balloon-tag">Feature</span>
+              <span class="balloon-votes"><i class="ph ph-heart"></i> 12</span>
+            </div>
+          </div>
+
+          <div class="idea-balloon-card">
+            <div class="balloon-priority priority-medium">Med</div>
+            <h4>Keyboard shortcuts panel</h4>
+            <p>Add a discoverable keyboard shortcuts overlay accessible via Ctrl+/ or ? key.</p>
+            <div class="balloon-meta">
+              <span class="balloon-tag">UX</span>
+              <span class="balloon-votes"><i class="ph ph-heart"></i> 5</span>
+            </div>
+          </div>
+
+          <div class="idea-balloon-card">
+            <div class="balloon-priority priority-low">Low</div>
+            <h4>Export kanban to CSV</h4>
+            <p>One-click export of kanban board data to CSV format for reporting and external tools.</p>
+            <div class="balloon-meta">
+              <span class="balloon-tag">Feature</span>
+              <span class="balloon-tag">Data</span>
+              <span class="balloon-votes"><i class="ph ph-heart"></i> 3</span>
+            </div>
+          </div>
+
+          <div class="idea-balloon-card">
+            <div class="balloon-priority priority-medium">Med</div>
+            <h4>Real-time collaboration cursors</h4>
+            <p>Show live cursor positions of team members on the whiteboard for real-time collaboration awareness.</p>
+            <div class="balloon-meta">
+              <span class="balloon-tag">Feature</span>
+              <span class="balloon-tag">Whiteboard</span>
+              <span class="balloon-votes"><i class="ph ph-heart"></i> 9</span>
+            </div>
+          </div>
+
+          <div class="idea-balloon-card">
+            <div class="balloon-priority priority-medium">Med</div>
+            <h4>AI-powered idea clustering</h4>
+            <p>Use AI to automatically group similar ideas and suggest merges or connections between them.</p>
+            <div class="balloon-meta">
+              <span class="balloon-tag">AI</span>
+              <span class="balloon-tag">Feature</span>
+              <span class="balloon-votes"><i class="ph ph-heart"></i> 15</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== AI CHAT ==================== -->
+    <section class="view-panel" data-view="ai-chat" data-page="ai-chat">
+      <div class="view-content">
+        <div class="ride-header">
+          <div class="ride-badge">RIDE #9</div>
+          <h1>The Fortune Teller's Tent</h1>
+          <p class="ride-subtitle">Step inside and consult our magnificent AI oracle! Ask anything and receive wisdom beyond measure!</p>
+        </div>
+
+        <div class="chat-container">
+          <div class="chat-messages">
+            <div class="chat-message ai-message">
+              <div class="message-avatar ai-avatar"><i class="ph ph-robot"></i></div>
+              <div class="message-bubble">
+                <div class="message-sender">AI Assistant</div>
+                <p>Welcome to the Idea-Management AI assistant! I can help you manage projects, capture ideas, update your kanban board, and generate directory templates. What would you like to do today?</p>
+              </div>
+            </div>
+
+            <div class="chat-message user-message">
+              <div class="message-bubble">
+                <div class="message-sender">You</div>
+                <p>I have a new idea for the Wavz.fm project: "Add real-time audio visualization using WebGL shaders for a more immersive experience."</p>
+              </div>
+              <div class="message-avatar user-avatar">AJ</div>
+            </div>
+
+            <div class="chat-message ai-message">
+              <div class="message-avatar ai-avatar"><i class="ph ph-robot"></i></div>
+              <div class="message-bubble">
+                <div class="message-sender">AI Assistant</div>
+                <p>Great idea! I'll add that to the Wavz.fm project right away.</p>
+                <div class="tool-action">
+                  <div class="tool-action-header">
+                    <i class="ph ph-wrench"></i> Tool: add_idea
+                  </div>
+                  <pre class="tool-action-code">{
+  "project": "wavz-fm",
+  "title": "WebGL shader audio visualization",
+  "description": "Add real-time audio visualization using WebGL shaders for immersive experience",
+  "priority": "medium",
+  "tags": ["feature", "audio", "visualization"]
+}</pre>
+                  <div class="tool-action-result"><i class="ph ph-check-circle"></i> Idea added successfully!</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-message user-message">
+              <div class="message-bubble">
+                <div class="message-sender">You</div>
+                <p>Can you move the "Set up Clerk authentication" card to the Done column?</p>
+              </div>
+              <div class="message-avatar user-avatar">AJ</div>
+            </div>
+
+            <div class="chat-message ai-message">
+              <div class="message-avatar ai-avatar"><i class="ph ph-robot"></i></div>
+              <div class="message-bubble">
+                <div class="message-sender">AI Assistant</div>
+                <p>Absolutely! Moving that card to Done now.</p>
+                <div class="tool-action">
+                  <div class="tool-action-header">
+                    <i class="ph ph-wrench"></i> Tool: update_kanban
+                  </div>
+                  <pre class="tool-action-code">{
+  "card": "Set up Clerk authentication",
+  "from": "In Progress",
+  "to": "Done"
+}</pre>
+                  <div class="tool-action-result"><i class="ph ph-check-circle"></i> Card moved to Done!</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-message user-message">
+              <div class="message-bubble">
+                <div class="message-sender">You</div>
+                <p>Generate a directory tree for a new microservice called "notification-service".</p>
+              </div>
+              <div class="message-avatar user-avatar">AJ</div>
+            </div>
+
+            <div class="chat-message ai-message">
+              <div class="message-avatar ai-avatar"><i class="ph ph-robot"></i></div>
+              <div class="message-bubble">
+                <div class="message-sender">AI Assistant</div>
+                <p>Here's a directory structure for your notification service:</p>
+                <div class="tool-action">
+                  <div class="tool-action-header">
+                    <i class="ph ph-wrench"></i> Tool: generate_tree
+                  </div>
+                  <pre class="tool-action-code">{
+  "name": "notification-service",
+  "template": "microservice",
+  "folders": [
+    "src/handlers",
+    "src/models",
+    "src/services",
+    "src/utils",
+    "tests/unit",
+    "tests/integration",
+    "config"
+  ]
+}</pre>
+                  <div class="tool-action-result"><i class="ph ph-check-circle"></i> Directory tree generated with 7 folders!</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-area">
+            <input type="text" class="chat-input fairground-input" placeholder="Ask the oracle anything...">
+            <button class="btn-primary chat-send-btn">
+              <i class="ph ph-paper-plane-tilt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SETTINGS ==================== -->
+    <section class="view-panel" data-view="settings" data-page="settings">
+      <div class="view-content">
+        <div class="ride-header">
+          <div class="ride-badge">RIDE #10</div>
+          <h1>The Control Booth</h1>
+          <p class="ride-subtitle">Fine-tune your fairground experience! Adjust every lever and dial to your heart's content!</p>
+        </div>
+
+        <div class="settings-panels">
+          <!-- Account -->
+          <div class="settings-section">
+            <div class="settings-section-header">
+              <i class="ph ph-user-circle"></i>
+              <h3>Account</h3>
+            </div>
+            <div class="settings-body">
+              <div class="setting-row">
+                <label>Display Name</label>
+                <input type="text" class="fairground-input" value="Alex Johnson">
+              </div>
+              <div class="setting-row">
+                <label>Email</label>
+                <input type="email" class="fairground-input" value="alex@wavz.fm">
+              </div>
+              <div class="setting-row">
+                <label>Avatar</label>
+                <div class="avatar-upload">
+                  <div class="current-avatar" style="background:#ff6b9d;">AJ</div>
+                  <button class="btn-small">Change Photo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subscription -->
+          <div class="settings-section">
+            <div class="settings-section-header">
+              <i class="ph ph-credit-card"></i>
+              <h3>Subscription</h3>
+            </div>
+            <div class="settings-body">
+              <div class="setting-row">
+                <label>Current Plan</label>
+                <div class="plan-badge">Pro Plan <span class="plan-price">$12/mo</span></div>
+              </div>
+              <div class="setting-row">
+                <label>Billing Cycle</label>
+                <span class="meta-value">Renews Mar 15, 2026</span>
+              </div>
+              <div class="setting-row">
+                <button class="btn-secondary">Manage Subscription</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preferences -->
+          <div class="settings-section">
+            <div class="settings-section-header">
+              <i class="ph ph-sliders-horizontal"></i>
+              <h3>Preferences</h3>
+            </div>
+            <div class="settings-body">
+              <div class="setting-row">
+                <label>Theme</label>
+                <div class="carnival-toggle-group">
+                  <button class="toggle-option active">Light</button>
+                  <button class="toggle-option">Dark</button>
+                  <button class="toggle-option">System</button>
+                </div>
+              </div>
+              <div class="setting-row">
+                <label>Notifications</label>
+                <div class="carnival-lever">
+                  <input type="checkbox" id="notif-toggle" class="lever-input" checked>
+                  <label for="notif-toggle" class="lever-track">
+                    <span class="lever-handle"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="setting-row">
+                <label>Email Digests</label>
+                <div class="carnival-lever">
+                  <input type="checkbox" id="digest-toggle" class="lever-input">
+                  <label for="digest-toggle" class="lever-track">
+                    <span class="lever-handle"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="setting-row">
+                <label>Sound Effects</label>
+                <div class="carnival-lever">
+                  <input type="checkbox" id="sound-toggle" class="lever-input" checked>
+                  <label for="sound-toggle" class="lever-track">
+                    <span class="lever-handle"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="setting-row">
+                <label>Default View</label>
+                <select class="fairground-select">
+                  <option>Dashboard</option>
+                  <option>Projects</option>
+                  <option>Kanban</option>
+                  <option>Ideas</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Integrations -->
+          <div class="settings-section">
+            <div class="settings-section-header">
+              <i class="ph ph-plugs-connected"></i>
+              <h3>Integrations</h3>
+            </div>
+            <div class="settings-body">
+              <div class="integration-row">
+                <div class="integration-info">
+                  <i class="ph ph-github-logo integration-icon"></i>
+                  <div>
+                    <strong>GitHub</strong>
+                    <p>Connect repositories for code sync</p>
+                  </div>
+                </div>
+                <button class="btn-small btn-connected">Connected</button>
+              </div>
+              <div class="integration-row">
+                <div class="integration-info">
+                  <i class="ph ph-slack-logo integration-icon"></i>
+                  <div>
+                    <strong>Slack</strong>
+                    <p>Get notifications in your channels</p>
+                  </div>
+                </div>
+                <button class="btn-small">Connect</button>
+              </div>
+              <div class="integration-row">
+                <div class="integration-info">
+                  <i class="ph ph-figma-logo integration-icon"></i>
+                  <div>
+                    <strong>Figma</strong>
+                    <p>Sync design files and components</p>
+                  </div>
+                </div>
+                <button class="btn-small">Connect</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data -->
+          <div class="settings-section">
+            <div class="settings-section-header">
+              <i class="ph ph-database"></i>
+              <h3>Data</h3>
+            </div>
+            <div class="settings-body">
+              <div class="setting-row">
+                <label>Export All Data</label>
+                <button class="btn-secondary"><i class="ph ph-download"></i> Export JSON</button>
+              </div>
+              <div class="setting-row">
+                <label>Import Data</label>
+                <button class="btn-secondary"><i class="ph ph-upload"></i> Import</button>
+              </div>
+              <div class="setting-row danger-row">
+                <label>Danger Zone</label>
+                <button class="btn-danger"><i class="ph ph-trash"></i> Delete Account</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Star burst feedback overlay -->
+  <div id="starburst-feedback" class="starburst-feedback" aria-hidden="true"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

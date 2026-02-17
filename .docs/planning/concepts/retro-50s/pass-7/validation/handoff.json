@@ -1,0 +1,214 @@
+{
+  "concept": "retro-50s",
+  "pass": 7,
+  "variantSeed": "carousel-fairground-ride",
+  "generatedAt": "2026-02-16",
+  "palette": {
+    "bg": "#fff5f0",
+    "text": "#2d1810",
+    "surface": "#ffe8dd",
+    "accent": "#ff6b9d",
+    "accent2": "#4ecdc4",
+    "border": "#f0c4b0"
+  },
+  "typography": {
+    "heading": "Fredoka One",
+    "body": "Quicksand",
+    "mono": "Space Mono"
+  },
+  "contentPersona": "fairground-barker",
+  "uniquenessProfile": {
+    "profileId": "card-stack-carousel",
+    "shellMode": "floating-pill-nav",
+    "navPattern": "pill-toggle-group",
+    "contentFlow": "stacked-card-carousel",
+    "scrollMode": "swipe-horizontal",
+    "alignment": "center",
+    "heroTreatment": "featured-card-hero",
+    "motionLanguage": "card-flip-slide",
+    "density": "spacious",
+    "componentTone": "soft"
+  },
+  "interactionProfile": {
+    "buttonHover": "puff-up-scale-shadow-bloom",
+    "buttonClick": "squash-and-stretch-bounce",
+    "cardHover": "lift-and-tilt-pickup",
+    "pageTransition": "horizontal-card-flip-slide",
+    "scrollReveal": "bounce-in-bottom-springy-overshoot",
+    "navItemHover": "pill-background-fill",
+    "navItemActive": "pill-full-color-glow",
+    "inputFocus": "dashed-colorful-border-bounce",
+    "toggleSwitch": "carnival-lever-flip-mechanical",
+    "tooltips": "rounded-speech-bubble-arrow",
+    "loadingState": "spinning-carnival-prize-wheel",
+    "idleAmbient": "floating-confetti-particles-3",
+    "microFeedback": "star-burst-emoji-pop"
+  },
+  "views": [
+    {
+      "id": "dashboard",
+      "navLabel": "Home",
+      "metaphor": "Grand Carousel panoramic overview of the fairground",
+      "uniqueElements": [
+        "Ride badge (#1) with accent2 background",
+        "Spinning number stat wheels with ease-out animation",
+        "Pastel-bordered stat cards (cotton-candy, mint-swirl, lemon-drop, blueberry)",
+        "Activity feed with icon-coded entries and time stamps",
+        "Quick action grid with dashed-border buttons and puff-up hover"
+      ]
+    },
+    {
+      "id": "projects",
+      "navLabel": "Projects",
+      "metaphor": "Project Pavilion — prize card collection",
+      "uniqueElements": [
+        "Prize ribbon corner banners (Active, New, Review) with rotated transform",
+        "Project avatar circles with gradient backgrounds",
+        "Gradient progress bars (accent to accent2 blend)",
+        "Create-new card with dashed border and plus-circle icon",
+        "Search input with magnifying glass icon pill"
+      ]
+    },
+    {
+      "id": "project-workspace",
+      "navLabel": "Workspace",
+      "metaphor": "Workshop Tent — big top project details",
+      "uniqueElements": [
+        "Sticky sidebar with icon-labeled navigation items",
+        "Meta card with key-value rows and status badge",
+        "Tech stack chip pills in surface color",
+        "Goals checklist with check-circle/circle toggle icons",
+        "Collaborator avatar row with add-new dashed button"
+      ]
+    },
+    {
+      "id": "kanban",
+      "navLabel": "Kanban",
+      "metaphor": "Kanban Carousel — spinning cards through columns",
+      "uniqueElements": [
+        "Four columns with pastel-tinted headers (pink backlog, green progress, blue review, yellow done)",
+        "Column count badges in colored circles",
+        "Drag-cursor kanban cards with priority pill badges",
+        "Card tag pills and assignee avatar circles",
+        "Done cards with reduced opacity and check-circle icons"
+      ]
+    },
+    {
+      "id": "whiteboard",
+      "navLabel": "Whiteboard",
+      "metaphor": "Whiteboard Wonderland — infinite canvas attraction",
+      "uniqueElements": [
+        "Pill-shaped toolbar with icon tool buttons and dividers",
+        "Dot-grid canvas background (radial-gradient pattern)",
+        "Draggable containers with color-coded headers (accent, accent2, purple)",
+        "SVG dashed connection lines between containers",
+        "Active tool state with accent-colored background"
+      ]
+    },
+    {
+      "id": "schema-planner",
+      "navLabel": "Schema",
+      "metaphor": "Schema Spectacular — entity architecture display",
+      "uniqueElements": [
+        "Positioned entity nodes with color-coded headers (accent, accent2, purple, amber)",
+        "PK/FK field badges with accent/accent2 backgrounds",
+        "Monospace field listings with type annotations right-aligned",
+        "SVG quadratic curve connection paths with dashed stroke",
+        "Dot-grid schema canvas background"
+      ]
+    },
+    {
+      "id": "directory-tree",
+      "navLabel": "Directory",
+      "metaphor": "Directory Ferris Wheel — view from the top",
+      "uniqueElements": [
+        "Collapsible tree with caret-down/caret-right toggles",
+        "Folder-open/folder icon state changes on toggle",
+        "Left-border connected tree hierarchy lines",
+        "File size annotations right-aligned in monospace",
+        "Generate Template action button in header"
+      ]
+    },
+    {
+      "id": "ideas",
+      "navLabel": "Ideas",
+      "metaphor": "Idea Balloon Pop — carnival game booth",
+      "uniqueElements": [
+        "Capture form card with sparkle icon header",
+        "Priority pill toggle group (Low=accent2, Medium=accent, High=red)",
+        "Balloon-style idea cards with hover lift and tilt",
+        "Heart vote counter with click-to-increment interaction",
+        "Tag pills and priority badges on each card"
+      ]
+    },
+    {
+      "id": "ai-chat",
+      "navLabel": "AI Chat",
+      "metaphor": "Fortune Teller's Tent — AI oracle consultation",
+      "uniqueElements": [
+        "AI messages with robot icon avatar on mint/teal background",
+        "User messages with initials avatar on accent pink background",
+        "Tool action blocks with wrench icon headers",
+        "Monospace code blocks for tool parameters",
+        "Success result bars with check-circle and green background"
+      ]
+    },
+    {
+      "id": "settings",
+      "navLabel": "Settings",
+      "metaphor": "Control Booth — fine-tuning the fairground",
+      "uniqueElements": [
+        "Grouped sections with icon headers on surface background",
+        "Carnival lever toggle switches with mechanical bounce animation",
+        "Toggle option button groups for theme selection",
+        "Integration rows with brand icons and connect/connected buttons",
+        "Danger zone section with dashed red border top"
+      ]
+    }
+  ],
+  "globalElements": {
+    "navigation": "Fixed floating pill nav bar centered at top, bottom-drawer on mobile",
+    "ambientEffect": "3 CSS-animated floating confetti particles with slow vertical drift",
+    "tooltips": "Dark rounded speech bubbles with bottom-pointing arrow",
+    "loading": "Spinning segmented prize wheel with 6 colored segments and pointer",
+    "microFeedback": "Star emoji pop with scale+rotate keyframe at click position",
+    "pageTransitions": "translateX + rotateY card-flip entrance animation",
+    "scrollReveal": "Staggered translateY bounce-in with opacity fade",
+    "rideBadges": "Numbered ride badges (#1-#10) using accent2 color pill"
+  },
+  "librariesUsed": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "purpose": "Card hover lift/tilt, button puff-up scale, progress bar fill, squash-and-stretch click, input focus bounce"
+    },
+    {
+      "name": "GSAP ScrollTrigger",
+      "version": "3.12.5",
+      "purpose": "Registered for potential scroll-driven animation (currently using JS-based reveal)"
+    },
+    {
+      "name": "Phosphor Icons",
+      "version": "2.1.1",
+      "purpose": "Icon system for navigation pills, content sections, tool actions, and tree structure"
+    }
+  ],
+  "antiRepeatCompliance": [
+    "Uses floating top pill toggle nav (NOT bottom bar from P1, swooping top bar from P2, right-rail from P3/P6, floating dock from P4, minimal top bar from P5)",
+    "Uses cotton-candy pink #ff6b9d + mint #4ecdc4 on warm cream #fff5f0 (NOT pink+mint neon on white P1, turquoise+coral on teal P2, purple+yellow on dark P3, cherry+blue on cream P4, teal+magenta on dark P5, avocado+gold on cream P6)",
+    "Uses Fredoka One + Quicksand + Space Mono (NOT Fredoka+Nunito P1/P2, Righteous+Poppins P3, Cherry Bomb+Lato P4, Permanent Marker+Cabin P5, Pacifico+Atkinson P6)",
+    "Uses fairground carousel metaphor (NOT diner P1, googie space-age P2, cinema P3, soda fountain P4, roadside motel P5, kitchen appliances P6)",
+    "Uses horizontal card-flip-slide page transition (NOT bounce slide P1, view-swoop P2, film-reel P3, receipt-roll P4, headlight-sweep P5, recipe-box-flip P6)",
+    "Uses fortune teller tent chat with rounded bubbles (NOT comic speech P1/P3, space radio P2, napkin notes P4, CB radio P5, recipe exchange P6)",
+    "Uses spinning prize wheel loading (NOT jukebox P1, orbital ring P2, film countdown P3, straw bubbles P4, vacancy sign P5, oven timer P6)",
+    "Does NOT use any anti-repeat items: no diner booth, no jukebox bar, no chrome trim, no googie swoosh, no drive-in screen, no rocket dashboard, no tiki lounge"
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

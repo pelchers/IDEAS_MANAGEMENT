@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDEA-MANAGEMENT // SURVEILLANCE GRID</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto+Mono:wght@300;400;500;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- TOP BAR — thin surveillance control strip    -->
+<!-- ============================================ -->
+<header class="sv-topbar" role="navigation" aria-label="Main navigation">
+  <div class="sv-topbar__brand">
+    <span class="sv-rec-dot" aria-hidden="true"></span>
+    <span class="sv-topbar__title">CTRL</span>
+  </div>
+  <nav class="sv-topbar__nav">
+    <button class="sv-nav-icon" data-view="dashboard" aria-label="Dashboard" title="Dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    </button>
+    <button class="sv-nav-icon" data-view="projects" aria-label="Projects" title="Projects">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+    </button>
+    <button class="sv-nav-icon" data-view="project-workspace" aria-label="Project Workspace" title="Workspace">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </button>
+    <button class="sv-nav-icon" data-view="kanban" aria-label="Kanban" title="Kanban">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="5" height="20"/><rect x="9.5" y="2" width="5" height="14"/><rect x="17" y="2" width="5" height="17"/></svg>
+    </button>
+    <button class="sv-nav-icon" data-view="whiteboard" aria-label="Whiteboard" title="Whiteboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18"/><circle cx="8" cy="8" r="1.5"/><circle cx="16" cy="8" r="1.5"/><circle cx="8" cy="16" r="1.5"/><line x1="9.5" y1="8" x2="14.5" y2="8"/><line x1="8" y1="9.5" x2="8" y2="14.5"/></svg>
+    </button>
+    <button class="sv-nav-icon" data-view="schema-planner" aria-label="Schema Planner" title="Schema Planner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+    </button>
+    <button class="sv-nav-icon" data-view="directory-tree" aria-label="Directory Tree" title="Directory Tree">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="21"/><line x1="6" y1="7" x2="18" y2="7"/><line x1="6" y1="12" x2="14" y2="12"/><line x1="6" y1="17" x2="16" y2="17"/></svg>
+    </button>
+    <button class="sv-nav-icon" data-view="ideas" aria-label="Ideas" title="Ideas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 017 7c0 2.38-1.19 4.47-3 5.74V17H8v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 017-7z"/></svg>
+    </button>
+    <button class="sv-nav-icon" data-view="ai-chat" aria-label="AI Chat" title="AI Chat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    </button>
+    <button class="sv-nav-icon" data-view="settings" aria-label="Settings" title="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1.08-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1.08 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001.08 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.6.77 1.05 1.39 1.08H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1.08z"/></svg>
+    </button>
+  </nav>
+  <div class="sv-topbar__clock">
+    <span class="sv-clock-time" id="sv-clock">00:00:00</span>
+    <span class="sv-rec-label">REC</span>
+  </div>
+</header>
+
+<!-- ============================================ -->
+<!-- MAIN CONTENT AREA                            -->
+<!-- ============================================ -->
+<main class="sv-main">
+
+  <!-- ========== DASHBOARD ========== -->
+  <section class="sv-view sv-view--active" data-page="dashboard">
+    <div class="sv-view__header">
+      <h1 class="sv-view__title">CONTROL ROOM</h1>
+      <span class="sv-view__timestamp">FEED ACTIVE // ALL SECTORS NOMINAL</span>
+    </div>
+    <div class="sv-tile-grid sv-tile-grid--dashboard">
+      <div class="sv-tile sv-tile--stat">
+        <div class="sv-tile__label">ACTIVE PROJECTS</div>
+        <div class="sv-tile__value sv-tile__value--accent">12</div>
+        <div class="sv-tile__sub">+3 THIS WEEK</div>
+        <div class="sv-tile__ts">UPD 14:32:08</div>
+      </div>
+      <div class="sv-tile sv-tile--stat">
+        <div class="sv-tile__label">TOTAL IDEAS</div>
+        <div class="sv-tile__value">47</div>
+        <div class="sv-tile__sub">8 PENDING REVIEW</div>
+        <div class="sv-tile__ts">UPD 14:32:08</div>
+      </div>
+      <div class="sv-tile sv-tile--stat">
+        <div class="sv-tile__label">KANBAN CARDS</div>
+        <div class="sv-tile__value">34</div>
+        <div class="sv-tile__sub">6 IN PROGRESS</div>
+        <div class="sv-tile__ts">UPD 14:31:55</div>
+      </div>
+      <div class="sv-tile sv-tile--stat">
+        <div class="sv-tile__label">COMPLETION RATE</div>
+        <div class="sv-tile__value sv-tile__value--blue">78%</div>
+        <div class="sv-tile__sub">+5% FROM LAST SPRINT</div>
+        <div class="sv-tile__ts">UPD 14:30:00</div>
+      </div>
+      <div class="sv-tile sv-tile--stat">
+        <div class="sv-tile__label">SCHEMA ENTITIES</div>
+        <div class="sv-tile__value">18</div>
+        <div class="sv-tile__sub">42 RELATIONSHIPS</div>
+        <div class="sv-tile__ts">UPD 14:28:12</div>
+      </div>
+      <div class="sv-tile sv-tile--stat">
+        <div class="sv-tile__label">COLLABORATORS</div>
+        <div class="sv-tile__value sv-tile__value--accent">7</div>
+        <div class="sv-tile__sub">3 ONLINE NOW</div>
+        <div class="sv-tile__ts">UPD 14:32:10</div>
+      </div>
+      <div class="sv-tile sv-tile--activity sv-tile--wide">
+        <div class="sv-tile__label">ACTIVITY LOG</div>
+        <div class="sv-activity-feed">
+          <div class="sv-activity-item"><span class="sv-activity-ts">14:31:22</span><span class="sv-activity-user">OPERATOR-A</span> moved card "Design kanban drag-drop UX" to REVIEW</div>
+          <div class="sv-activity-item"><span class="sv-activity-ts">14:28:05</span><span class="sv-activity-user">OPERATOR-B</span> created idea "Research vector search"</div>
+          <div class="sv-activity-item"><span class="sv-activity-ts">14:25:44</span><span class="sv-activity-user">OPERATOR-C</span> updated schema entity "KanbanCard"</div>
+          <div class="sv-activity-item"><span class="sv-activity-ts">14:20:11</span><span class="sv-activity-user">OPERATOR-A</span> deployed directory tree for "Wavz.fm"</div>
+          <div class="sv-activity-item"><span class="sv-activity-ts">14:15:33</span><span class="sv-activity-user">SYSTEM</span> auto-backup completed for all projects</div>
+          <div class="sv-activity-item"><span class="sv-activity-ts">14:10:09</span><span class="sv-activity-user">OPERATOR-D</span> added tag "urgent" to "Stripe webhook handler"</div>
+        </div>
+      </div>
+      <div class="sv-tile sv-tile--actions">
+        <div class="sv-tile__label">QUICK ACTIONS</div>
+        <button class="sv-action-btn" data-action="new-project">+ NEW PROJECT</button>
+        <button class="sv-action-btn" data-action="new-idea">+ CAPTURE IDEA</button>
+        <button class="sv-action-btn" data-action="open-chat">OPEN AI CHAT</button>
+        <button class="sv-action-btn" data-action="view-kanban">VIEW KANBAN</button>
+      </div>
+      <div class="sv-tile sv-tile--status">
+        <div class="sv-tile__label">SYSTEM STATUS</div>
+        <div class="sv-status-row"><span class="sv-status-dot sv-status-dot--green"></span> Database: ONLINE</div>
+        <div class="sv-status-row"><span class="sv-status-dot sv-status-dot--green"></span> Auth: ACTIVE</div>
+        <div class="sv-status-row"><span class="sv-status-dot sv-status-dot--green"></span> Payments: CONNECTED</div>
+        <div class="sv-status-row"><span class="sv-status-dot sv-status-dot--yellow"></span> AI Engine: WARM-UP</div>
+        <div class="sv-tile__ts">CHECK 14:32:10</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROJECTS ========== -->
+  <section class="sv-view" data-page="projects">
+    <div class="sv-view__header">
+      <h1 class="sv-view__title">PROJECT FEEDS</h1>
+      <span class="sv-view__timestamp">4 ACTIVE FEEDS // MONITORING</span>
+    </div>
+    <div class="sv-projects-toolbar">
+      <input type="text" class="sv-search-input" placeholder="SEARCH FEEDS..." aria-label="Search projects">
+      <button class="sv-action-btn sv-action-btn--primary">+ CREATE NEW</button>
+    </div>
+    <div class="sv-tile-grid sv-tile-grid--projects">
+      <div class="sv-tile sv-tile--project">
+        <div class="sv-tile__cam-id">CAM-01</div>
+        <div class="sv-tile__project-name">Wavz.fm Music Platform</div>
+        <div class="sv-tile__project-desc">Streaming music platform with social features, playlist curation, and artist analytics dashboard.</div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-tag">Next.js</span>
+          <span class="sv-tag">Convex</span>
+          <span class="sv-tag">Stripe</span>
+        </div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-status-badge sv-status-badge--active">ACTIVE</span>
+          <span class="sv-collab-count">4 operators</span>
+        </div>
+        <div class="sv-tile__ts">LAST UPD 14:20:00</div>
+      </div>
+      <div class="sv-tile sv-tile--project">
+        <div class="sv-tile__cam-id">CAM-02</div>
+        <div class="sv-tile__project-name">Campus Learning App</div>
+        <div class="sv-tile__project-desc">Mobile-first learning management system for universities with course tracking, assignments, and peer collaboration.</div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-tag">React Native</span>
+          <span class="sv-tag">Firebase</span>
+        </div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-status-badge sv-status-badge--active">ACTIVE</span>
+          <span class="sv-collab-count">3 operators</span>
+        </div>
+        <div class="sv-tile__ts">LAST UPD 13:45:20</div>
+      </div>
+      <div class="sv-tile sv-tile--project">
+        <div class="sv-tile__cam-id">CAM-03</div>
+        <div class="sv-tile__project-name">RepoSaver Backup Tool</div>
+        <div class="sv-tile__project-desc">Automated Git repository backup service with incremental snapshots, cloud storage, and disaster recovery.</div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-tag">Go</span>
+          <span class="sv-tag">AWS S3</span>
+          <span class="sv-tag">Docker</span>
+        </div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-status-badge sv-status-badge--review">REVIEW</span>
+          <span class="sv-collab-count">2 operators</span>
+        </div>
+        <div class="sv-tile__ts">LAST UPD 12:10:05</div>
+      </div>
+      <div class="sv-tile sv-tile--project">
+        <div class="sv-tile__cam-id">CAM-04</div>
+        <div class="sv-tile__project-name">Storyboarder Video Editor</div>
+        <div class="sv-tile__project-desc">Browser-based video storyboard editor with timeline, scene annotations, shot composition tools, and team sharing.</div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-tag">Vue.js</span>
+          <span class="sv-tag">FFmpeg</span>
+          <span class="sv-tag">WebGL</span>
+        </div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-status-badge sv-status-badge--planning">PLANNING</span>
+          <span class="sv-collab-count">2 operators</span>
+        </div>
+        <div class="sv-tile__ts">LAST UPD 11:00:30</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROJECT WORKSPACE ========== -->
+  <section class="sv-view" data-page="project-workspace">
+    <div class="sv-view__header">
+      <h1 class="sv-view__title">WORKSPACE // WAVZ.FM</h1>
+      <span class="sv-view__timestamp">SECTOR CAM-01 // DETAILED VIEW</span>
+    </div>
+    <div class="sv-tile-grid sv-tile-grid--workspace">
+      <div class="sv-tile sv-tile--ws-nav sv-tile--tall">
+        <div class="sv-tile__label">SECTOR NAV</div>
+        <div class="sv-ws-nav-list">
+          <div class="sv-ws-nav-item sv-ws-nav-item--active">Overview</div>
+          <div class="sv-ws-nav-item">Requirements</div>
+          <div class="sv-ws-nav-item">Architecture</div>
+          <div class="sv-ws-nav-item">API Docs</div>
+          <div class="sv-ws-nav-item">Test Plans</div>
+          <div class="sv-ws-nav-item">Deployments</div>
+          <div class="sv-ws-nav-item">Changelog</div>
+        </div>
+      </div>
+      <div class="sv-tile sv-tile--ws-info">
+        <div class="sv-tile__label">PROJECT INTEL</div>
+        <div class="sv-ws-field"><span class="sv-ws-key">NAME</span><span class="sv-ws-val">Wavz.fm Music Platform</span></div>
+        <div class="sv-ws-field"><span class="sv-ws-key">SLUG</span><span class="sv-ws-val">wavz-fm</span></div>
+        <div class="sv-ws-field"><span class="sv-ws-key">STATUS</span><span class="sv-ws-val sv-ws-val--accent">ACTIVE</span></div>
+        <div class="sv-ws-field"><span class="sv-ws-key">CREATED</span><span class="sv-ws-val">2026-01-15</span></div>
+        <div class="sv-tile__ts">CAM-01 // 14:32</div>
+      </div>
+      <div class="sv-tile sv-tile--ws-desc">
+        <div class="sv-tile__label">DESCRIPTION</div>
+        <p class="sv-ws-description">Streaming music platform with social features, playlist curation, and artist analytics dashboard. Built on Next.js with Convex backend for real-time sync. Stripe integration for premium subscriptions.</p>
+      </div>
+      <div class="sv-tile sv-tile--ws-goals">
+        <div class="sv-tile__label">OBJECTIVES</div>
+        <div class="sv-ws-goal"><span class="sv-ws-goal-id">OBJ-01</span> Launch MVP with core streaming by Q2 2026</div>
+        <div class="sv-ws-goal"><span class="sv-ws-goal-id">OBJ-02</span> Implement social features (follow, share, collab playlists)</div>
+        <div class="sv-ws-goal"><span class="sv-ws-goal-id">OBJ-03</span> Integrate Stripe billing with Free/Pro/Artist tiers</div>
+        <div class="sv-ws-goal"><span class="sv-ws-goal-id">OBJ-04</span> Build artist analytics dashboard with play counts</div>
+      </div>
+      <div class="sv-tile sv-tile--ws-stack">
+        <div class="sv-tile__label">TECH STACK</div>
+        <div class="sv-ws-stack-list">
+          <span class="sv-tag">Next.js 15</span>
+          <span class="sv-tag">TypeScript</span>
+          <span class="sv-tag">Convex</span>
+          <span class="sv-tag">Clerk</span>
+          <span class="sv-tag">Stripe</span>
+          <span class="sv-tag">Tailwind CSS</span>
+          <span class="sv-tag">Zustand</span>
+          <span class="sv-tag">Zod</span>
+        </div>
+      </div>
+      <div class="sv-tile sv-tile--ws-team">
+        <div class="sv-tile__label">OPERATORS</div>
+        <div class="sv-ws-team-member"><span class="sv-status-dot sv-status-dot--green"></span> Sarah K. — Lead Dev</div>
+        <div class="sv-ws-team-member"><span class="sv-status-dot sv-status-dot--green"></span> James L. — Backend</div>
+        <div class="sv-ws-team-member"><span class="sv-status-dot sv-status-dot--yellow"></span> Mika T. — Design</div>
+        <div class="sv-ws-team-member"><span class="sv-status-dot sv-status-dot--red"></span> Raj P. — QA (offline)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== KANBAN ========== -->
+  <section class="sv-view" data-page="kanban">
+    <div class="sv-view__header">
+      <h1 class="sv-view__title">KANBAN SURVEILLANCE</h1>
+      <span class="sv-view__timestamp">4 ZONES // 11 CARDS TRACKED</span>
+    </div>
+    <div class="sv-kanban-grid">
+      <!-- BACKLOG -->
+      <div class="sv-kanban-col" data-col="backlog">
+        <div class="sv-kanban-col__header">
+          <span class="sv-kanban-col__name">BACKLOG</span>
+          <span class="sv-kanban-col__count">3</span>
+        </div>
+        <div class="sv-kanban-col__cards">
+          <div class="sv-kanban-card" draggable="true">
+            <div class="sv-kanban-card__id">CARD-001</div>
+            <div class="sv-kanban-card__title">Set up Clerk authentication</div>
+            <div class="sv-kanban-card__meta">
+              <span class="sv-tag sv-tag--sm">auth</span>
+              <span class="sv-kanban-card__priority sv-kanban-card__priority--high">HIGH</span>
+            </div>
+            <div class="sv-kanban-card__ts">LOGGED 14:00:22</div>
+          </div>
+          <div class="sv-kanban-card" draggable="true">
+            <div class="sv-kanban-card__id">CARD-002</div>
+            <div class="sv-kanban-card__title">Research vector search integration</div>
+            <div class="sv-kanban-card__meta">
+              <span class="sv-tag sv-tag--sm">research</span>
+              <span class="sv-kanban-card__priority sv-kanban-card__priority--med">MED</span>
+            </div>
+            <div class="sv-kanban-card__ts">LOGGED 13:45:10</div>
+          </div>
+          <div class="sv-kanban-card" draggable="true">
+            <div class="sv-kanban-card__id">CARD-003</div>
+            <div class="sv-kanban-card__title">Design system color tokens</div>
+            <div class="sv-kanban-card__meta">
+              <span class="sv-tag sv-tag--sm">design</span>
+              <span class="sv-kanban-card__priority sv-kanban-card__priority--low">LOW</span>
+            </div>
+            <div class="sv-kanban-card__ts">LOGGED 12:20:33</div>
+          </div>
+        </div>
+      </div>
+      <!-- IN PROGRESS -->
+      <div class="sv-kanban-col" data-col="in-progress">
+        <div class="sv-kanban-col__header">
+          <span class="sv-kanban-col__name">IN PROGRESS</span>
+          <span class="sv-kanban-col__count">3</span>
+        </div>
+        <div class="sv-kanban-col__cards">
+          <div class="sv-kanban-card" draggable="true">
+            <div class="sv-kanban-card__id">CARD-004</div>
+            <div class="sv-kanban-card__title">Design kanban drag-drop UX</div>
+            <div class="sv-kanban-card__meta">
+              <span class="sv-tag sv-tag--sm">ux</span>
+              <span class="sv-kanban-card__priority sv-kanban-card__priority--high">HIGH</span>
+            </div>
+            <div class="sv-kanban-card__ts">STARTED 10:15:00</div>
+          </div>
+          <div class="sv-kanban-card" draggable="true">
+            <div class="sv-kanban-card__id">CARD-005</div>
+            <div class="sv-kanban-card__title">Implement real-time sync layer</div>
+            <div class="sv-kanban-card__meta">
+              <span class="sv-tag sv-tag--sm">backend</span>
+              <span class="sv-kanban-card__priority sv-kanban-card__priority--high">HIGH</span>
+            </div>
+            <div class="sv-kanban-card__ts">STARTED 09:30:45</div>
+          </div>
+          <div class="sv-kanban-card" draggable="true">
+            <div class="sv-kanban-card__id">CARD-006</div>
+            <div class="sv-kanban-card__title">Build playlist curation UI</div>
+            <div class="sv-kanban-card__meta">
+              <span class="sv-tag sv-tag--sm">frontend</span>
+              <span class="sv-kanban-card__priority sv-kanban-card__priority--med">MED</span>
+            </div>
+            <div class="sv-kanban-card__ts">STARTED 08:50:12</div>
+          </div>
+        </div>
+      </div>
+      <!-- REVIEW -->
+      <div class="sv-kanban-col" data-col="review">
+        <div class="sv-kanban-col__header">
+          <span class="sv-kanban-col__name">REVIEW</span>
+          <span class="sv-kanban-col__count">2</span>
+        </div>
+        <div class="sv-kanban-col__cards">
+          <div class="sv-kanban-card" draggable="true">
+            <div class="sv-kanban-card__id">CARD-007</div>
+            <div class="sv-kanban-card__title">Write Stripe webhook handler</div>
+            <div class="sv-kanban-card__meta">
+              <span class="sv-tag sv-tag--sm">payments</span>
+              <span class="sv-kanban-card__priority sv-kanban-card__priority--high">HIGH</span>
+            </div>
+            <div class="sv-kanban-card__ts">REVIEW 14:10:33</div>
+          </div>
+          <div class="sv-kanban-card" draggable="true">
+            <div class="sv-kanban-card__id">CARD-008</div>
+            <div class="sv-kanban-card__title">Mobile responsive navigation</div>
+            <div class="sv-kanban-card__meta">
+              <span class="sv-tag sv-tag--sm">frontend</span>
+              <span class="sv-kanban-card__priority sv-kanban-card__priority--med">MED</span>
+            </div>
+            <div class="sv-kanban-card__ts">REVIEW 13:55:20</div>
+          </div>
+        </div>
+      </div>
+      <!-- DONE -->
+      <div class="sv-kanban-col" data-col="done">
+        <div class="sv-kanban-col__header">
+          <span class="sv-kanban-col__name">DONE</span>
+          <span class="sv-kanban-col__count">3</span>
+        </div>
+        <div class="sv-kanban-col__cards">
+          <div class="sv-kanban-card sv-kanban-card--done" draggable="true">
+            <div class="sv-kanban-card__id">CARD-009</div>
+            <div class="sv-kanban-card__title">Configure Convex schema</div>
+            <div class="sv-kanban-card__meta">
+              <span class="sv-tag sv-tag--sm">backend</span>
+              <span class="sv-kanban-card__priority sv-kanban-card__priority--high">HIGH</span>
+            </div>
+            <div class="sv-kanban-card__ts">CLOSED 12:00:00</div>
+          </div>
+          <div class="sv-kanban-card sv-kanban-card--done" draggable="true">
+            <div class="sv-kanban-card__id">CARD-010</div>
+            <div class="sv-kanban-card__title">Project creation form</div>
+            <div class="sv-kanban-card__meta">
+              <span class="sv-tag sv-tag--sm">frontend</span>
+              <span class="sv-kanban-card__priority sv-kanban-card__priority--med">MED</span>
+            </div>
+            <div class="sv-kanban-card__ts">CLOSED 10:30:15</div>
+          </div>
+          <div class="sv-kanban-card sv-kanban-card--done" draggable="true">
+            <div class="sv-kanban-card__id">CARD-011</div>
+            <div class="sv-kanban-card__title">Set up CI/CD pipeline</div>
+            <div class="sv-kanban-card__meta">
+              <span class="sv-tag sv-tag--sm">devops</span>
+              <span class="sv-kanban-card__priority sv-kanban-card__priority--low">LOW</span>
+            </div>
+            <div class="sv-kanban-card__ts">CLOSED 09:00:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== WHITEBOARD ========== -->
+  <section class="sv-view" data-page="whiteboard">
+    <div class="sv-view__header">
+      <h1 class="sv-view__title">WHITEBOARD GRID</h1>
+      <span class="sv-view__timestamp">INFINITE CANVAS // 5 CONTAINERS ACTIVE</span>
+    </div>
+    <div class="sv-wb-toolbar">
+      <button class="sv-wb-tool sv-wb-tool--active" data-tool="select" title="Select">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+      </button>
+      <button class="sv-wb-tool" data-tool="container" title="Container">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18"/></svg>
+      </button>
+      <button class="sv-wb-tool" data-tool="text" title="Text">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="8" y1="20" x2="16" y2="20"/></svg>
+      </button>
+      <button class="sv-wb-tool" data-tool="link" title="Link nodes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+      </button>
+      <button class="sv-wb-tool" data-tool="delete" title="Delete">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M8 6V4h8v2"/></svg>
+      </button>
+    </div>
+    <div class="sv-wb-canvas">
+      <div class="sv-wb-container" style="left:40px;top:30px;width:280px;">
+        <div class="sv-wb-container__header">USER FLOWS</div>
+        <div class="sv-wb-container__body">
+          <div class="sv-wb-node">Sign Up Flow</div>
+          <div class="sv-wb-node">Onboarding Wizard</div>
+          <div class="sv-wb-node">First Playlist Create</div>
+        </div>
+        <div class="sv-wb-container__ts">NODE-GRP-01</div>
+      </div>
+      <div class="sv-wb-container" style="left:380px;top:30px;width:280px;">
+        <div class="sv-wb-container__header">CORE FEATURES</div>
+        <div class="sv-wb-container__body">
+          <div class="sv-wb-node">Audio Streaming Engine</div>
+          <div class="sv-wb-node">Playlist Management</div>
+          <div class="sv-wb-node">Social Feed</div>
+          <div class="sv-wb-node">Artist Dashboard</div>
+        </div>
+        <div class="sv-wb-container__ts">NODE-GRP-02</div>
+      </div>
+      <div class="sv-wb-container" style="left:40px;top:280px;width:280px;">
+        <div class="sv-wb-container__header">INTEGRATIONS</div>
+        <div class="sv-wb-container__body">
+          <div class="sv-wb-node">Stripe Payments</div>
+          <div class="sv-wb-node">Clerk Auth</div>
+          <div class="sv-wb-node">Convex Real-time</div>
+        </div>
+        <div class="sv-wb-container__ts">NODE-GRP-03</div>
+      </div>
+      <div class="sv-wb-container" style="left:380px;top:280px;width:280px;">
+        <div class="sv-wb-container__header">ANALYTICS</div>
+        <div class="sv-wb-container__body">
+          <div class="sv-wb-node">Play Count Tracking</div>
+          <div class="sv-wb-node">Revenue Reports</div>
+          <div class="sv-wb-node">User Retention</div>
+        </div>
+        <div class="sv-wb-container__ts">NODE-GRP-04</div>
+      </div>
+      <div class="sv-wb-container" style="left:210px;top:480px;width:280px;">
+        <div class="sv-wb-container__header">DEPLOYMENT</div>
+        <div class="sv-wb-container__body">
+          <div class="sv-wb-node">Vercel Hosting</div>
+          <div class="sv-wb-node">CI/CD Pipeline</div>
+          <div class="sv-wb-node">Monitoring</div>
+        </div>
+        <div class="sv-wb-container__ts">NODE-GRP-05</div>
+      </div>
+      <!-- SVG connector lines -->
+      <svg class="sv-wb-connectors" viewBox="0 0 700 650">
+        <line x1="320" y1="100" x2="380" y2="100" stroke="#333" stroke-width="2"/>
+        <line x1="180" y1="230" x2="180" y2="280" stroke="#333" stroke-width="2"/>
+        <line x1="520" y1="230" x2="520" y2="280" stroke="#333" stroke-width="2"/>
+        <line x1="320" y1="380" x2="350" y2="480" stroke="#333" stroke-width="2"/>
+        <line x1="380" y1="380" x2="350" y2="480" stroke="#333" stroke-width="2"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ========== SCHEMA PLANNER ========== -->
+  <section class="sv-view" data-page="schema-planner">
+    <div class="sv-view__header">
+      <h1 class="sv-view__title">SCHEMA SURVEILLANCE</h1>
+      <span class="sv-view__timestamp">5 ENTITIES // 8 RELATIONSHIPS MONITORED</span>
+    </div>
+    <div class="sv-tile-grid sv-tile-grid--schema">
+      <div class="sv-tile sv-tile--entity">
+        <div class="sv-entity-header">USER</div>
+        <div class="sv-entity-fields">
+          <div class="sv-entity-field"><span class="sv-field-key">PK</span> <span class="sv-field-name">id</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">email</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">name</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">role</span> <span class="sv-field-type">enum</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">createdAt</span> <span class="sv-field-type">datetime</span></div>
+        </div>
+        <div class="sv-entity-relations">HAS MANY: Project, Idea, AuditLog</div>
+        <div class="sv-tile__ts">ENTITY-001</div>
+      </div>
+      <div class="sv-tile sv-tile--entity">
+        <div class="sv-entity-header">PROJECT</div>
+        <div class="sv-entity-fields">
+          <div class="sv-entity-field"><span class="sv-field-key">PK</span> <span class="sv-field-name">id</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-key">FK</span> <span class="sv-field-name">ownerId</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">name</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">slug</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">status</span> <span class="sv-field-type">enum</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">tags</span> <span class="sv-field-type">string[]</span></div>
+        </div>
+        <div class="sv-entity-relations">BELONGS TO: User // HAS MANY: Idea, KanbanCard</div>
+        <div class="sv-tile__ts">ENTITY-002</div>
+      </div>
+      <div class="sv-tile sv-tile--entity">
+        <div class="sv-entity-header">IDEA</div>
+        <div class="sv-entity-fields">
+          <div class="sv-entity-field"><span class="sv-field-key">PK</span> <span class="sv-field-name">id</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-key">FK</span> <span class="sv-field-name">projectId</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">title</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">description</span> <span class="sv-field-type">text</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">priority</span> <span class="sv-field-type">enum</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">tags</span> <span class="sv-field-type">string[]</span></div>
+        </div>
+        <div class="sv-entity-relations">BELONGS TO: Project // PROMOTES TO: KanbanCard</div>
+        <div class="sv-tile__ts">ENTITY-003</div>
+      </div>
+      <div class="sv-tile sv-tile--entity">
+        <div class="sv-entity-header">KANBAN CARD</div>
+        <div class="sv-entity-fields">
+          <div class="sv-entity-field"><span class="sv-field-key">PK</span> <span class="sv-field-name">id</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-key">FK</span> <span class="sv-field-name">projectId</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">title</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">column</span> <span class="sv-field-type">enum</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">priority</span> <span class="sv-field-type">enum</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">assignee</span> <span class="sv-field-type">string</span></div>
+        </div>
+        <div class="sv-entity-relations">BELONGS TO: Project // FROM: Idea</div>
+        <div class="sv-tile__ts">ENTITY-004</div>
+      </div>
+      <div class="sv-tile sv-tile--entity">
+        <div class="sv-entity-header">WHITEBOARD NODE</div>
+        <div class="sv-entity-fields">
+          <div class="sv-entity-field"><span class="sv-field-key">PK</span> <span class="sv-field-name">id</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-key">FK</span> <span class="sv-field-name">boardId</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">label</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">x</span> <span class="sv-field-type">number</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">y</span> <span class="sv-field-type">number</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">connections</span> <span class="sv-field-type">string[]</span></div>
+        </div>
+        <div class="sv-entity-relations">BELONGS TO: Whiteboard</div>
+        <div class="sv-tile__ts">ENTITY-005</div>
+      </div>
+      <div class="sv-tile sv-tile--entity">
+        <div class="sv-entity-header">AUDIT LOG</div>
+        <div class="sv-entity-fields">
+          <div class="sv-entity-field"><span class="sv-field-key">PK</span> <span class="sv-field-name">id</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-key">FK</span> <span class="sv-field-name">userId</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">action</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">target</span> <span class="sv-field-type">string</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">timestamp</span> <span class="sv-field-type">datetime</span></div>
+          <div class="sv-entity-field"><span class="sv-field-name">diff</span> <span class="sv-field-type">json</span></div>
+        </div>
+        <div class="sv-entity-relations">BELONGS TO: User</div>
+        <div class="sv-tile__ts">ENTITY-006</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DIRECTORY TREE ========== -->
+  <section class="sv-view" data-page="directory-tree">
+    <div class="sv-view__header">
+      <h1 class="sv-view__title">DIRECTORY SURVEILLANCE</h1>
+      <span class="sv-view__timestamp">TEMPLATE-DRIVEN TREE // WAVZ.FM</span>
+    </div>
+    <div class="sv-tile sv-tile--tree-full">
+      <div class="sv-tile__label">FILE SYSTEM MONITOR</div>
+      <div class="sv-tree">
+        <div class="sv-tree-node sv-tree-node--root" data-expanded="true">
+          <span class="sv-tree-toggle">[&minus;]</span>
+          <span class="sv-tree-icon">DIR</span>
+          <span class="sv-tree-name">wavz-fm/</span>
+        </div>
+        <div class="sv-tree-children">
+          <div class="sv-tree-node" data-expanded="true">
+            <span class="sv-tree-toggle">[&minus;]</span>
+            <span class="sv-tree-icon">DIR</span>
+            <span class="sv-tree-name">src/</span>
+          </div>
+          <div class="sv-tree-children">
+            <div class="sv-tree-node" data-expanded="true">
+              <span class="sv-tree-toggle">[&minus;]</span>
+              <span class="sv-tree-icon">DIR</span>
+              <span class="sv-tree-name">app/</span>
+            </div>
+            <div class="sv-tree-children">
+              <div class="sv-tree-node sv-tree-node--file">
+                <span class="sv-tree-icon">FILE</span>
+                <span class="sv-tree-name">layout.tsx</span>
+                <span class="sv-tree-size">2.4 KB</span>
+              </div>
+              <div class="sv-tree-node sv-tree-node--file">
+                <span class="sv-tree-icon">FILE</span>
+                <span class="sv-tree-name">page.tsx</span>
+                <span class="sv-tree-size">1.8 KB</span>
+              </div>
+              <div class="sv-tree-node" data-expanded="false">
+                <span class="sv-tree-toggle">[+]</span>
+                <span class="sv-tree-icon">DIR</span>
+                <span class="sv-tree-name">dashboard/</span>
+              </div>
+              <div class="sv-tree-node" data-expanded="false">
+                <span class="sv-tree-toggle">[+]</span>
+                <span class="sv-tree-icon">DIR</span>
+                <span class="sv-tree-name">projects/</span>
+              </div>
+              <div class="sv-tree-node" data-expanded="false">
+                <span class="sv-tree-toggle">[+]</span>
+                <span class="sv-tree-icon">DIR</span>
+                <span class="sv-tree-name">kanban/</span>
+              </div>
+            </div>
+            <div class="sv-tree-node" data-expanded="true">
+              <span class="sv-tree-toggle">[&minus;]</span>
+              <span class="sv-tree-icon">DIR</span>
+              <span class="sv-tree-name">components/</span>
+            </div>
+            <div class="sv-tree-children">
+              <div class="sv-tree-node sv-tree-node--file">
+                <span class="sv-tree-icon">FILE</span>
+                <span class="sv-tree-name">Navbar.tsx</span>
+                <span class="sv-tree-size">3.1 KB</span>
+              </div>
+              <div class="sv-tree-node sv-tree-node--file">
+                <span class="sv-tree-icon">FILE</span>
+                <span class="sv-tree-name">KanbanBoard.tsx</span>
+                <span class="sv-tree-size">5.6 KB</span>
+              </div>
+              <div class="sv-tree-node sv-tree-node--file">
+                <span class="sv-tree-icon">FILE</span>
+                <span class="sv-tree-name">IdeaCard.tsx</span>
+                <span class="sv-tree-size">2.2 KB</span>
+              </div>
+            </div>
+            <div class="sv-tree-node" data-expanded="false">
+              <span class="sv-tree-toggle">[+]</span>
+              <span class="sv-tree-icon">DIR</span>
+              <span class="sv-tree-name">lib/</span>
+            </div>
+            <div class="sv-tree-node" data-expanded="false">
+              <span class="sv-tree-toggle">[+]</span>
+              <span class="sv-tree-icon">DIR</span>
+              <span class="sv-tree-name">hooks/</span>
+            </div>
+          </div>
+          <div class="sv-tree-node" data-expanded="true">
+            <span class="sv-tree-toggle">[&minus;]</span>
+            <span class="sv-tree-icon">DIR</span>
+            <span class="sv-tree-name">convex/</span>
+          </div>
+          <div class="sv-tree-children">
+            <div class="sv-tree-node sv-tree-node--file">
+              <span class="sv-tree-icon">FILE</span>
+              <span class="sv-tree-name">schema.ts</span>
+              <span class="sv-tree-size">4.2 KB</span>
+            </div>
+            <div class="sv-tree-node sv-tree-node--file">
+              <span class="sv-tree-icon">FILE</span>
+              <span class="sv-tree-name">projects.ts</span>
+              <span class="sv-tree-size">3.8 KB</span>
+            </div>
+            <div class="sv-tree-node sv-tree-node--file">
+              <span class="sv-tree-icon">FILE</span>
+              <span class="sv-tree-name">ideas.ts</span>
+              <span class="sv-tree-size">2.9 KB</span>
+            </div>
+          </div>
+          <div class="sv-tree-node sv-tree-node--file">
+            <span class="sv-tree-icon">FILE</span>
+            <span class="sv-tree-name">package.json</span>
+            <span class="sv-tree-size">1.4 KB</span>
+          </div>
+          <div class="sv-tree-node sv-tree-node--file">
+            <span class="sv-tree-icon">FILE</span>
+            <span class="sv-tree-name">tsconfig.json</span>
+            <span class="sv-tree-size">0.6 KB</span>
+          </div>
+          <div class="sv-tree-node sv-tree-node--file">
+            <span class="sv-tree-icon">FILE</span>
+            <span class="sv-tree-name">tailwind.config.ts</span>
+            <span class="sv-tree-size">1.1 KB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== IDEAS ========== -->
+  <section class="sv-view" data-page="ideas">
+    <div class="sv-view__header">
+      <h1 class="sv-view__title">IDEAS INTERCEPT</h1>
+      <span class="sv-view__timestamp">CAPTURE & MONITOR // 6 ACTIVE SIGNALS</span>
+    </div>
+    <div class="sv-ideas-capture">
+      <div class="sv-tile sv-tile--capture-form">
+        <div class="sv-tile__label">NEW SIGNAL CAPTURE</div>
+        <form class="sv-capture-form" onsubmit="return false;">
+          <input type="text" class="sv-input" placeholder="IDEA TITLE..." aria-label="Idea title">
+          <textarea class="sv-textarea" placeholder="DESCRIBE THE SIGNAL..." rows="3" aria-label="Idea description"></textarea>
+          <div class="sv-capture-row">
+            <select class="sv-select" aria-label="Priority">
+              <option>PRIORITY: LOW</option>
+              <option>PRIORITY: MEDIUM</option>
+              <option>PRIORITY: HIGH</option>
+              <option>PRIORITY: CRITICAL</option>
+            </select>
+            <input type="text" class="sv-input sv-input--tags" placeholder="TAGS (COMMA SEP)" aria-label="Tags">
+            <button type="submit" class="sv-action-btn sv-action-btn--primary">CAPTURE</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="sv-tile-grid sv-tile-grid--ideas">
+      <div class="sv-tile sv-tile--idea">
+        <div class="sv-tile__cam-id">SIG-001</div>
+        <div class="sv-idea-title">Add dark mode toggle</div>
+        <div class="sv-idea-desc">Allow users to switch between light and dark themes. Persist preference in user settings via Convex.</div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-tag sv-tag--sm">ui</span>
+          <span class="sv-tag sv-tag--sm">settings</span>
+          <span class="sv-kanban-card__priority sv-kanban-card__priority--med">MED</span>
+        </div>
+        <div class="sv-idea-actions">
+          <button class="sv-action-btn sv-action-btn--sm">PROMOTE TO CARD</button>
+        </div>
+        <div class="sv-tile__ts">CAPTURED 14:20:00</div>
+      </div>
+      <div class="sv-tile sv-tile--idea">
+        <div class="sv-tile__cam-id">SIG-002</div>
+        <div class="sv-idea-title">Implement drag-drop upload</div>
+        <div class="sv-idea-desc">Support drag-and-drop file uploads for whiteboard attachments and project documentation.</div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-tag sv-tag--sm">ux</span>
+          <span class="sv-tag sv-tag--sm">upload</span>
+          <span class="sv-kanban-card__priority sv-kanban-card__priority--high">HIGH</span>
+        </div>
+        <div class="sv-idea-actions">
+          <button class="sv-action-btn sv-action-btn--sm">PROMOTE TO CARD</button>
+        </div>
+        <div class="sv-tile__ts">CAPTURED 13:45:00</div>
+      </div>
+      <div class="sv-tile sv-tile--idea">
+        <div class="sv-tile__cam-id">SIG-003</div>
+        <div class="sv-idea-title">Research vector search</div>
+        <div class="sv-idea-desc">Investigate using vector embeddings for semantic search across ideas, projects, and kanban cards.</div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-tag sv-tag--sm">research</span>
+          <span class="sv-tag sv-tag--sm">ai</span>
+          <span class="sv-kanban-card__priority sv-kanban-card__priority--med">MED</span>
+        </div>
+        <div class="sv-idea-actions">
+          <button class="sv-action-btn sv-action-btn--sm">PROMOTE TO CARD</button>
+        </div>
+        <div class="sv-tile__ts">CAPTURED 12:30:00</div>
+      </div>
+      <div class="sv-tile sv-tile--idea">
+        <div class="sv-tile__cam-id">SIG-004</div>
+        <div class="sv-idea-title">Keyboard shortcut system</div>
+        <div class="sv-idea-desc">Global keyboard shortcuts for navigating views, creating items, and common actions. Show shortcut hints.</div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-tag sv-tag--sm">ux</span>
+          <span class="sv-tag sv-tag--sm">accessibility</span>
+          <span class="sv-kanban-card__priority sv-kanban-card__priority--low">LOW</span>
+        </div>
+        <div class="sv-idea-actions">
+          <button class="sv-action-btn sv-action-btn--sm">PROMOTE TO CARD</button>
+        </div>
+        <div class="sv-tile__ts">CAPTURED 11:15:00</div>
+      </div>
+      <div class="sv-tile sv-tile--idea">
+        <div class="sv-tile__cam-id">SIG-005</div>
+        <div class="sv-idea-title">Activity audit trail</div>
+        <div class="sv-idea-desc">Log all user actions with timestamps for compliance and team visibility. Exportable audit reports.</div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-tag sv-tag--sm">backend</span>
+          <span class="sv-tag sv-tag--sm">compliance</span>
+          <span class="sv-kanban-card__priority sv-kanban-card__priority--high">HIGH</span>
+        </div>
+        <div class="sv-idea-actions">
+          <button class="sv-action-btn sv-action-btn--sm">PROMOTE TO CARD</button>
+        </div>
+        <div class="sv-tile__ts">CAPTURED 10:00:00</div>
+      </div>
+      <div class="sv-tile sv-tile--idea">
+        <div class="sv-tile__cam-id">SIG-006</div>
+        <div class="sv-idea-title">Whiteboard template gallery</div>
+        <div class="sv-idea-desc">Pre-built whiteboard templates for user flows, architecture diagrams, and brainstorm sessions.</div>
+        <div class="sv-tile__meta-row">
+          <span class="sv-tag sv-tag--sm">whiteboard</span>
+          <span class="sv-tag sv-tag--sm">templates</span>
+          <span class="sv-kanban-card__priority sv-kanban-card__priority--low">LOW</span>
+        </div>
+        <div class="sv-idea-actions">
+          <button class="sv-action-btn sv-action-btn--sm">PROMOTE TO CARD</button>
+        </div>
+        <div class="sv-tile__ts">CAPTURED 09:20:00</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== AI CHAT ========== -->
+  <section class="sv-view" data-page="ai-chat">
+    <div class="sv-view__header">
+      <h1 class="sv-view__title">AI COMMS CHANNEL</h1>
+      <span class="sv-view__timestamp">ENCRYPTED LINK // AI ASSISTANT ACTIVE</span>
+    </div>
+    <div class="sv-chat-container">
+      <div class="sv-chat-feed">
+        <div class="sv-chat-msg sv-chat-msg--user">
+          <div class="sv-chat-msg__header">
+            <span class="sv-chat-msg__sender">OPERATOR</span>
+            <span class="sv-chat-msg__ts">14:20:00</span>
+          </div>
+          <div class="sv-chat-msg__body">List all ideas tagged with "research" across my projects.</div>
+        </div>
+        <div class="sv-chat-msg sv-chat-msg--ai">
+          <div class="sv-chat-msg__header">
+            <span class="sv-chat-msg__sender">AI CTRL</span>
+            <span class="sv-chat-msg__ts">14:20:02</span>
+          </div>
+          <div class="sv-chat-msg__body">Found 2 ideas tagged "research":
+1. "Research vector search" (Wavz.fm) - Priority: MED
+2. "Research WebRTC streaming" (Storyboarder) - Priority: HIGH</div>
+        </div>
+        <div class="sv-chat-msg sv-chat-msg--user">
+          <div class="sv-chat-msg__header">
+            <span class="sv-chat-msg__sender">OPERATOR</span>
+            <span class="sv-chat-msg__ts">14:21:15</span>
+          </div>
+          <div class="sv-chat-msg__body">Promote "Research vector search" to a kanban card in the Backlog column.</div>
+        </div>
+        <div class="sv-chat-msg sv-chat-msg--ai">
+          <div class="sv-chat-msg__header">
+            <span class="sv-chat-msg__sender">AI CTRL</span>
+            <span class="sv-chat-msg__ts">14:21:17</span>
+          </div>
+          <div class="sv-chat-msg__body">
+            <div class="sv-chat-action">
+              <span class="sv-chat-action__label">TOOL: update_kanban</span>
+              <span class="sv-chat-action__detail">Created CARD-012 "Research vector search" in BACKLOG</span>
+            </div>
+            Done. Card CARD-012 has been created in the Backlog column with tags: research, ai.
+          </div>
+        </div>
+        <div class="sv-chat-msg sv-chat-msg--user">
+          <div class="sv-chat-msg__header">
+            <span class="sv-chat-msg__sender">OPERATOR</span>
+            <span class="sv-chat-msg__ts">14:23:00</span>
+          </div>
+          <div class="sv-chat-msg__body">Generate a directory tree for a new microservice called "search-service" with Go project structure.</div>
+        </div>
+        <div class="sv-chat-msg sv-chat-msg--ai">
+          <div class="sv-chat-msg__header">
+            <span class="sv-chat-msg__sender">AI CTRL</span>
+            <span class="sv-chat-msg__ts">14:23:04</span>
+          </div>
+          <div class="sv-chat-msg__body">
+            <div class="sv-chat-action">
+              <span class="sv-chat-action__label">TOOL: generate_tree</span>
+              <span class="sv-chat-action__detail">Generated 14 directories, 22 files for search-service</span>
+            </div>
+            Directory tree generated with standard Go layout: cmd/, internal/, pkg/, api/, configs/, deployments/. All files created in your project workspace.
+          </div>
+        </div>
+        <div class="sv-chat-msg sv-chat-msg--user">
+          <div class="sv-chat-msg__header">
+            <span class="sv-chat-msg__sender">OPERATOR</span>
+            <span class="sv-chat-msg__ts">14:25:30</span>
+          </div>
+          <div class="sv-chat-msg__body">Add a new idea: "Implement real-time collaboration with CRDT" with high priority and tags backend, sync.</div>
+        </div>
+        <div class="sv-chat-msg sv-chat-msg--ai">
+          <div class="sv-chat-msg__header">
+            <span class="sv-chat-msg__sender">AI CTRL</span>
+            <span class="sv-chat-msg__ts">14:25:32</span>
+          </div>
+          <div class="sv-chat-msg__body">
+            <div class="sv-chat-action">
+              <span class="sv-chat-action__label">TOOL: add_idea</span>
+              <span class="sv-chat-action__detail">Created SIG-007 "Implement real-time collaboration with CRDT"</span>
+            </div>
+            Idea captured as SIG-007 with priority HIGH and tags [backend, sync]. Visible in the Ideas view now.
+          </div>
+        </div>
+      </div>
+      <div class="sv-chat-input-bar">
+        <input type="text" class="sv-input sv-chat-input" placeholder="TRANSMIT COMMAND..." aria-label="Chat message">
+        <button class="sv-action-btn sv-action-btn--primary">SEND</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SETTINGS ========== -->
+  <section class="sv-view" data-page="settings">
+    <div class="sv-view__header">
+      <h1 class="sv-view__title">SYSTEM CONFIG</h1>
+      <span class="sv-view__timestamp">CONTROL PANEL // ALL SECTORS</span>
+    </div>
+    <div class="sv-tile-grid sv-tile-grid--settings">
+      <!-- ACCOUNT -->
+      <div class="sv-tile sv-tile--settings-section sv-tile--wide">
+        <div class="sv-tile__label">ACCOUNT</div>
+        <div class="sv-settings-row">
+          <span class="sv-settings-key">OPERATOR NAME</span>
+          <input type="text" class="sv-input sv-input--settings" value="Sarah Kim" aria-label="Name">
+        </div>
+        <div class="sv-settings-row">
+          <span class="sv-settings-key">EMAIL</span>
+          <input type="email" class="sv-input sv-input--settings" value="sarah@wavzfm.com" aria-label="Email">
+        </div>
+        <div class="sv-settings-row">
+          <span class="sv-settings-key">ROLE</span>
+          <span class="sv-settings-val">ADMIN</span>
+        </div>
+        <button class="sv-action-btn">UPDATE PROFILE</button>
+      </div>
+      <!-- SUBSCRIPTION -->
+      <div class="sv-tile sv-tile--settings-section sv-tile--wide">
+        <div class="sv-tile__label">SUBSCRIPTION</div>
+        <div class="sv-subscription-tiers">
+          <div class="sv-tier">
+            <div class="sv-tier__name">FREE</div>
+            <div class="sv-tier__price">$0/mo</div>
+            <div class="sv-tier__features">3 projects, 50 ideas, basic AI</div>
+            <button class="sv-action-btn sv-action-btn--disabled" disabled>CURRENT</button>
+          </div>
+          <div class="sv-tier sv-tier--highlighted">
+            <div class="sv-tier__name">PRO</div>
+            <div class="sv-tier__price">$12/mo</div>
+            <div class="sv-tier__features">Unlimited projects, unlimited ideas, advanced AI, priority support</div>
+            <button class="sv-action-btn sv-action-btn--primary">UPGRADE</button>
+          </div>
+          <div class="sv-tier">
+            <div class="sv-tier__name">TEAM</div>
+            <div class="sv-tier__price">$29/mo</div>
+            <div class="sv-tier__features">Everything in Pro, team collaboration, admin controls, audit logs, SSO</div>
+            <button class="sv-action-btn">CONTACT</button>
+          </div>
+        </div>
+      </div>
+      <!-- PREFERENCES -->
+      <div class="sv-tile sv-tile--settings-section">
+        <div class="sv-tile__label">PREFERENCES</div>
+        <div class="sv-settings-row">
+          <span class="sv-settings-key">THEME</span>
+          <div class="sv-toggle" data-state="off">
+            <span class="sv-toggle__label">DARK</span>
+            <div class="sv-toggle__track"><div class="sv-toggle__dot"></div></div>
+            <span class="sv-toggle__label">LIGHT</span>
+          </div>
+        </div>
+        <div class="sv-settings-row">
+          <span class="sv-settings-key">NOTIFICATIONS</span>
+          <div class="sv-toggle" data-state="on">
+            <span class="sv-toggle__label">OFF</span>
+            <div class="sv-toggle__track"><div class="sv-toggle__dot"></div></div>
+            <span class="sv-toggle__label">ON</span>
+          </div>
+        </div>
+        <div class="sv-settings-row">
+          <span class="sv-settings-key">COMPACT MODE</span>
+          <div class="sv-toggle" data-state="on">
+            <span class="sv-toggle__label">OFF</span>
+            <div class="sv-toggle__track"><div class="sv-toggle__dot"></div></div>
+            <span class="sv-toggle__label">ON</span>
+          </div>
+        </div>
+        <div class="sv-settings-row">
+          <span class="sv-settings-key">LANGUAGE</span>
+          <select class="sv-select sv-select--settings" aria-label="Language">
+            <option>ENGLISH</option>
+            <option>SPANISH</option>
+            <option>FRENCH</option>
+            <option>GERMAN</option>
+          </select>
+        </div>
+      </div>
+      <!-- INTEGRATIONS -->
+      <div class="sv-tile sv-tile--settings-section">
+        <div class="sv-tile__label">INTEGRATIONS</div>
+        <div class="sv-integration-row">
+          <span class="sv-integration-name">GitHub</span>
+          <span class="sv-status-badge sv-status-badge--active">CONNECTED</span>
+        </div>
+        <div class="sv-integration-row">
+          <span class="sv-integration-name">Slack</span>
+          <span class="sv-status-badge sv-status-badge--active">CONNECTED</span>
+        </div>
+        <div class="sv-integration-row">
+          <span class="sv-integration-name">Figma</span>
+          <button class="sv-action-btn sv-action-btn--sm">CONNECT</button>
+        </div>
+        <div class="sv-integration-row">
+          <span class="sv-integration-name">Linear</span>
+          <button class="sv-action-btn sv-action-btn--sm">CONNECT</button>
+        </div>
+        <div class="sv-integration-row">
+          <span class="sv-integration-name">Notion</span>
+          <button class="sv-action-btn sv-action-btn--sm">CONNECT</button>
+        </div>
+      </div>
+      <!-- DATA -->
+      <div class="sv-tile sv-tile--settings-section sv-tile--wide">
+        <div class="sv-tile__label">DATA MANAGEMENT</div>
+        <div class="sv-settings-row">
+          <span class="sv-settings-key">EXPORT FORMAT</span>
+          <select class="sv-select sv-select--settings" aria-label="Export format">
+            <option>JSON</option>
+            <option>CSV</option>
+            <option>MARKDOWN</option>
+          </select>
+        </div>
+        <div class="sv-data-actions">
+          <button class="sv-action-btn">EXPORT ALL DATA</button>
+          <button class="sv-action-btn">IMPORT DATA</button>
+          <button class="sv-action-btn sv-action-btn--danger">DELETE ALL DATA</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDEA-MANAGEMENT // MAINFRAME CONSOLE v7.0</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="scanlines"></div>
+
+  <!-- ===== SHELL: TOP TAB STRIP ===== -->
+  <header class="tab-strip">
+    <div class="tab-strip__brand">
+      <span class="brand-ref">REF::SYS-001</span>
+      <span class="brand-name">IDEA-MGMT</span>
+      <span class="brand-status"><span class="status-dot"></span>ONLINE</span>
+    </div>
+    <nav class="tab-strip__tabs" role="tablist">
+      <button class="tab active" data-view="dashboard" role="tab" aria-selected="true">
+        <span class="tab-ref">01</span>DASHBOARD
+      </button>
+      <button class="tab" data-view="projects" role="tab" aria-selected="false">
+        <span class="tab-ref">02</span>PROJECTS
+      </button>
+      <button class="tab" data-view="workspace" role="tab" aria-selected="false">
+        <span class="tab-ref">03</span>WORKSPACE
+      </button>
+      <button class="tab" data-view="kanban" role="tab" aria-selected="false">
+        <span class="tab-ref">04</span>KANBAN
+      </button>
+      <button class="tab" data-view="whiteboard" role="tab" aria-selected="false">
+        <span class="tab-ref">05</span>WHITEBOARD
+      </button>
+      <button class="tab" data-view="schema" role="tab" aria-selected="false">
+        <span class="tab-ref">06</span>SCHEMA
+      </button>
+      <button class="tab" data-view="directory" role="tab" aria-selected="false">
+        <span class="tab-ref">07</span>DIR TREE
+      </button>
+      <button class="tab" data-view="ideas" role="tab" aria-selected="false">
+        <span class="tab-ref">08</span>IDEAS
+      </button>
+      <button class="tab" data-view="chat" role="tab" aria-selected="false">
+        <span class="tab-ref">09</span>AI CHAT
+      </button>
+      <button class="tab" data-view="settings" role="tab" aria-selected="false">
+        <span class="tab-ref">10</span>SETTINGS
+      </button>
+    </nav>
+    <div class="tab-strip__meta">
+      <span class="meta-clock" id="sysClock">00:00:00</span>
+      <span class="meta-user">OPR::ADMIN</span>
+    </div>
+  </header>
+
+  <!-- ===== MAIN PANEL CONTAINER ===== -->
+  <main class="panel-container" id="panelContainer">
+
+    <!-- ========== VIEW 01: DASHBOARD ========== -->
+    <section class="panel active" data-page="dashboard">
+      <div class="panel-header">
+        <h1 class="panel-title">SYSTEM DASHBOARD</h1>
+        <span class="panel-ref">SYS::DASH-001 // OVERVIEW READOUT</span>
+      </div>
+
+      <div class="greeting-bar">
+        <div class="greeting-text">
+          <span class="greeting-label">OPERATOR GREETING //</span>
+          Good morning, Administrator. System nominal. All subsystems reporting green.
+        </div>
+        <div class="greeting-timestamp">SESSION START: <span id="sessionTime">2026-02-16 08:00:00</span></div>
+      </div>
+
+      <div class="data-wall data-wall--4col">
+        <div class="punch-card stat-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">STAT-001</span>
+            <span class="punch-label">ACTIVE PROJECTS</span>
+          </div>
+          <div class="punch-card__value">12</div>
+          <div class="punch-card__footer">
+            <span class="punch-delta positive">+3 THIS MONTH</span>
+          </div>
+        </div>
+        <div class="punch-card stat-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">STAT-002</span>
+            <span class="punch-label">TOTAL IDEAS</span>
+          </div>
+          <div class="punch-card__value">247</div>
+          <div class="punch-card__footer">
+            <span class="punch-delta positive">+18 THIS WEEK</span>
+          </div>
+        </div>
+        <div class="punch-card stat-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">STAT-003</span>
+            <span class="punch-label">KANBAN CARDS</span>
+          </div>
+          <div class="punch-card__value">89</div>
+          <div class="punch-card__footer">
+            <span class="punch-delta neutral">34 IN PROGRESS</span>
+          </div>
+        </div>
+        <div class="punch-card stat-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">STAT-004</span>
+            <span class="punch-label">COMPLETION RATE</span>
+          </div>
+          <div class="punch-card__value">78%</div>
+          <div class="punch-card__footer">
+            <span class="punch-delta positive">+5% VS LAST MONTH</span>
+          </div>
+        </div>
+        <div class="punch-card stat-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">STAT-005</span>
+            <span class="punch-label">SCHEMAS DEFINED</span>
+          </div>
+          <div class="punch-card__value">6</div>
+          <div class="punch-card__footer">
+            <span class="punch-delta neutral">42 ENTITIES TOTAL</span>
+          </div>
+        </div>
+        <div class="punch-card stat-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">STAT-006</span>
+            <span class="punch-label">AI INTERACTIONS</span>
+          </div>
+          <div class="punch-card__value">1,204</div>
+          <div class="punch-card__footer">
+            <span class="punch-delta positive">+89 TODAY</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-wall data-wall--2col">
+        <div class="punch-card activity-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">LOG-001</span>
+            <span class="punch-label">RECENT ACTIVITY</span>
+          </div>
+          <div class="activity-log">
+            <div class="log-entry">
+              <span class="log-time">08:42</span>
+              <span class="log-action">CARD_MOVED</span>
+              <span class="log-detail">"Set up Clerk authentication" moved to DONE</span>
+            </div>
+            <div class="log-entry">
+              <span class="log-time">08:38</span>
+              <span class="log-action">IDEA_CREATED</span>
+              <span class="log-detail">"Research vector search for AI embeddings" added</span>
+            </div>
+            <div class="log-entry">
+              <span class="log-time">08:15</span>
+              <span class="log-action">PROJECT_UPDATED</span>
+              <span class="log-detail">"Wavz.fm Music Platform" status changed to ACTIVE</span>
+            </div>
+            <div class="log-entry">
+              <span class="log-time">07:55</span>
+              <span class="log-action">SCHEMA_MODIFIED</span>
+              <span class="log-detail">Entity "AuditLog" added 2 new fields</span>
+            </div>
+            <div class="log-entry">
+              <span class="log-time">07:30</span>
+              <span class="log-action">AI_CHAT</span>
+              <span class="log-detail">Generated directory tree for "Campus Learning App"</span>
+            </div>
+            <div class="log-entry">
+              <span class="log-time">07:12</span>
+              <span class="log-action">CARD_CREATED</span>
+              <span class="log-detail">"Write Stripe webhook handler" added to Backlog</span>
+            </div>
+          </div>
+        </div>
+        <div class="punch-card quickaction-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">CMD-001</span>
+            <span class="punch-label">QUICK ACTIONS</span>
+          </div>
+          <div class="quick-actions">
+            <button class="action-btn" data-view="ideas">
+              <span class="action-code">F1</span>
+              <span class="action-label">CAPTURE NEW IDEA</span>
+            </button>
+            <button class="action-btn" data-view="projects">
+              <span class="action-code">F2</span>
+              <span class="action-label">CREATE PROJECT</span>
+            </button>
+            <button class="action-btn" data-view="kanban">
+              <span class="action-code">F3</span>
+              <span class="action-label">OPEN KANBAN BOARD</span>
+            </button>
+            <button class="action-btn" data-view="chat">
+              <span class="action-code">F4</span>
+              <span class="action-label">LAUNCH AI ASSISTANT</span>
+            </button>
+            <button class="action-btn" data-view="schema">
+              <span class="action-code">F5</span>
+              <span class="action-label">SCHEMA PLANNER</span>
+            </button>
+            <button class="action-btn" data-view="whiteboard">
+              <span class="action-code">F6</span>
+              <span class="action-label">OPEN WHITEBOARD</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 02: PROJECTS ========== -->
+    <section class="panel" data-page="projects">
+      <div class="panel-header">
+        <h1 class="panel-title">PROJECT REGISTRY</h1>
+        <span class="panel-ref">SYS::PROJ-001 // ALL REGISTERED PROJECTS</span>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar__search">
+          <label class="search-label" for="projSearch">QUERY::</label>
+          <input type="text" id="projSearch" class="input-field" placeholder="Search projects by name, tag, or status...">
+        </div>
+        <div class="toolbar__filters">
+          <button class="filter-btn active">ALL</button>
+          <button class="filter-btn">ACTIVE</button>
+          <button class="filter-btn">ARCHIVED</button>
+        </div>
+        <button class="action-btn primary">
+          <span class="action-code">+</span>
+          <span class="action-label">NEW PROJECT</span>
+        </button>
+      </div>
+
+      <div class="data-wall data-wall--2col">
+        <div class="punch-card project-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">PROJ-001</span>
+            <span class="punch-label">Wavz.fm Music Platform</span>
+            <span class="status-badge active">ACTIVE</span>
+          </div>
+          <div class="punch-card__body">
+            <div class="field-row"><span class="field-key">SLUG:</span><span class="field-val">wavz-fm</span></div>
+            <div class="field-row"><span class="field-key">DESC:</span><span class="field-val">Social music streaming platform with collaborative playlists, live listening rooms, and artist analytics dashboard.</span></div>
+            <div class="field-row"><span class="field-key">TAGS:</span><span class="tag-list"><span class="tag">music</span><span class="tag">streaming</span><span class="tag">social</span></span></div>
+            <div class="field-row"><span class="field-key">STACK:</span><span class="field-val">Next.js, Convex, Clerk, Stripe, Tailwind</span></div>
+            <div class="field-row"><span class="field-key">TEAM:</span><span class="field-val">4 collaborators</span></div>
+            <div class="field-row"><span class="field-key">GOALS:</span><span class="field-val">MVP launch, 1K beta users, mobile app</span></div>
+          </div>
+          <div class="punch-card__footer">
+            <span class="punch-meta">CREATED: 2026-01-12</span>
+            <button class="card-action">OPEN</button>
+          </div>
+        </div>
+
+        <div class="punch-card project-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">PROJ-002</span>
+            <span class="punch-label">Campus Learning App</span>
+            <span class="status-badge active">ACTIVE</span>
+          </div>
+          <div class="punch-card__body">
+            <div class="field-row"><span class="field-key">SLUG:</span><span class="field-val">campus-learn</span></div>
+            <div class="field-row"><span class="field-key">DESC:</span><span class="field-val">University course management with real-time collaboration, video lectures, and AI-powered study guides.</span></div>
+            <div class="field-row"><span class="field-key">TAGS:</span><span class="tag-list"><span class="tag">education</span><span class="tag">LMS</span><span class="tag">AI</span></span></div>
+            <div class="field-row"><span class="field-key">STACK:</span><span class="field-val">Next.js, Convex, Clerk, OpenAI, Tailwind</span></div>
+            <div class="field-row"><span class="field-key">TEAM:</span><span class="field-val">6 collaborators</span></div>
+            <div class="field-row"><span class="field-key">GOALS:</span><span class="field-val">Pilot with 3 departments, accessibility audit</span></div>
+          </div>
+          <div class="punch-card__footer">
+            <span class="punch-meta">CREATED: 2026-01-20</span>
+            <button class="card-action">OPEN</button>
+          </div>
+        </div>
+
+        <div class="punch-card project-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">PROJ-003</span>
+            <span class="punch-label">RepoSaver Backup Tool</span>
+            <span class="status-badge active">ACTIVE</span>
+          </div>
+          <div class="punch-card__body">
+            <div class="field-row"><span class="field-key">SLUG:</span><span class="field-val">reposaver</span></div>
+            <div class="field-row"><span class="field-key">DESC:</span><span class="field-val">Automated GitHub/GitLab repository backup service with incremental snapshots and restore verification.</span></div>
+            <div class="field-row"><span class="field-key">TAGS:</span><span class="tag-list"><span class="tag">devtools</span><span class="tag">backup</span><span class="tag">git</span></span></div>
+            <div class="field-row"><span class="field-key">STACK:</span><span class="field-val">Node.js, PostgreSQL, Redis, Docker</span></div>
+            <div class="field-row"><span class="field-key">TEAM:</span><span class="field-val">2 collaborators</span></div>
+            <div class="field-row"><span class="field-key">GOALS:</span><span class="field-val">Support 10K repos, 99.9% uptime SLA</span></div>
+          </div>
+          <div class="punch-card__footer">
+            <span class="punch-meta">CREATED: 2025-11-08</span>
+            <button class="card-action">OPEN</button>
+          </div>
+        </div>
+
+        <div class="punch-card project-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">PROJ-004</span>
+            <span class="punch-label">Storyboarder Video Editor</span>
+            <span class="status-badge archived">ARCHIVED</span>
+          </div>
+          <div class="punch-card__body">
+            <div class="field-row"><span class="field-key">SLUG:</span><span class="field-val">storyboarder</span></div>
+            <div class="field-row"><span class="field-key">DESC:</span><span class="field-val">Browser-based storyboard and video pre-production tool with timeline, scene planning, and team review.</span></div>
+            <div class="field-row"><span class="field-key">TAGS:</span><span class="tag-list"><span class="tag">video</span><span class="tag">creative</span><span class="tag">collaboration</span></span></div>
+            <div class="field-row"><span class="field-key">STACK:</span><span class="field-val">React, Canvas API, Firebase, FFmpeg.wasm</span></div>
+            <div class="field-row"><span class="field-key">TEAM:</span><span class="field-val">3 collaborators</span></div>
+            <div class="field-row"><span class="field-key">GOALS:</span><span class="field-val">Feature parity with Boords, export to PDF</span></div>
+          </div>
+          <div class="punch-card__footer">
+            <span class="punch-meta">CREATED: 2025-09-15</span>
+            <button class="card-action">OPEN</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 03: PROJECT WORKSPACE ========== -->
+    <section class="panel" data-page="workspace">
+      <div class="panel-header">
+        <h1 class="panel-title">PROJECT WORKSPACE</h1>
+        <span class="panel-ref">SYS::WKSP-001 // Wavz.fm Music Platform</span>
+      </div>
+
+      <div class="breadcrumb-bar">
+        <span class="crumb" data-view="projects">PROJECTS</span>
+        <span class="crumb-sep">//</span>
+        <span class="crumb active">Wavz.fm Music Platform</span>
+      </div>
+
+      <div class="workspace-layout">
+        <aside class="workspace-nav">
+          <div class="punch-card nav-tree-card">
+            <div class="punch-card__header">
+              <span class="punch-ref">NAV-001</span>
+              <span class="punch-label">PROJECT FOLDERS</span>
+            </div>
+            <ul class="folder-nav">
+              <li class="folder-item active">
+                <span class="folder-icon">[D]</span>
+                <span class="folder-name">project.json</span>
+              </li>
+              <li class="folder-item">
+                <span class="folder-icon">[D]</span>
+                <span class="folder-name">requirements/</span>
+                <ul class="folder-sub">
+                  <li><span class="folder-icon">[F]</span> functional.md</li>
+                  <li><span class="folder-icon">[F]</span> non-functional.md</li>
+                </ul>
+              </li>
+              <li class="folder-item">
+                <span class="folder-icon">[D]</span>
+                <span class="folder-name">design/</span>
+                <ul class="folder-sub">
+                  <li><span class="folder-icon">[F]</span> wireframes.fig</li>
+                  <li><span class="folder-icon">[F]</span> style-guide.md</li>
+                </ul>
+              </li>
+              <li class="folder-item">
+                <span class="folder-icon">[D]</span>
+                <span class="folder-name">architecture/</span>
+                <ul class="folder-sub">
+                  <li><span class="folder-icon">[F]</span> system-design.md</li>
+                  <li><span class="folder-icon">[F]</span> api-spec.yaml</li>
+                </ul>
+              </li>
+              <li class="folder-item">
+                <span class="folder-icon">[D]</span>
+                <span class="folder-name">milestones/</span>
+              </li>
+              <li class="folder-item">
+                <span class="folder-icon">[D]</span>
+                <span class="folder-name">research/</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <div class="workspace-content">
+          <div class="punch-card metadata-card">
+            <div class="punch-card__header">
+              <span class="punch-ref">META-001</span>
+              <span class="punch-label">project.json // METADATA</span>
+            </div>
+            <div class="metadata-grid">
+              <div class="meta-row"><span class="meta-key">id:</span><span class="meta-val">"proj_wavzfm_001"</span></div>
+              <div class="meta-row"><span class="meta-key">name:</span><span class="meta-val">"Wavz.fm Music Platform"</span></div>
+              <div class="meta-row"><span class="meta-key">slug:</span><span class="meta-val">"wavz-fm"</span></div>
+              <div class="meta-row"><span class="meta-key">status:</span><span class="meta-val status-inline active">"active"</span></div>
+              <div class="meta-row"><span class="meta-key">description:</span><span class="meta-val">"Social music streaming platform with collaborative playlists, live listening rooms, and artist analytics."</span></div>
+              <div class="meta-row">
+                <span class="meta-key">tags:</span>
+                <span class="meta-val">["music", "streaming", "social", "real-time"]</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-key">collaborators:</span>
+                <span class="meta-val">["admin@wavz.fm", "dev1@wavz.fm", "design@wavz.fm", "pm@wavz.fm"]</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-key">goals:</span>
+                <span class="meta-val">["MVP launch Q1 2026", "1K beta users", "Mobile app by Q3"]</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-key">techStack:</span>
+                <span class="meta-val">["Next.js", "Convex", "Clerk", "Stripe", "Tailwind CSS"]</span>
+              </div>
+              <div class="meta-row"><span class="meta-key">createdAt:</span><span class="meta-val">"2026-01-12T09:00:00Z"</span></div>
+              <div class="meta-row"><span class="meta-key">updatedAt:</span><span class="meta-val">"2026-02-16T08:15:00Z"</span></div>
+            </div>
+            <div class="punch-card__footer">
+              <button class="card-action">EDIT METADATA</button>
+              <button class="card-action">EXPORT JSON</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 04: KANBAN ========== -->
+    <section class="panel" data-page="kanban">
+      <div class="panel-header">
+        <h1 class="panel-title">KANBAN BOARD</h1>
+        <span class="panel-ref">SYS::KANBAN-001 // Wavz.fm Music Platform</span>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar__info">
+          <span class="toolbar-label">PROJECT:</span>
+          <span class="toolbar-value">Wavz.fm Music Platform</span>
+        </div>
+        <div class="toolbar__filters">
+          <button class="filter-btn active">ALL</button>
+          <button class="filter-btn">HIGH</button>
+          <button class="filter-btn">MEDIUM</button>
+          <button class="filter-btn">LOW</button>
+        </div>
+        <button class="action-btn primary">
+          <span class="action-code">+</span>
+          <span class="action-label">ADD CARD</span>
+        </button>
+      </div>
+
+      <div class="kanban-board">
+        <div class="kanban-column">
+          <div class="column-header">
+            <span class="column-ref">COL-01</span>
+            <span class="column-title">BACKLOG</span>
+            <span class="column-count">3</span>
+          </div>
+          <div class="column-body">
+            <div class="kanban-card">
+              <div class="kcard-header">
+                <span class="kcard-ref">KBN-007</span>
+                <span class="kcard-priority high">HIGH</span>
+              </div>
+              <div class="kcard-title">Write Stripe webhook handler</div>
+              <div class="kcard-meta">
+                <span class="kcard-label">payments</span>
+                <span class="kcard-label">backend</span>
+              </div>
+              <div class="kcard-footer">
+                <span class="kcard-assignee">OPR::DEV1</span>
+                <span class="kcard-due">DUE: 2026-02-28</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kcard-header">
+                <span class="kcard-ref">KBN-008</span>
+                <span class="kcard-priority medium">MED</span>
+              </div>
+              <div class="kcard-title">Implement real-time listening rooms</div>
+              <div class="kcard-meta">
+                <span class="kcard-label">feature</span>
+                <span class="kcard-label">real-time</span>
+              </div>
+              <div class="kcard-footer">
+                <span class="kcard-assignee">OPR::DEV2</span>
+                <span class="kcard-due">DUE: 2026-03-10</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kcard-header">
+                <span class="kcard-ref">KBN-012</span>
+                <span class="kcard-priority low">LOW</span>
+              </div>
+              <div class="kcard-title">Add accessibility ARIA labels to player</div>
+              <div class="kcard-meta">
+                <span class="kcard-label">a11y</span>
+                <span class="kcard-label">frontend</span>
+              </div>
+              <div class="kcard-footer">
+                <span class="kcard-assignee">OPR::DEV3</span>
+                <span class="kcard-due">DUE: 2026-03-15</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="column-header">
+            <span class="column-ref">COL-02</span>
+            <span class="column-title">IN PROGRESS</span>
+            <span class="column-count">2</span>
+          </div>
+          <div class="column-body">
+            <div class="kanban-card">
+              <div class="kcard-header">
+                <span class="kcard-ref">KBN-003</span>
+                <span class="kcard-priority high">HIGH</span>
+              </div>
+              <div class="kcard-title">Design kanban drag-drop UX</div>
+              <div class="kcard-meta">
+                <span class="kcard-label">design</span>
+                <span class="kcard-label">UX</span>
+              </div>
+              <div class="kcard-footer">
+                <span class="kcard-assignee">OPR::DESIGN</span>
+                <span class="kcard-due">DUE: 2026-02-20</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kcard-header">
+                <span class="kcard-ref">KBN-005</span>
+                <span class="kcard-priority medium">MED</span>
+              </div>
+              <div class="kcard-title">Build collaborative playlist engine</div>
+              <div class="kcard-meta">
+                <span class="kcard-label">feature</span>
+                <span class="kcard-label">backend</span>
+              </div>
+              <div class="kcard-footer">
+                <span class="kcard-assignee">OPR::DEV1</span>
+                <span class="kcard-due">DUE: 2026-02-25</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="column-header">
+            <span class="column-ref">COL-03</span>
+            <span class="column-title">REVIEW</span>
+            <span class="column-count">2</span>
+          </div>
+          <div class="column-body">
+            <div class="kanban-card">
+              <div class="kcard-header">
+                <span class="kcard-ref">KBN-002</span>
+                <span class="kcard-priority high">HIGH</span>
+              </div>
+              <div class="kcard-title">Implement artist analytics dashboard</div>
+              <div class="kcard-meta">
+                <span class="kcard-label">analytics</span>
+                <span class="kcard-label">frontend</span>
+              </div>
+              <div class="kcard-footer">
+                <span class="kcard-assignee">OPR::DEV2</span>
+                <span class="kcard-due">DUE: 2026-02-18</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kcard-header">
+                <span class="kcard-ref">KBN-006</span>
+                <span class="kcard-priority low">LOW</span>
+              </div>
+              <div class="kcard-title">Optimize audio streaming buffer</div>
+              <div class="kcard-meta">
+                <span class="kcard-label">performance</span>
+                <span class="kcard-label">backend</span>
+              </div>
+              <div class="kcard-footer">
+                <span class="kcard-assignee">OPR::DEV1</span>
+                <span class="kcard-due">DUE: 2026-02-22</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="column-header">
+            <span class="column-ref">COL-04</span>
+            <span class="column-title">DONE</span>
+            <span class="column-count">3</span>
+          </div>
+          <div class="column-body">
+            <div class="kanban-card done">
+              <div class="kcard-header">
+                <span class="kcard-ref">KBN-001</span>
+                <span class="kcard-priority high">HIGH</span>
+              </div>
+              <div class="kcard-title">Set up Clerk authentication</div>
+              <div class="kcard-meta">
+                <span class="kcard-label">auth</span>
+                <span class="kcard-label">backend</span>
+              </div>
+              <div class="kcard-footer">
+                <span class="kcard-assignee">OPR::ADMIN</span>
+                <span class="kcard-due">COMPLETED</span>
+              </div>
+            </div>
+            <div class="kanban-card done">
+              <div class="kcard-header">
+                <span class="kcard-ref">KBN-004</span>
+                <span class="kcard-priority medium">MED</span>
+              </div>
+              <div class="kcard-title">Configure Convex database schema</div>
+              <div class="kcard-meta">
+                <span class="kcard-label">database</span>
+                <span class="kcard-label">setup</span>
+              </div>
+              <div class="kcard-footer">
+                <span class="kcard-assignee">OPR::DEV1</span>
+                <span class="kcard-due">COMPLETED</span>
+              </div>
+            </div>
+            <div class="kanban-card done">
+              <div class="kcard-header">
+                <span class="kcard-ref">KBN-009</span>
+                <span class="kcard-priority medium">MED</span>
+              </div>
+              <div class="kcard-title">Set up CI/CD pipeline with GitHub Actions</div>
+              <div class="kcard-meta">
+                <span class="kcard-label">devops</span>
+                <span class="kcard-label">infra</span>
+              </div>
+              <div class="kcard-footer">
+                <span class="kcard-assignee">OPR::DEV2</span>
+                <span class="kcard-due">COMPLETED</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 05: WHITEBOARD ========== -->
+    <section class="panel" data-page="whiteboard">
+      <div class="panel-header">
+        <h1 class="panel-title">WHITEBOARD</h1>
+        <span class="panel-ref">SYS::WB-001 // SPATIAL PLANNING SURFACE</span>
+      </div>
+
+      <div class="whiteboard-toolbar">
+        <div class="wb-tool-group">
+          <button class="wb-tool active" title="Select"><span class="wb-tool-icon">[S]</span>SELECT</button>
+          <button class="wb-tool" title="Container"><span class="wb-tool-icon">[C]</span>CONTAINER</button>
+          <button class="wb-tool" title="Text"><span class="wb-tool-icon">[T]</span>TEXT</button>
+          <button class="wb-tool" title="Link"><span class="wb-tool-icon">[L]</span>LINK</button>
+          <button class="wb-tool" title="Erase"><span class="wb-tool-icon">[X]</span>ERASE</button>
+        </div>
+        <div class="wb-tool-group">
+          <button class="wb-tool">ZOOM IN [+]</button>
+          <span class="wb-zoom-level">100%</span>
+          <button class="wb-tool">ZOOM OUT [-]</button>
+          <button class="wb-tool">FIT ALL</button>
+        </div>
+      </div>
+
+      <div class="whiteboard-canvas">
+        <div class="wb-container" style="left: 40px; top: 30px; width: 280px;">
+          <div class="wb-container-header">
+            <span class="wb-ref">WB-N01</span>
+            <span class="wb-container-title">User Authentication Flow</span>
+          </div>
+          <div class="wb-container-body">
+            <div class="wb-text-block">Sign Up -> Email Verify -> Profile Setup -> Dashboard</div>
+            <div class="wb-text-block">OAuth providers: Google, GitHub, Discord</div>
+            <div class="wb-text-block">Session management via Clerk JWT tokens</div>
+          </div>
+        </div>
+
+        <div class="wb-container" style="left: 360px; top: 30px; width: 300px;">
+          <div class="wb-container-header">
+            <span class="wb-ref">WB-N02</span>
+            <span class="wb-container-title">Music Player Architecture</span>
+          </div>
+          <div class="wb-container-body">
+            <div class="wb-text-block">Audio Context API for playback</div>
+            <div class="wb-text-block">WebSocket for real-time sync in listening rooms</div>
+            <div class="wb-text-block">Buffering: adaptive bitrate 128/256/320kbps</div>
+            <div class="wb-text-block">Queue system with shuffle + repeat modes</div>
+          </div>
+        </div>
+
+        <div class="wb-container" style="left: 700px; top: 30px; width: 260px;">
+          <div class="wb-container-header">
+            <span class="wb-ref">WB-N03</span>
+            <span class="wb-container-title">Payment Integration</span>
+          </div>
+          <div class="wb-container-body">
+            <div class="wb-text-block">Stripe Checkout for subscriptions</div>
+            <div class="wb-text-block">Plans: Free / Pro ($9/mo) / Team ($29/mo)</div>
+            <div class="wb-text-block">Webhook handler for billing events</div>
+          </div>
+        </div>
+
+        <div class="wb-container" style="left: 40px; top: 280px; width: 320px;">
+          <div class="wb-container-header">
+            <span class="wb-ref">WB-N04</span>
+            <span class="wb-container-title">Data Layer Design</span>
+          </div>
+          <div class="wb-container-body">
+            <div class="wb-text-block">Convex for real-time database + mutations</div>
+            <div class="wb-text-block">Entities: User, Track, Playlist, Room, Subscription</div>
+            <div class="wb-text-block">File storage: Convex file uploads for audio</div>
+            <div class="wb-text-block">Indexes on: userId, playlistId, roomId</div>
+          </div>
+        </div>
+
+        <div class="wb-container" style="left: 400px; top: 280px; width: 300px;">
+          <div class="wb-container-header">
+            <span class="wb-ref">WB-N05</span>
+            <span class="wb-container-title">Sprint 1 Milestones</span>
+          </div>
+          <div class="wb-container-body">
+            <div class="wb-text-block">[x] Auth setup with Clerk</div>
+            <div class="wb-text-block">[x] Database schema in Convex</div>
+            <div class="wb-text-block">[ ] Music player component</div>
+            <div class="wb-text-block">[ ] Playlist CRUD operations</div>
+            <div class="wb-text-block">[ ] Stripe integration</div>
+          </div>
+        </div>
+
+        <!-- SVG connection lines -->
+        <svg class="wb-connections" viewBox="0 0 1000 500">
+          <line x1="320" y1="100" x2="360" y2="100" class="wb-link" />
+          <line x1="660" y1="100" x2="700" y2="100" class="wb-link" />
+          <line x1="180" y1="220" x2="180" y2="280" class="wb-link" />
+          <line x1="520" y1="220" x2="520" y2="280" class="wb-link" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 06: SCHEMA PLANNER ========== -->
+    <section class="panel" data-page="schema">
+      <div class="panel-header">
+        <h1 class="panel-title">SCHEMA PLANNER</h1>
+        <span class="panel-ref">SYS::SCHEMA-001 // DATA MODEL DEFINITION</span>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar__info">
+          <span class="toolbar-label">ENTITIES:</span>
+          <span class="toolbar-value">5 defined</span>
+        </div>
+        <div class="toolbar__info">
+          <span class="toolbar-label">RELATIONS:</span>
+          <span class="toolbar-value">7 mapped</span>
+        </div>
+        <button class="action-btn primary">
+          <span class="action-code">+</span>
+          <span class="action-label">ADD ENTITY</span>
+        </button>
+      </div>
+
+      <div class="schema-canvas">
+        <div class="entity-node" style="left: 30px; top: 20px;">
+          <div class="entity-header">
+            <span class="entity-ref">ENT-001</span>
+            <span class="entity-name">User</span>
+          </div>
+          <div class="entity-fields">
+            <div class="field"><span class="field-pk">[PK]</span> id: string</div>
+            <div class="field"><span class="field-rq">[RQ]</span> email: string</div>
+            <div class="field"><span class="field-rq">[RQ]</span> name: string</div>
+            <div class="field">avatarUrl: string?</div>
+            <div class="field">role: "admin" | "member"</div>
+            <div class="field">clerkId: string</div>
+            <div class="field">createdAt: datetime</div>
+          </div>
+          <div class="entity-relations">
+            <span class="relation">1:N -> Project</span>
+            <span class="relation">1:N -> Idea</span>
+          </div>
+        </div>
+
+        <div class="entity-node" style="left: 350px; top: 20px;">
+          <div class="entity-header">
+            <span class="entity-ref">ENT-002</span>
+            <span class="entity-name">Project</span>
+          </div>
+          <div class="entity-fields">
+            <div class="field"><span class="field-pk">[PK]</span> id: string</div>
+            <div class="field"><span class="field-rq">[RQ]</span> name: string</div>
+            <div class="field"><span class="field-rq">[RQ]</span> slug: string</div>
+            <div class="field">description: string?</div>
+            <div class="field">status: "active" | "archived"</div>
+            <div class="field">tags: string[]</div>
+            <div class="field"><span class="field-fk">[FK]</span> ownerId: User.id</div>
+            <div class="field">createdAt: datetime</div>
+          </div>
+          <div class="entity-relations">
+            <span class="relation">N:1 -> User</span>
+            <span class="relation">1:N -> KanbanCard</span>
+            <span class="relation">1:N -> Idea</span>
+          </div>
+        </div>
+
+        <div class="entity-node" style="left: 670px; top: 20px;">
+          <div class="entity-header">
+            <span class="entity-ref">ENT-003</span>
+            <span class="entity-name">Idea</span>
+          </div>
+          <div class="entity-fields">
+            <div class="field"><span class="field-pk">[PK]</span> id: string</div>
+            <div class="field"><span class="field-rq">[RQ]</span> title: string</div>
+            <div class="field">description: string?</div>
+            <div class="field">tags: string[]</div>
+            <div class="field">priority: "high" | "medium" | "low"</div>
+            <div class="field"><span class="field-fk">[FK]</span> projectId: Project.id</div>
+            <div class="field"><span class="field-fk">[FK]</span> authorId: User.id</div>
+            <div class="field">promotedToCard: boolean</div>
+            <div class="field">createdAt: datetime</div>
+          </div>
+          <div class="entity-relations">
+            <span class="relation">N:1 -> Project</span>
+            <span class="relation">N:1 -> User</span>
+          </div>
+        </div>
+
+        <div class="entity-node" style="left: 120px; top: 360px;">
+          <div class="entity-header">
+            <span class="entity-ref">ENT-004</span>
+            <span class="entity-name">KanbanCard</span>
+          </div>
+          <div class="entity-fields">
+            <div class="field"><span class="field-pk">[PK]</span> id: string</div>
+            <div class="field"><span class="field-rq">[RQ]</span> title: string</div>
+            <div class="field">description: string?</div>
+            <div class="field">column: "backlog" | "progress" | "review" | "done"</div>
+            <div class="field">priority: "high" | "medium" | "low"</div>
+            <div class="field">labels: string[]</div>
+            <div class="field"><span class="field-fk">[FK]</span> projectId: Project.id</div>
+            <div class="field"><span class="field-fk">[FK]</span> assigneeId: User.id</div>
+            <div class="field">dueDate: datetime?</div>
+            <div class="field">order: number</div>
+          </div>
+          <div class="entity-relations">
+            <span class="relation">N:1 -> Project</span>
+            <span class="relation">N:1 -> User (assignee)</span>
+          </div>
+        </div>
+
+        <div class="entity-node" style="left: 530px; top: 360px;">
+          <div class="entity-header">
+            <span class="entity-ref">ENT-005</span>
+            <span class="entity-name">AuditLog</span>
+          </div>
+          <div class="entity-fields">
+            <div class="field"><span class="field-pk">[PK]</span> id: string</div>
+            <div class="field"><span class="field-rq">[RQ]</span> action: string</div>
+            <div class="field"><span class="field-rq">[RQ]</span> entityType: string</div>
+            <div class="field"><span class="field-rq">[RQ]</span> entityId: string</div>
+            <div class="field"><span class="field-fk">[FK]</span> userId: User.id</div>
+            <div class="field">metadata: json</div>
+            <div class="field">timestamp: datetime</div>
+          </div>
+          <div class="entity-relations">
+            <span class="relation">N:1 -> User</span>
+          </div>
+        </div>
+
+        <svg class="schema-lines" viewBox="0 0 1000 600">
+          <line x1="270" y1="80" x2="350" y2="80" class="schema-link" />
+          <line x1="590" y1="80" x2="670" y2="80" class="schema-link" />
+          <line x1="450" y1="230" x2="300" y2="360" class="schema-link" />
+          <line x1="450" y1="230" x2="630" y2="360" class="schema-link" />
+          <line x1="150" y1="200" x2="150" y2="360" class="schema-link dashed" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 07: DIRECTORY TREE ========== -->
+    <section class="panel" data-page="directory">
+      <div class="panel-header">
+        <h1 class="panel-title">DIRECTORY TREE</h1>
+        <span class="panel-ref">SYS::DIR-001 // PROJECT STRUCTURE GENERATOR</span>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar__info">
+          <span class="toolbar-label">TEMPLATE:</span>
+          <select class="select-field">
+            <option>Next.js App Router (Full Stack)</option>
+            <option>React SPA</option>
+            <option>Node.js API</option>
+            <option>Monorepo (Turborepo)</option>
+          </select>
+        </div>
+        <button class="action-btn primary">
+          <span class="action-code">G</span>
+          <span class="action-label">GENERATE</span>
+        </button>
+        <button class="action-btn">
+          <span class="action-code">P</span>
+          <span class="action-label">PREVIEW</span>
+        </button>
+      </div>
+
+      <div class="data-wall data-wall--2col">
+        <div class="punch-card tree-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">TREE-001</span>
+            <span class="punch-label">GENERATED STRUCTURE</span>
+          </div>
+          <div class="tree-display">
+            <pre class="tree-content">wavz-fm/
+<span class="tree-dir">[D]</span> app/
+    <span class="tree-dir">[D]</span> (auth)/
+        <span class="tree-file">[F]</span> sign-in/page.tsx
+        <span class="tree-file">[F]</span> sign-up/page.tsx
+    <span class="tree-dir">[D]</span> (dashboard)/
+        <span class="tree-file">[F]</span> page.tsx
+        <span class="tree-file">[F]</span> layout.tsx
+    <span class="tree-dir">[D]</span> (projects)/
+        <span class="tree-file">[F]</span> page.tsx
+        <span class="tree-dir">[D]</span> [slug]/
+            <span class="tree-file">[F]</span> page.tsx
+            <span class="tree-file">[F]</span> kanban/page.tsx
+            <span class="tree-file">[F]</span> whiteboard/page.tsx
+    <span class="tree-dir">[D]</span> api/
+        <span class="tree-dir">[D]</span> webhooks/
+            <span class="tree-file">[F]</span> stripe/route.ts
+            <span class="tree-file">[F]</span> clerk/route.ts
+    <span class="tree-file">[F]</span> layout.tsx
+    <span class="tree-file">[F]</span> globals.css
+<span class="tree-dir">[D]</span> components/
+    <span class="tree-dir">[D]</span> ui/
+        <span class="tree-file">[F]</span> button.tsx
+        <span class="tree-file">[F]</span> card.tsx
+        <span class="tree-file">[F]</span> dialog.tsx
+        <span class="tree-file">[F]</span> input.tsx
+    <span class="tree-dir">[D]</span> kanban/
+        <span class="tree-file">[F]</span> board.tsx
+        <span class="tree-file">[F]</span> column.tsx
+        <span class="tree-file">[F]</span> card.tsx
+    <span class="tree-dir">[D]</span> whiteboard/
+        <span class="tree-file">[F]</span> canvas.tsx
+        <span class="tree-file">[F]</span> toolbar.tsx
+<span class="tree-dir">[D]</span> convex/
+    <span class="tree-file">[F]</span> schema.ts
+    <span class="tree-file">[F]</span> projects.ts
+    <span class="tree-file">[F]</span> ideas.ts
+    <span class="tree-file">[F]</span> kanban.ts
+    <span class="tree-file">[F]</span> auth.ts
+<span class="tree-dir">[D]</span> lib/
+    <span class="tree-file">[F]</span> utils.ts
+    <span class="tree-file">[F]</span> constants.ts
+<span class="tree-file">[F]</span> package.json
+<span class="tree-file">[F]</span> tsconfig.json
+<span class="tree-file">[F]</span> tailwind.config.ts
+<span class="tree-file">[F]</span> next.config.ts</pre>
+          </div>
+        </div>
+
+        <div class="punch-card tree-info-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">TREE-002</span>
+            <span class="punch-label">STRUCTURE SUMMARY</span>
+          </div>
+          <div class="tree-summary">
+            <div class="summary-row"><span class="summary-key">DIRECTORIES:</span><span class="summary-val">14</span></div>
+            <div class="summary-row"><span class="summary-key">FILES:</span><span class="summary-val">28</span></div>
+            <div class="summary-row"><span class="summary-key">TEMPLATE:</span><span class="summary-val">Next.js App Router</span></div>
+            <div class="summary-row"><span class="summary-key">FRAMEWORK:</span><span class="summary-val">Next.js 15 + TypeScript</span></div>
+            <div class="summary-row"><span class="summary-key">BACKEND:</span><span class="summary-val">Convex</span></div>
+            <div class="summary-row"><span class="summary-key">AUTH:</span><span class="summary-val">Clerk</span></div>
+            <div class="summary-row"><span class="summary-key">PAYMENTS:</span><span class="summary-val">Stripe</span></div>
+          </div>
+          <div class="punch-card__footer">
+            <button class="card-action">COPY TREE</button>
+            <button class="card-action">EXPORT</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 08: IDEAS ========== -->
+    <section class="panel" data-page="ideas">
+      <div class="panel-header">
+        <h1 class="panel-title">IDEAS CAPTURE</h1>
+        <span class="panel-ref">SYS::IDEA-001 // RAPID INPUT REGISTER</span>
+      </div>
+
+      <div class="idea-capture-form">
+        <div class="punch-card form-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">INPUT-001</span>
+            <span class="punch-label">QUICK CAPTURE</span>
+          </div>
+          <div class="form-grid">
+            <div class="form-row">
+              <label class="form-label">TITLE::</label>
+              <input type="text" class="input-field" placeholder="Enter idea title...">
+            </div>
+            <div class="form-row">
+              <label class="form-label">DESC::</label>
+              <textarea class="input-field textarea" placeholder="Describe the idea in detail..." rows="3"></textarea>
+            </div>
+            <div class="form-row form-row--split">
+              <div class="form-col">
+                <label class="form-label">PRIORITY::</label>
+                <select class="select-field">
+                  <option value="high">HIGH</option>
+                  <option value="medium" selected>MEDIUM</option>
+                  <option value="low">LOW</option>
+                </select>
+              </div>
+              <div class="form-col">
+                <label class="form-label">TAGS::</label>
+                <input type="text" class="input-field" placeholder="tag1, tag2, tag3">
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="action-btn primary">
+                <span class="action-code">S</span>
+                <span class="action-label">SUBMIT IDEA</span>
+              </button>
+              <button class="action-btn">
+                <span class="action-code">R</span>
+                <span class="action-label">RESET FORM</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar__search">
+          <label class="search-label" for="ideaSearch">FILTER::</label>
+          <input type="text" id="ideaSearch" class="input-field" placeholder="Search ideas...">
+        </div>
+        <div class="toolbar__filters">
+          <button class="filter-btn active">ALL</button>
+          <button class="filter-btn">HIGH</button>
+          <button class="filter-btn">MEDIUM</button>
+          <button class="filter-btn">LOW</button>
+        </div>
+      </div>
+
+      <div class="ideas-list">
+        <div class="punch-card idea-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">IDEA-101</span>
+            <span class="punch-label">Add dark mode toggle</span>
+            <span class="priority-badge high">HIGH</span>
+          </div>
+          <div class="punch-card__body">
+            <div class="field-row"><span class="field-key">DESC:</span><span class="field-val">Implement system-aware dark mode with manual override toggle. Store preference in user settings via Convex. Apply CSS custom properties for seamless theme switching.</span></div>
+            <div class="field-row"><span class="field-key">TAGS:</span><span class="tag-list"><span class="tag">UI</span><span class="tag">theme</span><span class="tag">settings</span></span></div>
+            <div class="field-row"><span class="field-key">ADDED:</span><span class="field-val">2026-02-14 10:32</span></div>
+          </div>
+          <div class="punch-card__footer">
+            <span class="punch-meta">STATUS: PENDING</span>
+            <button class="card-action promote-btn">PROMOTE TO KANBAN</button>
+          </div>
+        </div>
+
+        <div class="punch-card idea-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">IDEA-102</span>
+            <span class="punch-label">Implement drag-drop upload</span>
+            <span class="priority-badge medium">MED</span>
+          </div>
+          <div class="punch-card__body">
+            <div class="field-row"><span class="field-key">DESC:</span><span class="field-val">Allow users to drag and drop files directly into the whiteboard canvas and project workspace. Support images, PDFs, and documents with preview thumbnails.</span></div>
+            <div class="field-row"><span class="field-key">TAGS:</span><span class="tag-list"><span class="tag">UX</span><span class="tag">upload</span><span class="tag">whiteboard</span></span></div>
+            <div class="field-row"><span class="field-key">ADDED:</span><span class="field-val">2026-02-13 16:45</span></div>
+          </div>
+          <div class="punch-card__footer">
+            <span class="punch-meta">STATUS: PENDING</span>
+            <button class="card-action promote-btn">PROMOTE TO KANBAN</button>
+          </div>
+        </div>
+
+        <div class="punch-card idea-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">IDEA-103</span>
+            <span class="punch-label">Research vector search for AI embeddings</span>
+            <span class="priority-badge high">HIGH</span>
+          </div>
+          <div class="punch-card__body">
+            <div class="field-row"><span class="field-key">DESC:</span><span class="field-val">Investigate vector database options (Pinecone, Weaviate, pgvector) for semantic search across ideas and project documents. Goal: natural language queries that surface related ideas.</span></div>
+            <div class="field-row"><span class="field-key">TAGS:</span><span class="tag-list"><span class="tag">AI</span><span class="tag">search</span><span class="tag">research</span></span></div>
+            <div class="field-row"><span class="field-key">ADDED:</span><span class="field-val">2026-02-12 09:15</span></div>
+          </div>
+          <div class="punch-card__footer">
+            <span class="punch-meta">STATUS: PENDING</span>
+            <button class="card-action promote-btn">PROMOTE TO KANBAN</button>
+          </div>
+        </div>
+
+        <div class="punch-card idea-card promoted">
+          <div class="punch-card__header">
+            <span class="punch-ref">IDEA-098</span>
+            <span class="punch-label">Build collaborative playlist engine</span>
+            <span class="priority-badge medium">MED</span>
+          </div>
+          <div class="punch-card__body">
+            <div class="field-row"><span class="field-key">DESC:</span><span class="field-val">Real-time collaborative playlist creation and editing using Convex subscriptions. Multiple users can add, remove, and reorder tracks simultaneously.</span></div>
+            <div class="field-row"><span class="field-key">TAGS:</span><span class="tag-list"><span class="tag">feature</span><span class="tag">real-time</span><span class="tag">music</span></span></div>
+            <div class="field-row"><span class="field-key">ADDED:</span><span class="field-val">2026-02-10 14:20</span></div>
+          </div>
+          <div class="punch-card__footer">
+            <span class="punch-meta">STATUS: PROMOTED -> KBN-005</span>
+            <button class="card-action" disabled>PROMOTED</button>
+          </div>
+        </div>
+
+        <div class="punch-card idea-card">
+          <div class="punch-card__header">
+            <span class="punch-ref">IDEA-104</span>
+            <span class="punch-label">Add keyboard shortcuts overlay</span>
+            <span class="priority-badge low">LOW</span>
+          </div>
+          <div class="punch-card__body">
+            <div class="field-row"><span class="field-key">DESC:</span><span class="field-val">Create a keyboard shortcut guide accessible via ? key. Show context-aware shortcuts for current view (kanban, whiteboard, etc.).</span></div>
+            <div class="field-row"><span class="field-key">TAGS:</span><span class="tag-list"><span class="tag">UX</span><span class="tag">accessibility</span><span class="tag">navigation</span></span></div>
+            <div class="field-row"><span class="field-key">ADDED:</span><span class="field-val">2026-02-11 11:00</span></div>
+          </div>
+          <div class="punch-card__footer">
+            <span class="punch-meta">STATUS: PENDING</span>
+            <button class="card-action promote-btn">PROMOTE TO KANBAN</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 09: AI CHAT ========== -->
+    <section class="panel" data-page="chat">
+      <div class="panel-header">
+        <h1 class="panel-title">AI CHAT</h1>
+        <span class="panel-ref">SYS::AI-001 // INTELLIGENT ASSISTANT INTERFACE</span>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat-messages">
+          <div class="chat-msg system">
+            <div class="msg-header">
+              <span class="msg-ref">MSG-000</span>
+              <span class="msg-sender">SYSTEM</span>
+              <span class="msg-time">08:00:00</span>
+            </div>
+            <div class="msg-body">AI Assistant initialized. Ready to help with idea management, kanban operations, directory generation, and project planning. Available tool actions: add_idea, update_kanban, generate_tree, query_schema.</div>
+          </div>
+
+          <div class="chat-msg user">
+            <div class="msg-header">
+              <span class="msg-ref">MSG-001</span>
+              <span class="msg-sender">OPR::ADMIN</span>
+              <span class="msg-time">08:05:12</span>
+            </div>
+            <div class="msg-body">What ideas do we have related to AI features?</div>
+          </div>
+
+          <div class="chat-msg assistant">
+            <div class="msg-header">
+              <span class="msg-ref">MSG-002</span>
+              <span class="msg-sender">AI::ASSISTANT</span>
+              <span class="msg-time">08:05:14</span>
+            </div>
+            <div class="msg-body">I found 2 AI-related ideas in your registry:
+              <div class="msg-result">
+                <div class="result-item"><span class="result-ref">IDEA-103</span> "Research vector search for AI embeddings" — Priority: HIGH</div>
+                <div class="result-item"><span class="result-ref">IDEA-089</span> "AI-powered idea deduplication" — Priority: MEDIUM</div>
+              </div>
+              Would you like to promote either of these to kanban cards, or add a new AI-related idea?
+            </div>
+          </div>
+
+          <div class="chat-msg user">
+            <div class="msg-header">
+              <span class="msg-ref">MSG-003</span>
+              <span class="msg-sender">OPR::ADMIN</span>
+              <span class="msg-time">08:06:30</span>
+            </div>
+            <div class="msg-body">Add a new idea: "Implement AI-powered code review suggestions for schema planner" with high priority and tags ai, schema, code-review.</div>
+          </div>
+
+          <div class="chat-msg assistant">
+            <div class="msg-header">
+              <span class="msg-ref">MSG-004</span>
+              <span class="msg-sender">AI::ASSISTANT</span>
+              <span class="msg-time">08:06:32</span>
+            </div>
+            <div class="msg-body">
+              <div class="tool-action">
+                <span class="tool-badge">TOOL::add_idea</span>
+                <span class="tool-status success">EXECUTED</span>
+              </div>
+              Idea created successfully:
+              <div class="msg-result">
+                <div class="result-item"><span class="result-ref">IDEA-105</span> "Implement AI-powered code review suggestions for schema planner"</div>
+                <div class="result-detail">Priority: HIGH | Tags: ai, schema, code-review</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-msg user">
+            <div class="msg-header">
+              <span class="msg-ref">MSG-005</span>
+              <span class="msg-sender">OPR::ADMIN</span>
+              <span class="msg-time">08:08:15</span>
+            </div>
+            <div class="msg-body">Move the kanban card "Design kanban drag-drop UX" to the Review column.</div>
+          </div>
+
+          <div class="chat-msg assistant">
+            <div class="msg-header">
+              <span class="msg-ref">MSG-006</span>
+              <span class="msg-sender">AI::ASSISTANT</span>
+              <span class="msg-time">08:08:17</span>
+            </div>
+            <div class="msg-body">
+              <div class="tool-action">
+                <span class="tool-badge">TOOL::update_kanban</span>
+                <span class="tool-status success">EXECUTED</span>
+              </div>
+              Card moved successfully:
+              <div class="msg-result">
+                <div class="result-item"><span class="result-ref">KBN-003</span> "Design kanban drag-drop UX"</div>
+                <div class="result-detail">IN PROGRESS -> REVIEW | Assignee: OPR::DESIGN</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-msg user">
+            <div class="msg-header">
+              <span class="msg-ref">MSG-007</span>
+              <span class="msg-sender">OPR::ADMIN</span>
+              <span class="msg-time">08:10:40</span>
+            </div>
+            <div class="msg-body">Generate a directory tree for the Campus Learning App project using a Next.js template.</div>
+          </div>
+
+          <div class="chat-msg assistant">
+            <div class="msg-header">
+              <span class="msg-ref">MSG-008</span>
+              <span class="msg-sender">AI::ASSISTANT</span>
+              <span class="msg-time">08:10:44</span>
+            </div>
+            <div class="msg-body">
+              <div class="tool-action">
+                <span class="tool-badge">TOOL::generate_tree</span>
+                <span class="tool-status success">EXECUTED</span>
+              </div>
+              Directory tree generated for "Campus Learning App":
+              <div class="msg-result">
+                <div class="result-detail">Template: Next.js App Router | 16 directories | 32 files</div>
+                <div class="result-detail">Includes: auth routes, course pages, video player components, AI study guide module</div>
+                <div class="result-item">View the full tree in DIR TREE [Tab 07]</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <div class="punch-card chat-input-card">
+            <div class="punch-card__header">
+              <span class="punch-ref">CMD</span>
+              <span class="punch-label">OPERATOR INPUT</span>
+            </div>
+            <div class="chat-input-row">
+              <input type="text" class="input-field chat-input" placeholder="Enter command or query...">
+              <button class="action-btn primary">
+                <span class="action-code">>></span>
+                <span class="action-label">SEND</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW 10: SETTINGS ========== -->
+    <section class="panel" data-page="settings">
+      <div class="panel-header">
+        <h1 class="panel-title">SYSTEM SETTINGS</h1>
+        <span class="panel-ref">SYS::CFG-001 // CONFIGURATION REGISTER</span>
+      </div>
+
+      <div class="settings-layout">
+        <nav class="settings-nav">
+          <button class="settings-tab active" data-settings="account">
+            <span class="stab-ref">CFG-01</span>ACCOUNT
+          </button>
+          <button class="settings-tab" data-settings="subscription">
+            <span class="stab-ref">CFG-02</span>SUBSCRIPTION
+          </button>
+          <button class="settings-tab" data-settings="preferences">
+            <span class="stab-ref">CFG-03</span>PREFERENCES
+          </button>
+          <button class="settings-tab" data-settings="integrations">
+            <span class="stab-ref">CFG-04</span>INTEGRATIONS
+          </button>
+          <button class="settings-tab" data-settings="data">
+            <span class="stab-ref">CFG-05</span>DATA
+          </button>
+        </nav>
+
+        <div class="settings-content">
+          <!-- Account Settings (default visible) -->
+          <div class="settings-pane active" data-settings-pane="account">
+            <div class="punch-card settings-card">
+              <div class="punch-card__header">
+                <span class="punch-ref">CFG-ACCT</span>
+                <span class="punch-label">ACCOUNT INFORMATION</span>
+              </div>
+              <div class="settings-form">
+                <div class="form-row">
+                  <label class="form-label">NAME::</label>
+                  <input type="text" class="input-field" value="Administrator">
+                </div>
+                <div class="form-row">
+                  <label class="form-label">EMAIL::</label>
+                  <input type="email" class="input-field" value="admin@idea-mgmt.io">
+                </div>
+                <div class="form-row">
+                  <label class="form-label">ROLE::</label>
+                  <input type="text" class="input-field" value="Owner" disabled>
+                </div>
+                <div class="form-row">
+                  <label class="form-label">CLERK ID::</label>
+                  <input type="text" class="input-field mono-val" value="user_2nXa9kL..." disabled>
+                </div>
+                <div class="form-row">
+                  <label class="form-label">JOINED::</label>
+                  <input type="text" class="input-field" value="2025-08-15" disabled>
+                </div>
+                <div class="form-actions">
+                  <button class="action-btn primary">
+                    <span class="action-code">S</span>
+                    <span class="action-label">SAVE CHANGES</span>
+                  </button>
+                  <button class="action-btn danger">
+                    <span class="action-code">!</span>
+                    <span class="action-label">DELETE ACCOUNT</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subscription Settings -->
+          <div class="settings-pane" data-settings-pane="subscription">
+            <div class="punch-card settings-card">
+              <div class="punch-card__header">
+                <span class="punch-ref">CFG-SUB</span>
+                <span class="punch-label">SUBSCRIPTION PLANS</span>
+              </div>
+              <div class="plan-grid">
+                <div class="plan-card">
+                  <div class="plan-header">FREE</div>
+                  <div class="plan-price">$0<span class="plan-period">/mo</span></div>
+                  <ul class="plan-features">
+                    <li>[x] 3 Projects</li>
+                    <li>[x] 50 Ideas</li>
+                    <li>[x] Basic Kanban</li>
+                    <li>[ ] AI Chat</li>
+                    <li>[ ] Schema Planner</li>
+                    <li>[ ] Priority Support</li>
+                  </ul>
+                  <button class="plan-btn">CURRENT PLAN</button>
+                </div>
+                <div class="plan-card featured">
+                  <div class="plan-header">PRO</div>
+                  <div class="plan-price">$9<span class="plan-period">/mo</span></div>
+                  <ul class="plan-features">
+                    <li>[x] Unlimited Projects</li>
+                    <li>[x] Unlimited Ideas</li>
+                    <li>[x] Advanced Kanban</li>
+                    <li>[x] AI Chat (1K msgs/mo)</li>
+                    <li>[x] Schema Planner</li>
+                    <li>[ ] Priority Support</li>
+                  </ul>
+                  <button class="plan-btn primary">UPGRADE</button>
+                </div>
+                <div class="plan-card">
+                  <div class="plan-header">TEAM</div>
+                  <div class="plan-price">$29<span class="plan-period">/mo</span></div>
+                  <ul class="plan-features">
+                    <li>[x] Everything in Pro</li>
+                    <li>[x] 10 Team Members</li>
+                    <li>[x] Unlimited AI Chat</li>
+                    <li>[x] Audit Log</li>
+                    <li>[x] Custom Integrations</li>
+                    <li>[x] Priority Support</li>
+                  </ul>
+                  <button class="plan-btn">UPGRADE</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preferences -->
+          <div class="settings-pane" data-settings-pane="preferences">
+            <div class="punch-card settings-card">
+              <div class="punch-card__header">
+                <span class="punch-ref">CFG-PREF</span>
+                <span class="punch-label">USER PREFERENCES</span>
+              </div>
+              <div class="settings-form">
+                <div class="form-row">
+                  <label class="form-label">THEME::</label>
+                  <div class="toggle-binary">
+                    <span class="toggle-label">LIGHT</span>
+                    <button class="toggle-switch" data-state="0"><span class="toggle-val">0</span></button>
+                    <span class="toggle-label">DARK</span>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <label class="form-label">NOTIFICATIONS::</label>
+                  <div class="toggle-binary">
+                    <span class="toggle-label">OFF</span>
+                    <button class="toggle-switch active" data-state="1"><span class="toggle-val">1</span></button>
+                    <span class="toggle-label">ON</span>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <label class="form-label">DEFAULT VIEW::</label>
+                  <select class="select-field">
+                    <option selected>DASHBOARD</option>
+                    <option>PROJECTS</option>
+                    <option>KANBAN</option>
+                    <option>IDEAS</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <label class="form-label">DATE FORMAT::</label>
+                  <select class="select-field">
+                    <option selected>YYYY-MM-DD</option>
+                    <option>MM/DD/YYYY</option>
+                    <option>DD/MM/YYYY</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <label class="form-label">AI MODEL::</label>
+                  <select class="select-field">
+                    <option selected>Claude Opus 4.6</option>
+                    <option>Claude Sonnet 4</option>
+                    <option>GPT-4o</option>
+                  </select>
+                </div>
+                <div class="form-actions">
+                  <button class="action-btn primary">
+                    <span class="action-code">S</span>
+                    <span class="action-label">SAVE PREFERENCES</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Integrations -->
+          <div class="settings-pane" data-settings-pane="integrations">
+            <div class="punch-card settings-card">
+              <div class="punch-card__header">
+                <span class="punch-ref">CFG-INT</span>
+                <span class="punch-label">INTEGRATIONS</span>
+              </div>
+              <div class="integration-list">
+                <div class="integration-row">
+                  <div class="int-info">
+                    <span class="int-name">GitHub</span>
+                    <span class="int-desc">Repository sync, issue tracking, PR automation</span>
+                  </div>
+                  <span class="int-status connected">CONNECTED</span>
+                </div>
+                <div class="integration-row">
+                  <div class="int-info">
+                    <span class="int-name">Slack</span>
+                    <span class="int-desc">Notifications, slash commands, channel updates</span>
+                  </div>
+                  <span class="int-status connected">CONNECTED</span>
+                </div>
+                <div class="integration-row">
+                  <div class="int-info">
+                    <span class="int-name">Figma</span>
+                    <span class="int-desc">Design file embedding, comment sync</span>
+                  </div>
+                  <span class="int-status disconnected">DISCONNECTED</span>
+                </div>
+                <div class="integration-row">
+                  <div class="int-info">
+                    <span class="int-name">Linear</span>
+                    <span class="int-desc">Issue sync, sprint planning, roadmap integration</span>
+                  </div>
+                  <span class="int-status disconnected">DISCONNECTED</span>
+                </div>
+                <div class="integration-row">
+                  <div class="int-info">
+                    <span class="int-name">Vercel</span>
+                    <span class="int-desc">Deployment previews, environment variables</span>
+                  </div>
+                  <span class="int-status connected">CONNECTED</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data -->
+          <div class="settings-pane" data-settings-pane="data">
+            <div class="punch-card settings-card">
+              <div class="punch-card__header">
+                <span class="punch-ref">CFG-DATA</span>
+                <span class="punch-label">DATA MANAGEMENT</span>
+              </div>
+              <div class="data-section">
+                <div class="data-row">
+                  <div class="data-info">
+                    <span class="data-title">Export All Data</span>
+                    <span class="data-desc">Download all projects, ideas, kanban cards, and settings as JSON</span>
+                  </div>
+                  <button class="action-btn">
+                    <span class="action-code">E</span>
+                    <span class="action-label">EXPORT</span>
+                  </button>
+                </div>
+                <div class="data-row">
+                  <div class="data-info">
+                    <span class="data-title">Import Data</span>
+                    <span class="data-desc">Import projects and ideas from JSON backup file</span>
+                  </div>
+                  <button class="action-btn">
+                    <span class="action-code">I</span>
+                    <span class="action-label">IMPORT</span>
+                  </button>
+                </div>
+                <div class="data-row">
+                  <div class="data-info">
+                    <span class="data-title">Database Stats</span>
+                    <span class="data-desc">12 projects, 247 ideas, 89 kanban cards, 6 schemas, 1.2K AI messages</span>
+                  </div>
+                  <button class="action-btn">
+                    <span class="action-code">R</span>
+                    <span class="action-label">REFRESH</span>
+                  </button>
+                </div>
+                <div class="data-row danger-zone">
+                  <div class="data-info">
+                    <span class="data-title">DANGER: Reset All Data</span>
+                    <span class="data-desc">Permanently delete all projects, ideas, and configurations. This action cannot be undone.</span>
+                  </div>
+                  <button class="action-btn danger">
+                    <span class="action-code">!!</span>
+                    <span class="action-label">RESET</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="system-footer">
+    <span class="footer-ref">IDEA-MANAGEMENT v7.0 // PUNCHED-CARD-DATA-WALL // BRUTALIST PASS 7</span>
+    <span class="footer-status"><span class="status-dot"></span>ALL SYSTEMS NOMINAL</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

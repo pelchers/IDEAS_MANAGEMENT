@@ -1,0 +1,26 @@
+{
+  "references": [
+    {
+      "name": "CCTV Control Room Dashboards",
+      "url": "https://dribbble.com/tags/surveillance",
+      "appliedTo": "Overall grid tile layout and dense information display",
+      "howApplied": "Auto-fit responsive tile grid where every piece of content is a discrete monitoring cell"
+    },
+    {
+      "name": "Industrial Control Panel Design",
+      "url": "https://dribbble.com/tags/control-panel",
+      "appliedTo": "Icon-only top bar navigation",
+      "howApplied": "Minimal icon row inspired by industrial control panel button strips with LED recording indicators"
+    },
+    {
+      "name": "Brutalist Web Design Archive",
+      "url": "https://brutalistwebsites.com",
+      "appliedTo": "Zero border-radius, hard component tone",
+      "howApplied": "All elements are sharp rectangles with no decorative rounding, maintaining raw structural honesty"
+    }
+  ],
+  "antiRepeatCompliance": {
+    "avoided": ["concrete slab monolith", "stamp grids", "CRT terminal", "blueprint grid", "torn paper collage", "corrugated steel warehouse", "punched card data wall"],
+    "uniqueElements": ["auto-fit tile grid", "icon-only navigation", "surveillance/CCTV metaphor", "recording light indicators", "grid-reflow transitions"]
+  }
+}

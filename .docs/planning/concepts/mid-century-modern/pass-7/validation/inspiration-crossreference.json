@@ -1,0 +1,65 @@
+{
+  "passId": "mid-century-modern-pass-7",
+  "style": "mid-century-modern",
+  "variantSeed": "floating-dock-lounge",
+  "inspirations": [
+    {
+      "source": "Herman Miller showroom displays",
+      "elementsAdapted": [
+        "Specimen-card presentation style with museum-quality labeling (monospaced uppercase category labels)",
+        "Generous whitespace as a curated display technique",
+        "Warm ambient lighting translated into golden gradient hero card",
+        "Each view treated as an 'exhibit' with label numbering (Exhibit A through J)"
+      ],
+      "differentiator": "Applied museum exhibit metaphor to software UI rather than physical furniture display. Each view gets a serial exhibit label instead of room numbers."
+    },
+    {
+      "source": "macOS Dock / System 76 Cosmic Dock",
+      "elementsAdapted": [
+        "Floating bottom dock as primary navigation paradigm",
+        "Pill-shaped icon containers with background fill on active state",
+        "Backdrop blur glass effect on dock background",
+        "Hover lift animation (translateY -2px) for dock items"
+      ],
+      "differentiator": "Adapted desktop dock pattern for a mid-century aesthetic with warm amber tones instead of system gray. Added spring bounce physics to all dock interactions. Used serif labels instead of sans-serif."
+    },
+    {
+      "source": "Eames Office furniture catalog",
+      "elementsAdapted": [
+        "Organic rounded corners (pill shapes for tags, buttons, search)",
+        "Warm amber and forest green as the two-color accent system",
+        "Tapered visual weight: lighter borders, generous padding, soft shadows",
+        "Playfair Display serif typography for authoritative headings"
+      ],
+      "differentiator": "Used Eames furniture proportions (generous, rounded, warm) as CSS design tokens rather than decorative woodgrain textures. The warmth comes from color and spacing, not from material simulation."
+    },
+    {
+      "source": "Museum exhibition catalog typography",
+      "elementsAdapted": [
+        "Playfair Display + Source Serif 4 pairing (editorial quality)",
+        "JetBrains Mono for specimen labels and metadata (like catalog notes)",
+        "Italic subtitles under exhibit headings",
+        "Letter-spacing in uppercase labels mimicking museum placards"
+      ],
+      "differentiator": "Combined exhibition typography conventions with a software interface. Catalog-style metadata presentation (key: value in monospace) applied to project metadata, schema field types, and tool action details."
+    },
+    {
+      "source": "Spring physics in iOS / Material Design motion guidelines",
+      "elementsAdapted": [
+        "cubic-bezier(0.34, 1.56, 0.64, 1) spring curve for overshoot bounce",
+        "Scale 0.97 -> 1.02 -> 1.0 click feedback sequence",
+        "Page transition: content rises from bottom with spring easing",
+        "Staggered reveal delays (80ms per element)"
+      ],
+      "differentiator": "Applied modern spring physics curves to a mid-century aesthetic. The bounce feels organic and warm rather than mechanical, matching the furniture-era design philosophy of 'form follows human comfort.'"
+    }
+  ],
+  "crossReferenceNotes": {
+    "vsPass1": "Pass 1 used horizontal credenza shelf as literal furniture metaphor. Pass 7 abstracts the furniture showroom concept into exhibit labeling and specimen cards without literal furniture shapes.",
+    "vsPass2": "Pass 2 used radial hub-spoke inspired by Saarinen's tulip table. Pass 7 uses a simple dock-and-panel model with no geometric gimmicks.",
+    "vsPass3": "Pass 3 used Girard textile collage with overlapping cards. Pass 7 uses clean centered panels with museum-grade spacing.",
+    "vsPass4": "Pass 4 used Noguchi sculpture garden with extreme whitespace. Pass 7 balances whitespace with warm filled gradient cards.",
+    "vsPass5": "Pass 5 shares the same structural profile (floating-bottom-dock) but uses completely different typography (Lora/Karla vs Playfair/Source Serif), palette (blush vs amber), and persona (Danish hygge vs design showroom). Pass 7 feels curatorial and aspirational while Pass 5 feels intimate and cozy.",
+    "vsPass6": "Pass 6 used Warhol pop art with collapsible sidebar. Pass 7 returns to centered composition with organic warmth."
+  }
+}

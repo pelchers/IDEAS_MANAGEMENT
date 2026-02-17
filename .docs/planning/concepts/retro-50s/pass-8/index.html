@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDEA-MANAGEMENT | Automat Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Nunito:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ding Flash (micro-feedback toast) -->
+  <div class="ding-flash" aria-live="polite"></div>
+
+  <!-- ============================================================
+       TOP BAR (Minimal Shell)
+       ============================================================ -->
+  <header class="top-bar" role="banner">
+    <!-- Logo -->
+    <div class="top-bar-logo">
+      <div class="logo-icon"><i class="ph ph-coin"></i></div>
+      <span>IDEA-MGMT</span>
+    </div>
+
+    <!-- Command palette trigger (desktop) -->
+    <button class="cmd-trigger" aria-label="Open command palette">
+      <i class="ph ph-magnifying-glass cmd-icon"></i>
+      <span>Search views, actions...</span>
+      <span class="cmd-shortcut">Ctrl K</span>
+    </button>
+
+    <!-- Right actions -->
+    <div class="top-bar-actions">
+      <button class="hamburger-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <button class="action-btn tooltip" data-tooltip="Notifications" aria-label="Notifications">
+        <i class="ph ph-bell"></i>
+        <span class="badge">3</span>
+      </button>
+      <div class="top-bar-avatar" title="Alex M.">AM</div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       COMMAND PALETTE MODAL
+       ============================================================ -->
+  <div class="cmd-overlay" aria-hidden="true"></div>
+  <div class="cmd-palette" role="dialog" aria-label="Command palette" aria-modal="true">
+    <div class="cmd-palette-header">
+      <i class="ph ph-magnifying-glass search-icon"></i>
+      <input type="text" class="cmd-palette-input" placeholder="Type a view name or action..." autocomplete="off" aria-label="Search command palette">
+      <span class="cmd-palette-hint">ESC</span>
+    </div>
+    <div class="cmd-palette-body">
+      <!-- Populated by JS -->
+    </div>
+    <div class="cmd-palette-footer">
+      <span><kbd>&uarr;</kbd> <kbd>&darr;</kbd> Navigate</span>
+      <span><kbd>Enter</kbd> Open</span>
+      <span><kbd>Esc</kbd> Close</span>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MOBILE NAV DRAWER
+       ============================================================ -->
+  <div class="mobile-drawer-overlay" aria-hidden="true"></div>
+  <nav class="mobile-drawer" role="navigation" aria-label="Mobile navigation">
+    <div class="mobile-drawer-header">
+      <h3>Navigate</h3>
+      <button class="mobile-drawer-close" aria-label="Close menu"><i class="ph ph-x"></i></button>
+    </div>
+    <button class="mobile-nav-item active" data-view="dashboard"><i class="ph ph-house"></i> Dashboard</button>
+    <button class="mobile-nav-item" data-view="projects"><i class="ph ph-folders"></i> Projects</button>
+    <button class="mobile-nav-item" data-view="project-workspace"><i class="ph ph-briefcase"></i> Workspace</button>
+    <button class="mobile-nav-item" data-view="kanban"><i class="ph ph-kanban"></i> Kanban</button>
+    <button class="mobile-nav-item" data-view="whiteboard"><i class="ph ph-chalkboard"></i> Whiteboard</button>
+    <button class="mobile-nav-item" data-view="schema-planner"><i class="ph ph-graph"></i> Schema Planner</button>
+    <button class="mobile-nav-item" data-view="directory-tree"><i class="ph ph-tree-structure"></i> Directory Tree</button>
+    <button class="mobile-nav-item" data-view="ideas"><i class="ph ph-lightbulb"></i> Ideas</button>
+    <button class="mobile-nav-item" data-view="ai-chat"><i class="ph ph-robot"></i> AI Chat</button>
+    <button class="mobile-nav-item" data-view="settings"><i class="ph ph-gear"></i> Settings</button>
+  </nav>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main class="main-content">
+
+    <!-- ========== VIEW: Dashboard ========== -->
+    <section id="view-dashboard" class="view-page active" data-view="dashboard" data-page="dashboard">
+
+      <!-- Search Hero -->
+      <div class="search-hero scroll-reveal">
+        <h1>Welcome back, Alex</h1>
+        <p>Drop a coin in the slot and open any window you need.</p>
+        <div class="search-hero-bar">
+          <i class="ph ph-magnifying-glass"></i>
+          <input type="text" placeholder="Search views, projects, ideas..." aria-label="Quick search">
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid scroll-reveal">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="ph ph-folders"></i></div>
+          <div class="stat-value">12</div>
+          <div class="stat-label">Active Projects</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="ph ph-lightbulb"></i></div>
+          <div class="stat-value">47</div>
+          <div class="stat-label">Ideas Captured</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="ph ph-check-circle"></i></div>
+          <div class="stat-value">89</div>
+          <div class="stat-label">Tasks Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="ph ph-users"></i></div>
+          <div class="stat-value">8</div>
+          <div class="stat-label">Collaborators</div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="scroll-reveal" style="margin-bottom: 28px;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 14px; color: var(--accent);">
+          <i class="ph ph-lightning" style="margin-right: 4px;"></i> Quick Actions
+        </h3>
+        <div class="quick-actions">
+          <button class="btn btn-primary btn-sm" onclick="showDing && showDing('New project created')"><i class="ph ph-plus"></i> New Project</button>
+          <button class="btn btn-secondary btn-sm" onclick="showDing && showDing('Idea form opened')"><i class="ph ph-lightbulb"></i> Capture Idea</button>
+          <button class="btn btn-secondary btn-sm"><i class="ph ph-kanban"></i> View Kanban</button>
+          <button class="btn btn-accent btn-sm"><i class="ph ph-robot"></i> Ask AI</button>
+        </div>
+      </div>
+
+      <!-- Two-column: Activity + Goals -->
+      <div class="two-col scroll-reveal">
+        <div class="automat-section">
+          <div class="automat-section-title"><i class="ph ph-clock-clockwise"></i> Recent Activity</div>
+          <ul class="activity-list">
+            <li class="activity-item">
+              <div class="activity-dot"></div>
+              <div>
+                <div class="activity-text">Created project <strong>"Wavz.fm Music Platform"</strong></div>
+                <div class="activity-time">2 hours ago</div>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="activity-dot orange"></div>
+              <div>
+                <div class="activity-text">Moved <strong>"Design kanban drag-drop UX"</strong> to Review</div>
+                <div class="activity-time">4 hours ago</div>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="activity-dot"></div>
+              <div>
+                <div class="activity-text">Added idea <strong>"Add dark mode toggle"</strong></div>
+                <div class="activity-time">Yesterday</div>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="activity-dot orange"></div>
+              <div>
+                <div class="activity-text">Updated schema planner for <strong>Campus Learning App</strong></div>
+                <div class="activity-time">Yesterday</div>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="activity-dot"></div>
+              <div>
+                <div class="activity-text">Completed <strong>8 tasks</strong> this week</div>
+                <div class="activity-time">2 days ago</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="automat-section">
+          <div class="automat-section-title"><i class="ph ph-target"></i> Active Goals</div>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="automat-card" style="padding: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-weight: 700; font-size: 0.92rem;">Launch MVP by Q2</span>
+                <span class="tag tag-mint">72%</span>
+              </div>
+              <div style="height: 6px; background: var(--chrome-bright); border-radius: 3px; overflow: hidden;">
+                <div style="width: 72%; height: 100%; background: var(--accent); border-radius: 3px;"></div>
+              </div>
+            </div>
+            <div class="automat-card" style="padding: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-weight: 700; font-size: 0.92rem;">User research (50 interviews)</span>
+                <span class="tag tag-orange">38%</span>
+              </div>
+              <div style="height: 6px; background: var(--chrome-bright); border-radius: 3px; overflow: hidden;">
+                <div style="width: 38%; height: 100%; background: var(--accent2); border-radius: 3px;"></div>
+              </div>
+            </div>
+            <div class="automat-card" style="padding: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-weight: 700; font-size: 0.92rem;">API documentation</span>
+                <span class="tag tag-chrome">55%</span>
+              </div>
+              <div style="height: 6px; background: var(--chrome-bright); border-radius: 3px; overflow: hidden;">
+                <div style="width: 55%; height: 100%; background: var(--border); border-radius: 3px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: Projects ========== -->
+    <section id="view-projects" class="view-page" data-view="projects" data-page="projects">
+
+      <div class="search-hero scroll-reveal">
+        <h1>Projects</h1>
+        <p>Each project is a dish behind glass -- organized, labeled, ready to serve.</p>
+        <div class="search-hero-bar">
+          <i class="ph ph-magnifying-glass"></i>
+          <input type="text" placeholder="Search projects..." aria-label="Search projects">
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;" class="scroll-reveal">
+        <div style="display: flex; gap: 8px;">
+          <span class="tag tag-mint">All (5)</span>
+          <span class="tag tag-chrome">Active (3)</span>
+          <span class="tag tag-cream">Archived (2)</span>
+        </div>
+        <button class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> Create New</button>
+      </div>
+
+      <div class="cards-grid scroll-reveal">
+        <!-- Project 1 -->
+        <div class="automat-card project-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+            <h3 class="project-name">Wavz.fm Music Platform</h3>
+            <span class="tag tag-mint">Active</span>
+          </div>
+          <p class="project-desc">A music streaming and discovery platform with social features, collaborative playlists, and artist analytics dashboards.</p>
+          <div class="project-meta">
+            <span class="tag tag-chrome">Next.js</span>
+            <span class="tag tag-chrome">Convex</span>
+            <div class="project-collaborators">
+              <div class="collaborator-avatar">AM</div>
+              <div class="collaborator-avatar" style="background: var(--accent2);">JD</div>
+              <div class="collaborator-avatar" style="background: #7b1fa2;">SK</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="automat-card project-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+            <h3 class="project-name">Campus Learning App</h3>
+            <span class="tag tag-mint">Active</span>
+          </div>
+          <p class="project-desc">An interactive campus learning management system with course tracking, peer collaboration, and assignment submission workflows.</p>
+          <div class="project-meta">
+            <span class="tag tag-chrome">React</span>
+            <span class="tag tag-chrome">PostgreSQL</span>
+            <div class="project-collaborators">
+              <div class="collaborator-avatar">AM</div>
+              <div class="collaborator-avatar" style="background: #1565c0;">LP</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="automat-card project-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+            <h3 class="project-name">RepoSaver Backup Tool</h3>
+            <span class="tag tag-mint">Active</span>
+          </div>
+          <p class="project-desc">Automated repository backup tool that monitors GitHub, GitLab, and Bitbucket repos for incremental snapshots to cloud storage.</p>
+          <div class="project-meta">
+            <span class="tag tag-chrome">Go</span>
+            <span class="tag tag-chrome">AWS S3</span>
+            <div class="project-collaborators">
+              <div class="collaborator-avatar">AM</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="automat-card project-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+            <h3 class="project-name">Budget Tracker</h3>
+            <span class="tag tag-cream">Archived</span>
+          </div>
+          <p class="project-desc">Personal finance tracker with bank sync, category rules, and monthly spending insights. Archived after v1 launch.</p>
+          <div class="project-meta">
+            <span class="tag tag-chrome">Vue</span>
+            <span class="tag tag-chrome">Firebase</span>
+            <div class="project-collaborators">
+              <div class="collaborator-avatar" style="background: #546e7a;">AM</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- New Project placeholder -->
+        <div class="automat-card" style="border: 2px dashed var(--border); display: flex; align-items: center; justify-content: center; min-height: 180px; cursor: pointer; background: rgba(232,245,232,0.2);" onclick="document.querySelector('.ding-flash') && (document.querySelector('.ding-flash').innerHTML = '<i class=\'ph ph-check-circle\'></i> New project dialog', document.querySelector('.ding-flash').classList.add('show'), setTimeout(function(){document.querySelector('.ding-flash').classList.remove('show')}, 1500))">
+          <div style="text-align: center; color: var(--accent);">
+            <i class="ph ph-plus-circle" style="font-size: 2.5rem; display: block; margin-bottom: 8px;"></i>
+            <span style="font-weight: 700; font-size: 0.92rem;">Create New Project</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: Project Workspace ========== -->
+    <section id="view-project-workspace" class="view-page" data-view="project-workspace" data-page="project-workspace">
+
+      <div style="margin-bottom: 24px;" class="scroll-reveal">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span class="tag tag-mint">Active</span>
+          <span style="font-size: 0.82rem; color: #90a4ae;">Project Workspace</span>
+        </div>
+        <h1 style="font-size: 1.8rem;">Wavz.fm Music Platform</h1>
+        <p style="color: #607d8b; max-width: 600px;">A music streaming and discovery platform with social features, collaborative playlists, and artist analytics dashboards.</p>
+      </div>
+
+      <div class="workspace-layout scroll-reveal">
+        <!-- Sidebar: folder nav -->
+        <div class="workspace-sidebar">
+          <h4 style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: #90a4ae; margin-bottom: 12px;">Sections</h4>
+          <button class="folder-nav-item active"><i class="ph ph-info"></i> Overview</button>
+          <button class="folder-nav-item"><i class="ph ph-kanban"></i> Kanban Board</button>
+          <button class="folder-nav-item"><i class="ph ph-lightbulb"></i> Ideas</button>
+          <button class="folder-nav-item"><i class="ph ph-graph"></i> Schema</button>
+          <button class="folder-nav-item"><i class="ph ph-tree-structure"></i> Directory</button>
+          <button class="folder-nav-item"><i class="ph ph-chalkboard"></i> Whiteboard</button>
+          <button class="folder-nav-item"><i class="ph ph-gear"></i> Settings</button>
+        </div>
+
+        <!-- Main content -->
+        <div class="workspace-main">
+          <div class="metadata-grid">
+            <div class="metadata-item">
+              <div class="meta-label">Status</div>
+              <div class="meta-value"><span class="tag tag-mint">Active</span></div>
+            </div>
+            <div class="metadata-item">
+              <div class="meta-label">Created</div>
+              <div class="meta-value mono" style="font-family: 'Courier Prime', monospace; font-size: 0.85rem;">Jan 15, 2026</div>
+            </div>
+            <div class="metadata-item">
+              <div class="meta-label">Tech Stack</div>
+              <div class="meta-value" style="display: flex; gap: 4px; flex-wrap: wrap;">
+                <span class="tag tag-chrome">Next.js</span>
+                <span class="tag tag-chrome">Convex</span>
+                <span class="tag tag-chrome">Clerk</span>
+                <span class="tag tag-chrome">Stripe</span>
+              </div>
+            </div>
+            <div class="metadata-item">
+              <div class="meta-label">Collaborators</div>
+              <div class="meta-value" style="display: flex; gap: -4px;">
+                <div class="collaborator-avatar" style="width: 28px; height: 28px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.6rem; font-weight: 700;">AM</div>
+                <div class="collaborator-avatar" style="width: 28px; height: 28px; background: var(--accent2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.6rem; font-weight: 700; margin-left: -4px;">JD</div>
+                <div class="collaborator-avatar" style="width: 28px; height: 28px; background: #7b1fa2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.6rem; font-weight: 700; margin-left: -4px;">SK</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="automat-section">
+            <div class="automat-section-title"><i class="ph ph-target"></i> Project Goals</div>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
+              <li style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #fff; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                <i class="ph ph-check-circle" style="color: var(--accent); font-size: 1.2rem;"></i>
+                <span style="font-size: 0.9rem;">Launch MVP with core streaming and playlist features</span>
+              </li>
+              <li style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #fff; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                <i class="ph ph-circle" style="color: var(--border); font-size: 1.2rem;"></i>
+                <span style="font-size: 0.9rem;">Integrate Stripe subscriptions for premium tier</span>
+              </li>
+              <li style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #fff; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                <i class="ph ph-circle" style="color: var(--border); font-size: 1.2rem;"></i>
+                <span style="font-size: 0.9rem;">Build artist analytics dashboard with real-time data</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="automat-section" style="margin-top: 20px;">
+            <div class="automat-section-title"><i class="ph ph-tag"></i> Tags</div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <span class="tag tag-mint">Music</span>
+              <span class="tag tag-orange">Streaming</span>
+              <span class="tag tag-chrome">SaaS</span>
+              <span class="tag tag-cream">Social</span>
+              <span class="tag tag-mint">Analytics</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: Kanban ========== -->
+    <section id="view-kanban" class="view-page" data-view="kanban" data-page="kanban">
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;" class="scroll-reveal">
+        <div>
+          <h1 style="font-size: 1.6rem;">Kanban Board</h1>
+          <p style="color: #607d8b; font-size: 0.9rem;">Wavz.fm Music Platform</p>
+        </div>
+        <button class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> Add Card</button>
+      </div>
+
+      <div class="kanban-board scroll-reveal">
+        <!-- Backlog -->
+        <div class="kanban-column">
+          <div class="kanban-col-header">
+            <span class="kanban-col-title">Backlog</span>
+            <span class="kanban-col-count">3</span>
+          </div>
+          <div class="kanban-card">
+            <div class="kanban-card-title">Research competitor streaming APIs</div>
+            <div class="kanban-card-meta">
+              <span class="kanban-card-priority priority-low">Low</span>
+              <div class="kanban-card-assignee">AM</div>
+            </div>
+          </div>
+          <div class="kanban-card">
+            <div class="kanban-card-title">Design onboarding flow mockups</div>
+            <div class="kanban-card-meta">
+              <span class="kanban-card-priority priority-med">Medium</span>
+              <div class="kanban-card-assignee">JD</div>
+            </div>
+          </div>
+          <div class="kanban-card">
+            <div class="kanban-card-title">Write API rate limiting docs</div>
+            <div class="kanban-card-meta">
+              <span class="kanban-card-priority priority-low">Low</span>
+              <div class="kanban-card-assignee">AM</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- In Progress -->
+        <div class="kanban-column">
+          <div class="kanban-col-header">
+            <span class="kanban-col-title">In Progress</span>
+            <span class="kanban-col-count">2</span>
+          </div>
+          <div class="kanban-card">
+            <div class="kanban-card-title">Set up Clerk authentication</div>
+            <div class="kanban-card-meta">
+              <span class="kanban-card-priority priority-high">High</span>
+              <div class="kanban-card-assignee">AM</div>
+            </div>
+          </div>
+          <div class="kanban-card">
+            <div class="kanban-card-title">Implement playlist CRUD operations</div>
+            <div class="kanban-card-meta">
+              <span class="kanban-card-priority priority-high">High</span>
+              <div class="kanban-card-assignee" style="background: var(--accent2);">JD</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review -->
+        <div class="kanban-column">
+          <div class="kanban-col-header">
+            <span class="kanban-col-title">Review</span>
+            <span class="kanban-col-count">2</span>
+          </div>
+          <div class="kanban-card">
+            <div class="kanban-card-title">Design kanban drag-drop UX</div>
+            <div class="kanban-card-meta">
+              <span class="kanban-card-priority priority-med">Medium</span>
+              <div class="kanban-card-assignee" style="background: #7b1fa2;">SK</div>
+            </div>
+          </div>
+          <div class="kanban-card">
+            <div class="kanban-card-title">Set up Convex real-time sync</div>
+            <div class="kanban-card-meta">
+              <span class="kanban-card-priority priority-high">High</span>
+              <div class="kanban-card-assignee">AM</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Done -->
+        <div class="kanban-column">
+          <div class="kanban-col-header">
+            <span class="kanban-col-title">Done</span>
+            <span class="kanban-col-count">3</span>
+          </div>
+          <div class="kanban-card">
+            <div class="kanban-card-title">Initialize Next.js project scaffold</div>
+            <div class="kanban-card-meta">
+              <span class="kanban-card-priority priority-med">Medium</span>
+              <div class="kanban-card-assignee">AM</div>
+            </div>
+          </div>
+          <div class="kanban-card">
+            <div class="kanban-card-title">Configure Tailwind + shadcn/ui</div>
+            <div class="kanban-card-meta">
+              <span class="kanban-card-priority priority-low">Low</span>
+              <div class="kanban-card-assignee" style="background: var(--accent2);">JD</div>
+            </div>
+          </div>
+          <div class="kanban-card">
+            <div class="kanban-card-title">Set up Convex schema v1</div>
+            <div class="kanban-card-meta">
+              <span class="kanban-card-priority priority-high">High</span>
+              <div class="kanban-card-assignee">AM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: Whiteboard ========== -->
+    <section id="view-whiteboard" class="view-page" data-view="whiteboard" data-page="whiteboard">
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;" class="scroll-reveal">
+        <div>
+          <h1 style="font-size: 1.6rem;">Whiteboard</h1>
+          <p style="color: #607d8b; font-size: 0.9rem;">Infinite canvas for brainstorming and linking ideas</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary btn-sm"><i class="ph ph-export"></i> Export</button>
+          <button class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> Add Node</button>
+        </div>
+      </div>
+
+      <div class="whiteboard-container scroll-reveal">
+        <div class="whiteboard-toolbar">
+          <button class="wb-tool-btn active tooltip" data-tooltip="Select"><i class="ph ph-cursor"></i></button>
+          <button class="wb-tool-btn tooltip" data-tooltip="Draw"><i class="ph ph-pencil-line"></i></button>
+          <button class="wb-tool-btn tooltip" data-tooltip="Container"><i class="ph ph-rectangle"></i></button>
+          <button class="wb-tool-btn tooltip" data-tooltip="Text"><i class="ph ph-text-aa"></i></button>
+          <button class="wb-tool-btn tooltip" data-tooltip="Link"><i class="ph ph-arrows-out-line-horizontal"></i></button>
+          <button class="wb-tool-btn tooltip" data-tooltip="Sticky"><i class="ph ph-note"></i></button>
+        </div>
+
+        <div class="whiteboard-canvas">
+          <!-- Connectors -->
+          <div class="wb-connector wb-connector-h" style="top: 115px; left: 230px; width: 100px;"></div>
+          <div class="wb-connector wb-connector-v" style="top: 115px; left: 330px; height: 80px;"></div>
+          <div class="wb-connector wb-connector-h" style="top: 195px; left: 330px; width: 70px;"></div>
+
+          <div class="wb-connector wb-connector-h" style="top: 300px; left: 230px; width: 170px;"></div>
+
+          <!-- Nodes -->
+          <div class="wb-node" style="top: 60px; left: 50px;">
+            <div class="wb-node-title">User Authentication</div>
+            <div class="wb-node-content">Clerk + JWT tokens<br>Social login support</div>
+          </div>
+
+          <div class="wb-node" style="top: 160px; left: 400px;">
+            <div class="wb-node-title">Music Player</div>
+            <div class="wb-node-content">Web Audio API<br>Queue management<br>Crossfade transitions</div>
+          </div>
+
+          <div class="wb-node" style="top: 240px; left: 50px;">
+            <div class="wb-node-title">Playlist Engine</div>
+            <div class="wb-node-content">Collaborative editing<br>Smart recommendations</div>
+          </div>
+
+          <div class="wb-node" style="top: 260px; left: 400px;">
+            <div class="wb-node-title">Artist Dashboard</div>
+            <div class="wb-node-content">Real-time analytics<br>Revenue tracking<br>Fan engagement</div>
+          </div>
+
+          <div class="wb-node" style="top: 400px; left: 180px;">
+            <div class="wb-node-title">Payment System</div>
+            <div class="wb-node-content">Stripe integration<br>Subscription tiers</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: Schema Planner ========== -->
+    <section id="view-schema-planner" class="view-page" data-view="schema-planner" data-page="schema-planner">
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;" class="scroll-reveal">
+        <div>
+          <h1 style="font-size: 1.6rem;">Schema Planner</h1>
+          <p style="color: #607d8b; font-size: 0.9rem;">Entity relationship diagram for Wavz.fm</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary btn-sm"><i class="ph ph-download"></i> Export SQL</button>
+          <button class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> Add Entity</button>
+        </div>
+      </div>
+
+      <div class="schema-canvas scroll-reveal">
+        <!-- Relation lines -->
+        <div class="schema-relation" style="top: 100px; left: 260px; width: 140px; transform: rotate(12deg);"></div>
+        <div class="schema-relation" style="top: 200px; left: 260px; width: 140px; transform: rotate(-5deg);"></div>
+        <div class="schema-relation" style="top: 150px; left: 620px; width: 100px; transform: rotate(20deg);"></div>
+        <div class="schema-relation" style="top: 340px; left: 260px; width: 200px; transform: rotate(10deg);"></div>
+
+        <!-- Entity: User -->
+        <div class="entity-node" style="top: 40px; left: 30px;">
+          <div class="entity-header"><i class="ph ph-user"></i> User</div>
+          <div class="entity-fields">
+            <div class="entity-field">
+              <span class="entity-field-key">PK</span>
+              <span class="entity-field-name">id</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">name</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">email</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">role</span>
+              <span class="entity-field-type">enum</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">avatarUrl</span>
+              <span class="entity-field-type">string?</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Entity: Project -->
+        <div class="entity-node" style="top: 30px; left: 400px;">
+          <div class="entity-header"><i class="ph ph-folders"></i> Project</div>
+          <div class="entity-fields">
+            <div class="entity-field">
+              <span class="entity-field-key">PK</span>
+              <span class="entity-field-name">id</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key">FK</span>
+              <span class="entity-field-name">ownerId</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">name</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">slug</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">status</span>
+              <span class="entity-field-type">enum</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">tags</span>
+              <span class="entity-field-type">string[]</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Entity: Idea -->
+        <div class="entity-node" style="top: 220px; left: 30px;">
+          <div class="entity-header"><i class="ph ph-lightbulb"></i> Idea</div>
+          <div class="entity-fields">
+            <div class="entity-field">
+              <span class="entity-field-key">PK</span>
+              <span class="entity-field-name">id</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key">FK</span>
+              <span class="entity-field-name">projectId</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">title</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">description</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">priority</span>
+              <span class="entity-field-type">enum</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Entity: KanbanCard -->
+        <div class="entity-node" style="top: 280px; left: 460px;">
+          <div class="entity-header"><i class="ph ph-kanban"></i> KanbanCard</div>
+          <div class="entity-fields">
+            <div class="entity-field">
+              <span class="entity-field-key">PK</span>
+              <span class="entity-field-name">id</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key">FK</span>
+              <span class="entity-field-name">projectId</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">title</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">column</span>
+              <span class="entity-field-type">enum</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">assigneeId</span>
+              <span class="entity-field-type">string?</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">priority</span>
+              <span class="entity-field-type">enum</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Entity: WhiteboardNode -->
+        <div class="entity-node" style="top: 60px; left: 700px;">
+          <div class="entity-header"><i class="ph ph-chalkboard"></i> WhiteboardNode</div>
+          <div class="entity-fields">
+            <div class="entity-field">
+              <span class="entity-field-key">PK</span>
+              <span class="entity-field-name">id</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key">FK</span>
+              <span class="entity-field-name">projectId</span>
+              <span class="entity-field-type">string</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">type</span>
+              <span class="entity-field-type">enum</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">x, y</span>
+              <span class="entity-field-type">number</span>
+            </div>
+            <div class="entity-field">
+              <span class="entity-field-key"></span>
+              <span class="entity-field-name">content</span>
+              <span class="entity-field-type">string</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: Directory Tree ========== -->
+    <section id="view-directory-tree" class="view-page" data-view="directory-tree" data-page="directory-tree">
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;" class="scroll-reveal">
+        <div>
+          <h1 style="font-size: 1.6rem;">Directory Tree</h1>
+          <p style="color: #607d8b; font-size: 0.9rem;">Wavz.fm project file structure</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary btn-sm"><i class="ph ph-arrows-clockwise"></i> Regenerate</button>
+          <button class="btn btn-primary btn-sm"><i class="ph ph-folder-plus"></i> Add Folder</button>
+        </div>
+      </div>
+
+      <div class="tree-container scroll-reveal">
+        <!-- Root -->
+        <div class="tree-item">
+          <button class="tree-toggle open" aria-label="Toggle folder">&rsaquo;</button>
+          <i class="ph ph-folder-open tree-folder-icon"></i>
+          <span style="font-weight: 700;">wavz-fm/</span>
+        </div>
+        <div class="tree-node">
+          <!-- src/ -->
+          <div class="tree-item">
+            <button class="tree-toggle open" aria-label="Toggle folder">&rsaquo;</button>
+            <i class="ph ph-folder-open tree-folder-icon"></i>
+            <span style="font-weight: 700;">src/</span>
+          </div>
+          <div class="tree-node">
+            <!-- app/ -->
+            <div class="tree-item">
+              <button class="tree-toggle open" aria-label="Toggle folder">&rsaquo;</button>
+              <i class="ph ph-folder-open tree-folder-icon"></i>
+              <span style="font-weight: 700;">app/</span>
+            </div>
+            <div class="tree-node">
+              <div class="tree-item">
+                <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+                <span>layout.tsx</span>
+                <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">2.4 KB</span>
+              </div>
+              <div class="tree-item">
+                <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+                <span>page.tsx</span>
+                <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">1.8 KB</span>
+              </div>
+              <div class="tree-item">
+                <button class="tree-toggle" aria-label="Toggle folder">&rsaquo;</button>
+                <i class="ph ph-folder tree-folder-icon"></i>
+                <span style="font-weight: 700;">dashboard/</span>
+              </div>
+              <div class="tree-node" style="display: none;">
+                <div class="tree-item">
+                  <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+                  <span>page.tsx</span>
+                  <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">3.1 KB</span>
+                </div>
+              </div>
+              <div class="tree-item">
+                <button class="tree-toggle" aria-label="Toggle folder">&rsaquo;</button>
+                <i class="ph ph-folder tree-folder-icon"></i>
+                <span style="font-weight: 700;">projects/</span>
+              </div>
+              <div class="tree-node" style="display: none;">
+                <div class="tree-item">
+                  <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+                  <span>page.tsx</span>
+                  <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">4.2 KB</span>
+                </div>
+                <div class="tree-item">
+                  <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+                  <span>[slug]/page.tsx</span>
+                  <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">5.6 KB</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- components/ -->
+            <div class="tree-item">
+              <button class="tree-toggle" aria-label="Toggle folder">&rsaquo;</button>
+              <i class="ph ph-folder tree-folder-icon"></i>
+              <span style="font-weight: 700;">components/</span>
+            </div>
+            <div class="tree-node" style="display: none;">
+              <div class="tree-item">
+                <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+                <span>KanbanBoard.tsx</span>
+                <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">6.8 KB</span>
+              </div>
+              <div class="tree-item">
+                <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+                <span>Whiteboard.tsx</span>
+                <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">8.2 KB</span>
+              </div>
+              <div class="tree-item">
+                <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+                <span>IdeaCaptureForm.tsx</span>
+                <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">3.4 KB</span>
+              </div>
+            </div>
+
+            <!-- lib/ -->
+            <div class="tree-item">
+              <button class="tree-toggle" aria-label="Toggle folder">&rsaquo;</button>
+              <i class="ph ph-folder tree-folder-icon"></i>
+              <span style="font-weight: 700;">lib/</span>
+            </div>
+            <div class="tree-node" style="display: none;">
+              <div class="tree-item">
+                <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+                <span>utils.ts</span>
+                <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">1.2 KB</span>
+              </div>
+              <div class="tree-item">
+                <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+                <span>validators.ts</span>
+                <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">2.1 KB</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- convex/ -->
+          <div class="tree-item">
+            <button class="tree-toggle open" aria-label="Toggle folder">&rsaquo;</button>
+            <i class="ph ph-folder-open tree-folder-icon"></i>
+            <span style="font-weight: 700;">convex/</span>
+          </div>
+          <div class="tree-node">
+            <div class="tree-item">
+              <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+              <span>schema.ts</span>
+              <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">3.8 KB</span>
+            </div>
+            <div class="tree-item">
+              <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+              <span>projects.ts</span>
+              <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">4.5 KB</span>
+            </div>
+            <div class="tree-item">
+              <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+              <span>ideas.ts</span>
+              <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">2.9 KB</span>
+            </div>
+            <div class="tree-item">
+              <i class="ph ph-file-ts" style="color: #1976d2;"></i>
+              <span>kanban.ts</span>
+              <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">3.3 KB</span>
+            </div>
+          </div>
+
+          <!-- Config files -->
+          <div class="tree-item">
+            <i class="ph ph-file-js" style="color: #f9a825;"></i>
+            <span>next.config.js</span>
+            <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">0.8 KB</span>
+          </div>
+          <div class="tree-item">
+            <i class="ph ph-file" style="color: #546e7a;"></i>
+            <span>package.json</span>
+            <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">2.1 KB</span>
+          </div>
+          <div class="tree-item">
+            <i class="ph ph-file" style="color: #546e7a;"></i>
+            <span>tsconfig.json</span>
+            <span style="margin-left: auto; font-size: 0.72rem; color: #90a4ae; font-family: 'Courier Prime', monospace;">0.6 KB</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: Ideas ========== -->
+    <section id="view-ideas" class="view-page" data-view="ideas" data-page="ideas">
+
+      <div class="search-hero scroll-reveal" style="padding-bottom: 24px;">
+        <h1>Ideas</h1>
+        <p>Drop a coin in the slot, capture your idea before it disappears.</p>
+      </div>
+
+      <!-- Capture form -->
+      <form id="idea-form" class="idea-form scroll-reveal">
+        <h3><i class="ph ph-coin"></i> Capture New Idea</h3>
+        <div class="form-group">
+          <label for="idea-title">Title</label>
+          <input type="text" id="idea-title" class="form-input" placeholder="What's your idea?" required>
+        </div>
+        <div class="form-group">
+          <label for="idea-desc">Description</label>
+          <textarea id="idea-desc" class="form-input" placeholder="Add details, context, or links..." rows="3"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="idea-priority">Priority</label>
+            <select id="idea-priority" class="form-input">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="idea-tags">Tags</label>
+            <input type="text" id="idea-tags" class="form-input" placeholder="frontend, ux, feature...">
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 4px;">
+          <button type="submit" class="btn btn-primary"><i class="ph ph-coin"></i> Capture Idea</button>
+          <button type="button" class="btn btn-secondary"><i class="ph ph-arrow-up"></i> Promote to Card</button>
+        </div>
+      </form>
+
+      <!-- Ideas list -->
+      <div class="automat-card scroll-reveal" style="padding: 0;">
+        <div style="padding: 16px 20px; border-bottom: 1.5px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+          <h3 style="font-size: 1rem; color: var(--accent);">All Ideas (6)</h3>
+          <div style="display: flex; gap: 6px;">
+            <span class="tag tag-mint" style="cursor: pointer;">All</span>
+            <span class="tag tag-chrome" style="cursor: pointer;">High</span>
+            <span class="tag tag-chrome" style="cursor: pointer;">Medium</span>
+          </div>
+        </div>
+
+        <div class="idea-list-item">
+          <div class="idea-priority-dot high"></div>
+          <div class="idea-content">
+            <div class="idea-title">Add dark mode toggle</div>
+            <div class="idea-desc">Allow users to switch between light and dark themes. Store preference in local storage and sync with user profile.</div>
+            <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+              <span class="tag tag-chrome">Frontend</span>
+              <span class="tag tag-chrome">UX</span>
+            </div>
+            <div class="idea-actions">
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-arrow-up"></i> Promote</button>
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-pencil"></i> Edit</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="idea-list-item">
+          <div class="idea-priority-dot high"></div>
+          <div class="idea-content">
+            <div class="idea-title">Implement drag-drop upload</div>
+            <div class="idea-desc">Support drag-and-drop file uploads for project assets. Show upload progress bar with file type validation.</div>
+            <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+              <span class="tag tag-chrome">Feature</span>
+              <span class="tag tag-chrome">Upload</span>
+            </div>
+            <div class="idea-actions">
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-arrow-up"></i> Promote</button>
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-pencil"></i> Edit</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="idea-list-item">
+          <div class="idea-priority-dot medium"></div>
+          <div class="idea-content">
+            <div class="idea-title">Real-time collaboration indicators</div>
+            <div class="idea-desc">Show who is currently viewing or editing the same project, whiteboard, or kanban board.</div>
+            <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+              <span class="tag tag-chrome">Real-time</span>
+              <span class="tag tag-chrome">Collab</span>
+            </div>
+            <div class="idea-actions">
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-arrow-up"></i> Promote</button>
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-pencil"></i> Edit</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="idea-list-item">
+          <div class="idea-priority-dot medium"></div>
+          <div class="idea-content">
+            <div class="idea-title">AI-powered idea suggestions</div>
+            <div class="idea-desc">Use AI to analyze existing ideas and suggest related concepts, potential features, or improvements.</div>
+            <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+              <span class="tag tag-chrome">AI</span>
+              <span class="tag tag-chrome">Feature</span>
+            </div>
+            <div class="idea-actions">
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-arrow-up"></i> Promote</button>
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-pencil"></i> Edit</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="idea-list-item">
+          <div class="idea-priority-dot low"></div>
+          <div class="idea-content">
+            <div class="idea-title">Keyboard shortcut reference panel</div>
+            <div class="idea-desc">Add a floating help panel showing all available keyboard shortcuts across the application.</div>
+            <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+              <span class="tag tag-chrome">UX</span>
+              <span class="tag tag-chrome">Accessibility</span>
+            </div>
+            <div class="idea-actions">
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-arrow-up"></i> Promote</button>
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-pencil"></i> Edit</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="idea-list-item">
+          <div class="idea-priority-dot low"></div>
+          <div class="idea-content">
+            <div class="idea-title">Export project data to PDF</div>
+            <div class="idea-desc">Allow exporting project overviews, kanban boards, and schema diagrams to formatted PDF reports.</div>
+            <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+              <span class="tag tag-chrome">Export</span>
+              <span class="tag tag-chrome">Report</span>
+            </div>
+            <div class="idea-actions">
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-arrow-up"></i> Promote</button>
+              <button class="btn btn-sm btn-secondary"><i class="ph ph-pencil"></i> Edit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: AI Chat ========== -->
+    <section id="view-ai-chat" class="view-page" data-view="ai-chat" data-page="ai-chat">
+
+      <div style="text-align: center; margin-bottom: 28px;" class="scroll-reveal">
+        <h1 style="font-size: 1.6rem;">AI Chat</h1>
+        <p style="color: #607d8b; font-size: 0.9rem;">Your automat attendant is ready to help with ideas, tasks, and planning.</p>
+      </div>
+
+      <div class="chat-container scroll-reveal">
+        <div class="chat-messages">
+          <!-- AI greeting -->
+          <div class="chat-msg assistant">
+            <div class="chat-avatar ai"><i class="ph ph-robot"></i></div>
+            <div class="chat-bubble">
+              Welcome to the automat! I'm your attendant -- drop a coin in and tell me what you need. I can help manage ideas, update your kanban board, generate directory structures, or brainstorm features. What window shall I open for you?
+            </div>
+          </div>
+
+          <!-- User message 1 -->
+          <div class="chat-msg user">
+            <div class="chat-avatar human"><i class="ph ph-user"></i></div>
+            <div class="chat-bubble">
+              Add a new idea: "Implement social login with Google and GitHub OAuth providers for streamlined onboarding."
+            </div>
+          </div>
+
+          <!-- AI response 1 with tool action -->
+          <div class="chat-msg assistant">
+            <div class="chat-avatar ai"><i class="ph ph-robot"></i></div>
+            <div>
+              <div class="chat-bubble">
+                Done! I've placed that idea right behind the glass. Social login is a great choice for reducing friction during sign-up. I've tagged it as high priority since authentication is foundational.
+                <div class="chat-tool-action">
+                  <i class="ph ph-lightning"></i>
+                  <span>add_idea({ title: "Implement social login with Google and GitHub", priority: "high", tags: ["auth", "onboarding"] })</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User message 2 -->
+          <div class="chat-msg user">
+            <div class="chat-avatar human"><i class="ph ph-user"></i></div>
+            <div class="chat-bubble">
+              Move the "Set up Clerk authentication" card to the Done column.
+            </div>
+          </div>
+
+          <!-- AI response 2 with tool action -->
+          <div class="chat-msg assistant">
+            <div class="chat-avatar ai"><i class="ph ph-robot"></i></div>
+            <div>
+              <div class="chat-bubble">
+                The Clerk authentication card has been moved to Done. Nice work closing that one out! That unlocks the social login implementation you just added. Would you like me to promote that idea to a kanban card in the Backlog?
+                <div class="chat-tool-action">
+                  <i class="ph ph-lightning"></i>
+                  <span>update_kanban({ card: "Set up Clerk authentication", column: "done" })</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User message 3 -->
+          <div class="chat-msg user">
+            <div class="chat-avatar human"><i class="ph ph-user"></i></div>
+            <div class="chat-bubble">
+              Yes, promote it. Also generate a directory tree for the auth module.
+            </div>
+          </div>
+
+          <!-- AI response 3 with multiple tool actions -->
+          <div class="chat-msg assistant">
+            <div class="chat-avatar ai"><i class="ph ph-robot"></i></div>
+            <div>
+              <div class="chat-bubble">
+                Both tasks are done! The social login idea is now a kanban card in Backlog, and I've generated the auth module directory structure under <code>src/lib/auth/</code>. It includes providers, middleware, and callback handlers.
+                <div class="chat-tool-action">
+                  <i class="ph ph-lightning"></i>
+                  <span>update_kanban({ action: "promote_idea", ideaId: "social-login", targetColumn: "backlog" })</span>
+                </div>
+                <div class="chat-tool-action" style="margin-top: 6px;">
+                  <i class="ph ph-lightning"></i>
+                  <span>generate_tree({ path: "src/lib/auth", template: "oauth-module" })</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form id="chat-form" class="chat-input-bar">
+          <input type="text" placeholder="Ask the automat attendant..." aria-label="Chat message">
+          <button type="submit" class="chat-send-btn" aria-label="Send message"><i class="ph ph-paper-plane-tilt"></i></button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: Settings ========== -->
+    <section id="view-settings" class="view-page" data-view="settings" data-page="settings">
+
+      <div style="margin-bottom: 28px;" class="scroll-reveal">
+        <h1 style="font-size: 1.6rem;">Settings</h1>
+        <p style="color: #607d8b; font-size: 0.9rem;">Configure your automat experience and account preferences.</p>
+      </div>
+
+      <div class="settings-layout scroll-reveal">
+        <!-- Tabs -->
+        <div class="settings-tabs">
+          <button class="settings-tab active" data-section="account"><i class="ph ph-user-circle"></i> Account</button>
+          <button class="settings-tab" data-section="subscription"><i class="ph ph-credit-card"></i> Subscription</button>
+          <button class="settings-tab" data-section="preferences"><i class="ph ph-sliders"></i> Preferences</button>
+          <button class="settings-tab" data-section="integrations"><i class="ph ph-plug"></i> Integrations</button>
+          <button class="settings-tab" data-section="data"><i class="ph ph-database"></i> Data</button>
+        </div>
+
+        <!-- Panel -->
+        <div class="settings-panel">
+          <!-- Account -->
+          <div class="settings-content-section" data-section="account">
+            <div class="settings-section">
+              <h3>Profile</h3>
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" class="form-input" value="Alex Morgan">
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" class="form-input" value="alex@wavzfm.com">
+              </div>
+              <div class="form-group">
+                <label>Role</label>
+                <input type="text" class="form-input" value="Product Lead" readonly style="background: var(--chrome-bright);">
+              </div>
+              <button class="btn btn-primary btn-sm" style="margin-top: 8px;"><i class="ph ph-floppy-disk"></i> Save Changes</button>
+            </div>
+
+            <div class="settings-section">
+              <h3>Security</h3>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-label">Two-Factor Authentication</div>
+                  <div class="setting-desc">Add an extra layer of security to your account</div>
+                </div>
+                <div class="toggle-switch on"></div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-label">Session Timeout</div>
+                  <div class="setting-desc">Automatically log out after period of inactivity</div>
+                </div>
+                <select class="form-input" style="width: auto;">
+                  <option>30 minutes</option>
+                  <option selected>1 hour</option>
+                  <option>4 hours</option>
+                  <option>Never</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subscription -->
+          <div class="settings-content-section" data-section="subscription" style="display: none;">
+            <div class="settings-section">
+              <h3>Current Plan</h3>
+              <div class="automat-card" style="margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                  <div>
+                    <span class="plan-badge"><i class="ph ph-crown"></i> Pro Plan</span>
+                    <p style="font-size: 0.82rem; color: #90a4ae; margin-top: 6px;">Billed monthly</p>
+                  </div>
+                  <div style="text-align: right;">
+                    <div style="font-family: 'Righteous', cursive; font-size: 1.8rem; color: var(--text);">$19</div>
+                    <div style="font-size: 0.75rem; color: #90a4ae;">/month</div>
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <i class="ph ph-check-circle" style="color: var(--accent);"></i> Unlimited projects
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <i class="ph ph-check-circle" style="color: var(--accent);"></i> AI chat assistant
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <i class="ph ph-check-circle" style="color: var(--accent);"></i> Schema planner & directory tree
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <i class="ph ph-check-circle" style="color: var(--accent);"></i> Up to 10 collaborators
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary btn-sm"><i class="ph ph-arrows-clockwise"></i> Change Plan</button>
+                <button class="btn btn-secondary btn-sm" style="color: #c62828;"><i class="ph ph-x"></i> Cancel</button>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3>Billing History</h3>
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid var(--border); text-align: left;">
+                      <th style="padding: 8px 0; color: #90a4ae; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.8px;">Date</th>
+                      <th style="padding: 8px 0; color: #90a4ae; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.8px;">Amount</th>
+                      <th style="padding: 8px 0; color: #90a4ae; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.8px;">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom: 1px solid rgba(176,190,197,0.3);">
+                      <td style="padding: 10px 0; font-family: 'Courier Prime', monospace; font-size: 0.82rem;">Feb 01, 2026</td>
+                      <td style="padding: 10px 0;">$19.00</td>
+                      <td style="padding: 10px 0;"><span class="tag tag-mint">Paid</span></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(176,190,197,0.3);">
+                      <td style="padding: 10px 0; font-family: 'Courier Prime', monospace; font-size: 0.82rem;">Jan 01, 2026</td>
+                      <td style="padding: 10px 0;">$19.00</td>
+                      <td style="padding: 10px 0;"><span class="tag tag-mint">Paid</span></td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 10px 0; font-family: 'Courier Prime', monospace; font-size: 0.82rem;">Dec 01, 2025</td>
+                      <td style="padding: 10px 0;">$19.00</td>
+                      <td style="padding: 10px 0;"><span class="tag tag-mint">Paid</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preferences -->
+          <div class="settings-content-section" data-section="preferences" style="display: none;">
+            <div class="settings-section">
+              <h3>Appearance</h3>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-label">Dark Mode</div>
+                  <div class="setting-desc">Switch to a darker color scheme</div>
+                </div>
+                <div class="toggle-switch"></div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-label">Compact View</div>
+                  <div class="setting-desc">Reduce spacing for denser information display</div>
+                </div>
+                <div class="toggle-switch"></div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-label">Animations</div>
+                  <div class="setting-desc">Enable smooth transitions and micro-interactions</div>
+                </div>
+                <div class="toggle-switch on"></div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3>Notifications</h3>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-label">Email Notifications</div>
+                  <div class="setting-desc">Receive updates about project activity via email</div>
+                </div>
+                <div class="toggle-switch on"></div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-label">Push Notifications</div>
+                  <div class="setting-desc">Browser push notifications for real-time updates</div>
+                </div>
+                <div class="toggle-switch"></div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-label">Weekly Digest</div>
+                  <div class="setting-desc">Summary of weekly activity across all projects</div>
+                </div>
+                <div class="toggle-switch on"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Integrations -->
+          <div class="settings-content-section" data-section="integrations" style="display: none;">
+            <div class="settings-section">
+              <h3>Connected Services</h3>
+              <div class="integration-card">
+                <div class="integration-icon"><i class="ph ph-github-logo"></i></div>
+                <div class="integration-info">
+                  <div class="integration-name">GitHub</div>
+                  <div class="integration-desc">Connected as @alexmorgan</div>
+                </div>
+                <span class="tag tag-mint">Active</span>
+              </div>
+              <div class="integration-card">
+                <div class="integration-icon"><i class="ph ph-slack-logo"></i></div>
+                <div class="integration-info">
+                  <div class="integration-name">Slack</div>
+                  <div class="integration-desc">Notifications to #idea-updates channel</div>
+                </div>
+                <span class="tag tag-mint">Active</span>
+              </div>
+              <div class="integration-card">
+                <div class="integration-icon"><i class="ph ph-figma-logo"></i></div>
+                <div class="integration-info">
+                  <div class="integration-name">Figma</div>
+                  <div class="integration-desc">Link design files to projects</div>
+                </div>
+                <button class="btn btn-sm btn-secondary">Connect</button>
+              </div>
+              <div class="integration-card">
+                <div class="integration-icon"><i class="ph ph-notion-logo"></i></div>
+                <div class="integration-info">
+                  <div class="integration-name">Notion</div>
+                  <div class="integration-desc">Sync ideas and docs bi-directionally</div>
+                </div>
+                <button class="btn btn-sm btn-secondary">Connect</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data -->
+          <div class="settings-content-section" data-section="data" style="display: none;">
+            <div class="settings-section">
+              <h3>Data Management</h3>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-label">Export All Data</div>
+                  <div class="setting-desc">Download a complete backup of all your projects, ideas, and boards as JSON</div>
+                </div>
+                <button class="btn btn-sm btn-secondary"><i class="ph ph-download"></i> Export</button>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-label">Import Data</div>
+                  <div class="setting-desc">Import projects and ideas from a backup file</div>
+                </div>
+                <button class="btn btn-sm btn-secondary"><i class="ph ph-upload"></i> Import</button>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3>Storage</h3>
+              <div class="automat-card" style="padding: 16px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="font-weight: 700; font-size: 0.9rem;">Storage Used</span>
+                  <span style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; color: var(--accent);">2.4 GB / 10 GB</span>
+                </div>
+                <div style="height: 8px; background: var(--chrome-bright); border-radius: 4px; overflow: hidden;">
+                  <div style="width: 24%; height: 100%; background: var(--accent); border-radius: 4px;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3 style="color: #c62828;">Danger Zone</h3>
+              <div class="setting-row" style="border: 1.5px solid #ef5350; border-radius: var(--radius-sm); padding: 14px;">
+                <div class="setting-info">
+                  <div class="setting-label" style="color: #c62828;">Delete Account</div>
+                  <div class="setting-desc">Permanently remove your account and all associated data. This action cannot be undone.</div>
+                </div>
+                <button class="btn btn-sm" style="background: #c62828; color: #fff; border-color: #b71c1c;">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

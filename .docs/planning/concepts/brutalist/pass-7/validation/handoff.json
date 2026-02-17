@@ -1,0 +1,82 @@
+{
+  "styleId": "brutalist",
+  "pass": 7,
+  "variantSeed": "punched-card-data-wall",
+  "uniquenessProfile": "tabbed-workbench",
+  "shellMode": "top-tab-strip",
+  "navPattern": "browser-tab-row",
+  "contentFlow": "full-width-panels",
+  "scrollMode": "snap-horizontal",
+  "density": "dense",
+  "componentTone": "hard",
+  "alignment": "left",
+  "heroTreatment": "none",
+  "motionLanguage": "slide-left-right",
+  "typographyStack": {
+    "heading": "Courier Prime",
+    "body": "IBM Plex Mono",
+    "mono": "Fira Code"
+  },
+  "paletteSignature": {
+    "bg": "#f0ece4",
+    "text": "#0d0d0d",
+    "surface": "#ddd6c8",
+    "accent": "#cc4400",
+    "accent2": "#003399",
+    "border": "#2a2a2a"
+  },
+  "interactionProfile": {
+    "buttonHover": "instant-invert-0ms",
+    "buttonClick": "border-flash-accent-100ms",
+    "cardHover": "1px-right-hard-shadow",
+    "pageTransition": "horizontal-slide-200ms",
+    "scrollReveal": "none",
+    "navItemHover": "underline-accent-2px",
+    "navItemActive": "punched-out-darker-bg",
+    "inputFocus": "3px-border-accent-no-animation",
+    "toggleSwitch": "binary-0-1-snap",
+    "tooltips": "monospace-ref-boxes",
+    "loadingState": "blinking-cursor-character",
+    "idleAmbient": "scanline-overlay-1px",
+    "microFeedback": "character-flash-150ms"
+  },
+  "librariesUsed": [
+    "Google Fonts (Courier Prime, IBM Plex Mono, Fira Code)"
+  ],
+  "viewsImplemented": [
+    "dashboard",
+    "projects",
+    "workspace",
+    "kanban",
+    "whiteboard",
+    "schema",
+    "directory",
+    "ideas",
+    "chat",
+    "settings"
+  ],
+  "backgroundImageUsed": false,
+  "contentPersona": "mainframe-operator",
+  "antiRepeatCompliance": {
+    "avoidedTextures": [
+      "concrete slab",
+      "paper textures",
+      "raw concrete backgrounds",
+      "stamp grids",
+      "numbered badges",
+      "postal/broadsheet motifs",
+      "CRT terminal green-on-black",
+      "phosphor glow",
+      "blueprint grid",
+      "construction zone orange",
+      "stencil typography",
+      "torn paper",
+      "wheat-paste collage",
+      "zine aesthetic",
+      "corrugated steel",
+      "barcode labels",
+      "hazmat stripes",
+      "warehouse containers"
+    ]
+  }
+}

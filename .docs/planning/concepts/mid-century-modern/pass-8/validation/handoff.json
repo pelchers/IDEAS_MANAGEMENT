@@ -1,0 +1,159 @@
+{
+  "styleId": "mid-century-modern",
+  "pass": 8,
+  "variantSeed": "timeline-exhibit-walkthrough",
+  "contentPersona": "museum-docent",
+  "generatedDate": "2026-02-16",
+  "uniquenessProfile": {
+    "profileId": "vertical-timeline",
+    "shellMode": "right-rail-nav",
+    "navPattern": "vertical-dots-timeline",
+    "contentFlow": "timeline-alternating",
+    "scrollMode": "scroll-snap-vertical",
+    "alignment": "center",
+    "heroTreatment": "timeline-hero-node",
+    "motionLanguage": "slide-up-cascade",
+    "density": "balanced",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "bg": "#f8f3ea",
+    "text": "#2c1e0f",
+    "surface": "#ede4d3",
+    "accent": "#b8632e",
+    "accent2": "#3a7c5f",
+    "border": "#c8b898"
+  },
+  "typography": {
+    "heading": "DM Serif Display",
+    "body": "Lato",
+    "mono": "IBM Plex Mono"
+  },
+  "layoutDetails": {
+    "shell": "Right-rail vertical timeline navigation (72px rail with dots)",
+    "navPattern": "Vertical dots connected by a spine line, tooltips on hover show exhibit room names in Roman numerals",
+    "contentFlow": "Main content area with alternating left-right timeline nodes for workspace view, card grids for other views",
+    "scroll": "Vertical scroll with snap proximity, cascade stagger on view entry",
+    "alignment": "Center-aligned content with max-width containers",
+    "hero": "Exhibit room header with era tag, serif title, and descriptive paragraph per view",
+    "motion": "Slide-up cascade (items stagger from bottom, 60ms delay between children)",
+    "density": "Balanced spacing with generous margins between sections",
+    "componentTone": "Soft (14px border-radius, warm shadows, cream backgrounds)"
+  },
+  "interactionProfile": {
+    "buttonHover": "Background deepens to darker warm tone, shadow expands",
+    "buttonClick": "TranslateY(1px) inset press with reduced shadow",
+    "cardHover": "TranslateY(-3px) lift with expanded warm shadow and border tint",
+    "pageTransition": "Slide-up cascade animation (450ms ease) with staggered children",
+    "scrollReveal": "Alternating revealFromLeft/revealFromRight for timeline nodes",
+    "navItemHover": "Timeline dot grows from 14px to 18px with warm glow, tooltip appears",
+    "navItemActive": "Dot fills with accent color, 18px with persistent shadow",
+    "inputFocus": "Golden underline draws left-to-right via ::after pseudo-element",
+    "toggleSwitch": "Smooth 280ms slide with amber indicator (accent color when active)",
+    "tooltips": "Cream card with serif text, thin warm border, positioned left of timeline",
+    "loadingState": "Three dots pulse in amber sequence (1.2s cycle)",
+    "idleAmbient": "None — clean and still like a museum",
+    "microFeedback": "Success checkmark with scale-in animation (checkAppear 400ms)"
+  },
+  "views": {
+    "dashboard": {
+      "exhibitName": "Room I — The Overview Gallery",
+      "components": ["stat-placard grid (4)", "activity feed", "quick actions", "milestone museum cards"],
+      "populated": true
+    },
+    "projects": {
+      "exhibitName": "Room II — The Project Pavilion",
+      "components": ["project card grid (3 cols)", "search bar", "create button", "status indicators"],
+      "populated": true
+    },
+    "workspace": {
+      "exhibitName": "Room III — The Working Studio",
+      "components": ["sidebar nav", "project details card", "goals card", "project timeline spine"],
+      "populated": true
+    },
+    "kanban": {
+      "exhibitName": "Room IV — The Progress Gallery",
+      "components": ["4-column board", "kanban cards with priority tags", "assignee avatars"],
+      "populated": true
+    },
+    "whiteboard": {
+      "exhibitName": "Room V — The Drawing Room",
+      "components": ["toolbar", "draggable containers (5)", "SVG connectors"],
+      "populated": true
+    },
+    "schema": {
+      "exhibitName": "Room VI — The Blueprint Chamber",
+      "components": ["5 entity nodes", "SVG relationship lines", "field type annotations"],
+      "populated": true
+    },
+    "directory": {
+      "exhibitName": "Room VII — The Archive",
+      "components": ["expandable tree", "file details card", "template config card"],
+      "populated": true
+    },
+    "ideas": {
+      "exhibitName": "Room VIII — The Idea Atelier",
+      "components": ["capture form", "idea list (6 items)", "priority filters", "promote actions"],
+      "populated": true
+    },
+    "chat": {
+      "exhibitName": "Room IX — The Conversation Salon",
+      "components": ["6 chat exchanges", "tool action badges (3)", "input bar", "loading animation"],
+      "populated": true
+    },
+    "settings": {
+      "exhibitName": "Room X — The Curator's Office",
+      "components": ["5 tab sections", "account form", "subscription plans", "preferences toggles", "integrations list", "data management"],
+      "populated": true
+    }
+  },
+  "responsiveness": {
+    "desktop": "1536px+ with expanded padding and wider timeline rail",
+    "tablet": "1024px breakpoint: 2-col kanban, collapsed timeline nodes to single side",
+    "mobile": "640px breakpoint: timeline nav hidden, mobile hamburger drawer, single-column grids"
+  },
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ],
+  "antiRepeatCompliance": {
+    "avoided": [
+      "horizontal shelf",
+      "credenza",
+      "walnut panels",
+      "hairpin legs",
+      "radial center hub",
+      "tulip geometry",
+      "orbital ring",
+      "leather-and-rosewood",
+      "Eames lounge",
+      "editorial columns",
+      "Nelson clock",
+      "starburst accents",
+      "glass house",
+      "exposed steel beams",
+      "Nordic pine",
+      "hygge warmth",
+      "candlelight",
+      "floating dock bar",
+      "bottom dock",
+      "pill icons",
+      "spring bounce"
+    ],
+    "usedInstead": [
+      "right-rail vertical timeline dots",
+      "exhibit room era tags",
+      "museum docent persona",
+      "alternating left-right timeline spine",
+      "slide-up cascade animations",
+      "museum-quality stat placards",
+      "Roman numeral room numbering",
+      "cream and warm amber palette",
+      "DM Serif Display heading typography"
+    ]
+  }
+}

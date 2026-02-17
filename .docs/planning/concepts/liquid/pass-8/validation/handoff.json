@@ -1,0 +1,114 @@
+{
+  "concept": "liquid-pass-8",
+  "variantSeed": "split-pane-aquarium",
+  "generatedAt": "2026-02-16T00:00:00Z",
+  "uniquenessProfile": {
+    "shellMode": "top-toolbar",
+    "navPattern": "toolbar-buttons",
+    "contentFlow": "resizable-split-panes",
+    "scrollMode": "independent-scroll-regions",
+    "alignment": "left",
+    "heroTreatment": "none",
+    "motionLanguage": "resize-drag",
+    "density": "compact",
+    "componentTone": "hard"
+  },
+  "structuralFingerprint": {
+    "navLocation": "top-fixed-toolbar",
+    "navMechanism": "icon-label-buttons-horizontal",
+    "layoutPrimary": "split-pane-left-right",
+    "layoutVariations": {
+      "dashboard": "38%-left-stats + 62%-right-activity",
+      "projects": "38%-left-list + 62%-right-detail",
+      "projectWorkspace": "220px-left-nav + flex-right-overview",
+      "kanban": "full-width-4-column-scroll",
+      "whiteboard": "full-width-canvas-svg",
+      "schema": "38%-left-entities + 62%-right-detail-table",
+      "directory": "38%-left-tree + 62%-right-preview",
+      "ideas": "38%-left-form + 62%-right-list",
+      "aiChat": "220px-left-sessions + flex-right-thread",
+      "settings": "220px-left-tabs + flex-right-panels"
+    },
+    "dividerStyle": "3px-vertical-pulsing-gradient",
+    "dividerInteraction": "drag-to-resize",
+    "transitionType": "loading-wave-then-fade",
+    "mobileStrategy": "stacked-vertical-panes"
+  },
+  "interactionFingerprint": {
+    "buttonHover": "liquid-fill-from-bottom",
+    "buttonClick": "ripple-from-center",
+    "cardHover": "bioluminescent-border-glow",
+    "pageTransition": "loading-wave-overlay-fade",
+    "scrollReveal": "translateY-opacity-stagger",
+    "navItemHover": "liquid-underline-flow",
+    "navItemActive": "teal-fill-border-glow",
+    "inputFocus": "sonar-ping-animation",
+    "toggleSwitch": "liquid-fill-pseudo-element",
+    "idleAmbient": "3-rising-bubbles-18-25s",
+    "successFeedback": "cyan-flash-top-right"
+  },
+  "palette": {
+    "bg": "#0c1a1f",
+    "text": "#d0e8f0",
+    "surface": "#142830",
+    "accent": "#00e5cc",
+    "accent2": "#ff6b9d",
+    "border": "#1e3a45"
+  },
+  "typography": {
+    "heading": "Exo 2",
+    "body": "Work Sans",
+    "mono": "JetBrains Mono"
+  },
+  "contentPersona": "aquarium-technician",
+  "viewCompleteness": {
+    "dashboard": true,
+    "projects": true,
+    "projectWorkspace": true,
+    "kanban": true,
+    "whiteboard": true,
+    "schemaPlanner": true,
+    "directoryTree": true,
+    "ideas": true,
+    "aiChat": true,
+    "settings": true
+  },
+  "antiRepeatCompliance": {
+    "avoided": [
+      "blob morph",
+      "floating blob nav",
+      "organic blob buttons",
+      "fluid bento",
+      "wave current stream",
+      "horizontal stream",
+      "wave-stacked",
+      "mercury droplet",
+      "metallic chrome",
+      "aurora plasma",
+      "northern lights",
+      "plasma ribbons",
+      "deep ocean bioluminescence",
+      "deep sea darkness",
+      "lava lamp",
+      "psychedelic color cycling",
+      "editorial ink flow",
+      "hamburger menu",
+      "fullscreen overlay",
+      "editorial columns",
+      "cinematic fade"
+    ],
+    "compliant": true
+  },
+  "responsiveBreakpoints": {
+    "mobile": "max-width: 768px",
+    "largeDesktop": "min-width: 1536px"
+  },
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

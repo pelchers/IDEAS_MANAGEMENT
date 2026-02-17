@@ -1,0 +1,18 @@
+{
+  "styleId": "brutalist",
+  "pass": 8,
+  "variantSeed": "grid-tile-surveillance",
+  "uniquenessProfile": "dashboard-grid-tiles",
+  "shellMode": "top-bar-minimal",
+  "navPattern": "icon-only-row",
+  "contentFlow": "auto-fit-tile-grid",
+  "scrollMode": "standard-scroll",
+  "alignment": "center",
+  "density": "dense",
+  "componentTone": "hard",
+  "typographyStack": ["Anton", "Roboto Mono", "Fira Code"],
+  "paletteSignature": ["#e2ddd4", "#111111", "#ee2200"],
+  "librariesUsed": [],
+  "viewsImplemented": ["dashboard", "projects", "project-workspace", "kanban", "whiteboard", "schema-planner", "directory-tree", "ideas", "ai-chat", "settings"],
+  "backgroundImageUsed": false
+}

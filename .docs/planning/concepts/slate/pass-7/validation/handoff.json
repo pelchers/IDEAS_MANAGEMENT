@@ -1,0 +1,29 @@
+{
+  "styleId": "slate",
+  "pass": 7,
+  "variantSeed": "accordion-cavern-archive",
+  "uniquenessProfile": "sidebar-accordion",
+  "shellMode": "collapsible-left-sidebar",
+  "navPattern": "accordion-sections",
+  "contentFlow": "split-panel-detail",
+  "scrollMode": "standard-scroll",
+  "alignment": "left",
+  "density": "compact",
+  "componentTone": "hard",
+  "typographyStack": ["Cinzel", "Lora", "Source Code Pro"],
+  "paletteSignature": ["#1a1814", "#d4c8b0", "#d4a04a"],
+  "librariesUsed": [],
+  "viewsImplemented": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "backgroundImageUsed": false
+}

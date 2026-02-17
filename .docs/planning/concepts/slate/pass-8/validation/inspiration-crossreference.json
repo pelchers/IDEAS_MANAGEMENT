@@ -1,0 +1,81 @@
+{
+  "style": "slate",
+  "pass": 8,
+  "variantSeed": "terminal-mine-shaft",
+  "inspirationSources": [
+    {
+      "source": "Hacker News / Lobsters Terminal UI",
+      "url": "https://news.ycombinator.com",
+      "elementsAdapted": [
+        "Monospace text-only interface with minimal chrome",
+        "Dense, information-rich layout with no decorative elements",
+        "Numbered navigation items for keyboard-first access",
+        "Left-aligned text stream as primary content display"
+      ],
+      "whatChanged": "Applied mining/geological theme instead of tech news. Used amber-on-dark-slate palette instead of gray-on-white. Added ASCII art banner. Replaced link-list with terminal command-response pattern."
+    },
+    {
+      "source": "Midnight Commander / Norton Commander",
+      "url": "https://midnight-commander.org",
+      "elementsAdapted": [
+        "Full-screen terminal application paradigm",
+        "Function key shortcuts displayed in a bottom/top bar",
+        "Text-based file tree with expand/collapse",
+        "Status bar at bottom showing system state"
+      ],
+      "whatChanged": "Used number keys instead of function keys. Removed dual-pane file manager layout in favor of single-stream terminal output. Applied mine shaft content persona. Modern web implementation instead of ncurses."
+    },
+    {
+      "source": "htop / Terminal System Monitors",
+      "url": "https://htop.dev",
+      "elementsAdapted": [
+        "Compact stat grid with progress bars",
+        "Real-time clock in status area",
+        "Color-coded status indicators",
+        "Dense grid layout for metrics"
+      ],
+      "whatChanged": "Replaced CPU/memory metrics with project management KPIs. Used amber/green color coding instead of htop's rainbow palette. Simplified bar charts to single-color fills. Added mine-themed labels."
+    },
+    {
+      "source": "Lazygit / Terminal Git Clients",
+      "url": "https://github.com/jesseduffield/lazygit",
+      "elementsAdapted": [
+        "Keyboard-driven navigation with visible shortcut indicators",
+        "Command echo showing what action was taken",
+        "Activity log with timestamps",
+        "Bordered panels for different data sections"
+      ],
+      "whatChanged": "Replaced git operations with idea management operations. Used single-panel stream instead of multi-panel split. Applied geological/mining terminology. Commands are navigational rather than operational."
+    },
+    {
+      "source": "IBM 3270 Terminal Interfaces",
+      "url": "https://en.wikipedia.org/wiki/IBM_3270",
+      "elementsAdapted": [
+        "Green/amber phosphor text on dark background aesthetic",
+        "Field-based input forms with prompt markers",
+        "Status line at bottom of screen",
+        "No mouse interaction assumed (keyboard-first)",
+        "Fixed-width character grid alignment"
+      ],
+      "whatChanged": "Used warm amber instead of classic green. Added mouse/touch support alongside keyboard for accessibility and mobile. Modern CSS grid instead of fixed character positions. Richer typography mixing monospace and decorative headings."
+    }
+  ],
+  "antiRepeatCompliance": {
+    "pass1_carved_monolith": "No recessed left rail, no etched panels, no carved inset shadows. This pass is flat terminal with zero depth.",
+    "pass2_layered_strata": "No protruding top tablets, no stone tabs, no depth layers. This pass has no elevation concept.",
+    "pass3_obsidian_forge": "No obsidian glass, no volcanic glass, no razor edges, no ember glow. This pass uses matte amber on flat dark slate.",
+    "pass4_sandstone_canyon": "No sandstone canyon, no desert sunset palette. This pass uses dark mine interior with amber terminal colors.",
+    "pass5_marble_temple": "No marble, no polished columns, no classical proportions, no gold-leaf. This pass is raw terminal aesthetics.",
+    "pass6_concrete_bunker": "No military bunker, no reinforced steel, no tactical overlays. This pass uses mining terminal theme.",
+    "avoidedPatterns": [
+      "recessed left rail, engraved items, etched panels",
+      "protruding top tablets, stone tabs, depth layers, geological header",
+      "obsidian glass, volcanic glass, razor edges, ember glow",
+      "sandstone canyon, desert sunset",
+      "marble temple, polished columns, classical proportions, gold-leaf",
+      "aegis shield, military bunker, reinforced steel, tactical",
+      "accordion cavern, collapsible sidebar, split-panel detail, crystal formations"
+    ]
+  },
+  "uniquenessNotes": "This is the only pass across all Slate variants that uses a fullscreen terminal paradigm with keyboard shortcut navigation displayed as numbered key badges. No other pass uses ASCII art as a hero element, terminal command-response as content flow, or a mine foreman persona. The interaction model (typewriter cascade, blinking cursor, spark flash, [OK] micro-feedback) is wholly distinct from all other passes."
+}

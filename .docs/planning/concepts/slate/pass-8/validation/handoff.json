@@ -1,0 +1,135 @@
+{
+  "style": "slate",
+  "pass": 8,
+  "variantSeed": "terminal-mine-shaft",
+  "generated": "2026-02-16",
+  "uniquenessProfile": "terminal-console",
+  "contentPersona": "mine-foreman",
+  "palette": {
+    "bg": "#0f0e0c",
+    "text": "#c8b890",
+    "surface": "#1a1816",
+    "accent": "#d4943a",
+    "accent2": "#5a8a6a",
+    "border": "#2d2a24"
+  },
+  "typography": {
+    "heading": "Cinzel Decorative",
+    "body": "Source Code Pro",
+    "mono": "Fira Code"
+  },
+  "structure": {
+    "shell": "no-chrome-fullscreen",
+    "navPattern": "keyboard-shortcut-only",
+    "contentFlow": "terminal-output-stream",
+    "scrollMode": "auto-scroll-bottom",
+    "alignment": "left",
+    "heroTreatment": "ascii-banner",
+    "motionLanguage": "typewriter-cascade",
+    "density": "compact",
+    "componentTone": "hard"
+  },
+  "views": [
+    {
+      "id": "dashboard",
+      "label": "Dashboard",
+      "dataPage": "dashboard",
+      "shortcut": "1",
+      "content": "Mine status report with 6 stat cells, activity log (7 entries), quick action buttons"
+    },
+    {
+      "id": "projects",
+      "label": "Projects",
+      "dataPage": "projects",
+      "shortcut": "2",
+      "content": "Searchable project registry table with 5 rows, status badges, create button"
+    },
+    {
+      "id": "project-workspace",
+      "label": "Project Workspace",
+      "dataPage": "project-workspace",
+      "shortcut": "3",
+      "content": "Split shaft navigation + assay report with metadata, tags, tech stack, collaborators, goals"
+    },
+    {
+      "id": "kanban",
+      "label": "Kanban",
+      "dataPage": "kanban",
+      "shortcut": "4",
+      "content": "4-column board: Backlog(3), In Progress(2), Review(2), Done(3) with priority badges"
+    },
+    {
+      "id": "whiteboard",
+      "label": "Whiteboard",
+      "dataPage": "whiteboard",
+      "shortcut": "5",
+      "content": "Architecture map with 6 positioned nodes, SVG connection lines, toolbar with 6 tools"
+    },
+    {
+      "id": "schema-planner",
+      "label": "Schema Planner",
+      "dataPage": "schema-planner",
+      "shortcut": "6",
+      "content": "5 entity blocks (User, Project, Idea, KanbanCard, WhiteboardNode) with PK/FK badges, 7 relationships"
+    },
+    {
+      "id": "directory-tree",
+      "label": "Directory Tree",
+      "dataPage": "directory-tree",
+      "shortcut": "7",
+      "content": "Expandable tree output with 3 collapsible folders, 22+ files across 4 directories"
+    },
+    {
+      "id": "ideas",
+      "label": "Ideas",
+      "dataPage": "ideas",
+      "shortcut": "8",
+      "content": "Terminal capture form (title, desc, priority, tags) + 7 ideas with priority/status indicators"
+    },
+    {
+      "id": "ai-chat",
+      "label": "AI Chat",
+      "dataPage": "ai-chat",
+      "shortcut": "9",
+      "content": "6 chat messages (3 user, 3 AI) with tool action blocks (add_kanban_card, add_idea, generate_tree)"
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "dataPage": "settings",
+      "shortcut": "0",
+      "content": "5 config groups: Account, Subscription, Preferences (toggles), Integrations (4 services), Data Management"
+    }
+  ],
+  "interactions": {
+    "buttonHover": "amber text brightens, underline appears character by character via CSS ::after width transition",
+    "buttonClick": "spark flash — amber background flashes via keyframe animation",
+    "cardHover": "amber border illuminates card edges with subtle box-shadow",
+    "pageTransition": "typewriter cascade — old view hides, new content appears line by line with stagger",
+    "scrollReveal": "content lines appear sequentially with translateX slide",
+    "navItemHover": "key badge gets amber glow via box-shadow",
+    "navItemActive": "full amber background on key badge",
+    "inputFocus": "border-bottom turns amber, caret color set to accent",
+    "toggleSwitch": "text toggles [ON]/[OFF] with amber/dim color swap",
+    "tooltips": "title attributes on nav buttons with shortcut key info",
+    "loadingState": "CSS animated ellipsis via keyframe content change",
+    "idleAmbient": "blinking underscore cursor at bottom of terminal via step animation",
+    "microFeedback": "[OK] text briefly appears in accent2 color, then fades out"
+  },
+  "responsive": {
+    "desktop": "1536px+ — full terminal, 6-column stat grid, full ASCII art",
+    "tablet": "768-1023px — 2-column stats, 2-column kanban, stacked workspace",
+    "mobile": "390px — 5x2 nav grid, single-column layouts, compact ASCII art"
+  },
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ],
+  "externalLibraries": [],
+  "backgroundImages": false,
+  "borderRadius": "0px throughout"
+}

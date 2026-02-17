@@ -1,0 +1,127 @@
+{
+  "pass": 8,
+  "style": "retro-50s",
+  "variantSeed": "command-palette-automat",
+  "inspirations": [
+    {
+      "source": "Horn & Hardart Automat Restaurants (1902-1991)",
+      "elements_borrowed": [
+        "Grid of small glass-door windows revealing individual food items, translated to cards displayed in a centered stack layout where each card is a 'window' into data",
+        "Coin-operated interaction model: the command palette is the 'coin slot' that opens windows to reveal content",
+        "Chrome and glass material language on card borders and hover states",
+        "Clean, efficient, minimal service counter aesthetic -- the top bar is the narrow service counter"
+      ],
+      "elements_NOT_borrowed": [
+        "Actual vending machine mechanics or coin-slot UI elements",
+        "Art Deco ornamental detailing from automat interiors",
+        "Food photography or culinary imagery"
+      ]
+    },
+    {
+      "source": "Linear.app Command Palette UX",
+      "elements_borrowed": [
+        "Ctrl+K activated modal with search input, grouped results, and keyboard navigation",
+        "Minimal shell approach where the command palette replaces traditional navigation entirely",
+        "Clean result items with icon + label + description pattern"
+      ],
+      "elements_NOT_borrowed": [
+        "Linear's dark theme or color scheme",
+        "Linear's sidebar navigation pattern",
+        "Linear's specific typography choices"
+      ]
+    },
+    {
+      "source": "Raycast Launcher",
+      "elements_borrowed": [
+        "Centered modal overlay with backdrop blur for command palette",
+        "Footer showing keyboard shortcut hints",
+        "Scale-in animation on open for the spotlight feel"
+      ],
+      "elements_NOT_borrowed": [
+        "Raycast's macOS-specific UI styling",
+        "Extension system or plugin architecture UI",
+        "Raycast's dark interface theme"
+      ]
+    },
+    {
+      "source": "1950s Diner Chrome Fixtures",
+      "elements_borrowed": [
+        "Chrome gradient (light silver to darker silver) used on the top bar background",
+        "Subtle shine-sweep hover effect on buttons mimicking polished chrome reflection",
+        "3px chrome gradient strip at the top of cards (automat window frame trim)"
+      ],
+      "elements_NOT_borrowed": [
+        "Chrome stools, booths, or furniture shapes (explicitly in anti-repeat list)",
+        "Checkered floor patterns",
+        "Red/white color schemes typical of diners"
+      ]
+    },
+    {
+      "source": "Mid-century Mint Green Appliance Palette",
+      "elements_borrowed": [
+        "Mint green (#e8f5e8) as the primary surface color, evoking 1950s kitchen and diner color trends",
+        "Cream (#f5f0e8) background evoking vintage ceramic tile",
+        "Warm, cheerful color temperature overall"
+      ],
+      "elements_NOT_borrowed": [
+        "Kitchen appliance metaphors (used in Pass 6)",
+        "Avocado green or harvest gold specific to 1970s era",
+        "Copper metallic accents"
+      ]
+    }
+  ],
+  "crossReferenceWithOtherPasses": {
+    "pass-1": {
+      "differences": [
+        "Pass 1 uses diner booth / jukebox metaphor; Pass 8 uses automat vending wall",
+        "Pass 1 uses bottom jukebox navigation bar; Pass 8 uses command palette modal",
+        "Pass 1 uses pink/mint neon palette; Pass 8 uses mint green/cream/chrome"
+      ]
+    },
+    "pass-2": {
+      "differences": [
+        "Pass 2 uses space-age / atomic swoops; Pass 8 uses clean, minimal automat lines",
+        "Pass 2 uses swooping top bar nav; Pass 8 uses flat minimal top bar + command palette",
+        "Pass 2 uses turquoise/coral palette; Pass 8 uses mint/cream/teal"
+      ]
+    },
+    "pass-3": {
+      "differences": [
+        "Pass 3 uses cinema/film metaphor; Pass 8 uses automat restaurant metaphor",
+        "Pass 3 uses dark purple/yellow palette; Pass 8 uses light cream/mint",
+        "Pass 3 uses film-reel page transitions; Pass 8 uses scale-in modal transitions"
+      ]
+    },
+    "pass-4": {
+      "differences": [
+        "Pass 4 uses soda fountain / floating dock; Pass 8 uses automat / command palette",
+        "Pass 4 uses cherry red/sky blue palette; Pass 8 uses teal/cream/chrome",
+        "Pass 4 uses receipt-roll scroll; Pass 8 uses standard centered scroll"
+      ]
+    },
+    "pass-5": {
+      "differences": [
+        "Pass 5 also uses command palette navigation BUT with motel neon theme on dark background",
+        "Pass 5 uses dark asphalt (#1a1a1e) background; Pass 8 uses warm cream (#f5f0e8)",
+        "Pass 5 uses Permanent Marker + Cabin fonts; Pass 8 uses Righteous + Nunito",
+        "Pass 5 uses neon glow effects; Pass 8 uses chrome shine effects",
+        "Pass 5 road trip content persona; Pass 8 automat attendant content persona"
+      ]
+    },
+    "pass-6": {
+      "differences": [
+        "Pass 6 uses kitchen appliance metaphor; Pass 8 uses automat restaurant metaphor",
+        "Pass 6 uses right-rail vertical dots timeline nav; Pass 8 uses command palette modal",
+        "Pass 6 uses avocado green/harvest gold; Pass 8 uses mint green/teal/chrome",
+        "Pass 6 uses Pacifico cursive heading; Pass 8 uses Righteous display heading"
+      ]
+    },
+    "pass-7": {
+      "differences": [
+        "Pass 7 uses carnival carousel theme with floating pill nav; Pass 8 uses automat with command palette",
+        "Pass 7 uses Fredoka One + Quicksand fonts; Pass 8 uses Righteous + Nunito",
+        "Pass 7 uses confetti canvas ambient effect; Pass 8 uses chrome shimmer ambient effect"
+      ]
+    }
+  }
+}
