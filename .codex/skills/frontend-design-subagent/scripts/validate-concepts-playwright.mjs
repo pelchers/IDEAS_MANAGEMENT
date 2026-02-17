@@ -21,7 +21,7 @@ const conceptRoot = path.resolve(arg("--concept-root", ".docs/planning/concepts"
 const configPath = path.resolve(
   arg(
     "--config",
-    ".codex/skills/planning-frontend-design-orchestrator/references/style-config.json"
+    ".claude/skills/planning-frontend-design-orchestrator/references/style-config.json"
   )
 );
 const styleFilter = arg("--style", null);
@@ -69,6 +69,90 @@ const VIEWPORTS = {
   mobile: { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true }
 };
 
+// ---------------------------------------------------------------------------
+// Smart-wait helpers
+// ---------------------------------------------------------------------------
+
+/** Force-dismiss any loading overlays / splash screens via JS injection */
+async function dismissLoadingOverlays(page) {
+  await page.evaluate(() => {
+    const selectors = [
+      "#loading-overlay", "#loader", "#splash", "#preloader",
+      ".loading-overlay", ".loader-overlay", ".splash-screen",
+      ".loading-screen", ".preloader", ".page-loader",
+      "[data-loading-overlay]", "[data-loader]"
+    ];
+    for (const sel of selectors) {
+      document.querySelectorAll(sel).forEach(el => {
+        el.style.display = "none";
+        el.style.opacity = "0";
+        el.style.visibility = "hidden";
+        el.style.pointerEvents = "none";
+      });
+    }
+    // Also remove any body class that locks scrolling during load
+    document.body.classList.remove(
+      "loading", "is-loading", "no-scroll", "overflow-hidden"
+    );
+    document.documentElement.classList.remove(
+      "loading", "is-loading", "no-scroll", "overflow-hidden"
+    );
+  });
+}
+
+/**
+ * Wait until the DOM stops mutating for `quietMs`, with an overall cap of
+ * `maxMs`. This adapts to each page — fast pages resolve quickly, heavy
+ * animation pages get the time they need.
+ */
+async function waitForDomStability(page, { quietMs = 500, maxMs = 4000 } = {}) {
+  await page.evaluate(({ quietMs, maxMs }) => {
+    return new Promise(resolve => {
+      let timer = null;
+      const deadline = Date.now() + maxMs;
+      const observer = new MutationObserver(() => {
+        clearTimeout(timer);
+        if (Date.now() >= deadline) { observer.disconnect(); resolve(); return; }
+        timer = setTimeout(() => { observer.disconnect(); resolve(); }, quietMs);
+      });
+      observer.observe(document.body, {
+        childList: true, subtree: true, attributes: true, characterData: true
+      });
+      // Kick off initial timer in case DOM is already stable
+      timer = setTimeout(() => { observer.disconnect(); resolve(); }, quietMs);
+    });
+  }, { quietMs, maxMs });
+}
+
+// ---------------------------------------------------------------------------
+// Viewport-segment screenshots: break tall pages into viewport-height slices
+// ---------------------------------------------------------------------------
+
+async function captureScrollSegments(page, outDir, viewName, viewportHeight) {
+  const fullHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+  const segments = Math.ceil(fullHeight / viewportHeight);
+  const segmentPaths = [];
+
+  // Only create segments if the page is taller than 1.5x the viewport
+  if (segments <= 1) return segmentPaths;
+
+  for (let i = 0; i < segments; i++) {
+    const y = i * viewportHeight;
+    await page.evaluate((scrollY) => window.scrollTo(0, scrollY), y);
+    await page.waitForTimeout(150); // brief settle after scroll
+    const segPath = path.join(outDir, `${viewName}_segment-${i + 1}.png`);
+    await page.screenshot({ path: segPath, fullPage: false });
+    segmentPaths.push(segPath);
+  }
+  // Scroll back to top for next view
+  await page.evaluate(() => window.scrollTo(0, 0));
+  return segmentPaths;
+}
+
+// ---------------------------------------------------------------------------
+// Core capture function
+// ---------------------------------------------------------------------------
+
 async function captureViewport(browser, indexPath, passPath, viewportName, viewportOpts) {
   const context = await browser.newContext({ viewport: viewportOpts });
   const page = await context.newPage();
@@ -77,12 +161,25 @@ async function captureViewport(browser, indexPath, passPath, viewportName, viewp
   await fs.mkdir(outDir, { recursive: true });
 
   const fileUrl = `file:///${indexPath.replace(/\\/g, "/")}`;
-  await page.goto(fileUrl, { waitUntil: "domcontentloaded" });
-  await page.waitForTimeout(300);
 
+  // Use networkidle to wait until network settles (catches late CDN fetches)
+  await page.goto(fileUrl, { waitUntil: "networkidle", timeout: 30000 });
+
+  // Wait for Google Fonts to fully render
+  await page.evaluate(() => document.fonts?.ready).catch(() => {});
+
+  // Force-dismiss loading overlays / splash screens
+  await dismissLoadingOverlays(page);
+
+  // Wait for JS libraries (GSAP, AOS, particles, etc.) to initialize and DOM to stabilize
+  await waitForDomStability(page, { quietMs: 500, maxMs: 4000 });
+
+  const viewportHeight = viewportOpts.height || 960;
   const screenshots = [];
+  let totalSegments = 0;
+
   for (const view of requiredViews) {
-    // Try clicking the nav button directly first
+    // ----- Navigate to view -----
     let clicked = false;
     const selector = `[data-view='${view}']`;
     const el = page.locator(selector).first();
@@ -96,9 +193,8 @@ async function captureViewport(browser, indexPath, passPath, viewportName, viewp
       }
     }
 
-    // If button is hidden (mobile hamburger, overflow, etc.), use JS to switch view
+    // Mobile hamburger fallback
     if (!clicked) {
-      // First try opening any hamburger/mobile menu toggle
       const hamburger = page.locator(
         '.hamburger, .menu-toggle, .mobile-toggle, .nav-toggle, [data-mobile-menu], .burger'
       ).first();
@@ -106,7 +202,6 @@ async function captureViewport(browser, indexPath, passPath, viewportName, viewp
         try {
           await hamburger.click({ timeout: 2000 });
           await page.waitForTimeout(300);
-          // Try clicking the nav button again after hamburger opens
           if ((await el.count()) > 0 && await el.isVisible().catch(() => false)) {
             try {
               await el.click({ timeout: 2000 });
@@ -117,16 +212,11 @@ async function captureViewport(browser, indexPath, passPath, viewportName, viewp
       }
     }
 
-    // Final fallback: use JavaScript to simulate the view switch
+    // JS fallback
     if (!clicked) {
       await page.evaluate((viewId) => {
-        // Click the button via JS (bypasses visibility/viewport checks)
         const btn = document.querySelector(`[data-view='${viewId}']`);
-        if (btn) {
-          btn.click();
-          return;
-        }
-        // Manual view switching as last resort
+        if (btn) { btn.click(); return; }
         document.querySelectorAll('[data-page]').forEach(p => {
           p.style.display = p.dataset.page === viewId ? '' : 'none';
           p.classList.toggle('active', p.dataset.page === viewId);
@@ -140,15 +230,37 @@ async function captureViewport(browser, indexPath, passPath, viewportName, viewp
       }, view);
     }
 
-    await page.waitForTimeout(250);
+    // Force-dismiss overlays again (some pages add overlays per view transition)
+    await dismissLoadingOverlays(page);
+
+    // Wait for DOM to stabilize after view switch
+    await waitForDomStability(page, { quietMs: 500, maxMs: 3000 });
+
+    // Scroll to top before capturing
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(100);
+
+    // ----- Full-page screenshot -----
     const shotPath = path.join(outDir, `${view}.png`);
     await page.screenshot({ path: shotPath, fullPage: true });
     screenshots.push(`validation/${viewportName}/${view}.png`);
+
+    // ----- Scroll-segment screenshots for tall pages -----
+    const segPaths = await captureScrollSegments(page, outDir, view, viewportHeight);
+    for (const sp of segPaths) {
+      const rel = path.relative(passPath, sp).replace(/\\/g, "/");
+      screenshots.push(rel);
+      totalSegments++;
+    }
   }
 
   await context.close();
-  return screenshots;
+  return { screenshots, totalSegments };
 }
+
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
 
 const browser = await chromium.launch({ headless: true });
 
@@ -173,22 +285,31 @@ for (const style of styleDirs) {
     console.log(`\n📸 ${style.name}/${pass.name}`);
 
     try {
-      const desktopShots = await captureViewport(
+      const desktop = await captureViewport(
         browser, indexPath, passPath, "desktop", VIEWPORTS.desktop
       );
-      console.log(`  ✓ Desktop: ${desktopShots.length} screenshots`);
+      console.log(`  ✓ Desktop: ${desktop.screenshots.length} screenshots (${desktop.totalSegments} scroll segments)`);
 
-      const mobileShots = await captureViewport(
+      const mobile = await captureViewport(
         browser, indexPath, passPath, "mobile", VIEWPORTS.mobile
       );
-      console.log(`  ✓ Mobile: ${mobileShots.length} screenshots`);
+      console.log(`  ✓ Mobile: ${mobile.screenshots.length} screenshots (${mobile.totalSegments} scroll segments)`);
 
       const report = {
         style: style.name,
         pass: pass.name,
         requiredViews,
-        desktop: { viewport: VIEWPORTS.desktop, screenshots: desktopShots },
-        mobile: { viewport: VIEWPORTS.mobile, screenshots: mobileShots },
+        desktop: {
+          viewport: VIEWPORTS.desktop,
+          screenshots: desktop.screenshots,
+          scrollSegments: desktop.totalSegments
+        },
+        mobile: {
+          viewport: VIEWPORTS.mobile,
+          screenshots: mobile.screenshots,
+          scrollSegments: mobile.totalSegments
+        },
+        totalScreenshots: desktop.screenshots.length + mobile.screenshots.length,
         timestamp: new Date().toISOString()
       };
 
@@ -213,5 +334,6 @@ await fs.writeFile(
 );
 await browser.close();
 
-console.log(`\nValidated ${aggregate.length} pass folders (${errors} errors).`);
+const totalShots = aggregate.reduce((s, r) => s + r.totalScreenshots, 0);
+console.log(`\nValidated ${aggregate.length} pass folders — ${totalShots} total screenshots (${errors} errors).`);
 if (errors > 0) process.exit(3);

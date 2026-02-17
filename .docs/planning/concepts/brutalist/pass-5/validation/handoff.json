@@ -1,0 +1,105 @@
+{
+  "styleId": "brutalist",
+  "pass": 5,
+  "profileId": "dashboard-grid-tiles",
+  "generatedAt": "2026-02-15T12:00:00Z",
+  "uniquenessProfile": {
+    "profileId": "dashboard-grid-tiles",
+    "shellMode": "top-bar-minimal",
+    "navPattern": "icon-only-row",
+    "contentFlow": "auto-fit-tile-grid",
+    "scrollMode": "standard-scroll",
+    "alignment": "center",
+    "heroTreatment": "none",
+    "motionLanguage": "grid-reflow",
+    "density": "dense",
+    "componentTone": "hard"
+  },
+  "palette": {
+    "bg": "#0d0d0d",
+    "text": "#f5f0e0",
+    "surface": "#1a1a1a",
+    "accent": "#ff0066",
+    "accent2": "#e6ff00",
+    "border": "#333333"
+  },
+  "typography": {
+    "heading": "Impact",
+    "body": "Archivo Narrow",
+    "mono": "IBM Plex Mono"
+  },
+  "contentPersona": "activist-nonprofit-organization",
+  "variantSeed": "protest-poster-collage",
+  "interactionProfile": {
+    "buttonHover": "stamp-press-ink-spread",
+    "buttonClick": "slam-down-stamp-mark",
+    "cardHover": "torn-edge-lift-curl",
+    "pageTransition": "tear-away-rip",
+    "scrollReveal": "wheat-paste-slap-on",
+    "navItemHover": "highlight-marker-streak",
+    "navItemActive": "circled-marker-ring",
+    "inputFocus": "scribble-underline-focus",
+    "toggleSwitch": "fist-punch-toggle",
+    "tooltips": "speech-bubble-shout",
+    "loadingState": "megaphone-pulse-spin",
+    "idleAmbient": "poster-flutter-micro",
+    "microFeedback": "megaphone-shake-confirm"
+  },
+  "librariesUsed": [
+    {
+      "name": "Anime.js",
+      "version": "3.2.2",
+      "purpose": "Staggered scroll-reveal animations, stat bar fills, vote button bounces, toggle punch impacts"
+    },
+    {
+      "name": "Rough.js",
+      "version": "4.6.6",
+      "purpose": "Hand-drawn string/connector lines on whiteboard and conspiracy board views"
+    },
+    {
+      "name": "SortableJS",
+      "version": "1.15.6",
+      "purpose": "Kanban card drag-and-drop reordering across columns"
+    },
+    {
+      "name": "Splitting.js",
+      "version": "1.0.6",
+      "purpose": "Character-level animation for the main slogan banner"
+    }
+  ],
+  "views": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ],
+  "antiRepeatCompliance": [
+    "Black background (#0d0d0d) with magenta (#ff0066) + electric yellow (#e6ff00) — not light paper+red from Pass 1",
+    "Protest poster collage with torn edges and wheat-paste texture — not newspaper manifesto from Pass 2",
+    "DIY punk poster aesthetic with stamp/marker/spray-paint interactions — not terminal CLI from Pass 3",
+    "Chaotic collage with torn paper textures — not blueprint grid from Pass 4",
+    "Impact heading font — not Anton (pass 1), Playfair (pass 2), monospace (pass 3), or Barlow Condensed (pass 4)",
+    "Post-it note chat format — not memo-format (pass 2), REPL (pass 3), or radio dispatch (pass 4)",
+    "Corkboard/flyer project listing — not card grid, table, or file listing from prior passes"
+  ],
+  "responsiveBreakpoints": [
+    { "name": "desktop", "minWidth": 1025 },
+    { "name": "tablet", "maxWidth": 1024 },
+    { "name": "mobile", "maxWidth": 768 },
+    { "name": "small-mobile", "maxWidth": 480 }
+  ]
+}

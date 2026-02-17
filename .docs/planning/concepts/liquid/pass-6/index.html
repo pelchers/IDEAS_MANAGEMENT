@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inkwell Studio - Calligraphy & Stationery Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.7/dist/tippy.css">
+  <link rel="stylesheet" href="https://unpkg.com/splitting@1.0.6/dist/splitting.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient ink wisps canvas -->
+  <canvas id="inkAmbient" aria-hidden="true"></canvas>
+
+  <!-- Loading overlay -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="ink-drop-loader">
+      <svg viewBox="0 0 100 100" class="ink-svg-loader">
+        <circle cx="50" cy="50" r="4" class="ink-core"/>
+        <circle cx="50" cy="50" r="15" class="ink-ring ink-ring-1"/>
+        <circle cx="50" cy="50" r="28" class="ink-ring ink-ring-2"/>
+        <circle cx="50" cy="50" r="42" class="ink-ring ink-ring-3"/>
+      </svg>
+      <span class="loading-text">Preparing the inkwell...</span>
+    </div>
+  </div>
+
+  <!-- Mobile header bar -->
+  <header class="mobile-header" id="mobileHeader">
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <span class="mobile-title">Inkwell Studio</span>
+    <div class="mobile-ink-dot"></div>
+  </header>
+
+  <!-- Mobile overlay backdrop -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <!-- Left rail navigation -->
+  <nav class="left-rail" id="leftRail">
+    <div class="rail-brand">
+      <svg viewBox="0 0 36 36" class="brand-quill" width="36" height="36">
+        <path d="M8 28 Q12 20 18 14 Q22 10 28 6 Q30 5 31 6 Q32 7 31 9 Q28 14 22 20 Q16 26 10 30 Q9 31 8 28Z" fill="#c8a84e" opacity="0.9"/>
+        <path d="M10 30 L6 34" stroke="#c8a84e" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name">Inkwell</span>
+        <span class="brand-sub">Studio</span>
+      </div>
+    </div>
+
+    <div class="rail-divider"></div>
+
+    <ul class="rail-nav" id="railNav">
+      <li>
+        <button class="rail-item active" data-view="dashboard" data-tooltip="Dashboard">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          <span class="rail-label">Dashboard</span>
+        </button>
+      </li>
+      <li>
+        <button class="rail-item" data-view="projects" data-tooltip="Collections">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 7V17a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+          </svg>
+          <span class="rail-label">Collections</span>
+        </button>
+      </li>
+      <li>
+        <button class="rail-item" data-view="project-workspace" data-tooltip="Writing Desk">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+          <span class="rail-label">Writing Desk</span>
+        </button>
+      </li>
+      <li>
+        <button class="rail-item" data-view="kanban" data-tooltip="Correspondence">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="5" height="18" rx="1"/>
+            <rect x="10" y="3" width="5" height="12" rx="1"/>
+            <rect x="17" y="3" width="5" height="15" rx="1"/>
+          </svg>
+          <span class="rail-label">Correspondence</span>
+        </button>
+      </li>
+      <li>
+        <button class="rail-item" data-view="whiteboard" data-tooltip="Ink Canvas">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="8" cy="8" r="3"/>
+            <circle cx="18" cy="8" r="3"/>
+            <circle cx="13" cy="17" r="3"/>
+            <path d="M10.5 9.5l2 5M15.5 9.5l-2 5"/>
+          </svg>
+          <span class="rail-label">Ink Canvas</span>
+        </button>
+      </li>
+      <li>
+        <button class="rail-item" data-view="schema-planner" data-tooltip="Manuscript">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="4" y="4" width="16" height="16" rx="2"/>
+            <path d="M4 9h16M9 4v16"/>
+          </svg>
+          <span class="rail-label">Manuscript</span>
+        </button>
+      </li>
+      <li>
+        <button class="rail-item" data-view="directory-tree" data-tooltip="Index">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 6h16M4 10h12M4 14h14M4 18h10"/>
+          </svg>
+          <span class="rail-label">Index</span>
+        </button>
+      </li>
+      <li>
+        <button class="rail-item" data-view="ideas" data-tooltip="Inspirations">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/>
+          </svg>
+          <span class="rail-label">Inspirations</span>
+        </button>
+      </li>
+      <li>
+        <button class="rail-item" data-view="ai-chat" data-tooltip="Scribe">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+          </svg>
+          <span class="rail-label">Scribe</span>
+        </button>
+      </li>
+      <li>
+        <button class="rail-item" data-view="settings" data-tooltip="Preferences">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+          <span class="rail-label">Preferences</span>
+        </button>
+      </li>
+    </ul>
+
+    <div class="rail-footer">
+      <div class="rail-user">
+        <div class="user-seal">EM</div>
+        <div class="user-info">
+          <span class="user-name">Eleanor Mori</span>
+          <span class="user-role">Master Calligrapher</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content area -->
+  <main class="content-area" id="contentArea">
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <section class="view-panel active" id="view-dashboard">
+      <div class="view-inner">
+        <header class="view-header">
+          <h1 class="chiseled-title" data-splitting>Manuscript Dashboard</h1>
+          <p class="view-subtitle">Overview of your calligraphy studio operations</p>
+        </header>
+
+        <div class="dashboard-metrics">
+          <div class="metric-card" data-tooltip="Total active commissions this quarter">
+            <div class="metric-value"><span class="gold-num">47</span></div>
+            <div class="metric-label">Active Commissions</div>
+            <div class="metric-trend trend-up">+12% from last quarter</div>
+            <div class="metric-stroke"></div>
+          </div>
+          <div class="metric-card" data-tooltip="Revenue from custom lettering work">
+            <div class="metric-value"><span class="gold-num">$23,480</span></div>
+            <div class="metric-label">Lettering Revenue</div>
+            <div class="metric-trend trend-up">+8% growth</div>
+            <div class="metric-stroke"></div>
+          </div>
+          <div class="metric-card" data-tooltip="Ink varieties currently in inventory">
+            <div class="metric-value"><span class="gold-num">156</span></div>
+            <div class="metric-label">Ink Varieties Stocked</div>
+            <div class="metric-trend trend-neutral">Stable inventory</div>
+            <div class="metric-stroke"></div>
+          </div>
+          <div class="metric-card" data-tooltip="Pending orders awaiting fulfillment">
+            <div class="metric-value"><span class="gold-num">18</span></div>
+            <div class="metric-label">Orders Pending</div>
+            <div class="metric-trend trend-down">-3 from yesterday</div>
+            <div class="metric-stroke"></div>
+          </div>
+        </div>
+
+        <div class="dashboard-body">
+          <div class="dash-section dash-activity">
+            <h3 class="section-heading">Recent Studio Activity</h3>
+            <div class="ink-divider"></div>
+            <ul class="activity-list">
+              <li class="activity-item">
+                <div class="activity-seal">W</div>
+                <div class="activity-detail">
+                  <strong>Wedding Suite Proofs Approved</strong>
+                  <span class="activity-meta">Harrison-Nakamura Commission &middot; 2 hours ago</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <div class="activity-seal">I</div>
+                <div class="activity-detail">
+                  <strong>New Sumi Ink Batch Received</strong>
+                  <span class="activity-meta">Kuretake Sumi #6000 &middot; 5 hours ago</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <div class="activity-seal">C</div>
+                <div class="activity-detail">
+                  <strong>Corporate Logo Lettering Draft Sent</strong>
+                  <span class="activity-meta">Bloomfield & Associates &middot; Yesterday</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <div class="activity-seal">P</div>
+                <div class="activity-detail">
+                  <strong>Nib Pressure Calibration Completed</strong>
+                  <span class="activity-meta">Brause Rose #76 tested &middot; Yesterday</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <div class="activity-seal">S</div>
+                <div class="activity-detail">
+                  <strong>Stationery Paper Sample Book Updated</strong>
+                  <span class="activity-meta">Added 12 new cotton rag papers &middot; 2 days ago</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="dash-section dash-deadlines">
+            <h3 class="section-heading">Upcoming Deadlines</h3>
+            <div class="ink-divider"></div>
+            <div class="deadline-list">
+              <div class="deadline-item">
+                <div class="deadline-date">
+                  <span class="dl-day">17</span>
+                  <span class="dl-month">Feb</span>
+                </div>
+                <div class="deadline-info">
+                  <strong>Tanaka Wedding Envelopes</strong>
+                  <span>200 hand-addressed envelopes in Copperplate</span>
+                </div>
+                <span class="deadline-urgency urgent">Urgent</span>
+              </div>
+              <div class="deadline-item">
+                <div class="deadline-date">
+                  <span class="dl-day">22</span>
+                  <span class="dl-month">Feb</span>
+                </div>
+                <div class="deadline-info">
+                  <strong>Gallery Exhibition Labels</strong>
+                  <span>48 museum-grade labels in Italic script</span>
+                </div>
+                <span class="deadline-urgency soon">Soon</span>
+              </div>
+              <div class="deadline-item">
+                <div class="deadline-date">
+                  <span class="dl-day">03</span>
+                  <span class="dl-month">Mar</span>
+                </div>
+                <div class="deadline-info">
+                  <strong>Brand Identity Package</strong>
+                  <span>Complete hand-lettered logo suite for Petal & Thorn</span>
+                </div>
+                <span class="deadline-urgency normal">On Track</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECTS ==================== -->
+    <section class="view-panel" id="view-projects">
+      <div class="view-inner">
+        <header class="view-header">
+          <h1 class="chiseled-title" data-splitting>Letter Collections</h1>
+          <p class="view-subtitle">Your curated portfolio of calligraphy commissions</p>
+        </header>
+
+        <div class="projects-grid">
+          <div class="project-letter">
+            <div class="letter-seal seal-gold" data-tooltip="In Progress"></div>
+            <h3 class="letter-title">The Harrison-Nakamura Suite</h3>
+            <p class="letter-desc">Complete wedding stationery suite: save-the-dates, invitations, RSVP cards, place cards, and menu cards. Copperplate script on handmade cotton rag paper with gold leaf accents.</p>
+            <div class="letter-meta">
+              <span class="meta-tag">Wedding</span>
+              <span class="meta-tag">Copperplate</span>
+              <span class="meta-date">Due Feb 28</span>
+            </div>
+            <div class="letter-flourish"></div>
+          </div>
+
+          <div class="project-letter">
+            <div class="letter-seal seal-white" data-tooltip="Review"></div>
+            <h3 class="letter-title">Petal & Thorn Brand Identity</h3>
+            <p class="letter-desc">Hand-lettered logotype, secondary marks, and monogram for an artisanal flower shop. Combining pointed pen flourishes with botanical illustration elements.</p>
+            <div class="letter-meta">
+              <span class="meta-tag">Branding</span>
+              <span class="meta-tag">Pointed Pen</span>
+              <span class="meta-date">Due Mar 3</span>
+            </div>
+            <div class="letter-flourish"></div>
+          </div>
+
+          <div class="project-letter">
+            <div class="letter-seal seal-navy" data-tooltip="Drafting"></div>
+            <h3 class="letter-title">Kyoto Temple Scroll Restoration</h3>
+            <p class="letter-desc">Restoration and reproduction of 18th-century Japanese calligraphy scrolls. Sumi ink on mulberry paper using traditional fude brushes. Three scrolls in Kaisho, Gyosho, and Sosho styles.</p>
+            <div class="letter-meta">
+              <span class="meta-tag">Restoration</span>
+              <span class="meta-tag">Japanese</span>
+              <span class="meta-date">Due Apr 15</span>
+            </div>
+            <div class="letter-flourish"></div>
+          </div>
+
+          <div class="project-letter">
+            <div class="letter-seal seal-gold" data-tooltip="In Progress"></div>
+            <h3 class="letter-title">Bloomfield & Associates Letterhead</h3>
+            <p class="letter-desc">Corporate stationery system with hand-drawn Spencerian headers, engraved business cards, and embossed notepad designs. Balancing formality with artisanal warmth.</p>
+            <div class="letter-meta">
+              <span class="meta-tag">Corporate</span>
+              <span class="meta-tag">Spencerian</span>
+              <span class="meta-date">Due Mar 20</span>
+            </div>
+            <div class="letter-flourish"></div>
+          </div>
+
+          <div class="project-letter">
+            <div class="letter-seal seal-white" data-tooltip="Complete"></div>
+            <h3 class="letter-title">Gallery Nocturne Exhibition</h3>
+            <p class="letter-desc">48 hand-lettered museum labels, exhibition title wall treatment, and catalog chapter headers. Italic hand with fine hairlines on archival acid-free card stock.</p>
+            <div class="letter-meta">
+              <span class="meta-tag">Exhibition</span>
+              <span class="meta-tag">Italic</span>
+              <span class="meta-date">Due Feb 22</span>
+            </div>
+            <div class="letter-flourish"></div>
+          </div>
+
+          <div class="project-letter">
+            <div class="letter-seal seal-navy" data-tooltip="Concept"></div>
+            <h3 class="letter-title">Amethyst & Oak Whiskey Labels</h3>
+            <p class="letter-desc">Premium whiskey label lettering for limited edition releases. Blackletter-inspired display type with ornamental borders. Includes neck label, front label, and back panel.</p>
+            <div class="letter-meta">
+              <span class="meta-tag">Packaging</span>
+              <span class="meta-tag">Blackletter</span>
+              <span class="meta-date">Due May 1</span>
+            </div>
+            <div class="letter-flourish"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECT WORKSPACE ==================== -->
+    <section class="view-panel" id="view-project-workspace">
+      <div class="view-inner">
+        <header class="view-header">
+          <h1 class="chiseled-title" data-splitting>Writing Desk</h1>
+          <p class="view-subtitle">Harrison-Nakamura Wedding Suite workspace</p>
+        </header>
+
+        <div class="workspace-layout">
+          <div class="workspace-main">
+            <div class="parchment-panel">
+              <h3 class="panel-title">Project Brief</h3>
+              <div class="quill-divider"></div>
+              <div class="brief-content">
+                <p>Akiko Harrison and James Nakamura request a full wedding stationery suite honoring both their Japanese and American heritages. The lettering should blend Copperplate elegance with subtle Japanese calligraphic sensibilities. Primary language English, with select Japanese characters for family names.</p>
+                <div class="brief-specs">
+                  <div class="spec-row">
+                    <span class="spec-label">Script Style</span>
+                    <span class="spec-value">Modified Copperplate with Kaisho accents</span>
+                  </div>
+                  <div class="spec-row">
+                    <span class="spec-label">Paper Stock</span>
+                    <span class="spec-value">Crane Lettra 220lb, Pearl White</span>
+                  </div>
+                  <div class="spec-row">
+                    <span class="spec-label">Ink Selection</span>
+                    <span class="spec-value">Sumi ink #6000, Finetec Arabic Gold</span>
+                  </div>
+                  <div class="spec-row">
+                    <span class="spec-label">Nib</span>
+                    <span class="spec-value">Nikko G and Brause Rose #76</span>
+                  </div>
+                  <div class="spec-row">
+                    <span class="spec-label">Quantity</span>
+                    <span class="spec-value">200 invitations, 250 RSVP cards, 200 place cards</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="parchment-panel">
+              <h3 class="panel-title">Tasks & Milestones</h3>
+              <div class="quill-divider"></div>
+              <ul class="task-list">
+                <li class="task-item completed">
+                  <div class="task-check checked"></div>
+                  <div class="task-text">
+                    <strong>Initial consultation & mood board</strong>
+                    <span>Completed Jan 15</span>
+                  </div>
+                </li>
+                <li class="task-item completed">
+                  <div class="task-check checked"></div>
+                  <div class="task-text">
+                    <strong>Script style samples (3 variations)</strong>
+                    <span>Completed Jan 28</span>
+                  </div>
+                </li>
+                <li class="task-item completed">
+                  <div class="task-check checked"></div>
+                  <div class="task-text">
+                    <strong>Paper and ink testing on Crane Lettra</strong>
+                    <span>Completed Feb 3</span>
+                  </div>
+                </li>
+                <li class="task-item active">
+                  <div class="task-check"></div>
+                  <div class="task-text">
+                    <strong>Invitation proof layout &amp; addressing guide</strong>
+                    <span>In progress - Est. Feb 18</span>
+                  </div>
+                </li>
+                <li class="task-item">
+                  <div class="task-check"></div>
+                  <div class="task-text">
+                    <strong>Gold leaf application test prints</strong>
+                    <span>Scheduled Feb 20</span>
+                  </div>
+                </li>
+                <li class="task-item">
+                  <div class="task-check"></div>
+                  <div class="task-text">
+                    <strong>Final production run (200 suites)</strong>
+                    <span>Scheduled Feb 24-27</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <aside class="workspace-tools">
+            <div class="tool-panel">
+              <h4 class="tool-heading">Ink Well</h4>
+              <div class="ink-well-display">
+                <div class="ink-swatch" style="--ink: #1a1a2e" data-tooltip="Sumi Black #6000"></div>
+                <div class="ink-swatch" style="--ink: #c8a84e" data-tooltip="Finetec Arabic Gold"></div>
+                <div class="ink-swatch" style="--ink: #2c3e6b" data-tooltip="Pilot Iroshizuku Tsuki-yo"></div>
+                <div class="ink-swatch" style="--ink: #8b4513" data-tooltip="Walnut Drawing Ink"></div>
+              </div>
+            </div>
+            <div class="tool-panel">
+              <h4 class="tool-heading">Nib Rack</h4>
+              <ul class="nib-list">
+                <li>Nikko G (fine hairlines)</li>
+                <li>Brause Rose #76 (flex shade)</li>
+                <li>Hunt 101 (extra-fine)</li>
+                <li>Leonardt Principal (bold)</li>
+              </ul>
+            </div>
+            <div class="tool-panel">
+              <h4 class="tool-heading">Notes</h4>
+              <div class="notes-pad">
+                <p>Client prefers cooler gold tones over warm brass. Test Finetec Inca Gold as backup. Akiko's grandmother's name uses Kanji: <span class="mono-text">&#x6751;&#x4E0A;</span> (Murakami).</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== KANBAN ==================== -->
+    <section class="view-panel" id="view-kanban">
+      <div class="view-inner">
+        <header class="view-header">
+          <h1 class="chiseled-title" data-splitting>Correspondence Board</h1>
+          <p class="view-subtitle">Track commissions through each stage of the creative process</p>
+        </header>
+
+        <div class="kanban-board">
+          <div class="kanban-column">
+            <div class="column-header">
+              <h3 class="column-title">Draft</h3>
+              <span class="column-count">3</span>
+              <div class="column-stroke"></div>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-wax-seal seal-draft"></div>
+                <h4 class="card-title">Whiskey Label Concepts</h4>
+                <p class="card-snippet">Exploring Blackletter variations for Amethyst & Oak. Three rough sketches using broad-edge nib.</p>
+                <div class="card-footer">
+                  <span class="card-tag">Packaging</span>
+                  <span class="card-date">Feb 10</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-wax-seal seal-draft"></div>
+                <h4 class="card-title">Menu Card Script Test</h4>
+                <p class="card-snippet">Testing Engrosser's script at small point sizes for reception dinner menu. Checking ink flow on textured stock.</p>
+                <div class="card-footer">
+                  <span class="card-tag">Wedding</span>
+                  <span class="card-date">Feb 12</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-wax-seal seal-draft"></div>
+                <h4 class="card-title">Botanical Monogram Sketch</h4>
+                <p class="card-snippet">Initial P&T monogram options with intertwined vine flourishes for Petal & Thorn brand.</p>
+                <div class="card-footer">
+                  <span class="card-tag">Branding</span>
+                  <span class="card-date">Feb 14</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="column-header">
+              <h3 class="column-title">Addressing</h3>
+              <span class="column-count">2</span>
+              <div class="column-stroke"></div>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-wax-seal seal-addressing"></div>
+                <h4 class="card-title">Invitation Proof Review</h4>
+                <p class="card-snippet">Client reviewing three layout options. Waiting on preference between centered and asymmetric composition.</p>
+                <div class="card-footer">
+                  <span class="card-tag">Wedding</span>
+                  <span class="card-date">Feb 15</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-wax-seal seal-addressing"></div>
+                <h4 class="card-title">Letterhead Alignment Check</h4>
+                <p class="card-snippet">Verifying Spencerian header positioning with printer's bleed margins. Need 3mm safe zone confirmed.</p>
+                <div class="card-footer">
+                  <span class="card-tag">Corporate</span>
+                  <span class="card-date">Feb 14</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="column-header">
+              <h3 class="column-title">Sealed</h3>
+              <span class="column-count">2</span>
+              <div class="column-stroke"></div>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-wax-seal seal-sealed"></div>
+                <h4 class="card-title">Exhibition Title Wall</h4>
+                <p class="card-snippet">Gallery Nocturne exhibition title and artist statement approved. Large-scale Italic at 48pt on gallery wall template ready for sign painter.</p>
+                <div class="card-footer">
+                  <span class="card-tag">Exhibition</span>
+                  <span class="card-date">Feb 13</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-wax-seal seal-sealed"></div>
+                <h4 class="card-title">Place Card Template</h4>
+                <p class="card-snippet">Final template for 200 place cards approved. Guide lines laser-cut, ready for hand addressing phase.</p>
+                <div class="card-footer">
+                  <span class="card-tag">Wedding</span>
+                  <span class="card-date">Feb 11</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="column-header">
+              <h3 class="column-title">Delivered</h3>
+              <span class="column-count">2</span>
+              <div class="column-stroke"></div>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-wax-seal seal-delivered"></div>
+                <h4 class="card-title">Save-the-Date Cards</h4>
+                <p class="card-snippet">200 save-the-date cards hand-addressed and shipped. Copperplate on Crane Lettra with Finetec gold detailing.</p>
+                <div class="card-footer">
+                  <span class="card-tag">Wedding</span>
+                  <span class="card-date">Jan 30</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-wax-seal seal-delivered"></div>
+                <h4 class="card-title">Business Card Engravings</h4>
+                <p class="card-snippet">500 engraved business cards for Bloomfield & Associates. Spencerian script with blind deboss monogram.</p>
+                <div class="card-footer">
+                  <span class="card-tag">Corporate</span>
+                  <span class="card-date">Jan 25</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== WHITEBOARD ==================== -->
+    <section class="view-panel" id="view-whiteboard">
+      <div class="view-inner">
+        <header class="view-header">
+          <h1 class="chiseled-title" data-splitting>Ink Wash Canvas</h1>
+          <p class="view-subtitle">Visual mapping of creative concepts and connections</p>
+        </header>
+
+        <div class="whiteboard-canvas" id="whiteboardCanvas">
+          <svg class="wb-connections" id="wbConnections" viewBox="0 0 1000 600">
+            <defs>
+              <filter id="inkBlur">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="1.5"/>
+              </filter>
+            </defs>
+            <path class="ink-connection" d="M200,120 C280,100 320,200 400,180" filter="url(#inkBlur)"/>
+            <path class="ink-connection" d="M400,220 C450,280 500,260 560,300" filter="url(#inkBlur)"/>
+            <path class="ink-connection" d="M200,160 C250,250 350,350 400,340" filter="url(#inkBlur)"/>
+            <path class="ink-connection gold-ink" d="M600,120 C650,180 680,200 700,280" filter="url(#inkBlur)"/>
+            <path class="ink-connection" d="M420,340 C480,320 540,310 560,300" filter="url(#inkBlur)"/>
+          </svg>
+
+          <div class="wb-node node-primary" style="left:120px;top:80px">
+            <div class="node-blot"></div>
+            <span class="node-label">Script Styles</span>
+            <span class="node-detail">Copperplate, Italic, Spencerian, Kaisho</span>
+          </div>
+
+          <div class="wb-node node-secondary" style="left:340px;top:140px">
+            <div class="node-blot"></div>
+            <span class="node-label">Ink Chemistry</span>
+            <span class="node-detail">Iron gall, sumi, walnut, metallic</span>
+          </div>
+
+          <div class="wb-node node-secondary" style="left:500px;top:260px">
+            <div class="node-blot"></div>
+            <span class="node-label">Paper Textures</span>
+            <span class="node-detail">Cotton rag, mulberry, vellum, hot-press</span>
+          </div>
+
+          <div class="wb-node node-accent" style="left:540px;top:80px">
+            <div class="node-blot"></div>
+            <span class="node-label">Gold Techniques</span>
+            <span class="node-detail">Leaf gilding, Finetec, shell gold</span>
+          </div>
+
+          <div class="wb-node node-primary" style="left:340px;top:300px">
+            <div class="node-blot"></div>
+            <span class="node-label">Tool Heritage</span>
+            <span class="node-detail">Quills, steel nibs, brushes, reed pens</span>
+          </div>
+
+          <div class="wb-node node-accent" style="left:640px;top:240px">
+            <div class="node-blot"></div>
+            <span class="node-label">Cultural Traditions</span>
+            <span class="node-detail">Western, East Asian, Arabic, Devanagari</span>
+          </div>
+
+          <div class="wb-node node-secondary" style="left:140px;top:280px">
+            <div class="node-blot"></div>
+            <span class="node-label">Flourishing</span>
+            <span class="node-detail">Oval forms, figure-8, vine spirals</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCHEMA PLANNER ==================== -->
+    <section class="view-panel" id="view-schema-planner">
+      <div class="view-inner">
+        <header class="view-header">
+          <h1 class="chiseled-title" data-splitting>Manuscript Marginalia</h1>
+          <p class="view-subtitle">Entity relationships for the stationery production workflow</p>
+        </header>
+
+        <div class="schema-layout">
+          <div class="schema-entity entity-illuminated">
+            <div class="entity-gold-cap">Commission</div>
+            <div class="entity-body">
+              <div class="entity-field">
+                <span class="field-key">commission_id</span>
+                <span class="field-type gold-leaf">PK</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">client_name</span>
+                <span class="field-type">varchar</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">script_style</span>
+                <span class="field-type">enum</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">deadline</span>
+                <span class="field-type">date</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">status</span>
+                <span class="field-type">enum</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="schema-relation">
+            <span class="relation-line"></span>
+            <span class="relation-label">has many</span>
+            <span class="relation-line"></span>
+          </div>
+
+          <div class="schema-entity entity-illuminated">
+            <div class="entity-gold-cap">Piece</div>
+            <div class="entity-body">
+              <div class="entity-field">
+                <span class="field-key">piece_id</span>
+                <span class="field-type gold-leaf">PK</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">commission_id</span>
+                <span class="field-type gold-leaf">FK</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">piece_type</span>
+                <span class="field-type">enum</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">quantity</span>
+                <span class="field-type">int</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">paper_stock</span>
+                <span class="field-type">varchar</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="schema-relation">
+            <span class="relation-line"></span>
+            <span class="relation-label">uses</span>
+            <span class="relation-line"></span>
+          </div>
+
+          <div class="schema-entity entity-illuminated">
+            <div class="entity-gold-cap">Material</div>
+            <div class="entity-body">
+              <div class="entity-field">
+                <span class="field-key">material_id</span>
+                <span class="field-type gold-leaf">PK</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">name</span>
+                <span class="field-type">varchar</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">category</span>
+                <span class="field-type">enum</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">supplier</span>
+                <span class="field-type">varchar</span>
+              </div>
+              <div class="entity-field">
+                <span class="field-key">stock_qty</span>
+                <span class="field-type">int</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="schema-row-two">
+            <div class="schema-entity entity-illuminated">
+              <div class="entity-gold-cap">Nib Profile</div>
+              <div class="entity-body">
+                <div class="entity-field">
+                  <span class="field-key">nib_id</span>
+                  <span class="field-type gold-leaf">PK</span>
+                </div>
+                <div class="entity-field">
+                  <span class="field-key">brand</span>
+                  <span class="field-type">varchar</span>
+                </div>
+                <div class="entity-field">
+                  <span class="field-key">model</span>
+                  <span class="field-type">varchar</span>
+                </div>
+                <div class="entity-field">
+                  <span class="field-key">flex_rating</span>
+                  <span class="field-type">int(1-10)</span>
+                </div>
+                <div class="entity-field">
+                  <span class="field-key">best_for</span>
+                  <span class="field-type">text</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="schema-relation-h">
+              <span class="relation-label">selects</span>
+            </div>
+
+            <div class="schema-entity entity-illuminated">
+              <div class="entity-gold-cap">Ink Batch</div>
+              <div class="entity-body">
+                <div class="entity-field">
+                  <span class="field-key">batch_id</span>
+                  <span class="field-type gold-leaf">PK</span>
+                </div>
+                <div class="entity-field">
+                  <span class="field-key">ink_name</span>
+                  <span class="field-type">varchar</span>
+                </div>
+                <div class="entity-field">
+                  <span class="field-key">viscosity</span>
+                  <span class="field-type">float</span>
+                </div>
+                <div class="entity-field">
+                  <span class="field-key">color_hex</span>
+                  <span class="field-type">varchar(7)</span>
+                </div>
+                <div class="entity-field">
+                  <span class="field-key">ml_remaining</span>
+                  <span class="field-type">int</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== DIRECTORY TREE ==================== -->
+    <section class="view-panel" id="view-directory-tree">
+      <div class="view-inner">
+        <header class="view-header">
+          <h1 class="chiseled-title" data-splitting>Book of Contents</h1>
+          <p class="view-subtitle">Hierarchical index of all studio files and resources</p>
+        </header>
+
+        <div class="directory-book">
+          <div class="chapter-group">
+            <div class="chapter-heading" data-expanded="true">
+              <span class="chapter-ornament"></span>
+              <span class="chapter-text">I. Active Commissions</span>
+              <span class="chapter-toggle">&#9662;</span>
+            </div>
+            <div class="chapter-content expanded">
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Harrison-Nakamura Wedding Suite</span>
+                <span class="section-note">6 files &middot; Last modified today</span>
+              </div>
+              <div class="section-entry indent-2">
+                <span class="leaf-marker"></span>
+                <span class="section-text">invitation-proof-v3.pdf</span>
+                <span class="section-note">2.4 MB</span>
+              </div>
+              <div class="section-entry indent-2">
+                <span class="leaf-marker"></span>
+                <span class="section-text">place-card-template.ai</span>
+                <span class="section-note">1.1 MB</span>
+              </div>
+              <div class="section-entry indent-2">
+                <span class="leaf-marker"></span>
+                <span class="section-text">address-list-200.csv</span>
+                <span class="section-note">48 KB</span>
+              </div>
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Petal & Thorn Brand Identity</span>
+                <span class="section-note">4 files &middot; Modified yesterday</span>
+              </div>
+              <div class="section-entry indent-2">
+                <span class="leaf-marker"></span>
+                <span class="section-text">logotype-options-A-D.svg</span>
+                <span class="section-note">340 KB</span>
+              </div>
+              <div class="section-entry indent-2">
+                <span class="leaf-marker"></span>
+                <span class="section-text">monogram-sketches.jpg</span>
+                <span class="section-note">5.2 MB</span>
+              </div>
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Bloomfield & Associates Letterhead</span>
+                <span class="section-note">3 files &middot; Modified Feb 12</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chapter-group">
+            <div class="chapter-heading" data-expanded="true">
+              <span class="chapter-ornament"></span>
+              <span class="chapter-text">II. Ink & Material Library</span>
+              <span class="chapter-toggle">&#9662;</span>
+            </div>
+            <div class="chapter-content expanded">
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Iron Gall Inks</span>
+                <span class="section-note">12 samples cataloged</span>
+              </div>
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Sumi Ink Collection</span>
+                <span class="section-note">8 varieties</span>
+              </div>
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Metallic & Specialty Inks</span>
+                <span class="section-note">15 varieties</span>
+              </div>
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Paper Sample Archive</span>
+                <span class="section-note">64 swatches</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chapter-group">
+            <div class="chapter-heading" data-expanded="false">
+              <span class="chapter-ornament"></span>
+              <span class="chapter-text">III. Script Reference Sheets</span>
+              <span class="chapter-toggle">&#9656;</span>
+            </div>
+            <div class="chapter-content">
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Copperplate Exemplars</span>
+                <span class="section-note">24 sheets</span>
+              </div>
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Italic Hand Guides</span>
+                <span class="section-note">18 sheets</span>
+              </div>
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Spencerian Practice Drills</span>
+                <span class="section-note">32 sheets</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chapter-group">
+            <div class="chapter-heading" data-expanded="false">
+              <span class="chapter-ornament"></span>
+              <span class="chapter-text">IV. Archived Commissions</span>
+              <span class="chapter-toggle">&#9656;</span>
+            </div>
+            <div class="chapter-content">
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">2025 Completed Work</span>
+                <span class="section-note">34 commissions</span>
+              </div>
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">2024 Completed Work</span>
+                <span class="section-note">41 commissions</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chapter-group">
+            <div class="chapter-heading" data-expanded="false">
+              <span class="chapter-ornament"></span>
+              <span class="chapter-text">V. Business Documents</span>
+              <span class="chapter-toggle">&#9656;</span>
+            </div>
+            <div class="chapter-content">
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Invoice Templates</span>
+                <span class="section-note">3 versions</span>
+              </div>
+              <div class="section-entry">
+                <span class="section-ornament"></span>
+                <span class="section-text">Client Contracts</span>
+                <span class="section-note">Standard & custom</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== IDEAS ==================== -->
+    <section class="view-panel" id="view-ideas">
+      <div class="view-inner">
+        <header class="view-header">
+          <h1 class="chiseled-title" data-splitting>Inspirations Cabinet</h1>
+          <p class="view-subtitle">Index cards of creative sparks and technique explorations</p>
+        </header>
+
+        <div class="ideas-grid">
+          <div class="idea-card">
+            <div class="idea-watermark">Script</div>
+            <h4 class="idea-title">Reverse Contrast Blackletter</h4>
+            <p class="idea-body">Experiment with inverting the thick/thin stroke contrast of traditional Blackletter. Instead of thick verticals, make horizontals heavier. Could create a stunning contemporary take on Fraktur for the whiskey label project.</p>
+            <div class="idea-meta">
+              <span class="idea-tag">Typography</span>
+              <span class="idea-date">Feb 14</span>
+              <span class="idea-priority priority-high">High</span>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-watermark">Ink</div>
+            <h4 class="idea-title">Homemade Walnut Ink Aging</h4>
+            <p class="idea-body">Research medieval walnut ink recipes. Create a small batch and document how the color shifts over 30 days. The natural warm brown aging could be perfect for heritage-themed stationery that develops character.</p>
+            <div class="idea-meta">
+              <span class="idea-tag">Materials</span>
+              <span class="idea-date">Feb 11</span>
+              <span class="idea-priority priority-med">Medium</span>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-watermark">Tech</div>
+            <h4 class="idea-title">Laser-Cut Calligraphy Guides</h4>
+            <p class="idea-body">Design precision laser-cut acrylic rulers with slant lines at 52 degrees (Copperplate standard) and 5-degree increments. Would speed up guideline preparation significantly for large commissions.</p>
+            <div class="idea-meta">
+              <span class="idea-tag">Tools</span>
+              <span class="idea-date">Feb 8</span>
+              <span class="idea-priority priority-high">High</span>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-watermark">Art</div>
+            <h4 class="idea-title">Suminagashi Envelope Liners</h4>
+            <p class="idea-body">Combine Japanese marbling (suminagashi) with calligraphy. Create custom marbled papers as envelope liners, then hand-address envelopes in complementary ink tones. A fusion of two water-based arts.</p>
+            <div class="idea-meta">
+              <span class="idea-tag">Technique</span>
+              <span class="idea-date">Feb 5</span>
+              <span class="idea-priority priority-med">Medium</span>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-watermark">Biz</div>
+            <h4 class="idea-title">Calligraphy Workshop Series</h4>
+            <p class="idea-body">Monthly 3-hour workshops in the studio: Copperplate for Beginners, Italic Essentials, Gold Leaf Techniques, Japanese Brush Basics. $85/person, max 8 students. Could generate steady supplemental income.</p>
+            <div class="idea-meta">
+              <span class="idea-tag">Business</span>
+              <span class="idea-date">Feb 2</span>
+              <span class="idea-priority priority-low">Low</span>
+            </div>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-watermark">Craft</div>
+            <h4 class="idea-title">Pointed Pen Pressure Mapping</h4>
+            <p class="idea-body">Attach a pressure sensor to the oblique holder and record stroke pressure data during Copperplate writing. Visualize the data as heat maps — could be a fascinating teaching tool and art piece.</p>
+            <div class="idea-meta">
+              <span class="idea-tag">Research</span>
+              <span class="idea-date">Jan 28</span>
+              <span class="idea-priority priority-low">Low</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== AI CHAT ==================== -->
+    <section class="view-panel" id="view-ai-chat">
+      <div class="view-inner">
+        <header class="view-header">
+          <h1 class="chiseled-title" data-splitting>The Scribe</h1>
+          <p class="view-subtitle">Your calligraphy research and creative writing assistant</p>
+        </header>
+
+        <div class="chat-chamber">
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-message msg-ai">
+              <div class="msg-header">
+                <span class="msg-sender">The Scribe</span>
+                <span class="msg-time">10:15 AM</span>
+              </div>
+              <div class="msg-body">
+                <p>Good morning, Eleanor. I have reviewed the Harrison-Nakamura commission brief. The request to blend Copperplate with Kaisho elements is a fascinating cross-cultural challenge. Shall I research historical examples of Western-Japanese calligraphic fusion?</p>
+              </div>
+              <div class="msg-ink-blot"></div>
+            </div>
+
+            <div class="chat-message msg-user">
+              <div class="msg-header">
+                <span class="msg-time">10:18 AM</span>
+                <span class="msg-sender">Eleanor</span>
+              </div>
+              <div class="msg-body">
+                <p>Yes, that would be wonderful. Also, can you suggest which nib would best handle both the hairline upstrokes of Copperplate and the broader strokes needed for Kanji characters? I'm torn between the Nikko G and something with more flex.</p>
+              </div>
+            </div>
+
+            <div class="chat-message msg-ai">
+              <div class="msg-header">
+                <span class="msg-sender">The Scribe</span>
+                <span class="msg-time">10:20 AM</span>
+              </div>
+              <div class="msg-body">
+                <p>For this dual-script commission, I would recommend the <strong>Zebra G (Titanium)</strong> as your primary nib. Here is my reasoning:</p>
+                <ul>
+                  <li><strong>Flex range:</strong> It offers moderate flex sufficient for Copperplate shade/hairline contrast without being as soft as a vintage Gillott 303.</li>
+                  <li><strong>Durability:</strong> The titanium coating means it withstands the higher pressure needed for broader Kaisho strokes without splaying prematurely.</li>
+                  <li><strong>Ink flow:</strong> Excellent ink reservoir for sustained strokes, critical when forming multi-stroke Kanji characters.</li>
+                </ul>
+                <p>For the finest hairlines on the English text, you could switch to the Nikko G for those passages specifically. A two-nib approach would give you the best of both worlds.</p>
+              </div>
+              <div class="msg-ink-blot"></div>
+            </div>
+
+            <div class="chat-message msg-user">
+              <div class="msg-header">
+                <span class="msg-time">10:24 AM</span>
+                <span class="msg-sender">Eleanor</span>
+              </div>
+              <div class="msg-body">
+                <p>That makes perfect sense. What about ink compatibility? Will Sumi ink work well in the Zebra G, or should I thin it slightly? I usually use it full strength for brush work.</p>
+              </div>
+            </div>
+
+            <div class="chat-message msg-ai">
+              <div class="msg-header">
+                <span class="msg-sender">The Scribe</span>
+                <span class="msg-time">10:26 AM</span>
+              </div>
+              <div class="msg-body">
+                <p>Excellent question. Sumi ink #6000 at full concentration tends to be too viscous for pointed pen use -- it can cause skipping and buildup between the tines. I recommend:</p>
+                <ol>
+                  <li>Dilute the sumi ink approximately <strong>15-20% with distilled water</strong></li>
+                  <li>Add 1 drop of <strong>gum arabic per 10ml</strong> to maintain opacity while improving flow</li>
+                  <li>Test on a scrap of the actual <strong>Crane Lettra stock</strong> before committing to the final pieces</li>
+                </ol>
+                <p>The Finetec Arabic Gold, by contrast, works beautifully with the Zebra G straight from the palette -- just activate it with a few drops of water and load the nib generously.</p>
+              </div>
+              <div class="msg-ink-blot"></div>
+            </div>
+
+            <div class="chat-message msg-user">
+              <div class="msg-header">
+                <span class="msg-time">10:30 AM</span>
+                <span class="msg-sender">Eleanor</span>
+              </div>
+              <div class="msg-body">
+                <p>Perfect. One more thing -- the client's grandmother's family name is Murakami. Can you show me the correct stroke order for the Kanji characters so I get the brush direction right?</p>
+              </div>
+            </div>
+
+            <div class="chat-message msg-ai">
+              <div class="msg-header">
+                <span class="msg-sender">The Scribe</span>
+                <span class="msg-time">10:32 AM</span>
+              </div>
+              <div class="msg-body">
+                <p>Of course. <span class="mono-text" style="font-size:1.1em">&#x6751;&#x4E0A;</span> (Murakami) consists of two characters:</p>
+                <p><strong>&#x6751;</strong> (mura, village) -- 7 strokes. Begin with the left-falling stroke of the tree radical, then the horizontal, the vertical, and complete the right portion left-to-right, top-to-bottom.</p>
+                <p><strong>&#x4E0A;</strong> (kami/ue, above) -- 3 strokes. One of the simplest kanji: short vertical, long horizontal, bottom horizontal. In Kaisho style, keep strokes deliberate with clear start/stop points.</p>
+                <p>Shall I compose a practice layout showing both characters at the scale you will use on the place cards?</p>
+              </div>
+              <div class="msg-ink-blot"></div>
+            </div>
+          </div>
+
+          <div class="chat-input-area">
+            <div class="chat-input-wrap">
+              <input type="text" class="chat-input" placeholder="Write your inquiry to the Scribe..." id="chatInput">
+              <button class="chat-send-btn" id="chatSendBtn" data-tooltip="Send message">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SETTINGS ==================== -->
+    <section class="view-panel" id="view-settings">
+      <div class="view-inner">
+        <header class="view-header">
+          <h1 class="chiseled-title" data-splitting>Scribe's Preferences</h1>
+          <p class="view-subtitle">Configure your calligraphy studio workspace</p>
+        </header>
+
+        <div class="settings-scroll">
+          <div class="settings-group">
+            <h3 class="settings-section-title">Appearance & Display</h3>
+            <div class="quill-divider"></div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong class="setting-name">Parchment Darkness</strong>
+                <span class="setting-desc">Adjust the background depth from pale vellum to deep navy</span>
+              </div>
+              <div class="setting-control">
+                <input type="range" class="ink-slider" min="0" max="100" value="85">
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong class="setting-name">Ink Wisp Ambient Motion</strong>
+                <span class="setting-desc">Show drifting calligraphic wisps in the background</span>
+              </div>
+              <div class="setting-control">
+                <label class="ink-toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong class="setting-name">Gold Accent Intensity</strong>
+                <span class="setting-desc">Control the brightness of gold-leaf accent elements</span>
+              </div>
+              <div class="setting-control">
+                <input type="range" class="ink-slider" min="0" max="100" value="70">
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong class="setting-name">Quill-Stroke Animations</strong>
+                <span class="setting-desc">Animate text and elements with calligraphic entrance effects</span>
+              </div>
+              <div class="setting-control">
+                <label class="ink-toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h3 class="settings-section-title">Studio Defaults</h3>
+            <div class="quill-divider"></div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong class="setting-name">Default Script Style</strong>
+                <span class="setting-desc">Pre-selected calligraphy style for new commissions</span>
+              </div>
+              <div class="setting-control">
+                <select class="ink-select">
+                  <option>Copperplate</option>
+                  <option>Italic</option>
+                  <option>Spencerian</option>
+                  <option>Blackletter</option>
+                  <option>Japanese Kaisho</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong class="setting-name">Preferred Paper Weight</strong>
+                <span class="setting-desc">Default paper weight for quotations and material lists</span>
+              </div>
+              <div class="setting-control">
+                <select class="ink-select">
+                  <option>110lb Cover</option>
+                  <option selected>220lb Lettra</option>
+                  <option>300gsm Hot Press</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong class="setting-name">Commission Numbering</strong>
+                <span class="setting-desc">Auto-generate commission reference numbers</span>
+              </div>
+              <div class="setting-control">
+                <label class="ink-toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h3 class="settings-section-title">Notifications & Reminders</h3>
+            <div class="quill-divider"></div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong class="setting-name">Deadline Alerts</strong>
+                <span class="setting-desc">Receive notifications for approaching commission deadlines</span>
+              </div>
+              <div class="setting-control">
+                <label class="ink-toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong class="setting-name">Alert Lead Time</strong>
+                <span class="setting-desc">How many days before a deadline to send the first reminder</span>
+              </div>
+              <div class="setting-control">
+                <select class="ink-select">
+                  <option>3 days</option>
+                  <option selected>5 days</option>
+                  <option>7 days</option>
+                  <option>14 days</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong class="setting-name">Ink Stock Warnings</strong>
+                <span class="setting-desc">Alert when ink or paper supplies drop below threshold</span>
+              </div>
+              <div class="setting-control">
+                <label class="ink-toggle">
+                  <input type="checkbox">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong class="setting-name">Weekly Studio Summary</strong>
+                <span class="setting-desc">Email digest of commissions, deadlines, and revenue each Monday</span>
+              </div>
+              <div class="setting-control">
+                <label class="ink-toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-actions">
+            <button class="btn-primary">Save Preferences</button>
+            <button class="btn-secondary">Reset to Defaults</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Gold seal confirmation overlay -->
+  <div class="gold-seal-overlay" id="goldSealOverlay">
+    <div class="gold-seal-stamp">
+      <svg viewBox="0 0 60 60" width="60" height="60">
+        <circle cx="30" cy="30" r="28" fill="#c8a84e" opacity="0.9"/>
+        <circle cx="30" cy="30" r="22" fill="none" stroke="#0a1628" stroke-width="1"/>
+        <path d="M20 30l6 6 14-14" stroke="#0a1628" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js"></script>
+  <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

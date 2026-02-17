@@ -1,0 +1,38 @@
+{
+  "passId": "brutalist-pass-6",
+  "references": [
+    {
+      "name": "Flexport",
+      "url": "https://www.flexport.com",
+      "takeaway": "Build a dual-field origin/destination input block as the hero element, styled like a shipping waybill with labeled fields, tracking numbers, and a route-map visualization below it showing the flow path.",
+      "implementation": {
+        "view": "dashboard",
+        "element": "tracking-hero",
+        "description": "The dashboard hero is a dual-field origin/destination input block styled as a shipping waybill. Labeled ORIGIN and DESTINATION fields with monospaced placeholder text (SHANGHAI, CN / ROTTERDAM, NL) sit side by side with an arrow separator. A TRACK SHIPMENT button follows. Below, the step pipeline shows the shipment stage progression, and the route map view provides the flow path visualization.",
+        "cssSelectors": [".tracking-hero", ".tracking-field-group", ".tracking-field"]
+      }
+    },
+    {
+      "name": "Maersk",
+      "url": "https://www.maersk.com",
+      "takeaway": "Position a prominent tracking/search bar as the top-of-page hero with bold label typography, and organize content below into industry-sector cards with flat-icon illustrations, creating a freight-terminal dispatch board layout.",
+      "implementation": {
+        "view": "dashboard",
+        "element": "tracking hero + gauge cluster + ideas cards",
+        "description": "The tracking hero search bar sits as the primary above-fold interaction element with bold Saira Condensed label typography. The gauge cluster below uses circular meters with industrial readouts (throughput, on-time rate, capacity, fleet utilization) creating a dispatch board feel. The ideas view uses flat SVG icon illustrations in a card grid layout inspired by Maersk's sector carousel approach.",
+        "cssSelectors": [".tracking-hero", ".gauge-cluster", ".ideas-grid"]
+      }
+    },
+    {
+      "name": "Freightos",
+      "url": "https://www.freightos.com",
+      "takeaway": "Use dense comparison tables with zebra-striped rows and a horizontal step-indicator pipeline at the top of each content section, making the layout feel like a logistics operations dashboard tracking cargo through stages.",
+      "implementation": {
+        "view": "dashboard + projects",
+        "element": "step-pipeline + activity-table + manifest-table",
+        "description": "The horizontal step-indicator pipeline (BOOKED > PICKED UP > IN TRANSIT > CUSTOMS > DELIVERED) appears at the top of the dashboard. Both the dispatch log table and the manifests table use dense columns with zebra-striped rows (alternating background on even rows). The manifest table includes tracking numbers, weight, destination, status, and progress bar columns — directly reflecting Freightos's rate comparison table density.",
+        "cssSelectors": [".step-pipeline", ".at-row:nth-child(even)", ".mt-row:nth-child(even)", ".manifest-table"]
+      }
+    }
+  ]
+}

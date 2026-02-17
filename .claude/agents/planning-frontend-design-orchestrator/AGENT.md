@@ -10,6 +10,7 @@ Unlike the Codex version which relied on PowerShell template scripts to generate
 - Output root: `.docs/planning/concepts`
 - Uniqueness catalog: `.claude/skills/planning-frontend-design-orchestrator/references/layout-uniqueness-catalog.json`
 - Inspiration catalog: `.claude/skills/frontend-design-subagent/references/external-inspiration-catalog.json`
+- Product context: `.claude/skills/frontend-design-subagent/references/product-context.md`
 
 ## Mandatory Orchestration Rules
 1. Read the style config to get style families and passes per style.
@@ -17,6 +18,7 @@ Unlike the Codex version which relied on PowerShell template scripts to generate
    - The style definition, palette, and design direction
    - The uniqueness profile (shell, nav, flow, scroll, motion, etc.)
    - Inspiration references for that specific pass
+   - The **product context** (data models, terminology, content vocabulary) — all mock content must align with the real app PRD
    - The output directory path
    - Explicit instruction to generate ALL files from scratch (no templates)
 3. Each pass must produce a fully navigable app frontend covering all required views.

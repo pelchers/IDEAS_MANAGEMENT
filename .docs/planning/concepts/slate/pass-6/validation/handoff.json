@@ -1,0 +1,181 @@
+{
+  "styleId": "slate",
+  "pass": 6,
+  "variantSeed": "concrete-brutalist-bunker",
+  "generatedAt": "2026-02-15T00:00:00Z",
+  "uniquenessProfile": {
+    "profileId": "magazine-spread",
+    "shellMode": "hidden-hamburger",
+    "navPattern": "fullscreen-overlay-menu",
+    "contentFlow": "editorial-columns",
+    "scrollMode": "parallax-layers",
+    "alignment": "mixed",
+    "heroTreatment": "full-bleed-image",
+    "motionLanguage": "cinematic-fade",
+    "density": "spacious",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "bg": "#2a2e20",
+    "text": "#d4d0c0",
+    "surface": "#353828",
+    "accent": "#b5b0a1",
+    "accent2": "#d4a020",
+    "border": "#4a4e38"
+  },
+  "typography": {
+    "heading": "Bebas Neue",
+    "body": "Azeret Mono",
+    "mono": "Azeret Mono"
+  },
+  "contentPersona": "defense-security-contractor",
+  "views": [
+    {
+      "id": "dashboard",
+      "label": "COMMAND CENTER",
+      "contentElements": [
+        "full-bleed hero with typed subtitle",
+        "4 bunker-slit viewport metric cards",
+        "4 threat-level gauge bars",
+        "5-entry operations activity log"
+      ]
+    },
+    {
+      "id": "projects",
+      "label": "OPERATIONS MANIFEST",
+      "contentElements": [
+        "6 operation cards with codenames",
+        "classification level badges",
+        "status codes (ACTIVE/STANDBY/COMPLETE)",
+        "asset and personnel counts"
+      ]
+    },
+    {
+      "id": "project-workspace",
+      "label": "BUNKER STATION",
+      "contentElements": [
+        "primary display panel with mission overview",
+        "mission objectives list",
+        "key milestones tracker",
+        "communications rack with quick-access buttons",
+        "status block with comms metrics",
+        "recent activity log"
+      ]
+    },
+    {
+      "id": "kanban",
+      "label": "MISSION BOARD",
+      "contentElements": [
+        "4 operational phase columns",
+        "10 mission dossier cards total",
+        "classification stamps per card",
+        "priority level indicators"
+      ]
+    },
+    {
+      "id": "whiteboard",
+      "label": "TACTICAL MAP",
+      "contentElements": [
+        "SVG tactical operations map",
+        "6 strategic position nodes",
+        "movement arrows with distance annotations",
+        "grid overlay pattern",
+        "legend with military symbology"
+      ]
+    },
+    {
+      "id": "schema-planner",
+      "label": "EQUIPMENT MANIFEST",
+      "contentElements": [
+        "4 equipment entity blocks",
+        "NSN codes per entity",
+        "6 specification rows per entity",
+        "deployment status indicators"
+      ]
+    },
+    {
+      "id": "directory-tree",
+      "label": "CHAIN OF COMMAND",
+      "contentElements": [
+        "3-level hierarchy tree",
+        "8 personnel nodes with rank indicators",
+        "unit designations",
+        "status lights per node"
+      ]
+    },
+    {
+      "id": "ideas",
+      "label": "INTEL BULLETIN",
+      "contentElements": [
+        "5 intelligence briefs",
+        "classification headers",
+        "priority stripes (amber for high)",
+        "author/date/status metadata"
+      ]
+    },
+    {
+      "id": "ai-chat",
+      "label": "SECURE COMMS",
+      "contentElements": [
+        "6 message transmissions",
+        "callsign headers with timestamps",
+        "priority indicators",
+        "transmission input with callsign prefix"
+      ]
+    },
+    {
+      "id": "settings",
+      "label": "SYSTEMS CONTROL",
+      "contentElements": [
+        "4 settings groups",
+        "5 toggle switches with guard mechanism",
+        "3 select dropdowns",
+        "1 text input",
+        "3 action buttons"
+      ]
+    }
+  ],
+  "interactions": {
+    "buttonHover": "amber-warning-flash-hover",
+    "buttonClick": "blast-door-confirm-press",
+    "cardHover": "bunker-slit-viewport-peek",
+    "pageTransition": "blast-door-slide-open",
+    "scrollReveal": "declassified-redact-reveal",
+    "navItemHover": "status-light-amber-blink",
+    "navItemActive": "active-duty-stripe",
+    "inputFocus": "perimeter-scan-border",
+    "toggleSwitch": "missile-switch-guard-flip",
+    "tooltips": "classified-briefing-popup",
+    "loadingState": "radar-sweep-loading",
+    "idleAmbient": "camo-pattern-slow-shift",
+    "microFeedback": "confirmed-stencil-stamp"
+  },
+  "libraries": [
+    {
+      "name": "Anime.js",
+      "version": "3.2.2",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js",
+      "usage": "Staggered animations, gauge fills, ambient surface shifts, node pulsing"
+    },
+    {
+      "name": "Typed.js",
+      "version": "2.1.0",
+      "cdn": "https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js",
+      "usage": "Hero subtitle typewriter effect"
+    }
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ],
+  "accessibility": {
+    "contrastRatio": "4.5:1+ body text (#d4d0c0 on #2a2e20), 3:1+ headings",
+    "touchTargets": "44x44px minimum on all interactive elements",
+    "mobileBreakpoint": "390px with single-column layout and hamburger nav",
+    "minFontSize": "14px body, 10px labels/metadata"
+  }
+}

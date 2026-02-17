@@ -1,0 +1,40 @@
+{
+  "styleId": "brutalist",
+  "pass": 5,
+  "layoutArchetype": "protest-poster-collage",
+  "references": [
+    {
+      "name": "Amnesty International",
+      "url": "https://www.amnesty.org",
+      "takeaway": "Use an urgency-yellow (#FDFF28) as the primary accent color for highlight strips and call-to-action bands, pairing it with condensed all-caps headlines at maximum width to create the visual volume of a protest placard.",
+      "applied": [
+        "Electric yellow (#e6ff00) used as secondary accent for stat numbers, spray-paint headers, vote counts, and highlight marker streaks on nav hover — matching the urgency-yellow accent strategy",
+        "Impact font headlines rendered in all-caps with tight letter-spacing (3-5px) and fluid clamp() sizing from 22px to 64px, mimicking the condensed protest placard volume",
+        "Full-width accent-colored banner with torn-edge clip-path on dashboard slogan creating the bold CTA band treatment",
+        "Stat tiles with accent-colored top bars and bold stat-number typography in yellow creating the data-forward urgency feel"
+      ]
+    },
+    {
+      "name": "Extinction Rebellion",
+      "url": "https://rebellion.global",
+      "takeaway": "Structure the page as a numbered manifesto with 3-5 bold declarations, each separated by full-width woodcut-style illustrated bands that feel hand-printed rather than digitally generated.",
+      "applied": [
+        "Dashboard organized as manifesto-style sections: stat declarations at top, recent dispatches, and urgent action demands — each section stamped with hand-drawn dividers",
+        "Project workspace uses ransom-header style section labels (clip-path torn blocks) as manifesto-style declaration markers",
+        "Rough.js used for hand-drawn connector lines on whiteboard and conspiracy board views, creating the woodcut/hand-printed texture",
+        "Spray-paint headers and stamp-style status badges throughout create the hand-printed rather than digitally-generated aesthetic"
+      ]
+    },
+    {
+      "name": "350.org",
+      "url": "https://350.org",
+      "takeaway": "Stack full-width campaign blocks vertically with alternating background treatments (photo, solid color, dark), and embed live counter elements (numbers, progress bars, deadlines) to create the urgency rhythm of an activist broadsheet.",
+      "applied": [
+        "Dashboard stat grid with 6 counter tiles showing live numbers (14,287 signatures, 42 campaigns, $127K raised) with animated progress bars — directly mirroring the live counter urgency pattern",
+        "Urgent actions section with deadline callouts (FEB 20, NEEDS 500 MORE, TOMORROW 9AM) in accent red, matching the deadline urgency treatment",
+        "Projects view stacks campaign flyers vertically on mobile with alternating torn-edge treatments and progress bars, creating the broadsheet campaign-block rhythm",
+        "Project workspace timeline with checked/pending markers creating the live action-progress cadence"
+      ]
+    }
+  ]
+}

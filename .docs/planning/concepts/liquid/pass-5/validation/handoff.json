@@ -1,0 +1,131 @@
+{
+  "passId": "liquid-pass-5",
+  "styleId": "liquid",
+  "pass": 5,
+  "variantSeed": "neon-plasma-electric",
+  "contentPersona": "electronic-music-label",
+  "generatedAt": "2026-02-15T00:00:00Z",
+  "structure": {
+    "shellMode": "protruding-top-tablets",
+    "navPattern": "stone-tab-items",
+    "navPosition": "top-fixed",
+    "contentFlow": "depth-stacked-layers",
+    "scrollMode": "strata-reveal",
+    "alignment": "center",
+    "heroTreatment": "geological-header",
+    "motionLanguage": "slow-emerge",
+    "density": "dense",
+    "componentTone": "hard"
+  },
+  "palette": {
+    "bg": "#0c0820",
+    "text": "#e0e8ff",
+    "surface": "#141030",
+    "accent": "#00e5ff",
+    "accent2": "#ff00aa",
+    "border": "#2a1e4a"
+  },
+  "typography": {
+    "heading": "Syncopate",
+    "body": "Lexend",
+    "mono": "Fira Code"
+  },
+  "views": [
+    {
+      "id": "dashboard",
+      "label": "Command Center",
+      "contentElements": ["4 metric cards with live waveform canvases", "frequency spectrum bar chart (64-bar animated canvas)", "signal log activity feed with 6 entries"],
+      "interactiveElements": ["metric cards with hover glow", "waveform animations"]
+    },
+    {
+      "id": "projects",
+      "label": "Release Roster",
+      "contentElements": ["6 release tracks with waveform previews", "BPM/key/genre badges", "status indicators", "search toolbar"],
+      "interactiveElements": ["search input", "new release button", "track hover effects"]
+    },
+    {
+      "id": "project-workspace",
+      "label": "DJ Deck",
+      "contentElements": ["deck A with turntable and 4-track listing", "crossfader zone with master info", "deck B with 3 production note cards", "task summary grid"],
+      "interactiveElements": ["play/pause/record/stop buttons", "crossfader thumb", "turntable animation"]
+    },
+    {
+      "id": "kanban",
+      "label": "Playlist Queue",
+      "contentElements": ["4 columns (Queue/Now Playing/Mixed/Archived)", "10 total track cards with waveforms", "BPM badges and priority tags"],
+      "interactiveElements": ["card drag cursor", "card hover lift", "column count badges"]
+    },
+    {
+      "id": "whiteboard",
+      "label": "Modular Patch Bay",
+      "contentElements": ["5 synth modules (OSC, FLT, ENV, AMP, LFO)", "SVG patch cable connections", "knobs/sliders/VU meters", "module notes"],
+      "interactiveElements": ["range sliders", "knob visuals", "module hover glow", "cable pulse animation"]
+    },
+    {
+      "id": "schema-planner",
+      "label": "Signal Flow",
+      "contentElements": ["7 signal blocks (Artist, Release, Track, Contract, Distribution, Analytics, Master Output)", "animated signal path SVG lines", "field metadata per block"],
+      "interactiveElements": ["block hover glow", "signal line animation"]
+    },
+    {
+      "id": "directory-tree",
+      "label": "Sample Library",
+      "contentElements": ["hierarchical folder tree with 8 folders and 8 files", "file preview panel with waveform canvas", "6 metadata fields"],
+      "interactiveElements": ["folder expand/collapse", "play sample button", "tree item hover"]
+    },
+    {
+      "id": "ideas",
+      "label": "Vinyl Vault",
+      "contentElements": ["5 vinyl records with gradient cover art", "waveform canvas art", "idea descriptions with status badges", "track listings per idea"],
+      "interactiveElements": ["record hover slide", "spine labels"]
+    },
+    {
+      "id": "ai-chat",
+      "label": "Voice Memo AI",
+      "contentElements": ["6 message exchanges (3 user + 3 AI)", "waveform visualizations per message", "transcripts", "play controls and duration"],
+      "interactiveElements": ["play buttons", "record button", "text input", "send button"]
+    },
+    {
+      "id": "settings",
+      "label": "Mixing Console",
+      "contentElements": ["4 channel strips (Account, Notifications, Appearance, Integrations)", "text inputs", "select dropdowns", "range sliders", "color swatches", "4 integration rows"],
+      "interactiveElements": ["7 power-surge toggles", "2 range faders", "color swatch selection", "integration configure buttons"]
+    }
+  ],
+  "interactions": {
+    "buttonHover": "plasma-tendril-wrap",
+    "buttonClick": "bass-drop-pulse-burst",
+    "cardHover": "waveform-border-pulse",
+    "pageTransition": "glitch-distortion-swap",
+    "scrollReveal": "frequency-sweep-materialize",
+    "navItemHover": "beat-pulse-highlight",
+    "navItemActive": "equalizer-bar-indicator",
+    "inputFocus": "plasma-arc-border",
+    "toggleSwitch": "power-surge-toggle",
+    "tooltips": "hologram-popup-glitch",
+    "loadingState": "equalizer-loading-bars",
+    "idleAmbient": "beat-pulse-idle-ambient",
+    "microFeedback": "drop-confirmed-flash"
+  },
+  "libraries": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "purpose": "Animation timelines, cable/signal line animation, stagger sequences"
+    },
+    {
+      "name": "ScrollTrigger",
+      "version": "3.12.5",
+      "purpose": "Scroll-driven animation coordination"
+    }
+  ],
+  "assets": [],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

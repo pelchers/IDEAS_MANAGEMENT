@@ -1,0 +1,41 @@
+{
+  "pass": 6,
+  "styleId": "retro-50s",
+  "variantSeed": "kitchen-appliance-pastel",
+  "inspirationMapping": [
+    {
+      "reference": "SMEG (smeg.com)",
+      "takeaway": "Give each content card a dominant pastel background color drawn from a 1950s appliance palette and use rounded silhouette shapes that echo retro appliance curves.",
+      "implementation": [
+        "Fridge magnet ideas use four distinct pastel tints (avocado green, harvest gold, cream, copper) as background variants, each evoking a different SMEG appliance color",
+        "Recipe box project cards have colored filing tab accents at the top in avocado green, harvest gold, and copper brown",
+        "All buttons and inputs use generous border-radius (8-14px) creating pill/capsule shapes that echo the rounded silhouettes of 1950s kitchen appliances",
+        "Dashboard stat cards use rounded 16px corners with soft shadows, mimicking the friendly rounded edges of retro appliance panels"
+      ],
+      "differentiation": "Where SMEG uses bold saturated product photography against white backgrounds, this pass uses warm cream (#faf5e8) as the base with hand-lettered Pacifico headings to create a homemade-recipe feel rather than a retail product showcase. The pastel tints are applied to card surfaces rather than hero banners."
+    },
+    {
+      "reference": "KitchenAid (kitchenaid.com)",
+      "takeaway": "Add a horizontal color-swatch strip as a navigation or filtering element, and give buttons and interactive elements a subtle chrome gradient sheen simulating polished kitchen appliance trim.",
+      "implementation": [
+        "Settings view includes a horizontal color swatch selector strip for kitchen theme colors, directly inspired by KitchenAid's mixer color selection strips",
+        "Appliance dial knobs in settings use radial-gradient from white to cream-dark to create a chrome/brushed-metal visual effect",
+        "Toggle switch knobs have an inset notch detail (::after pseudo-element) mimicking real appliance dial indicators",
+        "Recipe box category tabs act as a horizontal navigation strip reminiscent of KitchenAid's product category navigation"
+      ],
+      "differentiation": "KitchenAid centers the appliance as hero against solid-color backgrounds. This pass distributes the appliance metaphor across functional UI controls — the dial, switches, and swatch selectors are working interactive elements rather than decorative hero imagery. The chrome treatment is subtle (radial gradients on knobs) rather than edge-to-edge metallic surfaces."
+    },
+    {
+      "reference": "Food52 (food52.com)",
+      "takeaway": "Set the page on a warm cream background and present content items as still-life compositions with editorial captions, using copper/terracotta accents and generous card gutters to create the orderly warmth of a retro kitchen shelf display.",
+      "implementation": [
+        "Page background is warm cream (#faf5e8), very close to Food52's signature #FAF7F2, creating the same kitchen-warm base tone",
+        "Copper (#b87333) is used extensively as the accent material — input focus rings, push-pin icons, entity headers, file icons — evoking Food52's cast-iron and ceramic cookware warmth",
+        "Card grids use generous 20px gutters with orderly arrangement, creating the curated editorial shelf display feel",
+        "Recipe cards include descriptive captions with ingredient stories and cooking context, mimicking Food52's editorial recipe card voice rather than just listing titles"
+      ],
+      "differentiation": "Food52 mixes warm photography with clean card frames for a food-magazine editorial feel. This pass replaces photography with interactive kitchen widgets (gauges, dials, timers) and hand-lettered Pacifico headings to create a more playful, handmade recipe-box aesthetic rather than a polished editorial publication."
+    }
+  ],
+  "overallApproach": "This pass synthesizes the retro kitchen appliance aesthetic by treating the entire UI as a kitchen workspace. SMEG's pastel coloring strategy is applied to content cards and magnets. KitchenAid's chrome hardware language is embedded in interactive dial/switch controls. Food52's warm cream editorial foundation sets the overall tone. The result feels like opening grandma's kitchen to find a modern recipe management system built into the appliances themselves."
+}

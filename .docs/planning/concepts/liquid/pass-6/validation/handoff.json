@@ -1,0 +1,187 @@
+{
+  "passId": "liquid-pass-6",
+  "styleId": "liquid",
+  "styleLabel": "Liquid Motion",
+  "pass": 6,
+  "variantSeed": "ink-in-water-calligraphy",
+  "generatedAt": "2026-02-15T00:00:00Z",
+  "contentPersona": "calligraphy-stationery-brand",
+  "uniquenessProfile": {
+    "profileId": "carved-console-rail",
+    "shellMode": "recessed-left-rail",
+    "navPattern": "engraved-items",
+    "contentFlow": "etched-panels",
+    "scrollMode": "smooth-reveal",
+    "alignment": "left",
+    "heroTreatment": "chiseled-title",
+    "motionLanguage": "subtle-fade",
+    "density": "compact",
+    "componentTone": "hard"
+  },
+  "palette": {
+    "bg": "#0a1628",
+    "text": "#f0ece4",
+    "surface": "#0f1e38",
+    "accent": "#ffffff",
+    "accent2": "#c8a84e",
+    "border": "#1a3050"
+  },
+  "typography": {
+    "heading": "Playfair Display",
+    "body": "Source Sans 3",
+    "mono": "IBM Plex Mono"
+  },
+  "libraries": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
+      "usage": "Timeline animations, scroll-driven content reveals, spring physics for seal stamp micro-feedback"
+    },
+    {
+      "name": "GSAP ScrollTrigger",
+      "version": "3.12.5",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js",
+      "usage": "Scroll-based element reveal triggers for quill-stroke write-in effect"
+    },
+    {
+      "name": "Tippy.js",
+      "version": "6.3.7",
+      "cdn": "https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js",
+      "usage": "Parchment-scroll themed tooltips with custom gold/navy styling"
+    },
+    {
+      "name": "Splitting.js",
+      "version": "1.0.6",
+      "cdn": "https://unpkg.com/splitting@1.0.6/dist/splitting.min.js",
+      "usage": "Per-character splitting of view titles for staggered calligraphic reveal animation"
+    }
+  ],
+  "views": [
+    {
+      "id": "dashboard",
+      "label": "Manuscript Dashboard",
+      "contentElements": [
+        "4 metric cards with gold-ink numbers (commissions, revenue, ink varieties, pending orders)",
+        "5-item recent studio activity feed with seal avatars",
+        "3-item deadline timeline with urgency indicators"
+      ]
+    },
+    {
+      "id": "projects",
+      "label": "Letter Collections",
+      "contentElements": [
+        "6 project cards as sealed letters",
+        "Wax seal status indicators (gold/white/navy)",
+        "Calligraphic category tags and due dates"
+      ]
+    },
+    {
+      "id": "project-workspace",
+      "label": "Writing Desk",
+      "contentElements": [
+        "Project brief parchment panel with 5 spec rows",
+        "6-item task/milestone checklist with toggle states",
+        "Ink well tool sidebar with 4 ink swatches",
+        "Nib rack listing 4 pen nibs",
+        "Notes pad with client-specific details"
+      ]
+    },
+    {
+      "id": "kanban",
+      "label": "Correspondence Board",
+      "contentElements": [
+        "4 columns: Draft (3), Addressing (2), Sealed (2), Delivered (2)",
+        "9 total kanban cards with wax seal status marks",
+        "Each card has title, description, category tag, and date"
+      ]
+    },
+    {
+      "id": "whiteboard",
+      "label": "Ink Wash Canvas",
+      "contentElements": [
+        "7 draggable nodes with ink-blot shapes",
+        "5 SVG ink-trail connection paths with blur filter",
+        "Nodes categorized as primary, secondary, and accent"
+      ]
+    },
+    {
+      "id": "schema-planner",
+      "label": "Manuscript Marginalia",
+      "contentElements": [
+        "5 entity blocks (Commission, Piece, Material, Nib Profile, Ink Batch)",
+        "Each entity has 5 fields with PK/FK gold-leaf markers",
+        "Relationship annotations (has many, uses, selects)"
+      ]
+    },
+    {
+      "id": "directory-tree",
+      "label": "Book of Contents",
+      "contentElements": [
+        "5 collapsible chapter groups",
+        "Multiple nested section entries with file details",
+        "Leaf items with file sizes and modification dates"
+      ]
+    },
+    {
+      "id": "ideas",
+      "label": "Inspirations Cabinet",
+      "contentElements": [
+        "6 idea index cards with ink-wash watermarks",
+        "Each card has title, detailed description, category tag, date, and priority level",
+        "Priority indicators (High/Medium/Low)"
+      ]
+    },
+    {
+      "id": "ai-chat",
+      "label": "The Scribe",
+      "contentElements": [
+        "6 message exchanges (3 AI, 3 user)",
+        "AI messages styled as formal letters on navy parchment",
+        "User messages on cream with gold border",
+        "Chat input with send button and keyboard support",
+        "Ink-blot message dividers"
+      ]
+    },
+    {
+      "id": "settings",
+      "label": "Scribe's Preferences",
+      "contentElements": [
+        "3 settings groups (Appearance, Studio Defaults, Notifications)",
+        "4 toggle switches with ink-flow animation",
+        "2 range sliders for parchment darkness and gold intensity",
+        "3 select dropdowns for script style, paper weight, and alert timing",
+        "Save and reset action buttons with gold seal confirmation"
+      ]
+    }
+  ],
+  "interactions": {
+    "buttonHover": "ink-bleed-border-fill",
+    "buttonClick": "ink-drop-splash",
+    "cardHover": "ink-tendril-border-curl",
+    "pageTransition": "ink-diffusion-dissolve",
+    "scrollReveal": "quill-stroke-write-in",
+    "navItemHover": "gold-ink-underline-draw",
+    "navItemActive": "ink-blot-indicator",
+    "inputFocus": "quill-line-border",
+    "toggleSwitch": "ink-flow-toggle",
+    "tooltips": "parchment-scroll-tooltip",
+    "loadingState": "ink-drop-diffusion-loading",
+    "idleAmbient": "scroll-ink-trail-ambient",
+    "microFeedback": "gold-seal-stamp-confirm"
+  },
+  "responsiveBreakpoints": {
+    "tablet": "1024px",
+    "mobile": "768px",
+    "smallMobile": "400px"
+  },
+  "mobileNavPattern": "slide-out-drawer",
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

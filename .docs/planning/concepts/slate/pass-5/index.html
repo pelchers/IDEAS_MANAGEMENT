@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meridian Private Wealth - Idea Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Marble ambient light overlay -->
+  <div class="marble-ambient-layer" id="marbleAmbient"></div>
+
+  <!-- Loading overlay with weighing scale -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="scale-balance">
+      <div class="scale-beam"></div>
+      <div class="scale-pan scale-pan-left"></div>
+      <div class="scale-pan scale-pan-right"></div>
+      <div class="scale-base"></div>
+    </div>
+    <p class="loading-text">Balancing your portfolio...</p>
+  </div>
+
+  <!-- Gold seal micro-feedback -->
+  <div class="gold-seal-feedback" id="goldSeal">
+    <div class="seal-circle">
+      <span class="seal-text">VERIFIED</span>
+    </div>
+  </div>
+
+  <!-- Engraved plaque tooltips -->
+  <div class="engraved-tooltip" id="engravedTooltip">
+    <span class="tooltip-content"></span>
+  </div>
+
+  <!-- Floating pill navigation -->
+  <nav class="pill-nav" id="pillNav">
+    <div class="pill-nav-brand">
+      <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22">
+        <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/>
+      </svg>
+      <span class="brand-name">Meridian</span>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    <div class="pill-toggle-group" id="pillToggleGroup">
+      <button class="pill-item active" data-view="dashboard" data-tooltip="Portfolio overview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>Overview</span>
+      </button>
+      <button class="pill-item" data-view="projects" data-tooltip="Portfolio ledger">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        <span>Ledger</span>
+      </button>
+      <button class="pill-item" data-view="project-workspace" data-tooltip="Partner's office">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        <span>Office</span>
+      </button>
+      <button class="pill-item" data-view="kanban" data-tooltip="Deposit boxes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><rect x="2" y="3" width="6" height="18" rx="1"/><rect x="9" y="3" width="6" height="18" rx="1"/><rect x="16" y="3" width="6" height="18" rx="1"/></svg>
+        <span>Vault</span>
+      </button>
+      <button class="pill-item" data-view="whiteboard" data-tooltip="Boardroom canvas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><line x1="7" y1="7" x2="10" y2="10"/><line x1="17" y1="7" x2="14" y2="10"/><line x1="7" y1="17" x2="10" y2="14"/><line x1="17" y1="17" x2="14" y2="14"/></svg>
+        <span>Board</span>
+      </button>
+      <button class="pill-item" data-view="schema-planner" data-tooltip="Notarized schema">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        <span>Schema</span>
+      </button>
+      <button class="pill-item" data-view="directory-tree" data-tooltip="Card catalog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+        <span>Catalog</span>
+      </button>
+      <button class="pill-item" data-view="ideas" data-tooltip="Gallery exhibition">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        <span>Gallery</span>
+      </button>
+      <button class="pill-item" data-view="ai-chat" data-tooltip="Private correspondence">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <span>Letters</span>
+      </button>
+      <button class="pill-item" data-view="settings" data-tooltip="Vault controls">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <span>Controls</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main content area -->
+  <main class="app-main" id="appMain">
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="view-panel active" id="view-dashboard">
+      <div class="view-content">
+        <header class="view-header">
+          <h1 class="view-title">Portfolio Overview</h1>
+          <p class="view-subtitle">Meridian Private Wealth Management &mdash; Q4 2025 Summary</p>
+        </header>
+
+        <!-- Featured hero card -->
+        <div class="hero-card marble-card">
+          <div class="hero-card-inner">
+            <div class="hero-stat-primary">
+              <span class="stat-label">Total Portfolio Value</span>
+              <span class="stat-value gold-text">$847,392,150</span>
+              <span class="stat-change positive">+12.4% YTD</span>
+            </div>
+            <div class="hero-stat-secondary">
+              <div class="mini-stat">
+                <span class="mini-label">Unrealized Gains</span>
+                <span class="mini-value">$94.2M</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-label">Distributions</span>
+                <span class="mini-value">$18.7M</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-label">Active Positions</span>
+                <span class="mini-value">142</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stacked metric cards carousel -->
+        <div class="card-carousel" id="dashboardCarousel">
+          <div class="carousel-track">
+            <div class="metric-card marble-card" data-scroll-reveal>
+              <div class="metric-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+              </div>
+              <span class="metric-title">Equity Allocation</span>
+              <span class="metric-number gold-text">62.8%</span>
+              <div class="metric-bar"><div class="metric-fill" style="width:62.8%"></div></div>
+              <span class="metric-detail">$531.4M across 47 positions</span>
+            </div>
+            <div class="metric-card marble-card" data-scroll-reveal>
+              <div class="metric-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              </div>
+              <span class="metric-title">Fixed Income</span>
+              <span class="metric-number gold-text">24.1%</span>
+              <div class="metric-bar"><div class="metric-fill" style="width:24.1%"></div></div>
+              <span class="metric-detail">$204.2M in sovereign bonds</span>
+            </div>
+            <div class="metric-card marble-card" data-scroll-reveal>
+              <div class="metric-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+              </div>
+              <span class="metric-title">Alternative Assets</span>
+              <span class="metric-number gold-text">13.1%</span>
+              <div class="metric-bar"><div class="metric-fill" style="width:13.1%"></div></div>
+              <span class="metric-detail">$111.0M in PE &amp; real estate</span>
+            </div>
+            <div class="metric-card marble-card" data-scroll-reveal>
+              <div class="metric-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              </div>
+              <span class="metric-title">Sharpe Ratio</span>
+              <span class="metric-number gold-text">1.87</span>
+              <div class="metric-bar"><div class="metric-fill" style="width:87%"></div></div>
+              <span class="metric-detail">Risk-adjusted return benchmark</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-section marble-card" data-scroll-reveal>
+          <h2 class="section-heading">Recent Transactions</h2>
+          <div class="activity-list">
+            <div class="activity-row">
+              <span class="activity-badge buy">BUY</span>
+              <span class="activity-desc">Acquired 12,000 shares of Consolidated Mining Corp</span>
+              <span class="activity-amount gold-text">$2,340,000</span>
+              <span class="activity-date">Feb 14, 2026</span>
+            </div>
+            <div class="activity-row">
+              <span class="activity-badge sell">SELL</span>
+              <span class="activity-desc">Liquidated position in Oceanic Shipping Partners LP</span>
+              <span class="activity-amount">$1,875,000</span>
+              <span class="activity-date">Feb 13, 2026</span>
+            </div>
+            <div class="activity-row">
+              <span class="activity-badge div">DIV</span>
+              <span class="activity-desc">Quarterly dividend from Meridian Real Estate Trust</span>
+              <span class="activity-amount gold-text">$428,500</span>
+              <span class="activity-date">Feb 12, 2026</span>
+            </div>
+            <div class="activity-row">
+              <span class="activity-badge buy">BUY</span>
+              <span class="activity-desc">New position in Sovereign Green Bond Fund Series IV</span>
+              <span class="activity-amount gold-text">$5,000,000</span>
+              <span class="activity-date">Feb 11, 2026</span>
+            </div>
+            <div class="activity-row">
+              <span class="activity-badge rebal">RBL</span>
+              <span class="activity-desc">Quarterly rebalancing executed across 23 positions</span>
+              <span class="activity-amount">Net $0</span>
+              <span class="activity-date">Feb 10, 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECTS (Ledger) ===== -->
+    <section class="view-panel" id="view-projects">
+      <div class="view-content">
+        <header class="view-header">
+          <h1 class="view-title">Portfolio Ledger</h1>
+          <p class="view-subtitle">Investment vehicles and fund structures under management</p>
+        </header>
+
+        <div class="ledger-controls">
+          <div class="search-field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" placeholder="Search ledger entries..." class="brass-input" />
+          </div>
+          <button class="btn-primary" data-tooltip="Add new fund entry">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Entry
+          </button>
+        </div>
+
+        <div class="ledger-table marble-card" data-scroll-reveal>
+          <div class="ledger-header-row">
+            <span class="ledger-col col-ref">Ref #</span>
+            <span class="ledger-col col-name">Fund Name</span>
+            <span class="ledger-col col-type">Type</span>
+            <span class="ledger-col col-aum">AUM</span>
+            <span class="ledger-col col-return">YTD Return</span>
+            <span class="ledger-col col-status">Status</span>
+          </div>
+          <div class="ledger-row" data-scroll-reveal>
+            <span class="ledger-col col-ref gold-text">MPW-001</span>
+            <span class="ledger-col col-name">Meridian Global Equity Fund</span>
+            <span class="ledger-col col-type">Equity</span>
+            <span class="ledger-col col-aum">$312.4M</span>
+            <span class="ledger-col col-return positive">+18.2%</span>
+            <span class="ledger-col col-status"><span class="status-badge active">Active</span></span>
+          </div>
+          <div class="ledger-row" data-scroll-reveal>
+            <span class="ledger-col col-ref gold-text">MPW-002</span>
+            <span class="ledger-col col-name">Sovereign Bond Reserve Series III</span>
+            <span class="ledger-col col-type">Fixed Income</span>
+            <span class="ledger-col col-aum">$204.2M</span>
+            <span class="ledger-col col-return positive">+4.8%</span>
+            <span class="ledger-col col-status"><span class="status-badge active">Active</span></span>
+          </div>
+          <div class="ledger-row" data-scroll-reveal>
+            <span class="ledger-col col-ref gold-text">MPW-003</span>
+            <span class="ledger-col col-name">Carrara Real Estate Holdings LP</span>
+            <span class="ledger-col col-type">Real Estate</span>
+            <span class="ledger-col col-aum">$78.5M</span>
+            <span class="ledger-col col-return positive">+9.1%</span>
+            <span class="ledger-col col-status"><span class="status-badge active">Active</span></span>
+          </div>
+          <div class="ledger-row" data-scroll-reveal>
+            <span class="ledger-col col-ref gold-text">MPW-004</span>
+            <span class="ledger-col col-name">Alpine Private Equity Fund II</span>
+            <span class="ledger-col col-type">Private Equity</span>
+            <span class="ledger-col col-aum">$32.5M</span>
+            <span class="ledger-col col-return positive">+22.7%</span>
+            <span class="ledger-col col-status"><span class="status-badge deploying">Deploying</span></span>
+          </div>
+          <div class="ledger-row" data-scroll-reveal>
+            <span class="ledger-col col-ref gold-text">MPW-005</span>
+            <span class="ledger-col col-name">Meridian Structured Credit Vehicle</span>
+            <span class="ledger-col col-type">Credit</span>
+            <span class="ledger-col col-aum">$145.8M</span>
+            <span class="ledger-col col-return positive">+6.3%</span>
+            <span class="ledger-col col-status"><span class="status-badge active">Active</span></span>
+          </div>
+          <div class="ledger-row" data-scroll-reveal>
+            <span class="ledger-col col-ref gold-text">MPW-006</span>
+            <span class="ledger-col col-name">Heritage Commodities Trust</span>
+            <span class="ledger-col col-type">Commodities</span>
+            <span class="ledger-col col-aum">$74.0M</span>
+            <span class="ledger-col col-return negative">-2.1%</span>
+            <span class="ledger-col col-status"><span class="status-badge review">Under Review</span></span>
+          </div>
+        </div>
+
+        <div class="ledger-footer">
+          <span class="ledger-total">Total AUM: <strong class="gold-text">$847.4M</strong></span>
+          <span class="ledger-count">6 entries &middot; Page 1 of 1</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECT WORKSPACE (Partner's Office) ===== -->
+    <section class="view-panel" id="view-project-workspace">
+      <div class="view-content">
+        <header class="view-header">
+          <h1 class="view-title">Partner's Office</h1>
+          <p class="view-subtitle">Meridian Global Equity Fund &mdash; MPW-001</p>
+        </header>
+
+        <div class="office-layout">
+          <div class="desk-main marble-card" data-scroll-reveal>
+            <h2 class="section-heading">Fund Overview</h2>
+            <div class="desk-stats">
+              <div class="desk-stat">
+                <span class="desk-stat-label">Net Asset Value</span>
+                <span class="desk-stat-value gold-text">$312,420,000</span>
+              </div>
+              <div class="desk-stat">
+                <span class="desk-stat-label">Inception Date</span>
+                <span class="desk-stat-value">March 15, 2018</span>
+              </div>
+              <div class="desk-stat">
+                <span class="desk-stat-label">Benchmark</span>
+                <span class="desk-stat-value">S&amp;P 500 Total Return</span>
+              </div>
+              <div class="desk-stat">
+                <span class="desk-stat-label">Management Fee</span>
+                <span class="desk-stat-value">1.25%</span>
+              </div>
+            </div>
+
+            <h3 class="subsection-heading">Investment Thesis</h3>
+            <p class="desk-prose">The Meridian Global Equity Fund pursues concentrated, high-conviction positions in undervalued large-cap equities with sustainable competitive advantages. The fund maintains a 25-35 position portfolio with average holding period of 3-5 years, emphasizing businesses with strong cash flow generation, proven management teams, and durable moats in essential industries.</p>
+
+            <h3 class="subsection-heading">Top Holdings</h3>
+            <div class="holdings-grid">
+              <div class="holding-item">
+                <span class="holding-name">Consolidated Mining Corp</span>
+                <span class="holding-weight gold-text">8.2%</span>
+                <span class="holding-value">$25.6M</span>
+              </div>
+              <div class="holding-item">
+                <span class="holding-name">Pacific Maritime Industries</span>
+                <span class="holding-weight gold-text">7.1%</span>
+                <span class="holding-value">$22.2M</span>
+              </div>
+              <div class="holding-item">
+                <span class="holding-name">Sterling Pharmaceuticals</span>
+                <span class="holding-weight gold-text">6.8%</span>
+                <span class="holding-value">$21.2M</span>
+              </div>
+              <div class="holding-item">
+                <span class="holding-name">Apex Infrastructure Group</span>
+                <span class="holding-weight gold-text">6.3%</span>
+                <span class="holding-value">$19.7M</span>
+              </div>
+              <div class="holding-item">
+                <span class="holding-name">Continental Bank Holdings</span>
+                <span class="holding-weight gold-text">5.9%</span>
+                <span class="holding-value">$18.4M</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="drawer-sidebar" data-scroll-reveal>
+            <div class="drawer marble-card">
+              <h3 class="drawer-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                Documents
+              </h3>
+              <ul class="drawer-list">
+                <li class="drawer-item">Q4 2025 Factsheet.pdf</li>
+                <li class="drawer-item">Annual Letter to Partners.pdf</li>
+                <li class="drawer-item">Risk Assessment Report.xlsx</li>
+                <li class="drawer-item">Compliance Review Nov 2025.pdf</li>
+              </ul>
+            </div>
+            <div class="drawer marble-card">
+              <h3 class="drawer-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                Team
+              </h3>
+              <ul class="drawer-list">
+                <li class="drawer-item">Victoria Ashworth <em>- Managing Partner</em></li>
+                <li class="drawer-item">Jonathan Caldwell <em>- Portfolio Manager</em></li>
+                <li class="drawer-item">Eleanor Chen <em>- Senior Analyst</em></li>
+                <li class="drawer-item">Marcus Webb <em>- Risk Officer</em></li>
+              </ul>
+            </div>
+            <div class="drawer marble-card">
+              <h3 class="drawer-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Upcoming
+              </h3>
+              <ul class="drawer-list">
+                <li class="drawer-item">Feb 20 &mdash; Board Meeting</li>
+                <li class="drawer-item">Mar 1 &mdash; Q1 Rebalancing</li>
+                <li class="drawer-item">Mar 15 &mdash; Partner Distribution</li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KANBAN (Safe Deposit Vault) ===== -->
+    <section class="view-panel" id="view-kanban">
+      <div class="view-content">
+        <header class="view-header">
+          <h1 class="view-title">Safe Deposit Vault</h1>
+          <p class="view-subtitle">Investment pipeline &mdash; track positions through due diligence</p>
+        </header>
+
+        <div class="vault-columns">
+          <div class="vault-section marble-card" data-scroll-reveal>
+            <div class="vault-header">
+              <h2 class="vault-title">Screening</h2>
+              <span class="vault-count">3</span>
+            </div>
+            <div class="vault-boxes">
+              <div class="deposit-box">
+                <div class="box-latch"></div>
+                <span class="box-number gold-text">#1247</span>
+                <h3 class="box-name">Nordic Renewable Energy ASA</h3>
+                <p class="box-desc">Scandinavian wind and solar developer. Market cap $4.2B. Reviewing management track record and asset quality.</p>
+                <div class="box-meta">
+                  <span class="box-tag">Energy</span>
+                  <span class="box-date">Added Feb 8</span>
+                </div>
+              </div>
+              <div class="deposit-box">
+                <div class="box-latch"></div>
+                <span class="box-number gold-text">#1248</span>
+                <h3 class="box-name">Pinnacle Defense Systems</h3>
+                <p class="box-desc">Aerospace contractor. Strong government contracts pipeline. ESG review pending before advancing.</p>
+                <div class="box-meta">
+                  <span class="box-tag">Defense</span>
+                  <span class="box-date">Added Feb 10</span>
+                </div>
+              </div>
+              <div class="deposit-box">
+                <div class="box-latch"></div>
+                <span class="box-number gold-text">#1249</span>
+                <h3 class="box-name">Artisan Foods International</h3>
+                <p class="box-desc">Premium food conglomerate. Organic growth 14% CAGR. Attractive valuation at 16x forward earnings.</p>
+                <div class="box-meta">
+                  <span class="box-tag">Consumer</span>
+                  <span class="box-date">Added Feb 12</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vault-section marble-card" data-scroll-reveal>
+            <div class="vault-header">
+              <h2 class="vault-title">Due Diligence</h2>
+              <span class="vault-count">2</span>
+            </div>
+            <div class="vault-boxes">
+              <div class="deposit-box">
+                <div class="box-latch"></div>
+                <span class="box-number gold-text">#1243</span>
+                <h3 class="box-name">Evergreen Infrastructure Partners</h3>
+                <p class="box-desc">Toll roads and bridges portfolio. Cash yield 7.2%. Site visits completed, financial model under review.</p>
+                <div class="box-meta">
+                  <span class="box-tag">Infra</span>
+                  <span class="box-date">Added Jan 22</span>
+                </div>
+              </div>
+              <div class="deposit-box">
+                <div class="box-latch"></div>
+                <span class="box-number gold-text">#1245</span>
+                <h3 class="box-name">Monarch Healthcare Group</h3>
+                <p class="box-desc">Private hospital chain. 32 facilities. Awaiting regulatory approval data and management interviews.</p>
+                <div class="box-meta">
+                  <span class="box-tag">Healthcare</span>
+                  <span class="box-date">Added Jan 28</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vault-section marble-card" data-scroll-reveal>
+            <div class="vault-header">
+              <h2 class="vault-title">Approved</h2>
+              <span class="vault-count">2</span>
+            </div>
+            <div class="vault-boxes">
+              <div class="deposit-box">
+                <div class="box-latch"></div>
+                <span class="box-number gold-text">#1239</span>
+                <h3 class="box-name">Atlas Shipping Corporation</h3>
+                <p class="box-desc">Container fleet operator. Approved at 5% portfolio weight. Awaiting optimal entry price below $48/share.</p>
+                <div class="box-meta">
+                  <span class="box-tag">Transport</span>
+                  <span class="box-date">Approved Feb 5</span>
+                </div>
+              </div>
+              <div class="deposit-box">
+                <div class="box-latch"></div>
+                <span class="box-number gold-text">#1241</span>
+                <h3 class="box-name">Keystone Precious Metals ETF</h3>
+                <p class="box-desc">Gold and platinum ETF hedge. Approved for 2% allocation as portfolio insurance against inflation risk.</p>
+                <div class="box-meta">
+                  <span class="box-tag">Commodities</span>
+                  <span class="box-date">Approved Feb 7</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vault-section marble-card" data-scroll-reveal>
+            <div class="vault-header">
+              <h2 class="vault-title">Deployed</h2>
+              <span class="vault-count">2</span>
+            </div>
+            <div class="vault-boxes">
+              <div class="deposit-box">
+                <div class="box-latch"></div>
+                <span class="box-number gold-text">#1235</span>
+                <h3 class="box-name">Consolidated Mining Corp</h3>
+                <p class="box-desc">Position established at $195/share. Current: $218. Unrealized gain 11.8%. Monitoring quarterly output.</p>
+                <div class="box-meta">
+                  <span class="box-tag">Mining</span>
+                  <span class="box-date">Deployed Feb 14</span>
+                </div>
+              </div>
+              <div class="deposit-box">
+                <div class="box-latch"></div>
+                <span class="box-number gold-text">#1237</span>
+                <h3 class="box-name">Sovereign Green Bond Fund IV</h3>
+                <p class="box-desc">$5M deployed into AAA-rated green sovereign bonds. Coupon 3.8%. Duration 7.2 years. On track.</p>
+                <div class="box-meta">
+                  <span class="box-tag">Fixed Income</span>
+                  <span class="box-date">Deployed Feb 11</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHITEBOARD (Boardroom) ===== -->
+    <section class="view-panel" id="view-whiteboard">
+      <div class="view-content">
+        <header class="view-header">
+          <h1 class="view-title">Boardroom Canvas</h1>
+          <p class="view-subtitle">Strategic relationship mapping &mdash; Q1 2026 investment thesis</p>
+        </header>
+
+        <div class="boardroom-canvas marble-card" data-scroll-reveal>
+          <svg class="canvas-connectors" id="canvasConnectors" viewBox="0 0 900 600">
+            <!-- Brass rail connector lines -->
+            <line x1="200" y1="120" x2="450" y2="120" class="brass-rail" />
+            <line x1="200" y1="120" x2="200" y2="320" class="brass-rail" />
+            <line x1="450" y1="120" x2="700" y2="120" class="brass-rail" />
+            <line x1="450" y1="120" x2="450" y2="320" class="brass-rail" />
+            <line x1="700" y1="120" x2="700" y2="320" class="brass-rail" />
+            <line x1="200" y1="320" x2="450" y2="320" class="brass-rail" />
+            <line x1="450" y1="320" x2="700" y2="320" class="brass-rail" />
+            <line x1="450" y1="320" x2="450" y2="500" class="brass-rail" />
+            <!-- Junction ornaments -->
+            <circle cx="200" cy="120" r="6" class="brass-junction" />
+            <circle cx="450" cy="120" r="6" class="brass-junction" />
+            <circle cx="700" cy="120" r="6" class="brass-junction" />
+            <circle cx="200" cy="320" r="6" class="brass-junction" />
+            <circle cx="450" cy="320" r="6" class="brass-junction" />
+            <circle cx="700" cy="320" r="6" class="brass-junction" />
+            <circle cx="450" cy="500" r="6" class="brass-junction" />
+          </svg>
+
+          <div class="board-nodes">
+            <div class="board-node" style="left:120px;top:60px">
+              <div class="node-frame marble-card">
+                <h3 class="node-title">Macro Thesis</h3>
+                <p class="node-content">Rising real rates favor value equities and commodity producers. Reduce duration exposure.</p>
+              </div>
+            </div>
+            <div class="board-node" style="left:370px;top:60px">
+              <div class="node-frame marble-card">
+                <h3 class="node-title">Sector Focus</h3>
+                <p class="node-content">Overweight energy, mining, infrastructure. Underweight speculative tech.</p>
+              </div>
+            </div>
+            <div class="board-node" style="left:620px;top:60px">
+              <div class="node-frame marble-card">
+                <h3 class="node-title">Risk Limits</h3>
+                <p class="node-content">Max single position 10%. Max sector 25%. VaR ceiling $12M at 95% confidence.</p>
+              </div>
+            </div>
+            <div class="board-node" style="left:120px;top:260px">
+              <div class="node-frame marble-card">
+                <h3 class="node-title">Geographic Mix</h3>
+                <p class="node-content">NA 55%, Europe 25%, Asia-Pacific 15%, EM 5%. No single-country EM above 3%.</p>
+              </div>
+            </div>
+            <div class="board-node" style="left:370px;top:260px">
+              <div class="node-frame marble-card">
+                <h3 class="node-title">Liquidity Buffer</h3>
+                <p class="node-content">Maintain 8% cash allocation. T-bills as sweep vehicle. Redeploy on pullbacks >5%.</p>
+              </div>
+            </div>
+            <div class="board-node" style="left:620px;top:260px">
+              <div class="node-frame marble-card">
+                <h3 class="node-title">ESG Criteria</h3>
+                <p class="node-content">MSCI ESG rating B or above. Exclude thermal coal, controversial weapons, tobacco.</p>
+              </div>
+            </div>
+            <div class="board-node" style="left:370px;top:440px">
+              <div class="node-frame marble-card">
+                <h3 class="node-title">Exit Strategy</h3>
+                <p class="node-content">Systematic rebalancing quarterly. Stop-loss at -15%. Profit-taking at +40% from entry.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SCHEMA PLANNER ===== -->
+    <section class="view-panel" id="view-schema-planner">
+      <div class="view-content">
+        <header class="view-header">
+          <h1 class="view-title">Notarized Schema</h1>
+          <p class="view-subtitle">Fund structure &amp; entity relationships &mdash; legal document layout</p>
+        </header>
+
+        <div class="schema-grid">
+          <div class="certificate-section marble-card" data-scroll-reveal>
+            <div class="certificate-header">
+              <div class="gold-seal-mark">
+                <svg viewBox="0 0 40 40" width="40" height="40"><circle cx="20" cy="20" r="18" fill="none" stroke="#b8963a" stroke-width="2"/><circle cx="20" cy="20" r="14" fill="none" stroke="#b8963a" stroke-width="1"/><text x="20" y="24" text-anchor="middle" fill="#b8963a" font-size="10" font-family="Cinzel">MPW</text></svg>
+              </div>
+              <h2 class="certificate-title">Fund Entity</h2>
+            </div>
+            <div class="certificate-fields">
+              <div class="cert-field">
+                <span class="cert-label">Legal Name</span>
+                <span class="cert-value">Meridian Private Wealth Management LLC</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">Jurisdiction</span>
+                <span class="cert-value">Cayman Islands / Delaware</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">Entity Type</span>
+                <span class="cert-value">Limited Liability Company</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">Registration</span>
+                <span class="cert-value">SEC File No. 801-XXXXX</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="certificate-section marble-card" data-scroll-reveal>
+            <div class="certificate-header">
+              <div class="gold-seal-mark">
+                <svg viewBox="0 0 40 40" width="40" height="40"><circle cx="20" cy="20" r="18" fill="none" stroke="#b8963a" stroke-width="2"/><circle cx="20" cy="20" r="14" fill="none" stroke="#b8963a" stroke-width="1"/><text x="20" y="24" text-anchor="middle" fill="#b8963a" font-size="10" font-family="Cinzel">INV</text></svg>
+              </div>
+              <h2 class="certificate-title">Investor Class</h2>
+            </div>
+            <div class="certificate-fields">
+              <div class="cert-field">
+                <span class="cert-label">Class A (Founder)</span>
+                <span class="cert-value">$50M min / 0.75% fee / No lock-up</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">Class B (Institutional)</span>
+                <span class="cert-value">$10M min / 1.25% fee / 1yr lock-up</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">Class C (Qualified)</span>
+                <span class="cert-value">$1M min / 1.75% fee / 2yr lock-up</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">Total Investors</span>
+                <span class="cert-value">47 limited partners</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="certificate-section marble-card" data-scroll-reveal>
+            <div class="certificate-header">
+              <div class="gold-seal-mark">
+                <svg viewBox="0 0 40 40" width="40" height="40"><circle cx="20" cy="20" r="18" fill="none" stroke="#b8963a" stroke-width="2"/><circle cx="20" cy="20" r="14" fill="none" stroke="#b8963a" stroke-width="1"/><text x="20" y="24" text-anchor="middle" fill="#b8963a" font-size="10" font-family="Cinzel">CMP</text></svg>
+              </div>
+              <h2 class="certificate-title">Compliance</h2>
+            </div>
+            <div class="certificate-fields">
+              <div class="cert-field">
+                <span class="cert-label">Auditor</span>
+                <span class="cert-value">Deloitte &amp; Touche LLP</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">Legal Counsel</span>
+                <span class="cert-value">Sullivan &amp; Cromwell LLP</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">Custodian</span>
+                <span class="cert-value">Northern Trust Corporation</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">Administrator</span>
+                <span class="cert-value">Citco Fund Services</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="certificate-section marble-card" data-scroll-reveal>
+            <div class="certificate-header">
+              <div class="gold-seal-mark">
+                <svg viewBox="0 0 40 40" width="40" height="40"><circle cx="20" cy="20" r="18" fill="none" stroke="#b8963a" stroke-width="2"/><circle cx="20" cy="20" r="14" fill="none" stroke="#b8963a" stroke-width="1"/><text x="20" y="24" text-anchor="middle" fill="#b8963a" font-size="10" font-family="Cinzel">FEE</text></svg>
+              </div>
+              <h2 class="certificate-title">Fee Structure</h2>
+            </div>
+            <div class="certificate-fields">
+              <div class="cert-field">
+                <span class="cert-label">Management Fee</span>
+                <span class="cert-value">1.25% of NAV per annum</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">Performance Fee</span>
+                <span class="cert-value">20% over 6% hurdle rate</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">High Water Mark</span>
+                <span class="cert-value">Yes, perpetual reset</span>
+              </div>
+              <div class="cert-field">
+                <span class="cert-label">Crystallization</span>
+                <span class="cert-value">Annual on December 31</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DIRECTORY TREE (Card Catalog) ===== -->
+    <section class="view-panel" id="view-directory-tree">
+      <div class="view-content">
+        <header class="view-header">
+          <h1 class="view-title">Card Catalog</h1>
+          <p class="view-subtitle">Document library &mdash; filed alphabetically with gilt category labels</p>
+        </header>
+
+        <div class="catalog-cabinet">
+          <div class="catalog-drawer marble-card" data-scroll-reveal>
+            <div class="drawer-handle">
+              <span class="drawer-label gold-text">A &mdash; Agreements</span>
+              <svg class="drawer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="drawer-contents open">
+              <div class="catalog-card">
+                <span class="card-ref">A-001</span>
+                <span class="card-title">Limited Partnership Agreement (2018)</span>
+                <span class="card-type">Legal</span>
+              </div>
+              <div class="catalog-card">
+                <span class="card-ref">A-002</span>
+                <span class="card-title">Advisory Fee Agreement &mdash; Class B</span>
+                <span class="card-type">Legal</span>
+              </div>
+              <div class="catalog-card">
+                <span class="card-ref">A-003</span>
+                <span class="card-title">Amended Operating Agreement (2024)</span>
+                <span class="card-type">Legal</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="catalog-drawer marble-card" data-scroll-reveal>
+            <div class="drawer-handle">
+              <span class="drawer-label gold-text">C &mdash; Compliance</span>
+              <svg class="drawer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="drawer-contents">
+              <div class="catalog-card">
+                <span class="card-ref">C-001</span>
+                <span class="card-title">Annual Compliance Review 2025</span>
+                <span class="card-type">Regulatory</span>
+              </div>
+              <div class="catalog-card">
+                <span class="card-ref">C-002</span>
+                <span class="card-title">AML/KYC Procedures Manual</span>
+                <span class="card-type">Policy</span>
+              </div>
+              <div class="catalog-card">
+                <span class="card-ref">C-003</span>
+                <span class="card-title">SEC Form ADV Part 2A</span>
+                <span class="card-type">Filing</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="catalog-drawer marble-card" data-scroll-reveal>
+            <div class="drawer-handle">
+              <span class="drawer-label gold-text">F &mdash; Financial Reports</span>
+              <svg class="drawer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="drawer-contents">
+              <div class="catalog-card">
+                <span class="card-ref">F-001</span>
+                <span class="card-title">Audited Financial Statements FY 2025</span>
+                <span class="card-type">Audit</span>
+              </div>
+              <div class="catalog-card">
+                <span class="card-ref">F-002</span>
+                <span class="card-title">Monthly NAV Statement &mdash; January 2026</span>
+                <span class="card-type">Report</span>
+              </div>
+              <div class="catalog-card">
+                <span class="card-ref">F-003</span>
+                <span class="card-title">Capital Call Notice #14</span>
+                <span class="card-type">Notice</span>
+              </div>
+              <div class="catalog-card">
+                <span class="card-ref">F-004</span>
+                <span class="card-title">Distribution Waterfall Analysis</span>
+                <span class="card-type">Analysis</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="catalog-drawer marble-card" data-scroll-reveal>
+            <div class="drawer-handle">
+              <span class="drawer-label gold-text">I &mdash; Investment Memos</span>
+              <svg class="drawer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="drawer-contents">
+              <div class="catalog-card">
+                <span class="card-ref">I-001</span>
+                <span class="card-title">Consolidated Mining Corp &mdash; Investment Memo</span>
+                <span class="card-type">Memo</span>
+              </div>
+              <div class="catalog-card">
+                <span class="card-ref">I-002</span>
+                <span class="card-title">Pacific Maritime Industries &mdash; Thesis Update</span>
+                <span class="card-type">Memo</span>
+              </div>
+              <div class="catalog-card">
+                <span class="card-ref">I-003</span>
+                <span class="card-title">Nordic Renewable Energy &mdash; Screening Report</span>
+                <span class="card-type">Screening</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="catalog-drawer marble-card" data-scroll-reveal>
+            <div class="drawer-handle">
+              <span class="drawer-label gold-text">T &mdash; Tax Documents</span>
+              <svg class="drawer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="drawer-contents">
+              <div class="catalog-card">
+                <span class="card-ref">T-001</span>
+                <span class="card-title">Schedule K-1 (2025 Tax Year)</span>
+                <span class="card-type">Tax</span>
+              </div>
+              <div class="catalog-card">
+                <span class="card-ref">T-002</span>
+                <span class="card-title">FATCA/CRS Reporting Documentation</span>
+                <span class="card-type">Tax</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== IDEAS (Gallery) ===== -->
+    <section class="view-panel" id="view-ideas">
+      <div class="view-content">
+        <header class="view-header">
+          <h1 class="view-title">Gallery Exhibition</h1>
+          <p class="view-subtitle">Investment theses &amp; strategic ideas &mdash; curated collection</p>
+        </header>
+
+        <div class="gallery-wall">
+          <div class="gallery-frame marble-card" data-scroll-reveal>
+            <div class="frame-brass-border">
+              <div class="frame-image" style="background: linear-gradient(135deg, #1a4a2a 0%, #2a6a3a 50%, #1a4a2a 100%);">
+                <svg viewBox="0 0 120 80" width="120" height="80" fill="none" stroke="#b8963a" stroke-width="1">
+                  <path d="M10 70 L30 30 L50 50 L70 20 L90 40 L110 10"/>
+                  <circle cx="30" cy="30" r="3" fill="#b8963a"/>
+                  <circle cx="70" cy="20" r="3" fill="#b8963a"/>
+                  <circle cx="110" cy="10" r="3" fill="#b8963a"/>
+                </svg>
+              </div>
+              <div class="frame-plaque">
+                <h3 class="plaque-title">Infrastructure Supercycle</h3>
+                <p class="plaque-author">Victoria Ashworth &middot; January 2026</p>
+              </div>
+              <p class="curator-description">Global infrastructure spend projected to reach $9.2T by 2030. Position in toll roads, ports, and digital infrastructure before institutional capital fully allocates. Focus on assets with inflation-linked revenue streams and 20+ year concessions.</p>
+              <div class="frame-tags">
+                <span class="idea-tag">Infrastructure</span>
+                <span class="idea-tag">Macro</span>
+                <span class="idea-tag priority">High Conviction</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-frame marble-card" data-scroll-reveal>
+            <div class="frame-brass-border">
+              <div class="frame-image" style="background: linear-gradient(135deg, #2a3a5a 0%, #3a5a7a 50%, #2a3a5a 100%);">
+                <svg viewBox="0 0 120 80" width="120" height="80" fill="none" stroke="#b8963a" stroke-width="1">
+                  <rect x="15" y="15" width="25" height="50" rx="2"/>
+                  <rect x="48" y="25" width="25" height="40" rx="2"/>
+                  <rect x="81" y="10" width="25" height="55" rx="2"/>
+                </svg>
+              </div>
+              <div class="frame-plaque">
+                <h3 class="plaque-title">Nearshoring Value Chain</h3>
+                <p class="plaque-author">Jonathan Caldwell &middot; December 2025</p>
+              </div>
+              <p class="curator-description">Supply chain reconfiguration creates opportunities in Mexican manufacturing, US border logistics, and semiconductor packaging. The reshoring trend has 5-10 years of runway as companies diversify away from concentrated Asian supply chains.</p>
+              <div class="frame-tags">
+                <span class="idea-tag">Industrials</span>
+                <span class="idea-tag">Geopolitical</span>
+                <span class="idea-tag">Thematic</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-frame marble-card" data-scroll-reveal>
+            <div class="frame-brass-border">
+              <div class="frame-image" style="background: linear-gradient(135deg, #4a3a1a 0%, #6a5a2a 50%, #4a3a1a 100%);">
+                <svg viewBox="0 0 120 80" width="120" height="80" fill="none" stroke="#b8963a" stroke-width="1">
+                  <circle cx="40" cy="40" r="25"/>
+                  <circle cx="80" cy="40" r="25"/>
+                  <path d="M55 25 A25 25 0 0 1 55 55 A25 25 0 0 1 55 25" fill="none"/>
+                </svg>
+              </div>
+              <div class="frame-plaque">
+                <h3 class="plaque-title">Precious Metals Hedge</h3>
+                <p class="plaque-author">Eleanor Chen &middot; February 2026</p>
+              </div>
+              <p class="curator-description">Gold allocation as portfolio insurance. Central bank buying at record levels. Real yields declining in 2H 2026 should support price. Recommend 2-4% allocation through physical-backed ETFs and select mining equities with low all-in sustaining costs.</p>
+              <div class="frame-tags">
+                <span class="idea-tag">Commodities</span>
+                <span class="idea-tag">Hedging</span>
+                <span class="idea-tag priority">Under Review</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-frame marble-card" data-scroll-reveal>
+            <div class="frame-brass-border">
+              <div class="frame-image" style="background: linear-gradient(135deg, #1a3a3a 0%, #2a5a5a 50%, #1a3a3a 100%);">
+                <svg viewBox="0 0 120 80" width="120" height="80" fill="none" stroke="#b8963a" stroke-width="1">
+                  <path d="M20 60 Q40 20 60 40 Q80 60 100 20"/>
+                  <line x1="20" y1="65" x2="100" y2="65" stroke-dasharray="3,3"/>
+                </svg>
+              </div>
+              <div class="frame-plaque">
+                <h3 class="plaque-title">Private Credit Expansion</h3>
+                <p class="plaque-author">Marcus Webb &middot; January 2026</p>
+              </div>
+              <p class="curator-description">Bank retrenchment from middle-market lending opens yield opportunities. Direct lending to $50-200M EBITDA companies at SOFR+550-700bps. Target 12-15% net IRR with senior secured positioning and strong covenant packages.</p>
+              <div class="frame-tags">
+                <span class="idea-tag">Credit</span>
+                <span class="idea-tag">Private Markets</span>
+                <span class="idea-tag">Income</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== AI CHAT (Formal Correspondence) ===== -->
+    <section class="view-panel" id="view-ai-chat">
+      <div class="view-content">
+        <header class="view-header">
+          <h1 class="view-title">Private Correspondence</h1>
+          <p class="view-subtitle">Confidential advisory dialogue with Meridian AI Counsel</p>
+        </header>
+
+        <div class="correspondence-container marble-card">
+          <div class="letter-thread" id="letterThread">
+            <div class="letter user-letter" data-scroll-reveal>
+              <div class="letter-card">
+                <div class="letter-meta">
+                  <span class="letter-sender">V. Ashworth, Managing Partner</span>
+                  <span class="letter-date">February 15, 2026 &middot; 9:14 AM</span>
+                </div>
+                <p class="letter-body">Review our current equity allocation and recommend adjustments given the rising rate environment. Should we rotate out of growth into value? What about our tech exposure?</p>
+              </div>
+            </div>
+
+            <div class="letter ai-letter" data-scroll-reveal>
+              <div class="letter-card">
+                <div class="letter-header-emboss">
+                  <span class="emboss-logo">M</span>
+                  <span class="emboss-name">Meridian AI Counsel</span>
+                </div>
+                <div class="letter-meta">
+                  <span class="letter-date">February 15, 2026 &middot; 9:15 AM</span>
+                </div>
+                <p class="letter-body">Ms. Ashworth, I have reviewed the current equity allocation of $312.4M across 47 positions. Given the Federal Reserve's recent hawkish guidance and the 10-year yield approaching 4.8%, I recommend the following adjustments:</p>
+                <ul class="letter-list">
+                  <li><strong>Reduce growth tech exposure</strong> from 18% to 12%. Trim positions in high-multiple software names with negative free cash flow.</li>
+                  <li><strong>Increase value-oriented industrials</strong> from 14% to 20%. Companies with strong pricing power and tangible asset backing.</li>
+                  <li><strong>Add energy infrastructure</strong> at 5% allocation. Midstream operators with contracted cash flows benefit from the rate environment.</li>
+                </ul>
+                <div class="letter-seal">
+                  <div class="wax-seal">
+                    <span>M</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="letter user-letter" data-scroll-reveal>
+              <div class="letter-card">
+                <div class="letter-meta">
+                  <span class="letter-sender">V. Ashworth, Managing Partner</span>
+                  <span class="letter-date">February 15, 2026 &middot; 9:22 AM</span>
+                </div>
+                <p class="letter-body">Good analysis. What about the Consolidated Mining position specifically? We just added 12,000 shares. Is there room to increase further, or are we at our risk limit?</p>
+              </div>
+            </div>
+
+            <div class="letter ai-letter" data-scroll-reveal>
+              <div class="letter-card">
+                <div class="letter-header-emboss">
+                  <span class="emboss-logo">M</span>
+                  <span class="emboss-name">Meridian AI Counsel</span>
+                </div>
+                <div class="letter-meta">
+                  <span class="letter-date">February 15, 2026 &middot; 9:23 AM</span>
+                </div>
+                <p class="letter-body">The Consolidated Mining Corp position currently stands at 8.2% of the equity portfolio ($25.6M). With our single-position limit at 10%, there is capacity for an additional $5.6M. However, I would counsel prudence:</p>
+                <ul class="letter-list">
+                  <li>The stock has appreciated 11.8% since our entry at $195. Consider waiting for a pullback to $205-$210 before adding.</li>
+                  <li>Copper prices have run ahead of fundamentals; a correction to $8,500/mt would impact the thesis.</li>
+                  <li>Our total mining exposure is already 12%. Adding here would push near the 15% informal sector ceiling.</li>
+                </ul>
+                <p class="letter-body">My recommendation: hold the current position, set a limit order at $208 for an additional 4,000 shares, and revisit after Q1 earnings on March 28.</p>
+                <div class="letter-seal">
+                  <div class="wax-seal">
+                    <span>M</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="letter user-letter" data-scroll-reveal>
+              <div class="letter-card">
+                <div class="letter-meta">
+                  <span class="letter-sender">V. Ashworth, Managing Partner</span>
+                  <span class="letter-date">February 15, 2026 &middot; 9:30 AM</span>
+                </div>
+                <p class="letter-body">Agreed on the limit order approach. Please draft the trade instruction for review. Also flag any upcoming catalyst dates for our top 10 holdings.</p>
+              </div>
+            </div>
+
+            <div class="letter ai-letter" data-scroll-reveal>
+              <div class="letter-card">
+                <div class="letter-header-emboss">
+                  <span class="emboss-logo">M</span>
+                  <span class="emboss-name">Meridian AI Counsel</span>
+                </div>
+                <div class="letter-meta">
+                  <span class="letter-date">February 15, 2026 &middot; 9:31 AM</span>
+                </div>
+                <p class="letter-body">Certainly. I have prepared the trade instruction and compiled the catalyst calendar. Key upcoming dates for our top holdings:</p>
+                <ul class="letter-list">
+                  <li><strong>Feb 27</strong> &mdash; Sterling Pharmaceuticals FDA advisory committee meeting (Phase III results)</li>
+                  <li><strong>Mar 5</strong> &mdash; Pacific Maritime Q4 earnings release</li>
+                  <li><strong>Mar 12</strong> &mdash; Apex Infrastructure investor day presentation</li>
+                  <li><strong>Mar 28</strong> &mdash; Consolidated Mining Q1 preliminary production report</li>
+                </ul>
+                <p class="letter-body">The trade instruction document has been filed in the Card Catalog under reference T-003. Shall I notify the execution desk?</p>
+                <div class="letter-seal">
+                  <div class="wax-seal">
+                    <span>M</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="correspondence-input">
+            <textarea class="brass-input chat-input" placeholder="Draft your correspondence..." rows="2"></textarea>
+            <button class="btn-primary send-btn" data-tooltip="Dispatch correspondence">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+              Dispatch
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SETTINGS (Vault Controls) ===== -->
+    <section class="view-panel" id="view-settings">
+      <div class="view-content">
+        <header class="view-header">
+          <h1 class="view-title">Vault Controls</h1>
+          <p class="view-subtitle">System configuration &amp; security parameters</p>
+        </header>
+
+        <div class="settings-panels">
+          <div class="settings-group marble-card" data-scroll-reveal>
+            <div class="settings-group-header">
+              <div class="brass-divider-left"></div>
+              <h2 class="settings-group-title">Security &amp; Access</h2>
+              <div class="brass-divider-right"></div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Two-Factor Authentication</span>
+                <span class="setting-desc">Require hardware key or authenticator app for all logins</span>
+              </div>
+              <label class="brass-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Session Timeout</span>
+                <span class="setting-desc">Automatically lock vault after period of inactivity</span>
+              </div>
+              <select class="brass-select">
+                <option>15 minutes</option>
+                <option selected>30 minutes</option>
+                <option>1 hour</option>
+                <option>4 hours</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">IP Whitelist</span>
+                <span class="setting-desc">Restrict access to approved network addresses only</span>
+              </div>
+              <label class="brass-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Biometric Login</span>
+                <span class="setting-desc">Enable fingerprint or facial recognition for mobile access</span>
+              </div>
+              <label class="brass-toggle">
+                <input type="checkbox" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-group marble-card" data-scroll-reveal>
+            <div class="settings-group-header">
+              <div class="brass-divider-left"></div>
+              <h2 class="settings-group-title">Notifications &amp; Alerts</h2>
+              <div class="brass-divider-right"></div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Trade Confirmations</span>
+                <span class="setting-desc">Receive notification when trade orders are executed</span>
+              </div>
+              <label class="brass-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">NAV Threshold Alert</span>
+                <span class="setting-desc">Alert when portfolio value changes by more than specified amount</span>
+              </div>
+              <div class="setting-input-group">
+                <input type="text" class="brass-input small" value="$500,000" />
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Weekly Digest</span>
+                <span class="setting-desc">Comprehensive portfolio summary delivered every Monday</span>
+              </div>
+              <label class="brass-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Compliance Alerts</span>
+                <span class="setting-desc">Immediate notification of regulatory threshold breaches</span>
+              </div>
+              <label class="brass-toggle">
+                <input type="checkbox" checked />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-group marble-card" data-scroll-reveal>
+            <div class="settings-group-header">
+              <div class="brass-divider-left"></div>
+              <h2 class="settings-group-title">Display &amp; Preferences</h2>
+              <div class="brass-divider-right"></div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Currency Display</span>
+                <span class="setting-desc">Primary currency for portfolio valuation</span>
+              </div>
+              <select class="brass-select">
+                <option selected>USD ($)</option>
+                <option>EUR (&euro;)</option>
+                <option>GBP (&pound;)</option>
+                <option>CHF (Fr.)</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Date Format</span>
+                <span class="setting-desc">How dates appear throughout the application</span>
+              </div>
+              <select class="brass-select">
+                <option selected>MMM DD, YYYY</option>
+                <option>DD/MM/YYYY</option>
+                <option>YYYY-MM-DD</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Marble Light Effect</span>
+                <span class="setting-desc">Subtle ambient chandelier light reflection on surfaces</span>
+              </div>
+              <label class="brass-toggle">
+                <input type="checkbox" checked id="ambientToggle" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

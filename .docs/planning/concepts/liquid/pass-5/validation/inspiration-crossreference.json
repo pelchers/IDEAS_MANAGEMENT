@@ -1,0 +1,52 @@
+{
+  "passId": "liquid-pass-5",
+  "styleId": "liquid",
+  "pass": 5,
+  "layoutArchetype": "neon-plasma",
+  "references": [
+    {
+      "name": "Ableton",
+      "url": "https://www.ableton.com",
+      "takeaway": "Organize content as discrete modular rack-units—each block is a self-contained panel with its own header, content, and controls, tiled vertically like hardware modules mounted in a synthesizer rack.",
+      "applied": [
+        "Each dashboard metric card is a self-contained rack unit with its own waveform canvas, value display, and delta indicator",
+        "Whiteboard synth modules follow the rack-unit pattern with individual headers, control bodies, and I/O jacks",
+        "Settings mixer channels are independent channel strips with their own labeled header bar and control sections",
+        "Each kanban card contains its own waveform thumbnail, metadata, and status — no shared state between cards",
+        "Signal flow blocks are standalone processing units with their own entity metadata and frequency annotations"
+      ]
+    },
+    {
+      "name": "Native Instruments",
+      "url": "https://www.native-instruments.com",
+      "takeaway": "Use a deep teal-on-midnight color scheme with a single hot accent (red or magenta) reserved only for active/live states, and set all type in a geometric sans-serif at 3 distinct weights to create the readout precision of a synth display.",
+      "applied": [
+        "Primary palette uses deep indigo (#0c0820) as midnight void with electric cyan (#00e5ff) as teal-adjacent primary accent",
+        "Hot magenta (#ff00aa) reserved exclusively for active states: playing tracks, user messages, high-priority tags, and artist names",
+        "Syncopate heading font provides geometric sans-serif display precision at 2 weights (400, 700)",
+        "Fira Code monospace at regular and medium weights for technical readouts (BPM, keys, frequencies, timestamps)",
+        "Lexend body font at 4 weights (300-700) for hierarchical content text"
+      ]
+    },
+    {
+      "name": "Splice",
+      "url": "https://splice.com",
+      "takeaway": "Render inline waveform graphics and audio-spectrum visualizations as decorative content elements, and use neon accent colors (cyan, magenta, electric purple) only for interactive states and progress indicators against a near-black (#121212) background.",
+      "applied": [
+        "Dashboard metric cards feature inline animated waveform canvases as primary content imagery",
+        "Release roster tracks display miniature waveform previews in each row",
+        "Kanban cards include waveform thumbnail canvases as visual content elements",
+        "Vinyl vault records have waveform art on their sleeve covers",
+        "AI chat messages display voice-memo-style waveform visualizations",
+        "Sample library preview panel shows a large waveform canvas for the selected file",
+        "Dashboard spectrum chart renders a 64-bar animated frequency visualization",
+        "Neon cyan and magenta used exclusively for interactive states (hover, active, focus) and progress indicators (status badges, meter fills)"
+      ]
+    }
+  ],
+  "divergences": [
+    "Background color is slightly darker (#0c0820) than Splice's #121212 to create a deeper void for plasma effects to stand out against",
+    "Unlike Native Instruments' use of red for alerts only, magenta is used more broadly as a secondary accent for artist identity and user-facing elements",
+    "Added animated canvas-based waveforms (not static SVG) to enhance the 'live electronic performance' feel beyond what the reference sites do with static imagery"
+  ]
+}

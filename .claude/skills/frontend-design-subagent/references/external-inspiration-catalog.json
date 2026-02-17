@@ -143,6 +143,78 @@
       }
     ]
   },
+  "brutalist/pass-5": {
+    "layoutArchetype": "protest-poster-collage",
+    "direction": "Activist broadsheet collage with torn-edge overlaps, urgency-yellow highlight blocks, and bold condensed slogans. The page reads like a wall of wheat-pasted protest posters fighting for attention.",
+    "references": [
+      {
+        "name": "Amnesty International",
+        "url": "https://www.amnesty.org",
+        "traits": [
+          "bright activist-yellow (#FDFF28) accent used as highlight blocks and banner backgrounds against dark charcoal text",
+          "condensed sans-serif headlines (Amnesty Trade Gothic) scaled via fluid clamp() from 18px to 72px with tight 1.12 line-height",
+          "modular campaign cards with full-bleed emotive photography and pill-shaped CTA buttons layered over dark overlays"
+        ],
+        "takeaway": "Use an urgency-yellow (#FDFF28) as the primary accent color for highlight strips and call-to-action bands, pairing it with condensed all-caps headlines at maximum width to create the visual volume of a protest placard."
+      },
+      {
+        "name": "Extinction Rebellion",
+        "url": "https://rebellion.global",
+        "traits": [
+          "woodcut-style block-print illustrations (hourglass, tree of life, extinction symbol) used as section dividers and hero graphics",
+          "three-demand manifesto structure where core messages are presented as numbered declarations in oversized type",
+          "high-contrast black-on-white text blocks broken by full-width illustrated band separators with hand-printed texture"
+        ],
+        "takeaway": "Structure the page as a numbered manifesto with 3-5 bold declarations, each separated by full-width woodcut-style illustrated bands that feel hand-printed rather than digitally generated."
+      },
+      {
+        "name": "350.org",
+        "url": "https://350.org",
+        "traits": [
+          "action-oriented hero banners with countdown timers, petition signature counters, and live participant numbers",
+          "red/black/white tri-color system with red reserved exclusively for urgent action items and deadline callouts",
+          "stacked full-width campaign blocks where each campaign gets its own background color and photographic treatment"
+        ],
+        "takeaway": "Stack full-width campaign blocks vertically with alternating background treatments (photo, solid color, dark), and embed live counter elements (numbers, progress bars, deadlines) to create the urgency rhythm of an activist broadsheet."
+      }
+    ]
+  },
+  "brutalist/pass-6": {
+    "layoutArchetype": "warehouse-industrial",
+    "direction": "Logistics operations dashboard with container-grid tracking panels, shipment-flow diagrams, and industrial indigo-and-steel palette. The page feels like a freight terminal control room.",
+    "references": [
+      {
+        "name": "Flexport",
+        "url": "https://www.flexport.com",
+        "traits": [
+          "origin-destination search interface with paired input fields styled as shipping-label address blocks",
+          "indigo primary (#566AE5) paired with midnight (#052439) text and seafoam (#45DABE) focus-state accents",
+          "Mapbox-powered cartographic interface with custom-styled route lines and port-marker pins integrated into the content layout"
+        ],
+        "takeaway": "Build a dual-field origin/destination input block as the hero element, styled like a shipping waybill with labeled fields, tracking numbers, and a route-map visualization below it showing the flow path."
+      },
+      {
+        "name": "Maersk",
+        "url": "https://www.maersk.com",
+        "traits": [
+          "shipment tracking search bar positioned as the primary above-fold interaction, treating logistics data as the hero content",
+          "industry-sector carousel with flat-design icon illustrations (FMCG, Retail, Automotive, Pharma) in a horizontal scrolling row",
+          "corporate navy-blue and white palette with card-based modular sections for service discovery and filter categories"
+        ],
+        "takeaway": "Position a prominent tracking/search bar as the top-of-page hero with bold label typography, and organize content below into industry-sector cards with flat-icon illustrations, creating a freight-terminal dispatch board layout."
+      },
+      {
+        "name": "Freightos",
+        "url": "https://www.freightos.com",
+        "traits": [
+          "comparison-table layouts with dense columns for rates, transit times, and carrier names resembling a freight-rate tariff sheet",
+          "step-indicator progress bars showing shipment stages (booked, in-transit, customs, delivered) as a horizontal pipeline",
+          "industrial grey (#F5F5F5) backgrounds with bold blue CTAs and data-table zebra-striping for scannable rows"
+        ],
+        "takeaway": "Use dense comparison tables with zebra-striped rows and a horizontal step-indicator pipeline at the top of each content section, making the layout feel like a logistics operations dashboard tracking cargo through stages."
+      }
+    ]
+  },
   "mid-century-modern/pass-1": {
     "layoutArchetype": "eames-lounge-workspace",
     "direction": "Furniture-logic layout with rounded teak panels, generous padding, and Eames-era warmth. Every element feels like a crafted object you could touch.",
@@ -284,6 +356,78 @@
           "category landing pages that use a single hero image and one line of text per section"
         ],
         "takeaway": "Restrict the entire palette to 3 materials—white, warm grey, and one natural accent—and use the resulting visual quietness to make content placement itself the primary design gesture."
+      }
+    ]
+  },
+  "mid-century-modern/pass-5": {
+    "layoutArchetype": "danish-hygge-warmth",
+    "direction": "Scandinavian living-room warmth with soft neutral backgrounds, tactile material photography, and restrained product-as-sculpture presentation. The page feels like a sunlit Copenhagen apartment with curated objects on every surface.",
+    "references": [
+      {
+        "name": "HAY",
+        "url": "https://www.hay.com",
+        "traits": [
+          "masonry product grid with large high-resolution images (910x1100px) on spacious white backgrounds emphasizing object form",
+          "subtle blue-grey interface accents (#D1DEE7) for interactive elements against a predominantly white canvas",
+          "lifestyle photography showing furniture in curated room settings with warm natural light and complementary object pairings"
+        ],
+        "takeaway": "Present content items as curated objects in a spacious masonry grid with generous white surroundings, and pair each item with a lifestyle context image that shows it in a warm, lived-in Scandinavian interior."
+      },
+      {
+        "name": "Muuto",
+        "url": "https://www.muuto.com",
+        "traits": [
+          "product-as-sculpture presentation where furniture is photographed as tactile art objects emphasizing materiality (marble, mouth-blown glass, powder-coated steel)",
+          "neutral white-and-grey foundation with accent colors derived solely from the products themselves rather than UI chrome",
+          "poetic descriptive copy ('sculptural forms and tactile materials') set in generous spacing beneath each product image"
+        ],
+        "takeaway": "Let the content objects themselves provide all color in the interface—keep the UI shell pure white and warm grey, so every splash of color comes from the featured items, making them feel like curated gallery pieces."
+      },
+      {
+        "name": "Normann Copenhagen",
+        "url": "https://www.normann-copenhagen.com",
+        "traits": [
+          "full-width seasonal hero banners with soft desaturated photography and overlaid thin sans-serif headlines in white",
+          "category grid using alternating tall and wide image aspect ratios creating a dynamic editorial mosaic",
+          "warm off-white (#F8F6F3) page background that avoids clinical pure-white, evoking unbleached Danish linen"
+        ],
+        "takeaway": "Set the entire page on a warm off-white background (#F8F6F3) that reads as natural linen, and use an alternating tall/wide image mosaic for the content grid to create the unhurried browsing rhythm of a Scandinavian design showroom."
+      }
+    ]
+  },
+  "mid-century-modern/pass-6": {
+    "layoutArchetype": "pop-art-warhol",
+    "direction": "Pop art screen-print aesthetic with repeated image grids, high-saturation duotone color shifts, and bold Warhol-era graphic flatness. The page reads like a silkscreen portfolio with every panel punched to maximum chroma.",
+    "references": [
+      {
+        "name": "The Andy Warhol Museum",
+        "url": "https://www.warhol.org",
+        "traits": [
+          "full-bleed hero video sections with cinematic title-card overlays at 2560x1624px resolution dominating the viewport",
+          "preset typographic scale system (13px/20px/36px/42px) creating a disciplined size hierarchy against neutral black-white-grey backgrounds",
+          "image carousels presenting artworks as large focal-point photographs where the art's own color palette provides all chromatic energy"
+        ],
+        "takeaway": "Use a strict 4-step type scale (small/medium/large/x-large) on a neutral black-and-white scaffold, and let full-bleed artwork or hero imagery provide all the color—the interface stays monochrome so content pops like a screen print."
+      },
+      {
+        "name": "Roy Lichtenstein Foundation",
+        "url": "https://lichtensteinfoundation.org",
+        "traits": [
+          "Ben-Day dot pattern textures visible in artwork reproductions that define the pop-art halftone language",
+          "primary-color palette (red, yellow, blue, black) used in bold flat fills with hard comic-book outlines",
+          "grid-based artwork catalog where each piece is presented at uniform scale in a strict row-column matrix"
+        ],
+        "takeaway": "Apply a visible halftone dot-pattern texture to background fills and image overlays, and restrict the palette to flat primary colors (red, yellow, blue) with heavy black outlines on all container edges."
+      },
+      {
+        "name": "MoMA Design Store",
+        "url": "https://store.moma.org",
+        "traits": [
+          "product grid with clean white backgrounds and consistent square aspect ratios creating a gallery-wall uniformity",
+          "bold red (#E4002B) accent used sparingly for price badges and sale callouts against the otherwise neutral layout",
+          "category navigation as a horizontal pill-bar with each category in a distinct rounded-rectangle tab"
+        ],
+        "takeaway": "Build a strict uniform-square product grid on pure white where every card is the same size and proportion, then use a single high-chroma accent (pop-art red or electric blue) exclusively for interactive badges and price callouts."
       }
     ]
   },
@@ -431,6 +575,78 @@
       }
     ]
   },
+  "retro-50s/pass-5": {
+    "layoutArchetype": "motel-neon-roadside",
+    "direction": "Neon-sign roadside motel aesthetic with glowing tube-letter headlines, dark asphalt backgrounds, and illuminated vacancy-sign color palettes. The page feels like cruising Route 66 at dusk past flickering motel marquees.",
+    "references": [
+      {
+        "name": "Roadtrippers",
+        "url": "https://www.roadtrippers.com",
+        "traits": [
+          "organic 'bean' shapes and squiggle decorations scattered throughout the layout as playful roadside-sign ornaments",
+          "dark blue navigation backgrounds with illustrated location imagery evoking vintage highway signage and road atlases",
+          "numbered shape elements and carousel modules presenting destinations as a curated road-trip itinerary sequence"
+        ],
+        "takeaway": "Scatter organic bean-shaped and squiggle decorations around content blocks as neon-sign ornaments, and present content items as a numbered itinerary sequence suggesting a road-trip route from stop to stop."
+      },
+      {
+        "name": "The Neon Museum Las Vegas",
+        "url": "https://www.neonmuseum.org",
+        "traits": [
+          "deep black (#0A0A0A) backgrounds that make neon-colored elements glow with maximum contrast and luminosity",
+          "gallery grid of restored neon signs photographed at night with each sign's original color palette preserved (hot pink, turquoise, amber, cherry red)",
+          "vintage typography specimens displayed as hero content—each sign's letterform treated as a design artifact"
+        ],
+        "takeaway": "Set the entire page on a deep black background and render all headlines with neon-glow text-shadow effects (0 0 10px, 0 0 40px in the accent color), so each heading reads like a lit tube-letter motel sign against the night sky."
+      },
+      {
+        "name": "El Cosmico Marfa",
+        "url": "https://elcosmico.com",
+        "traits": [
+          "warm desert twilight photography with magenta/amber/indigo sunset gradients as hero backgrounds",
+          "retro-revival display typography with rounded, wide-set letterforms reminiscent of 1950s motor court signage",
+          "accommodation cards styled as vintage postcards with rounded corners, warm borders, and hand-lettered labels"
+        ],
+        "takeaway": "Style content cards as vintage postcards with rounded 16px corners, warm tan borders, and a slight drop-shadow rotation (1-2 degrees) so they feel like physical cards scattered on a motel lobby counter."
+      }
+    ]
+  },
+  "retro-50s/pass-6": {
+    "layoutArchetype": "kitchen-appliance-pastel",
+    "direction": "Retro kitchen showroom with rounded pastel appliance shapes, chrome trim accents, and 1950s domestic color palettes. The page looks like opening a SMEG refrigerator door to find perfectly arranged content inside.",
+    "references": [
+      {
+        "name": "SMEG",
+        "url": "https://www.smeg.com",
+        "traits": [
+          "product photography showcasing signature '50s Style' rounded silhouettes with bold saturated colors (pastel blue, cream, red, mint) on clean white backgrounds",
+          "card-based product grid where each appliance's own color becomes the dominant visual element against neutral surroundings",
+          "category navigation organized by appliance type with large hero banners proclaiming 'bold colors and timeless curves' as design philosophy"
+        ],
+        "takeaway": "Give each content card a dominant pastel background color drawn from a 1950s appliance palette (mint #B8E8D0, powder blue #A8D4E6, cream #FFF5E1, blush pink #F5C6C6) and use rounded silhouette shapes (pill buttons, capsule containers) that echo retro appliance curves."
+      },
+      {
+        "name": "KitchenAid",
+        "url": "https://www.kitchenaid.com",
+        "traits": [
+          "color-swatch selector strips showing 15+ mixer colors in a horizontal row, making color itself a primary navigation and content element",
+          "product hero sections with the appliance centered on a matching solid-color background that extends edge-to-edge",
+          "chrome and metallic accent treatments on UI elements (buttons with subtle gradient sheen, badge outlines) simulating polished kitchen hardware"
+        ],
+        "takeaway": "Add a horizontal color-swatch strip as a navigation or filtering element, and give buttons and interactive elements a subtle chrome gradient sheen (light grey to white highlight) that simulates polished kitchen appliance trim."
+      },
+      {
+        "name": "Food52",
+        "url": "https://food52.com",
+        "traits": [
+          "editorial recipe grid mixing warm overhead food photography with clean white card frames and generous 24px gutters",
+          "warm cream (#FAF7F2) page background with copper/terracotta accent colors evoking cast-iron and ceramic cookware",
+          "hand-curated 'shop the story' sections where kitchen objects are displayed as still-life compositions with editorial captions"
+        ],
+        "takeaway": "Set the page on a warm cream background (#FAF7F2) and present content items as still-life compositions with editorial captions, using copper/terracotta accents and generous card gutters to create the orderly warmth of a retro kitchen shelf display."
+      }
+    ]
+  },
   "liquid/pass-1": {
     "layoutArchetype": "morphing-blob-surfaces",
     "direction": "Blob-surface layout with organic morphing shapes, soft gradients bleeding into each other, and liquid dissolve transitions between sections.",
@@ -575,6 +791,78 @@
       }
     ]
   },
+  "liquid/pass-5": {
+    "layoutArchetype": "neon-plasma",
+    "direction": "Electronic music synth-panel aesthetic with dark void backgrounds, neon-plasma accent glows, and modular rack-unit content blocks. The page feels like a hardware synthesizer face plate lit by LED strips in a dark studio.",
+    "references": [
+      {
+        "name": "Ableton",
+        "url": "https://www.ableton.com",
+        "traits": [
+          "modular card-based content sections where each product (Live, Push, Move, Note) gets its own self-contained block like a rack unit",
+          "functional minimalist white backgrounds with precise typographic hierarchy using varying sans-serif weights for scannable structure",
+          "building-block layout philosophy where cards, feature panels, and blog posts tile as independent modules suggesting a modular synthesis approach"
+        ],
+        "takeaway": "Organize content as discrete modular rack-units—each block is a self-contained panel with its own header, content, and controls, tiled vertically like hardware modules mounted in a synthesizer rack."
+      },
+      {
+        "name": "Native Instruments",
+        "url": "https://www.native-instruments.com",
+        "traits": [
+          "deep teal (#3E8CBB) and midnight (#161819) dual-tone palette with red (#D64040) reserved exclusively for notification badges and alert states",
+          "Graphik typeface family across regular, medium, and semibold weights creating a precise instrument-panel typographic hierarchy",
+          "product navigation organized as a dense instrument-catalog grid where each item represents a distinct software or hardware module"
+        ],
+        "takeaway": "Use a deep teal-on-midnight color scheme with a single hot accent (red or magenta) reserved only for active/live states, and set all type in a geometric sans-serif at 3 distinct weights to create the readout precision of a synth display."
+      },
+      {
+        "name": "Splice",
+        "url": "https://splice.com",
+        "traits": [
+          "dark-mode-first interface (#121212) with waveform visualizations and audio-spectrum graphics as primary content imagery",
+          "horizontal sample-browser rows with inline play buttons and miniature waveform thumbnails creating a visual audio-timeline",
+          "neon accent colors (electric purple, hot pink, cyan) applied as progress bars, play-state indicators, and genre-tag pills against the dark canvas"
+        ],
+        "takeaway": "Render inline waveform graphics and audio-spectrum visualizations as decorative content elements, and use neon accent colors (cyan, magenta, electric purple) only for interactive states and progress indicators against a near-black (#121212) background."
+      }
+    ]
+  },
+  "liquid/pass-6": {
+    "layoutArchetype": "ink-in-water",
+    "direction": "Calligraphy ink-drop aesthetic with feathered edges, ink-wash gradient diffusion, and brush-stroke decorative elements. The page feels like watching ink droplets bloom in still water, with content emerging from fluid darkness.",
+    "references": [
+      {
+        "name": "Montblanc",
+        "url": "https://www.montblanc.com",
+        "traits": [
+          "deep navy-black (#1A1A2E) hero backgrounds with white logotype and whisper-thin serif headlines creating an ink-on-parchment contrast",
+          "product photography of pens with dramatic macro close-ups revealing nib details, ink flow channels, and lacquer surface reflections",
+          "generous vertical scroll pacing with each product section occupying a full viewport height, separated by slow crossfade transitions"
+        ],
+        "takeaway": "Use deep ink-navy backgrounds (#1A1A2E) with whisper-thin serif headlines in white, and pace each content section at full viewport height with slow opacity transitions between them, creating the meditative rhythm of a pen touching paper."
+      },
+      {
+        "name": "Pilot Pen",
+        "url": "https://www.pilotpen.us",
+        "traits": [
+          "brand-blue gradient footer (#0F72B7 to #054A7A) creating an ink-well depth effect that darkens toward the bottom of the page",
+          "sky-blue hyperlinks that shift to warm yellow on hover, simulating ink color-change chemistry",
+          "hero banner system with full-width photographic panels showcasing writing instruments in context with their ink trails"
+        ],
+        "takeaway": "Apply a vertical gradient that deepens from light to dark as the page scrolls downward (#0F72B7 to #054A7A), creating an ink-well depth illusion where content nearer the bottom feels submerged in denser fluid."
+      },
+      {
+        "name": "Sumi Ink Club",
+        "url": "https://sumiinkclub.com",
+        "traits": [
+          "brush-stroke textures used as section dividers and background fills with visible bristle marks and ink-bleed edges",
+          "high-contrast black sumi ink on natural rice-paper white (#F5F0E8) creating an authentic calligraphic ground",
+          "hand-drawn typographic elements mixed with clean digital type, blending organic calligraphy with structured layout"
+        ],
+        "takeaway": "Use brush-stroke SVG textures as section dividers and decorative borders—thick horizontal ink-swipes with visible bristle marks and feathered edges that separate content blocks like calligraphic rule lines on handmade paper."
+      }
+    ]
+  },
   "slate/pass-1": {
     "layoutArchetype": "carved-monolith-console",
     "direction": "Etched-stone console with recessed panels, engraved typography, and chiseled borders. Dark, heavy, immovable—like a control surface carved from a single block.",
@@ -716,6 +1004,78 @@
           "badge and seal design elements (park emblems, trail markers) used as visual anchors and section icons"
         ],
         "takeaway": "Use WPA-poster-inspired illustrated badges and trail-marker iconography as section headers and navigation waypoints, giving the layout the feel of a trail map through a sandstone canyon."
+      }
+    ]
+  },
+  "slate/pass-5": {
+    "layoutArchetype": "marble-luxury",
+    "direction": "Polished marble luxury with vein-pattern textures, gold-foil accents, and haute-couture typography. The page feels like the lobby of a private bank carved from a single block of Calacatta marble.",
+    "references": [
+      {
+        "name": "Bottega Veneta",
+        "url": "https://www.bottegaveneta.com",
+        "traits": [
+          "ultra-minimal grid with massive negative space (70%+ empty) and a single product image per viewport section",
+          "muted stone-green (#5C7C5E) brand accent used sparingly against cream and charcoal for a restrained luxury palette",
+          "navigation reduced to a wordmark and a single icon—all secondary controls hidden until explicitly invoked"
+        ],
+        "takeaway": "Reduce navigation to an absolute minimum (wordmark + one icon) and let each content section contain a single centered image with 70%+ negative space, making every visual feel like a museum-grade object displayed on a marble pedestal."
+      },
+      {
+        "name": "Celine",
+        "url": "https://www.celine.com",
+        "traits": [
+          "Neue Haas Grotesk Display typeface in regular and bold weights creating a refined Swiss-luxury typographic identity",
+          "neutral black/white/cream palette with soft tan product tones providing the only warmth in an otherwise monochrome interface",
+          "seasonal collection hero sections ('PRINTEMPS 2026') using full-bleed photography with minimal text overlay"
+        ],
+        "takeaway": "Set all typography in a refined grotesk typeface (Neue Haas Grotesk or similar) at two weights only (regular and bold), and use an austere black/white/cream palette where product photography provides the sole source of color warmth."
+      },
+      {
+        "name": "Savills Private Finance",
+        "url": "https://www.savills.com",
+        "traits": [
+          "deep navy (#002F5F) and gold (#C5A962) dual-accent system conveying private-banking authority on white marble-clean backgrounds",
+          "data-rich property cards with precise specification grids (price, area, bedrooms, location) set in small serif type",
+          "formal grid layout with strict 12-column alignment and zero playful elements—every pixel communicates institutional weight"
+        ],
+        "takeaway": "Use a deep navy and gold dual-accent system on a pure white background, and present all content in strict 12-column grid alignment with specification-style metadata (small serif type, structured key-value pairs) that conveys private-institution authority."
+      }
+    ]
+  },
+  "slate/pass-6": {
+    "layoutArchetype": "concrete-brutalist-bunker",
+    "direction": "Military command-center aesthetic with tactical green-on-dark overlays, classified-document redaction patterns, and armored-panel container styling. The page feels like a defense contractor's secure briefing room.",
+    "references": [
+      {
+        "name": "Lockheed Martin",
+        "url": "https://www.lockheedmartin.com",
+        "traits": [
+          "domain-based navigation taxonomy (Air, Land, Sea, Space, Cyber) with each domain functioning as a classified compartment of the interface",
+          "product showcase cards featuring technical systems (THAAD interceptors, autonomous vehicles) with mission-focused descriptive copy emphasizing operational readiness",
+          "dark corporate hero sections with video integration and bold sans-serif headlines ('21st Century Security') projecting institutional authority"
+        ],
+        "takeaway": "Organize content into domain compartments (Air, Land, Sea, Space, Cyber or equivalent taxonomies) as top-level navigation categories, and present each content card with mission-focused language and technical system imagery that conveys operational capability."
+      },
+      {
+        "name": "General Dynamics",
+        "url": "https://www.gd.com",
+        "traits": [
+          "steel-grey (#3D3D3D) and navy (#1B2A4A) bi-tonal palette with white text creating a hardened-surface material language",
+          "segmented business-unit architecture where each division (aerospace, marine, combat systems) has its own visual sub-identity within a unified chrome",
+          "specification-panel content blocks with technical stats (range, payload, speed) displayed as labeled data points in a grid format"
+        ],
+        "takeaway": "Use a steel-grey and navy bi-tonal palette for all surfaces, and display content metrics as labeled specification data points (range, capacity, status) in a structured grid that reads like a tactical systems readout."
+      },
+      {
+        "name": "Palantir Technologies",
+        "url": "https://www.palantir.com",
+        "traits": [
+          "pure black (#000000) backgrounds with thin white geometric line-art diagrams and network-graph visualizations as hero content",
+          "sparse typography (one headline, one paragraph, one CTA per viewport section) with extreme vertical spacing creating a classified-briefing pacing",
+          "constellation-style dot-and-line connection graphics linking data nodes, creating a tactical intelligence-network visual language"
+        ],
+        "takeaway": "Use thin white line-art network diagrams and constellation-style node graphs as decorative hero elements on pure black backgrounds, and space content at one element per viewport height to create the sparse, deliberate pacing of a classified intelligence briefing."
       }
     ]
   }

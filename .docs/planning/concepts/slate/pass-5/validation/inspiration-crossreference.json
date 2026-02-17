@@ -1,0 +1,42 @@
+{
+  "passId": "slate-pass-5",
+  "styleId": "slate",
+  "pass": 5,
+  "layoutArchetype": "marble-luxury",
+  "references": [
+    {
+      "name": "Bottega Veneta",
+      "url": "https://www.bottegaveneta.com",
+      "takeaway": "Reduce navigation to an absolute minimum (wordmark + one icon) and let each content section contain a single centered image with 70%+ negative space, making every visual feel like a museum-grade object displayed on a marble pedestal.",
+      "applied": [
+        "Navigation reduced to a minimal wordmark ('Meridian') plus compact icon pills — all secondary labels hidden by default on desktop, revealed only on mobile expansion",
+        "Dashboard hero card uses massive negative space (center-aligned single stat block occupying ~30% of the card area) creating a museum-pedestal presentation for the $847M portfolio value",
+        "Gallery exhibition view displays each idea in isolated brass frames with generous padding and centered imagery, treating each investment thesis as a curated gallery object",
+        "Spacious density setting maintained throughout — generous padding on cards (28-40px), wide gaps between sections (40-48px), and centered alignment creating breathing room"
+      ]
+    },
+    {
+      "name": "Celine",
+      "url": "https://www.celine.com",
+      "takeaway": "Set all typography in a refined grotesk typeface at two weights only (regular and bold), and use an austere black/white/cream palette where product photography provides the sole source of color warmth.",
+      "applied": [
+        "While using Cinzel serif (per style direction for engraved banking feel) instead of grotesk, the two-weight discipline is maintained: Cinzel at 400 (regular) and 600-700 (bold) only, with no intermediate weights creating a refined typographic hierarchy",
+        "Austere palette of cream (#f2ece6), white (#faf7f2), and dark green (#1a4a2a) with brass gold (#b8963a) as the sole warmth accent — mirroring Celine's monochrome-plus-one-warm-tone approach",
+        "Content imagery (gallery frame illustrations, chart SVGs) provides the primary visual interest against an otherwise restrained neutral canvas"
+      ]
+    },
+    {
+      "name": "Savills Private Finance",
+      "url": "https://www.savills.com",
+      "takeaway": "Use a deep navy and gold dual-accent system on a pure white background, and present all content in strict 12-column grid alignment with specification-style metadata (small serif type, structured key-value pairs) that conveys private-institution authority.",
+      "applied": [
+        "Deep green (#1a4a2a) and gold (#b8963a) dual-accent system applied on cream/white backgrounds — adapted from navy/gold to match the marble banking direction while maintaining the same authoritative contrast structure",
+        "Ledger table uses strict columnar alignment with specification-style metadata: reference numbers (MPW-001), fund types, AUM figures, and YTD returns in structured key-value layout",
+        "Schema planner certificates present data in formal field-label/field-value pairs using small serif type (Cinzel at 11px for labels, Libre Baskerville at 14px for values)",
+        "Card catalog uses structured grid layout (reference code, title, type) echoing Savills' property card specification grids",
+        "Settings panel uses key-value rows with institutional-weight formatting — engraved section labels with brass gold-leaf dividers between groups"
+      ]
+    }
+  ],
+  "combinedInfluence": "The design synthesizes Bottega Veneta's radical negative space and minimal navigation with Celine's disciplined two-weight typography and monochrome-plus-warmth palette, grounded in Savills' institutional data-presentation patterns. The result is a private banking interface that feels like walking through a marble-clad lobby where every element has been placed with deliberate authority and quiet luxury."
+}

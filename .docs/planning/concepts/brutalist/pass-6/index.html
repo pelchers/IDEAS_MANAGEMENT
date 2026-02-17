@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FREIGHT // COMMAND — Logistics Idea Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@300;400;600;700;800;900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- LOADING OVERLAY -->
+  <div id="loading-overlay">
+    <div class="scan-loader">
+      <div class="scan-bar"></div>
+      <div class="scan-readout">SCANNING MANIFEST... <span id="load-pct">0</span>%</div>
+    </div>
+  </div>
+
+  <!-- AMBIENT CONVEYOR LINES -->
+  <div class="conveyor-line conveyor-top"></div>
+
+  <!-- TOP TAB STRIP NAVIGATION -->
+  <header id="main-header">
+    <div class="header-brand">
+      <div class="brand-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect x="2" y="6" width="24" height="16" stroke="#d4622a" stroke-width="2" fill="none"/>
+          <line x1="8" y1="6" x2="8" y2="22" stroke="#d4622a" stroke-width="1.5"/>
+          <line x1="14" y1="6" x2="14" y2="22" stroke="#d4622a" stroke-width="1.5"/>
+          <line x1="20" y1="6" x2="20" y2="22" stroke="#d4622a" stroke-width="1.5"/>
+          <line x1="2" y1="14" x2="26" y2="14" stroke="#d4622a" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <span class="brand-name">FREIGHT<span class="brand-sep">//</span>CMD</span>
+    </div>
+    <nav id="tab-strip" role="tablist">
+      <button class="tab-btn active" data-view="dashboard" role="tab" aria-selected="true">
+        <span class="tab-num">01</span>
+        <span class="tab-label">OPS DECK</span>
+      </button>
+      <button class="tab-btn" data-view="projects" role="tab" aria-selected="false">
+        <span class="tab-num">02</span>
+        <span class="tab-label">MANIFESTS</span>
+      </button>
+      <button class="tab-btn" data-view="project-workspace" role="tab" aria-selected="false">
+        <span class="tab-num">03</span>
+        <span class="tab-label">DOCK BAY</span>
+      </button>
+      <button class="tab-btn" data-view="kanban" role="tab" aria-selected="false">
+        <span class="tab-num">04</span>
+        <span class="tab-label">FLOW BOARD</span>
+      </button>
+      <button class="tab-btn" data-view="whiteboard" role="tab" aria-selected="false">
+        <span class="tab-num">05</span>
+        <span class="tab-label">ROUTE MAP</span>
+      </button>
+      <button class="tab-btn" data-view="schema-planner" role="tab" aria-selected="false">
+        <span class="tab-num">06</span>
+        <span class="tab-label">INVENTORY DB</span>
+      </button>
+      <button class="tab-btn" data-view="directory-tree" role="tab" aria-selected="false">
+        <span class="tab-num">07</span>
+        <span class="tab-label">WAREHOUSE</span>
+      </button>
+      <button class="tab-btn" data-view="ideas" role="tab" aria-selected="false">
+        <span class="tab-num">08</span>
+        <span class="tab-label">IDEAS</span>
+      </button>
+      <button class="tab-btn" data-view="ai-chat" role="tab" aria-selected="false">
+        <span class="tab-num">09</span>
+        <span class="tab-label">DISPATCH</span>
+      </button>
+      <button class="tab-btn" data-view="settings" role="tab" aria-selected="false">
+        <span class="tab-num">10</span>
+        <span class="tab-label">CTRL PANEL</span>
+      </button>
+    </nav>
+    <button id="mobile-menu-toggle" aria-label="Open navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- MOBILE NAV DRAWER -->
+  <div id="mobile-nav-overlay"></div>
+  <nav id="mobile-nav" aria-label="Mobile navigation">
+    <div class="mobile-nav-header">
+      <span>MANIFEST INDEX</span>
+      <button id="mobile-nav-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <button class="mobile-tab-btn active" data-view="dashboard">
+      <span class="mtab-num">01</span> OPS DECK
+    </button>
+    <button class="mobile-tab-btn" data-view="projects">
+      <span class="mtab-num">02</span> MANIFESTS
+    </button>
+    <button class="mobile-tab-btn" data-view="project-workspace">
+      <span class="mtab-num">03</span> DOCK BAY
+    </button>
+    <button class="mobile-tab-btn" data-view="kanban">
+      <span class="mtab-num">04</span> FLOW BOARD
+    </button>
+    <button class="mobile-tab-btn" data-view="whiteboard">
+      <span class="mtab-num">05</span> ROUTE MAP
+    </button>
+    <button class="mobile-tab-btn" data-view="schema-planner">
+      <span class="mtab-num">06</span> INVENTORY DB
+    </button>
+    <button class="mobile-tab-btn" data-view="directory-tree">
+      <span class="mtab-num">07</span> WAREHOUSE
+    </button>
+    <button class="mobile-tab-btn" data-view="ideas">
+      <span class="mtab-num">08</span> IDEAS
+    </button>
+    <button class="mobile-tab-btn" data-view="ai-chat">
+      <span class="mtab-num">09</span> DISPATCH
+    </button>
+    <button class="mobile-tab-btn" data-view="settings">
+      <span class="mtab-num">10</span> CTRL PANEL
+    </button>
+  </nav>
+
+  <!-- MAIN CONTENT AREA -->
+  <main id="content-area">
+
+    <!-- ===================== VIEW: DASHBOARD ===================== -->
+    <section class="view-panel active" id="view-dashboard" data-view="dashboard">
+      <div class="view-inner">
+        <div class="view-title-bar">
+          <h1>OPERATIONS DECK</h1>
+          <span class="title-barcode">||||| |||| ||| |||||| |||</span>
+          <span class="title-timestamp" id="dash-clock"></span>
+        </div>
+
+        <!-- Tracking / Search hero -->
+        <div class="tracking-hero">
+          <div class="tracking-field-group">
+            <div class="tracking-field">
+              <label>ORIGIN</label>
+              <input type="text" placeholder="SHANGHAI, CN" class="wh-input">
+            </div>
+            <div class="tracking-arrow">
+              <svg width="32" height="16" viewBox="0 0 32 16"><path d="M0 8 H28 L22 2 M28 8 L22 14" stroke="#d4622a" stroke-width="2" fill="none"/></svg>
+            </div>
+            <div class="tracking-field">
+              <label>DESTINATION</label>
+              <input type="text" placeholder="ROTTERDAM, NL" class="wh-input">
+            </div>
+            <button class="wh-btn primary">TRACK SHIPMENT</button>
+          </div>
+        </div>
+
+        <!-- Step Pipeline -->
+        <div class="step-pipeline">
+          <div class="step completed"><span class="step-dot"></span><span class="step-text">BOOKED</span></div>
+          <div class="step-line filled"></div>
+          <div class="step completed"><span class="step-dot"></span><span class="step-text">PICKED UP</span></div>
+          <div class="step-line filled"></div>
+          <div class="step active"><span class="step-dot"></span><span class="step-text">IN TRANSIT</span></div>
+          <div class="step-line"></div>
+          <div class="step"><span class="step-dot"></span><span class="step-text">CUSTOMS</span></div>
+          <div class="step-line"></div>
+          <div class="step"><span class="step-dot"></span><span class="step-text">DELIVERED</span></div>
+        </div>
+
+        <!-- Gauge Cluster -->
+        <div class="gauge-cluster">
+          <div class="gauge-card pallet-drop" data-tooltip="Total containers processed this quarter" data-tooltip-weight="12,450 TEU" data-tooltip-dest="ALL PORTS">
+            <div class="gauge-ring" data-pct="78">
+              <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" class="gauge-bg"/>
+                <circle cx="60" cy="60" r="52" class="gauge-fill" style="--pct:78"/>
+              </svg>
+              <div class="gauge-value">78%</div>
+            </div>
+            <div class="gauge-label">THROUGHPUT</div>
+            <div class="gauge-detail">12,450 / 16,000 TEU</div>
+          </div>
+          <div class="gauge-card pallet-drop" data-tooltip="On-time delivery performance" data-tooltip-weight="5,280 units" data-tooltip-dest="GLOBAL">
+            <div class="gauge-ring" data-pct="92">
+              <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" class="gauge-bg"/>
+                <circle cx="60" cy="60" r="52" class="gauge-fill" style="--pct:92"/>
+              </svg>
+              <div class="gauge-value">92%</div>
+            </div>
+            <div class="gauge-label">ON-TIME RATE</div>
+            <div class="gauge-detail">5,280 / 5,739 shipments</div>
+          </div>
+          <div class="gauge-card pallet-drop" data-tooltip="Warehouse capacity utilization" data-tooltip-weight="340,000 sqft" data-tooltip-dest="ZONE A-F">
+            <div class="gauge-ring" data-pct="65">
+              <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" class="gauge-bg"/>
+                <circle cx="60" cy="60" r="52" class="gauge-fill" style="--pct:65"/>
+              </svg>
+              <div class="gauge-value">65%</div>
+            </div>
+            <div class="gauge-label">CAPACITY</div>
+            <div class="gauge-detail">221K / 340K sqft</div>
+          </div>
+          <div class="gauge-card pallet-drop" data-tooltip="Active fleet vehicles on route" data-tooltip-weight="312 trucks" data-tooltip-dest="NORTH AM">
+            <div class="gauge-ring" data-pct="84">
+              <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" class="gauge-bg"/>
+                <circle cx="60" cy="60" r="52" class="gauge-fill" style="--pct:84"/>
+              </svg>
+              <div class="gauge-value">84%</div>
+            </div>
+            <div class="gauge-label">FLEET UTIL</div>
+            <div class="gauge-detail">262 / 312 active</div>
+          </div>
+        </div>
+
+        <!-- Hazmat divider -->
+        <div class="hazmat-divider"></div>
+
+        <!-- Metrics Row -->
+        <div class="metrics-bar">
+          <div class="metric-chip pallet-drop">
+            <span class="metric-val">2,847</span>
+            <span class="metric-lbl">ORDERS TODAY</span>
+          </div>
+          <div class="metric-chip pallet-drop">
+            <span class="metric-val">$4.2M</span>
+            <span class="metric-lbl">REVENUE MTD</span>
+          </div>
+          <div class="metric-chip pallet-drop">
+            <span class="metric-val">14.2h</span>
+            <span class="metric-lbl">AVG TRANSIT</span>
+          </div>
+          <div class="metric-chip pallet-drop">
+            <span class="metric-val">0.3%</span>
+            <span class="metric-lbl">DAMAGE RATE</span>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-section">
+          <h2 class="section-heading">RECENT DISPATCH LOG</h2>
+          <div class="activity-table">
+            <div class="at-header">
+              <span>TRACKING #</span><span>ORIGIN</span><span>DEST</span><span>STATUS</span><span>ETA</span>
+            </div>
+            <div class="at-row pallet-drop">
+              <span class="mono-text">FRT-2024-88412</span><span>Shanghai, CN</span><span>Rotterdam, NL</span><span class="status-badge transit">IN TRANSIT</span><span>Feb 18</span>
+            </div>
+            <div class="at-row pallet-drop">
+              <span class="mono-text">FRT-2024-88401</span><span>Los Angeles, US</span><span>Tokyo, JP</span><span class="status-badge delivered">DELIVERED</span><span>Feb 14</span>
+            </div>
+            <div class="at-row pallet-drop">
+              <span class="mono-text">FRT-2024-88397</span><span>Hamburg, DE</span><span>Singapore, SG</span><span class="status-badge customs">CUSTOMS</span><span>Feb 20</span>
+            </div>
+            <div class="at-row pallet-drop">
+              <span class="mono-text">FRT-2024-88385</span><span>Mumbai, IN</span><span>Durban, ZA</span><span class="status-badge transit">IN TRANSIT</span><span>Feb 22</span>
+            </div>
+            <div class="at-row pallet-drop">
+              <span class="mono-text">FRT-2024-88379</span><span>Santos, BR</span><span>Antwerp, BE</span><span class="status-badge booked">BOOKED</span><span>Mar 01</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VIEW: PROJECTS ===================== -->
+    <section class="view-panel" id="view-projects" data-view="projects">
+      <div class="view-inner">
+        <div class="view-title-bar">
+          <h1>SHIPPING MANIFESTS</h1>
+          <span class="title-barcode">|||| ||||| || ||| |||||</span>
+          <button class="wh-btn primary">+ NEW MANIFEST</button>
+        </div>
+
+        <div class="manifest-filter-bar">
+          <input type="text" class="wh-input" placeholder="Search by tracking # or destination...">
+          <select class="wh-select">
+            <option>ALL STATUS</option>
+            <option>ACTIVE</option>
+            <option>DELIVERED</option>
+            <option>DELAYED</option>
+          </select>
+          <select class="wh-select">
+            <option>ALL REGIONS</option>
+            <option>ASIA-PAC</option>
+            <option>EUROPE</option>
+            <option>AMERICAS</option>
+          </select>
+        </div>
+
+        <div class="manifest-table">
+          <div class="mt-header">
+            <span>MANIFEST #</span><span>PROJECT NAME</span><span>WEIGHT</span><span>DESTINATION</span><span>STATUS</span><span>PROGRESS</span>
+          </div>
+          <div class="mt-row pallet-drop" data-tooltip="Cross-dock consolidation for Q1 EU expansion" data-tooltip-weight="24,500 kg" data-tooltip-dest="EMEA REGION">
+            <span class="mono-text">MFT-001</span>
+            <span class="proj-name">EU Distribution Network Expansion</span>
+            <span>24,500 kg</span>
+            <span>Rotterdam, NL</span>
+            <span class="status-badge transit">ACTIVE</span>
+            <span class="progress-mini"><span class="progress-fill" style="width:72%"></span></span>
+          </div>
+          <div class="mt-row pallet-drop" data-tooltip="Cold chain infrastructure build for pharma corridor" data-tooltip-weight="18,200 kg" data-tooltip-dest="APAC">
+            <span class="mono-text">MFT-002</span>
+            <span class="proj-name">Cold Chain Infrastructure — APAC</span>
+            <span>18,200 kg</span>
+            <span>Singapore, SG</span>
+            <span class="status-badge transit">ACTIVE</span>
+            <span class="progress-mini"><span class="progress-fill" style="width:45%"></span></span>
+          </div>
+          <div class="mt-row pallet-drop" data-tooltip="Last-mile automation pilot in three metro areas" data-tooltip-weight="8,100 kg" data-tooltip-dest="DOMESTIC US">
+            <span class="mono-text">MFT-003</span>
+            <span class="proj-name">Last-Mile Automation Pilot</span>
+            <span>8,100 kg</span>
+            <span>Chicago, US</span>
+            <span class="status-badge customs">REVIEW</span>
+            <span class="progress-mini"><span class="progress-fill" style="width:30%"></span></span>
+          </div>
+          <div class="mt-row pallet-drop" data-tooltip="Warehouse robotics integration at Dock 7-12" data-tooltip-weight="42,000 kg" data-tooltip-dest="HQ CAMPUS">
+            <span class="mono-text">MFT-004</span>
+            <span class="proj-name">Warehouse Robotics Integration</span>
+            <span>42,000 kg</span>
+            <span>Memphis, US</span>
+            <span class="status-badge delivered">COMPLETE</span>
+            <span class="progress-mini"><span class="progress-fill" style="width:100%"></span></span>
+          </div>
+          <div class="mt-row pallet-drop" data-tooltip="Cross-border customs automation for LATAM trade lanes" data-tooltip-weight="15,600 kg" data-tooltip-dest="LATAM">
+            <span class="mono-text">MFT-005</span>
+            <span class="proj-name">LATAM Customs Automation</span>
+            <span>15,600 kg</span>
+            <span>Santos, BR</span>
+            <span class="status-badge transit">ACTIVE</span>
+            <span class="progress-mini"><span class="progress-fill" style="width:58%"></span></span>
+          </div>
+          <div class="mt-row pallet-drop" data-tooltip="Sustainability fleet transition to electric vehicles" data-tooltip-weight="31,800 kg" data-tooltip-dest="GLOBAL">
+            <span class="mono-text">MFT-006</span>
+            <span class="proj-name">Green Fleet Transition Program</span>
+            <span>31,800 kg</span>
+            <span>Global</span>
+            <span class="status-badge booked">PLANNING</span>
+            <span class="progress-mini"><span class="progress-fill" style="width:12%"></span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VIEW: PROJECT WORKSPACE ===================== -->
+    <section class="view-panel" id="view-project-workspace" data-view="project-workspace">
+      <div class="view-inner dock-layout">
+        <div class="dock-main">
+          <div class="view-title-bar">
+            <h1>DOCK BAY — EU DISTRIBUTION</h1>
+            <span class="title-barcode">||| |||| ||||| || ||||</span>
+          </div>
+
+          <div class="dock-steel-panel">
+            <div class="dock-info-grid">
+              <div class="dock-info-cell">
+                <span class="dic-label">MANIFEST</span>
+                <span class="dic-value mono-text">MFT-001</span>
+              </div>
+              <div class="dock-info-cell">
+                <span class="dic-label">WEIGHT</span>
+                <span class="dic-value">24,500 kg</span>
+              </div>
+              <div class="dock-info-cell">
+                <span class="dic-label">ORIGIN</span>
+                <span class="dic-value">Shanghai, CN</span>
+              </div>
+              <div class="dock-info-cell">
+                <span class="dic-label">DESTINATION</span>
+                <span class="dic-value">Rotterdam, NL</span>
+              </div>
+              <div class="dock-info-cell">
+                <span class="dic-label">STATUS</span>
+                <span class="dic-value status-badge transit">ACTIVE</span>
+              </div>
+              <div class="dock-info-cell">
+                <span class="dic-label">ETA</span>
+                <span class="dic-value">2026-02-28</span>
+              </div>
+            </div>
+          </div>
+
+          <h2 class="section-heading">TASK MANIFEST</h2>
+          <div class="task-list">
+            <div class="task-row pallet-drop">
+              <input type="checkbox" checked class="wh-checkbox"><span class="task-text done">Negotiate carrier rates for trans-Pacific route</span><span class="task-tag">PROCUREMENT</span>
+            </div>
+            <div class="task-row pallet-drop">
+              <input type="checkbox" checked class="wh-checkbox"><span class="task-text done">Finalize warehouse lease in Rotterdam port zone</span><span class="task-tag">REAL ESTATE</span>
+            </div>
+            <div class="task-row pallet-drop">
+              <input type="checkbox" class="wh-checkbox"><span class="task-text">Install RFID tracking gates at dock doors 4-8</span><span class="task-tag">TECHNOLOGY</span>
+            </div>
+            <div class="task-row pallet-drop">
+              <input type="checkbox" class="wh-checkbox"><span class="task-text">Hire 12 forklift operators for night shift</span><span class="task-tag">STAFFING</span>
+            </div>
+            <div class="task-row pallet-drop">
+              <input type="checkbox" class="wh-checkbox"><span class="task-text">Obtain EU customs pre-clearance documentation</span><span class="task-tag">COMPLIANCE</span>
+            </div>
+            <div class="task-row pallet-drop">
+              <input type="checkbox" class="wh-checkbox"><span class="task-text">Configure WMS for multi-zone inventory allocation</span><span class="task-tag">TECHNOLOGY</span>
+            </div>
+          </div>
+
+          <h2 class="section-heading">NOTES</h2>
+          <div class="dock-notes">
+            <div class="note-card pallet-drop">
+              <div class="note-meta">OPS-LEAD NAKAMURA // 2026-02-10</div>
+              <p>Rotterdam port authority confirmed berth allocation for weeks 10-14. Crane availability secured. Need to coordinate with local trucking partner for last-mile delivery to distribution center.</p>
+            </div>
+            <div class="note-card pallet-drop">
+              <div class="note-meta">LOGISTICS-MGR CHEN // 2026-02-08</div>
+              <p>Container consolidation at Shanghai hub is running 2 days ahead of schedule. LCL shipments from Shenzhen and Guangzhou feeders are confirmed. Total load factor at 94%.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dock-sidebar">
+          <div class="sidebar-panel">
+            <h3 class="sidebar-heading">MANIFEST CLIPBOARD</h3>
+            <div class="sidebar-stat">
+              <span class="ss-label">COMPLETION</span>
+              <span class="ss-value">33%</span>
+              <div class="progress-mini"><span class="progress-fill" style="width:33%"></span></div>
+            </div>
+            <div class="sidebar-stat">
+              <span class="ss-label">DAYS LEFT</span>
+              <span class="ss-value">13</span>
+            </div>
+            <div class="sidebar-stat">
+              <span class="ss-label">TEAM SIZE</span>
+              <span class="ss-value">8</span>
+            </div>
+            <div class="sidebar-stat">
+              <span class="ss-label">BUDGET USED</span>
+              <span class="ss-value">$1.2M / $2.8M</span>
+            </div>
+
+            <div class="hazmat-divider thin"></div>
+
+            <h3 class="sidebar-heading">CREW</h3>
+            <div class="crew-list">
+              <div class="crew-member"><span class="crew-avatar">TN</span> T. Nakamura <span class="crew-role">OPS LEAD</span></div>
+              <div class="crew-member"><span class="crew-avatar">LC</span> L. Chen <span class="crew-role">LOGISTICS</span></div>
+              <div class="crew-member"><span class="crew-avatar">KV</span> K. Van Der Berg <span class="crew-role">CUSTOMS</span></div>
+              <div class="crew-member"><span class="crew-avatar">SM</span> S. Martinez <span class="crew-role">DRIVER MGR</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VIEW: KANBAN ===================== -->
+    <section class="view-panel" id="view-kanban" data-view="kanban">
+      <div class="view-inner">
+        <div class="view-title-bar">
+          <h1>SHIPPING FLOW BOARD</h1>
+          <span class="title-barcode">||||| || |||| ||| |||||</span>
+        </div>
+        <div class="kanban-board">
+          <!-- INBOUND -->
+          <div class="kanban-col">
+            <div class="kanban-col-header inbound">
+              <span class="zone-label">INBOUND</span>
+              <span class="zone-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card pallet-drop" data-tooltip="Refrigerated container shipment" data-tooltip-weight="4,200 kg" data-tooltip-dest="COLD STORAGE A">
+                <div class="kc-barcode">||| |||| ||| || |||||</div>
+                <div class="kc-id mono-text">PKG-4401</div>
+                <div class="kc-title">Refrigerated Pharma Containers</div>
+                <div class="kc-meta"><span class="kc-weight">4,200 kg</span><span class="kc-tag cold">COLD CHAIN</span></div>
+              </div>
+              <div class="kanban-card pallet-drop" data-tooltip="Automotive parts batch" data-tooltip-weight="8,900 kg" data-tooltip-dest="ASSEMBLY LINE 3">
+                <div class="kc-barcode">|||| || ||||| ||| ||||</div>
+                <div class="kc-id mono-text">PKG-4398</div>
+                <div class="kc-title">Auto Parts — Engine Block Batch</div>
+                <div class="kc-meta"><span class="kc-weight">8,900 kg</span><span class="kc-tag heavy">HEAVY</span></div>
+              </div>
+              <div class="kanban-card pallet-drop" data-tooltip="Consumer electronics for retail distribution" data-tooltip-weight="2,100 kg" data-tooltip-dest="RETAIL DC">
+                <div class="kc-barcode">|| ||||| |||| || |||||</div>
+                <div class="kc-id mono-text">PKG-4395</div>
+                <div class="kc-title">Consumer Electronics — Q1 Stock</div>
+                <div class="kc-meta"><span class="kc-weight">2,100 kg</span><span class="kc-tag standard">STD</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- STAGING -->
+          <div class="kanban-col">
+            <div class="kanban-col-header staging">
+              <span class="zone-label">STAGING</span>
+              <span class="zone-count">2</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card pallet-drop" data-tooltip="Textile rolls for garment factory" data-tooltip-weight="3,400 kg" data-tooltip-dest="MFG PLANT B">
+                <div class="kc-barcode">||||| ||| || ||||| ||</div>
+                <div class="kc-id mono-text">PKG-4389</div>
+                <div class="kc-title">Textile Raw Materials — Cotton</div>
+                <div class="kc-meta"><span class="kc-weight">3,400 kg</span><span class="kc-tag standard">STD</span></div>
+              </div>
+              <div class="kanban-card pallet-drop" data-tooltip="Hazardous materials requiring special handling" data-tooltip-weight="1,800 kg" data-tooltip-dest="CHEM STORAGE">
+                <div class="kc-barcode">||| ||||| || |||| |||</div>
+                <div class="kc-id mono-text">PKG-4385</div>
+                <div class="kc-title">Industrial Solvents — HAZMAT</div>
+                <div class="kc-meta"><span class="kc-weight">1,800 kg</span><span class="kc-tag hazmat">HAZMAT</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- OUTBOUND -->
+          <div class="kanban-col">
+            <div class="kanban-col-header outbound">
+              <span class="zone-label">OUTBOUND</span>
+              <span class="zone-count">2</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card pallet-drop" data-tooltip="Food-grade containers for restaurant chain" data-tooltip-weight="5,600 kg" data-tooltip-dest="DIST CENTER NE">
+                <div class="kc-barcode">|||| ||| ||||| || |||</div>
+                <div class="kc-id mono-text">PKG-4380</div>
+                <div class="kc-title">Food Grade — Restaurant Supply</div>
+                <div class="kc-meta"><span class="kc-weight">5,600 kg</span><span class="kc-tag cold">COLD CHAIN</span></div>
+              </div>
+              <div class="kanban-card pallet-drop" data-tooltip="Construction materials for site" data-tooltip-weight="12,300 kg" data-tooltip-dest="SITE BRAVO">
+                <div class="kc-barcode">|| |||| ||| ||||| ||||</div>
+                <div class="kc-id mono-text">PKG-4376</div>
+                <div class="kc-title">Construction Steel — I-Beams</div>
+                <div class="kc-meta"><span class="kc-weight">12,300 kg</span><span class="kc-tag heavy">HEAVY</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- DELIVERED -->
+          <div class="kanban-col">
+            <div class="kanban-col-header delivered">
+              <span class="zone-label">DELIVERED</span>
+              <span class="zone-count">2</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card pallet-drop completed" data-tooltip="Medical equipment delivered successfully" data-tooltip-weight="980 kg" data-tooltip-dest="HOSPITAL WING C">
+                <div class="kc-barcode">||||| || ||| |||| ||||</div>
+                <div class="kc-id mono-text">PKG-4370</div>
+                <div class="kc-title">Medical Equipment — MRI Parts</div>
+                <div class="kc-meta"><span class="kc-weight">980 kg</span><span class="kc-tag standard">STD</span></div>
+              </div>
+              <div class="kanban-card pallet-drop completed" data-tooltip="Office furniture for new HQ floor" data-tooltip-weight="2,200 kg" data-tooltip-dest="HQ FLOOR 12">
+                <div class="kc-barcode">||| |||| ||||| || |||</div>
+                <div class="kc-id mono-text">PKG-4365</div>
+                <div class="kc-title">Office Furniture — Ergonomic Desks</div>
+                <div class="kc-meta"><span class="kc-weight">2,200 kg</span><span class="kc-tag standard">STD</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VIEW: WHITEBOARD ===================== -->
+    <section class="view-panel" id="view-whiteboard" data-view="whiteboard">
+      <div class="view-inner">
+        <div class="view-title-bar">
+          <h1>SUPPLY CHAIN ROUTE MAP</h1>
+          <span class="title-barcode">|| |||| ||| ||||| ||||</span>
+        </div>
+        <div class="route-map-canvas">
+          <svg id="route-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
+            <!-- Route lines -->
+            <line x1="120" y1="200" x2="320" y2="120" class="route-line" data-dist="4,200 km" data-time="3d"/>
+            <line x1="320" y1="120" x2="540" y2="90" class="route-line" data-dist="2,800 km" data-time="2d"/>
+            <line x1="540" y1="90" x2="760" y2="180" class="route-line" data-dist="5,100 km" data-time="4d"/>
+            <line x1="760" y1="180" x2="900" y2="300" class="route-line" data-dist="1,900 km" data-time="1d"/>
+            <line x1="120" y1="200" x2="300" y2="350" class="route-line secondary" data-dist="3,600 km" data-time="3d"/>
+            <line x1="300" y1="350" x2="540" y2="380" class="route-line secondary" data-dist="2,200 km" data-time="2d"/>
+            <line x1="540" y1="380" x2="760" y2="180" class="route-line secondary" data-dist="4,700 km" data-time="3d"/>
+
+            <!-- Distance/time labels -->
+            <text x="210" y="148" class="route-label">4,200 km / 3d</text>
+            <text x="420" y="94" class="route-label">2,800 km / 2d</text>
+            <text x="640" y="122" class="route-label">5,100 km / 4d</text>
+            <text x="830" y="228" class="route-label">1,900 km / 1d</text>
+            <text x="200" y="288" class="route-label alt">3,600 km / 3d</text>
+            <text x="410" y="376" class="route-label alt">2,200 km / 2d</text>
+            <text x="640" y="296" class="route-label alt">4,700 km / 3d</text>
+
+            <!-- Warehouse nodes -->
+            <g class="wh-node" transform="translate(120,200)">
+              <rect x="-40" y="-25" width="80" height="50" class="node-rect origin"/>
+              <text x="0" y="-30" class="node-label">SHANGHAI</text>
+              <text x="0" y="5" class="node-code">HUB-SHA</text>
+            </g>
+            <g class="wh-node" transform="translate(320,120)">
+              <rect x="-40" y="-25" width="80" height="50" class="node-rect"/>
+              <text x="0" y="-30" class="node-label">SINGAPORE</text>
+              <text x="0" y="5" class="node-code">HUB-SIN</text>
+            </g>
+            <g class="wh-node" transform="translate(540,90)">
+              <rect x="-40" y="-25" width="80" height="50" class="node-rect"/>
+              <text x="0" y="-30" class="node-label">DUBAI</text>
+              <text x="0" y="5" class="node-code">HUB-DXB</text>
+            </g>
+            <g class="wh-node" transform="translate(760,180)">
+              <rect x="-40" y="-25" width="80" height="50" class="node-rect"/>
+              <text x="0" y="-30" class="node-label">ROTTERDAM</text>
+              <text x="0" y="5" class="node-code">HUB-RTM</text>
+            </g>
+            <g class="wh-node" transform="translate(900,300)">
+              <rect x="-40" y="-25" width="80" height="50" class="node-rect dest"/>
+              <text x="0" y="-30" class="node-label">HAMBURG</text>
+              <text x="0" y="5" class="node-code">HUB-HAM</text>
+            </g>
+            <g class="wh-node" transform="translate(300,350)">
+              <rect x="-40" y="-25" width="80" height="50" class="node-rect"/>
+              <text x="0" y="-30" class="node-label">MUMBAI</text>
+              <text x="0" y="5" class="node-code">HUB-BOM</text>
+            </g>
+            <g class="wh-node" transform="translate(540,380)">
+              <rect x="-40" y="-25" width="80" height="50" class="node-rect"/>
+              <text x="0" y="-30" class="node-label">JEDDAH</text>
+              <text x="0" y="5" class="node-code">HUB-JED</text>
+            </g>
+          </svg>
+        </div>
+        <div class="route-legend">
+          <div class="legend-item"><span class="legend-line primary-line"></span> Primary Route (10d)</div>
+          <div class="legend-item"><span class="legend-line secondary-line"></span> Alternate Route (8d)</div>
+          <div class="legend-item"><span class="legend-dot origin-dot"></span> Origin Hub</div>
+          <div class="legend-item"><span class="legend-dot dest-dot"></span> Destination Hub</div>
+          <div class="legend-item"><span class="legend-dot relay-dot"></span> Relay Hub</div>
+        </div>
+        <div class="route-stats">
+          <div class="rs-card pallet-drop">
+            <span class="rs-label">TOTAL DISTANCE</span>
+            <span class="rs-value">14,000 km</span>
+          </div>
+          <div class="rs-card pallet-drop">
+            <span class="rs-label">TRANSIT TIME</span>
+            <span class="rs-value">10 days</span>
+          </div>
+          <div class="rs-card pallet-drop">
+            <span class="rs-label">RELAY STOPS</span>
+            <span class="rs-value">5 hubs</span>
+          </div>
+          <div class="rs-card pallet-drop">
+            <span class="rs-label">EST. COST</span>
+            <span class="rs-value">$28,400</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VIEW: SCHEMA PLANNER ===================== -->
+    <section class="view-panel" id="view-schema-planner" data-view="schema-planner">
+      <div class="view-inner">
+        <div class="view-title-bar">
+          <h1>INVENTORY DATABASE</h1>
+          <span class="title-barcode">||||| ||| || |||| |||||</span>
+          <button class="wh-btn primary">+ ADD BIN</button>
+        </div>
+        <div class="schema-grid">
+          <!-- Entity: Warehouse -->
+          <div class="schema-entity pallet-drop">
+            <div class="entity-header">
+              <span class="entity-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4622a" stroke-width="2"><rect x="2" y="7" width="20" height="14"/><path d="M2 7L12 2l10 5"/></svg>
+              </span>
+              <span class="entity-name">WAREHOUSE</span>
+              <span class="entity-barcode">|| |||</span>
+            </div>
+            <div class="entity-fields">
+              <div class="field-row"><span class="field-key">warehouse_id</span><span class="field-type">PK INT</span></div>
+              <div class="field-row"><span class="field-key">name</span><span class="field-type">VARCHAR(120)</span></div>
+              <div class="field-row"><span class="field-key">location_code</span><span class="field-type">VARCHAR(10)</span></div>
+              <div class="field-row"><span class="field-key">capacity_sqft</span><span class="field-type">INT</span></div>
+              <div class="field-row"><span class="field-key">zone_count</span><span class="field-type">INT</span></div>
+              <div class="field-row"><span class="field-key">manager_id</span><span class="field-type">FK INT</span></div>
+            </div>
+          </div>
+          <!-- Entity: Zone -->
+          <div class="schema-entity pallet-drop">
+            <div class="entity-header">
+              <span class="entity-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5a8fa8" stroke-width="2"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+              </span>
+              <span class="entity-name">ZONE</span>
+              <span class="entity-barcode">||| ||</span>
+            </div>
+            <div class="entity-fields">
+              <div class="field-row"><span class="field-key">zone_id</span><span class="field-type">PK INT</span></div>
+              <div class="field-row"><span class="field-key">warehouse_id</span><span class="field-type">FK INT</span></div>
+              <div class="field-row"><span class="field-key">zone_code</span><span class="field-type">VARCHAR(5)</span></div>
+              <div class="field-row"><span class="field-key">temp_controlled</span><span class="field-type">BOOL</span></div>
+              <div class="field-row"><span class="field-key">hazmat_rated</span><span class="field-type">BOOL</span></div>
+            </div>
+          </div>
+          <!-- Entity: Bin -->
+          <div class="schema-entity pallet-drop">
+            <div class="entity-header">
+              <span class="entity-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4622a" stroke-width="2"><rect x="4" y="8" width="16" height="12"/><line x1="4" y1="14" x2="20" y2="14"/></svg>
+              </span>
+              <span class="entity-name">BIN</span>
+              <span class="entity-barcode">|||| |</span>
+            </div>
+            <div class="entity-fields">
+              <div class="field-row"><span class="field-key">bin_id</span><span class="field-type">PK INT</span></div>
+              <div class="field-row"><span class="field-key">zone_id</span><span class="field-type">FK INT</span></div>
+              <div class="field-row"><span class="field-key">aisle</span><span class="field-type">CHAR(2)</span></div>
+              <div class="field-row"><span class="field-key">shelf</span><span class="field-type">INT</span></div>
+              <div class="field-row"><span class="field-key">position</span><span class="field-type">INT</span></div>
+              <div class="field-row"><span class="field-key">max_weight_kg</span><span class="field-type">DECIMAL</span></div>
+              <div class="field-row"><span class="field-key">current_sku</span><span class="field-type">FK VARCHAR</span></div>
+            </div>
+          </div>
+          <!-- Entity: SKU -->
+          <div class="schema-entity pallet-drop">
+            <div class="entity-header">
+              <span class="entity-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5a8fa8" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="0"/><line x1="6" y1="8" x2="18" y2="8"/><line x1="6" y1="12" x2="14" y2="12"/><line x1="6" y1="16" x2="10" y2="16"/></svg>
+              </span>
+              <span class="entity-name">SKU_ITEM</span>
+              <span class="entity-barcode">|| ||||</span>
+            </div>
+            <div class="entity-fields">
+              <div class="field-row"><span class="field-key">sku</span><span class="field-type">PK VARCHAR(20)</span></div>
+              <div class="field-row"><span class="field-key">description</span><span class="field-type">TEXT</span></div>
+              <div class="field-row"><span class="field-key">weight_kg</span><span class="field-type">DECIMAL</span></div>
+              <div class="field-row"><span class="field-key">hazmat_class</span><span class="field-type">VARCHAR(5)</span></div>
+              <div class="field-row"><span class="field-key">temp_min_c</span><span class="field-type">INT NULL</span></div>
+              <div class="field-row"><span class="field-key">temp_max_c</span><span class="field-type">INT NULL</span></div>
+              <div class="field-row"><span class="field-key">supplier_id</span><span class="field-type">FK INT</span></div>
+            </div>
+          </div>
+          <!-- Entity: Shipment -->
+          <div class="schema-entity pallet-drop">
+            <div class="entity-header">
+              <span class="entity-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4622a" stroke-width="2"><path d="M1 12h15M16 7l5 5-5 5"/></svg>
+              </span>
+              <span class="entity-name">SHIPMENT</span>
+              <span class="entity-barcode">||||| |</span>
+            </div>
+            <div class="entity-fields">
+              <div class="field-row"><span class="field-key">shipment_id</span><span class="field-type">PK INT</span></div>
+              <div class="field-row"><span class="field-key">tracking_num</span><span class="field-type">VARCHAR(20)</span></div>
+              <div class="field-row"><span class="field-key">origin_wh_id</span><span class="field-type">FK INT</span></div>
+              <div class="field-row"><span class="field-key">dest_wh_id</span><span class="field-type">FK INT</span></div>
+              <div class="field-row"><span class="field-key">status</span><span class="field-type">ENUM</span></div>
+              <div class="field-row"><span class="field-key">eta</span><span class="field-type">DATETIME</span></div>
+              <div class="field-row"><span class="field-key">total_weight</span><span class="field-type">DECIMAL</span></div>
+            </div>
+          </div>
+          <!-- Entity: Supplier -->
+          <div class="schema-entity pallet-drop">
+            <div class="entity-header">
+              <span class="entity-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5a8fa8" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>
+              </span>
+              <span class="entity-name">SUPPLIER</span>
+              <span class="entity-barcode">||| |||</span>
+            </div>
+            <div class="entity-fields">
+              <div class="field-row"><span class="field-key">supplier_id</span><span class="field-type">PK INT</span></div>
+              <div class="field-row"><span class="field-key">company_name</span><span class="field-type">VARCHAR(200)</span></div>
+              <div class="field-row"><span class="field-key">country</span><span class="field-type">VARCHAR(3)</span></div>
+              <div class="field-row"><span class="field-key">lead_time_days</span><span class="field-type">INT</span></div>
+              <div class="field-row"><span class="field-key">reliability_pct</span><span class="field-type">DECIMAL</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VIEW: DIRECTORY TREE ===================== -->
+    <section class="view-panel" id="view-directory-tree" data-view="directory-tree">
+      <div class="view-inner">
+        <div class="view-title-bar">
+          <h1>WAREHOUSE DIRECTORY</h1>
+          <span class="title-barcode">|||| || ||||| ||| ||||</span>
+        </div>
+        <div class="wh-tree">
+          <!-- Warehouse 1 -->
+          <div class="tree-node level-0 pallet-drop">
+            <button class="tree-toggle open" aria-label="Toggle">&#9660;</button>
+            <span class="tree-icon aisle-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4622a" stroke-width="2"><rect x="2" y="7" width="20" height="14"/><path d="M2 7L12 2l10 5"/></svg>
+            </span>
+            <span class="tree-label">MEMPHIS MEGA-HUB</span>
+            <span class="tree-code">WH-MEM-01</span>
+          </div>
+          <div class="tree-children">
+            <div class="tree-node level-1 pallet-drop">
+              <button class="tree-toggle open" aria-label="Toggle">&#9660;</button>
+              <span class="tree-label">ZONE A — GENERAL CARGO</span>
+              <span class="tree-code">A</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-node level-2 pallet-drop">
+                <button class="tree-toggle open" aria-label="Toggle">&#9660;</button>
+                <span class="tree-label">Aisle A1</span>
+                <span class="tree-code">A1</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-node level-3 pallet-drop"><span class="tree-leaf"></span><span class="tree-label">Shelf 1 — Bin B1</span><span class="tree-code">A1-S1-B1</span><span class="tree-item-info">SKU: ENG-BOLT-M12 | 120 kg</span></div>
+                <div class="tree-node level-3 pallet-drop"><span class="tree-leaf"></span><span class="tree-label">Shelf 1 — Bin B2</span><span class="tree-code">A1-S1-B2</span><span class="tree-item-info">SKU: ENG-NUT-M12 | 85 kg</span></div>
+                <div class="tree-node level-3 pallet-drop"><span class="tree-leaf"></span><span class="tree-label">Shelf 2 — Bin B3</span><span class="tree-code">A1-S2-B3</span><span class="tree-item-info">SKU: HYD-HOSE-8MM | 45 kg</span></div>
+              </div>
+              <div class="tree-node level-2 pallet-drop">
+                <button class="tree-toggle" aria-label="Toggle">&#9654;</button>
+                <span class="tree-label">Aisle A2</span>
+                <span class="tree-code">A2</span>
+              </div>
+            </div>
+            <div class="tree-node level-1 pallet-drop">
+              <button class="tree-toggle open" aria-label="Toggle">&#9660;</button>
+              <span class="tree-label">ZONE B — COLD STORAGE</span>
+              <span class="tree-code">B</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-node level-2 pallet-drop">
+                <button class="tree-toggle open" aria-label="Toggle">&#9660;</button>
+                <span class="tree-label">Aisle B1</span>
+                <span class="tree-code">B1</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-node level-3 pallet-drop"><span class="tree-leaf"></span><span class="tree-label">Shelf 1 — Bin B1</span><span class="tree-code">B1-S1-B1</span><span class="tree-item-info">SKU: PHARMA-VAX-01 | 30 kg | 2-8°C</span></div>
+                <div class="tree-node level-3 pallet-drop"><span class="tree-leaf"></span><span class="tree-label">Shelf 2 — Bin B2</span><span class="tree-code">B1-S2-B2</span><span class="tree-item-info">SKU: PHARMA-INS-03 | 18 kg | 2-8°C</span></div>
+              </div>
+            </div>
+            <div class="tree-node level-1 pallet-drop">
+              <button class="tree-toggle" aria-label="Toggle">&#9654;</button>
+              <span class="tree-label">ZONE C — HAZMAT</span>
+              <span class="tree-code">C</span>
+            </div>
+          </div>
+
+          <!-- Warehouse 2 -->
+          <div class="tree-node level-0 pallet-drop" style="margin-top: 16px;">
+            <button class="tree-toggle" aria-label="Toggle">&#9654;</button>
+            <span class="tree-icon aisle-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5a8fa8" stroke-width="2"><rect x="2" y="7" width="20" height="14"/><path d="M2 7L12 2l10 5"/></svg>
+            </span>
+            <span class="tree-label">ROTTERDAM PORT HUB</span>
+            <span class="tree-code">WH-RTM-01</span>
+          </div>
+
+          <!-- Warehouse 3 -->
+          <div class="tree-node level-0 pallet-drop" style="margin-top: 16px;">
+            <button class="tree-toggle" aria-label="Toggle">&#9654;</button>
+            <span class="tree-icon aisle-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5a8fa8" stroke-width="2"><rect x="2" y="7" width="20" height="14"/><path d="M2 7L12 2l10 5"/></svg>
+            </span>
+            <span class="tree-label">SINGAPORE TRANSSHIPMENT</span>
+            <span class="tree-code">WH-SIN-01</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VIEW: IDEAS ===================== -->
+    <section class="view-panel" id="view-ideas" data-view="ideas">
+      <div class="view-inner">
+        <div class="view-title-bar">
+          <h1>IDEAS BOARD</h1>
+          <span class="title-barcode">||| ||||| || |||| |||||</span>
+          <button class="wh-btn primary">+ PIN IDEA</button>
+        </div>
+        <div class="ideas-grid">
+          <div class="idea-card pallet-drop" data-tooltip="Autonomous dock loading concept" data-tooltip-weight="HIGH IMPACT" data-tooltip-dest="INNOVATION LAB">
+            <div class="idea-photo" style="background: linear-gradient(135deg, #383838 0%, #2b2b2b 100%);">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><rect x="10" y="20" width="40" height="25" stroke="#5a8fa8" stroke-width="2"/><circle cx="20" cy="45" r="5" stroke="#5a8fa8" stroke-width="2"/><circle cx="40" cy="45" r="5" stroke="#5a8fa8" stroke-width="2"/><rect x="15" y="10" width="10" height="10" stroke="#d4622a" stroke-width="2"/></svg>
+            </div>
+            <div class="idea-label">
+              <span class="idea-title">Autonomous Forklift Fleet</span>
+              <span class="idea-desc">Replace manual forklifts with AGVs for 24/7 warehouse operations. Estimated 40% throughput increase.</span>
+              <span class="idea-author">K. YAMAMOTO — FEB 12</span>
+            </div>
+          </div>
+          <div class="idea-card pallet-drop" data-tooltip="Drone-based inventory counting" data-tooltip-weight="MED IMPACT" data-tooltip-dest="R&D DEPT">
+            <div class="idea-photo" style="background: linear-gradient(135deg, #383838 0%, #2b2b2b 100%);">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="12" stroke="#d4622a" stroke-width="2"/><line x1="18" y1="30" x2="8" y2="20" stroke="#d4622a" stroke-width="2"/><line x1="42" y1="30" x2="52" y2="20" stroke="#d4622a" stroke-width="2"/><line x1="18" y1="30" x2="8" y2="40" stroke="#d4622a" stroke-width="2"/><line x1="42" y1="30" x2="52" y2="40" stroke="#d4622a" stroke-width="2"/></svg>
+            </div>
+            <div class="idea-label">
+              <span class="idea-title">Drone Inventory Scanning</span>
+              <span class="idea-desc">Deploy indoor drones with RFID readers for real-time stock counting. Eliminates manual cycle counts.</span>
+              <span class="idea-author">R. OKONKWO — FEB 10</span>
+            </div>
+          </div>
+          <div class="idea-card pallet-drop" data-tooltip="Predictive maintenance for equipment" data-tooltip-weight="HIGH IMPACT" data-tooltip-dest="MAINTENANCE">
+            <div class="idea-photo" style="background: linear-gradient(135deg, #383838 0%, #2b2b2b 100%);">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><path d="M15 45 L30 15 L45 45 Z" stroke="#5a8fa8" stroke-width="2" fill="none"/><line x1="30" y1="28" x2="30" y2="36" stroke="#5a8fa8" stroke-width="2"/><circle cx="30" cy="40" r="2" fill="#5a8fa8"/></svg>
+            </div>
+            <div class="idea-label">
+              <span class="idea-title">Predictive Equipment Maintenance</span>
+              <span class="idea-desc">IoT sensors on conveyors and lifts predict failures 72 hours ahead. Reduce downtime by 60%.</span>
+              <span class="idea-author">M. PETROV — FEB 08</span>
+            </div>
+          </div>
+          <div class="idea-card pallet-drop" data-tooltip="Blockchain cargo verification" data-tooltip-weight="MED IMPACT" data-tooltip-dest="COMPLIANCE">
+            <div class="idea-photo" style="background: linear-gradient(135deg, #383838 0%, #2b2b2b 100%);">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><rect x="10" y="20" width="15" height="15" stroke="#d4622a" stroke-width="2"/><rect x="35" y="20" width="15" height="15" stroke="#d4622a" stroke-width="2"/><rect x="22" y="35" width="15" height="15" stroke="#d4622a" stroke-width="2"/><line x1="25" y1="27" x2="35" y2="27" stroke="#d4622a" stroke-width="1.5"/><line x1="30" y1="35" x2="30" y2="35" stroke="#d4622a" stroke-width="1.5"/></svg>
+            </div>
+            <div class="idea-label">
+              <span class="idea-title">Blockchain Cargo Chain-of-Custody</span>
+              <span class="idea-desc">Immutable ledger for every handoff from origin to destination. Cuts customs disputes by 80%.</span>
+              <span class="idea-author">A. SINGH — FEB 05</span>
+            </div>
+          </div>
+          <div class="idea-card pallet-drop" data-tooltip="Solar-powered warehouse roofs" data-tooltip-weight="LOW COST" data-tooltip-dest="FACILITIES">
+            <div class="idea-photo" style="background: linear-gradient(135deg, #383838 0%, #2b2b2b 100%);">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="20" r="10" stroke="#5a8fa8" stroke-width="2"/><line x1="30" y1="32" x2="30" y2="38" stroke="#5a8fa8" stroke-width="2"/><line x1="20" y1="28" x2="14" y2="34" stroke="#5a8fa8" stroke-width="2"/><line x1="40" y1="28" x2="46" y2="34" stroke="#5a8fa8" stroke-width="2"/><rect x="10" y="40" width="40" height="10" stroke="#5a8fa8" stroke-width="2"/></svg>
+            </div>
+            <div class="idea-label">
+              <span class="idea-title">Solar Roof Retrofit Program</span>
+              <span class="idea-desc">Install solar arrays on all warehouse roofs. Powers 70% of facility energy. ROI in 4 years.</span>
+              <span class="idea-author">L. MARTINEZ — FEB 03</span>
+            </div>
+          </div>
+          <div class="idea-card pallet-drop" data-tooltip="AR-guided picking system" data-tooltip-weight="HIGH IMPACT" data-tooltip-dest="OPERATIONS">
+            <div class="idea-photo" style="background: linear-gradient(135deg, #383838 0%, #2b2b2b 100%);">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><rect x="12" y="15" width="36" height="24" rx="0" stroke="#d4622a" stroke-width="2"/><circle cx="30" cy="27" r="6" stroke="#d4622a" stroke-width="2"/><line x1="30" y1="39" x2="30" y2="48" stroke="#d4622a" stroke-width="2"/><line x1="22" y1="48" x2="38" y2="48" stroke="#d4622a" stroke-width="2"/></svg>
+            </div>
+            <div class="idea-label">
+              <span class="idea-title">AR Smart Glasses for Picking</span>
+              <span class="idea-desc">Heads-up display guides pickers to exact bin locations. Reduces pick errors by 95%.</span>
+              <span class="idea-author">T. NAKAMURA — FEB 01</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VIEW: AI CHAT ===================== -->
+    <section class="view-panel" id="view-ai-chat" data-view="ai-chat">
+      <div class="view-inner">
+        <div class="view-title-bar">
+          <h1>DISPATCH RADIO</h1>
+          <span class="title-barcode">||||| || ||| |||| |||||</span>
+          <span class="radio-status">FREQ: 462.5 MHz &bull; CH 7</span>
+        </div>
+        <div class="radio-chat">
+          <div class="radio-msg incoming pallet-drop">
+            <div class="radio-header">
+              <span class="callsign">BASE-CMD</span>
+              <span class="radio-time">08:14:22</span>
+            </div>
+            <div class="static-line"></div>
+            <p>All units, be advised: Container vessel MAERSK EMERALD arriving at Berth 7 ahead of schedule. ETA 09:30. Prepare dock teams for immediate unload. Priority cargo: cold chain pharmaceuticals — temperature-controlled handling required.</p>
+          </div>
+          <div class="radio-msg outgoing pallet-drop">
+            <div class="radio-header">
+              <span class="callsign">DOCK-07</span>
+              <span class="radio-time">08:15:01</span>
+            </div>
+            <div class="static-line"></div>
+            <p>Copy, Base. Dock 7 crew standing by. Reefer units pre-cooled to 4°C. We have 3 reach stackers and 6 forklifts allocated. Request confirmation on container count — are we looking at 120 TEU or the revised 145?</p>
+          </div>
+          <div class="radio-msg incoming pallet-drop">
+            <div class="radio-header">
+              <span class="callsign">BASE-CMD</span>
+              <span class="radio-time">08:16:48</span>
+            </div>
+            <div class="static-line"></div>
+            <p>Confirmed 145 TEU. Additional 25 containers added at Singapore transshipment. Manifest updated in WMS. Also flagging: 8 containers marked HAZMAT Class 3 — flammable liquids. Route those to Zone C staging area. Safety team notified.</p>
+          </div>
+          <div class="radio-msg outgoing pallet-drop">
+            <div class="radio-header">
+              <span class="callsign">DOCK-07</span>
+              <span class="radio-time">08:18:15</span>
+            </div>
+            <div class="static-line"></div>
+            <p>Roger. Zone C prepped for HAZMAT intake. Spill containment barriers deployed. Requesting one additional crane operator for the expanded load — can Yard Control dispatch?</p>
+          </div>
+          <div class="radio-msg incoming pallet-drop">
+            <div class="radio-header">
+              <span class="callsign">YARD-CTRL</span>
+              <span class="radio-time">08:19:33</span>
+            </div>
+            <div class="static-line"></div>
+            <p>Dock 7, this is Yard Control. Crane operator Rodriguez reassigned from Berth 3 — en route to you now. ETA 15 minutes. Also, be aware that truck convoy for outbound containers departs at 11:00 sharp — need lanes 4-6 clear by 10:45.</p>
+          </div>
+          <div class="radio-msg outgoing pallet-drop">
+            <div class="radio-header">
+              <span class="callsign">DOCK-07</span>
+              <span class="radio-time">08:20:47</span>
+            </div>
+            <div class="static-line"></div>
+            <p>Understood, Yard Control. We'll prioritize cold chain offload first, then HAZMAT, then general cargo. Lanes 4-6 will be clear by 10:30 with 15 min buffer. Requesting AI dispatch assistant — what's the optimal unload sequence for 145 mixed TEU?</p>
+          </div>
+        </div>
+        <div class="radio-input-bar">
+          <span class="radio-prompt">DOCK-07 &gt;&gt;</span>
+          <input type="text" class="wh-input radio-input" placeholder="Transmit message...">
+          <button class="wh-btn primary">SEND</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VIEW: SETTINGS ===================== -->
+    <section class="view-panel" id="view-settings" data-view="settings">
+      <div class="view-inner">
+        <div class="view-title-bar">
+          <h1>CONTROL PANEL</h1>
+          <span class="title-barcode">|| ||||| |||| ||| ||||</span>
+        </div>
+        <div class="settings-grid">
+          <!-- Group: System -->
+          <div class="settings-group pallet-drop">
+            <div class="sg-header">
+              <div class="hazmat-stripe-small"></div>
+              <h2>SYSTEM OPERATIONS</h2>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Dark Mode Override</span>
+                <span class="setting-desc">Force dark interface across all terminals</span>
+              </div>
+              <label class="circuit-breaker">
+                <input type="checkbox" checked>
+                <span class="cb-track"><span class="cb-thumb"></span></span>
+                <span class="cb-state-label on">ON</span>
+                <span class="cb-state-label off">OFF</span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Auto-Refresh Interval</span>
+                <span class="setting-desc">Dashboard data polling frequency</span>
+              </div>
+              <select class="wh-select">
+                <option>5 seconds</option>
+                <option selected>15 seconds</option>
+                <option>30 seconds</option>
+                <option>60 seconds</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Conveyor Animation</span>
+                <span class="setting-desc">Ambient conveyor belt line effects</span>
+              </div>
+              <label class="circuit-breaker">
+                <input type="checkbox" checked>
+                <span class="cb-track"><span class="cb-thumb"></span></span>
+                <span class="cb-state-label on">ON</span>
+                <span class="cb-state-label off">OFF</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Group: Notifications -->
+          <div class="settings-group pallet-drop">
+            <div class="sg-header">
+              <div class="hazmat-stripe-small"></div>
+              <h2>ALERT CONFIGURATION</h2>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Shipment Delay Alerts</span>
+                <span class="setting-desc">Notify when shipments exceed ETA by 2+ hours</span>
+              </div>
+              <label class="circuit-breaker">
+                <input type="checkbox" checked>
+                <span class="cb-track"><span class="cb-thumb"></span></span>
+                <span class="cb-state-label on">ON</span>
+                <span class="cb-state-label off">OFF</span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">HAZMAT Breach Warning</span>
+                <span class="setting-desc">Immediate alarm on hazmat containment events</span>
+              </div>
+              <label class="circuit-breaker">
+                <input type="checkbox" checked>
+                <span class="cb-track"><span class="cb-thumb"></span></span>
+                <span class="cb-state-label on">ON</span>
+                <span class="cb-state-label off">OFF</span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Sound Effects</span>
+                <span class="setting-desc">Audible scan confirmation beeps</span>
+              </div>
+              <label class="circuit-breaker">
+                <input type="checkbox">
+                <span class="cb-track"><span class="cb-thumb"></span></span>
+                <span class="cb-state-label on">ON</span>
+                <span class="cb-state-label off">OFF</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Group: Display -->
+          <div class="settings-group pallet-drop">
+            <div class="sg-header">
+              <div class="hazmat-stripe-small"></div>
+              <h2>DISPLAY PARAMETERS</h2>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Terminal Font Size</span>
+                <span class="setting-desc">Base font size for all readouts</span>
+              </div>
+              <select class="wh-select">
+                <option>12px</option>
+                <option selected>14px</option>
+                <option>16px</option>
+                <option>18px</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Barcode Headers</span>
+                <span class="setting-desc">Show decorative barcodes on section headers</span>
+              </div>
+              <label class="circuit-breaker">
+                <input type="checkbox" checked>
+                <span class="cb-track"><span class="cb-thumb"></span></span>
+                <span class="cb-state-label on">ON</span>
+                <span class="cb-state-label off">OFF</span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Density Mode</span>
+                <span class="setting-desc">Content spacing density level</span>
+              </div>
+              <select class="wh-select">
+                <option>Compact</option>
+                <option selected>Dense</option>
+                <option>Standard</option>
+                <option>Comfortable</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Group: Account -->
+          <div class="settings-group pallet-drop">
+            <div class="sg-header">
+              <div class="hazmat-stripe-small"></div>
+              <h2>OPERATOR PROFILE</h2>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Operator ID</span>
+                <span class="setting-desc">Your terminal identification</span>
+              </div>
+              <input type="text" class="wh-input" value="OPS-NAKAMURA-07" style="max-width: 220px;">
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Home Warehouse</span>
+                <span class="setting-desc">Default warehouse assignment</span>
+              </div>
+              <select class="wh-select">
+                <option selected>Memphis Mega-Hub (WH-MEM-01)</option>
+                <option>Rotterdam Port Hub (WH-RTM-01)</option>
+                <option>Singapore Transshipment (WH-SIN-01)</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-name">Shift Schedule</span>
+                <span class="setting-desc">Active working shift</span>
+              </div>
+              <select class="wh-select">
+                <option>Day (06:00-14:00)</option>
+                <option selected>Swing (14:00-22:00)</option>
+                <option>Night (22:00-06:00)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TOOLTIP -->
+  <div id="shipping-tooltip" class="shipping-tooltip hidden">
+    <div class="tooltip-barcode">|||| ||| || ||||| ||||</div>
+    <div class="tooltip-body">
+      <div class="tooltip-row"><span class="tl">DESC:</span> <span class="tv" id="tt-desc"></span></div>
+      <div class="tooltip-row"><span class="tl">WEIGHT:</span> <span class="tv" id="tt-weight"></span></div>
+      <div class="tooltip-row"><span class="tl">DEST:</span> <span class="tv" id="tt-dest"></span></div>
+    </div>
+  </div>
+
+  <!-- SCAN OK FEEDBACK -->
+  <div id="scan-ok" class="scan-ok hidden">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4 4 8-8" stroke="#00cc66" stroke-width="2.5"/></svg>
+    SCAN OK
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

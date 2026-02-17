@@ -1,0 +1,64 @@
+{
+  "styleId": "slate",
+  "pass": 6,
+  "layoutArchetype": "concrete-brutalist-bunker",
+  "references": [
+    {
+      "name": "Lockheed Martin",
+      "url": "https://www.lockheedmartin.com",
+      "takeaway": "Organize content into domain compartments as top-level navigation categories, and present each content card with mission-focused language and technical system imagery that conveys operational capability.",
+      "applied": [
+        {
+          "element": "Navigation structure",
+          "description": "Ten numbered operational sections (01-10) function as classified compartments of the interface, each with its own domain (COMMAND CENTER, OPERATIONS MANIFEST, MISSION BOARD, etc.)"
+        },
+        {
+          "element": "Project cards on Operations Manifest view",
+          "description": "Each operation card features a military codename (IRON VEIL, GHOST MERIDIAN), mission-focused descriptive copy emphasizing operational readiness, and classification level badges"
+        },
+        {
+          "element": "Dashboard hero section",
+          "description": "Full-bleed dark hero with bold Bebas Neue headline ('AEGIS COMMAND CENTER') projecting institutional authority, paired with a typed monospace subtitle conveying threat-level status"
+        }
+      ]
+    },
+    {
+      "name": "General Dynamics",
+      "url": "https://www.gd.com",
+      "takeaway": "Use a steel-grey and navy bi-tonal palette for all surfaces, and display content metrics as labeled specification data points in a structured grid that reads like a tactical systems readout.",
+      "applied": [
+        {
+          "element": "Color palette",
+          "description": "Olive-dark (#2a2e20) and olive-surface (#353828) bi-tonal palette with tan text creating a hardened-surface material language, adapted from steel-grey/navy to military olive/concrete"
+        },
+        {
+          "element": "Equipment Manifest (schema-planner) view",
+          "description": "Specification-panel content blocks with labeled data points (Range, Weight, Power Req, Crew Size, Status) displayed in a grid format reading as a tactical systems readout with NSN codes"
+        },
+        {
+          "element": "Dashboard metrics",
+          "description": "Four metric viewport windows displaying labeled data (ACTIVE OPERATIONS: 17, DEPLOYED ASSETS: 142) in structured bunker-slit panels resembling specification readouts"
+        }
+      ]
+    },
+    {
+      "name": "Palantir Technologies",
+      "url": "https://www.palantir.com",
+      "takeaway": "Use thin white line-art network diagrams and constellation-style node graphs as decorative hero elements on pure black backgrounds, and space content at one element per viewport height to create the sparse, deliberate pacing of a classified intelligence briefing.",
+      "applied": [
+        {
+          "element": "Tactical Operations Map (whiteboard view)",
+          "description": "SVG tactical map with thin line-art connections between strategic position nodes (FOB GRANITE, RADAR ECHO-1, THAAD ALPHA) on a dark grid background, creating a network-graph visual language"
+        },
+        {
+          "element": "Content spacing and pacing",
+          "description": "Spacious editorial sections with substantial vertical spacing (64-128px between sections) creating the sparse, deliberate pacing of a classified intelligence briefing"
+        },
+        {
+          "element": "Intelligence Bulletin Board (ideas view)",
+          "description": "Each intelligence brief presented as a single focused element with classification header, body text, and metadata — sparse typography with one element per section creating briefing-document pacing"
+        }
+      ]
+    }
+  ]
+}

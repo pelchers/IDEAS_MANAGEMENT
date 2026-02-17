@@ -1,0 +1,135 @@
+{
+  "styleId": "retro-50s",
+  "pass": 5,
+  "variantSeed": "motel-neon-roadside",
+  "generatedAt": "2026-02-15T00:00:00Z",
+  "shell": {
+    "mode": "minimal-top-bar",
+    "height": "56px",
+    "position": "fixed-top",
+    "components": ["logo", "command-palette-trigger", "view-badge", "user-avatar"]
+  },
+  "navigation": {
+    "pattern": "command-palette-modal",
+    "trigger": "Ctrl+K or click search bar",
+    "mobilePattern": "hamburger-drawer-left",
+    "features": ["keyboard-arrow-nav", "fuzzy-search-filter", "neon-arrow-blink-hover", "vacancy-badge-active"]
+  },
+  "layout": {
+    "contentFlow": "centered-card-stack",
+    "maxWidth": "1100px",
+    "alignment": "center",
+    "scrollMode": "standard-scroll",
+    "density": "spacious",
+    "heroTreatment": "search-hero"
+  },
+  "palette": {
+    "bg": "#1a1a1e",
+    "text": "#f5f0e8",
+    "surface": "#252528",
+    "accent": "#00c9b7",
+    "accent2": "#ff3878",
+    "border": "#3a3a40"
+  },
+  "typography": {
+    "heading": "Permanent Marker",
+    "body": "Cabin",
+    "mono": "Source Code Pro",
+    "headingSizeDesktop": "2.4rem",
+    "headingSizeMobile": "1.6rem",
+    "bodySizeDesktop": "16px",
+    "bodySizeMobile": "15px"
+  },
+  "views": {
+    "dashboard": {
+      "components": ["neon-stat-boxes-4", "road-stripe-dividers", "recent-road-log-5-entries", "capacity-gauge", "vacancy-indicator", "upcoming-stops-3"],
+      "layoutPattern": "stats-grid-4col + duo-panel-below"
+    },
+    "projects": {
+      "components": ["postcard-cards-6", "neon-scene-headers", "postage-badge-status", "miles-counter"],
+      "layoutPattern": "auto-fill-grid-320px-min"
+    },
+    "project-workspace": {
+      "components": ["route-map-with-nodes-7", "task-checklist-5", "glovebox-sidebar-4-items", "travel-notes"],
+      "layoutPattern": "2-col-main+300px-sidebar"
+    },
+    "kanban": {
+      "components": ["4-columns-departure-enroute-reststop-destination", "license-plate-cards-9", "state-headers", "plate-numbers"],
+      "layoutPattern": "4-col-grid"
+    },
+    "whiteboard": {
+      "components": ["svg-highway-lines-dashed", "attraction-marker-nodes-6", "mile-marker-annotations-5"],
+      "layoutPattern": "positioned-canvas-500px"
+    },
+    "schema-planner": {
+      "components": ["town-sign-headers-4", "amenity-rows-with-icons", "road-sign-field-types"],
+      "layoutPattern": "auto-fill-grid-300px-min"
+    },
+    "directory-tree": {
+      "components": ["interstate-shields", "state-route-shields", "local-road-shields", "address-shields", "dashed-border-hierarchy"],
+      "layoutPattern": "nested-tree-with-left-indent"
+    },
+    "ideas": {
+      "components": ["polaroid-cards-8", "rotation-transforms", "category-badges", "location-date-labels", "icon-placeholders"],
+      "layoutPattern": "auto-fill-grid-230px-min"
+    },
+    "ai-chat": {
+      "components": ["channel-bar", "6-messages-alternating", "cb-radio-handles", "breaker-formatting", "input-with-send"],
+      "layoutPattern": "vertical-message-stream"
+    },
+    "settings": {
+      "components": ["4-settings-groups", "3-text-inputs", "5-neon-toggles", "1-range-slider", "1-select-dropdown"],
+      "layoutPattern": "stacked-groups-with-rows"
+    }
+  },
+  "interactions": {
+    "buttonHover": "neon-tube-flicker-on",
+    "buttonClick": "neon-buzz-snap",
+    "cardHover": "vacancy-sign-glow",
+    "pageTransition": "headlight-sweep-reveal",
+    "scrollReveal": "road-sign-zoom-past",
+    "navItemHover": "neon-arrow-blink",
+    "navItemActive": "vacancy-lit-badge",
+    "inputFocus": "neon-glow-border-teal",
+    "toggleSwitch": "light-switch-snap-neon",
+    "tooltips": "road-sign-tooltip",
+    "loadingState": "vacancy-sign-animation",
+    "idleAmbient": "neon-buzz-flicker",
+    "microFeedback": "check-in-stamp-confirm"
+  },
+  "libraries": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
+      "usage": "Gauge fill animation, stat counter counting effect"
+    },
+    {
+      "name": "GSAP ScrollTrigger",
+      "version": "3.12.5",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js",
+      "usage": "Enhanced scroll-driven reveals"
+    },
+    {
+      "name": "Phosphor Icons",
+      "version": "2.1.1",
+      "cdn": "https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css",
+      "usage": "Icon set for navigation, amenities, and UI elements"
+    }
+  ],
+  "responsive": {
+    "breakpoints": ["768px", "390px"],
+    "mobileNav": "hamburger-drawer-left",
+    "mobileSidebarBehavior": "stacks-below-main",
+    "mobileKanbanBehavior": "single-column-stack",
+    "minimumFontSize": "15px",
+    "minimumTouchTarget": "44px"
+  },
+  "contentPersona": "road-trip-travel-app",
+  "antiRepeatCompliance": [
+    "Pass 1 used pastel pink+mint diner on light -> COMPLIANT: dark asphalt #1a1a1e with teal+pink neon",
+    "Pass 2 used turquoise+coral space-age googie -> COMPLIANT: motel neon roadside with vacancy signs, no googie curves",
+    "Pass 3 used deep purple drive-in cinema -> COMPLIANT: dark charcoal (#1a1a1e) roadside motel, not purple",
+    "Pass 4 used cheerful powder blue soda shop -> COMPLIANT: nighttime neon highway aesthetic, not cheerful/light"
+  ]
+}

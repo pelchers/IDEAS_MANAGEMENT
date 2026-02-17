@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hygge Studio — Scandinavian Idea Management</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Karla:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Phosphor Icons (Duotone) -->
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+
+  <!-- Tippy.js -->
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.7/dist/tippy.css">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="coffee-loader">
+      <div class="coffee-cup">
+        <svg viewBox="0 0 60 60" width="60" height="60">
+          <path d="M10 20 h30 v25 q0 10 -15 10 q-15 0 -15 -10z" fill="#a08060" opacity="0.3"/>
+          <path d="M40 25 h8 q6 0 6 8 q0 8 -6 8 h-8" fill="none" stroke="#a08060" stroke-width="2.5"/>
+          <rect x="18" y="48" width="14" height="3" rx="1.5" fill="#a08060" opacity="0.4"/>
+        </svg>
+        <div class="steam-wisps">
+          <div class="steam s1"></div>
+          <div class="steam s2"></div>
+          <div class="steam s3"></div>
+        </div>
+      </div>
+      <p class="loading-text">Warming up the studio...</p>
+    </div>
+  </div>
+
+  <!-- Ambient candlelight overlay -->
+  <div id="candle-ambient" class="candle-ambient"></div>
+
+  <!-- Toast container for micro-feedback -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Main App Shell -->
+  <div id="app" class="app-shell" style="display:none;">
+
+    <!-- Top bar (minimal) -->
+    <header class="top-bar">
+      <div class="top-bar-inner">
+        <div class="brand">
+          <svg class="brand-icon" viewBox="0 0 32 32" width="28" height="28">
+            <circle cx="16" cy="16" r="14" fill="none" stroke="#d4927a" stroke-width="1.5"/>
+            <path d="M10 22 Q16 8 22 22" fill="none" stroke="#a08060" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="16" cy="12" r="2" fill="#d4927a"/>
+          </svg>
+          <span class="brand-name">Hygge Studio</span>
+        </div>
+        <div class="top-actions">
+          <button class="btn-icon" data-tippy-content="Search" aria-label="Search">
+            <i class="ph-duotone ph-magnifying-glass"></i>
+          </button>
+          <button class="btn-icon" data-tippy-content="Notifications" aria-label="Notifications">
+            <i class="ph-duotone ph-bell"></i>
+            <span class="notif-dot"></span>
+          </button>
+          <div class="avatar-small" data-tippy-content="Astrid Lindqvist">AL</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile hamburger toggle -->
+    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Open navigation">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Content Area -->
+    <main id="main-content" class="main-content">
+
+      <!-- ====== DASHBOARD ====== -->
+      <section id="view-dashboard" class="view active" data-view="dashboard">
+        <div class="view-inner centered-panel">
+          <div class="view-header">
+            <h1>God Morgen, Astrid</h1>
+            <p class="view-subtitle">Your studio at a glance this cozy morning</p>
+          </div>
+
+          <!-- Gradient hero card -->
+          <div class="hero-card gradient-hero">
+            <div class="hero-card-content">
+              <div class="hero-stat-row">
+                <div class="hero-stat">
+                  <span class="hero-stat-value candle-glow-text">24</span>
+                  <span class="hero-stat-label">Active Collections</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat-value candle-glow-text">147</span>
+                  <span class="hero-stat-label">Design Pieces</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat-value candle-glow-text">89%</span>
+                  <span class="hero-stat-label">On Schedule</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat-value candle-glow-text">12</span>
+                  <span class="hero-stat-label">Artisans</span>
+                </div>
+              </div>
+              <p class="hero-note">Spring collection launch in 18 days</p>
+            </div>
+          </div>
+
+          <!-- Weather-widget style stat cards -->
+          <div class="dash-stats-grid">
+            <div class="dash-stat-card" data-scroll-reveal>
+              <div class="stat-icon-wrap"><i class="ph-duotone ph-armchair"></i></div>
+              <div class="stat-content">
+                <span class="stat-number">38</span>
+                <span class="stat-label">Furniture Pieces</span>
+                <span class="stat-trend up">+5 this week</span>
+              </div>
+            </div>
+            <div class="dash-stat-card" data-scroll-reveal>
+              <div class="stat-icon-wrap"><i class="ph-duotone ph-lamp"></i></div>
+              <div class="stat-content">
+                <span class="stat-number">26</span>
+                <span class="stat-label">Lighting Designs</span>
+                <span class="stat-trend up">+3 this week</span>
+              </div>
+            </div>
+            <div class="dash-stat-card" data-scroll-reveal>
+              <div class="stat-icon-wrap"><i class="ph-duotone ph-rug"></i></div>
+              <div class="stat-content">
+                <span class="stat-number">41</span>
+                <span class="stat-label">Textile Samples</span>
+                <span class="stat-trend neutral">Steady</span>
+              </div>
+            </div>
+            <div class="dash-stat-card" data-scroll-reveal>
+              <div class="stat-icon-wrap"><i class="ph-duotone ph-flowerpot"></i></div>
+              <div class="stat-content">
+                <span class="stat-number">19</span>
+                <span class="stat-label">Ceramic Objects</span>
+                <span class="stat-trend up">+2 this week</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Knit-pattern divider -->
+          <div class="knit-divider"></div>
+
+          <!-- Recent activity -->
+          <div class="dash-section" data-scroll-reveal>
+            <h2>Recent Studio Activity</h2>
+            <div class="activity-list">
+              <div class="activity-item">
+                <div class="activity-avatar">EH</div>
+                <div class="activity-text">
+                  <strong>Erik Holm</strong> updated the <em>Birch Lounge Chair</em> prototype specs
+                  <span class="activity-time">12 min ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-avatar">SN</div>
+                <div class="activity-text">
+                  <strong>Sofia Nilsson</strong> uploaded 4 new wool swatch photos to <em>Autumn Weave</em>
+                  <span class="activity-time">1 hr ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-avatar">ML</div>
+                <div class="activity-text">
+                  <strong>Magnus Lindberg</strong> moved <em>Fjord Table Lamp</em> to production stage
+                  <span class="activity-time">3 hrs ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-avatar">KA</div>
+                <div class="activity-text">
+                  <strong>Klara Andersen</strong> added a concept sketch to <em>Moss Planter Series</em>
+                  <span class="activity-time">Yesterday</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-avatar">OJ</div>
+                <div class="activity-text">
+                  <strong>Oskar Jensen</strong> completed the <em>Midnight Blue Throw</em> weaving sample
+                  <span class="activity-time">Yesterday</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upcoming deadlines -->
+          <div class="dash-section" data-scroll-reveal>
+            <h2>Upcoming Milestones</h2>
+            <div class="milestones-list">
+              <div class="milestone-item">
+                <div class="milestone-date"><span class="day">22</span><span class="month">Feb</span></div>
+                <div class="milestone-info">
+                  <strong>Spring Collection Photoshoot</strong>
+                  <p>Natural light studio, styled vignettes for catalog</p>
+                </div>
+              </div>
+              <div class="milestone-item">
+                <div class="milestone-date"><span class="day">05</span><span class="month">Mar</span></div>
+                <div class="milestone-info">
+                  <strong>Stockholm Furniture Fair</strong>
+                  <p>Booth setup and product staging begins</p>
+                </div>
+              </div>
+              <div class="milestone-item">
+                <div class="milestone-date"><span class="day">14</span><span class="month">Mar</span></div>
+                <div class="milestone-info">
+                  <strong>Website Collection Update</strong>
+                  <p>New product pages and lookbook launch</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== PROJECTS ====== -->
+      <section id="view-projects" class="view" data-view="projects">
+        <div class="view-inner centered-panel">
+          <div class="view-header">
+            <h1>Collections</h1>
+            <p class="view-subtitle">Browse your curated design collections</p>
+          </div>
+
+          <div class="bookshelf">
+            <div class="shelf-row" data-scroll-reveal>
+              <div class="shelf-surface"></div>
+              <div class="book-spine" data-color="#d4927a" style="--spine-color: #a5715f; --spine-h: 180px;">
+                <span class="spine-title">Spring Meadow</span>
+                <span class="spine-meta">14 pieces</span>
+                <span class="spine-status active">Active</span>
+              </div>
+              <div class="book-spine" data-color="#a08060" style="--spine-color: #a08060; --spine-h: 200px;">
+                <span class="spine-title">Nordic Birch</span>
+                <span class="spine-meta">22 pieces</span>
+                <span class="spine-status active">Active</span>
+              </div>
+              <div class="book-spine" data-color="#8b7355" style="--spine-color: #8b7355; --spine-h: 170px;">
+                <span class="spine-title">Coastal Drift</span>
+                <span class="spine-meta">9 pieces</span>
+                <span class="spine-status draft">Draft</span>
+              </div>
+              <div class="book-spine" data-color="#c4a882" style="--spine-color: #937e61; --spine-h: 190px;">
+                <span class="spine-title">Autumn Weave</span>
+                <span class="spine-meta">18 pieces</span>
+                <span class="spine-status active">Active</span>
+              </div>
+            </div>
+
+            <div class="shelf-row" data-scroll-reveal>
+              <div class="shelf-surface"></div>
+              <div class="book-spine" data-color="#b08878" style="--spine-color: #b08878; --spine-h: 195px;">
+                <span class="spine-title">Moss & Stone</span>
+                <span class="spine-meta">11 pieces</span>
+                <span class="spine-status active">Active</span>
+              </div>
+              <div class="book-spine" data-color="#9a8a70" style="--spine-color: #9a8a70; --spine-h: 175px;">
+                <span class="spine-title">Fireside Glow</span>
+                <span class="spine-meta">7 pieces</span>
+                <span class="spine-status draft">Draft</span>
+              </div>
+              <div class="book-spine" data-color="#c09878" style="--spine-color: #95765d; --spine-h: 185px;">
+                <span class="spine-title">Midnight Blue</span>
+                <span class="spine-meta">16 pieces</span>
+                <span class="spine-status review">In Review</span>
+              </div>
+              <div class="book-spine" data-color="#a09080" style="--spine-color: #a09080; --spine-h: 165px;">
+                <span class="spine-title">Ceramic Earth</span>
+                <span class="spine-meta">5 pieces</span>
+                <span class="spine-status draft">Draft</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- List view below bookshelf -->
+          <div class="projects-list" data-scroll-reveal>
+            <h2>All Collections</h2>
+            <div class="project-list-item">
+              <div class="project-list-color" style="background: #d4927a;"></div>
+              <div class="project-list-info">
+                <h3>Spring Meadow</h3>
+                <p>Soft pastels and organic forms inspired by Danish countryside wildflowers. Chairs, tables, and textiles in blush and sage.</p>
+              </div>
+              <div class="project-list-meta">
+                <span class="badge active">Active</span>
+                <span>14 pieces</span>
+              </div>
+            </div>
+            <div class="project-list-item">
+              <div class="project-list-color" style="background: #a08060;"></div>
+              <div class="project-list-info">
+                <h3>Nordic Birch</h3>
+                <p>White birch wood paired with handwoven linen. Minimalist shelving, side tables, and pendant lights.</p>
+              </div>
+              <div class="project-list-meta">
+                <span class="badge active">Active</span>
+                <span>22 pieces</span>
+              </div>
+            </div>
+            <div class="project-list-item">
+              <div class="project-list-color" style="background: #8b7355;"></div>
+              <div class="project-list-info">
+                <h3>Coastal Drift</h3>
+                <p>Weathered oak and sea-glass ceramics. Inspired by the rocky Danish coastline and beach cottages.</p>
+              </div>
+              <div class="project-list-meta">
+                <span class="badge draft">Draft</span>
+                <span>9 pieces</span>
+              </div>
+            </div>
+            <div class="project-list-item">
+              <div class="project-list-color" style="background: #c4a882;"></div>
+              <div class="project-list-info">
+                <h3>Autumn Weave</h3>
+                <p>Chunky knit throws, woven wall hangings, and warm wool textiles in amber, rust, and cream.</p>
+              </div>
+              <div class="project-list-meta">
+                <span class="badge active">Active</span>
+                <span>18 pieces</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== PROJECT WORKSPACE ====== -->
+      <section id="view-project-workspace" class="view" data-view="project-workspace">
+        <div class="view-inner centered-panel">
+          <div class="view-header">
+            <h1>Spring Meadow</h1>
+            <p class="view-subtitle">A reading nook for your collection workspace</p>
+          </div>
+
+          <div class="workspace-layout">
+            <!-- Main content area (the open book) -->
+            <div class="workspace-main" data-scroll-reveal>
+              <div class="workspace-description">
+                <h2>Collection Overview</h2>
+                <p>Soft pastels and organic forms inspired by Danish countryside wildflowers. This collection celebrates the quiet beauty of Scandinavian spring — the first crocuses pushing through snow, pale morning light through linen curtains, and the gentle warmth of a new season.</p>
+              </div>
+
+              <div class="workspace-pieces-grid">
+                <div class="piece-card">
+                  <div class="piece-thumb" style="background: linear-gradient(135deg, #e8c9bc, #d4927a);"></div>
+                  <h3>Blomst Armchair</h3>
+                  <p>Oak frame with blush wool upholstery and organic curved armrests</p>
+                  <span class="piece-status done">Complete</span>
+                </div>
+                <div class="piece-card">
+                  <div class="piece-thumb" style="background: linear-gradient(135deg, #c4d4b8, #8ba87a);"></div>
+                  <h3>Eng Side Table</h3>
+                  <p>Solid ash with hand-turned legs and natural oil finish</p>
+                  <span class="piece-status progress">In Progress</span>
+                </div>
+                <div class="piece-card">
+                  <div class="piece-thumb" style="background: linear-gradient(135deg, #f0e0d0, #d4c0a8);"></div>
+                  <h3>Vild Throw Blanket</h3>
+                  <p>Merino wool throw with meadow-inspired knit pattern in cream and sage</p>
+                  <span class="piece-status done">Complete</span>
+                </div>
+                <div class="piece-card">
+                  <div class="piece-thumb" style="background: linear-gradient(135deg, #d8c8b8, #b8a898);"></div>
+                  <h3>Kvist Floor Lamp</h3>
+                  <p>Birch stem with hand-sewn linen shade, adjustable brass arm</p>
+                  <span class="piece-status review">Review</span>
+                </div>
+              </div>
+
+              <div class="workspace-timeline">
+                <h2>Timeline</h2>
+                <div class="timeline">
+                  <div class="timeline-item done">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>Concept Sketches</strong>
+                      <span>Completed Jan 15</span>
+                    </div>
+                  </div>
+                  <div class="timeline-item done">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>Material Sourcing</strong>
+                      <span>Completed Jan 28</span>
+                    </div>
+                  </div>
+                  <div class="timeline-item current">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>Prototyping</strong>
+                      <span>In progress — 65% done</span>
+                    </div>
+                  </div>
+                  <div class="timeline-item upcoming">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>Photography</strong>
+                      <span>Scheduled Feb 22</span>
+                    </div>
+                  </div>
+                  <div class="timeline-item upcoming">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>Launch</strong>
+                      <span>Planned Mar 5</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Side table (sidebar) -->
+            <aside class="workspace-sidebar" data-scroll-reveal>
+              <div class="side-card">
+                <h3>Team</h3>
+                <div class="team-list">
+                  <div class="team-member"><span class="team-avatar">AL</span> Astrid Lindqvist <em>Lead</em></div>
+                  <div class="team-member"><span class="team-avatar">EH</span> Erik Holm <em>Woodwork</em></div>
+                  <div class="team-member"><span class="team-avatar">SN</span> Sofia Nilsson <em>Textiles</em></div>
+                </div>
+              </div>
+              <div class="side-card">
+                <h3>Quick Notes</h3>
+                <div class="notes-area">
+                  <div class="note-item">Use only FSC-certified birch for all wood pieces</div>
+                  <div class="note-item">Blush tone reference: Pantone 14-1318 TCX</div>
+                  <div class="note-item">Photoshoot location confirmed: Oresund Studio</div>
+                </div>
+              </div>
+              <div class="side-card">
+                <h3>Budget</h3>
+                <div class="budget-bar">
+                  <div class="budget-label"><span>Materials</span><span>68%</span></div>
+                  <div class="budget-track"><div class="budget-fill" style="width:68%"></div></div>
+                </div>
+                <div class="budget-bar">
+                  <div class="budget-label"><span>Labor</span><span>45%</span></div>
+                  <div class="budget-track"><div class="budget-fill" style="width:45%"></div></div>
+                </div>
+                <div class="budget-bar">
+                  <div class="budget-label"><span>Photography</span><span>20%</span></div>
+                  <div class="budget-track"><div class="budget-fill" style="width:20%"></div></div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== KANBAN ====== -->
+      <section id="view-kanban" class="view" data-view="kanban">
+        <div class="view-inner centered-panel">
+          <div class="view-header">
+            <h1>Production Board</h1>
+            <p class="view-subtitle">Track pieces through the making stages</p>
+          </div>
+
+          <div class="kanban-board">
+            <div class="kanban-column" data-col="prep">
+              <div class="kanban-col-header">
+                <span class="kanban-col-icon">&#x1F331;</span>
+                <h3>Prep</h3>
+                <span class="kanban-count">3</span>
+              </div>
+              <div class="kanban-cards" id="kanban-prep">
+                <div class="kanban-card" draggable="true" data-scroll-reveal>
+                  <div class="kanban-card-tag" style="background: #d4927a;"></div>
+                  <h4>Moss Planter — Large</h4>
+                  <p>Source stoneware clay, prepare glazing samples in sage and cream</p>
+                  <div class="kanban-card-footer">
+                    <span class="kanban-avatar">KA</span>
+                    <span class="kanban-due">Feb 20</span>
+                  </div>
+                </div>
+                <div class="kanban-card" draggable="true" data-scroll-reveal>
+                  <div class="kanban-card-tag" style="background: #a08060;"></div>
+                  <h4>Birch Bookends</h4>
+                  <p>Select and cut birch blocks, sand to 220 grit</p>
+                  <div class="kanban-card-footer">
+                    <span class="kanban-avatar">EH</span>
+                    <span class="kanban-due">Feb 18</span>
+                  </div>
+                </div>
+                <div class="kanban-card" draggable="true" data-scroll-reveal>
+                  <div class="kanban-card-tag" style="background: #c4a882;"></div>
+                  <h4>Wool Cushion Covers</h4>
+                  <p>Order New Zealand merino yarn in 3 colorways</p>
+                  <div class="kanban-card-footer">
+                    <span class="kanban-avatar">SN</span>
+                    <span class="kanban-due">Feb 22</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="kanban-column" data-col="craft">
+              <div class="kanban-col-header">
+                <span class="kanban-col-icon">&#x1F528;</span>
+                <h3>Craft</h3>
+                <span class="kanban-count">2</span>
+              </div>
+              <div class="kanban-cards" id="kanban-craft">
+                <div class="kanban-card" draggable="true" data-scroll-reveal>
+                  <div class="kanban-card-tag" style="background: #b08878;"></div>
+                  <h4>Kvist Floor Lamp</h4>
+                  <p>Turning the birch stem on the lathe, brass arm fitting</p>
+                  <div class="kanban-card-footer">
+                    <span class="kanban-avatar">EH</span>
+                    <span class="kanban-due">Feb 25</span>
+                  </div>
+                </div>
+                <div class="kanban-card" draggable="true" data-scroll-reveal>
+                  <div class="kanban-card-tag" style="background: #d4927a;"></div>
+                  <h4>Eng Side Table</h4>
+                  <p>Joinery assembly, hand-turned legs, oil finishing</p>
+                  <div class="kanban-card-footer">
+                    <span class="kanban-avatar">EH</span>
+                    <span class="kanban-due">Feb 28</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="kanban-column" data-col="finish">
+              <div class="kanban-col-header">
+                <span class="kanban-col-icon">&#x2728;</span>
+                <h3>Finish</h3>
+                <span class="kanban-count">2</span>
+              </div>
+              <div class="kanban-cards" id="kanban-finish">
+                <div class="kanban-card" draggable="true" data-scroll-reveal>
+                  <div class="kanban-card-tag" style="background: #c09878;"></div>
+                  <h4>Vild Throw Blanket</h4>
+                  <p>Final wash, fringe trimming, quality inspection</p>
+                  <div class="kanban-card-footer">
+                    <span class="kanban-avatar">SN</span>
+                    <span class="kanban-due">Feb 17</span>
+                  </div>
+                </div>
+                <div class="kanban-card" draggable="true" data-scroll-reveal>
+                  <div class="kanban-card-tag" style="background: #9a8a70;"></div>
+                  <h4>Hygge Candle Set</h4>
+                  <p>Pour and cure remaining 24 candles, label packaging</p>
+                  <div class="kanban-card-footer">
+                    <span class="kanban-avatar">ML</span>
+                    <span class="kanban-due">Feb 19</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="kanban-column" data-col="ship">
+              <div class="kanban-col-header">
+                <span class="kanban-col-icon">&#x1F4E6;</span>
+                <h3>Ship</h3>
+                <span class="kanban-count">2</span>
+              </div>
+              <div class="kanban-cards" id="kanban-ship">
+                <div class="kanban-card" draggable="true" data-scroll-reveal>
+                  <div class="kanban-card-tag" style="background: #d4927a;"></div>
+                  <h4>Blomst Armchair</h4>
+                  <p>Ready for catalog photography and warehouse</p>
+                  <div class="kanban-card-footer">
+                    <span class="kanban-avatar">AL</span>
+                    <span class="kanban-due">Ready</span>
+                  </div>
+                </div>
+                <div class="kanban-card" draggable="true" data-scroll-reveal>
+                  <div class="kanban-card-tag" style="background: #a08060;"></div>
+                  <h4>Fjord Table Lamp</h4>
+                  <p>Packaged and labeled, pending shipping slot</p>
+                  <div class="kanban-card-footer">
+                    <span class="kanban-avatar">ML</span>
+                    <span class="kanban-due">Ready</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== WHITEBOARD ====== -->
+      <section id="view-whiteboard" class="view" data-view="whiteboard">
+        <div class="view-inner centered-panel">
+          <div class="view-header">
+            <h1>Inspiration Board</h1>
+            <p class="view-subtitle">Connect ideas with yarn-like threads</p>
+          </div>
+
+          <div class="yarn-board">
+            <svg class="yarn-lines" id="yarn-svg" width="100%" height="100%">
+              <defs>
+                <filter id="yarn-blur">
+                  <feGaussianBlur stdDeviation="0.5"/>
+                </filter>
+              </defs>
+              <!-- Lines drawn by JS -->
+            </svg>
+
+            <div class="yarn-node" id="node-1" style="left: 10%; top: 15%;" data-connects="node-2,node-3">
+              <div class="node-inner knit-bg">
+                <h4>Natural Materials</h4>
+                <p>Oak, birch, walnut, linen, wool, stoneware</p>
+              </div>
+            </div>
+            <div class="yarn-node" id="node-2" style="left: 45%; top: 8%;" data-connects="node-4">
+              <div class="node-inner knit-bg">
+                <h4>Color Palette</h4>
+                <p>Warm blush, cream, sage, honey, soft grey</p>
+              </div>
+            </div>
+            <div class="yarn-node" id="node-3" style="left: 15%; top: 50%;" data-connects="node-5">
+              <div class="node-inner knit-bg">
+                <h4>Craftsmanship</h4>
+                <p>Hand-turned, hand-woven, slow-made, artisan</p>
+              </div>
+            </div>
+            <div class="yarn-node" id="node-4" style="left: 70%; top: 20%;" data-connects="node-6">
+              <div class="node-inner knit-bg">
+                <h4>Sustainability</h4>
+                <p>FSC wood, organic cotton, low-waste production</p>
+              </div>
+            </div>
+            <div class="yarn-node" id="node-5" style="left: 40%; top: 55%;" data-connects="node-6">
+              <div class="node-inner knit-bg">
+                <h4>Comfort First</h4>
+                <p>Ergonomic curves, soft textures, warmth in every piece</p>
+              </div>
+            </div>
+            <div class="yarn-node" id="node-6" style="left: 65%; top: 55%;">
+              <div class="node-inner knit-bg">
+                <h4>Scandinavian Roots</h4>
+                <p>Danish design legacy, functional beauty, hygge spirit</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SCHEMA PLANNER ====== -->
+      <section id="view-schema-planner" class="view" data-view="schema-planner">
+        <div class="view-inner centered-panel">
+          <div class="view-header">
+            <h1>Catalog Structure</h1>
+            <p class="view-subtitle">Organize your product catalog like a cookbook index</p>
+          </div>
+
+          <div class="schema-grid">
+            <div class="schema-entity" data-scroll-reveal>
+              <div class="entity-header">
+                <i class="ph-duotone ph-book-open"></i>
+                <h3>Collection</h3>
+              </div>
+              <div class="entity-fields">
+                <div class="field-row"><span class="field-key">PK</span><span class="field-name">collection_id</span><span class="field-type">uuid</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">name</span><span class="field-type">text</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">season</span><span class="field-type">enum</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">description</span><span class="field-type">text</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">launch_date</span><span class="field-type">date</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">status</span><span class="field-type">enum</span></div>
+              </div>
+            </div>
+
+            <div class="schema-entity" data-scroll-reveal>
+              <div class="entity-header">
+                <i class="ph-duotone ph-armchair"></i>
+                <h3>Product</h3>
+              </div>
+              <div class="entity-fields">
+                <div class="field-row"><span class="field-key">PK</span><span class="field-name">product_id</span><span class="field-type">uuid</span></div>
+                <div class="field-row"><span class="field-key">FK</span><span class="field-name">collection_id</span><span class="field-type">uuid</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">name</span><span class="field-type">text</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">category</span><span class="field-type">enum</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">price_dkk</span><span class="field-type">decimal</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">dimensions</span><span class="field-type">json</span></div>
+              </div>
+            </div>
+
+            <div class="schema-entity" data-scroll-reveal>
+              <div class="entity-header">
+                <i class="ph-duotone ph-palette"></i>
+                <h3>Material</h3>
+              </div>
+              <div class="entity-fields">
+                <div class="field-row"><span class="field-key">PK</span><span class="field-name">material_id</span><span class="field-type">uuid</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">name</span><span class="field-type">text</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">type</span><span class="field-type">enum</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">origin</span><span class="field-type">text</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">is_sustainable</span><span class="field-type">bool</span></div>
+              </div>
+            </div>
+
+            <div class="schema-entity" data-scroll-reveal>
+              <div class="entity-header">
+                <i class="ph-duotone ph-user"></i>
+                <h3>Artisan</h3>
+              </div>
+              <div class="entity-fields">
+                <div class="field-row"><span class="field-key">PK</span><span class="field-name">artisan_id</span><span class="field-type">uuid</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">name</span><span class="field-type">text</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">specialty</span><span class="field-type">enum</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">workshop</span><span class="field-type">text</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">joined_date</span><span class="field-type">date</span></div>
+              </div>
+            </div>
+
+            <div class="schema-entity" data-scroll-reveal>
+              <div class="entity-header">
+                <i class="ph-duotone ph-receipt"></i>
+                <h3>Order</h3>
+              </div>
+              <div class="entity-fields">
+                <div class="field-row"><span class="field-key">PK</span><span class="field-name">order_id</span><span class="field-type">uuid</span></div>
+                <div class="field-row"><span class="field-key">FK</span><span class="field-name">product_id</span><span class="field-type">uuid</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">quantity</span><span class="field-type">int</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">retailer</span><span class="field-type">text</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">ship_date</span><span class="field-type">date</span></div>
+              </div>
+            </div>
+
+            <div class="schema-entity" data-scroll-reveal>
+              <div class="entity-header">
+                <i class="ph-duotone ph-image"></i>
+                <h3>Photo</h3>
+              </div>
+              <div class="entity-fields">
+                <div class="field-row"><span class="field-key">PK</span><span class="field-name">photo_id</span><span class="field-type">uuid</span></div>
+                <div class="field-row"><span class="field-key">FK</span><span class="field-name">product_id</span><span class="field-type">uuid</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">url</span><span class="field-type">text</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">type</span><span class="field-type">enum</span></div>
+                <div class="field-row"><span class="field-key"></span><span class="field-name">photographer</span><span class="field-type">text</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== DIRECTORY TREE ====== -->
+      <section id="view-directory-tree" class="view" data-view="directory-tree">
+        <div class="view-inner centered-panel">
+          <div class="view-header">
+            <h1>Studio Files</h1>
+            <p class="view-subtitle">A wooden drawer organizer for your design files</p>
+          </div>
+
+          <div class="file-tree" data-scroll-reveal>
+            <div class="tree-folder open">
+              <div class="tree-folder-header" tabindex="0">
+                <i class="ph-duotone ph-folder-open"></i>
+                <span>Hygge Studio</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-folder open">
+                  <div class="tree-folder-header" tabindex="0">
+                    <i class="ph-duotone ph-folder-open"></i>
+                    <span>Collections</span>
+                  </div>
+                  <div class="tree-children">
+                    <div class="tree-folder">
+                      <div class="tree-folder-header" tabindex="0">
+                        <i class="ph-duotone ph-folder"></i>
+                        <span>Spring Meadow</span>
+                      </div>
+                      <div class="tree-children">
+                        <div class="tree-file"><i class="ph-duotone ph-file-text"></i><span>collection-brief.pdf</span></div>
+                        <div class="tree-file"><i class="ph-duotone ph-file-image"></i><span>mood-board.png</span></div>
+                        <div class="tree-file"><i class="ph-duotone ph-file-text"></i><span>material-list.csv</span></div>
+                        <div class="tree-file"><i class="ph-duotone ph-file-image"></i><span>color-swatches.png</span></div>
+                      </div>
+                    </div>
+                    <div class="tree-folder">
+                      <div class="tree-folder-header" tabindex="0">
+                        <i class="ph-duotone ph-folder"></i>
+                        <span>Nordic Birch</span>
+                      </div>
+                      <div class="tree-children">
+                        <div class="tree-file"><i class="ph-duotone ph-file-text"></i><span>design-spec.pdf</span></div>
+                        <div class="tree-file"><i class="ph-duotone ph-file-image"></i><span>prototype-photos.zip</span></div>
+                        <div class="tree-file"><i class="ph-duotone ph-file-text"></i><span>cost-estimate.xlsx</span></div>
+                      </div>
+                    </div>
+                    <div class="tree-folder">
+                      <div class="tree-folder-header" tabindex="0">
+                        <i class="ph-duotone ph-folder"></i>
+                        <span>Coastal Drift</span>
+                      </div>
+                      <div class="tree-children">
+                        <div class="tree-file"><i class="ph-duotone ph-file-text"></i><span>concept-sketches.pdf</span></div>
+                        <div class="tree-file"><i class="ph-duotone ph-file-image"></i><span>inspiration-photos.zip</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tree-folder">
+                  <div class="tree-folder-header" tabindex="0">
+                    <i class="ph-duotone ph-folder"></i>
+                    <span>Photography</span>
+                  </div>
+                  <div class="tree-children">
+                    <div class="tree-file"><i class="ph-duotone ph-file-image"></i><span>studio-setup-guide.pdf</span></div>
+                    <div class="tree-file"><i class="ph-duotone ph-file-image"></i><span>lighting-reference.jpg</span></div>
+                    <div class="tree-file"><i class="ph-duotone ph-file-text"></i><span>shot-list-spring.csv</span></div>
+                  </div>
+                </div>
+                <div class="tree-folder">
+                  <div class="tree-folder-header" tabindex="0">
+                    <i class="ph-duotone ph-folder"></i>
+                    <span>Brand Assets</span>
+                  </div>
+                  <div class="tree-children">
+                    <div class="tree-file"><i class="ph-duotone ph-file-image"></i><span>logo-primary.svg</span></div>
+                    <div class="tree-file"><i class="ph-duotone ph-file-image"></i><span>logo-monochrome.svg</span></div>
+                    <div class="tree-file"><i class="ph-duotone ph-file-text"></i><span>brand-guidelines.pdf</span></div>
+                    <div class="tree-file"><i class="ph-duotone ph-file-text"></i><span>typography-spec.pdf</span></div>
+                  </div>
+                </div>
+                <div class="tree-folder">
+                  <div class="tree-folder-header" tabindex="0">
+                    <i class="ph-duotone ph-folder"></i>
+                    <span>Suppliers</span>
+                  </div>
+                  <div class="tree-children">
+                    <div class="tree-file"><i class="ph-duotone ph-file-text"></i><span>wood-suppliers.csv</span></div>
+                    <div class="tree-file"><i class="ph-duotone ph-file-text"></i><span>textile-mills.csv</span></div>
+                    <div class="tree-file"><i class="ph-duotone ph-file-text"></i><span>ceramic-studios.csv</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== IDEAS ====== -->
+      <section id="view-ideas" class="view" data-view="ideas">
+        <div class="view-inner centered-panel">
+          <div class="view-header">
+            <h1>Idea Cards</h1>
+            <p class="view-subtitle">Browse your index card filing cabinet of design ideas</p>
+          </div>
+
+          <!-- Idea input -->
+          <div class="idea-input-wrap" data-scroll-reveal>
+            <input type="text" id="idea-input" class="idea-input" placeholder="Write a new idea on a card...">
+            <button class="btn-primary" id="add-idea-btn">Pin Card</button>
+          </div>
+
+          <div class="idea-cards-grid">
+            <div class="idea-card" data-scroll-reveal>
+              <div class="idea-card-tab" style="background: #d4927a;"></div>
+              <div class="idea-card-body">
+                <h3>Modular Shelving System</h3>
+                <p>Interlocking birch modules that can be stacked and rearranged. Wall-mounted pegs with hanging shelves — no tools needed for reconfiguration.</p>
+                <div class="idea-card-footer">
+                  <span class="idea-category">Furniture</span>
+                  <span class="idea-votes"><i class="ph-duotone ph-heart"></i> 8</span>
+                  <span class="idea-author">Astrid L.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="idea-card" data-scroll-reveal>
+              <div class="idea-card-tab" style="background: #a08060;"></div>
+              <div class="idea-card-body">
+                <h3>Felted Wool Coasters</h3>
+                <p>Hand-felted coasters in sets of 6, using naturally dyed wool in gradient earth tones. Each set unique, packaged in a linen pouch.</p>
+                <div class="idea-card-footer">
+                  <span class="idea-category">Textiles</span>
+                  <span class="idea-votes"><i class="ph-duotone ph-heart"></i> 12</span>
+                  <span class="idea-author">Sofia N.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="idea-card" data-scroll-reveal>
+              <div class="idea-card-tab" style="background: #8b7355;"></div>
+              <div class="idea-card-body">
+                <h3>Candle Holder Trio</h3>
+                <p>Three graduated stoneware holders in warm cream glaze. Inspired by Danish church candles — simple, honest, beautiful in a row on a mantel.</p>
+                <div class="idea-card-footer">
+                  <span class="idea-category">Ceramics</span>
+                  <span class="idea-votes"><i class="ph-duotone ph-heart"></i> 15</span>
+                  <span class="idea-author">Klara A.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="idea-card" data-scroll-reveal>
+              <div class="idea-card-tab" style="background: #c4a882;"></div>
+              <div class="idea-card-body">
+                <h3>Woven Wall Hanging</h3>
+                <p>Large-scale wall textile combining raw linen warp with dyed wool weft. Abstract landscape pattern evoking Danish heathlands.</p>
+                <div class="idea-card-footer">
+                  <span class="idea-category">Textiles</span>
+                  <span class="idea-votes"><i class="ph-duotone ph-heart"></i> 6</span>
+                  <span class="idea-author">Sofia N.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="idea-card" data-scroll-reveal>
+              <div class="idea-card-tab" style="background: #b08878;"></div>
+              <div class="idea-card-body">
+                <h3>Cork & Oak Desk Organizer</h3>
+                <p>Desktop tray with cork-lined compartments and oak frame. Designed for the home office — holds pens, cards, and a small plant.</p>
+                <div class="idea-card-footer">
+                  <span class="idea-category">Furniture</span>
+                  <span class="idea-votes"><i class="ph-duotone ph-heart"></i> 9</span>
+                  <span class="idea-author">Erik H.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="idea-card" data-scroll-reveal>
+              <div class="idea-card-tab" style="background: #9a8a70;"></div>
+              <div class="idea-card-body">
+                <h3>Linen Napkin Set</h3>
+                <p>Stonewashed linen napkins with hand-stitched hem detail. Sold as a set of 4 in a cedar box. Available in oatmeal, blush, and sage.</p>
+                <div class="idea-card-footer">
+                  <span class="idea-category">Textiles</span>
+                  <span class="idea-votes"><i class="ph-duotone ph-heart"></i> 7</span>
+                  <span class="idea-author">Magnus L.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== AI CHAT ====== -->
+      <section id="view-ai-chat" class="view" data-view="ai-chat">
+        <div class="view-inner centered-panel">
+          <div class="view-header">
+            <h1>Studio Companion</h1>
+            <p class="view-subtitle">Exchange letters with your AI design assistant</p>
+          </div>
+
+          <div class="chat-letters">
+            <div class="letter user-letter" data-scroll-reveal>
+              <div class="letter-header">
+                <div class="letter-avatar user">AL</div>
+                <div class="letter-meta">
+                  <strong>Astrid Lindqvist</strong>
+                  <span class="letter-time wax-seal">9:15 AM</span>
+                </div>
+              </div>
+              <div class="letter-body">
+                <p>I am looking for inspiration for our Spring Meadow collection photoshoot. We want warm, natural light with a lived-in Scandinavian feel. What locations or setups would you suggest?</p>
+              </div>
+            </div>
+
+            <div class="letter ai-letter" data-scroll-reveal>
+              <div class="letter-header">
+                <div class="letter-avatar ai">
+                  <i class="ph-duotone ph-sparkle"></i>
+                </div>
+                <div class="letter-meta">
+                  <strong>Studio Companion</strong>
+                  <span class="letter-time wax-seal">9:16 AM</span>
+                </div>
+              </div>
+              <div class="letter-body">
+                <p>Lovely direction, Astrid. For the Spring Meadow collection, I would suggest three complementary setups:</p>
+                <p><strong>1. The Sunlit Studio</strong> -- A whitewashed room with south-facing windows. Place pieces on raw oak floors with linen drapes catching morning light. Add a few dried wildflower stems in a ceramic vase.</p>
+                <p><strong>2. The Garden Room</strong> -- A conservatory or greenhouse setting where natural greenery frames the furniture. Moss and ferns provide organic contrast to the blush upholstery.</p>
+                <p><strong>3. The Cottage Interior</strong> -- A real Danish summer cottage with whitewashed walls, worn wooden beams, and that authentic sense of hygge. Layer the textiles over vintage chairs beside a woodstove.</p>
+              </div>
+            </div>
+
+            <div class="letter user-letter" data-scroll-reveal>
+              <div class="letter-header">
+                <div class="letter-avatar user">AL</div>
+                <div class="letter-meta">
+                  <strong>Astrid Lindqvist</strong>
+                  <span class="letter-time wax-seal">9:20 AM</span>
+                </div>
+              </div>
+              <div class="letter-body">
+                <p>The cottage interior idea is perfect! Can you help me create a shot list for the Blomst Armchair specifically? We need both product-only shots and lifestyle shots.</p>
+              </div>
+            </div>
+
+            <div class="letter ai-letter" data-scroll-reveal>
+              <div class="letter-header">
+                <div class="letter-avatar ai">
+                  <i class="ph-duotone ph-sparkle"></i>
+                </div>
+                <div class="letter-meta">
+                  <strong>Studio Companion</strong>
+                  <span class="letter-time wax-seal">9:21 AM</span>
+                </div>
+              </div>
+              <div class="letter-body">
+                <p>Here is a shot list for the Blomst Armchair:</p>
+                <p><strong>Product Shots:</strong><br>
+                - Front 3/4 view on white sweep, natural light from left<br>
+                - Detail of the curved oak armrest joinery<br>
+                - Close-up of the blush wool upholstery texture<br>
+                - Back view showing the exposed wood frame</p>
+                <p><strong>Lifestyle Shots:</strong><br>
+                - Armchair beside a window with a knit throw draped over the arm, morning coffee on a side table<br>
+                - Person reading in the chair, bare feet on a wool rug, candles on the mantel behind<br>
+                - Chair in a room vignette with the Eng Side Table and Kvist Floor Lamp</p>
+              </div>
+            </div>
+
+            <div class="letter user-letter" data-scroll-reveal>
+              <div class="letter-header">
+                <div class="letter-avatar user">AL</div>
+                <div class="letter-meta">
+                  <strong>Astrid Lindqvist</strong>
+                  <span class="letter-time wax-seal">9:25 AM</span>
+                </div>
+              </div>
+              <div class="letter-body">
+                <p>Wonderful. One more thing -- what would be a good tagline for the collection? Something that captures the feeling of Danish spring and handmade warmth.</p>
+              </div>
+            </div>
+
+            <div class="letter ai-letter" data-scroll-reveal>
+              <div class="letter-header">
+                <div class="letter-avatar ai">
+                  <i class="ph-duotone ph-sparkle"></i>
+                </div>
+                <div class="letter-meta">
+                  <strong>Studio Companion</strong>
+                  <span class="letter-time wax-seal">9:26 AM</span>
+                </div>
+              </div>
+              <div class="letter-body">
+                <p>Here are a few options that evoke that feeling:</p>
+                <p><em>"Where warmth takes root."</em> -- Simple, organic, speaks to both the materials and the emotional experience.</p>
+                <p><em>"Handmade for the quiet hours."</em> -- Captures hygge and the contemplative quality of Scandinavian living.</p>
+                <p><em>"Bloom softly."</em> -- Short, poetic, connects spring with the gentle nature of the pieces.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat input -->
+          <div class="chat-input-wrap">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Write a letter to your companion...">
+            <button class="btn-primary" id="send-chat-btn">
+              <i class="ph-duotone ph-paper-plane-tilt"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SETTINGS ====== -->
+      <section id="view-settings" class="view" data-view="settings">
+        <div class="view-inner centered-panel">
+          <div class="view-header">
+            <h1>Studio Settings</h1>
+            <p class="view-subtitle">Adjust your cozy workspace preferences</p>
+          </div>
+
+          <!-- Profile section -->
+          <div class="settings-group" data-scroll-reveal>
+            <div class="settings-group-header">
+              <i class="ph-duotone ph-user-circle"></i>
+              <h2>Profile</h2>
+            </div>
+            <div class="settings-group-body">
+              <div class="settings-field">
+                <label for="settings-name">Display Name</label>
+                <input type="text" id="settings-name" value="Astrid Lindqvist" class="settings-input">
+              </div>
+              <div class="settings-field">
+                <label for="settings-email">Email</label>
+                <input type="email" id="settings-email" value="astrid@hyggestudio.dk" class="settings-input">
+              </div>
+              <div class="settings-field">
+                <label for="settings-role">Role</label>
+                <input type="text" id="settings-role" value="Creative Director" class="settings-input">
+              </div>
+              <div class="settings-field">
+                <label for="settings-studio">Studio Name</label>
+                <input type="text" id="settings-studio" value="Hygge Studio" class="settings-input">
+              </div>
+            </div>
+          </div>
+
+          <!-- Appearance section -->
+          <div class="settings-group" data-scroll-reveal>
+            <div class="settings-group-header">
+              <i class="ph-duotone ph-paint-brush"></i>
+              <h2>Appearance</h2>
+            </div>
+            <div class="settings-group-body">
+              <div class="settings-toggle-row">
+                <div class="toggle-label">
+                  <strong>Candlelight Mode</strong>
+                  <span>Add warm ambient glow to the interface</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+              <div class="settings-toggle-row">
+                <div class="toggle-label">
+                  <strong>Knit Texture Backgrounds</strong>
+                  <span>Show subtle textile patterns on surfaces</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+              <div class="settings-toggle-row">
+                <div class="toggle-label">
+                  <strong>Reduce Motion</strong>
+                  <span>Minimize animations and transitions</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+              <div class="settings-toggle-row">
+                <div class="toggle-label">
+                  <strong>Compact Layout</strong>
+                  <span>Use less spacing between elements</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notifications section -->
+          <div class="settings-group" data-scroll-reveal>
+            <div class="settings-group-header">
+              <i class="ph-duotone ph-bell-ringing"></i>
+              <h2>Notifications</h2>
+            </div>
+            <div class="settings-group-body">
+              <div class="settings-toggle-row">
+                <div class="toggle-label">
+                  <strong>Collection Updates</strong>
+                  <span>Notify when collection items change status</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+              <div class="settings-toggle-row">
+                <div class="toggle-label">
+                  <strong>Team Activity</strong>
+                  <span>Show when team members update or comment</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+              <div class="settings-toggle-row">
+                <div class="toggle-label">
+                  <strong>Deadline Reminders</strong>
+                  <span>Alert 3 days before milestone deadlines</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+              <div class="settings-toggle-row">
+                <div class="toggle-label">
+                  <strong>Email Digest</strong>
+                  <span>Weekly summary of studio activity</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data section -->
+          <div class="settings-group" data-scroll-reveal>
+            <div class="settings-group-header">
+              <i class="ph-duotone ph-database"></i>
+              <h2>Data & Privacy</h2>
+            </div>
+            <div class="settings-group-body">
+              <div class="settings-toggle-row">
+                <div class="toggle-label">
+                  <strong>Analytics</strong>
+                  <span>Help us improve by sharing anonymous usage data</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+              <div class="settings-field">
+                <label>Export Data</label>
+                <button class="btn-secondary">Download Studio Archive</button>
+              </div>
+              <div class="settings-field danger">
+                <label>Danger Zone</label>
+                <button class="btn-danger">Delete Studio Account</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Floating Bottom Dock Navigation -->
+    <nav id="dock-nav" class="dock-nav" role="navigation" aria-label="Main navigation">
+      <div class="dock-inner">
+        <button class="dock-item active" data-target="dashboard" data-tippy-content="Dashboard" aria-label="Dashboard">
+          <i class="ph-duotone ph-house"></i>
+          <span class="dock-label">Home</span>
+          <span class="candle-dot"></span>
+        </button>
+        <button class="dock-item" data-target="projects" data-tippy-content="Collections" aria-label="Collections">
+          <i class="ph-duotone ph-books"></i>
+          <span class="dock-label">Collections</span>
+          <span class="candle-dot"></span>
+        </button>
+        <button class="dock-item" data-target="project-workspace" data-tippy-content="Workspace" aria-label="Workspace">
+          <i class="ph-duotone ph-notebook"></i>
+          <span class="dock-label">Workspace</span>
+          <span class="candle-dot"></span>
+        </button>
+        <button class="dock-item" data-target="kanban" data-tippy-content="Board" aria-label="Board">
+          <i class="ph-duotone ph-kanban"></i>
+          <span class="dock-label">Board</span>
+          <span class="candle-dot"></span>
+        </button>
+        <button class="dock-item" data-target="whiteboard" data-tippy-content="Inspiration" aria-label="Inspiration">
+          <i class="ph-duotone ph-chalkboard"></i>
+          <span class="dock-label">Inspiration</span>
+          <span class="candle-dot"></span>
+        </button>
+        <button class="dock-item" data-target="schema-planner" data-tippy-content="Schema" aria-label="Schema">
+          <i class="ph-duotone ph-graph"></i>
+          <span class="dock-label">Schema</span>
+          <span class="candle-dot"></span>
+        </button>
+        <button class="dock-item" data-target="directory-tree" data-tippy-content="Files" aria-label="Files">
+          <i class="ph-duotone ph-tree-structure"></i>
+          <span class="dock-label">Files</span>
+          <span class="candle-dot"></span>
+        </button>
+        <button class="dock-item" data-target="ideas" data-tippy-content="Ideas" aria-label="Ideas">
+          <i class="ph-duotone ph-lightbulb"></i>
+          <span class="dock-label">Ideas</span>
+          <span class="candle-dot"></span>
+        </button>
+        <button class="dock-item" data-target="ai-chat" data-tippy-content="Chat" aria-label="Chat">
+          <i class="ph-duotone ph-envelope"></i>
+          <span class="dock-label">Chat</span>
+          <span class="candle-dot"></span>
+        </button>
+        <button class="dock-item" data-target="settings" data-tippy-content="Settings" aria-label="Settings">
+          <i class="ph-duotone ph-gear"></i>
+          <span class="dock-label">Settings</span>
+          <span class="candle-dot"></span>
+        </button>
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- CDN Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js"></script>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

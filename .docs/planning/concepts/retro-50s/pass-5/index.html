@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RouteKeeper - Roadside Idea Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Cabin:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- VACANCY loading overlay -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="vacancy-sign">
+      <span class="v-letter" data-i="0">V</span>
+      <span class="v-letter" data-i="1">A</span>
+      <span class="v-letter" data-i="2">C</span>
+      <span class="v-letter" data-i="3">A</span>
+      <span class="v-letter" data-i="4">N</span>
+      <span class="v-letter" data-i="5">C</span>
+      <span class="v-letter" data-i="6">Y</span>
+    </div>
+  </div>
+
+  <!-- Minimal Top Bar -->
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+        <i class="ph ph-list"></i>
+      </button>
+      <div class="logo-mark">
+        <span class="logo-neon">Route</span><span class="logo-pink">Keeper</span>
+      </div>
+    </div>
+    <div class="top-bar-center">
+      <button class="cmd-palette-trigger" id="cmd-palette-trigger">
+        <i class="ph ph-magnifying-glass"></i>
+        <span class="cmd-text">Navigate or search...</span>
+        <kbd class="cmd-shortcut">Ctrl+K</kbd>
+      </button>
+    </div>
+    <div class="top-bar-right">
+      <span class="current-view-badge" id="current-view-badge">Dashboard</span>
+      <div class="user-avatar-neon">
+        <span>RK</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Command Palette Modal -->
+  <div class="cmd-palette-backdrop" id="cmd-palette-backdrop">
+    <div class="cmd-palette" id="cmd-palette">
+      <div class="cmd-palette-search">
+        <i class="ph ph-magnifying-glass"></i>
+        <input type="text" id="cmd-search-input" placeholder="Where to next?" autocomplete="off">
+      </div>
+      <div class="cmd-palette-results" id="cmd-palette-results">
+        <div class="cmd-section-label">DESTINATIONS</div>
+        <button class="cmd-item" data-view="dashboard">
+          <i class="ph ph-gauge"></i>
+          <span class="cmd-item-label">Dashboard</span>
+          <span class="cmd-item-hint">Home base</span>
+        </button>
+        <button class="cmd-item" data-view="projects">
+          <i class="ph ph-map-trifold"></i>
+          <span class="cmd-item-label">Road Trips</span>
+          <span class="cmd-item-hint">All routes</span>
+        </button>
+        <button class="cmd-item" data-view="project-workspace">
+          <i class="ph ph-compass"></i>
+          <span class="cmd-item-label">Trip Planner</span>
+          <span class="cmd-item-hint">Active trip</span>
+        </button>
+        <button class="cmd-item" data-view="kanban">
+          <i class="ph ph-columns"></i>
+          <span class="cmd-item-label">Route Board</span>
+          <span class="cmd-item-hint">Kanban stops</span>
+        </button>
+        <button class="cmd-item" data-view="whiteboard">
+          <i class="ph ph-map-pin"></i>
+          <span class="cmd-item-label">Route Map</span>
+          <span class="cmd-item-hint">Canvas</span>
+        </button>
+        <button class="cmd-item" data-view="schema-planner">
+          <i class="ph ph-gas-pump"></i>
+          <span class="cmd-item-label">Stop Planner</span>
+          <span class="cmd-item-hint">Schema</span>
+        </button>
+        <button class="cmd-item" data-view="directory-tree">
+          <i class="ph ph-signpost"></i>
+          <span class="cmd-item-label">Highway Guide</span>
+          <span class="cmd-item-hint">Directory</span>
+        </button>
+        <button class="cmd-item" data-view="ideas">
+          <i class="ph ph-camera"></i>
+          <span class="cmd-item-label">Snapshots</span>
+          <span class="cmd-item-hint">Ideas</span>
+        </button>
+        <button class="cmd-item" data-view="ai-chat">
+          <i class="ph ph-radio"></i>
+          <span class="cmd-item-label">CB Radio</span>
+          <span class="cmd-item-hint">AI chat</span>
+        </button>
+        <button class="cmd-item" data-view="settings">
+          <i class="ph ph-wrench"></i>
+          <span class="cmd-item-label">Front Desk</span>
+          <span class="cmd-item-hint">Settings</span>
+        </button>
+      </div>
+      <div class="cmd-palette-footer">
+        <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> Navigate</span>
+        <span><kbd>Enter</kbd> Go</span>
+        <span><kbd>Esc</kbd> Close</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Nav Drawer -->
+  <div class="mobile-nav-backdrop" id="mobile-nav-backdrop">
+    <nav class="mobile-nav-drawer" id="mobile-nav-drawer">
+      <div class="mobile-nav-header">
+        <span class="logo-neon">Route</span><span class="logo-pink">Keeper</span>
+        <button class="mobile-nav-close" id="mobile-nav-close"><i class="ph ph-x"></i></button>
+      </div>
+      <button class="mobile-nav-item" data-view="dashboard"><i class="ph ph-gauge"></i> Dashboard</button>
+      <button class="mobile-nav-item" data-view="projects"><i class="ph ph-map-trifold"></i> Road Trips</button>
+      <button class="mobile-nav-item" data-view="project-workspace"><i class="ph ph-compass"></i> Trip Planner</button>
+      <button class="mobile-nav-item" data-view="kanban"><i class="ph ph-columns"></i> Route Board</button>
+      <button class="mobile-nav-item" data-view="whiteboard"><i class="ph ph-map-pin"></i> Route Map</button>
+      <button class="mobile-nav-item" data-view="schema-planner"><i class="ph ph-gas-pump"></i> Stop Planner</button>
+      <button class="mobile-nav-item" data-view="directory-tree"><i class="ph ph-signpost"></i> Highway Guide</button>
+      <button class="mobile-nav-item" data-view="ideas"><i class="ph ph-camera"></i> Snapshots</button>
+      <button class="mobile-nav-item" data-view="ai-chat"><i class="ph ph-radio"></i> CB Radio</button>
+      <button class="mobile-nav-item" data-view="settings"><i class="ph ph-wrench"></i> Front Desk</button>
+    </nav>
+  </div>
+
+  <!-- MICRO FEEDBACK STAMP -->
+  <div class="checkin-stamp" id="checkin-stamp">CHECKED IN</div>
+
+  <!-- ROAD SIGN TOOLTIP -->
+  <div class="road-sign-tooltip" id="road-sign-tooltip"></div>
+
+  <!-- Main Content Area (centered card stack) -->
+  <main class="main-content" id="main-content">
+
+    <!-- ========== DASHBOARD ========== -->
+    <section class="view-panel" id="view-dashboard">
+      <div class="view-card-stack">
+        <div class="marquee-header scroll-reveal">
+          <h1 class="neon-heading">Motel Dashboard</h1>
+          <p class="neon-subtext">Your roadside command center &mdash; every mile tracked</p>
+        </div>
+
+        <div class="neon-stats-row scroll-reveal">
+          <div class="neon-stat-box">
+            <div class="stat-neon-value" data-color="teal">2,847</div>
+            <div class="stat-label">Miles Logged</div>
+            <div class="stat-indicator on">VACANCY</div>
+          </div>
+          <div class="neon-stat-box">
+            <div class="stat-neon-value" data-color="pink">14</div>
+            <div class="stat-label">Active Trips</div>
+            <div class="stat-indicator on">OPEN</div>
+          </div>
+          <div class="neon-stat-box">
+            <div class="stat-neon-value" data-color="teal">89</div>
+            <div class="stat-label">Stops Visited</div>
+            <div class="stat-indicator off">CRUISING</div>
+          </div>
+          <div class="neon-stat-box">
+            <div class="stat-neon-value" data-color="pink">7</div>
+            <div class="stat-label">States Crossed</div>
+            <div class="stat-indicator on">ROLLING</div>
+          </div>
+        </div>
+
+        <div class="road-stripe-divider scroll-reveal"></div>
+
+        <div class="dashboard-duo scroll-reveal">
+          <div class="recent-activity-panel">
+            <h2 class="section-neon-title">Recent Road Log</h2>
+            <div class="activity-entry">
+              <span class="activity-time">2h ago</span>
+              <span class="activity-icon"><i class="ph ph-map-pin"></i></span>
+              <span class="activity-text">Added <strong>Tucson Sunset Diner</strong> to Route 66 trip</span>
+            </div>
+            <div class="activity-entry">
+              <span class="activity-time">5h ago</span>
+              <span class="activity-icon"><i class="ph ph-check-circle"></i></span>
+              <span class="activity-text">Completed <strong>Grand Canyon Detour</strong> planning phase</span>
+            </div>
+            <div class="activity-entry">
+              <span class="activity-time">1d ago</span>
+              <span class="activity-icon"><i class="ph ph-camera"></i></span>
+              <span class="activity-text">Snapshot: <strong>"Neon motel sign collection"</strong> idea captured</span>
+            </div>
+            <div class="activity-entry">
+              <span class="activity-time">1d ago</span>
+              <span class="activity-icon"><i class="ph ph-gas-pump"></i></span>
+              <span class="activity-text">Fuel stop added at <strong>Seligman, AZ</strong></span>
+            </div>
+            <div class="activity-entry">
+              <span class="activity-time">2d ago</span>
+              <span class="activity-icon"><i class="ph ph-star"></i></span>
+              <span class="activity-text">Rated <strong>Blue Swallow Motel</strong> as must-visit</span>
+            </div>
+          </div>
+
+          <div class="capacity-panel">
+            <h2 class="section-neon-title">Capacity Meter</h2>
+            <div class="capacity-gauge">
+              <div class="gauge-track">
+                <div class="gauge-fill" style="width:72%"></div>
+              </div>
+              <div class="gauge-labels">
+                <span>0 mi</span>
+                <span class="gauge-current">2,847 mi</span>
+                <span>4,000 mi</span>
+              </div>
+            </div>
+            <div class="vacancy-indicator scroll-reveal">
+              <div class="vacancy-light on">VACANCY</div>
+              <p class="vacancy-note">Room for 1,153 more miles of adventure this month</p>
+            </div>
+            <div class="upcoming-stops">
+              <h3 class="mini-neon">Next Stops</h3>
+              <div class="upcoming-stop"><i class="ph ph-map-pin"></i> Winslow, AZ &mdash; Tomorrow</div>
+              <div class="upcoming-stop"><i class="ph ph-map-pin"></i> Flagstaff, AZ &mdash; Wed</div>
+              <div class="upcoming-stop"><i class="ph ph-map-pin"></i> Williams, AZ &mdash; Thu</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS (Road Trips) ========== -->
+    <section class="view-panel" id="view-projects" style="display:none">
+      <div class="view-card-stack">
+        <div class="marquee-header scroll-reveal">
+          <h1 class="neon-heading">Road Trips</h1>
+          <p class="neon-subtext">Postcards from every journey &mdash; pick your route</p>
+        </div>
+
+        <div class="postcard-grid scroll-reveal">
+          <div class="postcard-card" data-tooltip="Started June 2025 - 14 stops planned">
+            <div class="postcard-scene" style="--scene-hue:180">
+              <div class="postcard-neon-name">Route 66 Revival</div>
+            </div>
+            <div class="postcard-body">
+              <p class="postcard-desc">Chicago to Santa Monica along the Mother Road. Diners, motels, and vintage gas stations the whole way.</p>
+              <div class="postcard-meta">
+                <span class="postage-badge active">EN ROUTE</span>
+                <span class="postcard-miles">1,240 mi</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="postcard-card" data-tooltip="Completed May 2025 - 9 stops visited">
+            <div class="postcard-scene" style="--scene-hue:330">
+              <div class="postcard-neon-name">Pacific Coast Hwy</div>
+            </div>
+            <div class="postcard-body">
+              <p class="postcard-desc">Hugging the California coastline from San Diego to San Francisco. Clifftop views and seafood shacks.</p>
+              <div class="postcard-meta">
+                <span class="postage-badge completed">ARRIVED</span>
+                <span class="postcard-miles">650 mi</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="postcard-card" data-tooltip="Planning phase - 6 stops drafted">
+            <div class="postcard-scene" style="--scene-hue:45">
+              <div class="postcard-neon-name">Desert Neon Trail</div>
+            </div>
+            <div class="postcard-body">
+              <p class="postcard-desc">Las Vegas to Marfa, chasing vintage neon signs and desert sunsets across Nevada, Arizona, and Texas.</p>
+              <div class="postcard-meta">
+                <span class="postage-badge planning">PLANNING</span>
+                <span class="postcard-miles">920 mi</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="postcard-card" data-tooltip="Starting August 2025 - 11 stops planned">
+            <div class="postcard-scene" style="--scene-hue:120">
+              <div class="postcard-neon-name">Blue Ridge Parkway</div>
+            </div>
+            <div class="postcard-body">
+              <p class="postcard-desc">Virginia to North Carolina through the Appalachian mountains. Fall foliage, mountain lodges, and bluegrass.</p>
+              <div class="postcard-meta">
+                <span class="postage-badge planning">PLANNING</span>
+                <span class="postcard-miles">469 mi</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="postcard-card" data-tooltip="Completed March 2025 - 8 stops visited">
+            <div class="postcard-scene" style="--scene-hue:200">
+              <div class="postcard-neon-name">Gulf Coast Drift</div>
+            </div>
+            <div class="postcard-body">
+              <p class="postcard-desc">New Orleans to Key West along the Gulf. Cajun food, barrier islands, and endless bridge crossings.</p>
+              <div class="postcard-meta">
+                <span class="postage-badge completed">ARRIVED</span>
+                <span class="postcard-miles">890 mi</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="postcard-card" data-tooltip="Deferred - waiting on permits">
+            <div class="postcard-scene" style="--scene-hue:270">
+              <div class="postcard-neon-name">Alaska Highway</div>
+            </div>
+            <div class="postcard-body">
+              <p class="postcard-desc">Dawson Creek to Fairbanks through the Yukon wilderness. Gravel roads, northern lights, and midnight sun.</p>
+              <div class="postcard-meta">
+                <span class="postage-badge deferred">DEFERRED</span>
+                <span class="postcard-miles">1,387 mi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECT WORKSPACE (Trip Planner) ========== -->
+    <section class="view-panel" id="view-project-workspace" style="display:none">
+      <div class="view-card-stack">
+        <div class="marquee-header scroll-reveal">
+          <h1 class="neon-heading">Trip Planner</h1>
+          <p class="neon-subtext">Route 66 Revival &mdash; your glove-compartment organizer</p>
+        </div>
+
+        <div class="workspace-layout scroll-reveal">
+          <div class="workspace-main">
+            <div class="map-area">
+              <div class="map-placeholder">
+                <div class="map-route-line"></div>
+                <div class="map-node" style="left:10%;top:30%"><span>Chicago</span></div>
+                <div class="map-node" style="left:25%;top:45%"><span>St. Louis</span></div>
+                <div class="map-node" style="left:40%;top:55%"><span>Tulsa</span></div>
+                <div class="map-node" style="left:55%;top:50%"><span>Amarillo</span></div>
+                <div class="map-node" style="left:70%;top:40%"><span>Albuquerque</span></div>
+                <div class="map-node" style="left:82%;top:35%"><span>Flagstaff</span></div>
+                <div class="map-node active" style="left:92%;top:55%"><span>Santa Monica</span></div>
+              </div>
+            </div>
+
+            <div class="road-stripe-divider"></div>
+
+            <div class="workspace-tasks">
+              <h2 class="section-neon-title">Leg Details</h2>
+              <div class="task-row">
+                <span class="task-check done"><i class="ph ph-check-circle"></i></span>
+                <span class="task-text">Book overnight at Coral Court Motel (St. Louis)</span>
+                <span class="task-tag">Lodging</span>
+              </div>
+              <div class="task-row">
+                <span class="task-check done"><i class="ph ph-check-circle"></i></span>
+                <span class="task-text">Reserve table at Rock Cafe, Stroud OK</span>
+                <span class="task-tag">Dining</span>
+              </div>
+              <div class="task-row">
+                <span class="task-check"><i class="ph ph-circle"></i></span>
+                <span class="task-text">Fill up at restored Conoco station, Shamrock TX</span>
+                <span class="task-tag">Fuel</span>
+              </div>
+              <div class="task-row">
+                <span class="task-check"><i class="ph ph-circle"></i></span>
+                <span class="task-text">Photo stop: Cadillac Ranch, Amarillo TX</span>
+                <span class="task-tag">Sightseeing</span>
+              </div>
+              <div class="task-row">
+                <span class="task-check"><i class="ph ph-circle"></i></span>
+                <span class="task-text">Hike Petrified Forest detour, 2hr off-route</span>
+                <span class="task-tag">Adventure</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="workspace-sidebar">
+            <h2 class="section-neon-title">Glove Box</h2>
+            <div class="glovebox-item">
+              <i class="ph ph-calendar"></i>
+              <div>
+                <strong>Departure</strong>
+                <p>June 15, 2025</p>
+              </div>
+            </div>
+            <div class="glovebox-item">
+              <i class="ph ph-clock"></i>
+              <div>
+                <strong>Duration</strong>
+                <p>12 days planned</p>
+              </div>
+            </div>
+            <div class="glovebox-item">
+              <i class="ph ph-gas-pump"></i>
+              <div>
+                <strong>Fuel Budget</strong>
+                <p>$480 estimated</p>
+              </div>
+            </div>
+            <div class="glovebox-item">
+              <i class="ph ph-bed"></i>
+              <div>
+                <strong>Lodging</strong>
+                <p>8 motels booked</p>
+              </div>
+            </div>
+            <div class="road-stripe-divider"></div>
+            <h3 class="mini-neon">Travel Notes</h3>
+            <p class="sidebar-note">Remember to check tire pressure before Amarillo stretch. Also, the wigwam motel in Holbrook AZ has limited availability in summer.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== KANBAN (Route Board) ========== -->
+    <section class="view-panel" id="view-kanban" style="display:none">
+      <div class="view-card-stack">
+        <div class="marquee-header scroll-reveal">
+          <h1 class="neon-heading">Route Board</h1>
+          <p class="neon-subtext">License-plate cards on the asphalt &mdash; track every stop</p>
+        </div>
+
+        <div class="kanban-board scroll-reveal">
+          <div class="kanban-column">
+            <div class="kanban-col-header departure">DEPARTURE</div>
+            <div class="license-card">
+              <div class="plate-state">ILLINOIS</div>
+              <div class="plate-text">Chicago Loop Walking Tour</div>
+              <div class="plate-number">RT66-001</div>
+              <div class="plate-detail">Starting point &mdash; Willis Tower, deep dish, blues bar</div>
+            </div>
+            <div class="license-card">
+              <div class="plate-state">ILLINOIS</div>
+              <div class="plate-text">Springfield Pit Stop</div>
+              <div class="plate-number">RT66-002</div>
+              <div class="plate-detail">Cozy Dog Drive In &mdash; original corn dog on a stick</div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-col-header enroute">EN ROUTE</div>
+            <div class="license-card">
+              <div class="plate-state">MISSOURI</div>
+              <div class="plate-text">Gateway Arch Layover</div>
+              <div class="plate-number">RT66-003</div>
+              <div class="plate-detail">Tram ride to the top, riverfront dinner at sunset</div>
+            </div>
+            <div class="license-card">
+              <div class="plate-state">OKLAHOMA</div>
+              <div class="plate-text">Blue Whale of Catoosa</div>
+              <div class="plate-number">RT66-004</div>
+              <div class="plate-detail">Roadside giant &mdash; swimming hole and photo opp</div>
+            </div>
+            <div class="license-card">
+              <div class="plate-state">TEXAS</div>
+              <div class="plate-text">Cadillac Ranch Photo</div>
+              <div class="plate-number">RT66-005</div>
+              <div class="plate-detail">Bring spray paint &mdash; add your mark to the cars</div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-col-header reststop">REST STOP</div>
+            <div class="license-card">
+              <div class="plate-state">NEW MEXICO</div>
+              <div class="plate-text">Blue Swallow Motel Night</div>
+              <div class="plate-number">RT66-006</div>
+              <div class="plate-detail">Iconic neon motel sign &mdash; rest and reset in Tucumcari</div>
+            </div>
+            <div class="license-card">
+              <div class="plate-state">ARIZONA</div>
+              <div class="plate-text">Wigwam Village Stay</div>
+              <div class="plate-number">RT66-007</div>
+              <div class="plate-detail">Sleep in a concrete tepee in Holbrook, AZ</div>
+            </div>
+          </div>
+
+          <div class="kanban-column">
+            <div class="kanban-col-header destination">DESTINATION</div>
+            <div class="license-card">
+              <div class="plate-state">CALIFORNIA</div>
+              <div class="plate-text">Santa Monica Pier Finish</div>
+              <div class="plate-number">RT66-008</div>
+              <div class="plate-detail">End of the road sign photo &mdash; celebration dinner on the pier</div>
+            </div>
+            <div class="license-card">
+              <div class="plate-state">CALIFORNIA</div>
+              <div class="plate-text">Post-Trip Recap Video</div>
+              <div class="plate-number">RT66-009</div>
+              <div class="plate-detail">Edit GoPro footage, compile the best roadside neon shots</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHITEBOARD (Route Map) ========== -->
+    <section class="view-panel" id="view-whiteboard" style="display:none">
+      <div class="view-card-stack">
+        <div class="marquee-header scroll-reveal">
+          <h1 class="neon-heading">Route Map</h1>
+          <p class="neon-subtext">Chart your roadside attractions &mdash; connect the dots</p>
+        </div>
+
+        <div class="whiteboard-canvas scroll-reveal">
+          <svg class="wb-lines" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
+            <line x1="130" y1="90" x2="310" y2="170" class="highway-line"/>
+            <line x1="370" y1="170" x2="530" y2="100" class="highway-line"/>
+            <line x1="530" y1="100" x2="660" y2="200" class="highway-line"/>
+            <line x1="310" y1="230" x2="440" y2="340" class="highway-line"/>
+            <line x1="440" y1="340" x2="620" y2="280" class="highway-line"/>
+            <line x1="660" y1="200" x2="620" y2="280" class="highway-line"/>
+            <text x="210" y="120" class="mile-marker">142 mi</text>
+            <text x="430" y="125" class="mile-marker">186 mi</text>
+            <text x="600" y="145" class="mile-marker">95 mi</text>
+            <text x="360" y="295" class="mile-marker">210 mi</text>
+            <text x="540" y="305" class="mile-marker">120 mi</text>
+          </svg>
+
+          <div class="wb-node" style="left:10%;top:12%">
+            <div class="node-marker"><i class="ph ph-flag-banner"></i></div>
+            <div class="node-label">Start: Chicago</div>
+            <div class="node-detail">Deep-dish farewell dinner</div>
+          </div>
+          <div class="wb-node" style="left:33%;top:28%">
+            <div class="node-marker"><i class="ph ph-bridge"></i></div>
+            <div class="node-label">Chain of Rocks Bridge</div>
+            <div class="node-detail">Walk the abandoned bridge at dawn</div>
+          </div>
+          <div class="wb-node" style="left:60%;top:14%">
+            <div class="node-marker"><i class="ph ph-hamburger"></i></div>
+            <div class="node-label">Rock Cafe, Stroud</div>
+            <div class="node-detail">Inspiration for Cars movie</div>
+          </div>
+          <div class="wb-node" style="left:78%;top:32%">
+            <div class="node-marker"><i class="ph ph-shooting-star"></i></div>
+            <div class="node-label">Cadillac Ranch</div>
+            <div class="node-detail">Spray paint the half-buried cars</div>
+          </div>
+          <div class="wb-node" style="left:48%;top:60%">
+            <div class="node-marker"><i class="ph ph-moon-stars"></i></div>
+            <div class="node-label">Blue Swallow Motel</div>
+            <div class="node-detail">Best neon sign on Route 66</div>
+          </div>
+          <div class="wb-node" style="left:72%;top:50%">
+            <div class="node-marker"><i class="ph ph-mountains"></i></div>
+            <div class="node-label">Petrified Forest</div>
+            <div class="node-detail">Ancient stone logs detour</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCHEMA PLANNER (Stop Planner) ========== -->
+    <section class="view-panel" id="view-schema-planner" style="display:none">
+      <div class="view-card-stack">
+        <div class="marquee-header scroll-reveal">
+          <h1 class="neon-heading">Stop Planner</h1>
+          <p class="neon-subtext">Map your towns and amenities &mdash; gas station guide style</p>
+        </div>
+
+        <div class="schema-grid scroll-reveal">
+          <div class="schema-town">
+            <div class="town-sign">
+              <div class="town-name">Tucumcari, NM</div>
+              <div class="town-pop">Pop. 5,363</div>
+            </div>
+            <div class="amenity-list">
+              <div class="amenity-row"><i class="ph ph-bed"></i> <span class="road-sign-field">Blue Swallow Motel</span> <span class="field-type">Lodging</span></div>
+              <div class="amenity-row"><i class="ph ph-fork-knife"></i> <span class="road-sign-field">Del's Restaurant</span> <span class="field-type">Dining</span></div>
+              <div class="amenity-row"><i class="ph ph-gas-pump"></i> <span class="road-sign-field">Tee Pee Trading Post</span> <span class="field-type">Fuel + Gifts</span></div>
+              <div class="amenity-row"><i class="ph ph-camera"></i> <span class="road-sign-field">Neon Sign Walk</span> <span class="field-type">Attraction</span></div>
+            </div>
+          </div>
+
+          <div class="schema-town">
+            <div class="town-sign">
+              <div class="town-name">Seligman, AZ</div>
+              <div class="town-pop">Pop. 456</div>
+            </div>
+            <div class="amenity-list">
+              <div class="amenity-row"><i class="ph ph-fork-knife"></i> <span class="road-sign-field">Roadkill Cafe</span> <span class="field-type">Dining</span></div>
+              <div class="amenity-row"><i class="ph ph-storefront"></i> <span class="road-sign-field">Angel's Barbershop</span> <span class="field-type">Landmark</span></div>
+              <div class="amenity-row"><i class="ph ph-gas-pump"></i> <span class="road-sign-field">Historic Shell Station</span> <span class="field-type">Fuel</span></div>
+            </div>
+          </div>
+
+          <div class="schema-town">
+            <div class="town-sign">
+              <div class="town-name">Amarillo, TX</div>
+              <div class="town-pop">Pop. 200,393</div>
+            </div>
+            <div class="amenity-list">
+              <div class="amenity-row"><i class="ph ph-fork-knife"></i> <span class="road-sign-field">Big Texan Steak Ranch</span> <span class="field-type">Dining</span></div>
+              <div class="amenity-row"><i class="ph ph-paint-brush"></i> <span class="road-sign-field">Cadillac Ranch</span> <span class="field-type">Art</span></div>
+              <div class="amenity-row"><i class="ph ph-bed"></i> <span class="road-sign-field">Route 66 Motor Inn</span> <span class="field-type">Lodging</span></div>
+              <div class="amenity-row"><i class="ph ph-gas-pump"></i> <span class="road-sign-field">Nat's Conoco</span> <span class="field-type">Fuel</span></div>
+              <div class="amenity-row"><i class="ph ph-shopping-bag"></i> <span class="road-sign-field">Sixth Street Antiques</span> <span class="field-type">Shopping</span></div>
+            </div>
+          </div>
+
+          <div class="schema-town">
+            <div class="town-sign">
+              <div class="town-name">Holbrook, AZ</div>
+              <div class="town-pop">Pop. 5,053</div>
+            </div>
+            <div class="amenity-list">
+              <div class="amenity-row"><i class="ph ph-tipi"></i> <span class="road-sign-field">Wigwam Village #6</span> <span class="field-type">Lodging</span></div>
+              <div class="amenity-row"><i class="ph ph-tree-evergreen"></i> <span class="road-sign-field">Petrified Forest NP</span> <span class="field-type">Nature</span></div>
+              <div class="amenity-row"><i class="ph ph-fork-knife"></i> <span class="road-sign-field">Joe & Aggie's Cafe</span> <span class="field-type">Dining</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIRECTORY TREE (Highway Guide) ========== -->
+    <section class="view-panel" id="view-directory-tree" style="display:none">
+      <div class="view-card-stack">
+        <div class="marquee-header scroll-reveal">
+          <h1 class="neon-heading">Highway Guide</h1>
+          <p class="neon-subtext">Interstate hierarchy &mdash; every road, every exit</p>
+        </div>
+
+        <div class="highway-tree scroll-reveal">
+          <div class="hw-level interstate">
+            <div class="hw-shield"><span>I-40</span></div>
+            <div class="hw-name">Interstate 40 &mdash; Cross-Country Backbone</div>
+            <div class="hw-children">
+              <div class="hw-level state-route">
+                <div class="hw-shield state"><span>US-66</span></div>
+                <div class="hw-name">Historic Route 66 &mdash; The Mother Road</div>
+                <div class="hw-children">
+                  <div class="hw-level local-road">
+                    <div class="hw-shield local"><span>SR-53</span></div>
+                    <div class="hw-name">Seligman Main Street &mdash; Birthplace of Route 66 revival</div>
+                  </div>
+                  <div class="hw-level local-road">
+                    <div class="hw-shield local"><span>SR-118</span></div>
+                    <div class="hw-name">Tucumcari Boulevard &mdash; Neon sign capital of New Mexico</div>
+                    <div class="hw-children">
+                      <div class="hw-level address">
+                        <div class="hw-shield addr"><span>815</span></div>
+                        <div class="hw-name">815 E Route 66 Blvd &mdash; Blue Swallow Motel</div>
+                      </div>
+                      <div class="hw-level address">
+                        <div class="hw-shield addr"><span>1202</span></div>
+                        <div class="hw-name">1202 W Route 66 &mdash; Tee Pee Curios</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="hw-level state-route">
+                <div class="hw-shield state"><span>US-180</span></div>
+                <div class="hw-name">Grand Canyon Spur &mdash; South Rim access road</div>
+                <div class="hw-children">
+                  <div class="hw-level local-road">
+                    <div class="hw-shield local"><span>AZ-64</span></div>
+                    <div class="hw-name">Desert View Drive &mdash; Canyon rim scenic route</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hw-level interstate">
+            <div class="hw-shield"><span>I-44</span></div>
+            <div class="hw-name">Interstate 44 &mdash; Oklahoma Gateway</div>
+            <div class="hw-children">
+              <div class="hw-level state-route">
+                <div class="hw-shield state"><span>OK-66</span></div>
+                <div class="hw-name">Oklahoma Route 66 &mdash; Tulsa to OKC</div>
+                <div class="hw-children">
+                  <div class="hw-level local-road">
+                    <div class="hw-shield local"><span>2nd St</span></div>
+                    <div class="hw-name">Catoosa Blue Whale &mdash; Roadside swimming hole & landmark</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== IDEAS (Snapshots) ========== -->
+    <section class="view-panel" id="view-ideas" style="display:none">
+      <div class="view-card-stack">
+        <div class="marquee-header scroll-reveal">
+          <h1 class="neon-heading">Snapshots</h1>
+          <p class="neon-subtext">Polaroid gallery &mdash; capture every roadside inspiration</p>
+        </div>
+
+        <div class="polaroid-grid scroll-reveal">
+          <div class="polaroid" style="--rot:-2deg">
+            <div class="polaroid-img" style="--pol-hue:180">
+              <i class="ph ph-lightbulb"></i>
+            </div>
+            <div class="polaroid-caption">
+              <strong>Neon Sign Photography App</strong>
+              <span class="pol-date">Tucumcari, Jun 12</span>
+              <span class="pol-category cat-teal">Tech</span>
+            </div>
+          </div>
+
+          <div class="polaroid" style="--rot:1.5deg">
+            <div class="polaroid-img" style="--pol-hue:330">
+              <i class="ph ph-hamburger"></i>
+            </div>
+            <div class="polaroid-caption">
+              <strong>Route 66 Food Guide Book</strong>
+              <span class="pol-date">Stroud OK, Jun 8</span>
+              <span class="pol-category cat-pink">Content</span>
+            </div>
+          </div>
+
+          <div class="polaroid" style="--rot:-1deg">
+            <div class="polaroid-img" style="--pol-hue:45">
+              <i class="ph ph-video-camera"></i>
+            </div>
+            <div class="polaroid-caption">
+              <strong>Motel Check-In Vlog Series</strong>
+              <span class="pol-date">Holbrook AZ, Jun 15</span>
+              <span class="pol-category cat-teal">Video</span>
+            </div>
+          </div>
+
+          <div class="polaroid" style="--rot:2.5deg">
+            <div class="polaroid-img" style="--pol-hue:120">
+              <i class="ph ph-paint-brush"></i>
+            </div>
+            <div class="polaroid-caption">
+              <strong>Vintage Gas Station Art Prints</strong>
+              <span class="pol-date">Shamrock TX, Jun 10</span>
+              <span class="pol-category cat-pink">Design</span>
+            </div>
+          </div>
+
+          <div class="polaroid" style="--rot:-3deg">
+            <div class="polaroid-img" style="--pol-hue:200">
+              <i class="ph ph-map-trifold"></i>
+            </div>
+            <div class="polaroid-caption">
+              <strong>Interactive Route 66 Web Map</strong>
+              <span class="pol-date">Amarillo TX, Jun 11</span>
+              <span class="pol-category cat-teal">Tech</span>
+            </div>
+          </div>
+
+          <div class="polaroid" style="--rot:0.5deg">
+            <div class="polaroid-img" style="--pol-hue:270">
+              <i class="ph ph-microphone"></i>
+            </div>
+            <div class="polaroid-caption">
+              <strong>Roadside Americana Podcast</strong>
+              <span class="pol-date">Seligman AZ, Jun 14</span>
+              <span class="pol-category cat-pink">Audio</span>
+            </div>
+          </div>
+
+          <div class="polaroid" style="--rot:-1.5deg">
+            <div class="polaroid-img" style="--pol-hue:60">
+              <i class="ph ph-t-shirt"></i>
+            </div>
+            <div class="polaroid-caption">
+              <strong>Retro Motel Merch Line</strong>
+              <span class="pol-date">St. Louis MO, Jun 6</span>
+              <span class="pol-category cat-teal">Product</span>
+            </div>
+          </div>
+
+          <div class="polaroid" style="--rot:1deg">
+            <div class="polaroid-img" style="--pol-hue:0">
+              <i class="ph ph-book-open"></i>
+            </div>
+            <div class="polaroid-caption">
+              <strong>Disappearing Diners Zine</strong>
+              <span class="pol-date">Tulsa OK, Jun 9</span>
+              <span class="pol-category cat-pink">Print</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== AI CHAT (CB Radio) ========== -->
+    <section class="view-panel" id="view-ai-chat" style="display:none">
+      <div class="view-card-stack">
+        <div class="marquee-header scroll-reveal">
+          <h1 class="neon-heading">CB Radio</h1>
+          <p class="neon-subtext">Breaker breaker &mdash; dispatch your AI co-pilot</p>
+        </div>
+
+        <div class="cb-radio-panel scroll-reveal">
+          <div class="cb-channel-bar">
+            <span class="cb-channel">CH-19</span>
+            <span class="cb-status on">TRANSMITTING</span>
+          </div>
+
+          <div class="cb-messages">
+            <div class="cb-msg user">
+              <div class="cb-handle">ROAD_RUNNER_99</div>
+              <div class="cb-bubble user-bubble">Breaker breaker, looking for the best neon motel signs between Amarillo and Albuquerque. Got any 10-4 on that, good buddy?</div>
+              <div class="cb-time">10:42 PM</div>
+            </div>
+
+            <div class="cb-msg ai">
+              <div class="cb-handle">DISPATCH_AI</div>
+              <div class="cb-bubble ai-bubble">10-4, Road Runner! Here's your neon hit list along that stretch:
+                <br><br>1. <strong>Blue Swallow Motel</strong>, Tucumcari NM &mdash; arguably the most photographed neon on Route 66. That blue and red vacancy sign is legendary.
+                <br>2. <strong>Safari Motel</strong>, Tucumcari &mdash; camel-shaped neon, very mid-century.
+                <br>3. <strong>Motel Safari</strong>, Tucumcari &mdash; don't confuse with above, different sign, same town!
+                <br>4. <strong>Route 66 Motel</strong>, Santa Rosa NM &mdash; classic arrow-style marquee.</div>
+              <div class="cb-time">10:42 PM</div>
+            </div>
+
+            <div class="cb-msg user">
+              <div class="cb-handle">ROAD_RUNNER_99</div>
+              <div class="cb-bubble user-bubble">That's a big 10-4! What about food stops? The co-driver is getting hungry and we're running on fumes.</div>
+              <div class="cb-time">10:45 PM</div>
+            </div>
+
+            <div class="cb-msg ai">
+              <div class="cb-handle">DISPATCH_AI</div>
+              <div class="cb-bubble ai-bubble">Copy that, smokey! Pull over at these fuel-and-food combos:
+                <br><br><strong>Del's Restaurant</strong> in Tucumcari &mdash; been feeding road-trippers since 1956. Get the green chile cheeseburger.
+                <br><strong>Joseph's Bar & Grill</strong> in Santa Rosa &mdash; famous for their Route 66 combo plate.
+                <br><br>Keep your eyes peeled, these places close early! Over and out.</div>
+              <div class="cb-time">10:46 PM</div>
+            </div>
+
+            <div class="cb-msg user">
+              <div class="cb-handle">ROAD_RUNNER_99</div>
+              <div class="cb-bubble user-bubble">10-4 Dispatch! One more &mdash; any detour-worthy spots we shouldn't skip? We've got an extra day of slack in the schedule.</div>
+              <div class="cb-time">10:48 PM</div>
+            </div>
+
+            <div class="cb-msg ai">
+              <div class="cb-handle">DISPATCH_AI</div>
+              <div class="cb-bubble ai-bubble">Roger that! With an extra day, you MUST hit <strong>Blue Hole</strong> in Santa Rosa &mdash; it's an 81-foot deep natural pool, crystal clear blue water in the middle of the desert. Locals call it the oasis on 66. Also swing by the <strong>Route 66 Auto Museum</strong> just off the highway. Vintage cars in a vintage town. That's your detour double-header right there. Happy trails, over and out! 🚗</div>
+              <div class="cb-time">10:49 PM</div>
+            </div>
+          </div>
+
+          <div class="cb-input-area">
+            <div class="cb-input-wrapper">
+              <input type="text" class="cb-input" placeholder="Breaker breaker... type your message">
+              <button class="cb-send-btn" data-tooltip="Transmit message"><i class="ph ph-paper-plane-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS (Front Desk) ========== -->
+    <section class="view-panel" id="view-settings" style="display:none">
+      <div class="view-card-stack">
+        <div class="marquee-header scroll-reveal">
+          <h1 class="neon-heading">Front Desk</h1>
+          <p class="neon-subtext">Motel control panel &mdash; adjust your room settings</p>
+        </div>
+
+        <div class="settings-groups scroll-reveal">
+          <div class="settings-group">
+            <h2 class="settings-group-title"><i class="ph ph-user-circle"></i> Guest Profile</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Road Name</label>
+                <p class="setting-desc">Your handle on the highway</p>
+              </div>
+              <input type="text" class="setting-input" value="Road_Runner_99" placeholder="Your road name">
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Home Base</label>
+                <p class="setting-desc">Where your road trips start</p>
+              </div>
+              <input type="text" class="setting-input" value="Chicago, IL" placeholder="City, State">
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Ride</label>
+                <p class="setting-desc">Your travel companion</p>
+              </div>
+              <input type="text" class="setting-input" value="1957 Chevy Bel Air" placeholder="Vehicle">
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h2 class="settings-group-title"><i class="ph ph-bell-ringing"></i> Neon Alerts</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Road Condition Alerts</label>
+                <p class="setting-desc">Get notified about construction and closures</p>
+              </div>
+              <label class="neon-toggle">
+                <input type="checkbox" checked>
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Fuel Price Drops</label>
+                <p class="setting-desc">Alert when gas prices drop at upcoming stops</p>
+              </div>
+              <label class="neon-toggle">
+                <input type="checkbox" checked>
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Motel Vacancy Pings</label>
+                <p class="setting-desc">Notify when rooms open at saved motels</p>
+              </div>
+              <label class="neon-toggle">
+                <input type="checkbox">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>CB Radio Notifications</label>
+                <p class="setting-desc">AI dispatch updates and suggestions</p>
+              </div>
+              <label class="neon-toggle">
+                <input type="checkbox" checked>
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h2 class="settings-group-title"><i class="ph ph-paint-brush"></i> Display & Ambiance</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Neon Intensity</label>
+                <p class="setting-desc">How bright should the glow be?</p>
+              </div>
+              <input type="range" class="neon-range" min="0" max="100" value="75">
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Ambient Flicker</label>
+                <p class="setting-desc">Enable subtle neon sign flickering</p>
+              </div>
+              <label class="neon-toggle">
+                <input type="checkbox" checked id="flicker-toggle">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Distance Unit</label>
+                <p class="setting-desc">Miles or kilometers?</p>
+              </div>
+              <select class="setting-select">
+                <option selected>Miles</option>
+                <option>Kilometers</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h2 class="settings-group-title"><i class="ph ph-lock"></i> Security & Privacy</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Share Trip Location</label>
+                <p class="setting-desc">Let travel buddies see your live position</p>
+              </div>
+              <label class="neon-toggle">
+                <input type="checkbox">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Auto-Backup Snapshots</label>
+                <p class="setting-desc">Save ideas to the cloud every hour</p>
+              </div>
+              <label class="neon-toggle">
+                <input type="checkbox" checked>
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

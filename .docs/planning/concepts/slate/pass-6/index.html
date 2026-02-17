@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEGIS Command | Idea Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Azeret+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- LOADING OVERLAY - Radar Sweep -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="radar-container">
+      <div class="radar-ring radar-ring-outer"></div>
+      <div class="radar-ring radar-ring-mid"></div>
+      <div class="radar-ring radar-ring-inner"></div>
+      <div class="radar-sweep"></div>
+      <div class="radar-blip blip-1"></div>
+      <div class="radar-blip blip-2"></div>
+      <div class="radar-blip blip-3"></div>
+      <div class="radar-center"></div>
+    </div>
+    <div class="loading-text">INITIALIZING AEGIS SYSTEMS...</div>
+  </div>
+
+  <!-- FULLSCREEN OVERLAY NAVIGATION -->
+  <nav id="overlay-nav" class="overlay-nav">
+    <div class="overlay-nav-inner">
+      <div class="overlay-nav-header">
+        <span class="nav-classification">// CLASSIFIED - AEGIS COMMAND INTERFACE</span>
+        <button id="close-nav-btn" class="close-nav-btn" aria-label="Close navigation">
+          <span class="close-bar"></span>
+          <span class="close-bar"></span>
+        </button>
+      </div>
+      <ul class="overlay-nav-list">
+        <li><a href="#" data-view="dashboard" class="nav-link active">
+          <span class="nav-code">01</span>
+          <span class="nav-label">COMMAND CENTER</span>
+          <span class="nav-status-light"></span>
+        </a></li>
+        <li><a href="#" data-view="projects" class="nav-link">
+          <span class="nav-code">02</span>
+          <span class="nav-label">OPERATIONS MANIFEST</span>
+          <span class="nav-status-light"></span>
+        </a></li>
+        <li><a href="#" data-view="project-workspace" class="nav-link">
+          <span class="nav-code">03</span>
+          <span class="nav-label">BUNKER STATION</span>
+          <span class="nav-status-light"></span>
+        </a></li>
+        <li><a href="#" data-view="kanban" class="nav-link">
+          <span class="nav-code">04</span>
+          <span class="nav-label">MISSION BOARD</span>
+          <span class="nav-status-light"></span>
+        </a></li>
+        <li><a href="#" data-view="whiteboard" class="nav-link">
+          <span class="nav-code">05</span>
+          <span class="nav-label">TACTICAL MAP</span>
+          <span class="nav-status-light"></span>
+        </a></li>
+        <li><a href="#" data-view="schema-planner" class="nav-link">
+          <span class="nav-code">06</span>
+          <span class="nav-label">EQUIPMENT MANIFEST</span>
+          <span class="nav-status-light"></span>
+        </a></li>
+        <li><a href="#" data-view="directory-tree" class="nav-link">
+          <span class="nav-code">07</span>
+          <span class="nav-label">CHAIN OF COMMAND</span>
+          <span class="nav-status-light"></span>
+        </a></li>
+        <li><a href="#" data-view="ideas" class="nav-link">
+          <span class="nav-code">08</span>
+          <span class="nav-label">INTEL BULLETIN</span>
+          <span class="nav-status-light"></span>
+        </a></li>
+        <li><a href="#" data-view="ai-chat" class="nav-link">
+          <span class="nav-code">09</span>
+          <span class="nav-label">SECURE COMMS</span>
+          <span class="nav-status-light"></span>
+        </a></li>
+        <li><a href="#" data-view="settings" class="nav-link">
+          <span class="nav-code">10</span>
+          <span class="nav-label">SYSTEMS CONTROL</span>
+          <span class="nav-status-light"></span>
+        </a></li>
+      </ul>
+      <div class="overlay-nav-footer">
+        <span class="nav-timestamp" id="nav-timestamp"></span>
+        <span class="nav-clearance">CLEARANCE LEVEL: SIGMA-7</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- TOP BAR / HAMBURGER -->
+  <header class="top-bar">
+    <button id="hamburger-btn" class="hamburger-btn" aria-label="Open navigation">
+      <span class="ham-line"></span>
+      <span class="ham-line"></span>
+      <span class="ham-line"></span>
+    </button>
+    <div class="top-bar-title">
+      <span class="aegis-mark">AEGIS</span>
+      <span class="aegis-sub" id="current-view-label">COMMAND CENTER</span>
+    </div>
+    <div class="top-bar-right">
+      <span class="top-bar-status">SYSTEM NOMINAL</span>
+      <span class="top-bar-amber-dot"></span>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT AREA -->
+  <main id="main-content" class="main-content">
+
+    <!-- BLAST DOOR TRANSITION PANELS -->
+    <div class="blast-door blast-door-left"></div>
+    <div class="blast-door blast-door-right"></div>
+
+    <!-- ===================== DASHBOARD ===================== -->
+    <section id="view-dashboard" class="view active" data-view="dashboard">
+      <div class="view-inner parallax-container">
+        <!-- Hero full-bleed -->
+        <div class="dashboard-hero parallax-layer" data-speed="0.3">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <h1 class="hero-title sr-item">AEGIS COMMAND CENTER</h1>
+            <p class="hero-subtitle sr-item">INTEGRATED DEFENSE SYSTEMS MONITORING | THREAT LEVEL: ELEVATED</p>
+          </div>
+        </div>
+
+        <!-- Radar Activity Monitor -->
+        <div class="editorial-section">
+          <div class="section-header sr-item">
+            <span class="section-stamp">CLASSIFIED</span>
+            <h2 class="section-title">REAL-TIME ACTIVITY MONITOR</h2>
+            <div class="section-line"></div>
+          </div>
+          <div class="dashboard-metrics editorial-cols">
+            <div class="metric-viewport sr-item">
+              <div class="viewport-slit">
+                <div class="metric-inner">
+                  <span class="metric-label">ACTIVE OPERATIONS</span>
+                  <span class="metric-value amber-glow">17</span>
+                  <span class="metric-delta positive">+3 THIS WEEK</span>
+                </div>
+              </div>
+            </div>
+            <div class="metric-viewport sr-item">
+              <div class="viewport-slit">
+                <div class="metric-inner">
+                  <span class="metric-label">DEPLOYED ASSETS</span>
+                  <span class="metric-value">142</span>
+                  <span class="metric-delta">ACROSS 6 THEATERS</span>
+                </div>
+              </div>
+            </div>
+            <div class="metric-viewport sr-item">
+              <div class="viewport-slit">
+                <div class="metric-inner">
+                  <span class="metric-label">THREAT ALERTS</span>
+                  <span class="metric-value amber-glow">4</span>
+                  <span class="metric-delta warning">2 CRITICAL</span>
+                </div>
+              </div>
+            </div>
+            <div class="metric-viewport sr-item">
+              <div class="viewport-slit">
+                <div class="metric-inner">
+                  <span class="metric-label">MISSION READINESS</span>
+                  <span class="metric-value">94%</span>
+                  <span class="metric-delta positive">OPTIMAL</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Threat Level Gauges -->
+        <div class="editorial-section">
+          <div class="section-header sr-item">
+            <h2 class="section-title">THREAT LEVEL ASSESSMENT</h2>
+            <div class="section-line"></div>
+          </div>
+          <div class="threat-gauges sr-item">
+            <div class="gauge-row">
+              <span class="gauge-label">CYBER DEFENSE</span>
+              <div class="gauge-track"><div class="gauge-fill" data-fill="78" style="width:78%"></div></div>
+              <span class="gauge-val">78%</span>
+            </div>
+            <div class="gauge-row">
+              <span class="gauge-label">PERIMETER INTEGRITY</span>
+              <div class="gauge-track"><div class="gauge-fill" data-fill="92" style="width:92%"></div></div>
+              <span class="gauge-val">92%</span>
+            </div>
+            <div class="gauge-row">
+              <span class="gauge-label">INTELLIGENCE FEED</span>
+              <div class="gauge-track"><div class="gauge-fill amber" data-fill="45" style="width:45%"></div></div>
+              <span class="gauge-val amber-text">45%</span>
+            </div>
+            <div class="gauge-row">
+              <span class="gauge-label">COMMS NETWORK</span>
+              <div class="gauge-track"><div class="gauge-fill" data-fill="88" style="width:88%"></div></div>
+              <span class="gauge-val">88%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity Feed -->
+        <div class="editorial-section">
+          <div class="section-header sr-item">
+            <h2 class="section-title">RECENT OPERATIONS LOG</h2>
+            <div class="section-line"></div>
+          </div>
+          <div class="activity-feed">
+            <div class="activity-entry sr-item">
+              <span class="activity-time">0847Z</span>
+              <span class="activity-code amber-text">[PRIORITY]</span>
+              <span class="activity-msg">Operation IRON VEIL deployed to Theater North. Asset count: 24 units.</span>
+            </div>
+            <div class="activity-entry sr-item">
+              <span class="activity-time">0812Z</span>
+              <span class="activity-code">[INTEL]</span>
+              <span class="activity-msg">Threat assessment updated for Sector 7-G. Classification upgraded to SIGMA.</span>
+            </div>
+            <div class="activity-entry sr-item">
+              <span class="activity-time">0756Z</span>
+              <span class="activity-code">[COMMS]</span>
+              <span class="activity-msg">Secure channel established with CENTCOM. Encryption verified AES-256.</span>
+            </div>
+            <div class="activity-entry sr-item">
+              <span class="activity-time">0723Z</span>
+              <span class="activity-code">[STATUS]</span>
+              <span class="activity-msg">All perimeter sensors nominal. Sweep cycle 47 completed without anomaly.</span>
+            </div>
+            <div class="activity-entry sr-item">
+              <span class="activity-time">0701Z</span>
+              <span class="activity-code amber-text">[ALERT]</span>
+              <span class="activity-msg">Cyber intrusion attempt detected on Node C-14. Auto-countermeasures engaged.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PROJECTS ===================== -->
+    <section id="view-projects" class="view" data-view="projects">
+      <div class="view-inner parallax-container">
+        <div class="page-header parallax-layer" data-speed="0.2">
+          <h1 class="page-title sr-item">OPERATIONS MANIFEST</h1>
+          <p class="page-subtitle sr-item">ACTIVE AND STANDBY THEATER OPERATIONS | CLASSIFICATION: SECRET</p>
+        </div>
+
+        <div class="editorial-section">
+          <div class="projects-grid editorial-cols">
+
+            <div class="project-card sr-item" data-classification="SECRET">
+              <div class="card-classification">SECRET // NOFORN</div>
+              <div class="card-bunker-slit">
+                <div class="card-content">
+                  <h3 class="card-codename">OPERATION IRON VEIL</h3>
+                  <p class="card-desc">Multi-domain integrated air defense system deployment across northern theater. Real-time threat detection and autonomous countermeasure engagement protocols.</p>
+                  <div class="card-meta">
+                    <span class="meta-status active">ACTIVE</span>
+                    <span class="meta-code">OP-7742-A</span>
+                    <span class="meta-theater">THEATER NORTH</span>
+                  </div>
+                  <div class="card-stats">
+                    <span>Assets: 24</span>
+                    <span>Personnel: 186</span>
+                    <span>Days Active: 47</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card sr-item" data-classification="TOP SECRET">
+              <div class="card-classification amber-bg">TOP SECRET // SCI</div>
+              <div class="card-bunker-slit">
+                <div class="card-content">
+                  <h3 class="card-codename">OPERATION GHOST MERIDIAN</h3>
+                  <p class="card-desc">Classified signals intelligence gathering operation utilizing next-generation SIGINT platforms. Full-spectrum electromagnetic monitoring across contested maritime zones.</p>
+                  <div class="card-meta">
+                    <span class="meta-status active">ACTIVE</span>
+                    <span class="meta-code">OP-9981-C</span>
+                    <span class="meta-theater">PACIFIC RIM</span>
+                  </div>
+                  <div class="card-stats">
+                    <span>Assets: 8</span>
+                    <span>Personnel: 312</span>
+                    <span>Days Active: 123</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card sr-item" data-classification="SECRET">
+              <div class="card-classification">SECRET // REL FVEY</div>
+              <div class="card-bunker-slit">
+                <div class="card-content">
+                  <h3 class="card-codename">OPERATION STONE BASTION</h3>
+                  <p class="card-desc">Hardened facility construction program for critical infrastructure protection. Includes EMP shielding, blast resistance certification, and SCIF construction standards.</p>
+                  <div class="card-meta">
+                    <span class="meta-status standby">STANDBY</span>
+                    <span class="meta-code">OP-3345-B</span>
+                    <span class="meta-theater">CONUS</span>
+                  </div>
+                  <div class="card-stats">
+                    <span>Assets: 3</span>
+                    <span>Personnel: 89</span>
+                    <span>Phase: PLANNING</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card sr-item" data-classification="CONFIDENTIAL">
+              <div class="card-classification">CONFIDENTIAL</div>
+              <div class="card-bunker-slit">
+                <div class="card-content">
+                  <h3 class="card-codename">OPERATION WATCHFIRE</h3>
+                  <p class="card-desc">Border surveillance modernization program incorporating AI-driven anomaly detection sensors and autonomous patrol drone coordination across 340km frontier zone.</p>
+                  <div class="card-meta">
+                    <span class="meta-status active">ACTIVE</span>
+                    <span class="meta-code">OP-2218-D</span>
+                    <span class="meta-theater">THEATER SOUTH</span>
+                  </div>
+                  <div class="card-stats">
+                    <span>Assets: 56</span>
+                    <span>Personnel: 420</span>
+                    <span>Days Active: 211</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card sr-item" data-classification="SECRET">
+              <div class="card-classification">SECRET // NOFORN</div>
+              <div class="card-bunker-slit">
+                <div class="card-content">
+                  <h3 class="card-codename">OPERATION DEEP QUARRY</h3>
+                  <p class="card-desc">Subterranean command facility network expansion. Boring and fortification of hardened C2 nodes at strategic depth beneath mountain terrain with fiber-optic backbone integration.</p>
+                  <div class="card-meta">
+                    <span class="meta-status complete">COMPLETE</span>
+                    <span class="meta-code">OP-5567-E</span>
+                    <span class="meta-theater">MOUNTAIN WEST</span>
+                  </div>
+                  <div class="card-stats">
+                    <span>Assets: 12</span>
+                    <span>Personnel: 267</span>
+                    <span>Phase: DEBRIEF</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card sr-item" data-classification="TOP SECRET">
+              <div class="card-classification amber-bg">TOP SECRET // SAP</div>
+              <div class="card-bunker-slit">
+                <div class="card-content">
+                  <h3 class="card-codename">OPERATION SILENT AEGIS</h3>
+                  <p class="card-desc">Next-generation directed energy weapons platform integration for carrier strike group defense. Prototype testing and fleet-wide deployment timeline coordination.</p>
+                  <div class="card-meta">
+                    <span class="meta-status active">ACTIVE</span>
+                    <span class="meta-code">OP-0012-X</span>
+                    <span class="meta-theater">CLASSIFIED</span>
+                  </div>
+                  <div class="card-stats">
+                    <span>Assets: REDACTED</span>
+                    <span>Personnel: REDACTED</span>
+                    <span>Days Active: 534</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PROJECT WORKSPACE ===================== -->
+    <section id="view-project-workspace" class="view" data-view="project-workspace">
+      <div class="view-inner parallax-container">
+        <div class="page-header parallax-layer" data-speed="0.2">
+          <h1 class="page-title sr-item">BUNKER COMMAND STATION</h1>
+          <p class="page-subtitle sr-item">OPERATION IRON VEIL | STATUS: ACTIVE | THEATER NORTH</p>
+        </div>
+
+        <div class="workspace-layout editorial-section">
+          <!-- Primary Display -->
+          <div class="workspace-primary sr-item">
+            <div class="display-panel">
+              <div class="panel-header">
+                <span class="panel-id">DISPLAY-01</span>
+                <span class="panel-title">OPERATION OVERVIEW</span>
+                <span class="panel-status active">LIVE</span>
+              </div>
+              <div class="panel-body">
+                <p class="panel-text">Operation IRON VEIL represents the largest integrated air defense deployment in the northern theater since 2019. The system comprises 24 mobile asset platforms coordinated through a centralized C4ISR architecture, providing 360-degree threat detection and engagement capability across a 450km operational radius.</p>
+                <div class="panel-divider"></div>
+                <h4 class="panel-section-title">MISSION OBJECTIVES</h4>
+                <ul class="panel-list">
+                  <li>Establish layered air defense coverage across designated AO</li>
+                  <li>Integrate THAAD, Patriot, and SHORAD systems into unified kill chain</li>
+                  <li>Maintain 24/7 combat readiness posture with 15-second engagement timeline</li>
+                  <li>Coordinate with allied forces under Combined Joint Task Force protocol</li>
+                </ul>
+                <div class="panel-divider"></div>
+                <h4 class="panel-section-title">KEY MILESTONES</h4>
+                <div class="milestone-list">
+                  <div class="milestone complete-ms"><span class="ms-mark">&#x2713;</span> Initial deployment complete - Day 7</div>
+                  <div class="milestone complete-ms"><span class="ms-mark">&#x2713;</span> System integration testing passed - Day 14</div>
+                  <div class="milestone complete-ms"><span class="ms-mark">&#x2713;</span> Full operational capability declared - Day 21</div>
+                  <div class="milestone active-ms"><span class="ms-mark amber-text">&#x25CF;</span> Live fire exercise scheduled - Day 52</div>
+                  <div class="milestone pending-ms"><span class="ms-mark">&#x25CB;</span> Phase II expansion approval - Day 90</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Communications Rack -->
+          <div class="workspace-comms sr-item">
+            <div class="comms-panel">
+              <div class="panel-header">
+                <span class="panel-id">COMMS-RACK</span>
+                <span class="panel-title">QUICK ACCESS</span>
+              </div>
+              <div class="comms-links">
+                <button class="comms-btn">SITREP GENERATOR</button>
+                <button class="comms-btn">ASSET TRACKER</button>
+                <button class="comms-btn">THREAT FEED</button>
+                <button class="comms-btn amber-border">EMERGENCY PROTOCOL</button>
+              </div>
+              <div class="comms-status-block">
+                <div class="status-row"><span>Uplink</span><span class="status-ok">NOMINAL</span></div>
+                <div class="status-row"><span>Encryption</span><span class="status-ok">AES-256</span></div>
+                <div class="status-row"><span>Latency</span><span class="status-ok">12ms</span></div>
+                <div class="status-row"><span>Bandwidth</span><span class="status-warn">78%</span></div>
+              </div>
+            </div>
+
+            <div class="comms-panel">
+              <div class="panel-header">
+                <span class="panel-id">LOG</span>
+                <span class="panel-title">RECENT ACTIVITY</span>
+              </div>
+              <div class="comms-log">
+                <div class="log-entry"><span class="log-time">0847Z</span> Asset repositioning authorized for Unit BRAVO-7</div>
+                <div class="log-entry"><span class="log-time">0832Z</span> Threat track 4471 classified as civilian - track dropped</div>
+                <div class="log-entry"><span class="log-time">0819Z</span> Maintenance cycle completed on Radar Site ECHO-3</div>
+                <div class="log-entry"><span class="log-time">0801Z</span> Shift change: Watch Team ALPHA assuming duty</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== KANBAN ===================== -->
+    <section id="view-kanban" class="view" data-view="kanban">
+      <div class="view-inner parallax-container">
+        <div class="page-header parallax-layer" data-speed="0.2">
+          <h1 class="page-title sr-item">MISSION STATUS BOARD</h1>
+          <p class="page-subtitle sr-item">OPERATIONAL PHASE TRACKING | OPERATION IRON VEIL</p>
+        </div>
+
+        <div class="kanban-board editorial-section">
+          <div class="kanban-cols">
+            <!-- BRIEFING Column -->
+            <div class="kanban-col sr-item">
+              <div class="col-header">
+                <span class="col-phase">BRIEFING</span>
+                <span class="col-count">3</span>
+              </div>
+              <div class="kanban-cards">
+                <div class="mission-dossier">
+                  <div class="dossier-stamp">CONFIDENTIAL</div>
+                  <h4 class="dossier-title">RADAR CALIBRATION PROTOCOL</h4>
+                  <p class="dossier-desc">Recalibrate AN/TPY-2 radar arrays at sites ECHO-1 through ECHO-4 for improved low-altitude detection threshold.</p>
+                  <div class="dossier-meta">
+                    <span class="dossier-code">MSN-2247</span>
+                    <span class="dossier-priority high">HIGH</span>
+                  </div>
+                </div>
+                <div class="mission-dossier">
+                  <div class="dossier-stamp">SECRET</div>
+                  <h4 class="dossier-title">SUPPLY ROUTE SURVEY</h4>
+                  <p class="dossier-desc">Map and secure three alternate logistics routes from FOB GRANITE to deployment sites. Include bridge load assessments.</p>
+                  <div class="dossier-meta">
+                    <span class="dossier-code">MSN-2251</span>
+                    <span class="dossier-priority medium">MEDIUM</span>
+                  </div>
+                </div>
+                <div class="mission-dossier">
+                  <div class="dossier-stamp">CONFIDENTIAL</div>
+                  <h4 class="dossier-title">COMM RELAY INSTALLATION</h4>
+                  <p class="dossier-desc">Install redundant SATCOM relay at Grid Reference NQ-4472 to eliminate communications dead zone in valley sector.</p>
+                  <div class="dossier-meta">
+                    <span class="dossier-code">MSN-2255</span>
+                    <span class="dossier-priority low">LOW</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DEPLOYED Column -->
+            <div class="kanban-col sr-item">
+              <div class="col-header">
+                <span class="col-phase">DEPLOYED</span>
+                <span class="col-count">2</span>
+              </div>
+              <div class="kanban-cards">
+                <div class="mission-dossier">
+                  <div class="dossier-stamp amber-bg">TOP SECRET</div>
+                  <h4 class="dossier-title">ELECTRONIC WARFARE SWEEP</h4>
+                  <p class="dossier-desc">Deploy EW assets to conduct spectrum analysis and jamming assessment across the northern corridor. 72-hour operation window.</p>
+                  <div class="dossier-meta">
+                    <span class="dossier-code">MSN-2238</span>
+                    <span class="dossier-priority high">HIGH</span>
+                  </div>
+                </div>
+                <div class="mission-dossier">
+                  <div class="dossier-stamp">SECRET</div>
+                  <h4 class="dossier-title">FORWARD OBSERVER POST</h4>
+                  <p class="dossier-desc">Establish concealed observation position at Ridgeline DELTA for persistent surveillance of avenue of approach ALPHA-3.</p>
+                  <div class="dossier-meta">
+                    <span class="dossier-code">MSN-2241</span>
+                    <span class="dossier-priority medium">MEDIUM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ENGAGED Column -->
+            <div class="kanban-col sr-item">
+              <div class="col-header">
+                <span class="col-phase">ENGAGED</span>
+                <span class="col-count">2</span>
+              </div>
+              <div class="kanban-cards">
+                <div class="mission-dossier">
+                  <div class="dossier-stamp amber-bg">TOP SECRET</div>
+                  <h4 class="dossier-title">LIVE INTERCEPT EXERCISE</h4>
+                  <p class="dossier-desc">Coordinated live-fire intercept of simulated cruise missile threats using THAAD Battery ALPHA. Joint forces participation with allied observers.</p>
+                  <div class="dossier-meta">
+                    <span class="dossier-code">MSN-2230</span>
+                    <span class="dossier-priority critical">CRITICAL</span>
+                  </div>
+                </div>
+                <div class="mission-dossier">
+                  <div class="dossier-stamp">SECRET</div>
+                  <h4 class="dossier-title">PERIMETER DEFENSE AUDIT</h4>
+                  <p class="dossier-desc">Active penetration testing of base perimeter security systems including sensor fence, ground radar, and guard force response timing.</p>
+                  <div class="dossier-meta">
+                    <span class="dossier-code">MSN-2233</span>
+                    <span class="dossier-priority high">HIGH</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DEBRIEFED Column -->
+            <div class="kanban-col sr-item">
+              <div class="col-header">
+                <span class="col-phase">DEBRIEFED</span>
+                <span class="col-count">3</span>
+              </div>
+              <div class="kanban-cards">
+                <div class="mission-dossier completed">
+                  <div class="dossier-stamp">CONFIDENTIAL</div>
+                  <h4 class="dossier-title">INITIAL SITE SURVEY</h4>
+                  <p class="dossier-desc">Topographic and electromagnetic survey of all planned deployment positions completed. 14 sites assessed, 12 approved.</p>
+                  <div class="dossier-meta">
+                    <span class="dossier-code">MSN-2201</span>
+                    <span class="dossier-priority low">COMPLETE</span>
+                  </div>
+                </div>
+                <div class="mission-dossier completed">
+                  <div class="dossier-stamp">SECRET</div>
+                  <h4 class="dossier-title">FORCE PROTECTION ASSESSMENT</h4>
+                  <p class="dossier-desc">Comprehensive threat assessment of area of operations including CBRN, small arms, and IED risk profiles. Risk level: MODERATE.</p>
+                  <div class="dossier-meta">
+                    <span class="dossier-code">MSN-2205</span>
+                    <span class="dossier-priority low">COMPLETE</span>
+                  </div>
+                </div>
+                <div class="mission-dossier completed">
+                  <div class="dossier-stamp">CONFIDENTIAL</div>
+                  <h4 class="dossier-title">LOGISTICS CHAIN VALIDATION</h4>
+                  <p class="dossier-desc">End-to-end supply chain test from depot to forward positions. Average delivery time: 4.2 hours. All critical supplies within tolerance.</p>
+                  <div class="dossier-meta">
+                    <span class="dossier-code">MSN-2209</span>
+                    <span class="dossier-priority low">COMPLETE</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== WHITEBOARD ===================== -->
+    <section id="view-whiteboard" class="view" data-view="whiteboard">
+      <div class="view-inner parallax-container">
+        <div class="page-header parallax-layer" data-speed="0.2">
+          <h1 class="page-title sr-item">TACTICAL OPERATIONS MAP</h1>
+          <p class="page-subtitle sr-item">STRATEGIC POSITION OVERLAY | THEATER NORTH AO</p>
+        </div>
+
+        <div class="editorial-section">
+          <div class="tactical-map-container sr-item">
+            <div class="tac-map">
+              <svg class="tac-svg" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                <!-- Grid lines -->
+                <defs>
+                  <pattern id="tacgrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#4a4e38" stroke-width="0.5" opacity="0.4"/>
+                  </pattern>
+                </defs>
+                <rect width="800" height="500" fill="url(#tacgrid)"/>
+
+                <!-- Movement arrows -->
+                <line x1="180" y1="150" x2="350" y2="200" stroke="#d4a020" stroke-width="2" stroke-dasharray="8,4" opacity="0.7"/>
+                <line x1="350" y1="200" x2="520" y2="180" stroke="#d4a020" stroke-width="2" stroke-dasharray="8,4" opacity="0.7"/>
+                <line x1="520" y1="180" x2="650" y2="280" stroke="#d4a020" stroke-width="2" stroke-dasharray="8,4" opacity="0.7"/>
+                <line x1="350" y1="200" x2="400" y2="350" stroke="#b5b0a1" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.5"/>
+                <line x1="180" y1="150" x2="250" y2="320" stroke="#b5b0a1" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.5"/>
+
+                <!-- Strategic positions -->
+                <g class="tac-node" data-label="FOB GRANITE">
+                  <rect x="155" y="125" width="50" height="50" fill="#353828" stroke="#d4a020" stroke-width="2"/>
+                  <text x="180" y="155" text-anchor="middle" fill="#d4a020" font-family="Bebas Neue" font-size="12">FOB</text>
+                  <text x="180" y="195" text-anchor="middle" fill="#d4d0c0" font-family="Azeret Mono" font-size="9">FOB GRANITE</text>
+                </g>
+                <g class="tac-node" data-label="RADAR SITE ECHO">
+                  <circle cx="350" cy="200" r="22" fill="#353828" stroke="#d4a020" stroke-width="2"/>
+                  <text x="350" y="205" text-anchor="middle" fill="#d4a020" font-family="Bebas Neue" font-size="11">E-1</text>
+                  <text x="350" y="240" text-anchor="middle" fill="#d4d0c0" font-family="Azeret Mono" font-size="9">RADAR ECHO-1</text>
+                </g>
+                <g class="tac-node" data-label="THAAD BATTERY ALPHA">
+                  <polygon points="520,158 542,202 498,202" fill="#353828" stroke="#d4a020" stroke-width="2"/>
+                  <text x="520" y="195" text-anchor="middle" fill="#d4a020" font-family="Bebas Neue" font-size="10">THD</text>
+                  <text x="520" y="220" text-anchor="middle" fill="#d4d0c0" font-family="Azeret Mono" font-size="9">THAAD ALPHA</text>
+                </g>
+                <g class="tac-node" data-label="C2 NODE DELTA">
+                  <rect x="625" y="255" width="50" height="50" rx="8" fill="#353828" stroke="#b5b0a1" stroke-width="2"/>
+                  <text x="650" y="285" text-anchor="middle" fill="#b5b0a1" font-family="Bebas Neue" font-size="11">C2</text>
+                  <text x="650" y="325" text-anchor="middle" fill="#d4d0c0" font-family="Azeret Mono" font-size="9">C2 NODE DELTA</text>
+                </g>
+                <g class="tac-node" data-label="LOGISTICS HUB">
+                  <rect x="225" y="295" width="50" height="50" fill="#353828" stroke="#b5b0a1" stroke-width="2"/>
+                  <text x="250" y="325" text-anchor="middle" fill="#b5b0a1" font-family="Bebas Neue" font-size="10">LOG</text>
+                  <text x="250" y="365" text-anchor="middle" fill="#d4d0c0" font-family="Azeret Mono" font-size="9">LOGISTICS HUB</text>
+                </g>
+                <g class="tac-node" data-label="OBS POST RIDGELINE">
+                  <circle cx="400" cy="350" r="16" fill="none" stroke="#d4a020" stroke-width="2" stroke-dasharray="4,2"/>
+                  <text x="400" y="354" text-anchor="middle" fill="#d4a020" font-family="Bebas Neue" font-size="9">OP</text>
+                  <text x="400" y="380" text-anchor="middle" fill="#d4d0c0" font-family="Azeret Mono" font-size="9">OBS POST</text>
+                </g>
+
+                <!-- Distance annotations -->
+                <text x="265" y="168" fill="#b5b0a1" font-family="Azeret Mono" font-size="8" opacity="0.7">47km / 1.2h</text>
+                <text x="435" y="185" fill="#b5b0a1" font-family="Azeret Mono" font-size="8" opacity="0.7">38km / 0.9h</text>
+                <text x="585" y="225" fill="#b5b0a1" font-family="Azeret Mono" font-size="8" opacity="0.7">62km / 1.8h</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="tac-legend sr-item">
+            <h3 class="legend-title">MAP LEGEND</h3>
+            <div class="legend-items">
+              <div class="legend-item"><span class="legend-sym" style="background:#d4a020"></span> Primary Movement Route</div>
+              <div class="legend-item"><span class="legend-sym" style="background:#b5b0a1"></span> Secondary / Supply Route</div>
+              <div class="legend-item"><span class="legend-sym square"></span> Fixed Installation</div>
+              <div class="legend-item"><span class="legend-sym circle"></span> Radar / Sensor Site</div>
+              <div class="legend-item"><span class="legend-sym triangle"></span> Weapons Platform</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SCHEMA PLANNER ===================== -->
+    <section id="view-schema-planner" class="view" data-view="schema-planner">
+      <div class="view-inner parallax-container">
+        <div class="page-header parallax-layer" data-speed="0.2">
+          <h1 class="page-title sr-item">EQUIPMENT MANIFEST</h1>
+          <p class="page-subtitle sr-item">HARDWARE CATEGORY SPECIFICATION | NSN CATALOG REFERENCE</p>
+        </div>
+
+        <div class="editorial-section">
+          <div class="schema-entities editorial-cols">
+
+            <div class="entity-block sr-item">
+              <div class="entity-header">
+                <span class="entity-nsn">NSN 1430-01-587-9032</span>
+                <span class="entity-name">AN/TPY-2 RADAR SYSTEM</span>
+              </div>
+              <div class="entity-specs">
+                <div class="spec-row"><span class="spec-label">Type</span><span class="spec-value">X-Band Phased Array</span></div>
+                <div class="spec-row"><span class="spec-label">Range</span><span class="spec-value">1,000+ km</span></div>
+                <div class="spec-row"><span class="spec-label">Weight</span><span class="spec-value">38,000 kg (deployed)</span></div>
+                <div class="spec-row"><span class="spec-label">Power Req</span><span class="spec-value">600 kW</span></div>
+                <div class="spec-row"><span class="spec-label">Crew Size</span><span class="spec-value">28 operators</span></div>
+                <div class="spec-row"><span class="spec-label">Status</span><span class="spec-value active-spec">DEPLOYED x4</span></div>
+              </div>
+            </div>
+
+            <div class="entity-block sr-item">
+              <div class="entity-header">
+                <span class="entity-nsn">NSN 1410-01-532-8856</span>
+                <span class="entity-name">THAAD LAUNCHER</span>
+              </div>
+              <div class="entity-specs">
+                <div class="spec-row"><span class="spec-label">Type</span><span class="spec-value">Terminal High Altitude Area Defense</span></div>
+                <div class="spec-row"><span class="spec-label">Interceptors</span><span class="spec-value">8 per launcher</span></div>
+                <div class="spec-row"><span class="spec-label">Weight</span><span class="spec-value">16,400 kg</span></div>
+                <div class="spec-row"><span class="spec-label">Dimensions</span><span class="spec-value">10.6m x 2.9m x 3.2m</span></div>
+                <div class="spec-row"><span class="spec-label">Mobility</span><span class="spec-value">C-17 transportable</span></div>
+                <div class="spec-row"><span class="spec-label">Status</span><span class="spec-value active-spec">DEPLOYED x6</span></div>
+              </div>
+            </div>
+
+            <div class="entity-block sr-item">
+              <div class="entity-header">
+                <span class="entity-nsn">NSN 5820-01-624-1174</span>
+                <span class="entity-name">TACTICAL COMMS SUITE</span>
+              </div>
+              <div class="entity-specs">
+                <div class="spec-row"><span class="spec-label">Type</span><span class="spec-value">Multi-Band SATCOM Terminal</span></div>
+                <div class="spec-row"><span class="spec-label">Bands</span><span class="spec-value">UHF / SHF / EHF</span></div>
+                <div class="spec-row"><span class="spec-label">Weight</span><span class="spec-value">1,200 kg</span></div>
+                <div class="spec-row"><span class="spec-label">Encryption</span><span class="spec-value">Type 1 (NSA approved)</span></div>
+                <div class="spec-row"><span class="spec-label">Data Rate</span><span class="spec-value">45 Mbps</span></div>
+                <div class="spec-row"><span class="spec-label">Status</span><span class="spec-value active-spec">DEPLOYED x12</span></div>
+              </div>
+            </div>
+
+            <div class="entity-block sr-item">
+              <div class="entity-header">
+                <span class="entity-nsn">NSN 6910-01-598-4427</span>
+                <span class="entity-name">C4ISR COMMAND POST</span>
+              </div>
+              <div class="entity-specs">
+                <div class="spec-row"><span class="spec-label">Type</span><span class="spec-value">Mobile Command Center</span></div>
+                <div class="spec-row"><span class="spec-label">Capacity</span><span class="spec-value">24 operator stations</span></div>
+                <div class="spec-row"><span class="spec-label">Weight</span><span class="spec-value">22,000 kg (configured)</span></div>
+                <div class="spec-row"><span class="spec-label">Shielding</span><span class="spec-value">TEMPEST / EMP rated</span></div>
+                <div class="spec-row"><span class="spec-label">Power Gen</span><span class="spec-value">Dual 150kW generators</span></div>
+                <div class="spec-row"><span class="spec-label">Status</span><span class="spec-value active-spec">DEPLOYED x2</span></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== DIRECTORY TREE ===================== -->
+    <section id="view-directory-tree" class="view" data-view="directory-tree">
+      <div class="view-inner parallax-container">
+        <div class="page-header parallax-layer" data-speed="0.2">
+          <h1 class="page-title sr-item">CHAIN OF COMMAND</h1>
+          <p class="page-subtitle sr-item">OPERATION IRON VEIL | TASK FORCE ORGANIZATIONAL HIERARCHY</p>
+        </div>
+
+        <div class="editorial-section">
+          <div class="chain-tree sr-item">
+            <div class="chain-node level-0">
+              <div class="node-badge">
+                <span class="rank-indicator gen">&#9733;&#9733;&#9733;</span>
+                <span class="node-name">LTG RICHARDSON, M.A.</span>
+                <span class="node-role">TASK FORCE COMMANDER</span>
+                <span class="node-unit">HQ, TF IRON VEIL</span>
+                <span class="node-status-light on"></span>
+              </div>
+              <div class="chain-children">
+                <div class="chain-node level-1">
+                  <div class="node-badge">
+                    <span class="rank-indicator col">&#9733;&#9733;</span>
+                    <span class="node-name">COL PARK, J.H.</span>
+                    <span class="node-role">AIR DEFENSE COMMANDER</span>
+                    <span class="node-unit">32nd ADA Brigade</span>
+                    <span class="node-status-light on"></span>
+                  </div>
+                  <div class="chain-children">
+                    <div class="chain-node level-2">
+                      <div class="node-badge">
+                        <span class="rank-indicator ltc">&#9733;</span>
+                        <span class="node-name">LTC VASQUEZ, R.M.</span>
+                        <span class="node-role">THAAD BATTERY CDR</span>
+                        <span class="node-unit">Battery ALPHA</span>
+                        <span class="node-status-light on"></span>
+                      </div>
+                    </div>
+                    <div class="chain-node level-2">
+                      <div class="node-badge">
+                        <span class="rank-indicator ltc">&#9733;</span>
+                        <span class="node-name">LTC CHEN, W.K.</span>
+                        <span class="node-role">PATRIOT BATTALION CDR</span>
+                        <span class="node-unit">4th BN, 32nd ADA</span>
+                        <span class="node-status-light on"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chain-node level-1">
+                  <div class="node-badge">
+                    <span class="rank-indicator col">&#9733;&#9733;</span>
+                    <span class="node-name">COL ANDERSEN, T.L.</span>
+                    <span class="node-role">INTELLIGENCE DIRECTOR</span>
+                    <span class="node-unit">J-2, TF IRON VEIL</span>
+                    <span class="node-status-light on"></span>
+                  </div>
+                  <div class="chain-children">
+                    <div class="chain-node level-2">
+                      <div class="node-badge">
+                        <span class="rank-indicator maj">&#9670;</span>
+                        <span class="node-name">MAJ OKONKWO, A.B.</span>
+                        <span class="node-role">SIGINT OPS CHIEF</span>
+                        <span class="node-unit">Detachment GHOST</span>
+                        <span class="node-status-light on"></span>
+                      </div>
+                    </div>
+                    <div class="chain-node level-2">
+                      <div class="node-badge">
+                        <span class="rank-indicator maj">&#9670;</span>
+                        <span class="node-name">MAJ SINGH, P.K.</span>
+                        <span class="node-role">CYBER OPS CHIEF</span>
+                        <span class="node-unit">Detachment CIPHER</span>
+                        <span class="node-status-light warn"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chain-node level-1">
+                  <div class="node-badge">
+                    <span class="rank-indicator col">&#9733;&#9733;</span>
+                    <span class="node-name">COL NAKAMURA, S.T.</span>
+                    <span class="node-role">LOGISTICS COMMANDER</span>
+                    <span class="node-unit">J-4, TF IRON VEIL</span>
+                    <span class="node-status-light on"></span>
+                  </div>
+                  <div class="chain-children">
+                    <div class="chain-node level-2">
+                      <div class="node-badge">
+                        <span class="rank-indicator ltc">&#9733;</span>
+                        <span class="node-name">LTC HARPER, D.W.</span>
+                        <span class="node-role">SUPPLY CHAIN OIC</span>
+                        <span class="node-unit">Forward Support BN</span>
+                        <span class="node-status-light on"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== IDEAS ===================== -->
+    <section id="view-ideas" class="view" data-view="ideas">
+      <div class="view-inner parallax-container">
+        <div class="page-header parallax-layer" data-speed="0.2">
+          <h1 class="page-title sr-item">INTELLIGENCE BULLETIN BOARD</h1>
+          <p class="page-subtitle sr-item">COLLECTED INTELLIGENCE BRIEFS | CLASSIFICATION: SECRET</p>
+        </div>
+
+        <div class="editorial-section">
+          <div class="intel-board editorial-cols">
+
+            <div class="intel-brief sr-item">
+              <div class="brief-header">
+                <span class="brief-classification">SECRET // NOFORN</span>
+                <span class="brief-priority-stripe"></span>
+              </div>
+              <div class="brief-body">
+                <h3 class="brief-title">AUTONOMOUS KILL CHAIN ACCELERATION</h3>
+                <p class="brief-content">Proposal to integrate machine learning-driven target identification into the existing kill chain pipeline, reducing sensor-to-shooter timeline from 15 seconds to under 5 seconds. Requires updated ROE framework and human-in-the-loop override protocol.</p>
+                <div class="brief-meta">
+                  <span class="brief-author">CDR VASQUEZ, R.M.</span>
+                  <span class="brief-date">2026-02-12</span>
+                  <span class="brief-status">UNDER REVIEW</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="intel-brief sr-item">
+              <div class="brief-header">
+                <span class="brief-classification amber-bg">TOP SECRET</span>
+                <span class="brief-priority-stripe amber"></span>
+              </div>
+              <div class="brief-body">
+                <h3 class="brief-title">DIRECTED ENERGY COUNTERMEASURE INTEGRATION</h3>
+                <p class="brief-content">Assessment of feasibility for incorporating High Energy Laser (HEL) systems as a supplementary SHORAD layer. Current power generation infrastructure at deployed sites can support 300kW laser systems with generator augmentation.</p>
+                <div class="brief-meta">
+                  <span class="brief-author">COL PARK, J.H.</span>
+                  <span class="brief-date">2026-02-10</span>
+                  <span class="brief-status amber-text">PRIORITY</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="intel-brief sr-item">
+              <div class="brief-header">
+                <span class="brief-classification">SECRET</span>
+                <span class="brief-priority-stripe"></span>
+              </div>
+              <div class="brief-body">
+                <h3 class="brief-title">ALLIED INTEROPERABILITY PROTOCOL</h3>
+                <p class="brief-content">Development of standardized data-link protocol enabling seamless integration with NATO partner air defense networks. Current LINK-16 limitations in bandwidth and latency require a next-generation solution for multi-domain operations.</p>
+                <div class="brief-meta">
+                  <span class="brief-author">MAJ OKONKWO, A.B.</span>
+                  <span class="brief-date">2026-02-08</span>
+                  <span class="brief-status">APPROVED</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="intel-brief sr-item">
+              <div class="brief-header">
+                <span class="brief-classification">CONFIDENTIAL</span>
+                <span class="brief-priority-stripe"></span>
+              </div>
+              <div class="brief-body">
+                <h3 class="brief-title">PREDICTIVE MAINTENANCE AI SYSTEM</h3>
+                <p class="brief-content">Deploy sensor-driven predictive maintenance algorithms across all THAAD and Patriot systems to forecast component failures 72-96 hours in advance. Reduces unplanned downtime by estimated 40% based on CONUS testing data.</p>
+                <div class="brief-meta">
+                  <span class="brief-author">LTC HARPER, D.W.</span>
+                  <span class="brief-date">2026-02-06</span>
+                  <span class="brief-status">SUBMITTED</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="intel-brief sr-item">
+              <div class="brief-header">
+                <span class="brief-classification">SECRET // REL FVEY</span>
+                <span class="brief-priority-stripe amber"></span>
+              </div>
+              <div class="brief-body">
+                <h3 class="brief-title">ELECTRONIC WARFARE HARDENING UPGRADE</h3>
+                <p class="brief-content">Upgrade all radar systems with frequency-hopping spread spectrum and adaptive null-steering capability to counter identified adversary electronic attack systems. Includes retrofit kit for existing AN/TPY-2 arrays.</p>
+                <div class="brief-meta">
+                  <span class="brief-author">MAJ SINGH, P.K.</span>
+                  <span class="brief-date">2026-02-04</span>
+                  <span class="brief-status amber-text">PRIORITY</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== AI CHAT ===================== -->
+    <section id="view-ai-chat" class="view" data-view="ai-chat">
+      <div class="view-inner parallax-container">
+        <div class="page-header parallax-layer" data-speed="0.2">
+          <h1 class="page-title sr-item">SECURE RADIO TRANSMISSION</h1>
+          <p class="page-subtitle sr-item">ENCRYPTED CHANNEL | CALLSIGN: AEGIS-ACTUAL</p>
+        </div>
+
+        <div class="editorial-section">
+          <div class="comms-channel sr-item">
+
+            <div class="transmission outgoing">
+              <div class="tx-header">
+                <span class="tx-callsign">AEGIS-ACTUAL</span>
+                <span class="tx-time">0847Z 15FEB2026</span>
+                <span class="tx-priority">ROUTINE</span>
+              </div>
+              <div class="tx-body">
+                <p>AEGIS, REQUEST CURRENT THREAT ASSESSMENT FOR SECTOR 7-GOLF. NEED UPDATED HOSTILE AIR ORDER OF BATTLE AND RECOMMENDED FORCE POSTURE ADJUSTMENTS. OVER.</p>
+              </div>
+            </div>
+
+            <div class="transmission incoming">
+              <div class="tx-header">
+                <span class="tx-callsign amber-text">SENTINEL-AI</span>
+                <span class="tx-time">0847Z 15FEB2026</span>
+                <span class="tx-priority">ROUTINE</span>
+              </div>
+              <div class="tx-body">
+                <p>AEGIS-ACTUAL, SENTINEL-AI COPIES. CURRENT THREAT ASSESSMENT FOR SECTOR 7-GOLF AS FOLLOWS:</p>
+                <p>HOSTILE AIR OOB: 3X FIGHTER SQUADRONS, 2X ROTARY WING ATTACK BATTALIONS, 1X UAS COMPANY IDENTIFIED WITHIN 200KM OF AO BOUNDARY. ASSESSED READINESS LEVEL: HIGH.</p>
+                <p>RECOMMEND: INCREASE PATRIOT RADAR COVERAGE TO SECTOR 7-GOLF BY REPOSITIONING BATTERY CHARLIE 15KM NORTHEAST. THIS CLOSES CURRENT GAP IN LOW-ALTITUDE DETECTION ENVELOPE. OVER.</p>
+              </div>
+            </div>
+
+            <div class="transmission outgoing">
+              <div class="tx-header">
+                <span class="tx-callsign">AEGIS-ACTUAL</span>
+                <span class="tx-time">0848Z 15FEB2026</span>
+                <span class="tx-priority">ROUTINE</span>
+              </div>
+              <div class="tx-body">
+                <p>SENTINEL, COPY THREAT ASSESSMENT. WHAT IS ESTIMATED TIME TO REPOSITION BATTERY CHARLIE AND ACHIEVE OPERATIONAL STATUS AT NEW LOCATION? OVER.</p>
+              </div>
+            </div>
+
+            <div class="transmission incoming">
+              <div class="tx-header">
+                <span class="tx-callsign amber-text">SENTINEL-AI</span>
+                <span class="tx-time">0849Z 15FEB2026</span>
+                <span class="tx-priority">ROUTINE</span>
+              </div>
+              <div class="tx-body">
+                <p>AEGIS-ACTUAL, ESTIMATED TIMELINE FOR BATTERY CHARLIE REPOSITIONING:</p>
+                <p>BREAKDOWN AND MARCH ORDER: 4 HOURS. ROAD MARCH TO NEW POSITION: 3.5 HOURS VIA MSR DELTA. SITE PREPARATION AND EMPLACEMENT: 6 HOURS. SYSTEM CALIBRATION AND OPERATIONAL TEST: 2 HOURS.</p>
+                <p>TOTAL ESTIMATED TIME TO FULL OPERATIONAL CAPABILITY: 15.5 HOURS. RECOMMEND INITIATING MOVEMENT NLT 1200Z TO ACHIEVE FOC BEFORE 0400Z TOMORROW. OVER.</p>
+              </div>
+            </div>
+
+            <div class="transmission outgoing">
+              <div class="tx-header">
+                <span class="tx-callsign">AEGIS-ACTUAL</span>
+                <span class="tx-time">0850Z 15FEB2026</span>
+                <span class="tx-priority amber-text">PRIORITY</span>
+              </div>
+              <div class="tx-body">
+                <p>SENTINEL, GOOD COPY. GENERATE MOVEMENT ORDER FOR BATTERY CHARLIE WITH RECOMMENDED ROUTE AND SECURITY REQUIREMENTS. INCLUDE COORDINATION REQUIREMENTS WITH ADJACENT UNITS. OVER.</p>
+              </div>
+            </div>
+
+            <div class="transmission incoming">
+              <div class="tx-header">
+                <span class="tx-callsign amber-text">SENTINEL-AI</span>
+                <span class="tx-time">0851Z 15FEB2026</span>
+                <span class="tx-priority amber-text">PRIORITY</span>
+              </div>
+              <div class="tx-body">
+                <p>AEGIS-ACTUAL, MOVEMENT ORDER DRAFTED. KEY ELEMENTS:</p>
+                <p>ROUTE: MSR DELTA (PRIMARY), ASR FOXTROT (ALTERNATE). CONVOY COMPOSITION: 14 VEHICLES, 3 SECURITY ESCORTS. COORDINATION: NOTIFY 4TH BN TOC, THEATER MP COMPANY, AND AIRSPACE CONTROL AT H-2. LOGISTICS: FUEL POINT ESTABLISHED AT CHECKPOINT 7.</p>
+                <p>FULL ORDER AVAILABLE IN OPERATIONS PLANNING MODULE. STANDING BY FOR EXECUTION AUTHORITY. OUT.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="chat-input-area sr-item">
+            <div class="input-wrapper">
+              <span class="input-callsign">AEGIS-ACTUAL &gt;</span>
+              <input type="text" class="chat-input" placeholder="ENTER TRANSMISSION..." aria-label="Enter transmission">
+              <button class="chat-send-btn">TRANSMIT</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SETTINGS ===================== -->
+    <section id="view-settings" class="view" data-view="settings">
+      <div class="view-inner parallax-container">
+        <div class="page-header parallax-layer" data-speed="0.2">
+          <h1 class="page-title sr-item">BUNKER SYSTEMS CONTROL</h1>
+          <p class="page-subtitle sr-item">INSTALLATION CONFIGURATION | AUTHORIZED PERSONNEL ONLY</p>
+        </div>
+
+        <div class="editorial-section">
+          <!-- Security Settings -->
+          <div class="settings-group sr-item">
+            <div class="group-divider"></div>
+            <h3 class="group-title">SECURITY PROTOCOLS</h3>
+            <div class="settings-panel">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">AUTOMATIC LOCKDOWN</span>
+                  <span class="setting-desc">Engage blast door protocols when threat level exceeds BRAVO</span>
+                </div>
+                <div class="toggle-switch" data-state="on">
+                  <div class="toggle-guard"></div>
+                  <div class="toggle-track">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">TWO-PERSON INTEGRITY</span>
+                  <span class="setting-desc">Require dual authorization for weapons system commands</span>
+                </div>
+                <div class="toggle-switch" data-state="on">
+                  <div class="toggle-guard"></div>
+                  <div class="toggle-track">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">CRYPTO KEY ROTATION</span>
+                  <span class="setting-desc">Automatic encryption key refresh interval</span>
+                </div>
+                <div class="setting-select">
+                  <select class="concrete-select" aria-label="Crypto key rotation interval">
+                    <option>EVERY 6 HOURS</option>
+                    <option selected>EVERY 12 HOURS</option>
+                    <option>EVERY 24 HOURS</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Communications Settings -->
+          <div class="settings-group sr-item">
+            <div class="group-divider"></div>
+            <h3 class="group-title">COMMUNICATIONS</h3>
+            <div class="settings-panel">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">SATCOM PRIORITY CHANNEL</span>
+                  <span class="setting-desc">Default satellite communications channel for priority traffic</span>
+                </div>
+                <div class="setting-input-wrap">
+                  <input type="text" class="concrete-input" value="CHAN-7 (SHF-MILSTAR)" aria-label="SATCOM priority channel">
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">EMISSIONS CONTROL</span>
+                  <span class="setting-desc">Minimize electromagnetic signature during EMCON conditions</span>
+                </div>
+                <div class="toggle-switch" data-state="off">
+                  <div class="toggle-guard"></div>
+                  <div class="toggle-track">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">BACKUP FREQ HOPPING</span>
+                  <span class="setting-desc">Enable frequency hopping on all HF radio nets</span>
+                </div>
+                <div class="toggle-switch" data-state="on">
+                  <div class="toggle-guard"></div>
+                  <div class="toggle-track">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Display Settings -->
+          <div class="settings-group sr-item">
+            <div class="group-divider"></div>
+            <h3 class="group-title">DISPLAY SYSTEMS</h3>
+            <div class="settings-panel">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">NIGHT VISION MODE</span>
+                  <span class="setting-desc">Switch all displays to NVG-compatible red/green palette</span>
+                </div>
+                <div class="toggle-switch" data-state="off">
+                  <div class="toggle-guard"></div>
+                  <div class="toggle-track">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">MAP DATUM</span>
+                  <span class="setting-desc">Coordinate reference system for all tactical displays</span>
+                </div>
+                <div class="setting-select">
+                  <select class="concrete-select" aria-label="Map datum selection">
+                    <option selected>WGS 84</option>
+                    <option>MGRS</option>
+                    <option>UTM</option>
+                  </select>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">REFRESH RATE</span>
+                  <span class="setting-desc">Tactical display update frequency</span>
+                </div>
+                <div class="setting-select">
+                  <select class="concrete-select" aria-label="Refresh rate selection">
+                    <option>1 SECOND</option>
+                    <option selected>3 SECONDS</option>
+                    <option>5 SECONDS</option>
+                    <option>10 SECONDS</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- System Actions -->
+          <div class="settings-group sr-item">
+            <div class="group-divider"></div>
+            <h3 class="group-title">SYSTEM ACTIONS</h3>
+            <div class="settings-panel">
+              <div class="action-buttons">
+                <button class="action-btn">RUN DIAGNOSTICS</button>
+                <button class="action-btn">EXPORT SYSTEM LOG</button>
+                <button class="action-btn amber-border">EMERGENCY SHUTDOWN</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CLASSIFIED TOOLTIP TEMPLATE -->
+  <div id="classified-tooltip" class="classified-tooltip" role="tooltip" aria-hidden="true">
+    <div class="tooltip-header">TOP SECRET</div>
+    <div class="tooltip-body" id="tooltip-content"></div>
+  </div>
+
+  <!-- CONFIRMED STAMP OVERLAY -->
+  <div id="stamp-overlay" class="stamp-overlay" aria-hidden="true">
+    <span class="stamp-text">CONFIRMED</span>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

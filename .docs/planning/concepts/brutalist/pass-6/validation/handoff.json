@@ -1,0 +1,178 @@
+{
+  "passId": "brutalist-pass-6",
+  "styleId": "brutalist",
+  "pass": 6,
+  "variantSeed": "warehouse-industrial-logistics",
+  "generatedAt": "2026-02-15T00:00:00Z",
+  "uniquenessProfile": {
+    "profileId": "tabbed-workbench",
+    "shellMode": "top-tab-strip",
+    "navPattern": "browser-tab-row",
+    "contentFlow": "full-width-panels",
+    "scrollMode": "snap-horizontal",
+    "alignment": "left",
+    "heroTreatment": "none",
+    "motionLanguage": "slide-left-right",
+    "density": "dense",
+    "componentTone": "hard"
+  },
+  "palette": {
+    "bg": "#2b2b2b",
+    "text": "#e8e4de",
+    "surface": "#383838",
+    "accent": "#d4622a",
+    "accent2": "#5a8fa8",
+    "border": "#555555"
+  },
+  "typography": {
+    "heading": "Saira Condensed",
+    "body": "DM Mono",
+    "mono": "DM Mono"
+  },
+  "contentPersona": "logistics-supply-chain-company",
+  "views": [
+    {
+      "id": "dashboard",
+      "label": "OPS DECK",
+      "tabNumber": "01",
+      "contentElements": [
+        "origin-destination tracking hero with shipping waybill inputs",
+        "horizontal step pipeline (BOOKED/PICKED UP/IN TRANSIT/CUSTOMS/DELIVERED)",
+        "4 circular gauge clusters (throughput, on-time rate, capacity, fleet util)",
+        "4 metric chips (orders, revenue, transit time, damage rate)",
+        "dispatch log table with 5 shipment rows"
+      ]
+    },
+    {
+      "id": "projects",
+      "label": "MANIFESTS",
+      "tabNumber": "02",
+      "contentElements": [
+        "search and filter bar with selects",
+        "6-row shipping manifest table with tracking, weight, destination, status, progress"
+      ]
+    },
+    {
+      "id": "project-workspace",
+      "label": "DOCK BAY",
+      "tabNumber": "03",
+      "contentElements": [
+        "6-cell info grid (manifest, weight, origin, destination, status, ETA)",
+        "6 task items with checkboxes and category tags",
+        "2 note cards with author/date metadata",
+        "sidebar clipboard with stats and 4 crew members"
+      ]
+    },
+    {
+      "id": "kanban",
+      "label": "FLOW BOARD",
+      "tabNumber": "04",
+      "contentElements": [
+        "4 columns (INBOUND/STAGING/OUTBOUND/DELIVERED)",
+        "9 package cards with barcodes, weights, and type tags",
+        "SortableJS drag-and-drop enabled"
+      ]
+    },
+    {
+      "id": "whiteboard",
+      "label": "ROUTE MAP",
+      "tabNumber": "05",
+      "contentElements": [
+        "SVG route map with 7 warehouse hub nodes",
+        "7 route lines with distance/time annotations",
+        "animated dash-offset route lines",
+        "legend (primary route, alternate route, origin, destination, relay)",
+        "4 route stats cards"
+      ]
+    },
+    {
+      "id": "schema-planner",
+      "label": "INVENTORY DB",
+      "tabNumber": "06",
+      "contentElements": [
+        "6 entity cards (WAREHOUSE, ZONE, BIN, SKU_ITEM, SHIPMENT, SUPPLIER)",
+        "each entity has 5-7 typed fields with PK/FK annotations"
+      ]
+    },
+    {
+      "id": "directory-tree",
+      "label": "WAREHOUSE",
+      "tabNumber": "07",
+      "contentElements": [
+        "3 warehouse roots (Memphis, Rotterdam, Singapore)",
+        "expandable zone > aisle > shelf > bin hierarchy",
+        "location codes (A1-S1-B1 format) and SKU/weight info at leaf nodes"
+      ]
+    },
+    {
+      "id": "ideas",
+      "label": "IDEAS",
+      "tabNumber": "08",
+      "contentElements": [
+        "6 polaroid-style idea cards",
+        "each with SVG icon, title, description, and author/date",
+        "rust orange label strip at bottom of each card"
+      ]
+    },
+    {
+      "id": "ai-chat",
+      "label": "DISPATCH",
+      "tabNumber": "09",
+      "contentElements": [
+        "6 radio messages with callsigns (BASE-CMD, DOCK-07, YARD-CTRL)",
+        "timestamps in HH:MM:SS format",
+        "static line separators between header and body",
+        "radio input bar with callsign prompt"
+      ]
+    },
+    {
+      "id": "settings",
+      "label": "CTRL PANEL",
+      "tabNumber": "10",
+      "contentElements": [
+        "4 settings groups (System, Alerts, Display, Profile)",
+        "hazmat stripe badges on group headers",
+        "7 circuit breaker toggles",
+        "5 select dropdowns",
+        "2 text inputs"
+      ]
+    }
+  ],
+  "interactions": {
+    "buttonHover": "corrugated-press-indent",
+    "buttonClick": "hydraulic-press-down",
+    "cardHover": "forklift-lift-raise",
+    "pageTransition": "container-door-slide",
+    "scrollReveal": "pallet-stack-drop-in",
+    "navItemHover": "barcode-scan-flash",
+    "navItemActive": "hazmat-stripe-indicator",
+    "inputFocus": "scan-line-border",
+    "toggleSwitch": "circuit-breaker-flip",
+    "tooltips": "shipping-label-popup",
+    "loadingState": "shipping-scan-progress",
+    "idleAmbient": "conveyor-belt-drift",
+    "microFeedback": "scan-confirmed-beep"
+  },
+  "libraries": [
+    {
+      "name": "Anime.js",
+      "version": "3.2.2",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js",
+      "usage": "Gauge circle animations, route line drawing, counter animations"
+    },
+    {
+      "name": "SortableJS",
+      "version": "1.15.6",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js",
+      "usage": "Kanban card drag-and-drop between loading zones"
+    }
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

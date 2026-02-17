@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POP! Studio - Idea Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rubik:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- CMYK Loading Overlay -->
+  <div id="cmyk-loader" class="cmyk-loader">
+    <div class="cmyk-layer cmyk-cyan"></div>
+    <div class="cmyk-layer cmyk-magenta"></div>
+    <div class="cmyk-layer cmyk-yellow"></div>
+    <div class="cmyk-layer cmyk-black"></div>
+    <span class="cmyk-text">LOADING...</span>
+  </div>
+
+  <!-- Halftone ambient background -->
+  <div class="halftone-ambient" aria-hidden="true"></div>
+
+  <!-- Comic POW burst for click feedback -->
+  <div id="pow-burst" class="pow-burst" aria-hidden="true">
+    <span>POW!</span>
+  </div>
+
+  <!-- ZAP starburst for micro feedback -->
+  <div id="zap-burst" class="zap-burst" aria-hidden="true">
+    <span>ZAP!</span>
+  </div>
+
+  <!-- Mobile hamburger toggle -->
+  <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+  </button>
+
+  <!-- Collapsible left sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-pop">POP!</span>
+        <span class="logo-studio">STUDIO</span>
+      </div>
+      <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" aria-label="Collapse sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+    </div>
+
+    <!-- Accordion nav sections -->
+    <div class="nav-accordion">
+      <div class="nav-section">
+        <button class="nav-section-header" data-section="overview" aria-expanded="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <span>OVERVIEW</span>
+          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-section-items" data-section-items="overview">
+          <a href="#" class="nav-item active" data-view="dashboard">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+            Dashboard
+          </a>
+          <a href="#" class="nav-item" data-view="projects">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            Projects
+          </a>
+          <a href="#" class="nav-item" data-view="ideas">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            Ideas
+          </a>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <button class="nav-section-header" data-section="workspace" aria-expanded="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm0 8a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zm10 0a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1h-4a1 1 0 01-1-1v-6z"/></svg>
+          <span>WORKSPACE</span>
+          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-section-items" data-section-items="workspace">
+          <a href="#" class="nav-item" data-view="project-workspace">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+            Workspace
+          </a>
+          <a href="#" class="nav-item" data-view="kanban">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="4" width="4" height="16"/><rect x="10" y="4" width="4" height="12"/><rect x="16" y="4" width="4" height="8"/></svg>
+            Kanban
+          </a>
+          <a href="#" class="nav-item" data-view="whiteboard">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Whiteboard
+          </a>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <button class="nav-section-header" data-section="tools" aria-expanded="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>TOOLS</span>
+          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-section-items" data-section-items="tools">
+          <a href="#" class="nav-item" data-view="schema-planner">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83"/></svg>
+            Schema Planner
+          </a>
+          <a href="#" class="nav-item" data-view="directory-tree">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+            Directory Tree
+          </a>
+          <a href="#" class="nav-item" data-view="ai-chat">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            AI Chat
+          </a>
+          <a href="#" class="nav-item" data-view="settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+            Settings
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content area -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ========== DASHBOARD ========== -->
+    <section class="view active" id="view-dashboard">
+      <div class="comic-panel-frame">
+        <!-- Scrolling headline ticker -->
+        <div class="ticker-bar">
+          <div class="ticker-track">
+            <span class="ticker-item ticker-hot">BREAKING: "Neon Nights" Campaign Hits 12M Impressions</span>
+            <span class="ticker-sep">///</span>
+            <span class="ticker-item ticker-new">NEW: Cover Shoot for March Issue Approved</span>
+            <span class="ticker-sep">///</span>
+            <span class="ticker-item ticker-hot">TRENDING: Brand Partnership with VOGUE Confirmed</span>
+            <span class="ticker-sep">///</span>
+            <span class="ticker-item ticker-new">UPDATE: Q1 Revenue Forecast Exceeds Projections by 23%</span>
+            <span class="ticker-sep">///</span>
+            <span class="ticker-item ticker-hot">ALERT: Social Engagement Up 340% This Week</span>
+            <span class="ticker-sep">///</span>
+            <span class="ticker-item ticker-hot">BREAKING: "Neon Nights" Campaign Hits 12M Impressions</span>
+            <span class="ticker-sep">///</span>
+            <span class="ticker-item ticker-new">NEW: Cover Shoot for March Issue Approved</span>
+            <span class="ticker-sep">///</span>
+            <span class="ticker-item ticker-hot">TRENDING: Brand Partnership with VOGUE Confirmed</span>
+            <span class="ticker-sep">///</span>
+          </div>
+        </div>
+
+        <!-- Stat panels -->
+        <div class="dash-stats">
+          <div class="stat-panel stat-pink scroll-reveal">
+            <div class="stat-halftone-bg"></div>
+            <div class="stat-number">47</div>
+            <div class="stat-label">ACTIVE CAMPAIGNS</div>
+            <div class="stat-delta">+12 this month</div>
+          </div>
+          <div class="stat-panel stat-cyan scroll-reveal">
+            <div class="stat-halftone-bg"></div>
+            <div class="stat-number">12.4M</div>
+            <div class="stat-label">TOTAL REACH</div>
+            <div class="stat-delta">+2.1M vs last quarter</div>
+          </div>
+          <div class="stat-panel stat-green scroll-reveal">
+            <div class="stat-halftone-bg"></div>
+            <div class="stat-number">$3.2M</div>
+            <div class="stat-label">AD REVENUE</div>
+            <div class="stat-delta">+23% YoY growth</div>
+          </div>
+          <div class="stat-panel stat-yellow scroll-reveal">
+            <div class="stat-halftone-bg"></div>
+            <div class="stat-number">892K</div>
+            <div class="stat-label">SUBSCRIBERS</div>
+            <div class="stat-delta">+45K this week</div>
+          </div>
+        </div>
+
+        <!-- Split panel: Chart + Activity -->
+        <div class="dash-split">
+          <div class="dash-chart-panel scroll-reveal">
+            <h3 class="panel-title">ENGAGEMENT TRACKER</h3>
+            <div class="bar-chart">
+              <div class="bar-group">
+                <div class="bar-label">MON</div>
+                <div class="bar-track"><div class="bar-fill" style="height:65%" data-val="65K"></div></div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label">TUE</div>
+                <div class="bar-track"><div class="bar-fill bar-cyan" style="height:82%" data-val="82K"></div></div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label">WED</div>
+                <div class="bar-track"><div class="bar-fill bar-green" style="height:45%" data-val="45K"></div></div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label">THU</div>
+                <div class="bar-track"><div class="bar-fill" style="height:91%" data-val="91K"></div></div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label">FRI</div>
+                <div class="bar-track"><div class="bar-fill bar-cyan" style="height:73%" data-val="73K"></div></div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label">SAT</div>
+                <div class="bar-track"><div class="bar-fill bar-green" style="height:58%" data-val="58K"></div></div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label">SUN</div>
+                <div class="bar-track"><div class="bar-fill" style="height:88%" data-val="88K"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="dash-activity-panel scroll-reveal">
+            <h3 class="panel-title">LATEST HEADLINES</h3>
+            <div class="activity-feed">
+              <div class="activity-item">
+                <span class="activity-badge badge-pink">EDIT</span>
+                <div class="activity-text">
+                  <strong>Sofia Chen</strong> updated the "Electric Dreams" editorial layout
+                  <span class="activity-time">12 min ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <span class="activity-badge badge-cyan">SHOOT</span>
+                <div class="activity-text">
+                  <strong>Marcus Webb</strong> uploaded 47 photos from the downtown lookbook
+                  <span class="activity-time">38 min ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <span class="activity-badge badge-green">DEAL</span>
+                <div class="activity-text">
+                  <strong>Priya Patel</strong> closed the Adidas partnership for Spring Issue
+                  <span class="activity-time">1 hr ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <span class="activity-badge badge-pink">COPY</span>
+                <div class="activity-text">
+                  <strong>James Rivera</strong> finalized cover story: "The Future is Analog"
+                  <span class="activity-time">2 hr ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <span class="activity-badge badge-cyan">SOCIAL</span>
+                <div class="activity-text">
+                  <strong>Zara Kim</strong> scheduled 15 TikTok posts for the "Y2K Revival" series
+                  <span class="activity-time">3 hr ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <span class="activity-badge badge-green">BRAND</span>
+                <div class="activity-text">
+                  <strong>Leo Nakamura</strong> approved the new brand guidelines deck
+                  <span class="activity-time">4 hr ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick action strip -->
+        <div class="dash-actions scroll-reveal">
+          <button class="pop-btn pop-btn-pink" data-tooltip="Launch a new campaign brief">+ NEW CAMPAIGN</button>
+          <button class="pop-btn pop-btn-cyan" data-tooltip="Start a fresh editorial pitch">+ NEW EDITORIAL</button>
+          <button class="pop-btn pop-btn-green" data-tooltip="Create a brand partnership proposal">+ NEW PARTNERSHIP</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS ========== -->
+    <section class="view" id="view-projects">
+      <div class="comic-panel-frame">
+        <h2 class="view-title">MAGAZINE COVERS</h2>
+        <div class="projects-grid">
+          <div class="project-cover scroll-reveal">
+            <div class="cover-image cover-pink">
+              <div class="cover-halftone"></div>
+              <span class="cover-issue">ISSUE #47</span>
+            </div>
+            <div class="cover-info">
+              <h3 class="cover-title">NEON NIGHTS</h3>
+              <p class="cover-desc">Spring editorial exploring nightlife photography with neon-lit urban landscapes and street culture.</p>
+              <div class="cover-meta">
+                <span class="cover-tag tag-pink">PHOTOGRAPHY</span>
+                <span class="cover-status status-live">LIVE</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-cover scroll-reveal">
+            <div class="cover-image cover-cyan">
+              <div class="cover-halftone"></div>
+              <span class="cover-issue">ISSUE #48</span>
+            </div>
+            <div class="cover-info">
+              <h3 class="cover-title">ELECTRIC DREAMS</h3>
+              <p class="cover-desc">Summer fashion spread featuring avant-garde designers pushing the boundaries of textile technology.</p>
+              <div class="cover-meta">
+                <span class="cover-tag tag-cyan">FASHION</span>
+                <span class="cover-status status-draft">IN PROGRESS</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-cover scroll-reveal">
+            <div class="cover-image cover-green">
+              <div class="cover-halftone"></div>
+              <span class="cover-issue">ISSUE #49</span>
+            </div>
+            <div class="cover-info">
+              <h3 class="cover-title">FUTURE IS ANALOG</h3>
+              <p class="cover-desc">Cover story investigating the vinyl revival, film photography renaissance, and anti-digital movements.</p>
+              <div class="cover-meta">
+                <span class="cover-tag tag-green">CULTURE</span>
+                <span class="cover-status status-draft">CONCEPT</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-cover scroll-reveal">
+            <div class="cover-image cover-yellow">
+              <div class="cover-halftone"></div>
+              <span class="cover-issue">ISSUE #50</span>
+            </div>
+            <div class="cover-info">
+              <h3 class="cover-title">Y2K REVIVAL</h3>
+              <p class="cover-desc">Milestone 50th issue celebrating the return of early 2000s aesthetics across fashion, music, and design.</p>
+              <div class="cover-meta">
+                <span class="cover-tag tag-pink">SPECIAL</span>
+                <span class="cover-status status-live">PLANNING</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-cover scroll-reveal">
+            <div class="cover-image cover-pink">
+              <div class="cover-halftone"></div>
+              <span class="cover-issue">DIGITAL</span>
+            </div>
+            <div class="cover-info">
+              <h3 class="cover-title">STREET VOICES</h3>
+              <p class="cover-desc">Digital-exclusive series profiling underground music producers and DIY culture scenes worldwide.</p>
+              <div class="cover-meta">
+                <span class="cover-tag tag-cyan">MUSIC</span>
+                <span class="cover-status status-live">LIVE</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-cover scroll-reveal">
+            <div class="cover-image cover-cyan">
+              <div class="cover-halftone"></div>
+              <span class="cover-issue">ANNUAL</span>
+            </div>
+            <div class="cover-info">
+              <h3 class="cover-title">DESIGN AWARDS 2026</h3>
+              <p class="cover-desc">Annual design awards showcasing the most innovative brand identities, packaging, and digital experiences.</p>
+              <div class="cover-meta">
+                <span class="cover-tag tag-green">AWARDS</span>
+                <span class="cover-status status-draft">CONCEPT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECT WORKSPACE ========== -->
+    <section class="view" id="view-project-workspace">
+      <div class="comic-panel-frame">
+        <h2 class="view-title">NEON NIGHTS WORKSPACE</h2>
+        <div class="workspace-comic-layout">
+          <!-- Frame 1: Brief -->
+          <div class="comic-frame frame-brief scroll-reveal">
+            <div class="frame-header">
+              <span class="frame-number">01</span>
+              <span class="speech-callout">THE BRIEF!</span>
+            </div>
+            <div class="frame-body">
+              <p class="frame-text"><strong>Theme:</strong> Urban nightlife photography exploring the neon-lit landscapes of Tokyo, Seoul, and New York after midnight.</p>
+              <p class="frame-text"><strong>Audience:</strong> 18-35 year old culture enthusiasts and photography lovers.</p>
+              <p class="frame-text"><strong>Deadline:</strong> March 15, 2026</p>
+              <p class="frame-text"><strong>Budget:</strong> $85,000</p>
+            </div>
+          </div>
+          <!-- Frame 2: Team -->
+          <div class="comic-frame frame-team scroll-reveal">
+            <div class="frame-header">
+              <span class="frame-number">02</span>
+              <span class="speech-callout">THE CREW!</span>
+            </div>
+            <div class="frame-body">
+              <div class="team-member"><span class="member-avatar avatar-pink">SC</span><div><strong>Sofia Chen</strong><br>Art Director</div></div>
+              <div class="team-member"><span class="member-avatar avatar-cyan">MW</span><div><strong>Marcus Webb</strong><br>Lead Photographer</div></div>
+              <div class="team-member"><span class="member-avatar avatar-green">JR</span><div><strong>James Rivera</strong><br>Senior Writer</div></div>
+              <div class="team-member"><span class="member-avatar avatar-yellow">ZK</span><div><strong>Zara Kim</strong><br>Social Strategist</div></div>
+            </div>
+          </div>
+          <!-- Frame 3: Milestones -->
+          <div class="comic-frame frame-milestones scroll-reveal">
+            <div class="frame-header">
+              <span class="frame-number">03</span>
+              <span class="speech-callout">MILESTONES!</span>
+            </div>
+            <div class="frame-body">
+              <div class="milestone done"><span class="ms-check">&#10003;</span> Concept approval & moodboard sign-off</div>
+              <div class="milestone done"><span class="ms-check">&#10003;</span> Location scouting in Tokyo complete</div>
+              <div class="milestone active"><span class="ms-dot"></span> Main photo shoot - Seoul (in progress)</div>
+              <div class="milestone"><span class="ms-dot empty"></span> Post-production & color grading</div>
+              <div class="milestone"><span class="ms-dot empty"></span> Copy editing & layout finalization</div>
+              <div class="milestone"><span class="ms-dot empty"></span> Print & digital distribution</div>
+            </div>
+          </div>
+          <!-- Frame 4: Notes -->
+          <div class="comic-frame frame-notes scroll-reveal">
+            <div class="frame-header">
+              <span class="frame-number">04</span>
+              <span class="speech-callout">EDITOR NOTES!</span>
+            </div>
+            <div class="frame-body">
+              <div class="note-bubble note-pink">
+                <p>"The Tokyo shots are incredible - let's make the Shinjuku alley series the hero spread. Need 6 full-bleed pages minimum."</p>
+                <span class="note-author">- Sofia Chen, Art Director</span>
+              </div>
+              <div class="note-bubble note-cyan">
+                <p>"Interview with DJ Akira is confirmed for the Seoul segment. Need a translator on set for March 3rd."</p>
+                <span class="note-author">- James Rivera, Writer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== KANBAN ========== -->
+    <section class="view" id="view-kanban">
+      <div class="comic-panel-frame">
+        <h2 class="view-title">PRODUCTION QUEUE</h2>
+        <div class="kanban-board">
+          <!-- Column 1: Backlog -->
+          <div class="kanban-column scroll-reveal">
+            <div class="kanban-col-header col-pink">
+              <span class="col-icon">&#9654;</span>
+              BACKLOG
+              <span class="col-count">4</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-halftone-strip strip-pink"></div>
+                <h4 class="card-title">Seoul Street Style Lookbook</h4>
+                <p class="card-desc">Curate 24 street fashion images from Hongdae district shoot</p>
+                <div class="card-footer"><span class="card-tag">PHOTOGRAPHY</span><span class="card-avatar avatar-cyan">MW</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-halftone-strip strip-cyan"></div>
+                <h4 class="card-title">Vinyl Collector Profiles</h4>
+                <p class="card-desc">Write 5 mini-profiles of record store owners for "Future is Analog" feature</p>
+                <div class="card-footer"><span class="card-tag">WRITING</span><span class="card-avatar avatar-green">JR</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-halftone-strip strip-green"></div>
+                <h4 class="card-title">Adidas Collab Assets</h4>
+                <p class="card-desc">Design 3 co-branded ad layouts for the Spring partnership pages</p>
+                <div class="card-footer"><span class="card-tag">DESIGN</span><span class="card-avatar avatar-pink">SC</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-halftone-strip strip-pink"></div>
+                <h4 class="card-title">TikTok Series Planning</h4>
+                <p class="card-desc">Storyboard 15-video rollout for the Y2K Revival campaign launch</p>
+                <div class="card-footer"><span class="card-tag">SOCIAL</span><span class="card-avatar avatar-yellow">ZK</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- Column 2: In Production -->
+          <div class="kanban-column scroll-reveal">
+            <div class="kanban-col-header col-cyan">
+              <span class="col-icon">&#9654;</span>
+              IN PRODUCTION
+              <span class="col-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-halftone-strip strip-cyan"></div>
+                <h4 class="card-title">Neon Nights Hero Spread</h4>
+                <p class="card-desc">6-page hero layout with full-bleed Tokyo night photography and overlaid typography</p>
+                <div class="card-footer"><span class="card-tag">LAYOUT</span><span class="card-avatar avatar-pink">SC</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-halftone-strip strip-green"></div>
+                <h4 class="card-title">DJ Akira Interview</h4>
+                <p class="card-desc">Transcribe, translate and edit the 90-min interview for the Seoul segment</p>
+                <div class="card-footer"><span class="card-tag">EDITORIAL</span><span class="card-avatar avatar-green">JR</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-halftone-strip strip-pink"></div>
+                <h4 class="card-title">Brand Guidelines Update</h4>
+                <p class="card-desc">Refresh the POP! Studio brand deck with new typography and color system</p>
+                <div class="card-footer"><span class="card-tag">BRAND</span><span class="card-avatar avatar-cyan">LN</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- Column 3: Review -->
+          <div class="kanban-column scroll-reveal">
+            <div class="kanban-col-header col-green">
+              <span class="col-icon">&#9654;</span>
+              IN REVIEW
+              <span class="col-count">2</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card">
+                <div class="card-halftone-strip strip-green"></div>
+                <h4 class="card-title">Electric Dreams Styling</h4>
+                <p class="card-desc">Final styling picks for the avant-garde fashion editorial - awaiting EIC approval</p>
+                <div class="card-footer"><span class="card-tag">FASHION</span><span class="card-avatar avatar-pink">SC</span></div>
+              </div>
+              <div class="kanban-card">
+                <div class="card-halftone-strip strip-cyan"></div>
+                <h4 class="card-title">March Cover Concepts</h4>
+                <p class="card-desc">3 cover design options for Issue #48 presented to editorial board</p>
+                <div class="card-footer"><span class="card-tag">COVER</span><span class="card-avatar avatar-pink">SC</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- Column 4: Published -->
+          <div class="kanban-column scroll-reveal">
+            <div class="kanban-col-header col-yellow">
+              <span class="col-icon">&#10003;</span>
+              PUBLISHED
+              <span class="col-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card card-done">
+                <div class="card-halftone-strip strip-yellow"></div>
+                <h4 class="card-title">Street Voices Ep. 12</h4>
+                <p class="card-desc">Berlin underground techno scene mini-doc published on all platforms</p>
+                <div class="card-footer"><span class="card-tag">VIDEO</span><span class="card-avatar avatar-yellow">ZK</span></div>
+              </div>
+              <div class="kanban-card card-done">
+                <div class="card-halftone-strip strip-yellow"></div>
+                <h4 class="card-title">Feb Newsletter Blast</h4>
+                <p class="card-desc">Monthly subscriber newsletter featuring "Neon Nights" preview - 45% open rate</p>
+                <div class="card-footer"><span class="card-tag">EMAIL</span><span class="card-avatar avatar-green">PP</span></div>
+              </div>
+              <div class="kanban-card card-done">
+                <div class="card-halftone-strip strip-yellow"></div>
+                <h4 class="card-title">Issue #47 Print Run</h4>
+                <p class="card-desc">125,000 copies distributed to newsstands nationwide, digital edition live</p>
+                <div class="card-footer"><span class="card-tag">PRINT</span><span class="card-avatar avatar-pink">SC</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHITEBOARD ========== -->
+    <section class="view" id="view-whiteboard">
+      <div class="comic-panel-frame">
+        <h2 class="view-title">POP ART GALLERY CANVAS</h2>
+        <div class="whiteboard-toolbar">
+          <button class="wb-tool active" data-tooltip="Select nodes">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+          </button>
+          <button class="wb-tool" data-tooltip="Add a new node">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4h8"/></svg>
+          </button>
+          <button class="wb-tool" data-tooltip="Draw connection">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </button>
+          <button class="wb-tool" data-tooltip="Add text label">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9.5" y1="20" x2="14.5" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+          </button>
+          <span class="wb-divider"></span>
+          <button class="wb-tool wb-color active" style="background:#ff1493" data-tooltip="Pink color"></button>
+          <button class="wb-tool wb-color" style="background:#00e5ff" data-tooltip="Cyan color"></button>
+          <button class="wb-tool wb-color" style="background:#76ff03" data-tooltip="Green color"></button>
+          <button class="wb-tool wb-color" style="background:#ffea00" data-tooltip="Yellow color"></button>
+        </div>
+        <div class="whiteboard-canvas" id="whiteboardCanvas">
+          <!-- Warhol-style repeated nodes -->
+          <div class="wb-node node-pink" style="left:60px;top:40px" data-id="n1">
+            <div class="wb-node-img"></div>
+            <span class="wb-node-label">BRAND IDENTITY</span>
+          </div>
+          <div class="wb-node node-cyan" style="left:320px;top:30px" data-id="n2">
+            <div class="wb-node-img"></div>
+            <span class="wb-node-label">SOCIAL STRATEGY</span>
+          </div>
+          <div class="wb-node node-green" style="left:560px;top:60px" data-id="n3">
+            <div class="wb-node-img"></div>
+            <span class="wb-node-label">CONTENT CALENDAR</span>
+          </div>
+          <div class="wb-node node-yellow" style="left:160px;top:260px" data-id="n4">
+            <div class="wb-node-img"></div>
+            <span class="wb-node-label">AUDIENCE RESEARCH</span>
+          </div>
+          <div class="wb-node node-pink" style="left:440px;top:280px" data-id="n5">
+            <div class="wb-node-img"></div>
+            <span class="wb-node-label">CAMPAIGN LAUNCH</span>
+          </div>
+          <div class="wb-node node-cyan" style="left:80px;top:450px" data-id="n6">
+            <div class="wb-node-img"></div>
+            <span class="wb-node-label">ANALYTICS</span>
+          </div>
+          <div class="wb-node node-green" style="left:350px;top:470px" data-id="n7">
+            <div class="wb-node-img"></div>
+            <span class="wb-node-label">REVENUE OPS</span>
+          </div>
+          <!-- SVG connector lines -->
+          <svg class="wb-connectors" width="100%" height="100%">
+            <line x1="155" y1="80" x2="325" y2="70" class="wb-line"/>
+            <line x1="415" y1="70" x2="565" y2="100" class="wb-line"/>
+            <line x1="120" y1="120" x2="200" y2="280" class="wb-line"/>
+            <line x1="320" y1="70" x2="480" y2="300" class="wb-line"/>
+            <line x1="260" y1="310" x2="445" y2="310" class="wb-line"/>
+            <line x1="200" y1="340" x2="130" y2="460" class="wb-line"/>
+            <line x1="500" y1="350" x2="420" y2="470" class="wb-line"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCHEMA PLANNER ========== -->
+    <section class="view" id="view-schema-planner">
+      <div class="comic-panel-frame">
+        <h2 class="view-title">INFOGRAPHIC SCHEMA</h2>
+        <div class="schema-poster">
+          <div class="schema-entity entity-pink scroll-reveal">
+            <div class="entity-header">
+              <span class="entity-icon">&#9733;</span>
+              <h3>PUBLICATION</h3>
+            </div>
+            <div class="entity-fields">
+              <div class="field-row"><span class="field-key">title</span><span class="field-type">string</span><span class="field-req">required</span></div>
+              <div class="field-row"><span class="field-key">issue_number</span><span class="field-type">integer</span><span class="field-req">required</span></div>
+              <div class="field-row"><span class="field-key">cover_image</span><span class="field-type">url</span><span class="field-req">required</span></div>
+              <div class="field-row"><span class="field-key">publish_date</span><span class="field-type">date</span><span class="field-req">required</span></div>
+              <div class="field-row"><span class="field-key">status</span><span class="field-type">enum</span><span class="field-opt">draft | review | live</span></div>
+              <div class="field-row"><span class="field-key">circulation</span><span class="field-type">integer</span><span class="field-opt">optional</span></div>
+            </div>
+          </div>
+          <div class="schema-connector-row">
+            <span class="connector-label">has many &#8594;</span>
+            <div class="connector-line"></div>
+          </div>
+          <div class="schema-entity entity-cyan scroll-reveal">
+            <div class="entity-header">
+              <span class="entity-icon">&#9998;</span>
+              <h3>ARTICLE</h3>
+            </div>
+            <div class="entity-fields">
+              <div class="field-row"><span class="field-key">headline</span><span class="field-type">string</span><span class="field-req">required</span></div>
+              <div class="field-row"><span class="field-key">body</span><span class="field-type">richtext</span><span class="field-req">required</span></div>
+              <div class="field-row"><span class="field-key">author_id</span><span class="field-type">ref:Contributor</span><span class="field-req">FK</span></div>
+              <div class="field-row"><span class="field-key">category</span><span class="field-type">enum</span><span class="field-opt">fashion | culture | music</span></div>
+              <div class="field-row"><span class="field-key">word_count</span><span class="field-type">integer</span><span class="field-opt">computed</span></div>
+            </div>
+          </div>
+          <div class="schema-connector-row">
+            <span class="connector-label">written by &#8594;</span>
+            <div class="connector-line"></div>
+          </div>
+          <div class="schema-entity entity-green scroll-reveal">
+            <div class="entity-header">
+              <span class="entity-icon">&#9786;</span>
+              <h3>CONTRIBUTOR</h3>
+            </div>
+            <div class="entity-fields">
+              <div class="field-row"><span class="field-key">name</span><span class="field-type">string</span><span class="field-req">required</span></div>
+              <div class="field-row"><span class="field-key">role</span><span class="field-type">enum</span><span class="field-opt">writer | photographer | editor</span></div>
+              <div class="field-row"><span class="field-key">email</span><span class="field-type">email</span><span class="field-req">required</span></div>
+              <div class="field-row"><span class="field-key">portfolio_url</span><span class="field-type">url</span><span class="field-opt">optional</span></div>
+              <div class="field-row"><span class="field-key">articles_count</span><span class="field-type">integer</span><span class="field-opt">computed</span></div>
+            </div>
+          </div>
+          <div class="schema-connector-row">
+            <span class="connector-label">produces &#8594;</span>
+            <div class="connector-line"></div>
+          </div>
+          <div class="schema-entity entity-yellow scroll-reveal">
+            <div class="entity-header">
+              <span class="entity-icon">&#9881;</span>
+              <h3>MEDIA ASSET</h3>
+            </div>
+            <div class="entity-fields">
+              <div class="field-row"><span class="field-key">filename</span><span class="field-type">string</span><span class="field-req">required</span></div>
+              <div class="field-row"><span class="field-key">type</span><span class="field-type">enum</span><span class="field-opt">photo | video | illustration</span></div>
+              <div class="field-row"><span class="field-key">resolution</span><span class="field-type">string</span><span class="field-opt">e.g. 4096x2730</span></div>
+              <div class="field-row"><span class="field-key">size_kb</span><span class="field-type">integer</span><span class="field-opt">optional</span></div>
+              <div class="field-row"><span class="field-key">license</span><span class="field-type">enum</span><span class="field-opt">owned | licensed | stock</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIRECTORY TREE ========== -->
+    <section class="view" id="view-directory-tree">
+      <div class="comic-panel-frame">
+        <h2 class="view-title">TABLE OF CONTENTS</h2>
+        <div class="toc-layout">
+          <div class="toc-section scroll-reveal">
+            <div class="toc-section-header toc-pink">
+              <span class="toc-number">01</span>
+              <h3>EDITORIAL</h3>
+            </div>
+            <div class="toc-items">
+              <div class="toc-item"><span class="toc-page">p.04</span><span class="toc-rule"></span><span class="toc-name">Editor's Letter</span></div>
+              <div class="toc-item"><span class="toc-page">p.08</span><span class="toc-rule"></span><span class="toc-name">Contributors Page</span></div>
+              <div class="toc-item"><span class="toc-page">p.12</span><span class="toc-rule"></span><span class="toc-name">Letters to the Editor</span></div>
+              <div class="toc-item"><span class="toc-page">p.14</span><span class="toc-rule"></span><span class="toc-name">Masthead & Credits</span></div>
+            </div>
+          </div>
+          <div class="toc-section scroll-reveal">
+            <div class="toc-section-header toc-cyan">
+              <span class="toc-number">02</span>
+              <h3>FEATURES</h3>
+            </div>
+            <div class="toc-items">
+              <div class="toc-item"><span class="toc-page">p.18</span><span class="toc-rule"></span><span class="toc-name">Neon Nights: Tokyo After Dark (Cover Story)</span></div>
+              <div class="toc-item"><span class="toc-page">p.32</span><span class="toc-rule"></span><span class="toc-name">Seoul's Hongdae Street Style Renaissance</span></div>
+              <div class="toc-item"><span class="toc-page">p.44</span><span class="toc-rule"></span><span class="toc-name">DJ Akira: The Sound of the Underground</span></div>
+              <div class="toc-item"><span class="toc-page">p.54</span><span class="toc-rule"></span><span class="toc-name">The Future is Analog: Vinyl Revival</span></div>
+            </div>
+          </div>
+          <div class="toc-section scroll-reveal">
+            <div class="toc-section-header toc-green">
+              <span class="toc-number">03</span>
+              <h3>FASHION</h3>
+            </div>
+            <div class="toc-items">
+              <div class="toc-item"><span class="toc-page">p.62</span><span class="toc-rule"></span><span class="toc-name">Electric Dreams: Avant-Garde Textile Tech</span></div>
+              <div class="toc-item"><span class="toc-page">p.74</span><span class="toc-rule"></span><span class="toc-name">Y2K Revival Lookbook</span></div>
+              <div class="toc-item"><span class="toc-page">p.82</span><span class="toc-rule"></span><span class="toc-name">Streetwear x High Fashion Crossovers</span></div>
+            </div>
+          </div>
+          <div class="toc-section scroll-reveal">
+            <div class="toc-section-header toc-yellow">
+              <span class="toc-number">04</span>
+              <h3>CULTURE & TECH</h3>
+            </div>
+            <div class="toc-items">
+              <div class="toc-item"><span class="toc-page">p.88</span><span class="toc-rule"></span><span class="toc-name">AI-Generated Art: Friend or Foe?</span></div>
+              <div class="toc-item"><span class="toc-page">p.94</span><span class="toc-rule"></span><span class="toc-name">Record Store Day 2026 Preview</span></div>
+              <div class="toc-item"><span class="toc-page">p.98</span><span class="toc-rule"></span><span class="toc-name">Design Awards 2026 Shortlist</span></div>
+              <div class="toc-item"><span class="toc-page">p.104</span><span class="toc-rule"></span><span class="toc-name">The Rise of Print Zine Culture</span></div>
+            </div>
+          </div>
+          <div class="toc-section scroll-reveal">
+            <div class="toc-section-header toc-pink">
+              <span class="toc-number">05</span>
+              <h3>REGULARS</h3>
+            </div>
+            <div class="toc-items">
+              <div class="toc-item"><span class="toc-page">p.110</span><span class="toc-rule"></span><span class="toc-name">What We're Listening To</span></div>
+              <div class="toc-item"><span class="toc-page">p.112</span><span class="toc-rule"></span><span class="toc-name">The Hot List: 10 Brands to Watch</span></div>
+              <div class="toc-item"><span class="toc-page">p.116</span><span class="toc-rule"></span><span class="toc-name">Subscription Offers & Back Issues</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== IDEAS ========== -->
+    <section class="view" id="view-ideas">
+      <div class="comic-panel-frame">
+        <h2 class="view-title">VINYL SHELF</h2>
+        <div class="vinyl-shelf">
+          <div class="vinyl-record scroll-reveal">
+            <div class="record-sleeve sleeve-pink">
+              <div class="sleeve-graphic">
+                <div class="vinyl-circle"></div>
+                <span class="sleeve-label">A-SIDE</span>
+              </div>
+            </div>
+            <div class="record-info">
+              <h3 class="record-title">AR Fashion Lookbook</h3>
+              <p class="record-desc">Augmented reality integration for the spring fashion editorial - readers point phone at spread to see models walk the runway.</p>
+              <div class="record-meta">
+                <span class="category-dot dot-pink"></span>
+                <span class="record-cat">INNOVATION</span>
+                <span class="record-date">Feb 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="vinyl-record scroll-reveal">
+            <div class="record-sleeve sleeve-cyan">
+              <div class="sleeve-graphic">
+                <div class="vinyl-circle"></div>
+                <span class="sleeve-label">B-SIDE</span>
+              </div>
+            </div>
+            <div class="record-info">
+              <h3 class="record-title">Subscriber-Only Podcast</h3>
+              <p class="record-desc">Weekly behind-the-scenes podcast with editors, photographers, and featured creatives from each issue.</p>
+              <div class="record-meta">
+                <span class="category-dot dot-cyan"></span>
+                <span class="record-cat">AUDIO</span>
+                <span class="record-date">Jan 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="vinyl-record scroll-reveal">
+            <div class="record-sleeve sleeve-green">
+              <div class="sleeve-graphic">
+                <div class="vinyl-circle"></div>
+                <span class="sleeve-label">A-SIDE</span>
+              </div>
+            </div>
+            <div class="record-info">
+              <h3 class="record-title">Pop-Up Gallery Events</h3>
+              <p class="record-desc">Monthly pop-up exhibitions in NYC, LA, and London featuring photographers from the magazine's archives.</p>
+              <div class="record-meta">
+                <span class="category-dot dot-green"></span>
+                <span class="record-cat">EVENTS</span>
+                <span class="record-date">Mar 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="vinyl-record scroll-reveal">
+            <div class="record-sleeve sleeve-yellow">
+              <div class="sleeve-graphic">
+                <div class="vinyl-circle"></div>
+                <span class="sleeve-label">B-SIDE</span>
+              </div>
+            </div>
+            <div class="record-info">
+              <h3 class="record-title">Merchandise Capsule Line</h3>
+              <p class="record-desc">Limited edition merch drops tied to each issue theme - tees, totes, pins designed by featured artists.</p>
+              <div class="record-meta">
+                <span class="category-dot dot-yellow"></span>
+                <span class="record-cat">REVENUE</span>
+                <span class="record-date">Feb 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="vinyl-record scroll-reveal">
+            <div class="record-sleeve sleeve-pink">
+              <div class="sleeve-graphic">
+                <div class="vinyl-circle"></div>
+                <span class="sleeve-label">A-SIDE</span>
+              </div>
+            </div>
+            <div class="record-info">
+              <h3 class="record-title">Creator Residency Program</h3>
+              <p class="record-desc">3-month paid residency for emerging photographers and writers, culminating in a dedicated issue feature.</p>
+              <div class="record-meta">
+                <span class="category-dot dot-pink"></span>
+                <span class="record-cat">TALENT</span>
+                <span class="record-date">Apr 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="vinyl-record scroll-reveal">
+            <div class="record-sleeve sleeve-cyan">
+              <div class="sleeve-graphic">
+                <div class="vinyl-circle"></div>
+                <span class="sleeve-label">B-SIDE</span>
+              </div>
+            </div>
+            <div class="record-info">
+              <h3 class="record-title">Interactive Digital Editions</h3>
+              <p class="record-desc">Enhanced digital magazine with embedded video interviews, 360-degree photo tours, and shoppable fashion spreads.</p>
+              <div class="record-meta">
+                <span class="category-dot dot-cyan"></span>
+                <span class="record-cat">DIGITAL</span>
+                <span class="record-date">May 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== AI CHAT ========== -->
+    <section class="view" id="view-ai-chat">
+      <div class="comic-panel-frame">
+        <h2 class="view-title">EDITORIAL ASSISTANT</h2>
+        <div class="chat-container">
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-bubble bubble-ai">
+              <div class="bubble-avatar">AI</div>
+              <div class="bubble-content">
+                <p>Hey there! I'm your POP! Studio editorial assistant. I can help with headline brainstorming, copy editing, social media captions, and content strategy. What are you working on today?</p>
+              </div>
+            </div>
+            <div class="chat-bubble bubble-user">
+              <div class="bubble-content">
+                <p>I need 5 headline options for the Neon Nights cover story. The piece is about Tokyo's nightlife photography scene - neon signs, back alleys, and the photographers who document them.</p>
+              </div>
+              <div class="bubble-avatar">YOU</div>
+            </div>
+            <div class="chat-bubble bubble-ai">
+              <div class="bubble-avatar">AI</div>
+              <div class="bubble-content">
+                <p>Here are 5 headline options for the Neon Nights cover:</p>
+                <ol>
+                  <li><strong>"NEON NIGHTS: Tokyo's Luminous Underground"</strong> - Classic, evocative, positions the city as character</li>
+                  <li><strong>"AFTER DARK: The Photographers Capturing Tokyo's Electric Soul"</strong> - Centers the artists' perspective</li>
+                  <li><strong>"12AM IN SHINJUKU"</strong> - Minimalist, time-stamp urgency, very Warhol-era bold</li>
+                  <li><strong>"GLOW: Inside Tokyo's Neon-Lit Back Alley Renaissance"</strong> - One-word punch + descriptive subtitle</li>
+                  <li><strong>"THE CITY THAT NEVER DIMS"</strong> - Playful twist on "never sleeps", ties to the visual neon theme</li>
+                </ol>
+                <p>My recommendation? Go with #3 for the cover and use #1 as the interior feature header. The brevity of "12AM IN SHINJUKU" will hit hard at magazine scale.</p>
+                <div class="bubble-emphasis">POW!</div>
+              </div>
+            </div>
+            <div class="chat-bubble bubble-user">
+              <div class="bubble-content">
+                <p>Love #3! Can you also draft a 2-sentence social media teaser for the Instagram announcement of this issue?</p>
+              </div>
+              <div class="bubble-avatar">YOU</div>
+            </div>
+            <div class="chat-bubble bubble-ai">
+              <div class="bubble-avatar">AI</div>
+              <div class="bubble-content">
+                <p>Here's your Instagram teaser:</p>
+                <blockquote>"When the last train leaves and the neon takes over, Tokyo transforms. Issue #47 goes deep into the electric alleys of Shinjuku with the photographers who never sleep. Out now."</blockquote>
+                <p>Character count: 198 (within Instagram's limit). I'd pair this with one of Marcus's Shinjuku alley shots - the one with the pink and blue neon reflections on wet pavement would be perfect for the grid.</p>
+              </div>
+            </div>
+            <div class="chat-bubble bubble-user">
+              <div class="bubble-content">
+                <p>Perfect. One more thing - can you suggest 3 hashtag sets we could rotate for the campaign?</p>
+              </div>
+              <div class="bubble-avatar">YOU</div>
+            </div>
+            <div class="chat-bubble bubble-ai">
+              <div class="bubble-avatar">AI</div>
+              <div class="bubble-content">
+                <p>Three hashtag sets to rotate:</p>
+                <p><strong>Set A (Discovery):</strong> #NeonNights #TokyoPhotography #StreetPhotography #NightPhotography #ShinjukuNights #UrbanExploring</p>
+                <p><strong>Set B (Brand):</strong> #POPStudioMag #Issue47 #NeonNightsSeries #POPPhotography #MagazineCover</p>
+                <p><strong>Set C (Culture):</strong> #TokyoNightlife #JapanCulture #NeonAesthetic #CityLights #AfterDark #VisualStorytelling</p>
+                <p>Rotate daily and mix 3 from each set per post for best algorithm reach.</p>
+                <div class="bubble-emphasis">ZAP!</div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-bar">
+            <input type="text" class="chat-input" placeholder="Ask the editorial assistant...">
+            <button class="pop-btn pop-btn-pink chat-send-btn">SEND</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS ========== -->
+    <section class="view" id="view-settings">
+      <div class="comic-panel-frame">
+        <h2 class="view-title">MASTHEAD SETTINGS</h2>
+        <div class="settings-layout">
+          <!-- Publication Settings -->
+          <div class="settings-group scroll-reveal">
+            <div class="settings-group-header header-pink">
+              <h3>PUBLICATION PROFILE</h3>
+            </div>
+            <div class="settings-group-body">
+              <div class="setting-row">
+                <label class="setting-label" for="pubName">Publication Name</label>
+                <input type="text" id="pubName" class="setting-input" value="POP! Studio Magazine">
+              </div>
+              <div class="setting-row">
+                <label class="setting-label" for="tagline">Tagline</label>
+                <input type="text" id="tagline" class="setting-input" value="Culture. Fashion. Sound. Design.">
+              </div>
+              <div class="setting-row">
+                <label class="setting-label" for="issueFreq">Issue Frequency</label>
+                <select id="issueFreq" class="setting-input">
+                  <option selected>Monthly</option>
+                  <option>Bi-Monthly</option>
+                  <option>Quarterly</option>
+                </select>
+              </div>
+              <div class="setting-row">
+                <label class="setting-label" for="currentIssue">Current Issue Number</label>
+                <input type="number" id="currentIssue" class="setting-input" value="47">
+              </div>
+            </div>
+          </div>
+
+          <!-- Notification Settings -->
+          <div class="settings-group scroll-reveal">
+            <div class="settings-group-header header-cyan">
+              <h3>NOTIFICATIONS</h3>
+            </div>
+            <div class="settings-group-body">
+              <div class="setting-row setting-toggle-row">
+                <div>
+                  <span class="setting-label">Deadline Reminders</span>
+                  <span class="setting-hint">Get alerts 48hrs before editorial deadlines</span>
+                </div>
+                <label class="comic-toggle"><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+              </div>
+              <div class="setting-row setting-toggle-row">
+                <div>
+                  <span class="setting-label">Social Metrics Alerts</span>
+                  <span class="setting-hint">Notify when posts exceed 10K engagement</span>
+                </div>
+                <label class="comic-toggle"><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+              </div>
+              <div class="setting-row setting-toggle-row">
+                <div>
+                  <span class="setting-label">New Contributor Applications</span>
+                  <span class="setting-hint">Alert when freelancers submit portfolios</span>
+                </div>
+                <label class="comic-toggle"><input type="checkbox"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+              </div>
+              <div class="setting-row setting-toggle-row">
+                <div>
+                  <span class="setting-label">Print Run Updates</span>
+                  <span class="setting-hint">Track distribution and newsstand reports</span>
+                </div>
+                <label class="comic-toggle"><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Display Settings -->
+          <div class="settings-group scroll-reveal">
+            <div class="settings-group-header header-green">
+              <h3>DISPLAY & THEME</h3>
+            </div>
+            <div class="settings-group-body">
+              <div class="setting-row setting-toggle-row">
+                <div>
+                  <span class="setting-label">Halftone Backgrounds</span>
+                  <span class="setting-hint">Show Ben-Day dot textures on panels</span>
+                </div>
+                <label class="comic-toggle"><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+              </div>
+              <div class="setting-row setting-toggle-row">
+                <div>
+                  <span class="setting-label">Comic Sound Effects</span>
+                  <span class="setting-hint">Show POW! and ZAP! micro-feedback</span>
+                </div>
+                <label class="comic-toggle"><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+              </div>
+              <div class="setting-row">
+                <label class="setting-label" for="accentChoice">Accent Color</label>
+                <div class="color-picker-row">
+                  <button class="color-swatch swatch-active" style="background:#ff1493" data-tooltip="Electric Pink"></button>
+                  <button class="color-swatch" style="background:#00e5ff" data-tooltip="Cyan"></button>
+                  <button class="color-swatch" style="background:#76ff03" data-tooltip="Acid Green"></button>
+                  <button class="color-swatch" style="background:#ffea00" data-tooltip="Yellow"></button>
+                </div>
+              </div>
+              <div class="setting-row">
+                <label class="setting-label" for="density">Layout Density</label>
+                <select id="density" class="setting-input">
+                  <option>Compact</option>
+                  <option selected>Standard</option>
+                  <option>Spacious</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Team Settings -->
+          <div class="settings-group scroll-reveal">
+            <div class="settings-group-header header-yellow">
+              <h3>TEAM & ROLES</h3>
+            </div>
+            <div class="settings-group-body">
+              <div class="team-settings-list">
+                <div class="team-setting-item">
+                  <span class="member-avatar avatar-pink">SC</span>
+                  <div class="team-setting-info"><strong>Sofia Chen</strong><span>Art Director - Full Access</span></div>
+                  <span class="team-role-badge role-admin">ADMIN</span>
+                </div>
+                <div class="team-setting-item">
+                  <span class="member-avatar avatar-cyan">MW</span>
+                  <div class="team-setting-info"><strong>Marcus Webb</strong><span>Lead Photographer - Edit Access</span></div>
+                  <span class="team-role-badge role-editor">EDITOR</span>
+                </div>
+                <div class="team-setting-item">
+                  <span class="member-avatar avatar-green">JR</span>
+                  <div class="team-setting-info"><strong>James Rivera</strong><span>Senior Writer - Edit Access</span></div>
+                  <span class="team-role-badge role-editor">EDITOR</span>
+                </div>
+                <div class="team-setting-item">
+                  <span class="member-avatar avatar-yellow">ZK</span>
+                  <div class="team-setting-info"><strong>Zara Kim</strong><span>Social Strategist - View Access</span></div>
+                  <span class="team-role-badge role-viewer">VIEWER</span>
+                </div>
+              </div>
+              <button class="pop-btn pop-btn-pink" style="margin-top:12px;">+ INVITE TEAM MEMBER</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Speech bubble tooltips container -->
+  <div id="speechBubbleTooltip" class="speech-bubble-tooltip" aria-hidden="true">
+    <span class="tooltip-text"></span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RecipeBox - Kitchen Idea Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient warm kitchen glow overlay -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <!-- Mobile hamburger -->
+  <button class="mobile-menu-btn" aria-label="Open navigation">
+    <i class="ph ph-list"></i>
+  </button>
+
+  <!-- Mobile overlay -->
+  <div class="mobile-overlay" aria-hidden="true"></div>
+
+  <!-- Right-rail navigation (vertical dots timeline) -->
+  <nav class="rail-nav" role="navigation" aria-label="Main navigation">
+    <div class="rail-brand">
+      <span class="brand-icon"><i class="ph ph-cooking-pot"></i></span>
+      <span class="brand-text">RecipeBox</span>
+    </div>
+    <ul class="rail-links">
+      <li>
+        <a href="#dashboard" class="rail-link active" data-view="dashboard" data-tooltip="Kitchen Counter">
+          <span class="rail-dot"></span>
+          <span class="rail-label">Kitchen Counter</span>
+        </a>
+      </li>
+      <li>
+        <a href="#projects" class="rail-link" data-view="projects" data-tooltip="Recipe Box">
+          <span class="rail-dot"></span>
+          <span class="rail-label">Recipe Box</span>
+        </a>
+      </li>
+      <li>
+        <a href="#project-workspace" class="rail-link" data-view="project-workspace" data-tooltip="Cutting Board">
+          <span class="rail-dot"></span>
+          <span class="rail-label">Cutting Board</span>
+        </a>
+      </li>
+      <li>
+        <a href="#kanban" class="rail-link" data-view="kanban" data-tooltip="Cooking Steps">
+          <span class="rail-dot"></span>
+          <span class="rail-label">Cooking Steps</span>
+        </a>
+      </li>
+      <li>
+        <a href="#whiteboard" class="rail-link" data-view="whiteboard" data-tooltip="Meal Planner">
+          <span class="rail-dot"></span>
+          <span class="rail-label">Meal Planner</span>
+        </a>
+      </li>
+      <li>
+        <a href="#schema-planner" class="rail-link" data-view="schema-planner" data-tooltip="Cookbook Index">
+          <span class="rail-dot"></span>
+          <span class="rail-label">Cookbook Index</span>
+        </a>
+      </li>
+      <li>
+        <a href="#directory-tree" class="rail-link" data-view="directory-tree" data-tooltip="Pantry Shelves">
+          <span class="rail-dot"></span>
+          <span class="rail-label">Pantry Shelves</span>
+        </a>
+      </li>
+      <li>
+        <a href="#ideas" class="rail-link" data-view="ideas" data-tooltip="Fridge Magnets">
+          <span class="rail-dot"></span>
+          <span class="rail-label">Fridge Magnets</span>
+        </a>
+      </li>
+      <li>
+        <a href="#ai-chat" class="rail-link" data-view="ai-chat" data-tooltip="Recipe Exchange">
+          <span class="rail-dot"></span>
+          <span class="rail-label">Recipe Exchange</span>
+        </a>
+      </li>
+      <li>
+        <a href="#settings" class="rail-link" data-view="settings" data-tooltip="Appliance Panel">
+          <span class="rail-dot"></span>
+          <span class="rail-label">Appliance Panel</span>
+        </a>
+      </li>
+    </ul>
+    <div class="rail-timeline-line" aria-hidden="true"></div>
+  </nav>
+
+  <!-- Main content area -->
+  <main class="content-area">
+
+    <!-- ============ DASHBOARD ============ -->
+    <section id="dashboard" class="view active">
+      <header class="view-header">
+        <h1>Kitchen Counter</h1>
+        <p class="view-subtitle">Your daily cooking command center</p>
+      </header>
+      <div class="dashboard-grid">
+        <!-- Oven temperature gauge -->
+        <div class="dash-stat-card stat-oven">
+          <div class="stat-gauge">
+            <svg viewBox="0 0 120 80" class="gauge-svg">
+              <path d="M10,70 A50,50 0 0,1 110,70" fill="none" stroke="#d4c8a8" stroke-width="8" stroke-linecap="round"/>
+              <path d="M10,70 A50,50 0 0,1 110,70" fill="none" stroke="#6b8a3e" stroke-width="8" stroke-linecap="round" class="gauge-fill" style="--pct:0.72"/>
+              <circle cx="60" cy="70" r="4" fill="#c4962a"/>
+            </svg>
+            <span class="stat-value">72%</span>
+          </div>
+          <span class="stat-label">Recipe Completion</span>
+          <span class="stat-detail">18 of 25 recipes tested this month</span>
+        </div>
+        <!-- Mixer speed dial -->
+        <div class="dash-stat-card stat-mixer">
+          <div class="mixer-dial">
+            <div class="dial-ring">
+              <div class="dial-indicator" style="--speed:7"></div>
+            </div>
+            <span class="dial-number">7</span>
+          </div>
+          <span class="stat-label">Cooking Velocity</span>
+          <span class="stat-detail">7 recipes completed per week</span>
+        </div>
+        <!-- Measurement cup volume -->
+        <div class="dash-stat-card stat-cup">
+          <div class="cup-visual">
+            <div class="cup-outline">
+              <div class="cup-fill" style="--level:0.85"></div>
+              <div class="cup-marks">
+                <span>1 cup</span>
+                <span>3/4</span>
+                <span>1/2</span>
+                <span>1/4</span>
+              </div>
+            </div>
+          </div>
+          <span class="stat-label">Pantry Stock</span>
+          <span class="stat-detail">85% ingredients available</span>
+        </div>
+        <!-- Timer stat -->
+        <div class="dash-stat-card stat-timer">
+          <div class="timer-face">
+            <div class="timer-ring"></div>
+            <span class="timer-digits">24</span>
+          </div>
+          <span class="stat-label">Active Timers</span>
+          <span class="stat-detail">24 recipes currently in progress</span>
+        </div>
+      </div>
+      <!-- Recent activity feed -->
+      <div class="activity-section">
+        <h2>Recent Kitchen Activity</h2>
+        <ul class="activity-feed">
+          <li class="activity-item shelf-anim">
+            <span class="activity-icon"><i class="ph ph-check-circle"></i></span>
+            <div class="activity-text">
+              <strong>Grandma's Apple Pie</strong> recipe marked as perfected
+              <span class="activity-time">10 minutes ago</span>
+            </div>
+          </li>
+          <li class="activity-item shelf-anim">
+            <span class="activity-icon"><i class="ph ph-pencil-simple"></i></span>
+            <div class="activity-text">
+              Updated seasoning notes on <strong>Classic Pot Roast</strong>
+              <span class="activity-time">1 hour ago</span>
+            </div>
+          </li>
+          <li class="activity-item shelf-anim">
+            <span class="activity-icon"><i class="ph ph-plus-circle"></i></span>
+            <div class="activity-text">
+              New recipe added: <strong>Buttermilk Biscuits & Honey Butter</strong>
+              <span class="activity-time">3 hours ago</span>
+            </div>
+          </li>
+          <li class="activity-item shelf-anim">
+            <span class="activity-icon"><i class="ph ph-star"></i></span>
+            <div class="activity-text">
+              <strong>Lemon Meringue Pie</strong> rated 5 stars by family
+              <span class="activity-time">Yesterday</span>
+            </div>
+          </li>
+          <li class="activity-item shelf-anim">
+            <span class="activity-icon"><i class="ph ph-timer"></i></span>
+            <div class="activity-text">
+              Started testing <strong>Sourdough Bread Starter</strong> - Day 3
+              <span class="activity-time">Yesterday</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ PROJECTS ============ -->
+    <section id="projects" class="view">
+      <header class="view-header">
+        <h1>Recipe Box</h1>
+        <p class="view-subtitle">Your collection of culinary projects</p>
+      </header>
+      <div class="recipe-box-tabs">
+        <button class="box-tab active" data-cat="all">All Recipes</button>
+        <button class="box-tab" data-cat="baking">Baking</button>
+        <button class="box-tab" data-cat="dinner">Dinner</button>
+        <button class="box-tab" data-cat="seasonal">Seasonal</button>
+      </div>
+      <div class="recipe-cards-grid">
+        <div class="recipe-card shelf-anim" data-cat="baking">
+          <div class="card-tab" style="background:#6b8a3e"></div>
+          <h3>Holiday Cookie Collection</h3>
+          <p>12 classic cookie recipes perfected over three generations. From sugar cookies with royal icing to gingerbread men with molasses glaze.</p>
+          <div class="card-meta">
+            <span class="meta-badge badge-baking">Baking</span>
+            <span class="meta-count"><i class="ph ph-note"></i> 12 recipes</span>
+          </div>
+          <div class="card-progress">
+            <div class="progress-bar"><div class="progress-fill" style="width:83%"></div></div>
+            <span>83% tested</span>
+          </div>
+        </div>
+        <div class="recipe-card shelf-anim" data-cat="dinner">
+          <div class="card-tab" style="background:#c4962a"></div>
+          <h3>Sunday Suppers</h3>
+          <p>Hearty one-pot meals for family gatherings. Pot roast, chicken and dumplings, beef stew, and shepherd's pie with mashed potato topping.</p>
+          <div class="card-meta">
+            <span class="meta-badge badge-dinner">Dinner</span>
+            <span class="meta-count"><i class="ph ph-note"></i> 8 recipes</span>
+          </div>
+          <div class="card-progress">
+            <div class="progress-bar"><div class="progress-fill" style="width:62%"></div></div>
+            <span>62% tested</span>
+          </div>
+        </div>
+        <div class="recipe-card shelf-anim" data-cat="baking">
+          <div class="card-tab" style="background:#6b8a3e"></div>
+          <h3>Bread Baking Basics</h3>
+          <p>From simple white bread to sourdough and challah. Mastering dough hydration, proofing times, and oven spring with each attempt.</p>
+          <div class="card-meta">
+            <span class="meta-badge badge-baking">Baking</span>
+            <span class="meta-count"><i class="ph ph-note"></i> 6 recipes</span>
+          </div>
+          <div class="card-progress">
+            <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+            <span>50% tested</span>
+          </div>
+        </div>
+        <div class="recipe-card shelf-anim" data-cat="seasonal">
+          <div class="card-tab" style="background:#a07040"></div>
+          <h3>Summer Preserves</h3>
+          <p>Canning and preserving summer's bounty. Strawberry jam, pickled vegetables, peach compote, and spiced apple butter for fall gifting.</p>
+          <div class="card-meta">
+            <span class="meta-badge badge-seasonal">Seasonal</span>
+            <span class="meta-count"><i class="ph ph-note"></i> 9 recipes</span>
+          </div>
+          <div class="card-progress">
+            <div class="progress-bar"><div class="progress-fill" style="width:44%"></div></div>
+            <span>44% tested</span>
+          </div>
+        </div>
+        <div class="recipe-card shelf-anim" data-cat="dinner">
+          <div class="card-tab" style="background:#c4962a"></div>
+          <h3>Cast Iron Classics</h3>
+          <p>Recipes designed for grandmother's seasoned cast iron skillet. Cornbread, pan-seared steaks, deep-dish pizza, and Dutch baby pancakes.</p>
+          <div class="card-meta">
+            <span class="meta-badge badge-dinner">Dinner</span>
+            <span class="meta-count"><i class="ph ph-note"></i> 7 recipes</span>
+          </div>
+          <div class="card-progress">
+            <div class="progress-bar"><div class="progress-fill" style="width:71%"></div></div>
+            <span>71% tested</span>
+          </div>
+        </div>
+        <div class="recipe-card shelf-anim" data-cat="seasonal">
+          <div class="card-tab" style="background:#a07040"></div>
+          <h3>Thanksgiving Feast</h3>
+          <p>The complete Thanksgiving menu from brined turkey to pumpkin pie. Includes timing chart for getting everything to the table hot.</p>
+          <div class="card-meta">
+            <span class="meta-badge badge-seasonal">Seasonal</span>
+            <span class="meta-count"><i class="ph ph-note"></i> 11 recipes</span>
+          </div>
+          <div class="card-progress">
+            <div class="progress-bar"><div class="progress-fill" style="width:91%"></div></div>
+            <span>91% tested</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROJECT WORKSPACE ============ -->
+    <section id="project-workspace" class="view">
+      <header class="view-header">
+        <h1>Cutting Board</h1>
+        <p class="view-subtitle">Holiday Cookie Collection workspace</p>
+      </header>
+      <div class="workspace-layout">
+        <!-- Spice rack sidebar -->
+        <aside class="spice-rack">
+          <h3><i class="ph ph-squares-four"></i> Spice Rack</h3>
+          <ul class="spice-list">
+            <li class="spice-item active"><i class="ph ph-file-text"></i> Overview</li>
+            <li class="spice-item"><i class="ph ph-list-checks"></i> Ingredients List</li>
+            <li class="spice-item"><i class="ph ph-clock"></i> Timing Notes</li>
+            <li class="spice-item"><i class="ph ph-camera"></i> Photo Log</li>
+            <li class="spice-item"><i class="ph ph-users"></i> Contributors</li>
+          </ul>
+          <div class="spice-divider"></div>
+          <h3><i class="ph ph-tag"></i> Labels</h3>
+          <div class="spice-tags">
+            <span class="spice-tag" style="--tag-clr:#6b8a3e">Tested</span>
+            <span class="spice-tag" style="--tag-clr:#c4962a">Needs Tweaking</span>
+            <span class="spice-tag" style="--tag-clr:#a07040">Family Favorite</span>
+          </div>
+        </aside>
+        <!-- Cutting board main area -->
+        <div class="cutting-board-main">
+          <div class="board-header-bar">
+            <h2>Holiday Cookie Collection</h2>
+            <span class="board-badge">12 Recipes &bull; 83% Complete</span>
+          </div>
+          <div class="board-description">
+            <p>Three generations of holiday cookies, each recipe refined over dozens of holiday seasons. This collection represents the heart of our family's baking traditions, from Great-Aunt Mildred's shortbread to Mom's famous snickerdoodles.</p>
+          </div>
+          <div class="board-tasks">
+            <h3><i class="ph ph-list-checks"></i> Recipe Checklist</h3>
+            <ul class="task-list">
+              <li class="task-item done"><input type="checkbox" checked><span>Sugar cookies with royal icing</span><span class="task-timer">Prep: 45min</span></li>
+              <li class="task-item done"><input type="checkbox" checked><span>Gingerbread men with molasses glaze</span><span class="task-timer">Prep: 1hr</span></li>
+              <li class="task-item done"><input type="checkbox" checked><span>Snickerdoodles with extra cinnamon</span><span class="task-timer">Prep: 30min</span></li>
+              <li class="task-item"><input type="checkbox"><span>Peanut butter blossoms</span><span class="task-timer">Prep: 35min</span></li>
+              <li class="task-item"><input type="checkbox"><span>Thumbprint jam cookies</span><span class="task-timer">Prep: 50min</span></li>
+              <li class="task-item done"><input type="checkbox" checked><span>Spritz butter cookies</span><span class="task-timer">Prep: 40min</span></li>
+            </ul>
+          </div>
+          <div class="board-notes">
+            <h3><i class="ph ph-note-pencil"></i> Kitchen Notes</h3>
+            <div class="note-card">
+              <p><strong>Temperature tip:</strong> Always chill dough 30 minutes before rolling. Room-temp dough spreads too thin and cookies lose their shape. This is especially crucial for sugar cookies.</p>
+            </div>
+            <div class="note-card">
+              <p><strong>Icing consistency:</strong> Royal icing should be thick enough to hold a line for 10 seconds before melting back. Add water one teaspoon at a time for flood consistency.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ KANBAN ============ -->
+    <section id="kanban" class="view">
+      <header class="view-header">
+        <h1>Cooking Steps</h1>
+        <p class="view-subtitle">Track recipe progress from prep to plate</p>
+      </header>
+      <div class="kanban-board">
+        <div class="kanban-col">
+          <div class="col-header col-mise">
+            <i class="ph ph-knife"></i>
+            <h3>Mise en Place</h3>
+            <span class="col-count">3</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card shelf-anim">
+              <h4>Measure dry ingredients</h4>
+              <p>Flour, sugar, baking powder, salt pre-measured into individual bowls</p>
+              <div class="kcard-meta">
+                <span class="kcard-tag">Sugar Cookies</span>
+                <label class="kcard-check"><input type="checkbox"> Sifted</label>
+              </div>
+              <span class="kcard-timer"><i class="ph ph-timer"></i> 10 min</span>
+            </div>
+            <div class="kanban-card shelf-anim">
+              <h4>Soften butter</h4>
+              <p>2 cups unsalted butter at room temperature, not melted</p>
+              <div class="kcard-meta">
+                <span class="kcard-tag">All Cookies</span>
+                <label class="kcard-check"><input type="checkbox"> Room temp</label>
+              </div>
+              <span class="kcard-timer"><i class="ph ph-timer"></i> 30 min</span>
+            </div>
+            <div class="kanban-card shelf-anim">
+              <h4>Zest lemons</h4>
+              <p>Fine zest from 3 lemons for the lemon shortbread variation</p>
+              <div class="kcard-meta">
+                <span class="kcard-tag">Shortbread</span>
+                <label class="kcard-check"><input type="checkbox"> Zested</label>
+              </div>
+              <span class="kcard-timer"><i class="ph ph-timer"></i> 5 min</span>
+            </div>
+          </div>
+        </div>
+        <div class="kanban-col">
+          <div class="col-header col-prep">
+            <i class="ph ph-bowl-food"></i>
+            <h3>Prep</h3>
+            <span class="col-count">2</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card shelf-anim">
+              <h4>Cream butter & sugar</h4>
+              <p>Beat until light and fluffy, approximately 3-4 minutes on medium-high</p>
+              <div class="kcard-meta">
+                <span class="kcard-tag">Sugar Cookies</span>
+                <label class="kcard-check"><input type="checkbox" checked> Mixed</label>
+              </div>
+              <span class="kcard-timer"><i class="ph ph-timer"></i> 4 min</span>
+            </div>
+            <div class="kanban-card shelf-anim">
+              <h4>Mix molasses & spices</h4>
+              <p>Combine molasses, ginger, cinnamon, cloves, and nutmeg in separate bowl</p>
+              <div class="kcard-meta">
+                <span class="kcard-tag">Gingerbread</span>
+                <label class="kcard-check"><input type="checkbox"> Spiced</label>
+              </div>
+              <span class="kcard-timer"><i class="ph ph-timer"></i> 5 min</span>
+            </div>
+          </div>
+        </div>
+        <div class="kanban-col">
+          <div class="col-header col-cook">
+            <i class="ph ph-oven"></i>
+            <h3>Cook</h3>
+            <span class="col-count">2</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card shelf-anim">
+              <h4>Bake snickerdoodles</h4>
+              <p>350&deg;F for 10-12 minutes. Edges set but center looks slightly underdone</p>
+              <div class="kcard-meta">
+                <span class="kcard-tag">Snickerdoodles</span>
+                <label class="kcard-check"><input type="checkbox" checked> In oven</label>
+              </div>
+              <span class="kcard-timer"><i class="ph ph-timer"></i> 12 min</span>
+            </div>
+            <div class="kanban-card shelf-anim">
+              <h4>Bake spritz cookies</h4>
+              <p>375&deg;F for 8-10 minutes. Watch for golden edges, remove immediately</p>
+              <div class="kcard-meta">
+                <span class="kcard-tag">Spritz</span>
+                <label class="kcard-check"><input type="checkbox"> Baking</label>
+              </div>
+              <span class="kcard-timer"><i class="ph ph-timer"></i> 10 min</span>
+            </div>
+          </div>
+        </div>
+        <div class="kanban-col">
+          <div class="col-header col-plate">
+            <i class="ph ph-fork-knife"></i>
+            <h3>Plate</h3>
+            <span class="col-count">2</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card shelf-anim">
+              <h4>Decorate sugar cookies</h4>
+              <p>Outline with stiff icing, flood with thinned icing, add sprinkles while wet</p>
+              <div class="kcard-meta">
+                <span class="kcard-tag">Sugar Cookies</span>
+                <label class="kcard-check"><input type="checkbox" checked> Decorated</label>
+              </div>
+              <span class="kcard-timer"><i class="ph ph-timer"></i> 2 hrs</span>
+            </div>
+            <div class="kanban-card shelf-anim">
+              <h4>Package for gifting</h4>
+              <p>Arrange assorted cookies in tins with parchment layers between varieties</p>
+              <div class="kcard-meta">
+                <span class="kcard-tag">All Cookies</span>
+                <label class="kcard-check"><input type="checkbox"> Packaged</label>
+              </div>
+              <span class="kcard-timer"><i class="ph ph-timer"></i> 30 min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHITEBOARD ============ -->
+    <section id="whiteboard" class="view">
+      <header class="view-header">
+        <h1>Meal Planner</h1>
+        <p class="view-subtitle">Plan your weekly meals and ingredient connections</p>
+      </header>
+      <div class="whiteboard-toolbar">
+        <button class="wb-tool active" data-tooltip="Select"><i class="ph ph-cursor"></i></button>
+        <button class="wb-tool" data-tooltip="Add Ingredient"><i class="ph ph-plus"></i></button>
+        <button class="wb-tool" data-tooltip="Connect"><i class="ph ph-arrows-left-right"></i></button>
+        <button class="wb-tool" data-tooltip="Note"><i class="ph ph-note-pencil"></i></button>
+        <button class="wb-tool" data-tooltip="Erase"><i class="ph ph-eraser"></i></button>
+      </div>
+      <div class="whiteboard-canvas">
+        <!-- Checkered tablecloth pattern background applied via CSS -->
+        <div class="wb-node node-meal" style="left:10%;top:12%">
+          <span class="node-icon"><i class="ph ph-bowl-food"></i></span>
+          <span class="node-label">Monday Dinner</span>
+          <span class="node-detail">Chicken Pot Pie</span>
+        </div>
+        <div class="wb-node node-ingredient" style="left:35%;top:8%">
+          <span class="node-icon"><i class="ph ph-carrot"></i></span>
+          <span class="node-label">Carrots</span>
+          <span class="node-detail">3 large, diced</span>
+        </div>
+        <div class="wb-node node-ingredient" style="left:35%;top:30%">
+          <span class="node-icon"><i class="ph ph-egg"></i></span>
+          <span class="node-label">Chicken Breast</span>
+          <span class="node-detail">2 lbs, cubed</span>
+        </div>
+        <div class="wb-node node-equipment" style="left:62%;top:5%">
+          <span class="node-icon"><i class="ph ph-cooking-pot"></i></span>
+          <span class="node-label">Dutch Oven</span>
+          <span class="node-detail">6-qt cast iron</span>
+        </div>
+        <div class="wb-node node-meal" style="left:60%;top:32%">
+          <span class="node-icon"><i class="ph ph-bowl-food"></i></span>
+          <span class="node-label">Wednesday Dinner</span>
+          <span class="node-detail">Beef Stew</span>
+        </div>
+        <div class="wb-node node-ingredient" style="left:10%;top:45%">
+          <span class="node-icon"><i class="ph ph-bread"></i></span>
+          <span class="node-label">Pie Crust</span>
+          <span class="node-detail">Homemade, chilled</span>
+        </div>
+        <div class="wb-node node-meal" style="left:38%;top:55%">
+          <span class="node-icon"><i class="ph ph-bowl-food"></i></span>
+          <span class="node-label">Friday Dinner</span>
+          <span class="node-detail">Lasagna Night</span>
+        </div>
+        <div class="wb-node node-ingredient" style="left:65%;top:55%">
+          <span class="node-icon"><i class="ph ph-leaf"></i></span>
+          <span class="node-label">Fresh Herbs</span>
+          <span class="node-detail">Thyme, rosemary, parsley</span>
+        </div>
+        <div class="wb-node node-equipment" style="left:12%;top:70%">
+          <span class="node-icon"><i class="ph ph-thermometer-simple"></i></span>
+          <span class="node-label">Meat Thermometer</span>
+          <span class="node-detail">Digital probe</span>
+        </div>
+        <!-- SVG connection lines -->
+        <svg class="wb-connections" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <line x1="22" y1="17" x2="35" y2="13" class="conn-line"/>
+          <line x1="22" y1="20" x2="35" y2="35" class="conn-line"/>
+          <line x1="22" y1="20" x2="10" y2="50" class="conn-line"/>
+          <line x1="47" y1="13" x2="62" y2="10" class="conn-line"/>
+          <line x1="47" y1="35" x2="60" y2="37" class="conn-line"/>
+          <line x1="72" y1="10" x2="72" y2="37" class="conn-line"/>
+          <line x1="60" y1="40" x2="65" y2="60" class="conn-line"/>
+          <line x1="50" y1="60" x2="65" y2="60" class="conn-line"/>
+          <line x1="38" y1="60" x2="24" y2="75" class="conn-line"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ============ SCHEMA PLANNER ============ -->
+    <section id="schema-planner" class="view">
+      <header class="view-header">
+        <h1>Cookbook Index</h1>
+        <p class="view-subtitle">Organize meal categories and recipe attributes</p>
+      </header>
+      <div class="schema-grid">
+        <div class="schema-entity shelf-anim">
+          <div class="entity-header">
+            <i class="ph ph-book-open-text"></i>
+            <h3>Recipes</h3>
+          </div>
+          <ul class="entity-fields">
+            <li><span class="field-key">PK</span> recipe_id <span class="field-type">INT</span></li>
+            <li><span class="field-fk">FK</span> category_id <span class="field-type">INT</span></li>
+            <li>title <span class="field-type">VARCHAR</span></li>
+            <li>description <span class="field-type">TEXT</span></li>
+            <li>prep_time_min <span class="field-type">INT</span></li>
+            <li>cook_time_min <span class="field-type">INT</span></li>
+            <li>servings <span class="field-type">INT</span></li>
+            <li>difficulty <span class="field-type">ENUM</span></li>
+          </ul>
+        </div>
+        <div class="schema-entity shelf-anim">
+          <div class="entity-header">
+            <i class="ph ph-list-bullets"></i>
+            <h3>Ingredients</h3>
+          </div>
+          <ul class="entity-fields">
+            <li><span class="field-key">PK</span> ingredient_id <span class="field-type">INT</span></li>
+            <li>name <span class="field-type">VARCHAR</span></li>
+            <li>category <span class="field-type">VARCHAR</span></li>
+            <li>unit <span class="field-type">VARCHAR</span></li>
+            <li>pantry_stock <span class="field-type">DECIMAL</span></li>
+            <li>allergen_flags <span class="field-type">JSON</span></li>
+          </ul>
+        </div>
+        <div class="schema-entity shelf-anim">
+          <div class="entity-header">
+            <i class="ph ph-tag"></i>
+            <h3>Categories</h3>
+          </div>
+          <ul class="entity-fields">
+            <li><span class="field-key">PK</span> category_id <span class="field-type">INT</span></li>
+            <li>name <span class="field-type">VARCHAR</span></li>
+            <li>description <span class="field-type">TEXT</span></li>
+            <li>display_order <span class="field-type">INT</span></li>
+            <li>icon <span class="field-type">VARCHAR</span></li>
+          </ul>
+        </div>
+        <div class="schema-entity shelf-anim">
+          <div class="entity-header">
+            <i class="ph ph-link"></i>
+            <h3>Recipe_Ingredients</h3>
+          </div>
+          <ul class="entity-fields">
+            <li><span class="field-fk">FK</span> recipe_id <span class="field-type">INT</span></li>
+            <li><span class="field-fk">FK</span> ingredient_id <span class="field-type">INT</span></li>
+            <li>quantity <span class="field-type">DECIMAL</span></li>
+            <li>unit <span class="field-type">VARCHAR</span></li>
+            <li>preparation <span class="field-type">VARCHAR</span></li>
+            <li>optional <span class="field-type">BOOL</span></li>
+          </ul>
+        </div>
+        <div class="schema-entity shelf-anim">
+          <div class="entity-header">
+            <i class="ph ph-users"></i>
+            <h3>Cooks</h3>
+          </div>
+          <ul class="entity-fields">
+            <li><span class="field-key">PK</span> cook_id <span class="field-type">INT</span></li>
+            <li>name <span class="field-type">VARCHAR</span></li>
+            <li>email <span class="field-type">VARCHAR</span></li>
+            <li>specialty <span class="field-type">VARCHAR</span></li>
+            <li>joined_date <span class="field-type">DATE</span></li>
+          </ul>
+        </div>
+        <div class="schema-entity shelf-anim">
+          <div class="entity-header">
+            <i class="ph ph-star"></i>
+            <h3>Ratings</h3>
+          </div>
+          <ul class="entity-fields">
+            <li><span class="field-key">PK</span> rating_id <span class="field-type">INT</span></li>
+            <li><span class="field-fk">FK</span> recipe_id <span class="field-type">INT</span></li>
+            <li><span class="field-fk">FK</span> cook_id <span class="field-type">INT</span></li>
+            <li>score <span class="field-type">INT</span></li>
+            <li>comment <span class="field-type">TEXT</span></li>
+            <li>rated_at <span class="field-type">TIMESTAMP</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DIRECTORY TREE ============ -->
+    <section id="directory-tree" class="view">
+      <header class="view-header">
+        <h1>Pantry Shelves</h1>
+        <p class="view-subtitle">Browse your organized recipe file hierarchy</p>
+      </header>
+      <div class="pantry-tree">
+        <div class="pantry-shelf shelf-anim">
+          <div class="shelf-header" data-expanded="true">
+            <i class="ph ph-caret-down shelf-caret"></i>
+            <i class="ph ph-folder-open shelf-icon"></i>
+            <span class="shelf-name">Baking</span>
+            <span class="shelf-count">4 items</span>
+          </div>
+          <ul class="shelf-items">
+            <li class="shelf-item">
+              <div class="item-header" data-expanded="true">
+                <i class="ph ph-caret-down shelf-caret"></i>
+                <i class="ph ph-folder-open shelf-icon"></i>
+                <span>Cookies</span>
+                <span class="shelf-count">3 items</span>
+              </div>
+              <ul class="shelf-items nested">
+                <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>sugar-cookies.recipe</span> <span class="file-size">2.4 KB</span></li>
+                <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>gingerbread.recipe</span> <span class="file-size">1.8 KB</span></li>
+                <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>snickerdoodles.recipe</span> <span class="file-size">1.2 KB</span></li>
+              </ul>
+            </li>
+            <li class="shelf-item">
+              <div class="item-header" data-expanded="false">
+                <i class="ph ph-caret-right shelf-caret"></i>
+                <i class="ph ph-folder shelf-icon"></i>
+                <span>Breads</span>
+                <span class="shelf-count">4 items</span>
+              </div>
+              <ul class="shelf-items nested collapsed">
+                <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>sourdough.recipe</span> <span class="file-size">3.1 KB</span></li>
+                <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>challah.recipe</span> <span class="file-size">2.6 KB</span></li>
+                <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>focaccia.recipe</span> <span class="file-size">2.0 KB</span></li>
+                <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>buttermilk-biscuits.recipe</span> <span class="file-size">1.5 KB</span></li>
+              </ul>
+            </li>
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>pie-crust-master.recipe</span> <span class="file-size">1.9 KB</span></li>
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>baking-tips.notes</span> <span class="file-size">4.2 KB</span></li>
+          </ul>
+        </div>
+        <div class="pantry-shelf shelf-anim">
+          <div class="shelf-header" data-expanded="true">
+            <i class="ph ph-caret-down shelf-caret"></i>
+            <i class="ph ph-folder-open shelf-icon"></i>
+            <span class="shelf-name">Dinner Mains</span>
+            <span class="shelf-count">3 items</span>
+          </div>
+          <ul class="shelf-items">
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>pot-roast-sunday.recipe</span> <span class="file-size">2.8 KB</span></li>
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>chicken-pot-pie.recipe</span> <span class="file-size">3.4 KB</span></li>
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>beef-stew-classic.recipe</span> <span class="file-size">2.1 KB</span></li>
+          </ul>
+        </div>
+        <div class="pantry-shelf shelf-anim">
+          <div class="shelf-header" data-expanded="false">
+            <i class="ph ph-caret-right shelf-caret"></i>
+            <i class="ph ph-folder shelf-icon"></i>
+            <span class="shelf-name">Preserves & Canning</span>
+            <span class="shelf-count">5 items</span>
+          </div>
+          <ul class="shelf-items collapsed">
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>strawberry-jam.recipe</span> <span class="file-size">1.6 KB</span></li>
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>dill-pickles.recipe</span> <span class="file-size">1.4 KB</span></li>
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>peach-compote.recipe</span> <span class="file-size">1.3 KB</span></li>
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>apple-butter.recipe</span> <span class="file-size">2.0 KB</span></li>
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>canning-safety.notes</span> <span class="file-size">5.1 KB</span></li>
+          </ul>
+        </div>
+        <div class="pantry-shelf shelf-anim">
+          <div class="shelf-header" data-expanded="false">
+            <i class="ph ph-caret-right shelf-caret"></i>
+            <i class="ph ph-folder shelf-icon"></i>
+            <span class="shelf-name">Sauces & Condiments</span>
+            <span class="shelf-count">4 items</span>
+          </div>
+          <ul class="shelf-items collapsed">
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>marinara-from-scratch.recipe</span> <span class="file-size">1.7 KB</span></li>
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>honey-mustard.recipe</span> <span class="file-size">0.8 KB</span></li>
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>gravy-pan-drippings.recipe</span> <span class="file-size">1.1 KB</span></li>
+            <li class="shelf-item leaf"><i class="ph ph-file-text"></i> <span>cranberry-sauce.recipe</span> <span class="file-size">1.0 KB</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ IDEAS ============ -->
+    <section id="ideas" class="view">
+      <header class="view-header">
+        <h1>Fridge Magnets</h1>
+        <p class="view-subtitle">Pin recipe ideas to the refrigerator door</p>
+      </header>
+      <div class="idea-input-area">
+        <input type="text" class="idea-input" placeholder="Write a new recipe idea on a magnet...">
+        <button class="idea-submit-btn"><i class="ph ph-push-pin"></i> Pin It</button>
+      </div>
+      <div class="fridge-door">
+        <div class="fridge-magnet magnet-green shelf-anim">
+          <div class="magnet-pin"><i class="ph ph-push-pin-simple"></i></div>
+          <h3>Homemade Pasta Night</h3>
+          <p>Try making fresh fettuccine with a simple egg dough. Pair with the from-scratch marinara and fresh basil from the garden.</p>
+          <div class="magnet-footer">
+            <span class="magnet-votes"><i class="ph ph-heart"></i> 12</span>
+            <span class="magnet-date">Feb 10</span>
+          </div>
+        </div>
+        <div class="fridge-magnet magnet-gold shelf-anim">
+          <div class="magnet-pin"><i class="ph ph-push-pin-simple"></i></div>
+          <h3>Cast Iron Pizza Party</h3>
+          <p>Deep dish pizza in the cast iron skillet. Let everyone pick their own toppings. Need to perfect the dough hydration first.</p>
+          <div class="magnet-footer">
+            <span class="magnet-votes"><i class="ph ph-heart"></i> 8</span>
+            <span class="magnet-date">Feb 8</span>
+          </div>
+        </div>
+        <div class="fridge-magnet magnet-cream shelf-anim">
+          <div class="magnet-pin"><i class="ph ph-push-pin-simple"></i></div>
+          <h3>Fermented Hot Sauce</h3>
+          <p>Use the end-of-summer peppers to ferment a batch of hot sauce. Habanero and garlic base, 2-week fermentation minimum.</p>
+          <div class="magnet-footer">
+            <span class="magnet-votes"><i class="ph ph-heart"></i> 15</span>
+            <span class="magnet-date">Feb 6</span>
+          </div>
+        </div>
+        <div class="fridge-magnet magnet-copper shelf-anim">
+          <div class="magnet-pin"><i class="ph ph-push-pin-simple"></i></div>
+          <h3>Thanksgiving Dry Run</h3>
+          <p>Practice the full Thanksgiving menu in October. Turkey, stuffing, mashed potatoes, gravy, cranberry sauce, and two pies.</p>
+          <div class="magnet-footer">
+            <span class="magnet-votes"><i class="ph ph-heart"></i> 21</span>
+            <span class="magnet-date">Feb 3</span>
+          </div>
+        </div>
+        <div class="fridge-magnet magnet-green shelf-anim">
+          <div class="magnet-pin"><i class="ph ph-push-pin-simple"></i></div>
+          <h3>Sourdough Discard Recipes</h3>
+          <p>Collect creative ways to use sourdough discard: pancakes, crackers, pizza dough, banana bread variation.</p>
+          <div class="magnet-footer">
+            <span class="magnet-votes"><i class="ph ph-heart"></i> 9</span>
+            <span class="magnet-date">Feb 1</span>
+          </div>
+        </div>
+        <div class="fridge-magnet magnet-gold shelf-anim">
+          <div class="magnet-pin"><i class="ph ph-push-pin-simple"></i></div>
+          <h3>Grandma's Lost Recipes</h3>
+          <p>Track down and recreate recipes from memory: her cinnamon rolls, chicken and dumplings, and the mysterious fruit cake.</p>
+          <div class="magnet-footer">
+            <span class="magnet-votes"><i class="ph ph-heart"></i> 18</span>
+            <span class="magnet-date">Jan 28</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AI CHAT ============ -->
+    <section id="ai-chat" class="view">
+      <header class="view-header">
+        <h1>Recipe Exchange</h1>
+        <p class="view-subtitle">Chat with your kitchen AI assistant</p>
+      </header>
+      <div class="chat-container">
+        <div class="chat-messages">
+          <div class="chat-msg msg-ai shelf-anim">
+            <div class="msg-avatar"><i class="ph ph-cooking-pot"></i></div>
+            <div class="msg-bubble bubble-ai">
+              <p>Welcome to the kitchen! I'm your recipe assistant. I can help you with substitutions, cooking times, meal planning, and technique tips. What are we cooking today?</p>
+            </div>
+          </div>
+          <div class="chat-msg msg-user shelf-anim">
+            <div class="msg-bubble bubble-user">
+              <p>I want to make a pie crust but I'm out of butter. What can I substitute?</p>
+            </div>
+          </div>
+          <div class="chat-msg msg-ai shelf-anim">
+            <div class="msg-avatar"><i class="ph ph-cooking-pot"></i></div>
+            <div class="msg-bubble bubble-ai">
+              <p>Great question! Here are your best butter substitutes for pie crust:</p>
+              <ul>
+                <li><strong>Shortening</strong> (1:1 ratio) - Gives the flakiest crust, but less flavor. Use chilled.</li>
+                <li><strong>Lard</strong> (1:1 ratio) - Traditional choice, incredibly flaky. Best for savory pies.</li>
+                <li><strong>Coconut oil</strong> (use 3/4 the amount) - Freeze solid first, then grate into flour. Slightly sweet.</li>
+              </ul>
+              <p>For best results with any substitute, keep everything ice-cold and handle the dough as little as possible!</p>
+            </div>
+          </div>
+          <div class="chat-msg msg-user shelf-anim">
+            <div class="msg-bubble bubble-user">
+              <p>I have shortening. How do I make the crust extra flaky?</p>
+            </div>
+          </div>
+          <div class="chat-msg msg-ai shelf-anim">
+            <div class="msg-avatar"><i class="ph ph-cooking-pot"></i></div>
+            <div class="msg-bubble bubble-ai">
+              <p>Here's the secret to ultra-flaky shortening pie crust:</p>
+              <ol>
+                <li><strong>Freeze the shortening</strong> for 15 minutes before cutting it in</li>
+                <li><strong>Leave pea-sized chunks</strong> - don't over-mix. Those chunks melt in the oven and create steam pockets = flaky layers</li>
+                <li><strong>Use ice water with a splash of vinegar</strong> (1 tsp) - the acid inhibits gluten formation</li>
+                <li><strong>Fold the dough like a letter</strong> 3 times before rolling - creates laminated layers</li>
+              </ol>
+              <p>Chill the formed crust 30 minutes before baking. This relaxes the gluten and re-firms the fat!</p>
+            </div>
+          </div>
+          <div class="chat-msg msg-user shelf-anim">
+            <div class="msg-bubble bubble-user">
+              <p>Perfect! Can you save this to my Baking folder?</p>
+            </div>
+          </div>
+          <div class="chat-msg msg-ai shelf-anim">
+            <div class="msg-avatar"><i class="ph ph-cooking-pot"></i></div>
+            <div class="msg-bubble bubble-ai">
+              <p>Done! I've saved "Shortening Pie Crust Tips" to your <strong>Baking &gt; Techniques</strong> folder. You can find it in the Pantry Shelves view. Happy baking!</p>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" class="chat-input" placeholder="Ask your kitchen assistant...">
+          <button class="chat-send-btn"><i class="ph ph-paper-plane-tilt"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SETTINGS ============ -->
+    <section id="settings" class="view">
+      <header class="view-header">
+        <h1>Appliance Panel</h1>
+        <p class="view-subtitle">Configure your kitchen workspace</p>
+      </header>
+      <div class="settings-panels">
+        <div class="settings-group shelf-anim">
+          <h3><i class="ph ph-user"></i> Chef Profile</h3>
+          <div class="setting-row">
+            <label>Display Name</label>
+            <input type="text" class="setting-input" value="Margaret's Kitchen">
+          </div>
+          <div class="setting-row">
+            <label>Kitchen Motto</label>
+            <input type="text" class="setting-input" value="Good food, made with love">
+          </div>
+          <div class="setting-row">
+            <label>Measurement System</label>
+            <div class="setting-toggle-group">
+              <button class="toggle-opt active">Imperial</button>
+              <button class="toggle-opt">Metric</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-group shelf-anim">
+          <h3><i class="ph ph-oven"></i> Oven Settings</h3>
+          <div class="setting-row">
+            <label>Default Temperature Unit</label>
+            <div class="setting-toggle-group">
+              <button class="toggle-opt active">&deg;F</button>
+              <button class="toggle-opt">&deg;C</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <label>Preheat Reminders</label>
+            <label class="appliance-switch">
+              <input type="checkbox" checked>
+              <span class="switch-track">
+                <span class="switch-knob"></span>
+              </span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <label>Timer Sound</label>
+            <select class="setting-select">
+              <option>Classic Ding</option>
+              <option>Kitchen Bell</option>
+              <option>Gentle Chime</option>
+              <option>Silent (Visual Only)</option>
+            </select>
+          </div>
+          <div class="setting-row">
+            <label>Auto-Save Interval</label>
+            <div class="dial-control">
+              <div class="dial-knob" data-value="5">
+                <div class="dial-pointer"></div>
+              </div>
+              <span class="dial-value">5 min</span>
+            </div>
+          </div>
+        </div>
+        <div class="settings-group shelf-anim">
+          <h3><i class="ph ph-bell-simple"></i> Notifications</h3>
+          <div class="setting-row">
+            <label>Recipe Timer Alerts</label>
+            <label class="appliance-switch">
+              <input type="checkbox" checked>
+              <span class="switch-track">
+                <span class="switch-knob"></span>
+              </span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <label>Shopping List Reminders</label>
+            <label class="appliance-switch">
+              <input type="checkbox">
+              <span class="switch-track">
+                <span class="switch-knob"></span>
+              </span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <label>Weekly Meal Plan Summary</label>
+            <label class="appliance-switch">
+              <input type="checkbox" checked>
+              <span class="switch-track">
+                <span class="switch-knob"></span>
+              </span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <label>Community Recipe Shares</label>
+            <label class="appliance-switch">
+              <input type="checkbox">
+              <span class="switch-track">
+                <span class="switch-knob"></span>
+              </span>
+            </label>
+          </div>
+        </div>
+        <div class="settings-group shelf-anim">
+          <h3><i class="ph ph-palette"></i> Kitchen Theme</h3>
+          <div class="setting-row">
+            <label>Color Scheme</label>
+            <div class="color-swatches">
+              <button class="swatch active" style="background:#6b8a3e" title="Avocado Green"></button>
+              <button class="swatch" style="background:#c4962a" title="Harvest Gold"></button>
+              <button class="swatch" style="background:#a07040" title="Copper"></button>
+              <button class="swatch" style="background:#cc6666" title="Retro Pink"></button>
+              <button class="swatch" style="background:#6699aa" title="Powder Blue"></button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <label>Ambient Kitchen Glow</label>
+            <label class="appliance-switch">
+              <input type="checkbox" checked>
+              <span class="switch-track">
+                <span class="switch-knob"></span>
+              </span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <label>Recipe Card Style</label>
+            <select class="setting-select">
+              <option>Classic Index Card</option>
+              <option>Vintage Postcard</option>
+              <option>Modern Minimal</option>
+              <option>Handwritten Note</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Tooltip container -->
+  <div class="tooltip-note" id="tooltipNote" aria-hidden="true">
+    <div class="tooltip-pin"><i class="ph ph-push-pin-simple"></i></div>
+    <span class="tooltip-text"></span>
+  </div>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loadingOverlay" aria-hidden="true">
+    <div class="oven-timer-loading">
+      <svg viewBox="0 0 100 100" class="timer-svg">
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#d4c8a8" stroke-width="4"/>
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#6b8a3e" stroke-width="4" class="timer-progress" stroke-dasharray="264" stroke-dashoffset="264"/>
+        <!-- tick marks -->
+        <line x1="50" y1="12" x2="50" y2="18" stroke="#2a2420" stroke-width="2"/>
+        <line x1="50" y1="82" x2="50" y2="88" stroke="#2a2420" stroke-width="2"/>
+        <line x1="12" y1="50" x2="18" y2="50" stroke="#2a2420" stroke-width="2"/>
+        <line x1="82" y1="50" x2="88" y2="50" stroke="#2a2420" stroke-width="2"/>
+      </svg>
+      <span class="timer-label">Preheating...</span>
+    </div>
+  </div>
+
+  <!-- Micro feedback (ding!) -->
+  <div class="ding-feedback" id="dingFeedback" aria-hidden="true">
+    <i class="ph ph-timer"></i>
+    <span>DING!</span>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

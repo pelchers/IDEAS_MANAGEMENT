@@ -1,0 +1,196 @@
+{
+  "passId": "slate-pass-5",
+  "styleId": "slate",
+  "pass": 5,
+  "variantSeed": "marble-luxury-banking",
+  "generatedAt": "2026-02-15T00:00:00.000Z",
+  "shellMode": "floating-pill-nav",
+  "navPattern": "pill-toggle-group",
+  "contentFlow": "stacked-card-carousel",
+  "scrollMode": "swipe-horizontal",
+  "alignment": "center",
+  "heroTreatment": "featured-card-hero",
+  "motionLanguage": "card-flip-slide",
+  "density": "spacious",
+  "componentTone": "soft",
+  "palette": {
+    "bg": "#f2ece6",
+    "text": "#1a2a1a",
+    "surface": "#faf7f2",
+    "accent": "#1a4a2a",
+    "accent2": "#b8963a",
+    "border": "#d4cdc0"
+  },
+  "typography": {
+    "heading": "Cinzel",
+    "body": "Libre Baskerville",
+    "mono": "IBM Plex Mono"
+  },
+  "contentPersona": "private-banking-finance",
+  "views": [
+    {
+      "id": "dashboard",
+      "label": "Portfolio Overview",
+      "contentElements": [
+        "hero-card-with-nav-stats",
+        "horizontal-metric-carousel",
+        "transaction-activity-feed"
+      ],
+      "interactiveElements": ["carousel-swipe", "scroll-reveal"],
+      "contentCount": 14
+    },
+    {
+      "id": "projects",
+      "label": "Portfolio Ledger",
+      "contentElements": [
+        "search-field",
+        "ledger-header-row",
+        "six-fund-entries",
+        "footer-totals"
+      ],
+      "interactiveElements": ["search-input", "row-hover", "new-entry-button"],
+      "contentCount": 10
+    },
+    {
+      "id": "project-workspace",
+      "label": "Partner's Office",
+      "contentElements": [
+        "fund-overview-stats",
+        "investment-thesis",
+        "top-holdings-grid",
+        "documents-drawer",
+        "team-drawer",
+        "upcoming-drawer"
+      ],
+      "interactiveElements": ["drawer-items-hover"],
+      "contentCount": 22
+    },
+    {
+      "id": "kanban",
+      "label": "Safe Deposit Vault",
+      "contentElements": [
+        "four-vault-columns",
+        "nine-deposit-boxes",
+        "brass-latches"
+      ],
+      "interactiveElements": ["box-hover-latch", "column-headers"],
+      "contentCount": 13
+    },
+    {
+      "id": "whiteboard",
+      "label": "Boardroom Canvas",
+      "contentElements": [
+        "seven-strategy-nodes",
+        "brass-rail-connectors",
+        "junction-ornaments"
+      ],
+      "interactiveElements": ["node-hover-scale", "canvas-scroll"],
+      "contentCount": 10
+    },
+    {
+      "id": "schema-planner",
+      "label": "Notarized Schema",
+      "contentElements": [
+        "four-certificate-sections",
+        "gold-seal-marks",
+        "field-value-pairs"
+      ],
+      "interactiveElements": ["card-hover-shimmer"],
+      "contentCount": 20
+    },
+    {
+      "id": "directory-tree",
+      "label": "Card Catalog",
+      "contentElements": [
+        "five-category-drawers",
+        "fifteen-catalog-cards",
+        "brass-handles"
+      ],
+      "interactiveElements": ["drawer-toggle", "card-hover"],
+      "contentCount": 20
+    },
+    {
+      "id": "ideas",
+      "label": "Gallery Exhibition",
+      "contentElements": [
+        "four-gallery-frames",
+        "brass-borders",
+        "curator-descriptions",
+        "idea-tags"
+      ],
+      "interactiveElements": ["frame-hover-glow", "tag-filtering"],
+      "contentCount": 16
+    },
+    {
+      "id": "ai-chat",
+      "label": "Private Correspondence",
+      "contentElements": [
+        "six-letter-exchanges",
+        "embossed-letterheads",
+        "wax-seal-terminators",
+        "correspondence-input"
+      ],
+      "interactiveElements": ["send-message", "enter-key-send", "auto-reply"],
+      "contentCount": 12
+    },
+    {
+      "id": "settings",
+      "label": "Vault Controls",
+      "contentElements": [
+        "three-settings-groups",
+        "brass-toggle-switches",
+        "select-dropdowns",
+        "text-inputs"
+      ],
+      "interactiveElements": ["toggle-with-seal-feedback", "ambient-toggle", "select-focus"],
+      "contentCount": 14
+    }
+  ],
+  "interactions": {
+    "buttonHover": "gold-foil-edge-reveal",
+    "buttonClick": "vault-door-press",
+    "cardHover": "marble-vein-shimmer",
+    "pageTransition": "vault-door-swing",
+    "scrollReveal": "marble-slab-slide-in",
+    "navItemHover": "brass-plate-engrave",
+    "navItemActive": "gold-bar-indicator",
+    "inputFocus": "brass-frame-border",
+    "toggleSwitch": "brass-lever-heavy-toggle",
+    "tooltips": "engraved-plaque-tooltip",
+    "loadingState": "weighing-scale-balance",
+    "idleAmbient": "marble-light-drift",
+    "microFeedback": "gold-seal-emboss-confirm"
+  },
+  "libraries": [
+    {
+      "name": "Anime.js",
+      "version": "3.2.2",
+      "cdn": "https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js",
+      "usage": "Staggered card reveals, toggle switch physics, node hover scaling, gallery frame glow"
+    }
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ],
+  "contrastCompliance": {
+    "bodyText": "4.5:1 minimum — #1a2a1a on #faf7f2 = 14.2:1",
+    "headings": "3:1 minimum — #1a4a2a on #faf7f2 = 8.1:1",
+    "subtitleText": "#5a6a5a on #faf7f2 = 5.2:1",
+    "goldAccent": "#b8963a on #faf7f2 = 3.4:1 (decorative/large text only)"
+  },
+  "responsiveBreakpoints": [
+    {
+      "width": "768px",
+      "changes": "Nav collapses to hamburger, grids stack to single column, sidebar below main"
+    },
+    {
+      "width": "480px",
+      "changes": "Brand name smaller, pill labels hidden, title text reduced"
+    }
+  ]
+}

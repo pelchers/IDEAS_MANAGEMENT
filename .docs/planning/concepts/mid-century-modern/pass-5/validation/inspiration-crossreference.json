@@ -1,0 +1,54 @@
+{
+  "passId": "mid-century-modern-pass-5",
+  "styleId": "mid-century-modern",
+  "pass": 5,
+  "layoutArchetype": "danish-hygge-warmth",
+  "inspirationReferences": [
+    {
+      "name": "HAY",
+      "url": "https://www.hay.com",
+      "takeaway": "Present content items as curated objects in a spacious masonry grid with generous white surroundings, and pair each item with a lifestyle context image that shows it in a warm, lived-in Scandinavian interior.",
+      "elementsAdapted": [
+        "Spacious centered single-panel layout with generous padding around content cards — every piece card, idea card, and stat card sits in ample whitespace like objects on a HAY product page",
+        "The project workspace pieces grid presents each design piece as a curated object with a gradient thumbnail and descriptive text below, mirroring HAY's product-as-sculpture approach",
+        "Idea cards arranged in a 3-column grid with generous gaps, each card given room to breathe like products in a showroom"
+      ],
+      "differentiators": [
+        "Uses warm blush/wood tones instead of HAY's cooler blue-grey accents",
+        "Adds knit-texture patterns to backgrounds — HAY uses pure flat white",
+        "Navigation is a floating bottom dock rather than HAY's horizontal top menu"
+      ]
+    },
+    {
+      "name": "Muuto",
+      "url": "https://www.muuto.com",
+      "takeaway": "Let the content objects themselves provide all color in the interface—keep the UI shell pure white and warm grey, so every splash of color comes from the featured items, making them feel like curated gallery pieces.",
+      "elementsAdapted": [
+        "The bookshelf view uses colored book spines as the primary color source against a neutral shelf background — the UI shell (warm cream) stays restrained while project spines provide all the visual color",
+        "Schema planner entity cards have subtle warm gradient headers but rely on the accent-colored PK/FK indicators and icons for visual interest, keeping the field lists neutral",
+        "Kanban cards use colored tag strips as their main color differentiator against neutral cream card backgrounds"
+      ],
+      "differentiators": [
+        "The shell is warm off-white (#faf5f0) with linen texture rather than Muuto's pure clinical white",
+        "Uses a candlelight ambient glow overlay that Muuto does not have",
+        "Poetic copy style is original — the 'Studio Companion' AI chat uses a warm literary voice unique to this concept"
+      ]
+    },
+    {
+      "name": "Normann Copenhagen",
+      "url": "https://www.normann-copenhagen.com",
+      "takeaway": "Set the entire page on a warm off-white background (#F8F6F3) that reads as natural linen, and use an alternating tall/wide image mosaic for the content grid to create the unhurried browsing rhythm of a Scandinavian design showroom.",
+      "elementsAdapted": [
+        "The entire app sits on a warm off-white background (#faf5f0) with a subtle knit-texture SVG pattern overlay, evoking unbleached Danish linen just as Normann uses #F8F6F3",
+        "The dashboard gradient hero card spans the full width like Normann's seasonal hero banners, using a soft desaturated blush-to-wood gradient with overlaid serif headlines",
+        "The bookshelf display creates an unhurried browsing rhythm with varying spine heights — tall and short spines alternate like Normann's editorial mosaic grid"
+      ],
+      "differentiators": [
+        "Uses a floating bottom dock navigation instead of Normann's fixed top nav with dropdown menus",
+        "Adds interactive candlelight shadow dance animations on card hover — Normann uses static layouts",
+        "The entire concept is an app (10 navigable views) rather than an e-commerce product catalog"
+      ]
+    }
+  ],
+  "overallInspirationSummary": "This pass synthesizes the spatial generosity and warm-neutral backgrounds of all three Scandinavian references (HAY, Muuto, Normann Copenhagen) into a cohesive idea management app. The warm off-white page tone (#faf5f0) comes directly from the Normann Copenhagen approach. The content-as-curated-object philosophy from HAY and Muuto informs how cards, spines, and nodes are presented with ample breathing room. The unique additions are the candlelight ambient glow system, knit-texture SVG patterns, floating bottom dock navigation, and the intimate letter-writing AI chat format — none of which exist in the reference sites."
+}

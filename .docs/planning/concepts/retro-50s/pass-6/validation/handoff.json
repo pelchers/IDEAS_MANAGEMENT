@@ -1,0 +1,217 @@
+{
+  "concept": "retro-50s",
+  "pass": 6,
+  "variantSeed": "kitchen-appliance-pastel",
+  "generatedAt": "2026-02-15",
+  "palette": {
+    "bg": "#faf5e8",
+    "text": "#2a2420",
+    "surface": "#fff8ee",
+    "accent": "#6b8a3e",
+    "accent2": "#c4962a",
+    "border": "#d4c8a8",
+    "copper": "#b87333"
+  },
+  "typography": {
+    "heading": "Pacifico",
+    "body": "Atkinson Hyperlegible",
+    "mono": "Courier Prime"
+  },
+  "contentPersona": "home-recipe-cooking-app",
+  "uniquenessProfile": {
+    "profileId": "vertical-timeline",
+    "shellMode": "right-rail-nav",
+    "navPattern": "vertical-dots-timeline",
+    "contentFlow": "timeline-alternating",
+    "scrollMode": "scroll-snap-vertical",
+    "alignment": "center",
+    "heroTreatment": "timeline-hero-node",
+    "motionLanguage": "slide-up-cascade",
+    "density": "balanced",
+    "componentTone": "soft"
+  },
+  "interactionProfile": {
+    "buttonHover": "appliance-button-glow",
+    "buttonClick": "oven-knob-click-press",
+    "cardHover": "recipe-card-thumb-lift",
+    "pageTransition": "recipe-box-flip",
+    "scrollReveal": "shelf-slide-in",
+    "navItemHover": "magnet-wiggle-hover",
+    "navItemActive": "fridge-magnet-stuck",
+    "inputFocus": "copper-ring-focus",
+    "toggleSwitch": "appliance-dial-turn",
+    "tooltips": "recipe-note-tooltip",
+    "loadingState": "oven-timer-countdown",
+    "idleAmbient": "warm-kitchen-glow",
+    "microFeedback": "ding-timer-done"
+  },
+  "views": [
+    {
+      "id": "dashboard",
+      "navLabel": "Kitchen Counter",
+      "metaphor": "Kitchen counter dashboard with appliance-style stat displays",
+      "uniqueElements": [
+        "SVG oven temperature gauge with animated fill arc",
+        "Mixer speed dial with rotating indicator",
+        "Measuring cup fill-level visualization",
+        "Spinning oven timer stat card",
+        "Kitchen activity feed with icon-tagged entries"
+      ]
+    },
+    {
+      "id": "projects",
+      "navLabel": "Recipe Box",
+      "metaphor": "Metal recipe box with tabbed divider cards",
+      "uniqueElements": [
+        "Category tab buttons (All, Baking, Dinner, Seasonal)",
+        "Recipe cards with colored filing tabs",
+        "Progress bars with gradient fills",
+        "Category badge labels with themed colors",
+        "Recipe count meta indicators"
+      ]
+    },
+    {
+      "id": "project-workspace",
+      "navLabel": "Cutting Board",
+      "metaphor": "Kitchen counter with cutting board main area and spice rack sidebar",
+      "uniqueElements": [
+        "Spice rack sidebar with labeled shelf items",
+        "Cutting board main with woodgrain texture CSS pattern",
+        "Recipe checklist with prep time annotations",
+        "Kitchen notes with copper left-border accent",
+        "Spice tags with colored dot indicators"
+      ]
+    },
+    {
+      "id": "kanban",
+      "navLabel": "Cooking Steps",
+      "metaphor": "Recipe cooking stages from prep to plate",
+      "uniqueElements": [
+        "Four cooking stage columns (Mise en Place, Prep, Cook, Plate)",
+        "Stage-colored column headers with cooking icons",
+        "Recipe step cards with ingredient checkboxes",
+        "Timer annotations on each card",
+        "Recipe name tags per card"
+      ]
+    },
+    {
+      "id": "whiteboard",
+      "navLabel": "Meal Planner",
+      "metaphor": "Kitchen planning board with checkered tablecloth background",
+      "uniqueElements": [
+        "Checkered tablecloth conic-gradient pattern",
+        "Draggable meal/ingredient/equipment nodes",
+        "Color-coded node borders (green meals, gold ingredients, copper equipment)",
+        "SVG dashed connection lines",
+        "Kitchen tool toolbar"
+      ]
+    },
+    {
+      "id": "schema-planner",
+      "navLabel": "Cookbook Index",
+      "metaphor": "Cookbook database with copper-foil entity headers",
+      "uniqueElements": [
+        "Entity cards with copper gradient headers",
+        "PK/FK badge indicators (green/gold)",
+        "Monospace field listings with type annotations",
+        "Dotted-border field separators",
+        "Kitchen-themed entity names (Recipes, Ingredients, Categories, Cooks, Ratings)"
+      ]
+    },
+    {
+      "id": "directory-tree",
+      "navLabel": "Pantry Shelves",
+      "metaphor": "Organized pantry shelves with collapsible sections",
+      "uniqueElements": [
+        "Collapsible folder/shelf hierarchy with animated carets",
+        "File type icons with copper coloring",
+        "File size annotations in monospace",
+        "Folder open/close icon state changes",
+        "Nested indentation for sub-shelves"
+      ]
+    },
+    {
+      "id": "ideas",
+      "navLabel": "Fridge Magnets",
+      "metaphor": "Refrigerator door with colorful magnets",
+      "uniqueElements": [
+        "Fridge door surface with gradient border",
+        "Color-variant magnets (green, gold, cream, copper)",
+        "Copper push-pin accent on each magnet",
+        "Heart vote counts on magnets",
+        "Pin It submit button with confetti feedback"
+      ]
+    },
+    {
+      "id": "ai-chat",
+      "navLabel": "Recipe Exchange",
+      "metaphor": "Handwritten recipe cards passed back and forth",
+      "uniqueElements": [
+        "AI messages on avocado green tinted cards",
+        "User messages on harvest gold tinted cards",
+        "Cooking pot avatar for AI",
+        "Recipe-style formatting with lists and bold tips",
+        "Working chat input with simulated AI response"
+      ]
+    },
+    {
+      "id": "settings",
+      "navLabel": "Appliance Panel",
+      "metaphor": "Vintage appliance control panel",
+      "uniqueElements": [
+        "Rotatable dial knob with pointer indicator",
+        "Appliance toggle switches with knob notch detail",
+        "Color swatch selector strip (SMEG/KitchenAid inspired)",
+        "Grouped control panel sections with copper icon headers",
+        "Toggle button groups for unit selection"
+      ]
+    }
+  ],
+  "globalElements": {
+    "navigation": "Fixed right-rail with vertical dots timeline and connecting line",
+    "ambientGlow": "CSS radial-gradient warm golden pulse (idle ambient)",
+    "tooltips": "Cream paper note popups with copper push-pin icon",
+    "loading": "SVG oven timer countdown with tick marks",
+    "microFeedback": "DING! toast notification with copper accent",
+    "pageTransitions": "perspective rotateY recipe-card flip entrance",
+    "scrollReveal": "translateX shelf-slide-in with staggered timing",
+    "copperAccents": "Copper (#b87333) used for focus rings, pins, entity headers, file icons"
+  },
+  "librariesUsed": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "purpose": "Dashboard stat entrance animations and gauge arc fill"
+    },
+    {
+      "name": "ScrollTrigger",
+      "version": "3.12.5",
+      "purpose": "GSAP plugin for scroll-driven animation registration"
+    },
+    {
+      "name": "Canvas Confetti",
+      "version": "1.9.3",
+      "purpose": "Celebration burst on task completion and idea pinning"
+    },
+    {
+      "name": "Phosphor Icons",
+      "version": "2.1.1",
+      "purpose": "Icon system for navigation, content, and decorative elements"
+    }
+  ],
+  "antiRepeatCompliance": [
+    "Uses avocado green + harvest gold + copper on cream (NOT pink+mint neon from Pass 1)",
+    "Uses right-rail vertical dots timeline nav (NOT bottom bar from Pass 1, top bar from Pass 2, floating dock from Pass 4)",
+    "Uses kitchen appliance pastels (NOT chrome diner from Pass 1, googie space-age from Pass 2, cinema marquee from Pass 3, soda fountain from Pass 4)",
+    "Uses recipe-box flip page transition (NOT horizontal slide, view-swoop, film-reel, or receipt-roll from prior passes)",
+    "Uses recipe exchange chat with avocado/gold cards (NOT comic speech bubbles, space radio, or napkin notes from prior passes)"
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

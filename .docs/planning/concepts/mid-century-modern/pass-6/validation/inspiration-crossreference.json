@@ -1,0 +1,63 @@
+{
+  "passId": "mid-century-modern-pass-6",
+  "layoutArchetype": "pop-art-warhol",
+  "references": [
+    {
+      "name": "The Andy Warhol Museum",
+      "url": "https://www.warhol.org",
+      "takeaway": "Use a strict 4-step type scale on a neutral black-and-white scaffold, and let full-bleed artwork or hero imagery provide all the color",
+      "applied": [
+        {
+          "element": "Global type scale",
+          "implementation": "Four-step Bebas Neue type scale: stat numbers (3.2rem), view titles (2.6rem), panel titles (1.2rem), labels (0.85rem). The interface scaffold is entirely black/white/grey, with color coming from content panels and accent fills."
+        },
+        {
+          "element": "Stat panels on dashboard",
+          "implementation": "Stat panels use bold halftone-patterned colored backgrounds (pink, cyan, green, yellow) while the surrounding layout stays monochrome white with black borders - content provides the chromatic energy."
+        },
+        {
+          "element": "Magazine cover hero areas",
+          "implementation": "Project cover cards have full-bleed colored hero sections (140px tall) that act as the visual focal point, while the card info area below remains on white."
+        }
+      ]
+    },
+    {
+      "name": "Roy Lichtenstein Foundation",
+      "url": "https://lichtensteinfoundation.org",
+      "takeaway": "Apply a visible halftone dot-pattern texture to background fills and image overlays, and restrict the palette to flat primary colors with heavy black outlines on all container edges",
+      "applied": [
+        {
+          "element": "Halftone dot textures throughout",
+          "implementation": "Radial-gradient halftone patterns applied to: ambient background (18px grid), stat panel overlays (10px grid), cover image overlays (8px grid), button hover states (6px grid), and whiteboard node fills (10px grid). All via CSS radial-gradient."
+        },
+        {
+          "element": "Heavy black outlines on all containers",
+          "implementation": "Every card, panel, column, frame, and interactive element has 3-4px solid black (#0a0a0a) borders. No rounded corners (radius-hard: 0px) to maintain the hard comic-book print aesthetic."
+        },
+        {
+          "element": "Flat primary color fills",
+          "implementation": "Four flat colors (pink, cyan, green, yellow) used as solid fills for column headers, entity headers, section headers, avatar backgrounds, and tag badges - never gradients, always solid flat blocks."
+        }
+      ]
+    },
+    {
+      "name": "MoMA Design Store",
+      "url": "https://store.moma.org",
+      "takeaway": "Build a strict uniform-square product grid on pure white where every card is the same size and proportion, then use a single high-chroma accent for interactive badges and price callouts",
+      "applied": [
+        {
+          "element": "Project cover grid uniformity",
+          "implementation": "Projects view uses a strict 3-column grid where every magazine cover card has identical dimensions, uniform 140px hero image height, and consistent padding. The grid sits on pure white with identical proportions."
+        },
+        {
+          "element": "High-chroma accent for badges",
+          "implementation": "Interactive elements (tags, status badges, action buttons, activity badges) use high-chroma electric pink (#ff1493) as the primary interactive accent. Secondary actions use cyan. The accent colors are reserved exclusively for interactive and status-indicator elements."
+        },
+        {
+          "element": "Kanban card uniformity",
+          "implementation": "Kanban cards all share identical structure: halftone color strip (6px), title, description, footer with tag and avatar. Uniform padding and border treatment creates gallery-wall consistency."
+        }
+      ]
+    }
+  ]
+}

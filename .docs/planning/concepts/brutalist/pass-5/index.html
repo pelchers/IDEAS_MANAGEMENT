@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RISE UP // Idea Management — Activist HQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- LOADING OVERLAY -->
+  <div id="loading-overlay" class="loading-overlay" aria-hidden="true">
+    <div class="megaphone-loader">
+      <svg class="megaphone-icon" viewBox="0 0 64 64" width="64" height="64">
+        <path d="M12 28 L12 40 L20 40 L36 52 L36 16 L20 28 Z" fill="#ff0066" stroke="#f5f0e0" stroke-width="2"/>
+        <line x1="40" y1="26" x2="52" y2="22" stroke="#e6ff00" stroke-width="3"/>
+        <line x1="40" y1="34" x2="54" y2="34" stroke="#e6ff00" stroke-width="3"/>
+        <line x1="40" y1="40" x2="52" y2="44" stroke="#e6ff00" stroke-width="3"/>
+      </svg>
+      <div class="sound-waves">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MICRO FEEDBACK TOAST -->
+  <div id="micro-feedback" class="micro-feedback" aria-live="polite">
+    <svg viewBox="0 0 32 32" width="24" height="24">
+      <path d="M6 14 L6 20 L10 20 L18 26 L18 8 L10 14 Z" fill="#ff0066"/>
+      <line x1="20" y1="12" x2="26" y2="10" stroke="#e6ff00" stroke-width="2"/>
+      <line x1="20" y1="16" x2="27" y2="16" stroke="#e6ff00" stroke-width="2"/>
+      <line x1="20" y1="20" x2="26" y2="22" stroke="#e6ff00" stroke-width="2"/>
+    </svg>
+    <span class="feedback-text">HEARD!</span>
+  </div>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-brand">
+      <svg class="fist-icon" viewBox="0 0 32 32" width="28" height="28">
+        <path d="M10 28 L10 16 L8 14 L8 10 L12 8 L14 10 L14 6 L18 4 L20 8 L20 4 L24 6 L24 12 L26 10 L28 12 L26 18 L22 28 Z" fill="#ff0066" stroke="#f5f0e0" stroke-width="1.5"/>
+      </svg>
+      <span class="brand-name">RISE UP</span>
+    </div>
+    <nav class="topbar-nav" role="navigation" aria-label="Main navigation">
+      <button class="nav-btn active" data-view="dashboard" title="Dashboard" aria-label="Dashboard">
+        <i class="ph-bold ph-megaphone"></i>
+      </button>
+      <button class="nav-btn" data-view="projects" title="Campaigns" aria-label="Campaigns">
+        <i class="ph-bold ph-flag-banner"></i>
+      </button>
+      <button class="nav-btn" data-view="project-workspace" title="Workspace" aria-label="Workspace">
+        <i class="ph-bold ph-newspaper-clipping"></i>
+      </button>
+      <button class="nav-btn" data-view="kanban" title="Action Board" aria-label="Action Board">
+        <i class="ph-bold ph-kanban"></i>
+      </button>
+      <button class="nav-btn" data-view="whiteboard" title="Sign Workshop" aria-label="Sign Workshop">
+        <i class="ph-bold ph-pencil-line"></i>
+      </button>
+      <button class="nav-btn" data-view="schema-planner" title="Conspiracy Board" aria-label="Conspiracy Board">
+        <i class="ph-bold ph-graph"></i>
+      </button>
+      <button class="nav-btn" data-view="directory-tree" title="File Stack" aria-label="File Stack">
+        <i class="ph-bold ph-folder-open"></i>
+      </button>
+      <button class="nav-btn" data-view="ideas" title="Ideas" aria-label="Ideas">
+        <i class="ph-bold ph-lightbulb-filament"></i>
+      </button>
+      <button class="nav-btn" data-view="ai-chat" title="Comms" aria-label="Comms">
+        <i class="ph-bold ph-chat-teardrop-dots"></i>
+      </button>
+      <button class="nav-btn" data-view="settings" title="Settings" aria-label="Settings">
+        <i class="ph-bold ph-gear"></i>
+      </button>
+    </nav>
+    <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- MOBILE NAV DRAWER -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+  <nav class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Mobile navigation">
+    <button class="mobile-nav-item active" data-view="dashboard">
+      <i class="ph-bold ph-megaphone"></i><span>RALLY</span>
+    </button>
+    <button class="mobile-nav-item" data-view="projects">
+      <i class="ph-bold ph-flag-banner"></i><span>CAMPAIGNS</span>
+    </button>
+    <button class="mobile-nav-item" data-view="project-workspace">
+      <i class="ph-bold ph-newspaper-clipping"></i><span>WORKSPACE</span>
+    </button>
+    <button class="mobile-nav-item" data-view="kanban">
+      <i class="ph-bold ph-kanban"></i><span>ACTIONS</span>
+    </button>
+    <button class="mobile-nav-item" data-view="whiteboard">
+      <i class="ph-bold ph-pencil-line"></i><span>SIGNS</span>
+    </button>
+    <button class="mobile-nav-item" data-view="schema-planner">
+      <i class="ph-bold ph-graph"></i><span>BOARD</span>
+    </button>
+    <button class="mobile-nav-item" data-view="directory-tree">
+      <i class="ph-bold ph-folder-open"></i><span>FILES</span>
+    </button>
+    <button class="mobile-nav-item" data-view="ideas">
+      <i class="ph-bold ph-lightbulb-filament"></i><span>IDEAS</span>
+    </button>
+    <button class="mobile-nav-item" data-view="ai-chat">
+      <i class="ph-bold ph-chat-teardrop-dots"></i><span>COMMS</span>
+    </button>
+    <button class="mobile-nav-item" data-view="settings">
+      <i class="ph-bold ph-gear"></i><span>CONFIG</span>
+    </button>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content" id="main-content">
+
+    <!-- ========== DASHBOARD ========== -->
+    <section class="view active" id="view-dashboard" data-view="dashboard">
+      <div class="view-rip-layer"></div>
+      <div class="view-inner">
+        <div class="slogan-banner">
+          <h1 class="slogan-text">THE MOVEMENT NEVER SLEEPS</h1>
+          <div class="slogan-sub">Solidarity Action Network — February 2026 Dashboard</div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-tile wheat-paste-in" data-delay="0">
+            <div class="stat-number">14,287</div>
+            <div class="stat-label">SIGNATURES COLLECTED</div>
+            <div class="stat-bar"><div class="stat-bar-fill" style="width:78%"></div></div>
+            <div class="stat-sub">Goal: 18,000 by March 1</div>
+          </div>
+          <div class="stat-tile wheat-paste-in" data-delay="1">
+            <div class="stat-number">42</div>
+            <div class="stat-label">ACTIVE CAMPAIGNS</div>
+            <div class="stat-bar"><div class="stat-bar-fill accent2" style="width:62%"></div></div>
+            <div class="stat-sub">+7 launched this week</div>
+          </div>
+          <div class="stat-tile wheat-paste-in" data-delay="2">
+            <div class="stat-number">3,819</div>
+            <div class="stat-label">VOLUNTEERS MOBILIZED</div>
+            <div class="stat-bar"><div class="stat-bar-fill" style="width:91%"></div></div>
+            <div class="stat-sub">91% of capacity reached</div>
+          </div>
+          <div class="stat-tile wheat-paste-in" data-delay="3">
+            <div class="stat-number">$127K</div>
+            <div class="stat-label">FUNDS RAISED THIS QTR</div>
+            <div class="stat-bar"><div class="stat-bar-fill accent2" style="width:54%"></div></div>
+            <div class="stat-sub">Target: $235K by Q2</div>
+          </div>
+          <div class="stat-tile wheat-paste-in" data-delay="4">
+            <div class="stat-number">89%</div>
+            <div class="stat-label">COMMUNITY APPROVAL</div>
+            <div class="stat-bar"><div class="stat-bar-fill" style="width:89%"></div></div>
+            <div class="stat-sub">Up from 82% last month</div>
+          </div>
+          <div class="stat-tile wheat-paste-in" data-delay="5">
+            <div class="stat-number">16</div>
+            <div class="stat-label">UPCOMING RALLIES</div>
+            <div class="stat-bar"><div class="stat-bar-fill accent2" style="width:40%"></div></div>
+            <div class="stat-sub">Next: Feb 22 — City Hall</div>
+          </div>
+        </div>
+
+        <div class="dashboard-bottom">
+          <div class="recent-activity wheat-paste-in" data-delay="6">
+            <h2 class="section-stamp">RECENT DISPATCHES</h2>
+            <div class="activity-feed">
+              <div class="activity-item">
+                <span class="activity-time">2 min ago</span>
+                <span class="activity-desc"><strong>Rosa M.</strong> added 45 new signatures to <em>Clean Water Act petition</em></span>
+              </div>
+              <div class="activity-item">
+                <span class="activity-time">18 min ago</span>
+                <span class="activity-desc"><strong>Coalition HQ</strong> approved funding for <em>Community Garden Initiative</em></span>
+              </div>
+              <div class="activity-item">
+                <span class="activity-time">1 hr ago</span>
+                <span class="activity-desc"><strong>Marcus T.</strong> published rally logistics for <em>March for Housing Rights</em></span>
+              </div>
+              <div class="activity-item">
+                <span class="activity-time">3 hrs ago</span>
+                <span class="activity-desc"><strong>Legal Team</strong> finalized policy brief on <em>Tenant Protection Ordinance</em></span>
+              </div>
+              <div class="activity-item">
+                <span class="activity-time">5 hrs ago</span>
+                <span class="activity-desc"><strong>Media Collective</strong> released press kit for <em>Youth Civic Engagement</em> campaign</span>
+              </div>
+            </div>
+          </div>
+          <div class="urgent-actions wheat-paste-in" data-delay="7">
+            <h2 class="section-stamp accent-stamp">URGENT ACTIONS</h2>
+            <div class="action-card">
+              <div class="action-urgency">DEADLINE: FEB 20</div>
+              <div class="action-title">Submit public comment on Zoning Amendment B-47</div>
+              <button class="btn-stamp">TAKE ACTION</button>
+            </div>
+            <div class="action-card">
+              <div class="action-urgency">NEEDS 500 MORE</div>
+              <div class="action-title">Sign petition: Free Transit for Essential Workers</div>
+              <button class="btn-stamp">SIGN NOW</button>
+            </div>
+            <div class="action-card">
+              <div class="action-urgency">TOMORROW 9AM</div>
+              <div class="action-title">City Council hearing on affordable housing — pack the room</div>
+              <button class="btn-stamp">RSVP</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS ========== -->
+    <section class="view" id="view-projects" data-view="projects">
+      <div class="view-rip-layer"></div>
+      <div class="view-inner">
+        <h1 class="page-slogan">ACTIVE CAMPAIGNS</h1>
+        <p class="page-subtitle">Every campaign is a fight. Every fight matters.</p>
+
+        <div class="projects-board">
+          <div class="project-flyer wheat-paste-in" data-delay="0" style="--rot: -1.2deg">
+            <div class="flyer-status stamped">ACTIVE</div>
+            <h3 class="flyer-title">CLEAN WATER FOR ALL</h3>
+            <p class="flyer-desc">Fighting to remove lead pipes from 12 underserved neighborhoods by end of year. 14,287 signatures collected, 42 volunteers active, 3 legal challenges filed.</p>
+            <div class="flyer-meta">
+              <span class="flyer-tag">ENVIRONMENT</span>
+              <span class="flyer-tag">HEALTH</span>
+            </div>
+            <div class="flyer-progress"><div class="flyer-progress-fill" style="width:78%"></div></div>
+            <div class="flyer-footer">Lead: Rosa Martinez | Started: Jan 2026</div>
+          </div>
+
+          <div class="project-flyer wheat-paste-in" data-delay="1" style="--rot: 0.8deg">
+            <div class="flyer-status stamped active-yellow">IN PROGRESS</div>
+            <h3 class="flyer-title">HOUSING IS A RIGHT</h3>
+            <p class="flyer-desc">Tenant protection ordinance campaign targeting 5 council districts. Door-to-door canvassing in full swing. 2,100 pledges secured so far.</p>
+            <div class="flyer-meta">
+              <span class="flyer-tag">HOUSING</span>
+              <span class="flyer-tag">POLICY</span>
+            </div>
+            <div class="flyer-progress"><div class="flyer-progress-fill" style="width:52%"></div></div>
+            <div class="flyer-footer">Lead: Marcus Thompson | Started: Dec 2025</div>
+          </div>
+
+          <div class="project-flyer wheat-paste-in" data-delay="2" style="--rot: -0.5deg">
+            <div class="flyer-status stamped">ACTIVE</div>
+            <h3 class="flyer-title">FREE TRANSIT NOW</h3>
+            <p class="flyer-desc">Mobilizing essential workers and transit riders to demand zero-fare public transit. Coalition of 18 organizations signed on. Lobbying state legislators.</p>
+            <div class="flyer-meta">
+              <span class="flyer-tag">TRANSIT</span>
+              <span class="flyer-tag">EQUITY</span>
+            </div>
+            <div class="flyer-progress"><div class="flyer-progress-fill" style="width:35%"></div></div>
+            <div class="flyer-footer">Lead: Aisha Johnson | Started: Feb 2026</div>
+          </div>
+
+          <div class="project-flyer wheat-paste-in" data-delay="3" style="--rot: 1.5deg">
+            <div class="flyer-status stamped completed-stamp">VICTORY</div>
+            <h3 class="flyer-title">COMMUNITY GARDENS</h3>
+            <p class="flyer-desc">Won city approval for 8 new community garden plots on formerly vacant lots. Soil testing complete. Spring planting schedule finalized.</p>
+            <div class="flyer-meta">
+              <span class="flyer-tag">FOOD JUSTICE</span>
+              <span class="flyer-tag">LAND USE</span>
+            </div>
+            <div class="flyer-progress"><div class="flyer-progress-fill victory" style="width:100%"></div></div>
+            <div class="flyer-footer">Lead: Community Land Trust | Completed: Feb 2026</div>
+          </div>
+
+          <div class="project-flyer wheat-paste-in" data-delay="4" style="--rot: -1.8deg">
+            <div class="flyer-status stamped active-yellow">PLANNING</div>
+            <h3 class="flyer-title">YOUTH CIVIC POWER</h3>
+            <p class="flyer-desc">Voter registration drive targeting 10,000 first-time voters aged 18-24. Campus organizing at 6 colleges underway. Debate watch parties planned.</p>
+            <div class="flyer-meta">
+              <span class="flyer-tag">YOUTH</span>
+              <span class="flyer-tag">DEMOCRACY</span>
+            </div>
+            <div class="flyer-progress"><div class="flyer-progress-fill" style="width:22%"></div></div>
+            <div class="flyer-footer">Lead: Student Coalition | Started: Jan 2026</div>
+          </div>
+
+          <div class="project-flyer wheat-paste-in" data-delay="5" style="--rot: 0.3deg">
+            <div class="flyer-status stamped">ACTIVE</div>
+            <h3 class="flyer-title">STOP THE PIPELINE</h3>
+            <p class="flyer-desc">Legal and direct-action campaign opposing the Riverside Industrial Pipeline. Environmental impact report challenged. 3 community hearings upcoming.</p>
+            <div class="flyer-meta">
+              <span class="flyer-tag">CLIMATE</span>
+              <span class="flyer-tag">INDIGENOUS RIGHTS</span>
+            </div>
+            <div class="flyer-progress"><div class="flyer-progress-fill" style="width:45%"></div></div>
+            <div class="flyer-footer">Lead: Earth Defenders Alliance | Started: Nov 2025</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECT WORKSPACE ========== -->
+    <section class="view" id="view-project-workspace" data-view="project-workspace">
+      <div class="view-rip-layer"></div>
+      <div class="view-inner">
+        <h1 class="page-slogan">CLEAN WATER FOR ALL — WAR ROOM</h1>
+        <p class="page-subtitle">Cut. Paste. Organize. Act.</p>
+
+        <div class="zine-layout">
+          <div class="zine-panel overview wheat-paste-in" data-delay="0">
+            <h2 class="ransom-header">MISSION BRIEF</h2>
+            <div class="zine-content">
+              <p><strong>Objective:</strong> Remove all lead service lines from the Eastside, Riverside, and Downtown corridors by December 2026.</p>
+              <p><strong>Strategy:</strong> Three-pronged approach — legal pressure on water utility, community petition for federal infrastructure funds, and direct media campaigns exposing contamination data.</p>
+              <p><strong>Status:</strong> Phase 2 of 4. Legal team filed injunction on Feb 10. Media blitz starts Feb 22.</p>
+            </div>
+          </div>
+
+          <div class="zine-panel timeline wheat-paste-in" data-delay="1">
+            <h2 class="ransom-header">ACTION TIMELINE</h2>
+            <div class="timeline-items">
+              <div class="timeline-entry">
+                <span class="timeline-date">JAN 15</span>
+                <span class="timeline-event">Petition launched — door-to-door canvassing begins</span>
+                <span class="timeline-check done">&#10003;</span>
+              </div>
+              <div class="timeline-entry">
+                <span class="timeline-date">FEB 01</span>
+                <span class="timeline-event">10,000 signature milestone reached</span>
+                <span class="timeline-check done">&#10003;</span>
+              </div>
+              <div class="timeline-entry">
+                <span class="timeline-date">FEB 10</span>
+                <span class="timeline-event">Legal injunction filed against Metro Water Authority</span>
+                <span class="timeline-check done">&#10003;</span>
+              </div>
+              <div class="timeline-entry active-entry">
+                <span class="timeline-date">FEB 22</span>
+                <span class="timeline-event">Media blitz launch — press conference + social flood</span>
+                <span class="timeline-check pending">&#9679;</span>
+              </div>
+              <div class="timeline-entry">
+                <span class="timeline-date">MAR 01</span>
+                <span class="timeline-event">City Council vote on emergency water infrastructure bond</span>
+                <span class="timeline-check pending">&#9675;</span>
+              </div>
+              <div class="timeline-entry">
+                <span class="timeline-date">APR 15</span>
+                <span class="timeline-event">Federal grant application deadline</span>
+                <span class="timeline-check pending">&#9675;</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="zine-panel team wheat-paste-in" data-delay="2">
+            <h2 class="ransom-header">CREW</h2>
+            <div class="crew-list">
+              <div class="crew-member"><span class="crew-role">LEAD ORGANIZER</span><span class="crew-name">Rosa Martinez</span></div>
+              <div class="crew-member"><span class="crew-role">LEGAL COUNSEL</span><span class="crew-name">David Chen, ESQ</span></div>
+              <div class="crew-member"><span class="crew-role">MEDIA DIRECTOR</span><span class="crew-name">Priya Patel</span></div>
+              <div class="crew-member"><span class="crew-role">FIELD CAPTAIN</span><span class="crew-name">James Okafor</span></div>
+              <div class="crew-member"><span class="crew-role">DATA ANALYST</span><span class="crew-name">Lin Wei</span></div>
+              <div class="crew-member"><span class="crew-role">COMMUNITY LIAISON</span><span class="crew-name">Maria Santos</span></div>
+            </div>
+          </div>
+
+          <div class="zine-panel resources wheat-paste-in" data-delay="3">
+            <h2 class="ransom-header">RESOURCES</h2>
+            <div class="resource-list">
+              <div class="resource-item"><span class="resource-icon">&#128196;</span> Water quality test results (12 neighborhoods)</div>
+              <div class="resource-item"><span class="resource-icon">&#128221;</span> Legal brief — injunction filing</div>
+              <div class="resource-item"><span class="resource-icon">&#127908;</span> Press conference talking points</div>
+              <div class="resource-item"><span class="resource-icon">&#128247;</span> Photo documentation — pipe conditions</div>
+              <div class="resource-item"><span class="resource-icon">&#128200;</span> Budget tracker — $48K of $85K allocated</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== KANBAN ========== -->
+    <section class="view" id="view-kanban" data-view="kanban">
+      <div class="view-rip-layer"></div>
+      <div class="view-inner">
+        <h1 class="page-slogan">ACTION BOARD</h1>
+        <p class="page-subtitle">Move the work. Move the needle. Move the people.</p>
+
+        <div class="kanban-board">
+          <div class="kanban-column wheat-paste-in" data-delay="0">
+            <h2 class="spray-paint-header">TO DO</h2>
+            <div class="kanban-cards">
+              <div class="kanban-card" style="--card-rot: -1deg" draggable="true">
+                <div class="card-pin"></div>
+                <div class="card-content">
+                  <div class="card-title">Design rally flyers for Feb 22</div>
+                  <div class="card-assignee">Priya P.</div>
+                  <div class="card-tag">MEDIA</div>
+                </div>
+              </div>
+              <div class="kanban-card" style="--card-rot: 1.5deg" draggable="true">
+                <div class="card-pin"></div>
+                <div class="card-content">
+                  <div class="card-title">Secure sound system for City Hall rally</div>
+                  <div class="card-assignee">James O.</div>
+                  <div class="card-tag">LOGISTICS</div>
+                </div>
+              </div>
+              <div class="kanban-card" style="--card-rot: -0.5deg" draggable="true">
+                <div class="card-pin"></div>
+                <div class="card-content">
+                  <div class="card-title">Recruit 20 marshals for march route</div>
+                  <div class="card-assignee">Marcus T.</div>
+                  <div class="card-tag">MOBILIZATION</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column wheat-paste-in" data-delay="1">
+            <h2 class="spray-paint-header in-progress-header">IN PROGRESS</h2>
+            <div class="kanban-cards">
+              <div class="kanban-card" style="--card-rot: 0.8deg" draggable="true">
+                <div class="card-pin"></div>
+                <div class="card-content">
+                  <div class="card-title">Canvass Ward 7 — 120 doors left</div>
+                  <div class="card-assignee">Field Team A</div>
+                  <div class="card-tag">OUTREACH</div>
+                </div>
+              </div>
+              <div class="kanban-card" style="--card-rot: -1.2deg" draggable="true">
+                <div class="card-pin"></div>
+                <div class="card-content">
+                  <div class="card-title">Draft op-ed for City Tribune</div>
+                  <div class="card-assignee">Rosa M.</div>
+                  <div class="card-tag">MEDIA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column wheat-paste-in" data-delay="2">
+            <h2 class="spray-paint-header review-header">REVIEW</h2>
+            <div class="kanban-cards">
+              <div class="kanban-card" style="--card-rot: 1deg" draggable="true">
+                <div class="card-pin"></div>
+                <div class="card-content">
+                  <div class="card-title">Legal review: permit application</div>
+                  <div class="card-assignee">David C.</div>
+                  <div class="card-tag">LEGAL</div>
+                </div>
+              </div>
+              <div class="kanban-card" style="--card-rot: -0.8deg" draggable="true">
+                <div class="card-pin"></div>
+                <div class="card-content">
+                  <div class="card-title">Coalition letter — 14 of 18 orgs signed</div>
+                  <div class="card-assignee">Aisha J.</div>
+                  <div class="card-tag">COALITION</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-column wheat-paste-in" data-delay="3">
+            <h2 class="spray-paint-header done-header">DONE</h2>
+            <div class="kanban-cards">
+              <div class="kanban-card done-card" style="--card-rot: 0.5deg" draggable="true">
+                <div class="card-pin"></div>
+                <div class="card-content">
+                  <div class="card-title">Petition delivered to Mayor's office</div>
+                  <div class="card-assignee">Rosa M.</div>
+                  <div class="card-tag">ADVOCACY</div>
+                </div>
+              </div>
+              <div class="kanban-card done-card" style="--card-rot: -1.5deg" draggable="true">
+                <div class="card-pin"></div>
+                <div class="card-content">
+                  <div class="card-title">Water testing kits distributed — 500 homes</div>
+                  <div class="card-assignee">Lin W.</div>
+                  <div class="card-tag">RESEARCH</div>
+                </div>
+              </div>
+              <div class="kanban-card done-card" style="--card-rot: 0.3deg" draggable="true">
+                <div class="card-pin"></div>
+                <div class="card-content">
+                  <div class="card-title">Social media toolkit released</div>
+                  <div class="card-assignee">Priya P.</div>
+                  <div class="card-tag">MEDIA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHITEBOARD ========== -->
+    <section class="view" id="view-whiteboard" data-view="whiteboard">
+      <div class="view-rip-layer"></div>
+      <div class="view-inner">
+        <h1 class="page-slogan">SIGN WORKSHOP</h1>
+        <p class="page-subtitle">Design your message. Make your voice visible.</p>
+
+        <div class="whiteboard-canvas" id="whiteboard-canvas">
+          <svg class="connector-lines" id="connector-svg" width="100%" height="100%">
+            <line class="string-line" x1="18%" y1="22%" x2="52%" y2="18%" />
+            <line class="string-line" x1="52%" y1="22%" x2="82%" y2="20%" />
+            <line class="string-line" x1="18%" y1="25%" x2="25%" y2="55%" />
+            <line class="string-line" x1="52%" y1="25%" x2="55%" y2="55%" />
+            <line class="string-line" x1="82%" y1="25%" x2="78%" y2="55%" />
+            <line class="string-line" x1="25%" y1="60%" x2="55%" y2="58%" />
+            <line class="string-line" x1="55%" y1="62%" x2="78%" y2="60%" />
+            <line class="string-line" x1="55%" y1="65%" x2="50%" y2="85%" />
+          </svg>
+
+          <div class="picket-sign" style="left: 10%; top: 10%; --sign-rot: -3deg">
+            <div class="sign-face">
+              <div class="sign-text">CLEAN WATER IS A HUMAN RIGHT</div>
+            </div>
+            <div class="sign-handle"></div>
+          </div>
+
+          <div class="picket-sign" style="left: 42%; top: 8%; --sign-rot: 2deg">
+            <div class="sign-face accent2-sign">
+              <div class="sign-text dark-text">NO MORE LEAD PIPES</div>
+            </div>
+            <div class="sign-handle"></div>
+          </div>
+
+          <div class="picket-sign" style="left: 72%; top: 10%; --sign-rot: -1deg">
+            <div class="sign-face">
+              <div class="sign-text">PEOPLE OVER PROFIT</div>
+            </div>
+            <div class="sign-handle"></div>
+          </div>
+
+          <div class="picket-sign" style="left: 15%; top: 42%; --sign-rot: 4deg">
+            <div class="sign-face accent2-sign">
+              <div class="sign-text dark-text">FUND PUBLIC INFRASTRUCTURE</div>
+            </div>
+            <div class="sign-handle"></div>
+          </div>
+
+          <div class="picket-sign" style="left: 45%; top: 45%; --sign-rot: -2deg">
+            <div class="sign-face">
+              <div class="sign-text">TEST EVERY TAP</div>
+            </div>
+            <div class="sign-handle"></div>
+          </div>
+
+          <div class="picket-sign" style="left: 68%; top: 42%; --sign-rot: 1deg">
+            <div class="sign-face accent2-sign">
+              <div class="sign-text dark-text">ACCOUNTABILITY NOW</div>
+            </div>
+            <div class="sign-handle"></div>
+          </div>
+
+          <div class="picket-sign" style="left: 40%; top: 75%; --sign-rot: -1.5deg">
+            <div class="sign-face large-sign">
+              <div class="sign-text">MARCH ON CITY HALL — FEB 22</div>
+            </div>
+            <div class="sign-handle"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCHEMA PLANNER ========== -->
+    <section class="view" id="view-schema-planner" data-view="schema-planner">
+      <div class="view-rip-layer"></div>
+      <div class="view-inner">
+        <h1 class="page-slogan">CONSPIRACY BOARD</h1>
+        <p class="page-subtitle">Follow the money. Connect the dots. Expose the truth.</p>
+
+        <div class="conspiracy-board" id="conspiracy-board">
+          <svg class="red-strings" id="red-strings-svg" width="100%" height="100%">
+            <line class="red-string" x1="22%" y1="18%" x2="55%" y2="12%" />
+            <line class="red-string" x1="55%" y1="16%" x2="85%" y2="15%" />
+            <line class="red-string" x1="22%" y1="22%" x2="20%" y2="48%" />
+            <line class="red-string" x1="55%" y1="20%" x2="52%" y2="48%" />
+            <line class="red-string" x1="85%" y1="20%" x2="80%" y2="48%" />
+            <line class="red-string" x1="20%" y1="55%" x2="52%" y2="52%" />
+            <line class="red-string" x1="52%" y1="55%" x2="80%" y2="52%" />
+            <line class="red-string" x1="52%" y1="58%" x2="50%" y2="82%" />
+          </svg>
+
+          <div class="pinned-doc" style="left: 12%; top: 6%; --doc-rot: -2deg">
+            <div class="pushpin"></div>
+            <div class="doc-photo">&#127983;</div>
+            <div class="doc-label">METRO WATER AUTHORITY</div>
+            <div class="doc-detail">Budget: $340M | CEO: R. Thompson</div>
+          </div>
+
+          <div class="pinned-doc" style="left: 45%; top: 4%; --doc-rot: 1deg">
+            <div class="pushpin accent2-pin"></div>
+            <div class="doc-photo">&#128176;</div>
+            <div class="doc-label">CLEARSTREAM INDUSTRIES</div>
+            <div class="doc-detail">Contractor | No-bid contracts since 2019</div>
+          </div>
+
+          <div class="pinned-doc" style="left: 75%; top: 5%; --doc-rot: -1.5deg">
+            <div class="pushpin"></div>
+            <div class="doc-photo">&#127970;</div>
+            <div class="doc-label">CITY COUNCIL — WARD 3</div>
+            <div class="doc-detail">Cmr. Davis | Received $45K in donations</div>
+          </div>
+
+          <div class="pinned-doc" style="left: 10%; top: 38%; --doc-rot: 3deg">
+            <div class="pushpin accent2-pin"></div>
+            <div class="doc-photo">&#128200;</div>
+            <div class="doc-label">EPA VIOLATION REPORT</div>
+            <div class="doc-detail">12 violations since 2022 — zero fines</div>
+          </div>
+
+          <div class="pinned-doc" style="left: 42%; top: 40%; --doc-rot: -1deg">
+            <div class="pushpin"></div>
+            <div class="doc-photo">&#128196;</div>
+            <div class="doc-label">INTERNAL MEMO (LEAKED)</div>
+            <div class="doc-detail">"Delay replacement to Q4 for budget optics"</div>
+          </div>
+
+          <div class="pinned-doc" style="left: 70%; top: 40%; --doc-rot: 2deg">
+            <div class="pushpin accent2-pin"></div>
+            <div class="doc-photo">&#128101;</div>
+            <div class="doc-label">AFFECTED COMMUNITIES</div>
+            <div class="doc-detail">14,000 residents | 3 schools in zone</div>
+          </div>
+
+          <div class="pinned-doc large-doc" style="left: 38%; top: 72%; --doc-rot: 0deg">
+            <div class="pushpin"></div>
+            <div class="doc-photo">&#9888;&#65039;</div>
+            <div class="doc-label">CONCLUSION: SYSTEMIC NEGLECT</div>
+            <div class="doc-detail">Deliberate underfunding + crony contracts = poisoned water</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIRECTORY TREE ========== -->
+    <section class="view" id="view-directory-tree" data-view="directory-tree">
+      <div class="view-rip-layer"></div>
+      <div class="view-inner">
+        <h1 class="page-slogan">FILE STACK</h1>
+        <p class="page-subtitle">Everything we need. Organized for the fight.</p>
+
+        <div class="flyer-pile">
+          <div class="dir-stack wheat-paste-in" data-delay="0">
+            <div class="dir-header spray-dir">
+              <i class="ph-bold ph-folder-open"></i> CAMPAIGNS/
+            </div>
+            <div class="dir-children">
+              <div class="dir-item">
+                <div class="dir-file-row">
+                  <i class="ph-bold ph-folder"></i>
+                  <span class="dir-name">clean-water-initiative/</span>
+                  <span class="dir-size">24 files</span>
+                </div>
+                <div class="dir-sub-children">
+                  <div class="dir-file-row sub">
+                    <i class="ph-bold ph-file-text"></i>
+                    <span class="dir-name">petition-master.pdf</span>
+                    <span class="dir-size">2.4 MB</span>
+                  </div>
+                  <div class="dir-file-row sub">
+                    <i class="ph-bold ph-file-image"></i>
+                    <span class="dir-name">rally-flyer-v3.png</span>
+                    <span class="dir-size">890 KB</span>
+                  </div>
+                  <div class="dir-file-row sub">
+                    <i class="ph-bold ph-file-doc"></i>
+                    <span class="dir-name">legal-brief-injunction.docx</span>
+                    <span class="dir-size">156 KB</span>
+                  </div>
+                  <div class="dir-file-row sub">
+                    <i class="ph-bold ph-file-csv"></i>
+                    <span class="dir-name">signature-tracking.csv</span>
+                    <span class="dir-size">45 KB</span>
+                  </div>
+                </div>
+              </div>
+              <div class="dir-item">
+                <div class="dir-file-row">
+                  <i class="ph-bold ph-folder"></i>
+                  <span class="dir-name">housing-rights/</span>
+                  <span class="dir-size">18 files</span>
+                </div>
+                <div class="dir-sub-children">
+                  <div class="dir-file-row sub">
+                    <i class="ph-bold ph-file-text"></i>
+                    <span class="dir-name">tenant-protection-ordinance.pdf</span>
+                    <span class="dir-size">1.1 MB</span>
+                  </div>
+                  <div class="dir-file-row sub">
+                    <i class="ph-bold ph-file-doc"></i>
+                    <span class="dir-name">canvassing-script.docx</span>
+                    <span class="dir-size">34 KB</span>
+                  </div>
+                  <div class="dir-file-row sub">
+                    <i class="ph-bold ph-spreadsheet"></i>
+                    <span class="dir-name">ward-contact-list.xlsx</span>
+                    <span class="dir-size">128 KB</span>
+                  </div>
+                </div>
+              </div>
+              <div class="dir-item">
+                <div class="dir-file-row">
+                  <i class="ph-bold ph-folder"></i>
+                  <span class="dir-name">free-transit/</span>
+                  <span class="dir-size">11 files</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dir-stack wheat-paste-in" data-delay="1">
+            <div class="dir-header spray-dir">
+              <i class="ph-bold ph-folder-open"></i> MEDIA/
+            </div>
+            <div class="dir-children">
+              <div class="dir-item">
+                <div class="dir-file-row">
+                  <i class="ph-bold ph-folder"></i>
+                  <span class="dir-name">press-kits/</span>
+                  <span class="dir-size">8 files</span>
+                </div>
+              </div>
+              <div class="dir-item">
+                <div class="dir-file-row">
+                  <i class="ph-bold ph-folder"></i>
+                  <span class="dir-name">social-assets/</span>
+                  <span class="dir-size">42 files</span>
+                </div>
+                <div class="dir-sub-children">
+                  <div class="dir-file-row sub">
+                    <i class="ph-bold ph-file-image"></i>
+                    <span class="dir-name">instagram-story-template.psd</span>
+                    <span class="dir-size">4.2 MB</span>
+                  </div>
+                  <div class="dir-file-row sub">
+                    <i class="ph-bold ph-file-video"></i>
+                    <span class="dir-name">rally-recap-30s.mp4</span>
+                    <span class="dir-size">18 MB</span>
+                  </div>
+                </div>
+              </div>
+              <div class="dir-item">
+                <div class="dir-file-row">
+                  <i class="ph-bold ph-folder"></i>
+                  <span class="dir-name">photography/</span>
+                  <span class="dir-size">156 files</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dir-stack wheat-paste-in" data-delay="2">
+            <div class="dir-header spray-dir">
+              <i class="ph-bold ph-folder-open"></i> LEGAL/
+            </div>
+            <div class="dir-children">
+              <div class="dir-item">
+                <div class="dir-file-row">
+                  <i class="ph-bold ph-file-text"></i>
+                  <span class="dir-name">501c3-determination-letter.pdf</span>
+                  <span class="dir-size">340 KB</span>
+                </div>
+              </div>
+              <div class="dir-item">
+                <div class="dir-file-row">
+                  <i class="ph-bold ph-file-text"></i>
+                  <span class="dir-name">protest-permit-city-hall.pdf</span>
+                  <span class="dir-size">220 KB</span>
+                </div>
+              </div>
+              <div class="dir-item">
+                <div class="dir-file-row">
+                  <i class="ph-bold ph-file-doc"></i>
+                  <span class="dir-name">liability-waiver-template.docx</span>
+                  <span class="dir-size">28 KB</span>
+                </div>
+              </div>
+              <div class="dir-item">
+                <div class="dir-file-row">
+                  <i class="ph-bold ph-folder"></i>
+                  <span class="dir-name">FOIA-requests/</span>
+                  <span class="dir-size">7 files</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== IDEAS ========== -->
+    <section class="view" id="view-ideas" data-view="ideas">
+      <div class="view-rip-layer"></div>
+      <div class="view-inner">
+        <h1 class="page-slogan">IDEAS BOARD</h1>
+        <p class="page-subtitle">Pin it up. Vote it up. Lift it up.</p>
+
+        <div class="ideas-corkboard">
+          <div class="idea-card wheat-paste-in" data-delay="0" style="--idea-rot: -2deg">
+            <div class="idea-pin"></div>
+            <div class="idea-category stamped">DIRECT ACTION</div>
+            <h3 class="idea-title">Guerrilla water testing — free kits at bus stops</h3>
+            <p class="idea-desc">Distribute 1,000 home water testing kits at high-traffic bus stops in affected neighborhoods. Include QR code linking to results submission portal.</p>
+            <div class="idea-votes">
+              <button class="vote-btn" aria-label="Upvote">&#9650;</button>
+              <span class="vote-count">47</span>
+            </div>
+            <div class="idea-author">Submitted by Lin W. — Feb 12</div>
+          </div>
+
+          <div class="idea-card wheat-paste-in" data-delay="1" style="--idea-rot: 1.5deg">
+            <div class="idea-pin accent2-pin"></div>
+            <div class="idea-category stamped yellow-stamp">MEDIA</div>
+            <h3 class="idea-title">Billboard crowdfund: "WHAT'S IN YOUR WATER?"</h3>
+            <p class="idea-desc">Crowdfund 5 billboards near City Hall with water contamination data. Use bold, simple design that confronts commuters with the facts daily.</p>
+            <div class="idea-votes">
+              <button class="vote-btn" aria-label="Upvote">&#9650;</button>
+              <span class="vote-count">62</span>
+            </div>
+            <div class="idea-author">Submitted by Priya P. — Feb 10</div>
+          </div>
+
+          <div class="idea-card wheat-paste-in" data-delay="2" style="--idea-rot: -0.5deg">
+            <div class="idea-pin"></div>
+            <div class="idea-category stamped">COALITION</div>
+            <h3 class="idea-title">Partner with teachers' union on school water safety</h3>
+            <p class="idea-desc">Three schools in the contamination zone. Partner with the local teachers' union to demand independent testing and bottled water until pipes are replaced.</p>
+            <div class="idea-votes">
+              <button class="vote-btn" aria-label="Upvote">&#9650;</button>
+              <span class="vote-count">38</span>
+            </div>
+            <div class="idea-author">Submitted by Maria S. — Feb 8</div>
+          </div>
+
+          <div class="idea-card wheat-paste-in" data-delay="3" style="--idea-rot: 2deg">
+            <div class="idea-pin accent2-pin"></div>
+            <div class="idea-category stamped yellow-stamp">FUNDRAISING</div>
+            <h3 class="idea-title">Benefit concert — local bands for clean water</h3>
+            <p class="idea-desc">Organize a benefit concert at Riverside Park featuring local bands. $15 tickets, all proceeds to legal fund. Target: $8,000.</p>
+            <div class="idea-votes">
+              <button class="vote-btn" aria-label="Upvote">&#9650;</button>
+              <span class="vote-count">55</span>
+            </div>
+            <div class="idea-author">Submitted by James O. — Feb 6</div>
+          </div>
+
+          <div class="idea-card wheat-paste-in" data-delay="4" style="--idea-rot: -1.8deg">
+            <div class="idea-pin"></div>
+            <div class="idea-category stamped">POLICY</div>
+            <h3 class="idea-title">Draft model ordinance for lead pipe disclosure</h3>
+            <p class="idea-desc">Create a model ordinance requiring landlords to disclose lead pipe status before lease signing. Push for adoption in 3 municipalities.</p>
+            <div class="idea-votes">
+              <button class="vote-btn" aria-label="Upvote">&#9650;</button>
+              <span class="vote-count">41</span>
+            </div>
+            <div class="idea-author">Submitted by David C. — Feb 4</div>
+          </div>
+
+          <div class="idea-card wheat-paste-in" data-delay="5" style="--idea-rot: 0.8deg">
+            <div class="idea-pin accent2-pin"></div>
+            <div class="idea-category stamped yellow-stamp">DIGITAL</div>
+            <h3 class="idea-title">Interactive contamination map — public data viz</h3>
+            <p class="idea-desc">Build an interactive web map showing lead pipe locations, test results, and replacement timelines. Make the data public and shareable.</p>
+            <div class="idea-votes">
+              <button class="vote-btn" aria-label="Upvote">&#9650;</button>
+              <span class="vote-count">73</span>
+            </div>
+            <div class="idea-author">Submitted by Lin W. — Feb 2</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== AI CHAT ========== -->
+    <section class="view" id="view-ai-chat" data-view="ai-chat">
+      <div class="view-rip-layer"></div>
+      <div class="view-inner">
+        <h1 class="page-slogan">COMMS CENTER</h1>
+        <p class="page-subtitle">Strategize with your AI ally.</p>
+
+        <div class="chat-wall">
+          <div class="chat-message user-msg wheat-paste-in" data-delay="0">
+            <div class="sticky-note yellow-note" style="--note-rot: 1.5deg">
+              <div class="tape-mark"></div>
+              <div class="note-text">We need talking points for the City Council hearing on Feb 22. Focus on the health data and legal precedent.</div>
+              <div class="note-author">You — 10:15 AM</div>
+            </div>
+          </div>
+
+          <div class="chat-message ai-msg wheat-paste-in" data-delay="1">
+            <div class="sticky-note magenta-note" style="--note-rot: -1deg">
+              <div class="tape-mark"></div>
+              <div class="note-text">Here are your key talking points:
+<strong>1. Health Impact:</strong> CDC data shows blood lead levels in Eastside children are 3x the national average. This is not theoretical - it is happening now.
+<strong>2. Legal Precedent:</strong> Flint v. City of Flint (2021) established that municipal negligence in water infrastructure is actionable. Our legal team has identified 12 EPA violations since 2022 with zero enforcement.
+<strong>3. Cost Argument:</strong> Replacing lead pipes now costs $85M. The health costs of inaction: $340M+ over 20 years (cognitive development, healthcare, lost productivity).
+<strong>4. Timeline Demand:</strong> Full replacement within 18 months, starting with schools and daycares.</div>
+              <div class="note-author">AI Ally — 10:16 AM</div>
+            </div>
+          </div>
+
+          <div class="chat-message user-msg wheat-paste-in" data-delay="2">
+            <div class="sticky-note yellow-note" style="--note-rot: -0.5deg">
+              <div class="tape-mark"></div>
+              <div class="note-text">What about the no-bid contract angle? Clearstream Industries got $12M without competitive bidding.</div>
+              <div class="note-author">You — 10:18 AM</div>
+            </div>
+          </div>
+
+          <div class="chat-message ai-msg wheat-paste-in" data-delay="3">
+            <div class="sticky-note magenta-note" style="--note-rot: 2deg">
+              <div class="tape-mark"></div>
+              <div class="note-text"><strong>The Clearstream Connection:</strong> Public records show Clearstream Industries received $12.4M in no-bid contracts from Metro Water Authority since 2019. Clearstream's CEO, Martin Burke, donated $45K to Councilmember Davis's re-election campaign. Davis chairs the Water Infrastructure Committee. This is textbook pay-to-play and should be framed as a corruption issue, not just an infrastructure one. Recommend filing a FOIA request for all contract communications.</div>
+              <div class="note-author">AI Ally — 10:19 AM</div>
+            </div>
+          </div>
+
+          <div class="chat-message user-msg wheat-paste-in" data-delay="4">
+            <div class="sticky-note yellow-note" style="--note-rot: 1deg">
+              <div class="tape-mark"></div>
+              <div class="note-text">Perfect. Can you draft a 2-minute opening statement that hits all these points?</div>
+              <div class="note-author">You — 10:21 AM</div>
+            </div>
+          </div>
+
+          <div class="chat-message ai-msg wheat-paste-in" data-delay="5">
+            <div class="sticky-note magenta-note" style="--note-rot: -1.5deg">
+              <div class="tape-mark"></div>
+              <div class="note-text"><strong>OPENING STATEMENT DRAFT:</strong>
+
+"Council members, I stand before you representing 14,000 residents who turn on their taps every day not knowing if the water coming out is safe for their children. The data is clear: blood lead levels in our neighborhoods are three times the national average. The EPA has documented 12 violations at our water treatment facility since 2022. Not one fine has been issued.
+
+Meanwhile, $12.4 million in no-bid contracts have flowed to a single company whose CEO is a major campaign donor to this very committee's chair. Our children are being poisoned while politically connected contractors profit.
+
+We are not asking. We are demanding: full lead pipe replacement within 18 months, independent water testing, and a forensic audit of every contract issued by Metro Water Authority. The cost of action is $85 million. The cost of your inaction is immeasurable."</div>
+              <div class="note-author">AI Ally — 10:23 AM</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <input type="text" class="chat-input" placeholder="Write your message..." aria-label="Type a message">
+          <button class="btn-stamp chat-send-btn">SEND</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS ========== -->
+    <section class="view" id="view-settings" data-view="settings">
+      <div class="view-rip-layer"></div>
+      <div class="view-inner">
+        <h1 class="page-slogan">CONTROL PANEL</h1>
+        <p class="page-subtitle">Configure your resistance toolkit.</p>
+
+        <div class="settings-zine">
+          <div class="settings-section wheat-paste-in" data-delay="0">
+            <h2 class="spray-divider">ORGANIZATION</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Organization Name</span>
+                <span class="setting-desc">Your group's public-facing name</span>
+              </div>
+              <input type="text" class="setting-input" value="Solidarity Action Network" aria-label="Organization name">
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Contact Email</span>
+                <span class="setting-desc">Primary email for campaign communications</span>
+              </div>
+              <input type="email" class="setting-input" value="organize@solidarityaction.org" aria-label="Contact email">
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Public Profile Visible</span>
+                <span class="setting-desc">Allow non-members to see your campaigns</span>
+              </div>
+              <button class="toggle-switch active" aria-label="Toggle public profile" data-state="on">
+                <span class="toggle-fist">&#9994;</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="settings-section wheat-paste-in" data-delay="1">
+            <h2 class="spray-divider">NOTIFICATIONS</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Action Alerts</span>
+                <span class="setting-desc">Urgent campaign deadlines and actions</span>
+              </div>
+              <button class="toggle-switch active" aria-label="Toggle action alerts" data-state="on">
+                <span class="toggle-fist">&#9994;</span>
+              </button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">New Volunteer Sign-ups</span>
+                <span class="setting-desc">When someone joins your campaigns</span>
+              </div>
+              <button class="toggle-switch active" aria-label="Toggle volunteer notifications" data-state="on">
+                <span class="toggle-fist">&#9994;</span>
+              </button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Weekly Digest</span>
+                <span class="setting-desc">Summary of all campaign activity</span>
+              </div>
+              <button class="toggle-switch" aria-label="Toggle weekly digest" data-state="off">
+                <span class="toggle-fist">&#9994;</span>
+              </button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Coalition Updates</span>
+                <span class="setting-desc">Updates from partner organizations</span>
+              </div>
+              <button class="toggle-switch active" aria-label="Toggle coalition updates" data-state="on">
+                <span class="toggle-fist">&#9994;</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="settings-section wheat-paste-in" data-delay="2">
+            <h2 class="spray-divider">SECURITY</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Two-Factor Authentication</span>
+                <span class="setting-desc">Protect your account with 2FA</span>
+              </div>
+              <button class="toggle-switch active" aria-label="Toggle 2FA" data-state="on">
+                <span class="toggle-fist">&#9994;</span>
+              </button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Encrypt Communications</span>
+                <span class="setting-desc">End-to-end encryption for all messages</span>
+              </div>
+              <button class="toggle-switch active" aria-label="Toggle encryption" data-state="on">
+                <span class="toggle-fist">&#9994;</span>
+              </button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Auto-Delete Message History</span>
+                <span class="setting-desc">Purge messages older than 90 days</span>
+              </div>
+              <button class="toggle-switch" aria-label="Toggle auto-delete" data-state="off">
+                <span class="toggle-fist">&#9994;</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="settings-section wheat-paste-in" data-delay="3">
+            <h2 class="spray-divider">APPEARANCE</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Theme</span>
+                <span class="setting-desc">Choose your visual mode</span>
+              </div>
+              <select class="setting-select" aria-label="Theme selection">
+                <option selected>PROTEST DARK</option>
+                <option>HIGH CONTRAST</option>
+                <option>PRINT FRIENDLY</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Animation Intensity</span>
+                <span class="setting-desc">Reduce motion for accessibility</span>
+              </div>
+              <select class="setting-select" aria-label="Animation intensity">
+                <option selected>FULL ENERGY</option>
+                <option>REDUCED</option>
+                <option>MINIMAL</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Language</span>
+                <span class="setting-desc">Interface language</span>
+              </div>
+              <select class="setting-select" aria-label="Language selection">
+                <option selected>ENGLISH</option>
+                <option>ESPANOL</option>
+                <option>FRANCAIS</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TOOLTIP TEMPLATE -->
+  <div id="shout-tooltip" class="shout-tooltip" role="tooltip" aria-hidden="true">
+    <div class="shout-bubble">
+      <span class="shout-text"></span>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js"></script>
+  <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting@1.0.6/dist/splitting.css">
+  <script src="app.js"></script>
+</body>
+</html>

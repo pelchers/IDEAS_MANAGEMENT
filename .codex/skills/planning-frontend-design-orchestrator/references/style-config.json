@@ -17,7 +17,8 @@
     "uniquenessThreshold": 0.55,
     "requirePlaywrightScreenshots": true
   },
-  "passesPerStyle": 4,
+  "passesPerStyle": 2,
+  "productContextRef": ".claude/skills/frontend-design-subagent/references/product-context.md",
   "requiredViews": [
     "dashboard",
     "projects",
@@ -396,6 +397,188 @@
             "Pass 3 used ASCII charts and CLI formatting — use blueprint annotations instead",
             "Pass 2 used memo-format chat and pass 3 used REPL chat — use radio-dispatch format instead"
           ]
+        },
+        {
+          "pass": 5,
+          "variantSeed": "protest-poster-collage",
+          "direction": "Protest poster collage aesthetic. The UI channels grassroots activism — torn-edge paper layers, wheat-paste texture overlays, hand-stamped typography, and DIY zine energy. Hot magenta and electric yellow scream against black backgrounds. Cards look ripped from larger posters. Navigation uses megaphone and fist iconography. Every surface has the rough, urgent feel of a photocopied flyer stapled to a telephone pole.",
+          "paletteOverrides": {
+            "bg": "#0d0d0d",
+            "text": "#f5f0e0",
+            "surface": "#1a1a1a",
+            "accent": "#ff0066",
+            "accent2": "#e6ff00",
+            "border": "#333333"
+          },
+          "typographyOverrides": {
+            "heading": "Impact",
+            "body": "Archivo Narrow",
+            "mono": "IBM Plex Mono"
+          },
+          "contentPersona": "activist-nonprofit-organization",
+          "interactionProfile": {
+            "buttonHover": {
+              "selections": ["stamp-press-ink-spread"],
+              "prompt": "Button gains a rubber-stamp ink-spread effect on hover — edges bleed outward as if freshly stamped on rough paper"
+            },
+            "buttonClick": {
+              "selections": ["slam-down-stamp-mark"],
+              "prompt": "Button slams downward leaving a visible stamp impression with ink splatter micro-particles"
+            },
+            "cardHover": {
+              "selections": ["torn-edge-lift-curl"],
+              "prompt": "Card lifts at one corner with a torn-paper edge curl, revealing wheat-paste texture underneath"
+            },
+            "pageTransition": {
+              "selections": ["tear-away-rip"],
+              "prompt": "Current view rips away diagonally like tearing a poster off a wall, revealing the new view beneath"
+            },
+            "scrollReveal": {
+              "selections": ["wheat-paste-slap-on"],
+              "prompt": "Content slaps into view with a slight rotation as if being wheat-pasted onto the page in a hurry"
+            },
+            "navItemHover": {
+              "selections": ["highlight-marker-streak"],
+              "prompt": "A hand-drawn highlighter streak appears behind the nav item in electric yellow"
+            },
+            "navItemActive": {
+              "selections": ["circled-marker-ring"],
+              "prompt": "Active item gets a hand-drawn circle ring around it like someone circled it with a marker"
+            },
+            "inputFocus": {
+              "selections": ["scribble-underline-focus"],
+              "prompt": "Input gets a scribbled underline as if someone drew it urgently with a pen"
+            },
+            "toggleSwitch": {
+              "selections": ["fist-punch-toggle"],
+              "prompt": "Toggle snaps between states with a fist-punch impact feel — instant and forceful"
+            },
+            "tooltips": {
+              "selections": ["speech-bubble-shout"],
+              "prompt": "Tooltip appears as a jagged-edge speech bubble as if someone is shouting the information"
+            },
+            "loadingState": {
+              "selections": ["megaphone-pulse-spin"],
+              "prompt": "Loading shown as a megaphone icon pulsing and rotating with sound-wave rings emanating outward"
+            },
+            "idleAmbient": {
+              "selections": ["poster-flutter-micro"],
+              "prompt": "Torn poster edges flutter subtly as if caught by wind on a street wall"
+            },
+            "microFeedback": {
+              "selections": ["megaphone-shake-confirm"],
+              "prompt": "A brief megaphone icon shakes with emphasis and a HEARD! stamp appears"
+            }
+          },
+          "viewHints": {
+            "dashboard": "Protest rally dashboard — progress rings styled as raised-fist power meters, large bold stat slogans in Impact, wheat-paste collage background with torn flyer layers.",
+            "projects": "Bulletin board with projects as stapled/taped flyers at random angles, each with torn edges and hand-stamped status marks.",
+            "project-workspace": "Zine layout workspace with cut-and-paste collage panels, rough dividers, and ransom-note style section headers.",
+            "kanban": "Sticky notes on corkboard — hand-scrawled cards pinned with pushpins, columns marked with spray-paint stencil headers.",
+            "whiteboard": "Protest sign workshop canvas — nodes are picket signs with hand-lettered text, connectors are string and tape lines.",
+            "schema-planner": "Conspiracy board style with entities as pinned photos/documents connected by red string lines with pushpin markers.",
+            "directory-tree": "Stacked flyer pile with indentation shown as overlapping torn-edge papers, folder names in stencil spray-paint.",
+            "ideas": "Cork board pins — each idea is a pinned index card at slight rotation with hand-stamped category marks and torn edges.",
+            "ai-chat": "Post-it note exchange — user messages on yellow post-its, AI on hot magenta post-its, stuck at angles with tape marks visible.",
+            "settings": "Zine control panel with hand-drawn checkbox doodles, spray-paint section dividers, and marker-scrawled labels."
+          },
+          "antiRepeat": [
+            "Pass 1 used light paper+red monolithic slabs — use black background with magenta+yellow poster collage instead",
+            "Pass 2 used newspaper manifesto with blue+red stamps — use protest zine with torn edges and wheat-paste instead",
+            "Pass 3 used terminal CLI with green phosphor — use DIY punk poster aesthetic instead",
+            "Pass 4 used blueprint grid with navy+orange — use chaotic collage with torn paper textures instead"
+          ]
+        },
+        {
+          "pass": 6,
+          "variantSeed": "warehouse-industrial-logistics",
+          "direction": "Warehouse industrial logistics aesthetic. The UI channels a shipping warehouse operations center — corrugated steel surfaces, barcode labels, hazmat stripe borders, and shipping container proportions. Navigation uses manifest-style numbered tabs. Content is organized in container-grid units with pallet-stack hierarchy. Everything feels functional, utilitarian, and built for heavy-duty throughput — like the control screen on a forklift or warehouse management system.",
+          "paletteOverrides": {
+            "bg": "#2b2b2b",
+            "text": "#e8e4de",
+            "surface": "#383838",
+            "accent": "#d4622a",
+            "accent2": "#5a8fa8",
+            "border": "#555555"
+          },
+          "typographyOverrides": {
+            "heading": "Saira Condensed",
+            "body": "DM Mono",
+            "mono": "DM Mono"
+          },
+          "contentPersona": "logistics-supply-chain-company",
+          "interactionProfile": {
+            "buttonHover": {
+              "selections": ["corrugated-press-indent"],
+              "prompt": "Button surface shows a corrugated steel press indent pattern on hover like stamping sheet metal"
+            },
+            "buttonClick": {
+              "selections": ["hydraulic-press-down"],
+              "prompt": "Button presses down with hydraulic weight — slow compression, fast release with a mechanical snap"
+            },
+            "cardHover": {
+              "selections": ["forklift-lift-raise"],
+              "prompt": "Card raises from below as if lifted by forklift tines — parallel bottom edge rises first, then content levels out"
+            },
+            "pageTransition": {
+              "selections": ["container-door-slide"],
+              "prompt": "View transitions like a shipping container door sliding open to reveal contents — heavy lateral slide with metal rail feel"
+            },
+            "scrollReveal": {
+              "selections": ["pallet-stack-drop-in"],
+              "prompt": "Content drops into place from above like pallets being stacked by an overhead crane — weighted and deliberate"
+            },
+            "navItemHover": {
+              "selections": ["barcode-scan-flash"],
+              "prompt": "A barcode scanner laser line sweeps across the nav item on hover"
+            },
+            "navItemActive": {
+              "selections": ["hazmat-stripe-indicator"],
+              "prompt": "Active item gets diagonal hazmat-stripe accent bar in rust orange and black"
+            },
+            "inputFocus": {
+              "selections": ["scan-line-border"],
+              "prompt": "Input border becomes a scanning laser line that sweeps back and forth"
+            },
+            "toggleSwitch": {
+              "selections": ["circuit-breaker-flip"],
+              "prompt": "Toggle flips like an industrial circuit breaker — heavy mechanical snap between ON/OFF states"
+            },
+            "tooltips": {
+              "selections": ["shipping-label-popup"],
+              "prompt": "Tooltip appears as a shipping label with barcode, weight, and destination-style formatting"
+            },
+            "loadingState": {
+              "selections": ["shipping-scan-progress"],
+              "prompt": "Loading shown as a barcode being scanned — laser line sweeps with percentage readout in mono font"
+            },
+            "idleAmbient": {
+              "selections": ["conveyor-belt-drift"],
+              "prompt": "Subtle conveyor belt line animation drifts along section dividers"
+            },
+            "microFeedback": {
+              "selections": ["scan-confirmed-beep"],
+              "prompt": "A green SCAN OK badge flashes with a barcode checkmark icon"
+            }
+          },
+          "viewHints": {
+            "dashboard": "Gauge cluster dashboard — circular pressure gauges, temperature dials, and throughput meters arranged in a warehouse operations control panel with hazmat stripe dividers.",
+            "projects": "Shipping manifest table with projects as line items — tracking numbers, weight, destination, status columns in strict grid with barcode identifiers.",
+            "project-workspace": "Loading dock layout with main content as the dock bay and sidebar as the manifest clipboard. Corrugated steel panel borders.",
+            "kanban": "Shipping manifest board — columns are loading zones (INBOUND/STAGING/OUTBOUND/DELIVERED), cards are package labels with barcode headers and weight tags.",
+            "whiteboard": "Supply chain diagram canvas with nodes as warehouse buildings and connectors as truck route lines with distance/time annotations.",
+            "schema-planner": "Inventory database view with entities as warehouse bins and fields as item specifications in barcode-labeled rows.",
+            "directory-tree": "Warehouse aisle hierarchy — aisles > shelves > bins > items with location codes (A1-S3-B7) as identifiers.",
+            "ideas": "Polaroid gallery — each idea is a polaroid-style card with a rust-orange bottom label strip, pinned to a corrugated metal backing board.",
+            "ai-chat": "Radio dispatch format — messages prefixed with call signs and timestamps in mono font, styled as warehouse floor radio communication with static line separators.",
+            "settings": "Industrial control panel with chunky toggle switches, pressure gauge indicators, and sections bordered by hazmat stripes."
+          },
+          "antiRepeat": [
+            "Pass 1 used light paper+red ink monolith slabs — use dark corrugated steel with rust orange instead",
+            "Pass 2 used newspaper manifesto broadsheet — use shipping manifest grid instead",
+            "Pass 3 used terminal CRT with green text — use warehouse operations panel with mono readouts instead",
+            "Pass 4 used blueprint drafting with navy — use industrial warehouse with steel gray instead"
+          ]
         }
       ]
     },
@@ -763,6 +946,188 @@
             "Pass 3 used vibrant multicolor collage with patterns — use monochrome sage/stone with no patterns instead",
             "Pass 3 used overlapping collage cards — use isolated elements with maximum whitespace instead",
             "Pass 3 used wizard-step settings — use sparse single-scroll settings instead"
+          ]
+        },
+        {
+          "pass": 5,
+          "variantSeed": "danish-hygge-warmth",
+          "direction": "Danish hygge warmth aesthetic. The UI radiates cozy Scandinavian intimacy — soft blush pinks, warm wood tones, and cream backgrounds create an inviting atmosphere like a candlelit Copenhagen living room. Rounded corners everywhere suggest comfort. Knit-texture patterns provide tactile warmth. Navigation feels like browsing a curated Scandinavian furniture catalog. Generous padding, soft shadows, and the golden glow of candlelight create an emotionally warm, intimate digital environment.",
+          "paletteOverrides": {
+            "bg": "#faf5f0",
+            "text": "#3a2e28",
+            "surface": "#fff8f2",
+            "accent": "#d4927a",
+            "accent2": "#a08060",
+            "border": "#e8ddd0"
+          },
+          "typographyOverrides": {
+            "heading": "Lora",
+            "body": "Karla",
+            "mono": "JetBrains Mono"
+          },
+          "contentPersona": "scandinavian-furniture-brand",
+          "interactionProfile": {
+            "buttonHover": {
+              "selections": ["gentle-glow-warm-hover"],
+              "prompt": "Button gains a soft warm candlelight glow emanating from within — subtle blush radiance that feels like holding hands near a flame"
+            },
+            "buttonClick": {
+              "selections": ["cushion-press-soft"],
+              "prompt": "Button compresses gently like pressing into a wool cushion — slow, soft easing with warm shadow deepening"
+            },
+            "cardHover": {
+              "selections": ["candlelight-shadow-dance"],
+              "prompt": "Card shadow shifts and flickers subtly as if illuminated by a nearby candle — warm, living shadow movement"
+            },
+            "pageTransition": {
+              "selections": ["soft-curtain-draw"],
+              "prompt": "Views transition like drawing a linen curtain — soft fabric-like horizontal sweep with gentle opacity blend"
+            },
+            "scrollReveal": {
+              "selections": ["warm-fade-rise-gentle"],
+              "prompt": "Content fades in from below with a warm golden tint that settles into normal color — like morning light filling a room"
+            },
+            "navItemHover": {
+              "selections": ["wood-grain-highlight"],
+              "prompt": "A warm wood-grain textured highlight bar appears behind the nav item"
+            },
+            "navItemActive": {
+              "selections": ["candle-flame-dot"],
+              "prompt": "Active item has a tiny animated candle-flame dot indicator that gently flickers"
+            },
+            "inputFocus": {
+              "selections": ["warm-wool-border-glow"],
+              "prompt": "Input border gains a soft fuzzy glow like wool fibers catching light — warm blush tone"
+            },
+            "toggleSwitch": {
+              "selections": ["wool-stretch-toggle"],
+              "prompt": "Toggle thumb stretches slightly like pulled wool yarn before snapping to position with a cozy bounce"
+            },
+            "tooltips": {
+              "selections": ["linen-card-tooltip"],
+              "prompt": "Tooltip appears as a soft linen-textured card with rounded corners and warm cream background"
+            },
+            "loadingState": {
+              "selections": ["coffee-cup-steam-rise"],
+              "prompt": "Loading shown as steam wisps rising from a coffee cup silhouette — gentle, meditative, unhurried"
+            },
+            "idleAmbient": {
+              "selections": ["candle-flicker-ambient"],
+              "prompt": "Subtle candlelight flicker effect on accent elements — warm golden micro-variations in opacity and color temperature"
+            },
+            "microFeedback": {
+              "selections": ["heart-warmth-pulse"],
+              "prompt": "A small warm heart shape pulses once with a golden glow and fades — gentle confirmation"
+            }
+          },
+          "viewHints": {
+            "dashboard": "Weather-widget style dashboard — cozy stat cards with rounded corners showing metrics like a home weather station. Warm blush and wood tones, knit-pattern section dividers, candlelight glow on key numbers.",
+            "projects": "Bookshelf display with projects as book spines on a warm wooden shelf. Each spine has a soft blush or cream color with serif titles.",
+            "project-workspace": "Reading nook layout with a large content area like an open book, sidebar as a wooden side table with tools and notes.",
+            "kanban": "Recipe steps board — columns are cooking stages (PREP/MIX/BAKE/SERVE) with cards as hand-written recipe step cards on warm cream paper with rounded corners.",
+            "whiteboard": "Yarn-board canvas with soft nodes connected by yarn-like curved lines in warm tones. Knit-pattern backgrounds on node shapes.",
+            "schema-planner": "Cookbook index layout with entities as recipe categories and fields as ingredients listed on warm cream cards.",
+            "directory-tree": "Wooden drawer organizer tree with warm-toned folder compartments and soft labels in serif type.",
+            "ideas": "Index card filing cabinet — ideas as cream-colored index cards with rounded tabs, warm wood card holder background, handwritten-feel category labels.",
+            "ai-chat": "Letter writing format — messages styled as handwritten letters on warm cream stationery with soft blush borders, wax-seal-style timestamps.",
+            "settings": "Cozy control panel with soft rounded toggle switches, warm wood section backgrounds, and generous spacing like a hygge interior."
+          },
+          "antiRepeat": [
+            "Pass 1 used teak credenza furniture logic with amber+olive — use blush+wood Danish hygge warmth instead",
+            "Pass 2 used atomic tulip-table radial layout with mustard — use cozy intimate reading-nook layout instead",
+            "Pass 3 used vibrant Girard textile collage with multicolor — use soft monochrome warmth with knit textures instead",
+            "Pass 4 used sparse Noguchi sculpture garden with sage — use warm filled hygge comfort with candlelight instead"
+          ]
+        },
+        {
+          "pass": 6,
+          "variantSeed": "pop-art-warhol-screen-print",
+          "direction": "Pop art Warhol screen-print aesthetic. The UI explodes with Andy Warhol's factory energy — electric pink, cyan, and acid green clash on white. Ben-Day dots and halftone patterns cover surfaces. Comic-panel layouts with thick black outlines. Speech bubble tooltips and POW!/ZAP! micro-feedback. Everything is loud, graphic, and unapologetically attention-demanding. The app feels like walking through a pop art gallery exhibition crossed with a comic book store.",
+          "paletteOverrides": {
+            "bg": "#ffffff",
+            "text": "#0a0a0a",
+            "surface": "#f5f5f5",
+            "accent": "#ff1493",
+            "accent2": "#00e5ff",
+            "border": "#0a0a0a"
+          },
+          "typographyOverrides": {
+            "heading": "Bebas Neue",
+            "body": "Rubik",
+            "mono": "Space Mono"
+          },
+          "contentPersona": "magazine-media-brand",
+          "interactionProfile": {
+            "buttonHover": {
+              "selections": ["halftone-dot-fill-reveal"],
+              "prompt": "Button fills with a Ben-Day dot halftone pattern on hover — dots scale up from zero to full creating a screen-print reveal effect"
+            },
+            "buttonClick": {
+              "selections": ["pow-burst-comic"],
+              "prompt": "A comic-style POW! burst shape explodes from the button on click with jagged starburst edges"
+            },
+            "cardHover": {
+              "selections": ["color-channel-shift"],
+              "prompt": "Card shifts its color channels — cyan and magenta separate slightly creating a misregistered screen-print effect on hover"
+            },
+            "pageTransition": {
+              "selections": ["comic-panel-wipe"],
+              "prompt": "Views transition as comic panels sliding in — thick black borders frame the incoming view as a new panel"
+            },
+            "scrollReveal": {
+              "selections": ["halftone-fade-resolve"],
+              "prompt": "Content appears first as abstract halftone dots that resolve into sharp images and text — like a newspaper photo zooming in"
+            },
+            "navItemHover": {
+              "selections": ["color-swap-pop"],
+              "prompt": "Nav item swaps to a complementary pop color (pink becomes cyan, cyan becomes acid green) on hover"
+            },
+            "navItemActive": {
+              "selections": ["thick-outline-box-active"],
+              "prompt": "Active item gets a thick black comic-outline box with a colored fill background"
+            },
+            "inputFocus": {
+              "selections": ["halftone-border-pattern"],
+              "prompt": "Input border becomes a halftone dot pattern in accent color on focus"
+            },
+            "toggleSwitch": {
+              "selections": ["comic-smash-toggle"],
+              "prompt": "Toggle slams between states with a brief SMASH! visual burst — thick black impact lines radiate out"
+            },
+            "tooltips": {
+              "selections": ["speech-bubble-comic-tooltip"],
+              "prompt": "Tooltip appears as a classic comic speech bubble with thick black outline, pointed tail, and bold text"
+            },
+            "loadingState": {
+              "selections": ["screen-print-layer-build"],
+              "prompt": "Loading shown as screen-print color layers being applied one at a time — cyan first, then magenta, then yellow, then black (CMYK build-up)"
+            },
+            "idleAmbient": {
+              "selections": ["halftone-dot-drift"],
+              "prompt": "Background Ben-Day dots slowly shift and scale creating a living halftone texture"
+            },
+            "microFeedback": {
+              "selections": ["zap-starburst-confirm"],
+              "prompt": "A ZAP! comic starburst flashes in acid green on success and dissolves"
+            }
+          },
+          "viewHints": {
+            "dashboard": "Live feed ticker dashboard — scrolling headline ticker at top, oversized stat numbers in Bebas Neue with halftone pattern backgrounds, color-blocked metric panels in pink/cyan/green.",
+            "projects": "Magazine cover grid — each project is a magazine cover with bold title, halftone hero image area, and thick black borders.",
+            "project-workspace": "Comic strip layout with workspace panels as comic frames — thick black dividers, speech bubble annotations, action-word callouts.",
+            "kanban": "Playlist queue board — columns as music playlist categories with cards as album-cover-style tiles featuring halftone patterns and bold track titles.",
+            "whiteboard": "Pop art gallery canvas with nodes as Warhol-style repeated image frames in different color variations, connected by thick black lines.",
+            "schema-planner": "Infographic poster layout with entities as bold color-blocked sections and fields as bullet-point callouts with Ben-Day dot backgrounds.",
+            "directory-tree": "Magazine table of contents with bold section numbers, halftone category headers, and thick rule dividers.",
+            "ideas": "Vinyl record shelf — each idea is a record sleeve with bold graphic cover art, thick spine labels, and pop-color category dots.",
+            "ai-chat": "Speech bubble comic exchange — AI messages in pink bubbles, user in cyan bubbles, thick black outlines, occasional POW/ZAP emphasis marks on key responses.",
+            "settings": "Control panel styled as a magazine masthead settings page — bold section headers, thick rules, color-blocked toggle groups with halftone accents."
+          },
+          "antiRepeat": [
+            "Pass 1 used warm teak Eames furniture with amber — use electric pink+cyan pop art with halftone instead",
+            "Pass 2 used atomic-age Saarinen with mustard+orange — use Warhol screen-print with CMYK colors instead",
+            "Pass 3 used Girard textile folk art with coral+olive — use comic panel pop art with thick black outlines instead",
+            "Pass 4 used minimal Noguchi zen with sage+stone — use maximum-volume pop art with Ben-Day dots instead"
           ]
         }
       ]
@@ -1133,6 +1498,188 @@
             "Pass 3 used film-reel transitions — use receipt-roll and fizz-bubble transitions instead",
             "Pass 3 used comic panel chat — use handwritten napkin-note chat instead"
           ]
+        },
+        {
+          "pass": 5,
+          "variantSeed": "motel-neon-roadside",
+          "direction": "Motel neon roadside aesthetic. The UI channels a late-night desert highway motel — buzzing neon signs against dark asphalt, flickering vacancy signs, road-stripe dividers, and the romance of Route 66. Teal and hot pink neon tubes glow against dark charcoal backgrounds. Navigation feels like flipping through a roadside attraction guide. Cards look like license plates and postcards. The whole interface hums with the electric buzz of a roadside motel sign at 2am.",
+          "paletteOverrides": {
+            "bg": "#1a1a1e",
+            "text": "#f5f0e8",
+            "surface": "#252528",
+            "accent": "#00c9b7",
+            "accent2": "#ff3878",
+            "border": "#3a3a40"
+          },
+          "typographyOverrides": {
+            "heading": "Permanent Marker",
+            "body": "Cabin",
+            "mono": "Source Code Pro"
+          },
+          "contentPersona": "road-trip-travel-app",
+          "interactionProfile": {
+            "buttonHover": {
+              "selections": ["neon-tube-flicker-on"],
+              "prompt": "Button border flickers on like a neon tube — brief stutter-flash then steady glow in teal with pink shadow"
+            },
+            "buttonClick": {
+              "selections": ["neon-buzz-snap"],
+              "prompt": "Button snaps with a neon buzz effect — brief white flash followed by steady neon glow intensifying"
+            },
+            "cardHover": {
+              "selections": ["vacancy-sign-glow"],
+              "prompt": "Card gains a neon sign glow effect around its border — alternating teal and pink segments like a motel vacancy sign"
+            },
+            "pageTransition": {
+              "selections": ["headlight-sweep-reveal"],
+              "prompt": "New view is revealed by a headlight beam sweeping across from left to right like car headlights on a dark road"
+            },
+            "scrollReveal": {
+              "selections": ["road-sign-zoom-past"],
+              "prompt": "Content zooms in from a distance and settles into place like road signs approaching on a highway at night"
+            },
+            "navItemHover": {
+              "selections": ["neon-arrow-blink"],
+              "prompt": "A blinking neon arrow points to the hovered nav item like a motel sign directing guests"
+            },
+            "navItemActive": {
+              "selections": ["vacancy-lit-badge"],
+              "prompt": "Active item shows a glowing VACANCY-style neon badge indicator"
+            },
+            "inputFocus": {
+              "selections": ["neon-glow-border-teal"],
+              "prompt": "Input border glows teal neon with a subtle pink shadow offset like layered neon tubes"
+            },
+            "toggleSwitch": {
+              "selections": ["light-switch-snap-neon"],
+              "prompt": "Toggle snaps like a motel light switch — OFF is dark, ON triggers a neon glow animation"
+            },
+            "tooltips": {
+              "selections": ["road-sign-tooltip"],
+              "prompt": "Tooltip appears as a reflective road sign with white text on dark green background and retroreflective border"
+            },
+            "loadingState": {
+              "selections": ["vacancy-sign-animation"],
+              "prompt": "Loading shown as a motel vacancy sign with letters lighting up one at a time — V-A-C-A-N-C-Y then cycling"
+            },
+            "idleAmbient": {
+              "selections": ["neon-buzz-flicker"],
+              "prompt": "Subtle neon sign buzz-flicker on accent elements — occasional micro-stutter like aging neon tubes"
+            },
+            "microFeedback": {
+              "selections": ["check-in-stamp-confirm"],
+              "prompt": "A CHECKED IN motel stamp appears briefly with a neon glow halo"
+            }
+          },
+          "viewHints": {
+            "dashboard": "Motel marquee dashboard with key stats displayed as neon sign readouts, road-stripe dividers between sections, and a flickering vacancy/no-vacancy indicator for capacity metrics.",
+            "projects": "Postcards from the road — each project is a vintage postcard with neon-lit location name, scenic description, and a postage-stamp status badge.",
+            "project-workspace": "Road trip map layout with main content as the map and sidebar as the glove-compartment trip planner. Road-stripe dividers between sections.",
+            "kanban": "License-plate cards on an asphalt board — columns are route stops (DEPARTURE/EN ROUTE/REST STOP/DESTINATION), cards styled as state license plates with embossed text.",
+            "whiteboard": "Route-map navigation canvas with nodes as roadside attraction markers connected by dotted highway lines with mile-marker annotations.",
+            "schema-planner": "Gas station map display with entities as towns/stops along a route and fields as amenities listed in road-sign style.",
+            "directory-tree": "Interstate highway hierarchy — interstates > state routes > local roads > addresses with highway shield icons at each level.",
+            "ideas": "Polaroid gallery — each idea is a polaroid snapshot pinned to a corkboard with location/date labels and neon-accent category markers.",
+            "ai-chat": "Radio dispatch from the road — messages styled as CB radio transmissions with channel numbers, handles, and breaker-breaker formatting. Neon-teal for AI, pink for user.",
+            "settings": "Motel front desk control panel with room-key slot toggles, neon indicator lights, and vintage register-style grouped controls."
+          },
+          "antiRepeat": [
+            "Pass 1 used pastel pink+mint diner on light — use dark asphalt with teal+pink neon instead",
+            "Pass 2 used turquoise+coral space-age googie — use motel neon roadside with vacancy signs instead",
+            "Pass 3 used deep purple drive-in cinema — use dark charcoal roadside motel instead",
+            "Pass 4 used cheerful powder blue soda shop — use nighttime neon highway aesthetic instead"
+          ]
+        },
+        {
+          "pass": 6,
+          "variantSeed": "kitchen-appliance-pastel",
+          "direction": "Kitchen appliance pastel aesthetic. The UI channels a 1950s dream kitchen — avocado green appliances, harvest gold countertops, copper accents on cream tile walls. Navigation uses appliance dial controls. Cards look like recipe cards filed in a metal box. Every interaction feels domestic, warm, and wholesome — like flipping through grandma's recipe box while a pie bakes in the oven. Rounded appliance-style control knobs, oven timer loading indicators, and refrigerator-magnet navigation.",
+          "paletteOverrides": {
+            "bg": "#faf5e8",
+            "text": "#2a2420",
+            "surface": "#fff8ee",
+            "accent": "#6b8a3e",
+            "accent2": "#c4962a",
+            "border": "#d4c8a8"
+          },
+          "typographyOverrides": {
+            "heading": "Pacifico",
+            "body": "Atkinson Hyperlegible",
+            "mono": "Courier Prime"
+          },
+          "contentPersona": "home-recipe-cooking-app",
+          "interactionProfile": {
+            "buttonHover": {
+              "selections": ["appliance-button-glow"],
+              "prompt": "Button gains a warm backlit glow like an appliance indicator light — soft avocado green illumination behind the surface"
+            },
+            "buttonClick": {
+              "selections": ["oven-knob-click-press"],
+              "prompt": "Button depresses with a satisfying click like pushing an oven control button — tactile mechanical feel with a brief copper flash"
+            },
+            "cardHover": {
+              "selections": ["recipe-card-thumb-lift"],
+              "prompt": "Card lifts at the top edge like thumbing through a recipe card box — slight tilt with shadow suggesting the card being pulled up"
+            },
+            "pageTransition": {
+              "selections": ["recipe-box-flip"],
+              "prompt": "Views transition by flipping like recipe cards in a metal box — the current card flips backward revealing the next"
+            },
+            "scrollReveal": {
+              "selections": ["shelf-slide-in"],
+              "prompt": "Content slides in from the side like items being placed on a kitchen shelf — warm, deliberate placement with a settling bounce"
+            },
+            "navItemHover": {
+              "selections": ["magnet-wiggle-hover"],
+              "prompt": "Nav item wiggles slightly like a refrigerator magnet being nudged — playful micro-rotation"
+            },
+            "navItemActive": {
+              "selections": ["fridge-magnet-stuck"],
+              "prompt": "Active item looks stuck to the surface like a fridge magnet — slight 3D raised effect with a cast shadow"
+            },
+            "inputFocus": {
+              "selections": ["copper-ring-focus"],
+              "prompt": "Input gains a warm copper ring border on focus like a copper pot rim"
+            },
+            "toggleSwitch": {
+              "selections": ["appliance-dial-turn"],
+              "prompt": "Toggle animates like turning an appliance dial — rotational motion with click stops"
+            },
+            "tooltips": {
+              "selections": ["recipe-note-tooltip"],
+              "prompt": "Tooltip appears as a hand-written recipe note on cream paper with a small copper pin"
+            },
+            "loadingState": {
+              "selections": ["oven-timer-countdown"],
+              "prompt": "Loading shown as a vintage oven timer dial counting down — circular progress with tick marks and a DING indication at completion"
+            },
+            "idleAmbient": {
+              "selections": ["warm-kitchen-glow"],
+              "prompt": "Subtle warm golden ambient glow on surfaces — like afternoon sunlight streaming through a kitchen window"
+            },
+            "microFeedback": {
+              "selections": ["ding-timer-done"],
+              "prompt": "A small oven timer icon rings with a DING! badge — warm copper flash on success"
+            }
+          },
+          "viewHints": {
+            "dashboard": "Kitchen counter dashboard with stat cards as appliance displays — oven temperature gauge for progress, mixer speed dial for velocity metrics, copper-accented measurement cups for volume stats.",
+            "projects": "Recipe box filing system with projects as tabbed recipe cards in a metal box — category divider tabs in avocado green and harvest gold.",
+            "project-workspace": "Kitchen counter workspace with main content as the cutting board area and sidebar as the spice rack organizer. Copper utensil dividers between sections.",
+            "kanban": "Recipe steps board — columns are cooking stages (MISE EN PLACE/PREP/COOK/PLATE) with cards as recipe step cards featuring ingredient checkboxes and timer annotations.",
+            "whiteboard": "Kitchen planning board with nodes as ingredient/equipment items connected by recipe-flow arrows. Checkered tablecloth background pattern.",
+            "schema-planner": "Cookbook index layout with entities as meal categories and fields as recipe attributes on cream cards with copper-foil headers.",
+            "directory-tree": "Pantry shelf hierarchy — shelves > sections > items with hand-lettered labels and avocado green folder markers.",
+            "ideas": "Refrigerator magnet board — each idea is a colorful fridge magnet on a cream refrigerator door surface with hand-written labels and copper pin accents.",
+            "ai-chat": "Handwritten recipe exchange — messages styled as recipe cards passed back and forth. AI writes on avocado green cards, user on harvest gold cards, both with hand-lettered fonts.",
+            "settings": "Appliance control panel with vintage dial knobs, rocker switches with copper trim, and grouped controls under hand-lettered section headers on cream backgrounds."
+          },
+          "antiRepeat": [
+            "Pass 1 used chrome diner with pink+mint neon — use kitchen appliance pastels with avocado+gold+copper instead",
+            "Pass 2 used space-age googie with turquoise+coral — use domestic kitchen with warm appliance tones instead",
+            "Pass 3 used dark cinema marquee with purple+yellow — use bright kitchen cream with green+gold instead",
+            "Pass 4 used soda fountain pharmacy with cherry red+blue — use home kitchen with avocado+harvest gold instead"
+          ]
         }
       ]
     },
@@ -1501,6 +2048,188 @@
             "Pass 3 used magnetic snap interactions — use soft bleed and paint-stroke interactions instead",
             "Pass 3 used terminal-sleek chrome chat — use handwritten letter watercolor chat instead"
           ]
+        },
+        {
+          "pass": 5,
+          "variantSeed": "neon-plasma-electric",
+          "direction": "Neon plasma electric aesthetic. The UI channels an electronic music visualizer — electric cyan and magenta plasma tendrils pulse on a deep indigo void. Audio waveform patterns replace traditional charts. Equalizer bars serve as loading indicators. Navigation throbs with beat-pulse rhythm. Everything vibrates with the energy of a bass drop at a darkened warehouse rave. Synth-wave typography, glitch distortion effects, and the constant suggestion of sound made visible through light.",
+          "paletteOverrides": {
+            "bg": "#0c0820",
+            "text": "#e0e8ff",
+            "surface": "#141030",
+            "accent": "#00e5ff",
+            "accent2": "#ff00aa",
+            "border": "#2a1e4a"
+          },
+          "typographyOverrides": {
+            "heading": "Syncopate",
+            "body": "Lexend",
+            "mono": "Fira Code"
+          },
+          "contentPersona": "electronic-music-label",
+          "interactionProfile": {
+            "buttonHover": {
+              "selections": ["plasma-tendril-wrap"],
+              "prompt": "Electric plasma tendrils crawl around the button perimeter on hover — cyan energy lines that fork and spark"
+            },
+            "buttonClick": {
+              "selections": ["bass-drop-pulse-burst"],
+              "prompt": "Button triggers a bass-drop shockwave — a concentric pulse ring expands outward with screen micro-shake"
+            },
+            "cardHover": {
+              "selections": ["waveform-border-pulse"],
+              "prompt": "Card border becomes a live audio waveform — oscillating line that responds to hover position as if the cursor is a frequency dial"
+            },
+            "pageTransition": {
+              "selections": ["glitch-distortion-swap"],
+              "prompt": "Views transition with a digital glitch distortion — brief RGB channel separation, scan line corruption, then the new view snaps clean"
+            },
+            "scrollReveal": {
+              "selections": ["frequency-sweep-materialize"],
+              "prompt": "Content materializes through a frequency sweep — elements appear as horizontal scan lines that build from noise into clarity"
+            },
+            "navItemHover": {
+              "selections": ["beat-pulse-highlight"],
+              "prompt": "Nav item pulses with a rhythmic beat — opacity and scale oscillate at a steady BPM-like tempo"
+            },
+            "navItemActive": {
+              "selections": ["equalizer-bar-indicator"],
+              "prompt": "Active item has a small equalizer bar visualization bouncing beside it — 3-4 bars at different heights"
+            },
+            "inputFocus": {
+              "selections": ["plasma-arc-border"],
+              "prompt": "Input border sparks with plasma arc effects — tiny lightning forks travel along the border edges"
+            },
+            "toggleSwitch": {
+              "selections": ["power-surge-toggle"],
+              "prompt": "Toggle fires with a power surge effect — brief overcharge flash as it snaps between states with trailing plasma afterglow"
+            },
+            "tooltips": {
+              "selections": ["hologram-popup-glitch"],
+              "prompt": "Tooltip appears as a holographic projection with brief glitch artifacts — scanline distortion then stabilization"
+            },
+            "loadingState": {
+              "selections": ["equalizer-loading-bars"],
+              "prompt": "Loading shown as an audio equalizer — multiple vertical bars bouncing at different frequencies, building to a crescendo at completion"
+            },
+            "idleAmbient": {
+              "selections": ["beat-pulse-idle-ambient"],
+              "prompt": "Subtle beat-pulse ambient on background elements — slow rhythmic opacity pulse like a resting heartbeat in the indigo void"
+            },
+            "microFeedback": {
+              "selections": ["drop-confirmed-flash"],
+              "prompt": "A brief full-screen edge flash in cyan with a DROP! text stamp confirms success"
+            }
+          },
+          "viewHints": {
+            "dashboard": "Audio waveform charts replacing traditional graphs — metrics displayed as frequency visualizations, equalizer bar stat indicators, and plasma-glow key numbers on deep indigo.",
+            "projects": "Playlist queue — projects listed as tracks in a DJ setlist with BPM, key, and duration metadata. Waveform preview strips for each entry.",
+            "project-workspace": "DJ deck layout — dual-pane workspace with turntable-style circular navigation elements and crossfader-style panel dividers.",
+            "kanban": "Playlist queue board — columns as playlist categories (QUEUE/NOW PLAYING/MIXED/ARCHIVED) with cards as track cards featuring waveform thumbnails and BPM badges.",
+            "whiteboard": "Modular synth patch canvas — nodes as synth modules with knob/slider interfaces, connected by patch cable lines in neon cyan and magenta.",
+            "schema-planner": "Signal flow diagram — entities as audio processing blocks connected by signal-path lines with frequency/amplitude annotations.",
+            "directory-tree": "Sample library browser — hierarchical tree styled as a music production sample library with folder icons as genre categories.",
+            "ideas": "Vinyl record shelf — each idea is a record sleeve on a shelf with glowing spine labels. Hover reveals the full cover with waveform art and track listing.",
+            "ai-chat": "Voice memo style exchange — messages styled as audio recording cards with waveform visualizations, timestamp markers, and play/pause controls. Cyan for AI, magenta for user.",
+            "settings": "Mixing console — controls laid out as a mixer channel strip with faders, knobs, and illuminated buttons. Section groups are channel banks."
+          },
+          "antiRepeat": [
+            "Pass 1 used blue-purple blob morphing on light — use deep indigo with cyan+magenta plasma energy instead",
+            "Pass 2 used ocean wave water motion — use audio waveform and equalizer motion instead",
+            "Pass 3 used chrome/mercury metallic on charcoal — use neon plasma on deep indigo instead",
+            "Pass 4 used soft pastel watercolor on white — use intense neon electronic on black instead"
+          ]
+        },
+        {
+          "pass": 6,
+          "variantSeed": "ink-in-water-calligraphy",
+          "direction": "Ink in water calligraphy aesthetic. The UI channels the meditative art of ink dropping into still water — deep navy as the water, white and gold ink strokes diffusing and curling through the space. Transitions are ink diffusion animations. Borders are quill-stroke lines that taper. Navigation elements have the weight and deliberation of brush calligraphy. Everything feels intentional, elegant, and caught in the moment between control and beautiful chaos as ink meets water.",
+          "paletteOverrides": {
+            "bg": "#0a1628",
+            "text": "#f0ece4",
+            "surface": "#0f1e38",
+            "accent": "#ffffff",
+            "accent2": "#c8a84e",
+            "border": "#1a3050"
+          },
+          "typographyOverrides": {
+            "heading": "Playfair Display",
+            "body": "Source Sans 3",
+            "mono": "IBM Plex Mono"
+          },
+          "contentPersona": "calligraphy-stationery-brand",
+          "interactionProfile": {
+            "buttonHover": {
+              "selections": ["ink-bleed-border-fill"],
+              "prompt": "Button border bleeds inward like ink diffusing in water — white ink slowly fills from edges toward center with organic irregular flow"
+            },
+            "buttonClick": {
+              "selections": ["ink-drop-splash"],
+              "prompt": "A single ink drop splashes at the click point and diffuses outward in a beautiful organic pattern before fading"
+            },
+            "cardHover": {
+              "selections": ["ink-tendril-border-curl"],
+              "prompt": "Thin ink tendrils curl along the card border on hover — organic, unpredictable paths that suggest calligraphy flourishes"
+            },
+            "pageTransition": {
+              "selections": ["ink-diffusion-dissolve"],
+              "prompt": "Current view dissolves as if ink diffusing in water — content bleeds and disperses, then the new view coalesces from ink tendrils"
+            },
+            "scrollReveal": {
+              "selections": ["quill-stroke-write-in"],
+              "prompt": "Content appears as if being written by an invisible quill — text and elements draw on with calligraphic stroke animation from left to right"
+            },
+            "navItemHover": {
+              "selections": ["gold-ink-underline-draw"],
+              "prompt": "A gold ink underline draws itself under the nav item with tapered calligraphic thickness variation"
+            },
+            "navItemActive": {
+              "selections": ["ink-blot-indicator"],
+              "prompt": "Active item has an ink blot dot that slowly diffuses and holds — organic shape that stays visually interesting"
+            },
+            "inputFocus": {
+              "selections": ["quill-line-border"],
+              "prompt": "Input border redraws as a quill-stroke line on focus — tapered ends and organic thickness suggesting hand-drawn calligraphy"
+            },
+            "toggleSwitch": {
+              "selections": ["ink-flow-toggle"],
+              "prompt": "Toggle thumb flows between states like a drop of ink moving through water — organic, fluid path with trailing wisps"
+            },
+            "tooltips": {
+              "selections": ["parchment-scroll-tooltip"],
+              "prompt": "Tooltip unfurls like a tiny parchment scroll with gold-ink text and quill-stroke borders"
+            },
+            "loadingState": {
+              "selections": ["ink-drop-diffusion-loading"],
+              "prompt": "Loading shown as an ink drop slowly diffusing in water — the diffusion pattern grows until complete, creating a beautiful organic progress indicator"
+            },
+            "idleAmbient": {
+              "selections": ["scroll-ink-trail-ambient"],
+              "prompt": "Very subtle ink-trail wisps drift slowly across the deep navy background — ghost-like calligraphic strokes that fade"
+            },
+            "microFeedback": {
+              "selections": ["gold-seal-stamp-confirm"],
+              "prompt": "A gold wax-seal stamp impression appears and sets — elegant confirmation with a brief shine"
+            }
+          },
+          "viewHints": {
+            "dashboard": "Calligraphy manuscript dashboard — metrics written in elegant display type with gold ink numbers on navy. Ink-blot section dividers. Quill-stroke underlines on key stats.",
+            "projects": "Letter collection — each project is a sealed letter with calligraphic title, wax seal status indicator, and ink-stroke category flourishes.",
+            "project-workspace": "Writing desk layout — main content as a parchment surface with ink-well tools sidebar. Quill-stroke dividers between sections.",
+            "kanban": "Letter writing stages — columns as correspondence stages (DRAFT/ADDRESSING/SEALED/DELIVERED) with cards as folded letters with calligraphic headers and wax-seal status marks.",
+            "whiteboard": "Ink-wash painting canvas — nodes as ink-blot shapes with calligraphic text labels, connected by flowing ink-trail lines that curl and taper.",
+            "schema-planner": "Manuscript marginalia layout — entities as illuminated manuscript sections with gold-leaf accent fields and calligraphic relationship annotations.",
+            "directory-tree": "Book of contents — chapters and sections in calligraphic heading hierarchy with ornamental ink flourishes at each level.",
+            "ideas": "Index card filing cabinet — each idea on a cream card with calligraphic title, ink-wash category watermark, and gold-accent metadata.",
+            "ai-chat": "Letter writing exchange — AI messages as formal letters with calligraphic salutations on navy parchment, user messages as notes on cream with gold ink. Ink-blot message dividers.",
+            "settings": "Scribe's desk control panel — settings as manuscript notations with calligraphic section headers, quill-stroke toggles, and wax-seal confirmation indicators."
+          },
+          "antiRepeat": [
+            "Pass 1 used blue-purple blobs on light background — use deep navy with white+gold ink diffusion instead",
+            "Pass 2 used ocean wave current on dark blue — use still-water ink calligraphy on deep navy instead",
+            "Pass 3 used chrome mercury metallic on charcoal — use organic ink tendrils on navy instead",
+            "Pass 4 used soft watercolor pastel on white — use deliberate calligraphic ink on dark water instead"
+          ]
         }
       ]
     },
@@ -1868,6 +2597,188 @@
             "Pass 3 used pure black obsidian with fire/magma — use warm sandstone with sage/terracotta instead",
             "Pass 3 used glass reflections and volcanic cracks — use weathered erosion and canyon depth instead",
             "Pass 3 used forge communication chat — use park ranger field notes chat instead"
+          ]
+        },
+        {
+          "pass": 5,
+          "variantSeed": "marble-luxury-banking",
+          "direction": "Marble luxury banking aesthetic. The UI channels a private bank's marble-clad lobby — white Carrara marble surfaces with dark green accent panels, brass gold trim on every edge, and the hushed opulence of old money. Typography is classically elegant with engraved serif headings. Cards look like marble tiles with gold-foil borders. Navigation has the weight and permanence of brass door handles. Every interaction feels like opening a vault door — deliberate, heavy, and reassuringly expensive.",
+          "paletteOverrides": {
+            "bg": "#f2ece6",
+            "text": "#1a2a1a",
+            "surface": "#faf7f2",
+            "accent": "#1a4a2a",
+            "accent2": "#b8963a",
+            "border": "#d4cdc0"
+          },
+          "typographyOverrides": {
+            "heading": "Cinzel",
+            "body": "Libre Baskerville",
+            "mono": "IBM Plex Mono"
+          },
+          "contentPersona": "private-banking-finance",
+          "interactionProfile": {
+            "buttonHover": {
+              "selections": ["gold-foil-edge-reveal"],
+              "prompt": "Button reveals a gold foil edge trim on hover — brass-gold border appears with a subtle metallic sheen animation"
+            },
+            "buttonClick": {
+              "selections": ["vault-door-press"],
+              "prompt": "Button presses with vault-door heaviness — slow, deliberate compression with a weighty mechanical feel and brass flash"
+            },
+            "cardHover": {
+              "selections": ["marble-vein-shimmer"],
+              "prompt": "Card surface reveals subtle marble vein patterns that shimmer on hover — like polished stone catching light at different angles"
+            },
+            "pageTransition": {
+              "selections": ["vault-door-swing"],
+              "prompt": "Views transition like a vault door swinging open — heavy rotational pivot from one edge revealing the new view behind"
+            },
+            "scrollReveal": {
+              "selections": ["marble-slab-slide-in"],
+              "prompt": "Content slides into view as marble slabs — heavy, slow, with weighty momentum and a settling thud feel"
+            },
+            "navItemHover": {
+              "selections": ["brass-plate-engrave"],
+              "prompt": "Nav item gains a brass nameplate effect — engraved text on a gold-toned background plate"
+            },
+            "navItemActive": {
+              "selections": ["gold-bar-indicator"],
+              "prompt": "Active item has a solid brass-gold bar indicator — thick, polished, and weighty"
+            },
+            "inputFocus": {
+              "selections": ["brass-frame-border"],
+              "prompt": "Input border becomes a brass picture frame on focus — gold-toned with subtle bevel suggesting crafted metalwork"
+            },
+            "toggleSwitch": {
+              "selections": ["brass-lever-heavy-toggle"],
+              "prompt": "Toggle operates like a brass lever in a bank vault — heavy, deliberate slide with mechanical precision and a gold flash at each terminus"
+            },
+            "tooltips": {
+              "selections": ["engraved-plaque-tooltip"],
+              "prompt": "Tooltip appears as an engraved brass plaque with serif text — elegant, permanent-feeling, gold on dark green"
+            },
+            "loadingState": {
+              "selections": ["weighing-scale-balance"],
+              "prompt": "Loading shown as a balance weighing scale — the pans tip back and forth finding equilibrium, settling level at completion"
+            },
+            "idleAmbient": {
+              "selections": ["marble-light-drift"],
+              "prompt": "Very subtle light plays across marble surfaces — slow caustic-like reflections drifting as if from a chandelier"
+            },
+            "microFeedback": {
+              "selections": ["gold-seal-emboss-confirm"],
+              "prompt": "A gold embossed seal stamps into the surface — VERIFIED in engraved serif with a brass shine"
+            }
+          },
+          "viewHints": {
+            "dashboard": "Private bank portfolio view — key stats in engraved serif on marble cards, gold-foil accent on performance numbers, weighing-scale balance indicators for allocation metrics, brass-framed section dividers.",
+            "projects": "Leather-bound ledger with projects as entries in a gilt-edged register — gold page numbers, dark green headers, marble-texture row backgrounds.",
+            "project-workspace": "Partner's office layout — large marble-topped desk as main content area, brass-handled drawers sidebar for tools and resources.",
+            "kanban": "Safe deposit box grid — columns as vault sections, cards as numbered deposit boxes with brass latches and engraved nameplates.",
+            "whiteboard": "Boardroom diagram canvas — nodes as marble-framed portraits/documents connected by brass-rail lines with ornamental junction points.",
+            "schema-planner": "Legal document layout — entities as notarized certificate sections with gold-seal authenticity marks and brass-rule field dividers.",
+            "directory-tree": "Library card catalog — mahogany drawers with brass handles, filed alphabetically with gold-embossed category labels.",
+            "ideas": "Gallery exhibition — each idea framed in brass with marble wall mounting, engraved title plaque, and curator's description card below.",
+            "ai-chat": "Formal correspondence — AI messages as banker's letters with embossed letterhead on cream, user messages on marble-textured cards. Gold wax-seal message terminators.",
+            "settings": "Bank vault control panel — brass dial controls, marble-faced toggle housings, engraved section labels, and gold-leaf group dividers."
+          },
+          "antiRepeat": [
+            "Pass 1 used dark charcoal carved slate with amber — use white marble with dark green and brass gold instead",
+            "Pass 2 used dark layered strata with gold veins — use polished marble surface with brass trim instead",
+            "Pass 3 used black obsidian with molten red fire — use white marble with dark green and gold instead",
+            "Pass 4 used warm sandstone desert mesa — use cool marble luxury banking instead"
+          ]
+        },
+        {
+          "pass": 6,
+          "variantSeed": "concrete-brutalist-bunker",
+          "direction": "Concrete brutalist bunker aesthetic. The UI channels a military defense installation — raw exposed concrete walls, military olive drab surfaces, amber warning indicators, and the claustrophobic intensity of a command bunker. Navigation uses bunker-slit viewports — narrow horizontal windows revealing content. Pages transition like blast doors. Radar sweep loading animations. Camo-pattern textures on surfaces. Everything feels hardened, functional, and designed to survive. Zero decoration — pure operational utility.",
+          "paletteOverrides": {
+            "bg": "#2a2e20",
+            "text": "#d4d0c0",
+            "surface": "#353828",
+            "accent": "#b5b0a1",
+            "accent2": "#d4a020",
+            "border": "#4a4e38"
+          },
+          "typographyOverrides": {
+            "heading": "Bebas Neue",
+            "body": "Azeret Mono",
+            "mono": "Azeret Mono"
+          },
+          "contentPersona": "defense-security-contractor",
+          "interactionProfile": {
+            "buttonHover": {
+              "selections": ["amber-warning-flash-hover"],
+              "prompt": "Button border flashes amber warning on hover — brief staccato pulse like a threat-level indicator activating"
+            },
+            "buttonClick": {
+              "selections": ["blast-door-confirm-press"],
+              "prompt": "Button presses with blast-door finality — heavy downward slam with a concrete-thud feel and amber confirmation flash"
+            },
+            "cardHover": {
+              "selections": ["bunker-slit-viewport-peek"],
+              "prompt": "Card reveals content through a widening bunker slit — a horizontal viewport line expands to show card details"
+            },
+            "pageTransition": {
+              "selections": ["blast-door-slide-open"],
+              "prompt": "Views transition as blast doors — thick concrete panels slide apart from center revealing the new view with a heavy mechanical feel"
+            },
+            "scrollReveal": {
+              "selections": ["declassified-redact-reveal"],
+              "prompt": "Content appears through a declassification effect — black redaction bars slide away revealing text and elements underneath"
+            },
+            "navItemHover": {
+              "selections": ["status-light-amber-blink"],
+              "prompt": "Nav item gains a blinking amber status light indicator — military equipment style readiness signal"
+            },
+            "navItemActive": {
+              "selections": ["active-duty-stripe"],
+              "prompt": "Active item gets a military rank-stripe style indicator — parallel olive and amber diagonal stripes"
+            },
+            "inputFocus": {
+              "selections": ["perimeter-scan-border"],
+              "prompt": "Input border gains a scanning perimeter effect — a bright line sweeps around the border continuously like a security scan"
+            },
+            "toggleSwitch": {
+              "selections": ["missile-switch-guard-flip"],
+              "prompt": "Toggle operates under a safety guard — first click lifts the guard (visual), second confirms the switch with an amber flash"
+            },
+            "tooltips": {
+              "selections": ["classified-briefing-popup"],
+              "prompt": "Tooltip appears as a CLASSIFIED briefing card with stencil mono text, amber border, and TOP SECRET header stamp"
+            },
+            "loadingState": {
+              "selections": ["radar-sweep-loading"],
+              "prompt": "Loading shown as a radar sweep — green phosphor line rotating around a circular display with blips appearing as progress markers"
+            },
+            "idleAmbient": {
+              "selections": ["camo-pattern-slow-shift"],
+              "prompt": "Subtle camo pattern on surfaces shifts very slowly — olive/concrete/amber patches drift at glacial pace"
+            },
+            "microFeedback": {
+              "selections": ["confirmed-stencil-stamp"],
+              "prompt": "A military stencil CONFIRMED stamp appears in amber with a heavy mechanical impression feel"
+            }
+          },
+          "viewHints": {
+            "dashboard": "Command center dashboard — radar sweep display for activity monitoring, threat-level gauge bars for priority metrics, bunker-slit viewport stat windows, amber warning indicators for attention items.",
+            "projects": "Operations manifest — projects listed as military operations with codenames, status codes (ACTIVE/STANDBY/COMPLETE), and classification levels in stencil mono.",
+            "project-workspace": "Bunker command station — main content as the primary display screen, sidebar as the communications rack. Blast door dividers between sections.",
+            "kanban": "Mission status board — columns as operational phases (BRIEFING/DEPLOYED/ENGAGED/DEBRIEFED) with cards as mission dossier folders with classification stamps and status codes.",
+            "whiteboard": "Tactical operations map — nodes as strategic positions with military symbology, connected by movement arrows with distance/time annotations on olive canvas.",
+            "schema-planner": "Equipment manifest layout — entities as hardware categories with specification fields in military nomenclature format (NSN codes, dimensions, weight).",
+            "directory-tree": "Chain of command hierarchy — military org chart with rank indicators, unit designations, and status lights at each level.",
+            "ideas": "Intelligence bulletin board — each idea is a pinned intelligence brief with classification header, amber priority stripe, and redaction-ready formatting.",
+            "ai-chat": "Secure radio transmission — messages styled as encrypted military comms with timestamp headers, call signs, and OVER/OUT terminators. Amber for priority, olive for standard.",
+            "settings": "Bunker systems control panel — heavy concrete-housed toggle switches, amber warning lights, blast-door-style section dividers, and stencil-labeled control groups."
+          },
+          "antiRepeat": [
+            "Pass 1 used dark charcoal carved slate with amber — use military olive concrete with amber warning instead",
+            "Pass 2 used geological strata with gold — use bunker concrete with camo patterns instead",
+            "Pass 3 used obsidian volcanic glass with red fire — use military bunker with olive and amber instead",
+            "Pass 4 used warm sandstone desert with sage — use cold concrete bunker with military olive instead"
           ]
         }
       ]

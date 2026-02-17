@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOIDFREQUENCY — Idea Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Lexend:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- AMBIENT PLASMA CANVAS -->
+  <canvas id="plasma-bg" aria-hidden="true"></canvas>
+
+  <!-- GLITCH OVERLAY FOR PAGE TRANSITIONS -->
+  <div id="glitch-overlay" class="glitch-overlay" aria-hidden="true">
+    <div class="glitch-scanlines"></div>
+    <div class="glitch-rgb-shift"></div>
+    <span class="glitch-text">VOIDFREQUENCY</span>
+  </div>
+
+  <!-- MICRO FEEDBACK OVERLAY -->
+  <div id="drop-flash" class="drop-flash" aria-hidden="true">
+    <span class="drop-text">DROP!</span>
+  </div>
+
+  <!-- LOADING OVERLAY -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="eq-loader" aria-label="Loading">
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+    </div>
+    <p class="eq-label">INITIALIZING FREQUENCY...</p>
+  </div>
+
+  <!-- MOBILE HAMBURGER -->
+  <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu">
+    <span class="ham-bar"></span>
+    <span class="ham-bar"></span>
+    <span class="ham-bar"></span>
+  </button>
+
+  <!-- NAVIGATION SHELL — protruding top tablets -->
+  <nav class="nav-shell" id="nav-shell">
+    <div class="nav-brand">
+      <div class="brand-logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="14" stroke="#00e5ff" stroke-width="1.5"/>
+          <circle cx="16" cy="16" r="8" stroke="#ff00aa" stroke-width="1"/>
+          <circle cx="16" cy="16" r="3" fill="#00e5ff"/>
+          <line x1="2" y1="16" x2="30" y2="16" stroke="#00e5ff" stroke-width="0.5" opacity="0.4"/>
+          <line x1="16" y1="2" x2="16" y2="30" stroke="#ff00aa" stroke-width="0.5" opacity="0.4"/>
+        </svg>
+      </div>
+      <span class="brand-name">VOIDFREQ</span>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-view="dashboard" data-tooltip="Command Center">
+        <span class="eq-indicator" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span class="nav-label">DASHBOARD</span>
+      </button>
+      <button class="nav-tab" data-view="projects" data-tooltip="Label Roster">
+        <span class="eq-indicator" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span class="nav-label">RELEASES</span>
+      </button>
+      <button class="nav-tab" data-view="project-workspace" data-tooltip="DJ Deck">
+        <span class="eq-indicator" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        <span class="nav-label">DJ DECK</span>
+      </button>
+      <button class="nav-tab" data-view="kanban" data-tooltip="Playlist Queue">
+        <span class="eq-indicator" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="nav-label">QUEUE</span>
+      </button>
+      <button class="nav-tab" data-view="whiteboard" data-tooltip="Synth Patch Bay">
+        <span class="eq-indicator" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+        <span class="nav-label">PATCH BAY</span>
+      </button>
+      <button class="nav-tab" data-view="schema-planner" data-tooltip="Signal Flow">
+        <span class="eq-indicator" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span class="nav-label">SIGNAL</span>
+      </button>
+      <button class="nav-tab" data-view="directory-tree" data-tooltip="Sample Library">
+        <span class="eq-indicator" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="nav-label">SAMPLES</span>
+      </button>
+      <button class="nav-tab" data-view="ideas" data-tooltip="Vinyl Vault">
+        <span class="eq-indicator" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span class="nav-label">VAULT</span>
+      </button>
+      <button class="nav-tab" data-view="ai-chat" data-tooltip="Voice Memo AI">
+        <span class="eq-indicator" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="nav-label">AI MEMO</span>
+      </button>
+      <button class="nav-tab" data-view="settings" data-tooltip="Mixer Console">
+        <span class="eq-indicator" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span class="nav-label">CONSOLE</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- TOOLTIP HOLOGRAM -->
+  <div id="holo-tooltip" class="holo-tooltip" aria-hidden="true">
+    <div class="holo-text"></div>
+    <div class="holo-scanlines"></div>
+  </div>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="main-content" id="main-content">
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <section class="view active" id="view-dashboard">
+      <div class="view-header">
+        <h1 class="view-title" data-reveal>COMMAND CENTER</h1>
+        <p class="view-subtitle" data-reveal>Label frequency analysis — real-time signal monitoring</p>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Metric Waveform Cards -->
+        <div class="metric-card glow-cyan" data-reveal>
+          <div class="metric-wave" data-wave="releases">
+            <canvas class="wave-canvas" width="200" height="60"></canvas>
+          </div>
+          <div class="metric-data">
+            <span class="metric-value">247</span>
+            <span class="metric-label">ACTIVE RELEASES</span>
+          </div>
+          <div class="metric-delta positive">+12 THIS WEEK</div>
+        </div>
+
+        <div class="metric-card glow-magenta" data-reveal>
+          <div class="metric-wave" data-wave="streams">
+            <canvas class="wave-canvas" width="200" height="60"></canvas>
+          </div>
+          <div class="metric-data">
+            <span class="metric-value">1.4M</span>
+            <span class="metric-label">TOTAL STREAMS</span>
+          </div>
+          <div class="metric-delta positive">+89K THIS MONTH</div>
+        </div>
+
+        <div class="metric-card glow-cyan" data-reveal>
+          <div class="metric-wave" data-wave="artists">
+            <canvas class="wave-canvas" width="200" height="60"></canvas>
+          </div>
+          <div class="metric-data">
+            <span class="metric-value">38</span>
+            <span class="metric-label">SIGNED ARTISTS</span>
+          </div>
+          <div class="metric-delta neutral">ROSTER FULL</div>
+        </div>
+
+        <div class="metric-card glow-magenta" data-reveal>
+          <div class="metric-wave" data-wave="revenue">
+            <canvas class="wave-canvas" width="200" height="60"></canvas>
+          </div>
+          <div class="metric-data">
+            <span class="metric-value">$218K</span>
+            <span class="metric-label">Q4 REVENUE</span>
+          </div>
+          <div class="metric-delta positive">+23% YOY</div>
+        </div>
+
+        <!-- Frequency Spectrum Chart -->
+        <div class="spectrum-panel" data-reveal>
+          <h3 class="panel-title">FREQUENCY SPECTRUM — MONTHLY RELEASES</h3>
+          <div class="spectrum-chart">
+            <canvas id="spectrum-canvas" width="800" height="200"></canvas>
+          </div>
+        </div>
+
+        <!-- Recent Activity Feed -->
+        <div class="activity-feed" data-reveal>
+          <h3 class="panel-title">SIGNAL LOG</h3>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-pulse cyan"></div>
+              <div class="activity-content">
+                <strong>NEXUS_DRVR</strong> submitted master for "Plasma State EP"
+                <span class="activity-time">2 min ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-pulse magenta"></div>
+              <div class="activity-content">
+                <strong>KIRA//NULL</strong> uploaded 4 new stems to "Void Resonance"
+                <span class="activity-time">18 min ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-pulse cyan"></div>
+              <div class="activity-content">
+                <strong>DISTRIBUTION</strong> confirmed Spotify delivery for "Bass Cathedral"
+                <span class="activity-time">45 min ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-pulse magenta"></div>
+              <div class="activity-content">
+                <strong>SYNTHWAVE_OX</strong> approved artwork for "Frequency Ghost" single
+                <span class="activity-time">1 hr ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-pulse cyan"></div>
+              <div class="activity-content">
+                <strong>A&R TEAM</strong> flagged demo submission from "DARK_MATTER" for review
+                <span class="activity-time">2 hr ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-pulse magenta"></div>
+              <div class="activity-content">
+                <strong>MASTERING</strong> completed final pass on "Neon Collapse" LP
+                <span class="activity-time">3 hr ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECTS / RELEASES ==================== -->
+    <section class="view" id="view-projects">
+      <div class="view-header">
+        <h1 class="view-title" data-reveal>RELEASE ROSTER</h1>
+        <p class="view-subtitle" data-reveal>Label catalog — all active and scheduled releases</p>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-field">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search releases..." class="plasma-input">
+        </div>
+        <button class="btn-primary plasma-btn">+ NEW RELEASE</button>
+      </div>
+
+      <div class="release-list">
+        <div class="release-track" data-reveal>
+          <div class="track-waveform"><canvas class="mini-wave" width="120" height="40"></canvas></div>
+          <div class="track-info">
+            <h3 class="track-title">Plasma State EP</h3>
+            <span class="track-artist">NEXUS_DRVR</span>
+          </div>
+          <div class="track-meta">
+            <span class="bpm-badge">174 BPM</span>
+            <span class="key-badge">Fm</span>
+            <span class="genre-tag">DRUM & BASS</span>
+          </div>
+          <div class="track-status releasing">MASTERING</div>
+          <div class="track-date">FEB 28</div>
+        </div>
+
+        <div class="release-track" data-reveal>
+          <div class="track-waveform"><canvas class="mini-wave" width="120" height="40"></canvas></div>
+          <div class="track-info">
+            <h3 class="track-title">Void Resonance</h3>
+            <span class="track-artist">KIRA//NULL</span>
+          </div>
+          <div class="track-meta">
+            <span class="bpm-badge">140 BPM</span>
+            <span class="key-badge">Cm</span>
+            <span class="genre-tag">TECHNO</span>
+          </div>
+          <div class="track-status inprogress">MIXING</div>
+          <div class="track-date">MAR 15</div>
+        </div>
+
+        <div class="release-track" data-reveal>
+          <div class="track-waveform"><canvas class="mini-wave" width="120" height="40"></canvas></div>
+          <div class="track-info">
+            <h3 class="track-title">Bass Cathedral</h3>
+            <span class="track-artist">SYNTHWAVE_OX</span>
+          </div>
+          <div class="track-meta">
+            <span class="bpm-badge">150 BPM</span>
+            <span class="key-badge">Am</span>
+            <span class="genre-tag">DUBSTEP</span>
+          </div>
+          <div class="track-status released">DISTRIBUTED</div>
+          <div class="track-date">JAN 20</div>
+        </div>
+
+        <div class="release-track" data-reveal>
+          <div class="track-waveform"><canvas class="mini-wave" width="120" height="40"></canvas></div>
+          <div class="track-info">
+            <h3 class="track-title">Neon Collapse LP</h3>
+            <span class="track-artist">DARK_MATTER</span>
+          </div>
+          <div class="track-meta">
+            <span class="bpm-badge">128 BPM</span>
+            <span class="key-badge">Ebm</span>
+            <span class="genre-tag">ELECTRO</span>
+          </div>
+          <div class="track-status releasing">MASTERING</div>
+          <div class="track-date">MAR 08</div>
+        </div>
+
+        <div class="release-track" data-reveal>
+          <div class="track-waveform"><canvas class="mini-wave" width="120" height="40"></canvas></div>
+          <div class="track-info">
+            <h3 class="track-title">Frequency Ghost</h3>
+            <span class="track-artist">PHREAK_CTRL</span>
+          </div>
+          <div class="track-meta">
+            <span class="bpm-badge">160 BPM</span>
+            <span class="key-badge">Gm</span>
+            <span class="genre-tag">JUNGLE</span>
+          </div>
+          <div class="track-status inprogress">PRODUCTION</div>
+          <div class="track-date">APR 01</div>
+        </div>
+
+        <div class="release-track" data-reveal>
+          <div class="track-waveform"><canvas class="mini-wave" width="120" height="40"></canvas></div>
+          <div class="track-info">
+            <h3 class="track-title">Subzero Protocol</h3>
+            <span class="track-artist">GLACIAL_SYNC</span>
+          </div>
+          <div class="track-meta">
+            <span class="bpm-badge">135 BPM</span>
+            <span class="key-badge">Bbm</span>
+            <span class="genre-tag">BREAKS</span>
+          </div>
+          <div class="track-status released">DISTRIBUTED</div>
+          <div class="track-date">DEC 12</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROJECT WORKSPACE / DJ DECK ==================== -->
+    <section class="view" id="view-project-workspace">
+      <div class="view-header">
+        <h1 class="view-title" data-reveal>DJ DECK — PLASMA STATE EP</h1>
+        <p class="view-subtitle" data-reveal>Dual-deck workspace for release production</p>
+      </div>
+
+      <div class="dj-deck-layout">
+        <!-- DECK A -->
+        <div class="deck-panel deck-a" data-reveal>
+          <div class="deck-header">
+            <span class="deck-label">DECK A — TRACKS</span>
+            <div class="deck-controls">
+              <button class="deck-btn" aria-label="Play"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+              <button class="deck-btn" aria-label="Pause"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></button>
+            </div>
+          </div>
+          <div class="turntable">
+            <div class="vinyl-ring outer"></div>
+            <div class="vinyl-ring middle"></div>
+            <div class="vinyl-ring inner"></div>
+            <div class="vinyl-label">A</div>
+          </div>
+          <div class="track-list-mini">
+            <div class="mini-track active">
+              <span class="mini-num">01</span>
+              <span class="mini-name">Plasma Ignition</span>
+              <span class="mini-dur">5:42</span>
+            </div>
+            <div class="mini-track">
+              <span class="mini-num">02</span>
+              <span class="mini-name">State Change</span>
+              <span class="mini-dur">6:18</span>
+            </div>
+            <div class="mini-track">
+              <span class="mini-num">03</span>
+              <span class="mini-name">Ion Drive</span>
+              <span class="mini-dur">4:55</span>
+            </div>
+            <div class="mini-track">
+              <span class="mini-num">04</span>
+              <span class="mini-name">Arc Reactor Dub</span>
+              <span class="mini-dur">7:10</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CROSSFADER -->
+        <div class="crossfader-zone" data-reveal>
+          <div class="crossfader-track">
+            <div class="crossfader-thumb"></div>
+          </div>
+          <div class="master-info">
+            <div class="master-meter">
+              <div class="meter-fill"></div>
+            </div>
+            <span class="master-label">MASTER</span>
+            <span class="master-bpm">174 BPM</span>
+          </div>
+          <div class="task-summary">
+            <div class="task-stat">
+              <span class="stat-val">12</span>
+              <span class="stat-lbl">TASKS</span>
+            </div>
+            <div class="task-stat">
+              <span class="stat-val">7</span>
+              <span class="stat-lbl">DONE</span>
+            </div>
+            <div class="task-stat">
+              <span class="stat-val">3</span>
+              <span class="stat-lbl">ACTIVE</span>
+            </div>
+            <div class="task-stat">
+              <span class="stat-val">2</span>
+              <span class="stat-lbl">PENDING</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- DECK B -->
+        <div class="deck-panel deck-b" data-reveal>
+          <div class="deck-header">
+            <span class="deck-label">DECK B — PRODUCTION</span>
+            <div class="deck-controls">
+              <button class="deck-btn" aria-label="Record"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg></button>
+              <button class="deck-btn" aria-label="Stop"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12"/></svg></button>
+            </div>
+          </div>
+          <div class="production-notes">
+            <div class="note-card">
+              <h4>Mixing Notes</h4>
+              <p>Sub-bass needs tightening on Track 01. Apply sidechain compression to kick/bass relationship. Target -6dB headroom on master.</p>
+            </div>
+            <div class="note-card">
+              <h4>Artwork Brief</h4>
+              <p>Plasma state transition concept — cyan-to-magenta gradient with particle disintegration effect. 3000x3000px minimum for streaming platforms.</p>
+            </div>
+            <div class="note-card">
+              <h4>Distribution</h4>
+              <p>Target platforms: Spotify, Beatport, Bandcamp, Apple Music. Pre-save campaign starts Feb 14. PR push to DnB blogs and Spotify editorial contacts.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== KANBAN / QUEUE ==================== -->
+    <section class="view" id="view-kanban">
+      <div class="view-header">
+        <h1 class="view-title" data-reveal>PLAYLIST QUEUE</h1>
+        <p class="view-subtitle" data-reveal>Track production pipeline — drag to reorder the setlist</p>
+      </div>
+
+      <div class="kanban-board">
+        <div class="kanban-col" data-reveal>
+          <div class="col-header queue-col">
+            <span class="col-icon">◇</span>
+            <h3>QUEUE</h3>
+            <span class="col-count">3</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card">
+              <div class="card-wave"><canvas class="card-wave-canvas" width="240" height="30"></canvas></div>
+              <h4 class="card-title">Subharmonic Drift</h4>
+              <p class="card-artist">GLACIAL_SYNC</p>
+              <div class="card-footer">
+                <span class="bpm-badge sm">135 BPM</span>
+                <span class="card-priority high">HIGH</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="card-wave"><canvas class="card-wave-canvas" width="240" height="30"></canvas></div>
+              <h4 class="card-title">Photon Cascade</h4>
+              <p class="card-artist">NEXUS_DRVR</p>
+              <div class="card-footer">
+                <span class="bpm-badge sm">174 BPM</span>
+                <span class="card-priority medium">MED</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="card-wave"><canvas class="card-wave-canvas" width="240" height="30"></canvas></div>
+              <h4 class="card-title">Zero Kelvin</h4>
+              <p class="card-artist">DARK_MATTER</p>
+              <div class="card-footer">
+                <span class="bpm-badge sm">128 BPM</span>
+                <span class="card-priority low">LOW</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-col" data-reveal>
+          <div class="col-header now-col">
+            <span class="col-icon">▶</span>
+            <h3>NOW PLAYING</h3>
+            <span class="col-count">2</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card">
+              <div class="card-wave"><canvas class="card-wave-canvas" width="240" height="30"></canvas></div>
+              <h4 class="card-title">Plasma Ignition</h4>
+              <p class="card-artist">NEXUS_DRVR</p>
+              <div class="card-footer">
+                <span class="bpm-badge sm">174 BPM</span>
+                <span class="card-priority high">HIGH</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="card-wave"><canvas class="card-wave-canvas" width="240" height="30"></canvas></div>
+              <h4 class="card-title">Void Signal</h4>
+              <p class="card-artist">KIRA//NULL</p>
+              <div class="card-footer">
+                <span class="bpm-badge sm">140 BPM</span>
+                <span class="card-priority medium">MED</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-col" data-reveal>
+          <div class="col-header mixed-col">
+            <span class="col-icon">✦</span>
+            <h3>MIXED</h3>
+            <span class="col-count">3</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card">
+              <div class="card-wave"><canvas class="card-wave-canvas" width="240" height="30"></canvas></div>
+              <h4 class="card-title">Bass Cathedral</h4>
+              <p class="card-artist">SYNTHWAVE_OX</p>
+              <div class="card-footer">
+                <span class="bpm-badge sm">150 BPM</span>
+                <span class="card-priority low">LOW</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="card-wave"><canvas class="card-wave-canvas" width="240" height="30"></canvas></div>
+              <h4 class="card-title">Neon Collapse</h4>
+              <p class="card-artist">DARK_MATTER</p>
+              <div class="card-footer">
+                <span class="bpm-badge sm">128 BPM</span>
+                <span class="card-priority medium">MED</span>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="card-wave"><canvas class="card-wave-canvas" width="240" height="30"></canvas></div>
+              <h4 class="card-title">Neural Pathway</h4>
+              <p class="card-artist">PHREAK_CTRL</p>
+              <div class="card-footer">
+                <span class="bpm-badge sm">160 BPM</span>
+                <span class="card-priority high">HIGH</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-col" data-reveal>
+          <div class="col-header archive-col">
+            <span class="col-icon">▣</span>
+            <h3>ARCHIVED</h3>
+            <span class="col-count">2</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="kanban-card archived">
+              <div class="card-wave"><canvas class="card-wave-canvas" width="240" height="30"></canvas></div>
+              <h4 class="card-title">Subzero Protocol</h4>
+              <p class="card-artist">GLACIAL_SYNC</p>
+              <div class="card-footer">
+                <span class="bpm-badge sm">135 BPM</span>
+                <span class="card-priority low">DONE</span>
+              </div>
+            </div>
+            <div class="kanban-card archived">
+              <div class="card-wave"><canvas class="card-wave-canvas" width="240" height="30"></canvas></div>
+              <h4 class="card-title">Dark Energy</h4>
+              <p class="card-artist">DARK_MATTER</p>
+              <div class="card-footer">
+                <span class="bpm-badge sm">128 BPM</span>
+                <span class="card-priority low">DONE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== WHITEBOARD / PATCH BAY ==================== -->
+    <section class="view" id="view-whiteboard">
+      <div class="view-header">
+        <h1 class="view-title" data-reveal>MODULAR PATCH BAY</h1>
+        <p class="view-subtitle" data-reveal>Synth module canvas — connect ideas with patch cables</p>
+      </div>
+
+      <div class="patch-canvas" data-reveal>
+        <svg class="patch-cables" width="100%" height="100%" viewBox="0 0 900 500">
+          <!-- Patch cables connecting modules -->
+          <path d="M200,120 C300,120 250,250 350,250" stroke="#00e5ff" stroke-width="3" fill="none" class="cable-line"/>
+          <path d="M200,170 C280,200 300,350 450,330" stroke="#ff00aa" stroke-width="3" fill="none" class="cable-line"/>
+          <path d="M550,120 C600,120 620,250 700,250" stroke="#00e5ff" stroke-width="3" fill="none" class="cable-line"/>
+          <path d="M550,170 C650,200 600,400 700,380" stroke="#ff00aa" stroke-width="3" fill="none" class="cable-line"/>
+          <path d="M350,300 C400,300 420,120 550,120" stroke="#00e5ff" stroke-width="2" fill="none" class="cable-line" opacity="0.6"/>
+        </svg>
+
+        <div class="synth-module" style="left:50px;top:60px;" data-reveal>
+          <div class="module-header">OSC — CONCEPT</div>
+          <div class="module-body">
+            <div class="knob-row">
+              <div class="knob" data-value="72"><div class="knob-indicator"></div></div>
+              <span class="knob-label">FREQ</span>
+            </div>
+            <div class="knob-row">
+              <div class="knob" data-value="45"><div class="knob-indicator"></div></div>
+              <span class="knob-label">DEPTH</span>
+            </div>
+            <div class="module-output">
+              <span class="jack out">OUT 1</span>
+              <span class="jack out">OUT 2</span>
+            </div>
+          </div>
+          <p class="module-note">Core concept oscillator: "Immersive audio-visual live experience for warehouse venues"</p>
+        </div>
+
+        <div class="synth-module" style="left:300px;top:180px;" data-reveal>
+          <div class="module-header">FLT — RESEARCH</div>
+          <div class="module-body">
+            <div class="slider-row">
+              <input type="range" class="synth-slider" min="0" max="100" value="65">
+              <span class="slider-label">CUTOFF</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" class="synth-slider" min="0" max="100" value="30">
+              <span class="slider-label">RESONANCE</span>
+            </div>
+            <div class="module-output">
+              <span class="jack in">IN 1</span>
+              <span class="jack out">OUT 1</span>
+            </div>
+          </div>
+          <p class="module-note">Filter: Market analysis for immersive venue technology — spatial audio, LED mapping, haptic floors</p>
+        </div>
+
+        <div class="synth-module" style="left:500px;top:50px;" data-reveal>
+          <div class="module-header">ENV — DESIGN</div>
+          <div class="module-body">
+            <div class="env-display">
+              <svg width="140" height="50" viewBox="0 0 140 50">
+                <polyline points="0,50 20,10 50,20 100,25 140,50" stroke="#00e5ff" stroke-width="2" fill="none"/>
+                <text x="10" y="48" fill="#00e5ff" font-size="8" font-family="Fira Code">A</text>
+                <text x="35" y="48" fill="#00e5ff" font-size="8" font-family="Fira Code">D</text>
+                <text x="75" y="48" fill="#00e5ff" font-size="8" font-family="Fira Code">S</text>
+                <text x="120" y="48" fill="#00e5ff" font-size="8" font-family="Fira Code">R</text>
+              </svg>
+            </div>
+            <div class="module-output">
+              <span class="jack in">IN 1</span>
+              <span class="jack out">OUT 1</span>
+              <span class="jack out">OUT 2</span>
+            </div>
+          </div>
+          <p class="module-note">Envelope: Stage design with 360-degree projection mapping and binaural sound zones</p>
+        </div>
+
+        <div class="synth-module" style="left:650px;top:200px;" data-reveal>
+          <div class="module-header">AMP — PROTOTYPE</div>
+          <div class="module-body">
+            <div class="vu-meter">
+              <div class="vu-fill" style="height:70%"></div>
+            </div>
+            <div class="module-output">
+              <span class="jack in">IN 1</span>
+              <span class="jack in">IN 2</span>
+              <span class="jack out">MASTER</span>
+            </div>
+          </div>
+          <p class="module-note">Amplifier: Scale prototype to 500-person capacity, budget $45K for initial installation</p>
+        </div>
+
+        <div class="synth-module" style="left:400px;top:370px;" data-reveal>
+          <div class="module-header">LFO — FEEDBACK</div>
+          <div class="module-body">
+            <div class="lfo-display">
+              <svg width="140" height="40" viewBox="0 0 140 40">
+                <path d="M0,20 Q17.5,0 35,20 Q52.5,40 70,20 Q87.5,0 105,20 Q122.5,40 140,20" stroke="#ff00aa" stroke-width="2" fill="none"/>
+              </svg>
+            </div>
+            <div class="module-output">
+              <span class="jack out">MOD</span>
+            </div>
+          </div>
+          <p class="module-note">LFO: Audience feedback loop — collect sensory data, iterate on experience intensity curves</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCHEMA PLANNER / SIGNAL FLOW ==================== -->
+    <section class="view" id="view-schema-planner">
+      <div class="view-header">
+        <h1 class="view-title" data-reveal>SIGNAL FLOW</h1>
+        <p class="view-subtitle" data-reveal>Audio processing pipeline — entity routing diagram</p>
+      </div>
+
+      <div class="signal-flow-diagram" data-reveal>
+        <svg class="signal-paths" viewBox="0 0 900 480">
+          <!-- Signal paths -->
+          <defs>
+            <linearGradient id="sig-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#00e5ff;stop-opacity:1"/>
+              <stop offset="100%" style="stop-color:#ff00aa;stop-opacity:1"/>
+            </linearGradient>
+            <filter id="signal-glow">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <path d="M180,80 L300,80" stroke="url(#sig-grad-1)" stroke-width="2" fill="none" filter="url(#signal-glow)" class="signal-line"/>
+          <path d="M480,80 L600,80" stroke="url(#sig-grad-1)" stroke-width="2" fill="none" filter="url(#signal-glow)" class="signal-line"/>
+          <path d="M180,200 L300,200" stroke="url(#sig-grad-1)" stroke-width="2" fill="none" filter="url(#signal-glow)" class="signal-line"/>
+          <path d="M480,200 L600,200" stroke="url(#sig-grad-1)" stroke-width="2" fill="none" filter="url(#signal-glow)" class="signal-line"/>
+          <path d="M780,80 L820,80 L820,300 L300,300" stroke="#00e5ff" stroke-width="1.5" fill="none" filter="url(#signal-glow)" class="signal-line"/>
+          <path d="M420,200 L420,350 L600,350" stroke="#ff00aa" stroke-width="1.5" fill="none" filter="url(#signal-glow)" class="signal-line"/>
+          <path d="M780,350 L850,350 L850,440 L450,440" stroke="url(#sig-grad-1)" stroke-width="2" fill="none" filter="url(#signal-glow)" class="signal-line"/>
+        </svg>
+
+        <div class="signal-block" style="left:40px;top:40px;">
+          <div class="block-icon">◈</div>
+          <h4>ARTIST</h4>
+          <div class="block-meta">
+            <span>name: STRING</span>
+            <span>genre: ENUM</span>
+            <span>bpm_range: INT[2]</span>
+            <span>signed_date: DATE</span>
+          </div>
+          <div class="block-freq">48kHz</div>
+        </div>
+
+        <div class="signal-block" style="left:310px;top:40px;">
+          <div class="block-icon">◈</div>
+          <h4>RELEASE</h4>
+          <div class="block-meta">
+            <span>title: STRING</span>
+            <span>type: EP|LP|SINGLE</span>
+            <span>tracks: REL[]</span>
+            <span>status: ENUM</span>
+          </div>
+          <div class="block-freq">96kHz</div>
+        </div>
+
+        <div class="signal-block" style="left:610px;top:40px;">
+          <div class="block-icon">◈</div>
+          <h4>TRACK</h4>
+          <div class="block-meta">
+            <span>title: STRING</span>
+            <span>bpm: INT</span>
+            <span>key: STRING</span>
+            <span>duration: TIME</span>
+          </div>
+          <div class="block-freq">192kHz</div>
+        </div>
+
+        <div class="signal-block" style="left:40px;top:160px;">
+          <div class="block-icon">◇</div>
+          <h4>CONTRACT</h4>
+          <div class="block-meta">
+            <span>artist_id: FK</span>
+            <span>terms: TEXT</span>
+            <span>royalty_pct: FLOAT</span>
+            <span>expires: DATE</span>
+          </div>
+          <div class="block-freq">24kHz</div>
+        </div>
+
+        <div class="signal-block" style="left:310px;top:160px;">
+          <div class="block-icon">◇</div>
+          <h4>DISTRIBUTION</h4>
+          <div class="block-meta">
+            <span>release_id: FK</span>
+            <span>platform: ENUM</span>
+            <span>delivery_date: DATE</span>
+            <span>status: ENUM</span>
+          </div>
+          <div class="block-freq">44.1kHz</div>
+        </div>
+
+        <div class="signal-block" style="left:610px;top:300px;">
+          <div class="block-icon">◇</div>
+          <h4>ANALYTICS</h4>
+          <div class="block-meta">
+            <span>track_id: FK</span>
+            <span>streams: BIGINT</span>
+            <span>revenue: DECIMAL</span>
+            <span>territory: STRING</span>
+          </div>
+          <div class="block-freq">8kHz</div>
+        </div>
+
+        <div class="signal-block" style="left:300px;top:400px;">
+          <div class="block-icon">◆</div>
+          <h4>MASTER OUTPUT</h4>
+          <div class="block-meta">
+            <span>aggregated pipeline</span>
+            <span>all signals merged</span>
+          </div>
+          <div class="block-freq">MASTER</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== DIRECTORY TREE / SAMPLE LIBRARY ==================== -->
+    <section class="view" id="view-directory-tree">
+      <div class="view-header">
+        <h1 class="view-title" data-reveal>SAMPLE LIBRARY</h1>
+        <p class="view-subtitle" data-reveal>Browse the production asset hierarchy</p>
+      </div>
+
+      <div class="sample-browser" data-reveal>
+        <div class="folder-tree">
+          <div class="tree-item folder open">
+            <span class="tree-toggle">▾</span>
+            <span class="tree-icon folder-icon">📁</span>
+            <span class="tree-name">VOIDFREQUENCY CATALOG</span>
+          </div>
+          <div class="tree-children">
+            <div class="tree-item folder open">
+              <span class="tree-toggle">▾</span>
+              <span class="tree-icon folder-icon">🎵</span>
+              <span class="tree-name">Drum & Bass</span>
+              <span class="tree-count">42 files</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-item file">
+                <span class="tree-toggle"></span>
+                <span class="tree-icon">⟿</span>
+                <span class="tree-name">amens_174bpm_Fm.wav</span>
+                <span class="file-size">4.2 MB</span>
+              </div>
+              <div class="tree-item file">
+                <span class="tree-toggle"></span>
+                <span class="tree-icon">⟿</span>
+                <span class="tree-name">reese_bass_sustained.wav</span>
+                <span class="file-size">2.8 MB</span>
+              </div>
+              <div class="tree-item file">
+                <span class="tree-toggle"></span>
+                <span class="tree-icon">⟿</span>
+                <span class="tree-name">neuro_lead_processed.wav</span>
+                <span class="file-size">3.1 MB</span>
+              </div>
+            </div>
+
+            <div class="tree-item folder">
+              <span class="tree-toggle">▸</span>
+              <span class="tree-icon folder-icon">🎵</span>
+              <span class="tree-name">Techno</span>
+              <span class="tree-count">67 files</span>
+            </div>
+
+            <div class="tree-item folder open">
+              <span class="tree-toggle">▾</span>
+              <span class="tree-icon folder-icon">🎵</span>
+              <span class="tree-name">Dubstep</span>
+              <span class="tree-count">31 files</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-item file">
+                <span class="tree-toggle"></span>
+                <span class="tree-icon">⟿</span>
+                <span class="tree-name">wobble_bass_150_Am.wav</span>
+                <span class="file-size">5.6 MB</span>
+              </div>
+              <div class="tree-item file">
+                <span class="tree-toggle"></span>
+                <span class="tree-icon">⟿</span>
+                <span class="tree-name">halftime_drums_loop.wav</span>
+                <span class="file-size">1.9 MB</span>
+              </div>
+            </div>
+
+            <div class="tree-item folder">
+              <span class="tree-toggle">▸</span>
+              <span class="tree-icon folder-icon">🎵</span>
+              <span class="tree-name">Electro</span>
+              <span class="tree-count">28 files</span>
+            </div>
+
+            <div class="tree-item folder">
+              <span class="tree-toggle">▸</span>
+              <span class="tree-icon folder-icon">🎵</span>
+              <span class="tree-name">Jungle</span>
+              <span class="tree-count">19 files</span>
+            </div>
+
+            <div class="tree-item folder open">
+              <span class="tree-toggle">▾</span>
+              <span class="tree-icon folder-icon">🎛️</span>
+              <span class="tree-name">FX & Risers</span>
+              <span class="tree-count">54 files</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-item file">
+                <span class="tree-toggle"></span>
+                <span class="tree-icon">⟿</span>
+                <span class="tree-name">plasma_riser_8bar.wav</span>
+                <span class="file-size">6.1 MB</span>
+              </div>
+              <div class="tree-item file">
+                <span class="tree-toggle"></span>
+                <span class="tree-icon">⟿</span>
+                <span class="tree-name">glitch_stutter_fx.wav</span>
+                <span class="file-size">0.8 MB</span>
+              </div>
+              <div class="tree-item file">
+                <span class="tree-toggle"></span>
+                <span class="tree-icon">⟿</span>
+                <span class="tree-name">cymbal_reverse_crash.wav</span>
+                <span class="file-size">1.2 MB</span>
+              </div>
+            </div>
+
+            <div class="tree-item folder">
+              <span class="tree-toggle">▸</span>
+              <span class="tree-icon folder-icon">🎤</span>
+              <span class="tree-name">Vocal Chops</span>
+              <span class="tree-count">23 files</span>
+            </div>
+
+            <div class="tree-item folder">
+              <span class="tree-toggle">▸</span>
+              <span class="tree-icon folder-icon">🔊</span>
+              <span class="tree-name">Mastered References</span>
+              <span class="tree-count">12 files</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="file-preview">
+          <h3 class="preview-title">amens_174bpm_Fm.wav</h3>
+          <div class="preview-waveform">
+            <canvas id="preview-wave-canvas" width="400" height="80"></canvas>
+          </div>
+          <div class="preview-meta">
+            <div class="pm-item"><span class="pm-label">FORMAT</span><span class="pm-value">WAV 24bit</span></div>
+            <div class="pm-item"><span class="pm-label">SAMPLE RATE</span><span class="pm-value">48,000 Hz</span></div>
+            <div class="pm-item"><span class="pm-label">BPM</span><span class="pm-value">174</span></div>
+            <div class="pm-item"><span class="pm-label">KEY</span><span class="pm-value">F minor</span></div>
+            <div class="pm-item"><span class="pm-label">DURATION</span><span class="pm-value">0:08.32</span></div>
+            <div class="pm-item"><span class="pm-label">SIZE</span><span class="pm-value">4.2 MB</span></div>
+          </div>
+          <button class="btn-primary plasma-btn preview-play-btn">▶ PLAY SAMPLE</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== IDEAS / VINYL VAULT ==================== -->
+    <section class="view" id="view-ideas">
+      <div class="view-header">
+        <h1 class="view-title" data-reveal>VINYL VAULT</h1>
+        <p class="view-subtitle" data-reveal>Browse the idea collection — each idea is a record</p>
+      </div>
+
+      <div class="vinyl-shelf" data-reveal>
+        <div class="vinyl-record" data-reveal>
+          <div class="record-spine">
+            <span class="spine-label">VF-001</span>
+          </div>
+          <div class="record-sleeve">
+            <div class="sleeve-art gradient-1">
+              <div class="sleeve-waveform">
+                <canvas class="sleeve-wave-canvas" width="200" height="60"></canvas>
+              </div>
+            </div>
+            <div class="sleeve-info">
+              <h3 class="sleeve-title">Immersive Venue Experience</h3>
+              <p class="sleeve-desc">360-degree projection-mapped warehouse space with spatial audio zones and haptic floor tiles. Each zone responds to a different frequency band.</p>
+              <div class="sleeve-tracks">
+                <span>RESEARCH</span> · <span>PROTOTYPE</span> · <span>PITCH DECK</span>
+              </div>
+              <div class="sleeve-meta">
+                <span class="idea-status hot">🔥 HOT</span>
+                <span class="idea-date">Jan 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vinyl-record" data-reveal>
+          <div class="record-spine">
+            <span class="spine-label">VF-002</span>
+          </div>
+          <div class="record-sleeve">
+            <div class="sleeve-art gradient-2">
+              <div class="sleeve-waveform">
+                <canvas class="sleeve-wave-canvas" width="200" height="60"></canvas>
+              </div>
+            </div>
+            <div class="sleeve-info">
+              <h3 class="sleeve-title">AI Stem Separation Service</h3>
+              <p class="sleeve-desc">Cloud-based stem extraction for DJs and producers. Upload any track, get isolated drums, bass, vocals, and melodics in 30 seconds using custom ML models.</p>
+              <div class="sleeve-tracks">
+                <span>ML MODEL</span> · <span>API DESIGN</span> · <span>UI/UX</span>
+              </div>
+              <div class="sleeve-meta">
+                <span class="idea-status warm">⚡ ACTIVE</span>
+                <span class="idea-date">Dec 2025</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vinyl-record" data-reveal>
+          <div class="record-spine">
+            <span class="spine-label">VF-003</span>
+          </div>
+          <div class="record-sleeve">
+            <div class="sleeve-art gradient-3">
+              <div class="sleeve-waveform">
+                <canvas class="sleeve-wave-canvas" width="200" height="60"></canvas>
+              </div>
+            </div>
+            <div class="sleeve-info">
+              <h3 class="sleeve-title">NFT Vinyl Pressings</h3>
+              <p class="sleeve-desc">Limited-edition physical vinyl paired with digital NFT ownership certificates. Each pressing includes a unique generative artwork and exclusive bonus tracks.</p>
+              <div class="sleeve-tracks">
+                <span>BLOCKCHAIN</span> · <span>PRESSING PLANT</span> · <span>LEGAL</span>
+              </div>
+              <div class="sleeve-meta">
+                <span class="idea-status cold">💤 PAUSED</span>
+                <span class="idea-date">Nov 2025</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vinyl-record" data-reveal>
+          <div class="record-spine">
+            <span class="spine-label">VF-004</span>
+          </div>
+          <div class="record-sleeve">
+            <div class="sleeve-art gradient-4">
+              <div class="sleeve-waveform">
+                <canvas class="sleeve-wave-canvas" width="200" height="60"></canvas>
+              </div>
+            </div>
+            <div class="sleeve-info">
+              <h3 class="sleeve-title">Collaborative Remix Platform</h3>
+              <p class="sleeve-desc">Real-time collaborative DAW in the browser. Multiple producers can work on the same project simultaneously with version control and conflict resolution.</p>
+              <div class="sleeve-tracks">
+                <span>WebRTC</span> · <span>CRDT SYNC</span> · <span>AUDIO ENGINE</span>
+              </div>
+              <div class="sleeve-meta">
+                <span class="idea-status hot">🔥 HOT</span>
+                <span class="idea-date">Feb 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vinyl-record" data-reveal>
+          <div class="record-spine">
+            <span class="spine-label">VF-005</span>
+          </div>
+          <div class="record-sleeve">
+            <div class="sleeve-art gradient-5">
+              <div class="sleeve-waveform">
+                <canvas class="sleeve-wave-canvas" width="200" height="60"></canvas>
+              </div>
+            </div>
+            <div class="sleeve-info">
+              <h3 class="sleeve-title">Label Analytics Dashboard</h3>
+              <p class="sleeve-desc">Unified streaming analytics aggregator. Pull data from Spotify, Apple Music, Beatport, Bandcamp into one real-time dashboard with predictive trend modeling.</p>
+              <div class="sleeve-tracks">
+                <span>DATA PIPELINE</span> · <span>VISUALIZATION</span> · <span>ML FORECAST</span>
+              </div>
+              <div class="sleeve-meta">
+                <span class="idea-status warm">⚡ ACTIVE</span>
+                <span class="idea-date">Jan 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== AI CHAT / VOICE MEMO ==================== -->
+    <section class="view" id="view-ai-chat">
+      <div class="view-header">
+        <h1 class="view-title" data-reveal>VOICE MEMO AI</h1>
+        <p class="view-subtitle" data-reveal>Audio-style message exchange with your AI producer assistant</p>
+      </div>
+
+      <div class="chat-feed" data-reveal>
+        <div class="memo-message user-memo">
+          <div class="memo-header">
+            <span class="memo-sender magenta">YOU</span>
+            <span class="memo-time">14:32</span>
+          </div>
+          <div class="memo-body">
+            <div class="memo-waveform"><canvas class="memo-wave-canvas" width="280" height="36"></canvas></div>
+            <div class="memo-controls">
+              <button class="memo-play" aria-label="Play">▶</button>
+              <span class="memo-duration">0:45</span>
+            </div>
+          </div>
+          <p class="memo-transcript">I need help planning the release timeline for the Plasma State EP. We have 4 tracks, mastering starts next week, and I want to hit Beatport by end of February.</p>
+        </div>
+
+        <div class="memo-message ai-memo">
+          <div class="memo-header">
+            <span class="memo-sender cyan">VOIDFREQ AI</span>
+            <span class="memo-time">14:33</span>
+          </div>
+          <div class="memo-body">
+            <div class="memo-waveform"><canvas class="memo-wave-canvas" width="280" height="36"></canvas></div>
+            <div class="memo-controls">
+              <button class="memo-play" aria-label="Play">▶</button>
+              <span class="memo-duration">1:12</span>
+            </div>
+          </div>
+          <p class="memo-transcript">Based on Beatport's 2-week delivery window, you'll need final masters submitted by February 14th. Here's my suggested timeline: Mastering Feb 3-7, artwork approval Feb 8, metadata submission Feb 10, delivery Feb 12. That gives you a 2-day buffer. Want me to create tasks for each milestone?</p>
+        </div>
+
+        <div class="memo-message user-memo">
+          <div class="memo-header">
+            <span class="memo-sender magenta">YOU</span>
+            <span class="memo-time">14:35</span>
+          </div>
+          <div class="memo-body">
+            <div class="memo-waveform"><canvas class="memo-wave-canvas" width="280" height="36"></canvas></div>
+            <div class="memo-controls">
+              <button class="memo-play" aria-label="Play">▶</button>
+              <span class="memo-duration">0:22</span>
+            </div>
+          </div>
+          <p class="memo-transcript">Yes, create those tasks. Also, what about the pre-save campaign? Should we start that before or after the Beatport delivery?</p>
+        </div>
+
+        <div class="memo-message ai-memo">
+          <div class="memo-header">
+            <span class="memo-sender cyan">VOIDFREQ AI</span>
+            <span class="memo-time">14:36</span>
+          </div>
+          <div class="memo-body">
+            <div class="memo-waveform"><canvas class="memo-wave-canvas" width="280" height="36"></canvas></div>
+            <div class="memo-controls">
+              <button class="memo-play" aria-label="Play">▶</button>
+              <span class="memo-duration">0:58</span>
+            </div>
+          </div>
+          <p class="memo-transcript">Pre-save campaigns perform best when launched 2-3 weeks before release. Since you're targeting Feb 28, I'd launch the Spotify pre-save on Feb 7 alongside a teaser clip on socials. I've created 6 tasks in the Queue board and set the Plasma State EP status to "Mastering". I also scheduled a reminder for the artwork deadline.</p>
+        </div>
+
+        <div class="memo-message user-memo">
+          <div class="memo-header">
+            <span class="memo-sender magenta">YOU</span>
+            <span class="memo-time">14:38</span>
+          </div>
+          <div class="memo-body">
+            <div class="memo-waveform"><canvas class="memo-wave-canvas" width="280" height="36"></canvas></div>
+            <div class="memo-controls">
+              <button class="memo-play" aria-label="Play">▶</button>
+              <span class="memo-duration">0:18</span>
+            </div>
+          </div>
+          <p class="memo-transcript">Perfect. One more thing — can you compare our last 3 EP releases and tell me which promo strategy got the most first-week streams?</p>
+        </div>
+
+        <div class="memo-message ai-memo">
+          <div class="memo-header">
+            <span class="memo-sender cyan">VOIDFREQ AI</span>
+            <span class="memo-time">14:39</span>
+          </div>
+          <div class="memo-body">
+            <div class="memo-waveform"><canvas class="memo-wave-canvas" width="280" height="36"></canvas></div>
+            <div class="memo-controls">
+              <button class="memo-play" aria-label="Play">▶</button>
+              <span class="memo-duration">1:30</span>
+            </div>
+          </div>
+          <p class="memo-transcript">Looking at the data: "Subzero Protocol" (Dec 2025) used a Reddit AMA + playlist pitching strategy and got 42K first-week streams. "Dark Energy" (Oct 2025) relied on Instagram reels + influencer seeding and hit 38K. "Neural Pathway" (Aug 2025) tried Beatport exclusive first week and only hit 28K but had better long-tail performance. My recommendation: combine playlist pitching with a Reddit AMA — that 42K benchmark is your best first-week result.</p>
+        </div>
+      </div>
+
+      <div class="chat-input-area" data-reveal>
+        <button class="record-btn" aria-label="Record voice memo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </button>
+        <input type="text" placeholder="Type a message or record a voice memo..." class="plasma-input chat-text-input">
+        <button class="btn-primary plasma-btn send-btn">SEND</button>
+      </div>
+    </section>
+
+    <!-- ==================== SETTINGS / MIXER CONSOLE ==================== -->
+    <section class="view" id="view-settings">
+      <div class="view-header">
+        <h1 class="view-title" data-reveal>MIXING CONSOLE</h1>
+        <p class="view-subtitle" data-reveal>System configuration — adjust your channel strips</p>
+      </div>
+
+      <div class="mixer-layout" data-reveal>
+        <!-- Channel 1: Account -->
+        <div class="mixer-channel" data-reveal>
+          <div class="channel-label">CH 1 — ACCOUNT</div>
+          <div class="channel-strip">
+            <div class="fader-group">
+              <label class="fader-label">DISPLAY NAME</label>
+              <input type="text" class="plasma-input" value="VOIDFREQUENCY ADMIN">
+            </div>
+            <div class="fader-group">
+              <label class="fader-label">EMAIL</label>
+              <input type="email" class="plasma-input" value="admin@voidfrequency.io">
+            </div>
+            <div class="fader-group">
+              <label class="fader-label">ROLE</label>
+              <select class="plasma-input plasma-select">
+                <option>LABEL MANAGER</option>
+                <option>A&R</option>
+                <option>PRODUCER</option>
+                <option>ARTIST</option>
+              </select>
+            </div>
+            <div class="fader-group toggle-group">
+              <label class="fader-label">TWO-FACTOR AUTH</label>
+              <div class="power-toggle active" data-toggle="tfa">
+                <div class="toggle-thumb"></div>
+                <span class="toggle-state">ON</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Channel 2: Notifications -->
+        <div class="mixer-channel" data-reveal>
+          <div class="channel-label">CH 2 — NOTIFICATIONS</div>
+          <div class="channel-strip">
+            <div class="fader-group toggle-group">
+              <label class="fader-label">RELEASE ALERTS</label>
+              <div class="power-toggle active" data-toggle="release-alerts">
+                <div class="toggle-thumb"></div>
+                <span class="toggle-state">ON</span>
+              </div>
+            </div>
+            <div class="fader-group toggle-group">
+              <label class="fader-label">STREAM MILESTONES</label>
+              <div class="power-toggle active" data-toggle="stream-milestones">
+                <div class="toggle-thumb"></div>
+                <span class="toggle-state">ON</span>
+              </div>
+            </div>
+            <div class="fader-group toggle-group">
+              <label class="fader-label">A&R SUBMISSIONS</label>
+              <div class="power-toggle" data-toggle="ar-submissions">
+                <div class="toggle-thumb"></div>
+                <span class="toggle-state">OFF</span>
+              </div>
+            </div>
+            <div class="fader-group toggle-group">
+              <label class="fader-label">MARKETING REPORTS</label>
+              <div class="power-toggle active" data-toggle="marketing">
+                <div class="toggle-thumb"></div>
+                <span class="toggle-state">ON</span>
+              </div>
+            </div>
+            <div class="fader-group">
+              <label class="fader-label">DIGEST FREQUENCY</label>
+              <div class="mixer-fader">
+                <input type="range" class="synth-slider" min="0" max="3" value="2">
+                <div class="fader-stops">
+                  <span>OFF</span><span>DAILY</span><span>WEEKLY</span><span>MONTHLY</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Channel 3: Appearance -->
+        <div class="mixer-channel" data-reveal>
+          <div class="channel-label">CH 3 — APPEARANCE</div>
+          <div class="channel-strip">
+            <div class="fader-group toggle-group">
+              <label class="fader-label">DARK MODE</label>
+              <div class="power-toggle active" data-toggle="dark-mode">
+                <div class="toggle-thumb"></div>
+                <span class="toggle-state">ON</span>
+              </div>
+            </div>
+            <div class="fader-group toggle-group">
+              <label class="fader-label">PLASMA EFFECTS</label>
+              <div class="power-toggle active" data-toggle="plasma-fx">
+                <div class="toggle-thumb"></div>
+                <span class="toggle-state">ON</span>
+              </div>
+            </div>
+            <div class="fader-group toggle-group">
+              <label class="fader-label">AMBIENT MOTION</label>
+              <div class="power-toggle active" data-toggle="ambient">
+                <div class="toggle-thumb"></div>
+                <span class="toggle-state">ON</span>
+              </div>
+            </div>
+            <div class="fader-group">
+              <label class="fader-label">ANIMATION SPEED</label>
+              <div class="mixer-fader">
+                <input type="range" class="synth-slider" min="0" max="100" value="70">
+                <div class="fader-stops">
+                  <span>SLOW</span><span>NORMAL</span><span>FAST</span>
+                </div>
+              </div>
+            </div>
+            <div class="fader-group">
+              <label class="fader-label">ACCENT COLOR</label>
+              <div class="color-swatches">
+                <button class="swatch active" style="background:#00e5ff" aria-label="Cyan"></button>
+                <button class="swatch" style="background:#ff00aa" aria-label="Magenta"></button>
+                <button class="swatch" style="background:#00ff88" aria-label="Green"></button>
+                <button class="swatch" style="background:#ffaa00" aria-label="Orange"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Channel 4: Integrations -->
+        <div class="mixer-channel" data-reveal>
+          <div class="channel-label">CH 4 — INTEGRATIONS</div>
+          <div class="channel-strip">
+            <div class="integration-row">
+              <div class="integ-icon">SP</div>
+              <div class="integ-info">
+                <span class="integ-name">Spotify for Artists</span>
+                <span class="integ-status connected">CONNECTED</span>
+              </div>
+              <button class="btn-sm plasma-btn">CONFIGURE</button>
+            </div>
+            <div class="integration-row">
+              <div class="integ-icon">BP</div>
+              <div class="integ-info">
+                <span class="integ-name">Beatport Pro</span>
+                <span class="integ-status connected">CONNECTED</span>
+              </div>
+              <button class="btn-sm plasma-btn">CONFIGURE</button>
+            </div>
+            <div class="integration-row">
+              <div class="integ-icon">BC</div>
+              <div class="integ-info">
+                <span class="integ-name">Bandcamp</span>
+                <span class="integ-status disconnected">DISCONNECTED</span>
+              </div>
+              <button class="btn-sm plasma-btn">CONNECT</button>
+            </div>
+            <div class="integration-row">
+              <div class="integ-icon">SC</div>
+              <div class="integ-info">
+                <span class="integ-name">SoundCloud</span>
+                <span class="integ-status connected">CONNECTED</span>
+              </div>
+              <button class="btn-sm plasma-btn">CONFIGURE</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

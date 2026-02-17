@@ -1,0 +1,199 @@
+{
+  "styleId": "mid-century-modern",
+  "pass": 5,
+  "variantSeed": "danish-hygge-warmth",
+  "contentPersona": "scandinavian-furniture-brand",
+  "brandName": "Hygge Studio",
+  "generatedDate": "2026-02-15",
+  "uniquenessProfile": {
+    "profileId": "floating-dock-bar",
+    "shellMode": "floating-bottom-dock",
+    "navPattern": "icon-pill-dock",
+    "contentFlow": "centered-single-panel",
+    "scrollMode": "smooth-scroll",
+    "alignment": "center",
+    "heroTreatment": "gradient-hero-card",
+    "motionLanguage": "spring-bounce",
+    "density": "spacious",
+    "componentTone": "soft"
+  },
+  "palette": {
+    "bg": "#faf5f0",
+    "text": "#3a2e28",
+    "surface": "#fff8f2",
+    "accent": "#d4927a",
+    "accent2": "#a08060",
+    "border": "#e8ddd0"
+  },
+  "typography": {
+    "heading": "Lora",
+    "body": "Karla",
+    "mono": "JetBrains Mono"
+  },
+  "interactionProfile": {
+    "buttonHover": "gentle-glow-warm-hover",
+    "buttonClick": "cushion-press-soft",
+    "cardHover": "candlelight-shadow-dance",
+    "pageTransition": "soft-curtain-draw",
+    "scrollReveal": "warm-fade-rise-gentle",
+    "navItemHover": "wood-grain-highlight",
+    "navItemActive": "candle-flame-dot",
+    "inputFocus": "warm-wool-border-glow",
+    "toggleSwitch": "wool-stretch-toggle",
+    "tooltips": "linen-card-tooltip",
+    "loadingState": "coffee-cup-steam-rise",
+    "idleAmbient": "candle-flicker-ambient",
+    "microFeedback": "heart-warmth-pulse"
+  },
+  "views": [
+    {
+      "name": "dashboard",
+      "displayLabel": "God Morgen, Astrid",
+      "layoutPattern": "gradient-hero-card-with-weather-widget-stats",
+      "keyComponents": [
+        "gradient hero with 4 big stats",
+        "4 weather-widget stat cards",
+        "knit-pattern divider",
+        "activity feed (5 items)",
+        "milestones list (3 items)"
+      ]
+    },
+    {
+      "name": "projects",
+      "displayLabel": "Collections",
+      "layoutPattern": "bookshelf-spines-with-list-view",
+      "keyComponents": [
+        "2 wooden shelf rows with 4 book spines each",
+        "project detail list (4 items with descriptions)"
+      ]
+    },
+    {
+      "name": "project-workspace",
+      "displayLabel": "Spring Meadow",
+      "layoutPattern": "reading-nook-two-column",
+      "keyComponents": [
+        "collection overview description",
+        "piece cards grid (4 pieces)",
+        "timeline (5 stages)",
+        "sidebar: team, notes, budget"
+      ]
+    },
+    {
+      "name": "kanban",
+      "displayLabel": "Production Board",
+      "layoutPattern": "four-column-production-stages",
+      "keyComponents": [
+        "Prep column (3 cards)",
+        "Craft column (2 cards)",
+        "Finish column (2 cards)",
+        "Ship column (2 cards)",
+        "SortableJS drag-and-drop"
+      ]
+    },
+    {
+      "name": "whiteboard",
+      "displayLabel": "Inspiration Board",
+      "layoutPattern": "yarn-board-canvas",
+      "keyComponents": [
+        "6 draggable concept nodes",
+        "SVG yarn-line connections",
+        "knit-pattern node backgrounds"
+      ]
+    },
+    {
+      "name": "schema-planner",
+      "displayLabel": "Catalog Structure",
+      "layoutPattern": "cookbook-index-grid",
+      "keyComponents": [
+        "6 entity cards (Collection, Product, Material, Artisan, Order, Photo)",
+        "PK/FK field indicators",
+        "icon-topped entity headers"
+      ]
+    },
+    {
+      "name": "directory-tree",
+      "displayLabel": "Studio Files",
+      "layoutPattern": "wooden-drawer-organizer",
+      "keyComponents": [
+        "nested collapsible folder tree",
+        "5 top-level folders",
+        "15+ file items with type icons",
+        "open/close toggle animation"
+      ]
+    },
+    {
+      "name": "ideas",
+      "displayLabel": "Idea Cards",
+      "layoutPattern": "index-card-filing-cabinet",
+      "keyComponents": [
+        "idea text input with pin button",
+        "6 idea cards with colored tabs",
+        "category tags, heart votes, author"
+      ]
+    },
+    {
+      "name": "ai-chat",
+      "displayLabel": "Studio Companion",
+      "layoutPattern": "letter-writing-format",
+      "keyComponents": [
+        "6 letter-style messages (3 user, 3 AI)",
+        "wax-seal timestamps",
+        "blush/wood left borders",
+        "chat input with send button"
+      ]
+    },
+    {
+      "name": "settings",
+      "displayLabel": "Studio Settings",
+      "layoutPattern": "cozy-grouped-control-panel",
+      "keyComponents": [
+        "Profile group (4 text inputs)",
+        "Appearance group (4 toggles)",
+        "Notifications group (4 toggles)",
+        "Data & Privacy group (1 toggle, export, danger zone)"
+      ]
+    }
+  ],
+  "librariesUsed": [
+    {
+      "name": "GSAP",
+      "version": "3.12.5",
+      "purpose": "Spring bounce dock entrance, ambient candlelight glow on text"
+    },
+    {
+      "name": "ScrollTrigger",
+      "version": "3.12.5",
+      "purpose": "Budget bar fill animations triggered on scroll"
+    },
+    {
+      "name": "Tippy.js",
+      "version": "6.3.7",
+      "purpose": "Linen-card tooltips on dock items and action buttons"
+    },
+    {
+      "name": "SortableJS",
+      "version": "1.15.6",
+      "purpose": "Kanban card drag-and-drop between production columns"
+    },
+    {
+      "name": "Phosphor Icons",
+      "version": "2.1.1",
+      "purpose": "Duotone icons throughout — navigation, file tree, schema entities, actions"
+    }
+  ],
+  "assetsDownloaded": [],
+  "antiRepeatCompliance": [
+    "Pass 1 used teak credenza + amber/olive — this pass uses blush/wood Danish hygge warmth with completely different Lora+Karla typography",
+    "Pass 2 used atomic tulip-table radial layout with mustard — this pass uses cozy intimate centered-panel layout with floating bottom dock",
+    "Pass 3 used vibrant Girard textile collage with multicolor — this pass uses soft monochrome warmth with subtle knit textures",
+    "Pass 4 used sparse Noguchi sculpture garden with sage — this pass uses warm filled hygge comfort with candlelight glow everywhere"
+  ],
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json",
+    "validation/inspiration-crossreference.json"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "passId": "liquid-pass-6",
+  "layoutArchetype": "ink-in-water",
+  "references": [
+    {
+      "name": "Montblanc",
+      "url": "https://www.montblanc.com",
+      "takeaway": "Use deep ink-navy backgrounds (#1A1A2E) with whisper-thin serif headlines in white, and pace each content section at full viewport height with slow opacity transitions between them, creating the meditative rhythm of a pen touching paper.",
+      "applied": [
+        {
+          "element": "Global background",
+          "implementation": "Deep ink-navy (#0a1628) used as the --bg color token; every surface sits on this dark water canvas"
+        },
+        {
+          "element": "View headings",
+          "implementation": "Playfair Display serif font at 2rem with white (#ffffff) color and letter-spacing 0.02em creating whisper-thin serif headlines"
+        },
+        {
+          "element": "Page transitions",
+          "implementation": "Ink diffusion dissolve transition between views uses CSS blur+opacity (0.4s dissolve, 0.5s coalesce) creating slow meditative rhythm"
+        },
+        {
+          "element": "Scroll reveal pacing",
+          "implementation": "GSAP ScrollTrigger reveals content elements sequentially with 0.5s duration and staggered delays, pacing the viewport experience"
+        }
+      ]
+    },
+    {
+      "name": "Pilot Pen",
+      "url": "https://www.pilotpen.us",
+      "takeaway": "Apply a vertical gradient that deepens from light to dark as the page scrolls downward (#0F72B7 to #054A7A), creating an ink-well depth illusion where content nearer the bottom feels submerged in denser fluid.",
+      "applied": [
+        {
+          "element": "Surface panel depth",
+          "implementation": "Surface color (#0f1e38) is slightly lighter than background (#0a1628), creating layered depth. Deadline cards use rgba(26,48,80,0.3) for additional depth layering"
+        },
+        {
+          "element": "Nav rail shadow",
+          "implementation": "Left rail has inset box-shadow (inset -2px 0 8px rgba(0,0,0,0.2)) creating an ink-well recess effect that darkens at the edge"
+        },
+        {
+          "element": "Hover color shifts",
+          "implementation": "Nav items shift from neutral text opacity to gold (#c8a84e) active state, simulating ink color-change chemistry between hover and active"
+        }
+      ]
+    },
+    {
+      "name": "Sumi Ink Club",
+      "url": "https://sumiinkclub.com",
+      "takeaway": "Use brush-stroke SVG textures as section dividers and decorative borders—thick horizontal ink-swipes with visible bristle marks and feathered edges that separate content blocks like calligraphic rule lines on handmade paper.",
+      "applied": [
+        {
+          "element": "Ink dividers (.ink-divider)",
+          "implementation": "CSS clip-path polygon creating tapered brush-stroke shape (0% 0%, 2% 100%, 70% 100%, 75% 0%) with gold gradient fill, simulating calligraphic rule lines"
+        },
+        {
+          "element": "Quill dividers (.quill-divider)",
+          "implementation": "Similar tapered clip-path (0% 0%, 1% 100%, 80% 100%, 85% 0%) with gold-to-border gradient, creating thinner brush strokes between content sections"
+        },
+        {
+          "element": "Card flourishes (.letter-flourish)",
+          "implementation": "Bottom-edge clip-path accent strokes on project cards creating feathered calligraphic endings"
+        },
+        {
+          "element": "Kanban column strokes (.column-stroke)",
+          "implementation": "Tapered gradient lines under column headers mimicking brush-drawn horizontal rules"
+        },
+        {
+          "element": "Mixed typography",
+          "implementation": "Playfair Display (organic calligraphic feel) mixed with Source Sans 3 (clean digital type), blending handcraft aesthetic with structured layout readability"
+        }
+      ]
+    }
+  ]
+}

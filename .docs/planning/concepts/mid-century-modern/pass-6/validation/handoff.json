@@ -1,0 +1,202 @@
+{
+  "passId": "mid-century-modern-pass-6",
+  "styleId": "mid-century-modern",
+  "variantSeed": "pop-art-warhol-screen-print",
+  "pass": 6,
+  "timestamp": "2026-02-15T00:00:00.000Z",
+  "uniquenessProfile": {
+    "profileId": "sidebar-accordion",
+    "shellMode": "collapsible-left-sidebar",
+    "navPattern": "accordion-sections",
+    "contentFlow": "split-panel-detail",
+    "scrollMode": "standard-scroll",
+    "alignment": "left",
+    "heroTreatment": "inline-stats-row",
+    "motionLanguage": "collapse-expand",
+    "density": "compact",
+    "componentTone": "hard"
+  },
+  "typography": {
+    "heading": "Bebas Neue",
+    "body": "Rubik",
+    "mono": "Space Mono"
+  },
+  "palette": {
+    "bg": "#ffffff",
+    "text": "#0a0a0a",
+    "surface": "#f5f5f5",
+    "accent": "#ff1493",
+    "accent2": "#00e5ff",
+    "border": "#0a0a0a",
+    "green": "#76ff03",
+    "yellow": "#ffea00"
+  },
+  "contentPersona": "magazine-media-brand",
+  "views": [
+    {
+      "id": "dashboard",
+      "title": "Dashboard",
+      "components": [
+        "scrolling-headline-ticker",
+        "stat-panels-4-grid",
+        "bar-chart-engagement",
+        "activity-feed-timeline",
+        "action-buttons-strip"
+      ],
+      "contentCount": {
+        "stats": 4,
+        "activityItems": 6,
+        "actionButtons": 3
+      }
+    },
+    {
+      "id": "projects",
+      "title": "Magazine Covers",
+      "components": [
+        "project-cover-grid-3col"
+      ],
+      "contentCount": {
+        "projectCards": 6
+      }
+    },
+    {
+      "id": "project-workspace",
+      "title": "Neon Nights Workspace",
+      "components": [
+        "comic-frame-brief",
+        "comic-frame-team",
+        "comic-frame-milestones",
+        "comic-frame-notes"
+      ],
+      "contentCount": {
+        "comicFrames": 4,
+        "teamMembers": 4,
+        "milestones": 6,
+        "notes": 2
+      }
+    },
+    {
+      "id": "kanban",
+      "title": "Production Queue",
+      "components": [
+        "kanban-column-backlog",
+        "kanban-column-production",
+        "kanban-column-review",
+        "kanban-column-published"
+      ],
+      "contentCount": {
+        "columns": 4,
+        "totalCards": 12
+      }
+    },
+    {
+      "id": "whiteboard",
+      "title": "Pop Art Gallery Canvas",
+      "components": [
+        "toolbar",
+        "canvas-with-nodes",
+        "svg-connector-lines"
+      ],
+      "contentCount": {
+        "nodes": 7,
+        "connections": 7
+      }
+    },
+    {
+      "id": "schema-planner",
+      "title": "Infographic Schema",
+      "components": [
+        "entity-publication",
+        "entity-article",
+        "entity-contributor",
+        "entity-media-asset",
+        "connector-rows"
+      ],
+      "contentCount": {
+        "entities": 4,
+        "fieldsPerEntity": [6, 5, 5, 5]
+      }
+    },
+    {
+      "id": "directory-tree",
+      "title": "Table of Contents",
+      "components": [
+        "toc-section-editorial",
+        "toc-section-features",
+        "toc-section-fashion",
+        "toc-section-culture",
+        "toc-section-regulars"
+      ],
+      "contentCount": {
+        "sections": 5,
+        "totalItems": 18
+      }
+    },
+    {
+      "id": "ideas",
+      "title": "Vinyl Shelf",
+      "components": [
+        "vinyl-record-cards"
+      ],
+      "contentCount": {
+        "ideaCards": 6
+      }
+    },
+    {
+      "id": "ai-chat",
+      "title": "Editorial Assistant",
+      "components": [
+        "chat-message-list",
+        "chat-input-bar"
+      ],
+      "contentCount": {
+        "messageExchanges": 6
+      }
+    },
+    {
+      "id": "settings",
+      "title": "Masthead Settings",
+      "components": [
+        "publication-profile-group",
+        "notifications-group",
+        "display-theme-group",
+        "team-roles-group"
+      ],
+      "contentCount": {
+        "settingsGroups": 4,
+        "toggles": 6,
+        "inputs": 4,
+        "teamMembers": 4
+      }
+    }
+  ],
+  "interactions": {
+    "buttonHover": "halftone-dot-fill-reveal",
+    "buttonClick": "pow-burst-comic",
+    "cardHover": "color-channel-shift",
+    "pageTransition": "comic-panel-wipe",
+    "scrollReveal": "halftone-fade-resolve",
+    "navItemHover": "color-swap-pop",
+    "navItemActive": "thick-outline-box-active",
+    "inputFocus": "halftone-border-pattern",
+    "toggleSwitch": "comic-smash-toggle",
+    "tooltips": "speech-bubble-comic-tooltip",
+    "loadingState": "screen-print-layer-build",
+    "idleAmbient": "halftone-dot-drift",
+    "microFeedback": "zap-starburst-confirm"
+  },
+  "libraries": [],
+  "assets": [],
+  "antiRepeatCompliance": {
+    "pass1_teak_eames_amber": "avoided - using electric pink/cyan pop art with halftone",
+    "pass2_saarinen_mustard_orange": "avoided - using Warhol screen-print with CMYK colors",
+    "pass3_girard_folk_coral_olive": "avoided - using comic panel pop art with thick black outlines",
+    "pass4_noguchi_zen_sage_stone": "avoided - maximum volume pop art with Ben-Day dots"
+  },
+  "files": {
+    "html": "index.html",
+    "css": "style.css",
+    "js": "app.js",
+    "readme": "README.md"
+  }
+}

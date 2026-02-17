@@ -1,0 +1,93 @@
+{
+  "styleId": "retro-50s",
+  "pass": 5,
+  "variantSeed": "motel-neon-roadside",
+  "references": [
+    {
+      "name": "Roadtrippers",
+      "url": "https://www.roadtrippers.com",
+      "takeaway": "Scatter organic bean-shaped and squiggle decorations around content blocks as neon-sign ornaments, and present content items as a numbered itinerary sequence suggesting a road-trip route from stop to stop.",
+      "implementation": [
+        {
+          "element": ".marquee-header::before",
+          "description": "Bean-shaped organic border decoration with accent2 color and rotation, placed at top-right of each view header as a neon-sign ornament",
+          "cssProperties": ["border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%", "border: 2px solid var(--accent2)", "transform: rotate(-15deg)", "filter: drop-shadow(0 0 4px var(--accent2))"]
+        },
+        {
+          "element": ".marquee-header::after",
+          "description": "Squiggle/ellipse decoration at bottom-left with accent color as secondary neon-sign ornament",
+          "cssProperties": ["border-radius: 50%", "border: 2px solid var(--accent)", "transform: rotate(25deg)"]
+        },
+        {
+          "element": "Kanban columns",
+          "description": "Content presented as a numbered itinerary sequence: DEPARTURE -> EN ROUTE -> REST STOP -> DESTINATION, suggesting a road-trip route progression from stop to stop",
+          "cssProperties": ["Sequential column ordering with color-coded headers"]
+        },
+        {
+          "element": "License plate cards (.plate-number)",
+          "description": "Plate numbers like RT66-001 through RT66-009 create a numbered sequence through the kanban, evoking an itinerary order",
+          "cssProperties": ["font-family: var(--font-mono)", "color: var(--accent)", "letter-spacing: 2px"]
+        }
+      ]
+    },
+    {
+      "name": "The Neon Museum Las Vegas",
+      "url": "https://www.neonmuseum.org",
+      "takeaway": "Set the entire page on a deep black background and render all headlines with neon-glow text-shadow effects (0 0 10px, 0 0 40px in the accent color), so each heading reads like a lit tube-letter motel sign against the night sky.",
+      "implementation": [
+        {
+          "element": "body",
+          "description": "Deep dark background (#1a1a1e) that makes neon-colored elements glow with maximum contrast and luminosity",
+          "cssProperties": ["background-color: #1a1a1e"]
+        },
+        {
+          "element": ".neon-heading",
+          "description": "All primary headings use multi-layer neon text-shadow with 10px, 30px, and 60px radii for realistic tube-letter glow effect",
+          "cssProperties": ["text-shadow: 0 0 10px #00c9b7, 0 0 30px #00c9b766, 0 0 60px #00c9b733", "color: #00c9b7", "font-family: 'Permanent Marker'"]
+        },
+        {
+          "element": ".section-neon-title",
+          "description": "Secondary headings use pink neon glow treatment for variety, like different colored neon signs in the museum boneyard",
+          "cssProperties": ["text-shadow: 0 0 7px #ff3878, 0 0 20px #ff387844, 0 0 40px #ff387822", "color: #ff3878"]
+        },
+        {
+          "element": ".stat-neon-value, .vacancy-light, .cb-channel",
+          "description": "Accent elements rendered as neon signs with glow halos, treating each value as a vintage sign specimen",
+          "cssProperties": ["text-shadow with multi-layer glow", "animation: neon-flicker for aging tube effect"]
+        },
+        {
+          "element": ".logo-neon, .logo-pink",
+          "description": "Logo split into teal and pink neon tube colors like a dual-color vintage motel sign",
+          "cssProperties": ["text-shadow: var(--neon-glow-teal) / var(--neon-glow-pink)"]
+        }
+      ]
+    },
+    {
+      "name": "El Cosmico Marfa",
+      "url": "https://elcosmico.com",
+      "takeaway": "Style content cards as vintage postcards with rounded 16px corners, warm tan borders, and a slight drop-shadow rotation (1-2 degrees) so they feel like physical cards scattered on a motel lobby counter.",
+      "implementation": [
+        {
+          "element": ".postcard-card",
+          "description": "Project cards styled as vintage postcards with rounded 16px corners and warm scene backgrounds, hover removes rotation for 'picking up' effect",
+          "cssProperties": ["border-radius: 16px", "transform: rotate(calc(var(--rot) * 0.3deg))", "transition: transform 0.3s"]
+        },
+        {
+          "element": ".polaroid",
+          "description": "Idea cards styled as polaroid photos with varied CSS custom property rotation (-3deg to +2.5deg), creating a scattered-on-counter feeling",
+          "cssProperties": ["transform: rotate(var(--rot))", "background: #2a2a2f", "padding: 12px", "box-shadow: 0 4px 16px rgba(0,0,0,0.4)"]
+        },
+        {
+          "element": ".license-card",
+          "description": "Kanban cards evoke physical license plates with embossed state headers and plate numbers, continuing the tactile card-on-surface metaphor",
+          "cssProperties": ["border: 2px solid var(--border)", "border-radius: 10px", "hover translateY(-3px) lift effect"]
+        },
+        {
+          "element": ".schema-town .town-sign",
+          "description": "Town headers styled like physical road signs with green background and retroreflective side borders, evoking real-world directional signage",
+          "cssProperties": ["background: #1a4d2e", "border-bottom: 3px solid #4a7a5a", "pseudo-elements for side reflector bars"]
+        }
+      ]
+    }
+  ]
+}
