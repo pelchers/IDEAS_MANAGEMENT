@@ -34,6 +34,46 @@ Use this skill for one pass only. Do not blend with other pass outputs.
 8. Animations, transitions, and interactions should be deliberately designed, not generic defaults.
 9. Meet ALL Professional Quality Standards (see below) — the orchestrator will visually review screenshots and reject passes that fail.
 
+## Full Navigability (CRITICAL — NON-NEGOTIABLE)
+
+Every generated pass MUST be fully navigable. This is the single most important functional requirement. A concept that looks beautiful but cannot be navigated between views is WORTHLESS for evaluation.
+
+### Navigation Architecture Requirements
+1. **Every view must have a clickable `data-view="viewId"` navigation element** visible at all times (desktop AND mobile). The Playwright validation script relies on these attributes to navigate between views.
+2. **Every view's content section must have a `data-page="viewId"` attribute** on its container div/section.
+3. **Clicking any nav item must immediately show the corresponding view** and hide all others. No dead links, no broken handlers, no console errors.
+4. **The currently active view must be visually indicated** in the navigation (highlighted, underlined, filled, etc.).
+5. **Hash-based routing** (`#dashboard`, `#kanban`, etc.) must be supported so direct URL navigation works.
+6. **On page load, the default view (dashboard) must be visible** — not a blank screen, loading spinner, or "select a view" placeholder.
+
+### Mobile Navigation Requirements
+7. **On mobile (390px), ALL 10 views must still be reachable** via hamburger menu, bottom tab bar, drawer, or equivalent mobile nav pattern.
+8. **The mobile nav must actually work** — hamburger buttons must open menus, drawer items must trigger view switches, and the menu must close after selection.
+9. **Touch targets must be at least 44x44px** for all navigation elements on mobile.
+
+### Interactive Elements Within Views
+10. **Forms must be visible and functional-looking**: The Ideas view must show a capture form with visible input fields for title, description, tags, and priority. Settings must show actual form controls (toggles, inputs, selects).
+11. **All buttons must look clickable** — Create New Project, Add Card, Promote to Kanban, Generate Tree, Send Message, etc.
+12. **Directory tree folders must be expandable/collapsible** with click handlers.
+13. **Settings must have sub-tabs or sections** that are independently navigable.
+14. **AI Chat must show the message input** and have a visible send button.
+
+### Self-Test Checklist (MANDATORY before completing)
+Before marking the pass as done, mentally test EVERY navigation path:
+- [ ] Dashboard loads on page open — content is visible, not blank
+- [ ] Click Projects nav → projects view appears with project cards
+- [ ] Click Project Workspace nav → workspace view with folder tree + metadata
+- [ ] Click Kanban nav → 4 columns visible with cards
+- [ ] Click Whiteboard nav → canvas area with toolbar
+- [ ] Click Schema Planner nav → entity nodes with relationships
+- [ ] Click Directory Tree nav → expandable folder tree
+- [ ] Click Ideas nav → capture form + ideas list visible
+- [ ] Click AI Chat nav → message thread + input visible
+- [ ] Click Settings nav → settings panels with real controls
+- [ ] On mobile: hamburger/menu opens → all 10 items listed → each item navigates correctly
+
+If ANY navigation path fails, FIX IT before completing.
+
 ## Professional Quality Standards (CRITICAL)
 
 Your output will be visually reviewed by examining screenshots. Treat this as a design portfolio piece being reviewed by a senior frontend designer. The following are hard requirements — violations will cause the pass to be rejected and you will need to fix and regenerate.

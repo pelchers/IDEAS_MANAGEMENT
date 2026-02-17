@@ -31,13 +31,14 @@ Write these files into the output directory:
 - `validation/inspiration-crossreference.json` - Applied inspiration references
 
 ## Design Requirements
-1. **Fully navigable**: All 10 views must be accessible via navigation and display unique, view-appropriate content
-2. **Responsive**: Must work on desktop (1600px) and mobile (375px)
+1. **Fully navigable (NON-NEGOTIABLE)**: ALL 10 views must be reachable via visible navigation elements. Every nav item needs `data-view="viewId"`, every content section needs `data-page="viewId"`. Navigation must work on desktop AND mobile. Hash routing required. A concept that cannot be navigated is REJECTED regardless of visual quality.
+2. **Responsive**: Must work on desktop (1600px) and mobile (375px). Mobile must have working hamburger/drawer/tab nav reaching all 10 views.
 3. **Style-authentic**: Every element must feel native to the style family
 4. **Structurally unique**: Use the provided uniqueness profile to determine layout shell, nav pattern, content flow, and scroll behavior
 5. **PRD-aligned content**: Each view's mock content must use the real app's data models, terminology, and feature vocabulary from the product context. The content persona shapes visual tone; product context shapes what the content actually says
-6. **Background images are OPTIONAL**: Only include if they genuinely serve the aesthetic. CSS gradients, patterns, textures via CSS, or solid backgrounds are preferred in most cases.
-7. **Animations**: Use CSS animations/transitions. Include GSAP or Three.js only if it genuinely serves the style (e.g., liquid morphing for liquid style, atomic particles for retro 50s). Don't force 3D into every pass.
+6. **Interactive elements visible**: Forms (Ideas capture, Settings controls), buttons (Create New, Add Card, Promote, Generate, Send), expandable trees (Directory Tree), and sub-tabs (Settings) must all be present and functional-looking
+7. **Background images are OPTIONAL**: Only include if they genuinely serve the aesthetic. CSS gradients, patterns, textures via CSS, or solid backgrounds are preferred in most cases.
+8. **Animations**: Use CSS animations/transitions. Include GSAP or Three.js only if it genuinely serves the style (e.g., liquid morphing for liquid style, atomic particles for retro 50s). Don't force 3D into every pass.
 
 ## View Content Guidelines
 Each view should contain:
