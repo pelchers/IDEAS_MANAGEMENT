@@ -1,0 +1,84 @@
+{
+  "style": "mid-century-modern",
+  "pass": "pass-8",
+  "requiredViews": [
+    "dashboard",
+    "projects",
+    "project-workspace",
+    "kanban",
+    "whiteboard",
+    "schema-planner",
+    "directory-tree",
+    "ideas",
+    "ai-chat",
+    "settings"
+  ],
+  "desktop": {
+    "viewport": {
+      "width": 1536,
+      "height": 960
+    },
+    "screenshots": [
+      "validation/desktop/dashboard.png",
+      "validation/desktop/dashboard_segment-1.png",
+      "validation/desktop/dashboard_segment-2.png",
+      "validation/desktop/projects.png",
+      "validation/desktop/projects_segment-1.png",
+      "validation/desktop/projects_segment-2.png",
+      "validation/desktop/project-workspace.png",
+      "validation/desktop/project-workspace_segment-1.png",
+      "validation/desktop/project-workspace_segment-2.png",
+      "validation/desktop/kanban.png",
+      "validation/desktop/kanban_segment-1.png",
+      "validation/desktop/kanban_segment-2.png",
+      "validation/desktop/whiteboard.png",
+      "validation/desktop/whiteboard_segment-1.png",
+      "validation/desktop/whiteboard_segment-2.png",
+      "validation/desktop/schema-planner.png",
+      "validation/desktop/schema-planner_segment-1.png",
+      "validation/desktop/schema-planner_segment-2.png",
+      "validation/desktop/directory-tree.png",
+      "validation/desktop/directory-tree_segment-1.png",
+      "validation/desktop/directory-tree_segment-2.png",
+      "validation/desktop/ideas.png",
+      "validation/desktop/ideas_segment-1.png",
+      "validation/desktop/ideas_segment-2.png",
+      "validation/desktop/ai-chat.png",
+      "validation/desktop/ai-chat_segment-1.png",
+      "validation/desktop/ai-chat_segment-2.png",
+      "validation/desktop/settings.png",
+      "validation/desktop/settings_segment-1.png",
+      "validation/desktop/settings_segment-2.png"
+    ],
+    "scrollSegments": 20
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844,
+      "deviceScaleFactor": 2,
+      "isMobile": true
+    },
+    "screenshots": [
+      "validation/mobile/dashboard.png",
+      "validation/mobile/dashboard_segment-1.png",
+      "validation/mobile/dashboard_segment-2.png",
+      "validation/mobile/dashboard_segment-3.png",
+      "validation/mobile/projects.png",
+      "validation/mobile/projects_segment-1.png",
+      "validation/mobile/projects_segment-2.png",
+      "validation/mobile/projects_segment-3.png",
+      "validation/mobile/project-workspace.png",
+      "validation/mobile/kanban.png",
+      "validation/mobile/whiteboard.png",
+      "validation/mobile/schema-planner.png",
+      "validation/mobile/directory-tree.png",
+      "validation/mobile/ideas.png",
+      "validation/mobile/ai-chat.png",
+      "validation/mobile/settings.png"
+    ],
+    "scrollSegments": 6
+  },
+  "totalScreenshots": 46,
+  "timestamp": "2026-02-17T03:49:18.671Z"
+}
