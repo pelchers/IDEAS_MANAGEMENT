@@ -63,6 +63,9 @@
     // Typewriter cascade effect on child elements
     typewriterCascade(newPanel);
 
+    // Update hash
+    window.location.hash = '#' + viewId;
+
     // Update status
     var viewLabel = viewId.replace(/-/g, ' ').toUpperCase();
     setStatus('NAVIGATED TO ' + viewLabel);
@@ -475,5 +478,16 @@
       this.style.boxShadow = '';
     });
   });
+
+  // ---- HASH ROUTING ----
+  function handleHash() {
+    var hash = window.location.hash.replace('#', '');
+    if (hash && state.views.includes(hash) && hash !== state.currentView) {
+      navigateTo(hash);
+    }
+  }
+
+  window.addEventListener('hashchange', handleHash);
+  handleHash();
 
 })();

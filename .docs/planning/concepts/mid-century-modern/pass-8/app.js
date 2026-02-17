@@ -8,9 +8,8 @@
   'use strict';
 
   // ============ View Navigation ============
-  const viewPanels = document.querySelectorAll('.view-panel');
-  const timelineDots = document.querySelectorAll('.timeline-dot[data-nav]');
-  const mobileNavItems = document.querySelectorAll('.mobile-nav-item[data-view]');
+  const viewPanels = document.querySelectorAll('.view-panel[data-page]');
+  const allNavItems = document.querySelectorAll('[data-view]');
   let currentView = 'dashboard';
 
   function navigateTo(viewName) {
@@ -20,23 +19,15 @@
     // Update view panels
     viewPanels.forEach(panel => {
       panel.classList.remove('active');
-      if (panel.dataset.view === viewName) {
+      if (panel.dataset.page === viewName) {
         panel.classList.add('active');
         // Re-trigger cascade animations
         triggerCascade(panel);
       }
     });
 
-    // Update timeline dots
-    timelineDots.forEach(dot => {
-      dot.classList.remove('active');
-      if (dot.dataset.nav === viewName) {
-        dot.classList.add('active');
-      }
-    });
-
-    // Update mobile nav items
-    mobileNavItems.forEach(item => {
+    // Update all nav items with data-view
+    allNavItems.forEach(item => {
       item.classList.remove('active');
       if (item.dataset.view === viewName) {
         item.classList.add('active');
@@ -49,6 +40,9 @@
     // Scroll view area to top
     const viewArea = document.getElementById('viewArea');
     if (viewArea) viewArea.scrollTop = 0;
+
+    // Update hash
+    history.replaceState(null, '', '#' + viewName);
   }
 
   function triggerCascade(panel) {
@@ -61,15 +55,8 @@
     });
   }
 
-  // Timeline dot clicks
-  timelineDots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      navigateTo(dot.dataset.nav);
-    });
-  });
-
-  // Mobile nav item clicks
-  mobileNavItems.forEach(item => {
+  // Click handlers on ALL [data-view] elements (timeline dots + mobile nav items)
+  allNavItems.forEach(item => {
     item.addEventListener('click', () => {
       navigateTo(item.dataset.view);
     });
@@ -83,6 +70,21 @@
       navigateTo(navigable.dataset.navigate);
     }
   });
+
+  // ============ Hash Routing ============
+  function handleHash() {
+    const hash = location.hash.replace('#', '');
+    const validViews = [
+      'dashboard', 'projects', 'project-workspace', 'kanban', 'whiteboard',
+      'schema-planner', 'directory-tree', 'ideas', 'ai-chat', 'settings'
+    ];
+    if (hash && validViews.includes(hash)) {
+      currentView = ''; // Reset so navigateTo doesn't short-circuit
+      navigateTo(hash);
+    }
+  }
+
+  window.addEventListener('hashchange', handleHash);
 
   // ============ Mobile Drawer ============
   const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -287,8 +289,8 @@
   // ============ Keyboard Navigation ============
   document.addEventListener('keydown', (e) => {
     const viewOrder = [
-      'dashboard', 'projects', 'workspace', 'kanban', 'whiteboard',
-      'schema', 'directory', 'ideas', 'chat', 'settings'
+      'dashboard', 'projects', 'project-workspace', 'kanban', 'whiteboard',
+      'schema-planner', 'directory-tree', 'ideas', 'ai-chat', 'settings'
     ];
     const currentIndex = viewOrder.indexOf(currentView);
 
@@ -321,10 +323,23 @@
     return div.innerHTML;
   }
 
-  // ============ Initial Cascade Trigger ============
-  const initialPanel = document.querySelector('.view-panel.active');
-  if (initialPanel) {
-    triggerCascade(initialPanel);
+  // ============ Initial Load ============
+  // Check hash first, otherwise show dashboard
+  const initHash = location.hash.replace('#', '');
+  const validViews = [
+    'dashboard', 'projects', 'project-workspace', 'kanban', 'whiteboard',
+    'schema-planner', 'directory-tree', 'ideas', 'ai-chat', 'settings'
+  ];
+
+  if (initHash && validViews.includes(initHash)) {
+    currentView = ''; // Reset so navigateTo doesn't short-circuit
+    navigateTo(initHash);
+  } else {
+    // Dashboard is already active via HTML class, just trigger cascade
+    const initialPanel = document.querySelector('.view-panel.active');
+    if (initialPanel) {
+      triggerCascade(initialPanel);
+    }
   }
 
 })();

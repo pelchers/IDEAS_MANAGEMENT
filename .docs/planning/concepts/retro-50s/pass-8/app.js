@@ -53,10 +53,20 @@
     target.classList.add('active');
     currentView = viewId;
 
+    // Update persistent nav active states
+    document.querySelectorAll('.persistent-nav-item').forEach(function (item) {
+      item.classList.toggle('active', item.getAttribute('data-view') === viewId);
+    });
+
     // Update mobile drawer active states
     document.querySelectorAll('.mobile-nav-item').forEach(function (item) {
       item.classList.toggle('active', item.getAttribute('data-view') === viewId);
     });
+
+    // Update hash
+    if (window.location.hash !== '#' + viewId) {
+      history.pushState(null, '', '#' + viewId);
+    }
 
     // Close command palette and mobile drawer
     closeCmdPalette();
@@ -379,6 +389,21 @@
         navigateTo(item.getAttribute('data-view'));
       });
     });
+
+    // Persistent nav items (desktop bar)
+    document.querySelectorAll('.persistent-nav-item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        navigateTo(item.getAttribute('data-view'));
+      });
+    });
+
+    // Hash routing: respond to browser back/forward
+    window.addEventListener('hashchange', function () {
+      var hash = window.location.hash.replace('#', '');
+      if (hash && hash !== currentView && document.getElementById('view-' + hash)) {
+        navigateTo(hash);
+      }
+    });
   }
 
   function updateHighlight(items) {
@@ -393,6 +418,9 @@
 
   // ---------- Init ----------
   function init() {
+    // Expose showDing globally (used in inline HTML onclick handlers)
+    window.showDing = showDing;
+
     bindEvents();
     initToggles();
     initSettingsTabs();
@@ -405,8 +433,10 @@
     initProjectCards();
     initSearchHeros();
 
-    // Show dashboard
-    navigateTo('dashboard');
+    // Load view from hash, default to dashboard
+    var hash = window.location.hash.replace('#', '');
+    var startView = (hash && document.getElementById('view-' + hash)) ? hash : 'dashboard';
+    navigateTo(startView);
 
     // Initial scroll reveal
     setTimeout(triggerScrollReveal, 200);

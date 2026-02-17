@@ -15,7 +15,7 @@
   const starburstEl = document.getElementById('starburst-feedback');
 
   // --- State ---
-  let currentView = 'dashboard';
+  let currentView = null;
 
   // =========================================
   // NAVIGATION — Pill Ticket Toggle

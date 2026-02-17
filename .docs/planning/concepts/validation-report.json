@@ -1,7 +1,7 @@
 [
   {
     "style": "liquid",
-    "pass": "pass-5",
+    "pass": "pass-7",
     "requiredViews": [
       "dashboard",
       "projects",
@@ -21,16 +21,32 @@
       },
       "screenshots": [
         "validation/desktop/dashboard.png",
+        "validation/desktop/dashboard_segment-1.png",
+        "validation/desktop/dashboard_segment-2.png",
         "validation/desktop/projects.png",
+        "validation/desktop/projects_segment-1.png",
+        "validation/desktop/projects_segment-2.png",
         "validation/desktop/project-workspace.png",
+        "validation/desktop/project-workspace_segment-1.png",
+        "validation/desktop/project-workspace_segment-2.png",
         "validation/desktop/kanban.png",
+        "validation/desktop/kanban_segment-1.png",
+        "validation/desktop/kanban_segment-2.png",
         "validation/desktop/whiteboard.png",
         "validation/desktop/schema-planner.png",
         "validation/desktop/directory-tree.png",
+        "validation/desktop/directory-tree_segment-1.png",
+        "validation/desktop/directory-tree_segment-2.png",
         "validation/desktop/ideas.png",
+        "validation/desktop/ideas_segment-1.png",
+        "validation/desktop/ideas_segment-2.png",
+        "validation/desktop/ideas_segment-3.png",
         "validation/desktop/ai-chat.png",
+        "validation/desktop/ai-chat_segment-1.png",
+        "validation/desktop/ai-chat_segment-2.png",
         "validation/desktop/settings.png"
-      ]
+      ],
+      "scrollSegments": 15
     },
     "mobile": {
       "viewport": {
@@ -41,17 +57,41 @@
       },
       "screenshots": [
         "validation/mobile/dashboard.png",
+        "validation/mobile/dashboard_segment-1.png",
+        "validation/mobile/dashboard_segment-2.png",
+        "validation/mobile/dashboard_segment-3.png",
         "validation/mobile/projects.png",
+        "validation/mobile/projects_segment-1.png",
+        "validation/mobile/projects_segment-2.png",
+        "validation/mobile/projects_segment-3.png",
         "validation/mobile/project-workspace.png",
+        "validation/mobile/project-workspace_segment-1.png",
+        "validation/mobile/project-workspace_segment-2.png",
+        "validation/mobile/project-workspace_segment-3.png",
         "validation/mobile/kanban.png",
+        "validation/mobile/kanban_segment-1.png",
+        "validation/mobile/kanban_segment-2.png",
+        "validation/mobile/kanban_segment-3.png",
         "validation/mobile/whiteboard.png",
         "validation/mobile/schema-planner.png",
         "validation/mobile/directory-tree.png",
+        "validation/mobile/directory-tree_segment-1.png",
+        "validation/mobile/directory-tree_segment-2.png",
         "validation/mobile/ideas.png",
+        "validation/mobile/ideas_segment-1.png",
+        "validation/mobile/ideas_segment-2.png",
+        "validation/mobile/ideas_segment-3.png",
         "validation/mobile/ai-chat.png",
-        "validation/mobile/settings.png"
-      ]
+        "validation/mobile/ai-chat_segment-1.png",
+        "validation/mobile/ai-chat_segment-2.png",
+        "validation/mobile/ai-chat_segment-3.png",
+        "validation/mobile/settings.png",
+        "validation/mobile/settings_segment-1.png",
+        "validation/mobile/settings_segment-2.png"
+      ],
+      "scrollSegments": 22
     },
-    "timestamp": "2026-02-15T07:26:52.036Z"
+    "totalScreenshots": 57,
+    "timestamp": "2026-02-17T03:50:49.769Z"
   }
 ]

@@ -9,8 +9,8 @@
 
   // ── VIEW ORDERING (for slide direction) ──
   const VIEW_ORDER = [
-    'dashboard', 'projects', 'workspace', 'kanban',
-    'whiteboard', 'schema', 'directory', 'ideas', 'chat', 'settings'
+    'dashboard', 'projects', 'project-workspace', 'kanban',
+    'whiteboard', 'schema-planner', 'directory-tree', 'ideas', 'ai-chat', 'settings'
   ];
 
   // ── STATE ──
@@ -92,6 +92,7 @@
       nextPanel.classList.add('active');
 
       currentView = viewId;
+      window.location.hash = viewId;
     }, 200);
   }
 
@@ -342,10 +343,40 @@
     });
   });
 
+  // ── DIRECTORY TREE EXPAND/COLLAPSE ──
+  document.querySelectorAll('.folder-item').forEach(function (item) {
+    var subList = item.querySelector('.folder-sub');
+    if (subList) {
+      item.addEventListener('click', function (e) {
+        if (e.target.closest('.folder-sub')) return;
+        e.stopPropagation();
+        var isHidden = subList.style.display === 'none';
+        subList.style.display = isHidden ? '' : 'none';
+        var icon = this.querySelector('.folder-icon');
+        if (icon) {
+          icon.textContent = isHidden ? '[D]' : '[+]';
+        }
+      });
+    }
+  });
+
+  // ── HASH-BASED ROUTING ──
+  function handleHash() {
+    var hash = window.location.hash.replace('#', '');
+    if (hash && VIEW_ORDER.indexOf(hash) !== -1 && hash !== currentView) {
+      navigateTo(hash);
+    }
+  }
+
+  window.addEventListener('hashchange', handleHash);
+
   // ── INITIAL STATE ──
-  // Ensure only dashboard is visible on load
+  // Check hash first; if valid, navigate to that view; else show dashboard
+  var initialHash = window.location.hash.replace('#', '');
+  var initialView = (initialHash && VIEW_ORDER.indexOf(initialHash) !== -1) ? initialHash : 'dashboard';
+
   panels.forEach(function (panel) {
-    if (panel.getAttribute('data-page') === 'dashboard') {
+    if (panel.getAttribute('data-page') === initialView) {
       panel.classList.add('active');
       panel.style.display = 'block';
     } else {
@@ -353,5 +384,19 @@
       panel.style.display = 'none';
     }
   });
+
+  if (initialView !== 'dashboard') {
+    // Update tab active state for hash-loaded view
+    currentView = initialView;
+    tabs.forEach(function (tab) {
+      tab.classList.remove('active');
+      tab.setAttribute('aria-selected', 'false');
+    });
+    var initialTab = document.querySelector('.tab[data-view="' + initialView + '"]');
+    if (initialTab) {
+      initialTab.classList.add('active');
+      initialTab.setAttribute('aria-selected', 'true');
+    }
+  }
 
 })();

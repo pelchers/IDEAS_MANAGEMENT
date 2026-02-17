@@ -14,13 +14,13 @@
   <button class="mobile-nav-close" id="mobileClose">&#x2715;</button>
   <div class="mobile-nav-item active" data-view="dashboard">&#9670; Dashboard</div>
   <div class="mobile-nav-item" data-view="projects">&#9670; Projects</div>
-  <div class="mobile-nav-item" data-view="workspace">&#9670; Project Workspace</div>
+  <div class="mobile-nav-item" data-view="project-workspace">&#9670; Project Workspace</div>
   <div class="mobile-nav-item" data-view="kanban">&#9670; Kanban Board</div>
   <div class="mobile-nav-item" data-view="whiteboard">&#9670; Whiteboard</div>
-  <div class="mobile-nav-item" data-view="schema">&#9670; Schema Planner</div>
-  <div class="mobile-nav-item" data-view="directory">&#9670; Directory Tree</div>
+  <div class="mobile-nav-item" data-view="schema-planner">&#9670; Schema Planner</div>
+  <div class="mobile-nav-item" data-view="directory-tree">&#9670; Directory Tree</div>
   <div class="mobile-nav-item" data-view="ideas">&#9670; Ideas</div>
-  <div class="mobile-nav-item" data-view="chat">&#9670; AI Chat</div>
+  <div class="mobile-nav-item" data-view="ai-chat">&#9670; AI Chat</div>
   <div class="mobile-nav-item" data-view="settings">&#9670; Settings</div>
 </div>
 
@@ -52,7 +52,7 @@
     <div class="view-area" id="viewArea">
 
       <!-- ========== 1. DASHBOARD ========== -->
-      <div class="view-panel active" data-view="dashboard" data-page="dashboard">
+      <div class="view-panel active" data-page="dashboard">
         <div class="exhibit-room cascade-item">
           <div class="exhibit-room__era-tag">Room I &mdash; The Overview Gallery</div>
           <h1 class="exhibit-room__title">Welcome to the Collection, Marcus</h1>
@@ -132,7 +132,7 @@
               <button class="quick-action" data-navigate="projects">+ New Project</button>
               <button class="quick-action" data-navigate="ideas">+ Capture Idea</button>
               <button class="quick-action" data-navigate="kanban">View Kanban</button>
-              <button class="quick-action" data-navigate="chat">Ask AI</button>
+              <button class="quick-action" data-navigate="ai-chat">Ask AI</button>
             </div>
 
             <div class="section-divider">
@@ -153,7 +153,7 @@
       </div>
 
       <!-- ========== 2. PROJECTS ========== -->
-      <div class="view-panel" data-view="projects" data-page="projects">
+      <div class="view-panel" data-page="projects">
         <div class="exhibit-room cascade-item">
           <div class="exhibit-room__era-tag">Room II &mdash; The Project Pavilion</div>
           <h1 class="exhibit-room__title">Your Projects</h1>
@@ -169,7 +169,7 @@
         </div>
 
         <div class="grid-3 cascade-item">
-          <div class="project-card" data-navigate="workspace">
+          <div class="project-card" data-navigate="project-workspace">
             <div class="project-card__status active">Active</div>
             <div class="project-card__name">Wavz.fm Music Platform</div>
             <div class="project-card__desc">A social music discovery platform with collaborative playlists, AI-powered recommendations, and live listening rooms.</div>
@@ -184,7 +184,7 @@
             </div>
           </div>
 
-          <div class="project-card" data-navigate="workspace">
+          <div class="project-card" data-navigate="project-workspace">
             <div class="project-card__status active">Active</div>
             <div class="project-card__name">Campus Learning App</div>
             <div class="project-card__desc">University course management with real-time collaboration, grade tracking, and peer study groups.</div>
@@ -198,7 +198,7 @@
             </div>
           </div>
 
-          <div class="project-card" data-navigate="workspace">
+          <div class="project-card" data-navigate="project-workspace">
             <div class="project-card__status planning">Planning</div>
             <div class="project-card__name">RepoSaver Backup Tool</div>
             <div class="project-card__desc">Automated GitHub repository backup service with versioned snapshots, encryption, and cloud storage integration.</div>
@@ -212,7 +212,7 @@
             </div>
           </div>
 
-          <div class="project-card" data-navigate="workspace">
+          <div class="project-card" data-navigate="project-workspace">
             <div class="project-card__status planning">Planning</div>
             <div class="project-card__name">HealthTrack Dashboard</div>
             <div class="project-card__desc">Personal health metrics dashboard with wearable device integration and AI-driven wellness insights.</div>
@@ -226,7 +226,7 @@
             </div>
           </div>
 
-          <div class="project-card" data-navigate="workspace">
+          <div class="project-card" data-navigate="project-workspace">
             <div class="project-card__status active">Active</div>
             <div class="project-card__name">Artisan Marketplace</div>
             <div class="project-card__desc">E-commerce platform connecting local artisans with customers, featuring custom storefronts and shipping integration.</div>
@@ -250,7 +250,7 @@
       </div>
 
       <!-- ========== 3. PROJECT WORKSPACE ========== -->
-      <div class="view-panel" data-view="workspace" data-page="workspace">
+      <div class="view-panel" data-page="project-workspace">
         <div class="exhibit-room cascade-item">
           <div class="exhibit-room__era-tag">Room III &mdash; The Working Studio</div>
           <h1 class="exhibit-room__title">Wavz.fm Music Platform</h1>
@@ -263,10 +263,10 @@
             <div class="workspace-sidebar__nav-item active">&#9670; Overview</div>
             <div class="workspace-sidebar__nav-item" data-navigate="kanban">&#9670; Kanban Board</div>
             <div class="workspace-sidebar__nav-item" data-navigate="whiteboard">&#9670; Whiteboard</div>
-            <div class="workspace-sidebar__nav-item" data-navigate="schema">&#9670; Schema Planner</div>
-            <div class="workspace-sidebar__nav-item" data-navigate="directory">&#9670; Directory Tree</div>
+            <div class="workspace-sidebar__nav-item" data-navigate="schema-planner">&#9670; Schema Planner</div>
+            <div class="workspace-sidebar__nav-item" data-navigate="directory-tree">&#9670; Directory Tree</div>
             <div class="workspace-sidebar__nav-item" data-navigate="ideas">&#9670; Ideas</div>
-            <div class="workspace-sidebar__nav-item" data-navigate="chat">&#9670; AI Chat</div>
+            <div class="workspace-sidebar__nav-item" data-navigate="ai-chat">&#9670; AI Chat</div>
 
             <div style="margin-top: 28px; font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.14em; color: #8a7e6e; margin-bottom: 12px; padding: 0 12px;">Collaborators</div>
             <div style="display: flex; gap: 6px; padding: 0 12px;">
@@ -354,7 +354,7 @@
       </div>
 
       <!-- ========== 4. KANBAN BOARD ========== -->
-      <div class="view-panel" data-view="kanban" data-page="kanban">
+      <div class="view-panel" data-page="kanban">
         <div class="exhibit-room cascade-item">
           <div class="exhibit-room__era-tag">Room IV &mdash; The Progress Gallery</div>
           <h1 class="exhibit-room__title">Kanban Board</h1>
@@ -485,7 +485,7 @@
       </div>
 
       <!-- ========== 5. WHITEBOARD ========== -->
-      <div class="view-panel" data-view="whiteboard" data-page="whiteboard">
+      <div class="view-panel" data-page="whiteboard">
         <div class="exhibit-room cascade-item">
           <div class="exhibit-room__era-tag">Room V &mdash; The Drawing Room</div>
           <h1 class="exhibit-room__title">Whiteboard</h1>
@@ -553,7 +553,7 @@
       </div>
 
       <!-- ========== 6. SCHEMA PLANNER ========== -->
-      <div class="view-panel" data-view="schema" data-page="schema">
+      <div class="view-panel" data-page="schema-planner">
         <div class="exhibit-room cascade-item">
           <div class="exhibit-room__era-tag">Room VI &mdash; The Blueprint Chamber</div>
           <h1 class="exhibit-room__title">Schema Planner</h1>
@@ -781,7 +781,7 @@
       </div>
 
       <!-- ========== 7. DIRECTORY TREE ========== -->
-      <div class="view-panel" data-view="directory" data-page="directory">
+      <div class="view-panel" data-page="directory-tree">
         <div class="exhibit-room cascade-item">
           <div class="exhibit-room__era-tag">Room VII &mdash; The Archive</div>
           <h1 class="exhibit-room__title">Directory Tree</h1>
@@ -1022,7 +1022,7 @@
       </div>
 
       <!-- ========== 8. IDEAS ========== -->
-      <div class="view-panel" data-view="ideas" data-page="ideas">
+      <div class="view-panel" data-page="ideas">
         <div class="exhibit-room cascade-item">
           <div class="exhibit-room__era-tag">Room VIII &mdash; The Idea Atelier</div>
           <h1 class="exhibit-room__title">Ideas</h1>
@@ -1168,7 +1168,7 @@
       </div>
 
       <!-- ========== 9. AI CHAT ========== -->
-      <div class="view-panel" data-view="chat" data-page="chat">
+      <div class="view-panel" data-page="ai-chat">
         <div class="exhibit-room cascade-item">
           <div class="exhibit-room__era-tag">Room IX &mdash; The Conversation Salon</div>
           <h1 class="exhibit-room__title">AI Chat</h1>
@@ -1242,7 +1242,7 @@
       </div>
 
       <!-- ========== 10. SETTINGS ========== -->
-      <div class="view-panel" data-view="settings" data-page="settings">
+      <div class="view-panel" data-page="settings">
         <div class="exhibit-room cascade-item">
           <div class="exhibit-room__era-tag">Room X &mdash; The Curator's Office</div>
           <h1 class="exhibit-room__title">Settings</h1>
@@ -1483,43 +1483,43 @@
   <nav class="timeline-nav" id="timelineNav">
     <div class="timeline-nav__label">Exhibit Rooms</div>
     <div class="timeline-nav__track">
-      <div class="timeline-dot active" data-nav="dashboard">
+      <div class="timeline-dot active" data-view="dashboard">
         <div class="timeline-dot__circle"></div>
         <div class="timeline-dot__tooltip">I. Dashboard</div>
       </div>
-      <div class="timeline-dot" data-nav="projects">
+      <div class="timeline-dot" data-view="projects">
         <div class="timeline-dot__circle"></div>
         <div class="timeline-dot__tooltip">II. Projects</div>
       </div>
-      <div class="timeline-dot" data-nav="workspace">
+      <div class="timeline-dot" data-view="project-workspace">
         <div class="timeline-dot__circle"></div>
         <div class="timeline-dot__tooltip">III. Workspace</div>
       </div>
-      <div class="timeline-dot" data-nav="kanban">
+      <div class="timeline-dot" data-view="kanban">
         <div class="timeline-dot__circle"></div>
         <div class="timeline-dot__tooltip">IV. Kanban</div>
       </div>
-      <div class="timeline-dot" data-nav="whiteboard">
+      <div class="timeline-dot" data-view="whiteboard">
         <div class="timeline-dot__circle"></div>
         <div class="timeline-dot__tooltip">V. Whiteboard</div>
       </div>
-      <div class="timeline-dot" data-nav="schema">
+      <div class="timeline-dot" data-view="schema-planner">
         <div class="timeline-dot__circle"></div>
         <div class="timeline-dot__tooltip">VI. Schema</div>
       </div>
-      <div class="timeline-dot" data-nav="directory">
+      <div class="timeline-dot" data-view="directory-tree">
         <div class="timeline-dot__circle"></div>
         <div class="timeline-dot__tooltip">VII. Directory</div>
       </div>
-      <div class="timeline-dot" data-nav="ideas">
+      <div class="timeline-dot" data-view="ideas">
         <div class="timeline-dot__circle"></div>
         <div class="timeline-dot__tooltip">VIII. Ideas</div>
       </div>
-      <div class="timeline-dot" data-nav="chat">
+      <div class="timeline-dot" data-view="ai-chat">
         <div class="timeline-dot__circle"></div>
         <div class="timeline-dot__tooltip">IX. AI Chat</div>
       </div>
-      <div class="timeline-dot" data-nav="settings">
+      <div class="timeline-dot" data-view="settings">
         <div class="timeline-dot__circle"></div>
         <div class="timeline-dot__tooltip">X. Settings</div>
       </div>

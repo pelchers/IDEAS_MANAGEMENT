@@ -8,19 +8,26 @@
 
   // ---- DOM refs ----
   const toolbarNav = document.getElementById('toolbarNav');
-  const toolbarBtns = toolbarNav.querySelectorAll('.toolbar-btn');
+  const toolbarBtns = toolbarNav.querySelectorAll('.toolbar-btn[data-view]');
   const views = document.querySelectorAll('.view[data-view]');
   const mobileMenuBtn = document.getElementById('mobileMenuBtn');
   const loadingOverlay = document.getElementById('loadingOverlay');
   const successFlash = document.getElementById('successFlash');
   const settingsPaneTitle = document.getElementById('settingsPaneTitle');
 
+  // Valid view IDs
+  var validViews = [
+    'dashboard', 'projects', 'project-workspace', 'kanban', 'whiteboard',
+    'schema-planner', 'directory-tree', 'ideas', 'ai-chat', 'settings'
+  ];
+
   // ---- State ----
   let currentView = 'dashboard';
   let mobileNavOpen = false;
 
   // ---- Navigation ----
-  function navigateTo(target) {
+  function navigateTo(target, skipHash) {
+    if (!target || validViews.indexOf(target) === -1) return;
     if (target === currentView) return;
 
     // Show loading briefly
@@ -31,11 +38,12 @@
       toolbarBtns.forEach(function (btn) { btn.classList.remove('active'); });
       views.forEach(function (v) { v.classList.remove('active'); });
 
-      // Activate target
-      var btn = toolbarNav.querySelector('[data-target="' + target + '"]');
+      // Activate target nav button
+      var btn = toolbarNav.querySelector('[data-view="' + target + '"]');
       if (btn) btn.classList.add('active');
 
-      var view = document.querySelector('[data-view="' + target + '"]');
+      // Activate target view section
+      var view = document.querySelector('section.view[data-view="' + target + '"]');
       if (view) {
         view.classList.add('active');
         // Trigger scroll-reveal animations on child elements
@@ -43,6 +51,12 @@
       }
 
       currentView = target;
+
+      // Update hash
+      if (!skipHash) {
+        location.hash = target;
+      }
+
       hideLoading();
 
       // Close mobile nav
@@ -53,10 +67,12 @@
     }, 220);
   }
 
-  // Toolbar button clicks
-  toolbarBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var target = btn.getAttribute('data-target');
+  // Toolbar button clicks — wire on ALL [data-view] elements
+  document.querySelectorAll('[data-view]').forEach(function (el) {
+    // Skip section elements (they are pages, not nav)
+    if (el.tagName === 'SECTION') return;
+    el.addEventListener('click', function () {
+      var target = el.getAttribute('data-view');
       if (target) navigateTo(target);
     });
   });
@@ -69,13 +85,33 @@
     });
   }
 
-  // Quick action navigation buttons
+  // Quick action navigation buttons (data-nav)
   document.querySelectorAll('[data-nav]').forEach(function (el) {
     el.addEventListener('click', function () {
       var target = el.getAttribute('data-nav');
       if (target) navigateTo(target);
     });
   });
+
+  // ---- Hash Routing ----
+  function handleHash() {
+    var hash = location.hash.replace('#', '');
+    if (hash && validViews.indexOf(hash) !== -1) {
+      // Force navigation even if same as currentView on initial load
+      currentView = '';
+      navigateTo(hash, true);
+    }
+  }
+
+  window.addEventListener('hashchange', handleHash);
+
+  // On initial load, check for hash
+  var initialHash = location.hash.replace('#', '');
+  if (initialHash && validViews.indexOf(initialHash) !== -1) {
+    // Remove active from dashboard, navigate to hash target
+    currentView = '';
+    navigateTo(initialHash, true);
+  }
 
   // ---- Loading ----
   function showLoading() {
@@ -329,8 +365,8 @@
         '3': 'project-workspace',
         '4': 'kanban',
         '5': 'whiteboard',
-        '6': 'schema',
-        '7': 'directory',
+        '6': 'schema-planner',
+        '7': 'directory-tree',
         '8': 'ideas',
         '9': 'ai-chat',
         '0': 'settings'
@@ -390,5 +426,35 @@
       if (target) navigateTo(target);
     });
   });
+
+  // ---- Tag Removal ----
+  document.querySelectorAll('.tag-remove').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var tag = btn.closest('.tag');
+      if (tag) tag.remove();
+    });
+  });
+
+  // ---- Ideas Form Tag Add ----
+  var tagInput = document.querySelector('.tag-input');
+  if (tagInput) {
+    tagInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var val = tagInput.value.trim();
+        if (!val) return;
+        var tagSpan = document.createElement('span');
+        tagSpan.className = 'tag removable';
+        tagSpan.textContent = val + ' ';
+        var removeBtn = document.createElement('button');
+        removeBtn.className = 'tag-remove';
+        removeBtn.innerHTML = '&times;';
+        removeBtn.addEventListener('click', function () { tagSpan.remove(); });
+        tagSpan.appendChild(removeBtn);
+        tagInput.parentNode.insertBefore(tagSpan, tagInput);
+        tagInput.value = '';
+      }
+    });
+  }
 
 })();

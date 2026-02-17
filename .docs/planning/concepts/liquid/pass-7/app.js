@@ -12,7 +12,7 @@
   const overlayNav = document.getElementById('overlayNav');
   const inkWashOverlay = document.getElementById('inkWashOverlay');
   const editorialMain = document.getElementById('editorialMain');
-  const navLinks = document.querySelectorAll('.overlay-nav__link');
+  const navLinks = document.querySelectorAll('[data-view]');
   const pages = document.querySelectorAll('.page[data-page]');
   const inkCanvas = document.getElementById('ink-ambient');
   const settingsTabs = document.querySelectorAll('[data-settings-tab]');
@@ -107,6 +107,7 @@
       });
 
       currentView = viewId;
+      history.replaceState(null, '', '#' + viewId);
       window.scrollTo(0, 0);
     });
 

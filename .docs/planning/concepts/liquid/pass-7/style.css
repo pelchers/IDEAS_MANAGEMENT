@@ -317,6 +317,123 @@ img {
   background: var(--accent);
 }
 
+/* ---- PERSISTENT DESKTOP SIDEBAR NAV ---- */
+.desktop-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background: rgba(14, 14, 30, 0.92);
+  backdrop-filter: blur(16px);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 0;
+  overflow-y: auto;
+}
+
+.desktop-nav__masthead {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 1.25rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+
+.desktop-nav__issue {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--accent2);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+}
+
+.desktop-nav__title {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.desktop-nav__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0 0.5rem;
+}
+
+.desktop-nav__link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  transition: color var(--dur-fast) var(--ease-ink),
+              background var(--dur-fast) var(--ease-ink);
+  position: relative;
+}
+
+.desktop-nav__link:hover {
+  color: var(--text);
+  background: rgba(123, 104, 238, 0.06);
+}
+
+.desktop-nav__link.active {
+  color: var(--text);
+  background: rgba(123, 104, 238, 0.12);
+}
+
+.desktop-nav__link.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+.desktop-nav__num {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  width: 1.6ch;
+  flex-shrink: 0;
+}
+
+.desktop-nav__label {
+  white-space: nowrap;
+}
+
+.hamburger {
+  display: none;
+}
+
+/* On mobile: hide desktop nav, show hamburger, remove margin */
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .editorial-main {
+    margin-left: 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
 /* ---- INK WASH TRANSITION OVERLAY ---- */
 .ink-wash-overlay {
   position: fixed;
@@ -351,6 +468,7 @@ img {
 .editorial-main {
   position: relative;
   z-index: 1;
+  margin-left: 200px;
 }
 
 .page {

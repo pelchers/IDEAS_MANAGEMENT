@@ -489,9 +489,60 @@ input, textarea, select { font-family: inherit; }
   text-align: center;
 }
 
+/* ---------- Persistent Nav Bar (Desktop) ---------- */
+.persistent-nav {
+  position: fixed;
+  top: 56px;
+  left: 0; right: 0;
+  height: 44px;
+  background: linear-gradient(180deg, #faf8f3, var(--bg));
+  border-bottom: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 16px;
+  z-index: 999;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.persistent-nav::-webkit-scrollbar { display: none; }
+
+.persistent-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 20px;
+  background: transparent;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #546e7a;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.persistent-nav-item i {
+  font-size: 0.95rem;
+}
+.persistent-nav-item:hover {
+  background: var(--surface);
+  color: var(--accent);
+}
+.persistent-nav-item.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(0,137,123,0.3);
+}
+
 /* ---------- Main Content Area ---------- */
 .main-content {
-  padding-top: 56px;
+  padding-top: 100px; /* 56px top-bar + 44px persistent-nav */
   min-height: 100vh;
 }
 
@@ -1700,6 +1751,8 @@ select.form-input {
   .top-bar { padding: 0 14px; }
   .cmd-trigger { display: none; }
   .hamburger-btn { display: flex; }
+  .persistent-nav { display: none; }
+  .main-content { padding-top: 56px; }
 
   .view-page { padding: 28px 16px 60px; }
 
