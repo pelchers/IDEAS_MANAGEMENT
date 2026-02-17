@@ -59,10 +59,13 @@
       "validation/mobile/dashboard_segment-1.png",
       "validation/mobile/dashboard_segment-2.png",
       "validation/mobile/dashboard_segment-3.png",
+      "validation/mobile/dashboard_segment-4.png",
       "validation/mobile/projects.png",
       "validation/mobile/projects_segment-1.png",
       "validation/mobile/projects_segment-2.png",
       "validation/mobile/projects_segment-3.png",
+      "validation/mobile/projects_segment-4.png",
+      "validation/mobile/projects_segment-5.png",
       "validation/mobile/project-workspace.png",
       "validation/mobile/project-workspace_segment-1.png",
       "validation/mobile/project-workspace_segment-2.png",
@@ -80,16 +83,20 @@
       "validation/mobile/ideas_segment-1.png",
       "validation/mobile/ideas_segment-2.png",
       "validation/mobile/ideas_segment-3.png",
+      "validation/mobile/ideas_segment-4.png",
+      "validation/mobile/ideas_segment-5.png",
       "validation/mobile/ai-chat.png",
       "validation/mobile/ai-chat_segment-1.png",
       "validation/mobile/ai-chat_segment-2.png",
       "validation/mobile/ai-chat_segment-3.png",
+      "validation/mobile/ai-chat_segment-4.png",
+      "validation/mobile/ai-chat_segment-5.png",
       "validation/mobile/settings.png",
       "validation/mobile/settings_segment-1.png",
       "validation/mobile/settings_segment-2.png"
     ],
-    "scrollSegments": 22
+    "scrollSegments": 29
   },
-  "totalScreenshots": 57,
-  "timestamp": "2026-02-17T03:50:49.769Z"
+  "totalScreenshots": 64,
+  "timestamp": "2026-02-17T04:06:48.762Z"
 }
