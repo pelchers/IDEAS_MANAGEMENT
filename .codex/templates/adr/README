@@ -3,7 +3,7 @@
 This is a template layout for ADR orchestration.
 
 ```
-.codex/adr/
+.adr/
 ?? README
 ?? orchestration/
 ?  ?? <SESSION_NAME>/

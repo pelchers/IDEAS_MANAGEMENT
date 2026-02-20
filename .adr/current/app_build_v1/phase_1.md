@@ -39,4 +39,4 @@ Status: complete
 - Electron GUI validation cannot be fully automated in this environment.
 
 ## Notes
-- Requirements source: .codex/adr/orchestration/app_build_v1/primary_task_list.md + .docs/planning/*.
+- Requirements source: .adr/orchestration/app_build_v1/primary_task_list.md + .docs/planning/*.

@@ -32,6 +32,6 @@
 - `.codex/orchestration/history/*` — archived queue items.
 
 ## ADR Workflow
-- `.codex/adr/orchestration/*` — session task lists + PRD + tech requirements.
-- `.codex/adr/current/*` — active phase files.
-- `.codex/adr/history/*` — completed phases + reviews.
+- `.adr/orchestration/*` — session task lists + PRD + tech requirements.
+- `.adr/current/*` — active phase files.
+- `.adr/history/*` — completed phases + reviews.

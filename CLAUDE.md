@@ -63,7 +63,7 @@ This repo also includes a visual/creative concept system for data visualization,
 ## Key Paths
 - Frontend Concepts: `.docs/planning/concepts/<style>/pass-<n>/`
 - Visual/Creative Concepts: `.docs/design/concepts/<domain>/<style>/pass-<n>/`
-- ADR: `.claude/adr/`
+- ADR: `.adr/`
 - Agents: `.claude/agents/`
 - Skills: `.claude/skills/`
 

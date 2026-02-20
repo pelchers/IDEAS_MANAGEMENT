@@ -21,6 +21,6 @@ This folder documents the Codex tooling, agents, skills, hooks, and conventions 
 ## Quick Pointers
 - Orchestration queue: `.codex/orchestration/queue/next_phase.template.json`
 - Orchestration hook: `.codex/hooks/scripts/orchestrator-poke.ps1`
-- Primary task lists: `.codex/adr/orchestration/*/primary_task_list.md`
-- Phase plans: `.codex/adr/current/<SESSION>/phase_N.md`
-- Phase reviews: `.codex/adr/history/<SESSION>/phase_N_review.md`
+- Primary task lists: `.adr/orchestration/*/primary_task_list.md`
+- Phase plans: `.adr/current/<SESSION>/phase_N.md`
+- Phase reviews: `.adr/history/<SESSION>/phase_N_review.md`

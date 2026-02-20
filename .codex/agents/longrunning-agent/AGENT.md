@@ -14,12 +14,12 @@ Responsibilities:
 - Queue the next phase in `.codex/orchestration/queue/next_phase.json` and invoke the orchestrator hook.
 
 Required artifacts:
-- `.codex/adr/orchestration/<SESSION>/primary_task_list.md`
-- `.codex/adr/orchestration/<SESSION>/prd.md`
-- `.codex/adr/orchestration/<SESSION>/technical_requirements.md`
-- `.codex/adr/orchestration/<SESSION>/notes.md`
-- `.codex/adr/current/<SESSION>/phase_<N>.md`
-- `.codex/adr/history/<SESSION>/phase_<N>_review.md`
+- `.adr/orchestration/<SESSION>/primary_task_list.md`
+- `.adr/orchestration/<SESSION>/prd.md`
+- `.adr/orchestration/<SESSION>/technical_requirements.md`
+- `.adr/orchestration/<SESSION>/notes.md`
+- `.adr/current/<SESSION>/phase_<N>.md`
+- `.adr/history/<SESSION>/phase_<N>_review.md`
 
 Validation rules:
 - All phase tasks must be checked off.

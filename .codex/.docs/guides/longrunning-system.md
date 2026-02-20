@@ -6,20 +6,20 @@ The longrunning system is a multi-phase workflow that uses an orchestrator to sp
 ## User Guide (How to run)
 
 ### 1) Create or update the session files
-- `.codex/adr/orchestration/<SESSION>/primary_task_list.md`
-- `.codex/adr/orchestration/<SESSION>/prd.md`
-- `.codex/adr/orchestration/<SESSION>/technical_requirements.md`
-- `.codex/adr/orchestration/<SESSION>/notes.md`
+- `.adr/orchestration/<SESSION>/primary_task_list.md`
+- `.adr/orchestration/<SESSION>/prd.md`
+- `.adr/orchestration/<SESSION>/technical_requirements.md`
+- `.adr/orchestration/<SESSION>/notes.md`
 
 ### 2) Create the phase plan
-Create `.codex/adr/current/<SESSION>/phase_<N>.md` using the template.
+Create `.adr/current/<SESSION>/phase_<N>.md` using the template.
 
 ### 3) Execute the phase
 Work through tasks; validate each checklist item.
 
 ### 4) Close out the phase
-- Write `.codex/adr/history/<SESSION>/phase_<N>_review.md`.
-- Move the phase plan to `.codex/adr/history/<SESSION>/phase_<N>.md`.
+- Write `.adr/history/<SESSION>/phase_<N>_review.md`.
+- Move the phase plan to `.adr/history/<SESSION>/phase_<N>.md`.
 - Update the primary task list status.
 - Commit and push.
 

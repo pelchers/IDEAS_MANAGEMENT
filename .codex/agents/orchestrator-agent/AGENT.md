@@ -25,9 +25,9 @@ Phase loop:
 6) Orchestrator starts the next phase subagent.
 
 Required artifacts:
-- `.codex/adr/current/<SESSION>/phase_<N>.md`
-- `.codex/adr/history/<SESSION>/phase_<N>_review.md`
-- `.codex/adr/orchestration/<SESSION>/primary_task_list.md`
+- `.adr/current/<SESSION>/phase_<N>.md`
+- `.adr/history/<SESSION>/phase_<N>_review.md`
+- `.adr/orchestration/<SESSION>/primary_task_list.md`
 
 Remote handling:
 - Use HTTPS remotes (not SSH) for pushes.

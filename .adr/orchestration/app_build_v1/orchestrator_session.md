@@ -25,7 +25,7 @@ Date: 2026-02-10
   - A commit
 
 ## Required ADR Artifacts Per Phase
-- Plan doc in `.codex/adr/current/<phase_name>/phase_<n>.md`
-- Review doc in `.codex/adr/history/<phase_name>/phase_<n>_review.md`
+- Plan doc in `.adr/current/<phase_name>/phase_<n>.md`
+- Review doc in `.adr/history/<phase_name>/phase_<n>_review.md`
 
 Note: We intentionally keep detailed requirements in `.docs/planning/*` and reference them from ADR docs.

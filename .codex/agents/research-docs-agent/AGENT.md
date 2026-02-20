@@ -13,12 +13,12 @@ Responsibilities:
 - End each phase with a structured "poke" to the orchestrator.
 
 Required artifacts:
-- `.codex/adr/orchestration/<SESSION>/primary_task_list.md`
-- `.codex/adr/orchestration/<SESSION>/prd.md`
-- `.codex/adr/orchestration/<SESSION>/technical_requirements.md`
-- `.codex/adr/orchestration/<SESSION>/notes.md`
-- `.codex/adr/current/<SESSION>/phase_<N>.md`
-- `.codex/adr/history/<SESSION>/phase_<N>_review.md`
+- `.adr/orchestration/<SESSION>/primary_task_list.md`
+- `.adr/orchestration/<SESSION>/prd.md`
+- `.adr/orchestration/<SESSION>/technical_requirements.md`
+- `.adr/orchestration/<SESSION>/notes.md`
+- `.adr/current/<SESSION>/phase_<N>.md`
+- `.adr/history/<SESSION>/phase_<N>_review.md`
 
 Use template files from:
 - `.codex/skills/research-docs-session/templates/`

@@ -31,8 +31,8 @@ Specialist in creating user and developer documentation with visual capture supp
 ## Workflow
 
 1) Create/Update ADR orchestration
-- Ensure .codex/adr/orchestration/3_SITE_VISUAL_DOCS_FOR_USERS/primary_task_list.md exists.
-- Create phase plan in .codex/adr/current/3_SITE_VISUAL_DOCS_FOR_USERS/phase_N.md.
+- Ensure .adr/orchestration/3_SITE_VISUAL_DOCS_FOR_USERS/primary_task_list.md exists.
+- Create phase plan in .adr/current/3_SITE_VISUAL_DOCS_FOR_USERS/phase_N.md.
 
 2) Build documentation assets
 - Update coverage map and tester checklist.

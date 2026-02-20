@@ -29,7 +29,7 @@ Creates a session ingest entry whenever conversation history is cleared or compa
 1. Identify the current branch and latest commit.
 2. Capture the last user request and last assistant response in one or two sentences each.
 3. List current app state (frontend, Convex functions, Convex containers) and seed status.
-4. Write the ingest entry to `.codex/adr/agent_ingest/ingest_YYYY-MM-DD_HHMM_<short-commit>.md`.
+4. Write the ingest entry to `.adr/agent_ingest/ingest_YYYY-MM-DD_HHMM_<short-commit>.md`.
 
 ## Output Quality Bar
 

@@ -51,10 +51,10 @@ Creates and maintains user + developer documentation with visual capture support
 
 Use the session folder:
 
-- .codex/adr/orchestration/3_SITE_VISUAL_DOCS_FOR_USERS/primary_task_list.md
-- .codex/adr/current/3_SITE_VISUAL_DOCS_FOR_USERS/phase_N.md
-- .codex/adr/history/3_SITE_VISUAL_DOCS_FOR_USERS/phase_N.md
-- .codex/adr/history/3_SITE_VISUAL_DOCS_FOR_USERS/phase_N_review.md
+- .adr/orchestration/3_SITE_VISUAL_DOCS_FOR_USERS/primary_task_list.md
+- .adr/current/3_SITE_VISUAL_DOCS_FOR_USERS/phase_N.md
+- .adr/history/3_SITE_VISUAL_DOCS_FOR_USERS/phase_N.md
+- .adr/history/3_SITE_VISUAL_DOCS_FOR_USERS/phase_N_review.md
 
 ## Templates
 

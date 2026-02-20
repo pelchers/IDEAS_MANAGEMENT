@@ -18,9 +18,9 @@
 ### Orchestration loop (multi-phase tasks)
 - For any primary task list with phases, use **longrunning-session** + **orchestrator-session**.
 - Each phase must:
-  - Start with a phase plan in `.codex/adr/current/<SESSION>/phase_N.md`.
-  - End with a review file in `.codex/adr/history/<SESSION>/phase_N_review.md`.
-  - Update task list checkboxes in `.codex/adr/orchestration/<SESSION>/primary_task_list.md`.
+  - Start with a phase plan in `.adr/current/<SESSION>/phase_N.md`.
+  - End with a review file in `.adr/history/<SESSION>/phase_N_review.md`.
+  - Update task list checkboxes in `.adr/orchestration/<SESSION>/primary_task_list.md`.
   - Commit + push once validations pass.
 - Orchestrator must “poke” the next subagent after each phase.
 
@@ -31,8 +31,8 @@
 ## Conventions (This Repo)
 
 ### ADR lifecycle
-- Phase files live in `.codex/adr/current/<SESSION>/` during work.
-- Completed phase files move to `.codex/adr/history/<SESSION>/`.
+- Phase files live in `.adr/current/<SESSION>/` during work.
+- Completed phase files move to `.adr/history/<SESSION>/`.
 - Each phase requires a review file with tree + summary + validations.
 
 ### Git workflow

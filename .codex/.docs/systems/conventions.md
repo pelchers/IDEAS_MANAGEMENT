@@ -3,7 +3,7 @@
 ## ADR Workflow
 - All multi-phase work uses ADR session folders.
 - Each phase requires a plan, validations, and a review file.
-- Phase plans live in `.codex/adr/current/` and move to history once complete.
+- Phase plans live in `.adr/current/` and move to history once complete.
 
 ## Git Workflow
 - Commit and push after each phase.
