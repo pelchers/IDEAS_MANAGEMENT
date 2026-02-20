@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network Graph — Pass 1 | IDEA-MANAGEMENT Data Vis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========== HEADER BAR ========== -->
+  <header class="header-bar">
+    <div class="header-left">
+      <span class="badge badge-domain">DATA VIS</span>
+      <h1 class="header-title">Network Graph &mdash; Pass 1</h1>
+    </div>
+    <div class="header-right">
+      <span class="badge badge-lib">D3.js</span>
+    </div>
+  </header>
+
+  <!-- ========== MAIN LAYOUT ========== -->
+  <div class="main-layout">
+
+    <!-- GRAPH AREA -->
+    <div class="graph-container" id="graph-container">
+      <svg id="network-svg"></svg>
+      <!-- Tooltip -->
+      <div class="tooltip" id="tooltip">
+        <div class="tooltip-label" id="tooltip-label"></div>
+        <div class="tooltip-group" id="tooltip-group"></div>
+        <div class="tooltip-connections" id="tooltip-connections"></div>
+      </div>
+    </div>
+
+    <!-- CONTROLS PANEL -->
+    <aside class="controls-panel">
+      <h2 class="controls-heading">Controls</h2>
+
+      <!-- Force Strength -->
+      <div class="control-group">
+        <label class="control-label" for="force-strength">
+          Force Strength
+          <span class="control-value" id="force-strength-val">-120</span>
+        </label>
+        <input type="range" id="force-strength" class="slider" min="-400" max="-20" value="-120" step="10">
+      </div>
+
+      <!-- Link Distance -->
+      <div class="control-group">
+        <label class="control-label" for="link-distance">
+          Link Distance
+          <span class="control-value" id="link-distance-val">100</span>
+        </label>
+        <input type="range" id="link-distance" class="slider" min="40" max="260" value="100" step="10">
+      </div>
+
+      <!-- Collision Radius -->
+      <div class="control-group">
+        <label class="control-label" for="collision-radius">
+          Collision Radius
+          <span class="control-value" id="collision-radius-val">35</span>
+        </label>
+        <input type="range" id="collision-radius" class="slider" min="10" max="80" value="35" step="5">
+      </div>
+
+      <!-- Group Filters -->
+      <div class="control-group">
+        <span class="control-label">Filter by Group</span>
+        <div class="filter-checks">
+          <label class="check-label">
+            <input type="checkbox" class="group-filter" value="user" checked>
+            <span class="check-swatch" style="background:#8B5CF6"></span>
+            User
+          </label>
+          <label class="check-label">
+            <input type="checkbox" class="group-filter" value="project" checked>
+            <span class="check-swatch" style="background:#06B6D4"></span>
+            Project
+          </label>
+          <label class="check-label">
+            <input type="checkbox" class="group-filter" value="idea" checked>
+            <span class="check-swatch" style="background:#34D399"></span>
+            Idea
+          </label>
+          <label class="check-label">
+            <input type="checkbox" class="group-filter" value="kanban" checked>
+            <span class="check-swatch" style="background:#FBBF24"></span>
+            Kanban
+          </label>
+        </div>
+      </div>
+
+      <!-- Color Legend -->
+      <div class="control-group legend-group">
+        <span class="control-label">Color Legend</span>
+        <div class="legend-items">
+          <div class="legend-row"><span class="legend-dot" style="background:#8B5CF6"></span> User</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#06B6D4"></span> Project</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#34D399"></span> Idea</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#FBBF24"></span> Kanban Card</div>
+        </div>
+        <span class="control-label" style="margin-top:12px">Link Types</span>
+        <div class="legend-items">
+          <div class="legend-row"><span class="legend-line legend-solid"></span> Owns</div>
+          <div class="legend-row"><span class="legend-line legend-dashed"></span> Collaborates</div>
+          <div class="legend-row"><span class="legend-line legend-dotted"></span> Contains</div>
+          <div class="legend-row"><span class="legend-line legend-thick"></span> Promoted</div>
+          <div class="legend-row"><span class="legend-line legend-board"></span> Board</div>
+        </div>
+      </div>
+
+      <!-- Reset -->
+      <button class="btn-reset" id="btn-reset">Reset View</button>
+    </aside>
+  </div>
+
+  <!-- ========== INFO FOOTER ========== -->
+  <footer class="info-footer">
+    <span>D3.js v7.9.0</span>
+    <span class="footer-sep">|</span>
+    <span>SVG Rendering</span>
+    <span class="footer-sep">|</span>
+    <span>IDEA-MANAGEMENT Entity Relationships</span>
+  </footer>
+
+  <!-- D3.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

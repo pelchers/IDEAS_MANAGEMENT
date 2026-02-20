@@ -1,0 +1,160 @@
+{
+  "concept": {
+    "domain": "animation",
+    "style": "nature-landscape",
+    "pass": 2,
+    "title": "Spring Meadow in Modern Frame",
+    "description": "Animated spring meadow with rolling green hills, wildflowers, butterflies on bezier paths, drifting clouds, and V-formation birds. All DOM/SVG rendered, GSAP-driven."
+  },
+  "palette": {
+    "primary": "#6EE7B7",
+    "secondary": "#93C5FD",
+    "background": "#1E3A5F",
+    "surface": "#0F172A",
+    "text": "#F8FAFC",
+    "accent": "#FDE68A"
+  },
+  "technology": {
+    "library": "GSAP",
+    "version": "3.12.5",
+    "plugins": ["MotionPathPlugin"],
+    "cdn": [
+      "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"
+    ],
+    "renderer": "DOM/SVG",
+    "canvas": false
+  },
+  "scene": {
+    "layers": [
+      {
+        "name": "sky",
+        "depth": "back",
+        "elements": ["css-gradient-sky", "5-svg-clouds", "2-bird-flocks", "sun-with-glow"]
+      },
+      {
+        "name": "hills",
+        "depth": "mid",
+        "elements": ["3-clip-path-hills", "28-svg-wildflowers"]
+      },
+      {
+        "name": "front",
+        "depth": "front",
+        "elements": ["35-grass-blades", "5-butterflies", "12-drifting-petals"]
+      }
+    ],
+    "frame": {
+      "style": "modern-white-silver",
+      "thickness": "22px",
+      "material": "CSS gradient with bevel effect"
+    }
+  },
+  "animations": {
+    "clouds": {
+      "type": "gsap.to",
+      "behavior": "horizontal-drift",
+      "repeat": "infinite",
+      "speeds": "varied-per-cloud"
+    },
+    "birds": {
+      "type": "motionPath",
+      "behavior": "bezier-curve-flight",
+      "repeat": "infinite"
+    },
+    "grass": {
+      "type": "gsap.to",
+      "behavior": "rotation-sway",
+      "ease": "sine.inOut",
+      "stagger": true,
+      "yoyo": true,
+      "repeat": "infinite"
+    },
+    "wildflowers": {
+      "type": "gsap.to",
+      "behavior": "gentle-sway",
+      "stagger": true,
+      "repeat": "infinite"
+    },
+    "butterflies": {
+      "wingFlap": "scaleX-oscillation",
+      "flight": "motionPath-bezier",
+      "count": 5,
+      "colors": ["pink", "yellow", "blue", "purple", "emerald"]
+    },
+    "petals": {
+      "type": "gsap.to",
+      "behavior": "wind-drift-downward",
+      "count": 12,
+      "repeat": "infinite"
+    },
+    "sun": {
+      "type": "gsap.to",
+      "behavior": "glow-pulse",
+      "repeat": "infinite"
+    }
+  },
+  "controls": {
+    "playPause": {
+      "type": "button",
+      "action": "pause/resume all GSAP timelines"
+    },
+    "windIntensity": {
+      "type": "range-slider",
+      "min": 0,
+      "max": 100,
+      "default": 50,
+      "affects": ["grass-sway-amplitude", "animation-timeScale", "petal-drift-speed"]
+    },
+    "dayDusk": {
+      "type": "toggle",
+      "affects": ["sky-gradient", "sun-position", "sun-color", "hill-colors", "grass-opacity"]
+    }
+  },
+  "parallax": {
+    "scroll": {
+      "skyFactor": 0.05,
+      "hillsFactor": 0.15,
+      "frontFactor": 0.3
+    },
+    "mouse": {
+      "enabled": true,
+      "skyOffset": 8,
+      "hillsOffset": 15,
+      "frontOffset": 25
+    }
+  },
+  "responsive": {
+    "frameScaling": "min(900px, 92vw) x min(600px, 58vw)",
+    "breakpoints": ["680px", "480px"],
+    "mobileAdaptations": ["reduced-frame-thickness", "smaller-butterflies", "stacked-controls"]
+  },
+  "antiRepeat": {
+    "excluded": ["autumn-colors", "canvas-rendering", "falling-leaves", "golden-frame", "p5js"],
+    "passDistinction": "Spring theme, DOM/SVG renderer, modern white frame, GSAP engine"
+  },
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json"
+  ],
+  "validation": {
+    "timestamp": "2026-02-19T00:00:00Z",
+    "status": "complete",
+    "checklist": {
+      "animationStartsImmediately": true,
+      "domSvgOnly_noCanvas": true,
+      "butterfliesBezierPaths": true,
+      "parallaxDepthLayers": true,
+      "controlsPlayPause": true,
+      "controlsWindSlider": true,
+      "controlsDayDuskToggle": true,
+      "modernWhiteFrame": true,
+      "responsiveLayout": true,
+      "gsapTimeline": true,
+      "motionPathPlugin": true,
+      "distinctFromPass1": true
+    }
+  }
+}

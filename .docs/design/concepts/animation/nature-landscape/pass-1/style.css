@@ -1,0 +1,397 @@
+/* ============================================================
+   Autumn Landscape — Pass 1 | Style Sheet
+   ============================================================ */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --clr-primary: #22C55E;
+  --clr-secondary: #3B82F6;
+  --clr-bg: #0C4A6E;
+  --clr-surface: #164E63;
+  --clr-text: #F0FDFA;
+  --clr-accent: #FBBF24;
+
+  /* Frame palette */
+  --frame-gold-light: #F5D76E;
+  --frame-gold: #D4A843;
+  --frame-gold-mid: #B8860B;
+  --frame-gold-dark: #8B6914;
+  --frame-gold-shadow: #5C4400;
+
+  --frame-thickness: 36px;
+  --canvas-w: 900px;
+  --canvas-h: 600px;
+}
+
+html {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  min-height: 100vh;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* --- Header Bar --- */
+.header-bar {
+  width: 100%;
+  background: var(--clr-surface);
+  border-bottom: 1px solid rgba(240, 253, 250, 0.08);
+  padding: 14px 24px;
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header-title {
+  flex: 1;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.badge-domain {
+  background: var(--clr-primary);
+  color: #052e16;
+}
+
+.badge-lib {
+  background: var(--clr-accent);
+  color: #422006;
+}
+
+/* --- Showcase / Frame --- */
+.showcase {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  width: 100%;
+}
+
+/* Outer frame — the ornate golden border */
+.frame-outer {
+  position: relative;
+  border-radius: 6px;
+  /* Outer drop shadow to ground the frame */
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.55),
+    0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* Bevel layer — creates the 3D carved look */
+.frame-bevel {
+  position: relative;
+  padding: var(--frame-thickness);
+  border-radius: 5px;
+  background:
+    linear-gradient(
+      145deg,
+      var(--frame-gold-light) 0%,
+      var(--frame-gold) 18%,
+      var(--frame-gold-mid) 40%,
+      var(--frame-gold-dark) 62%,
+      var(--frame-gold) 78%,
+      var(--frame-gold-light) 100%
+    );
+  /* Inner ornate ridges via box-shadow */
+  box-shadow:
+    /* Outer highlight (top-left light catch) */
+    inset 3px 3px 0 0 rgba(255, 235, 150, 0.6),
+    /* Outer shadow (bottom-right depth) */
+    inset -3px -3px 0 0 rgba(70, 40, 0, 0.5),
+    /* Middle ridge highlight */
+    inset 10px 10px 0 0 rgba(212, 168, 67, 0.5),
+    inset -10px -10px 0 0 rgba(92, 68, 0, 0.45),
+    /* Inner ridge */
+    inset 18px 18px 0 0 rgba(255, 223, 120, 0.35),
+    inset -18px -18px 0 0 rgba(60, 40, 0, 0.4),
+    /* Deep inner shadow around canvas */
+    inset 28px 28px 6px 0 rgba(30, 15, 0, 0.3),
+    inset -28px -28px 6px 0 rgba(30, 15, 0, 0.25);
+}
+
+/* Decorative corner accents — pseudo-elements */
+.frame-bevel::before,
+.frame-bevel::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--frame-gold-light) 30%, var(--frame-gold-mid) 100%);
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 240, 170, 0.7),
+    inset -1px -1px 2px rgba(80, 50, 0, 0.5),
+    0 0 4px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.frame-bevel::before {
+  top: 4px;
+  left: 4px;
+}
+
+.frame-bevel::after {
+  bottom: 4px;
+  right: 4px;
+}
+
+/* Additional corner accents via frame-inner pseudo-elements */
+.frame-inner {
+  position: relative;
+  line-height: 0;
+  box-shadow:
+    inset 0 0 8px 2px rgba(20, 10, 0, 0.45),
+    0 0 2px rgba(0, 0, 0, 0.3);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.frame-inner::before,
+.frame-inner::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--frame-gold-light) 30%, var(--frame-gold-mid) 100%);
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 240, 170, 0.7),
+    inset -1px -1px 2px rgba(80, 50, 0, 0.5),
+    0 0 4px rgba(0, 0, 0, 0.3);
+  z-index: 5;
+  /* Position relative to frame-bevel's padding area */
+  pointer-events: none;
+}
+
+.frame-inner::before {
+  top: -14px;
+  right: -14px;
+  /* actually place on frame-bevel */
+}
+
+.frame-inner::after {
+  bottom: -14px;
+  left: -14px;
+}
+
+/* Override: place inner pseudo corners on the bevel layer instead */
+.frame-inner::before,
+.frame-inner::after {
+  display: none;
+}
+
+/* Use the frame-outer for the other two corners */
+.frame-outer::before,
+.frame-outer::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--frame-gold-light) 30%, var(--frame-gold-mid) 100%);
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 240, 170, 0.7),
+    inset -1px -1px 2px rgba(80, 50, 0, 0.5),
+    0 0 4px rgba(0, 0, 0, 0.3);
+  z-index: 5;
+}
+
+.frame-outer::before {
+  top: 4px;
+  right: 4px;
+}
+
+.frame-outer::after {
+  bottom: 4px;
+  left: 4px;
+}
+
+/* Canvas container */
+#canvas-container {
+  width: var(--canvas-w);
+  height: var(--canvas-h);
+  max-width: 100%;
+  position: relative;
+}
+
+#canvas-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* --- Controls Panel --- */
+.controls-panel {
+  width: 100%;
+  background: var(--clr-surface);
+  border-top: 1px solid rgba(240, 253, 250, 0.08);
+  padding: 16px 24px;
+}
+
+.controls-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ctrl-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border: 1px solid rgba(240, 253, 250, 0.15);
+  border-radius: 6px;
+  background: rgba(240, 253, 250, 0.06);
+  color: var(--clr-text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.ctrl-btn:hover {
+  background: rgba(240, 253, 250, 0.12);
+  border-color: var(--clr-accent);
+}
+
+.ctrl-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.ctrl-icon.hidden {
+  display: none;
+}
+
+.slider-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+
+.slider-group label {
+  font-weight: 600;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.slider-group input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 120px;
+  height: 6px;
+  background: rgba(240, 253, 250, 0.15);
+  border-radius: 3px;
+  outline: none;
+}
+
+.slider-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--clr-accent);
+  cursor: pointer;
+  border: 2px solid var(--clr-surface);
+}
+
+.slider-group input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--clr-accent);
+  cursor: pointer;
+  border: 2px solid var(--clr-surface);
+}
+
+.slider-val {
+  min-width: 32px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--clr-accent);
+  font-weight: 600;
+}
+
+/* --- Info Footer --- */
+.info-footer {
+  width: 100%;
+  text-align: center;
+  padding: 12px 16px;
+  font-size: 0.75rem;
+  opacity: 0.5;
+  letter-spacing: 0.04em;
+}
+
+.info-footer .sep {
+  margin: 0 8px;
+  opacity: 0.4;
+}
+
+/* --- Responsive --- */
+@media (max-width: 980px) {
+  :root {
+    --canvas-w: 700px;
+    --canvas-h: 467px;
+    --frame-thickness: 28px;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --canvas-w: 96vw;
+    --canvas-h: 64vw;
+    --frame-thickness: 20px;
+  }
+
+  .header-inner {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .controls-inner {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .slider-group input[type="range"] {
+    width: 150px;
+  }
+}

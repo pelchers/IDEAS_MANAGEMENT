@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autumn Landscape — Pass 1 | Animation Concept</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+</head>
+<body>
+
+  <!-- Header Bar -->
+  <header class="header-bar">
+    <div class="header-inner">
+      <span class="badge badge-domain">ANIMATION</span>
+      <h1 class="header-title">Nature Landscape &mdash; Pass 1</h1>
+      <span class="badge badge-lib">p5.js</span>
+    </div>
+  </header>
+
+  <!-- Main Showcase -->
+  <main class="showcase">
+    <div class="frame-outer">
+      <div class="frame-bevel">
+        <div class="frame-inner">
+          <div id="canvas-container"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Controls Panel -->
+  <section class="controls-panel">
+    <div class="controls-inner">
+      <button id="btn-play-pause" class="ctrl-btn" aria-label="Pause animation">
+        <svg id="icon-pause" class="ctrl-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        <svg id="icon-play" class="ctrl-icon hidden" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+        <span id="btn-label">Pause</span>
+      </button>
+
+      <div class="slider-group">
+        <label for="wind-slider">Wind Speed</label>
+        <input type="range" id="wind-slider" min="0" max="100" value="40" />
+        <span id="wind-value" class="slider-val">40%</span>
+      </div>
+
+      <div class="slider-group">
+        <label for="leaf-slider">Leaf Count</label>
+        <input type="range" id="leaf-slider" min="20" max="60" value="35" />
+        <span id="leaf-value" class="slider-val">35</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info Footer -->
+  <footer class="info-footer">
+    <span>p5.js v1.11.3</span>
+    <span class="sep">|</span>
+    <span>Canvas Rendering</span>
+    <span class="sep">|</span>
+    <span>Animated Autumn Landscape</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

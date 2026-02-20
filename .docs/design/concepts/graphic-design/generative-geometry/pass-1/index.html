@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generative Geometry — Pass 1 | Recursive Circle Packing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <span class="badge badge-domain">GRAPHIC DESIGN</span>
+      <h1 class="header-title">Generative Geometry &mdash; Pass 1</h1>
+    </div>
+    <div class="header-right">
+      <span class="badge badge-lib">p5.js</span>
+    </div>
+  </header>
+
+  <!-- Main showcase -->
+  <main class="showcase">
+    <div id="canvas-container"></div>
+  </main>
+
+  <!-- Controls panel -->
+  <section class="controls">
+    <div class="controls-inner">
+      <button id="btn-regenerate" class="btn-regenerate" aria-label="Regenerate composition">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M13.65 2.35A7.96 7.96 0 0 0 8 0C3.58 0 0 3.58 0 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 8 14 6 6 0 1 1 8 2c1.66 0 3.14.69 4.22 1.78L9 7h7V0l-2.35 2.35z" fill="currentColor"/>
+        </svg>
+        Regenerate
+      </button>
+
+      <div class="control-group">
+        <label for="slider-min-radius">Min Radius</label>
+        <input type="range" id="slider-min-radius" min="1" max="10" value="3" step="1" />
+        <span class="control-value" id="val-min-radius">3 px</span>
+      </div>
+
+      <div class="control-group">
+        <label for="slider-max-depth">Max Depth</label>
+        <input type="range" id="slider-max-depth" min="1" max="5" value="3" step="1" />
+        <span class="control-value" id="val-max-depth">3</span>
+      </div>
+
+      <div class="control-group seed-display">
+        <label>Seed</label>
+        <span class="seed-value" id="seed-display">—</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="info-footer">
+    <span>p5.js v1.11.3</span>
+    <span class="footer-sep">|</span>
+    <span>Canvas Rendering</span>
+    <span class="footer-sep">|</span>
+    <span>Recursive Circle Packing</span>
+    <span class="footer-sep">|</span>
+    <span>Seed: <span id="footer-seed">—</span></span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{
+  "concept": {
+    "domain": "data-vis",
+    "style": "bar-chart",
+    "pass": 1,
+    "title": "Bar Chart — Pass 1"
+  },
+  "library": {
+    "name": "Chart.js",
+    "version": "4.4.7",
+    "cdn": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js",
+    "renderer": "canvas"
+  },
+  "palette": {
+    "primary": "#6366F1",
+    "secondary": "#EC4899",
+    "accent1": "#A78BFA",
+    "accent2": "#F9A8D4",
+    "background": "#0F172A",
+    "surface": "#1E293B",
+    "text": "#F8FAFC"
+  },
+  "data": {
+    "projects_count": 6,
+    "metrics": ["tasks_total", "tasks_done", "ideas_count", "collaborators"],
+    "source": "mock"
+  },
+  "features": {
+    "animated_entrance": true,
+    "hover_tooltips": true,
+    "grouped_layout": true,
+    "stacked_layout": true,
+    "layout_toggle": true,
+    "dataset_filter": true,
+    "responsive": true,
+    "gradient_bars": true,
+    "rounded_corners": true
+  },
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json"
+  ],
+  "generated": {
+    "date": "2026-02-19",
+    "agent": "visual-creative-subagent",
+    "model": "claude-opus-4-6"
+  }
+}

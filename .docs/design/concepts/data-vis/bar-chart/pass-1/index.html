@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bar Chart — Pass 1 | IDEA-MANAGEMENT Data Vis</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ========== HEADER BAR ========== -->
+  <header class="header">
+    <div class="header__left">
+      <span class="badge badge--domain">DATA VIS</span>
+      <h1 class="header__title">Bar Chart &mdash; Pass 1</h1>
+    </div>
+    <div class="header__right">
+      <span class="badge badge--lib">Chart.js</span>
+    </div>
+  </header>
+
+  <!-- ========== MAIN SHOWCASE ========== -->
+  <main class="showcase">
+    <div class="chart-wrapper">
+      <canvas id="barChart"></canvas>
+    </div>
+  </main>
+
+  <!-- ========== CONTROLS PANEL ========== -->
+  <section class="controls">
+    <div class="controls__group controls__group--toggle">
+      <span class="controls__label">Layout</span>
+      <div class="toggle-switch">
+        <button class="toggle-btn toggle-btn--active" data-mode="grouped">Grouped</button>
+        <button class="toggle-btn" data-mode="stacked">Stacked</button>
+      </div>
+    </div>
+
+    <div class="controls__divider"></div>
+
+    <div class="controls__group controls__group--filters">
+      <span class="controls__label">Metrics</span>
+      <div class="filter-checks">
+        <label class="check" data-index="0">
+          <input type="checkbox" checked />
+          <span class="check__swatch" style="background:#6366F1;"></span>
+          <span class="check__text">Tasks Total</span>
+        </label>
+        <label class="check" data-index="1">
+          <input type="checkbox" checked />
+          <span class="check__swatch" style="background:#EC4899;"></span>
+          <span class="check__text">Tasks Done</span>
+        </label>
+        <label class="check" data-index="2">
+          <input type="checkbox" checked />
+          <span class="check__swatch" style="background:#A78BFA;"></span>
+          <span class="check__text">Ideas</span>
+        </label>
+        <label class="check" data-index="3">
+          <input type="checkbox" checked />
+          <span class="check__swatch" style="background:#F9A8D4;"></span>
+          <span class="check__text">Collaborators</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== INFO FOOTER ========== -->
+  <footer class="footer">
+    <span>Chart.js v4.4.7</span>
+    <span class="footer__sep">&middot;</span>
+    <span>Canvas Rendering</span>
+    <span class="footer__sep">&middot;</span>
+    <span>IDEA-MANAGEMENT Project Metrics</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+{
+  "concept": {
+    "domain": "animation",
+    "style": "nature-landscape",
+    "pass": 1,
+    "title": "Autumn Landscape in Ornate Golden Frame"
+  },
+  "palette": {
+    "primary": "#22C55E",
+    "secondary": "#3B82F6",
+    "background": "#0C4A6E",
+    "surface": "#164E63",
+    "text": "#F0FDFA",
+    "accent": "#FBBF24"
+  },
+  "library": {
+    "name": "p5.js",
+    "version": "1.11.3",
+    "cdn": "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"
+  },
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json"
+  ],
+  "canvas": {
+    "width": 900,
+    "height": 600,
+    "renderer": "P2D"
+  },
+  "animation": {
+    "targetFPS": 60,
+    "autoStart": true,
+    "looping": true,
+    "elements": {
+      "sky": {
+        "type": "gradient",
+        "description": "Warm blue to sunset orange vertical gradient"
+      },
+      "clouds": {
+        "count": 13,
+        "layers": 3,
+        "movement": "left-to-right, parallax speeds"
+      },
+      "hills": {
+        "layers": 3,
+        "generation": "Perlin noise + sine composite curves",
+        "depthHaze": true
+      },
+      "trees": {
+        "count": 7,
+        "placement": "middle hill layer",
+        "foliageStyle": "randomized blob clusters in autumn colors"
+      },
+      "fallingLeaves": {
+        "defaultCount": 35,
+        "minCount": 20,
+        "maxCount": 60,
+        "physics": {
+          "fallSpeed": "1-3 px/frame",
+          "horizontalDrift": "sinusoidal, amplitude 15-40px",
+          "rotation": "continuous, -0.06 to 0.06 rad/frame",
+          "wrapping": "reset to random position above canvas"
+        },
+        "colors": ["orange", "red", "yellow", "brown", "amber", "crimson", "gold"]
+      },
+      "grass": {
+        "bladeCount": "~225",
+        "animation": "sin() oscillation, wind-responsive"
+      },
+      "stream": {
+        "type": "winding ribbon",
+        "animation": "width oscillation, alpha shimmer, sparkle highlights"
+      }
+    }
+  },
+  "controls": [
+    {
+      "id": "btn-play-pause",
+      "type": "button",
+      "label": "Play / Pause",
+      "effect": "Toggles animation loop"
+    },
+    {
+      "id": "wind-slider",
+      "type": "range",
+      "min": 0,
+      "max": 100,
+      "default": 40,
+      "unit": "%",
+      "effect": "Scales leaf drift, cloud speed, grass sway"
+    },
+    {
+      "id": "leaf-slider",
+      "type": "range",
+      "min": 20,
+      "max": 60,
+      "default": 35,
+      "unit": "count",
+      "effect": "Dynamically adds/removes leaf particles"
+    }
+  ],
+  "frame": {
+    "technique": "CSS only (no image assets)",
+    "thickness": "36px desktop, 28px tablet, 20px mobile",
+    "features": [
+      "Golden gradient border (145deg, 6-stop)",
+      "Multi-layer inset box-shadows for bevel ridges",
+      "4 decorative corner rosettes via ::before/::after",
+      "Deep inner shadow on canvas edge",
+      "Outer drop shadow"
+    ]
+  },
+  "responsive": {
+    "breakpoints": [
+      { "maxWidth": "980px", "canvas": "700x467", "frame": "28px" },
+      { "maxWidth": "760px", "canvas": "96vw x 64vw", "frame": "20px" }
+    ]
+  },
+  "validation": {
+    "generatedAt": "2026-02-19T00:00:00Z",
+    "status": "complete",
+    "checklist": {
+      "htmlStructure": true,
+      "cssFrameStyling": true,
+      "p5CanvasRendering": true,
+      "leafParticles30Plus": true,
+      "cloudParallax3Layers": true,
+      "controlsPlayPause": true,
+      "controlsWindSlider": true,
+      "controlsLeafSlider": true,
+      "responsiveDesign": true,
+      "noExternalImages": true
+    }
+  }
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Globe — Pass 1 | IDEA-MANAGEMENT</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <span class="badge badge-domain">GRAPHIC DESIGN</span>
+      <h1 class="header-title">3D Globe &mdash; Pass 1</h1>
+    </div>
+    <div class="header-right">
+      <span class="badge badge-lib">Three.js</span>
+    </div>
+  </header>
+
+  <!-- Main Showcase -->
+  <main class="showcase" id="showcase">
+    <canvas id="globe-canvas"></canvas>
+    <div class="tooltip" id="tooltip"></div>
+    <div class="loading-overlay" id="loading">
+      <div class="loading-spinner"></div>
+      <p>Initializing WebGL&hellip;</p>
+    </div>
+  </main>
+
+  <!-- Controls Panel -->
+  <aside class="controls">
+    <div class="control-group">
+      <label class="control-label" for="auto-rotate-toggle">Auto-Rotate</label>
+      <button class="toggle-btn active" id="auto-rotate-toggle" aria-pressed="true">ON</button>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="density-slider">Connection Density</label>
+      <input
+        type="range"
+        id="density-slider"
+        class="slider"
+        min="0"
+        max="100"
+        value="70"
+      />
+      <span class="slider-value" id="density-value">70%</span>
+    </div>
+    <div class="control-group">
+      <button class="btn-reset" id="camera-reset">Reset Camera</button>
+    </div>
+  </aside>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span>Three.js v0.170.0</span>
+    <span class="footer-sep">|</span>
+    <span>WebGL Rendering</span>
+    <span class="footer-sep">|</span>
+    <span>IDEA-MANAGEMENT Global User Connections</span>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

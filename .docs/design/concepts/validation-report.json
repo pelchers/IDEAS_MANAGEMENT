@@ -1,0 +1,176 @@
+[
+  {
+    "domain": "animation",
+    "style": "nature-landscape",
+    "pass": "pass-1",
+    "desktop": {
+      "viewport": {
+        "width": 1536,
+        "height": 960
+      },
+      "screenshots": [
+        "validation/desktop/showcase.png",
+        "validation/desktop/showcase-viewport.png"
+      ]
+    },
+    "mobile": {
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 2,
+        "isMobile": true
+      },
+      "screenshots": [
+        "validation/mobile/showcase.png",
+        "validation/mobile/showcase-viewport.png"
+      ]
+    },
+    "totalScreenshots": 4,
+    "timestamp": "2026-02-20T01:11:05.421Z"
+  },
+  {
+    "domain": "animation",
+    "style": "nature-landscape",
+    "pass": "pass-2",
+    "desktop": {
+      "viewport": {
+        "width": 1536,
+        "height": 960
+      },
+      "screenshots": [
+        "validation/desktop/showcase.png",
+        "validation/desktop/showcase-viewport.png"
+      ]
+    },
+    "mobile": {
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 2,
+        "isMobile": true
+      },
+      "screenshots": [
+        "validation/mobile/showcase.png",
+        "validation/mobile/showcase-viewport.png"
+      ]
+    },
+    "totalScreenshots": 4,
+    "timestamp": "2026-02-20T01:11:23.037Z"
+  },
+  {
+    "domain": "data-vis",
+    "style": "bar-chart",
+    "pass": "pass-1",
+    "desktop": {
+      "viewport": {
+        "width": 1536,
+        "height": 960
+      },
+      "screenshots": [
+        "validation/desktop/showcase.png",
+        "validation/desktop/showcase-viewport.png"
+      ]
+    },
+    "mobile": {
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 2,
+        "isMobile": true
+      },
+      "screenshots": [
+        "validation/mobile/showcase.png",
+        "validation/mobile/showcase-viewport.png"
+      ]
+    },
+    "totalScreenshots": 4,
+    "timestamp": "2026-02-20T01:11:29.314Z"
+  },
+  {
+    "domain": "data-vis",
+    "style": "network-graph",
+    "pass": "pass-1",
+    "desktop": {
+      "viewport": {
+        "width": 1536,
+        "height": 960
+      },
+      "screenshots": [
+        "validation/desktop/showcase.png",
+        "validation/desktop/showcase-viewport.png"
+      ]
+    },
+    "mobile": {
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 2,
+        "isMobile": true
+      },
+      "screenshots": [
+        "validation/mobile/showcase.png",
+        "validation/mobile/showcase-viewport.png"
+      ]
+    },
+    "totalScreenshots": 4,
+    "timestamp": "2026-02-20T01:11:46.283Z"
+  },
+  {
+    "domain": "graphic-design",
+    "style": "generative-geometry",
+    "pass": "pass-1",
+    "desktop": {
+      "viewport": {
+        "width": 1536,
+        "height": 960
+      },
+      "screenshots": [
+        "validation/desktop/showcase.png",
+        "validation/desktop/showcase-viewport.png"
+      ]
+    },
+    "mobile": {
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 2,
+        "isMobile": true
+      },
+      "screenshots": [
+        "validation/mobile/showcase.png",
+        "validation/mobile/showcase-viewport.png"
+      ]
+    },
+    "totalScreenshots": 4,
+    "timestamp": "2026-02-20T01:11:53.942Z"
+  },
+  {
+    "domain": "graphic-design",
+    "style": "globe-3d",
+    "pass": "pass-1",
+    "desktop": {
+      "viewport": {
+        "width": 1536,
+        "height": 960
+      },
+      "screenshots": [
+        "validation/desktop/showcase.png",
+        "validation/desktop/showcase-viewport.png"
+      ]
+    },
+    "mobile": {
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 2,
+        "isMobile": true
+      },
+      "screenshots": [
+        "validation/mobile/showcase.png",
+        "validation/mobile/showcase-viewport.png"
+      ]
+    },
+    "totalScreenshots": 4,
+    "timestamp": "2026-02-20T01:11:59.862Z"
+  }
+]

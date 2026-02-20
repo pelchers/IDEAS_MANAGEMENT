@@ -1,0 +1,84 @@
+{
+  "concept": "network-graph",
+  "domain": "data-vis",
+  "pass": 1,
+  "generatedAt": "2026-02-19T00:00:00Z",
+  "library": {
+    "name": "D3.js",
+    "version": "7.9.0",
+    "cdn": "https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js",
+    "rendering": "SVG"
+  },
+  "palette": {
+    "primary": "#8B5CF6",
+    "secondary": "#06B6D4",
+    "background": "#030712",
+    "surface": "#111827",
+    "text": "#E5E7EB"
+  },
+  "theme": "deep-space",
+  "entityGroups": {
+    "user": { "color": "#8B5CF6", "count": 3 },
+    "project": { "color": "#06B6D4", "count": 3 },
+    "idea": { "color": "#34D399", "count": 6 },
+    "kanban": { "color": "#FBBF24", "count": 6 }
+  },
+  "linkTypes": ["owns", "collaborates", "contains", "promoted", "board"],
+  "dataStats": {
+    "totalNodes": 18,
+    "totalLinks": 21
+  },
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "README.md",
+    "validation/handoff.json"
+  ],
+  "features": {
+    "forceSimulation": true,
+    "dragInteraction": true,
+    "zoomPan": true,
+    "hoverTooltip": true,
+    "clickHighlight": true,
+    "groupFiltering": true,
+    "forceStrengthSlider": true,
+    "linkDistanceSlider": true,
+    "collisionRadiusSlider": true,
+    "nodeGlowEffect": true,
+    "pulsingAnimation": true,
+    "responsiveResize": true,
+    "resetView": true,
+    "colorLegend": true,
+    "linkTypeLegend": true
+  },
+  "checklist": {
+    "nodesColoredByGroup": true,
+    "nodesHaveGlowEffect": true,
+    "linksColoredByType": true,
+    "linksStyledByType": true,
+    "forceSimulationWithDrag": true,
+    "hoverEnlargesNode": true,
+    "hoverShowsTooltip": true,
+    "clickHighlightsConnected": true,
+    "clickDimsOthers": true,
+    "zoomPanWithD3Zoom": true,
+    "pulsingAmbientAnimation": true,
+    "responsiveSvgScaling": true,
+    "darkSpaceTheme": true,
+    "headerBar": true,
+    "controlsPanel": true,
+    "infoFooter": true,
+    "colorLegend": true,
+    "plainHtmlCssJs": true,
+    "noBuildStep": true,
+    "d3FromCdn": true
+  },
+  "pageStructure": {
+    "headerBar": "DATA VIS badge, title, D3.js badge",
+    "mainShowcase": "Force-directed SVG graph with zoom/pan (~85vh)",
+    "controlsPanel": "Force strength, link distance, collision radius sliders; group filter checkboxes",
+    "infoFooter": "D3.js v7.9.0 | SVG Rendering | IDEA-MANAGEMENT Entity Relationships",
+    "colorLegend": "User=violet, Project=cyan, Idea=emerald, KanbanCard=amber"
+  }
+}

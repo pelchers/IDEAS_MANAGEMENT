@@ -35,8 +35,34 @@ This repo uses a multi-style frontend concept ideation system.
 - Each pass covers all 10 app views (dashboard through settings)
 - Claude Code agents generate concepts directly (no template scripts)
 
+## Visual/Creative Concept Generation
+This repo also includes a visual/creative concept system for data visualization, animation, and graphic design.
+- Orchestrator: `.claude/agents/planning-visual-creative-orchestrator/`
+- Subagent: `.claude/agents/visual-creative-subagent/`
+- Config: `.claude/skills/planning-visual-creative-orchestrator/references/style-config.json`
+- Library Catalog: `.claude/skills/visual-creative-subagent/references/library-catalog.json`
+- Output: `.docs/design/concepts/`
+
+### Domains
+1. **Data Visualization** — Interactive charts, dashboards, statistical graphics (D3.js, Chart.js, ECharts, Vega-Lite)
+2. **Animation** — Motion graphics, physics simulations, animated scenes (GSAP, p5.js, Anime.js, Matter.js)
+3. **Graphic Design** — Generative art, 3D renders, illustrations (Three.js, p5.js, Paper.js, PixiJS)
+
+### Generation Rules
+- 2 passes per style (configurable via `passesPerStyle`)
+- Each pass produces a single self-contained HTML showcase page
+- Libraries loaded via CDN from the library catalog
+- Each pass includes Playwright validation screenshots (desktop + mobile)
+- Mock data for data-vis from `mockDatasets` in style-config.json
+
+### Output Structure
+- Data-vis: `.docs/design/concepts/data-vis/<chart-type>/pass-<n>/`
+- Animation: `.docs/design/concepts/animation/<animation-style>/pass-<n>/`
+- Graphic Design: `.docs/design/concepts/graphic-design/<design-style>/pass-<n>/`
+
 ## Key Paths
-- Concepts: `.docs/planning/concepts/<style>/pass-<n>/`
+- Frontend Concepts: `.docs/planning/concepts/<style>/pass-<n>/`
+- Visual/Creative Concepts: `.docs/design/concepts/<domain>/<style>/pass-<n>/`
 - ADR: `.claude/adr/`
 - Agents: `.claude/agents/`
 - Skills: `.claude/skills/`
