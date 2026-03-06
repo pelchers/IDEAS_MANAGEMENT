@@ -15,7 +15,10 @@
     "admin:bootstrap": "tsx scripts/bootstrap-admin.ts"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^3.0.41",
+    "@ai-sdk/react": "^3.0.118",
     "@prisma/client": "^6.16.1",
+    "ai": "^6.0.116",
     "argon2": "^0.44.0",
     "next": "16.1.6",
     "react": "19.2.3",

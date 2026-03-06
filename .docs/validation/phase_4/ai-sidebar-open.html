@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 4 Validation - AI Sidebar Open</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f0f0; }
+  .app-content { padding: 40px; max-width: calc(100% - 380px); }
+  .app-content h1 { font-size: 24px; color: #333; margin-bottom: 16px; }
+  .app-content p { color: #666; line-height: 1.6; }
+  .sidebar { position: fixed; top: 0; right: 0; width: 360px; height: 100vh; background: #fff; border-left: 1px solid #e0e0e0; box-shadow: -4px 0 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; }
+  .sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #e0e0e0; }
+  .sidebar-header h3 { font-size: 15px; font-weight: 600; }
+  .close-btn { padding: 4px 8px; border: none; background: transparent; font-size: 16px; color: #888; cursor: pointer; }
+  .context-bar { padding: 6px 16px; background: #f8f8f8; border-bottom: 1px solid #eee; font-size: 11px; display: flex; gap: 4px; }
+  .context-label { font-weight: 600; color: #888; }
+  .context-value { color: #555; }
+  .quick-actions { display: flex; gap: 6px; padding: 10px 16px; border-bottom: 1px solid #eee; flex-wrap: wrap; }
+  .quick-btn { padding: 5px 10px; font-size: 12px; font-weight: 500; border: 1px solid #d0d0d0; border-radius: 14px; background: #fff; color: #5b4dc7; cursor: pointer; }
+  .messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .msg { padding: 8px 10px; border-radius: 6px; font-size: 13px; line-height: 1.5; max-width: 90%; }
+  .msg-user { align-self: flex-end; background: #e8e4ff; }
+  .msg-assistant { align-self: flex-start; background: #f5f5f5; }
+  .msg-role { font-size: 10px; font-weight: 600; text-transform: uppercase; color: #999; margin-bottom: 2px; }
+  .tool-tag { display: inline-block; padding: 2px 8px; background: #e8e4ff; border-radius: 4px; font-size: 11px; margin-top: 4px; color: #5b4dc7; }
+  .input-form { display: flex; gap: 6px; padding: 10px 12px; border-top: 1px solid #e0e0e0; }
+  .input-form input { flex: 1; padding: 8px 10px; border: 1px solid #d0d0d0; border-radius: 6px; font-size: 13px; }
+  .send-btn { padding: 8px 14px; background: #5b4dc7; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; }
+  .toggle-btn { position: fixed; bottom: 20px; right: 380px; width: 48px; height: 48px; border-radius: 50%; background: #5b4dc7; color: #fff; border: none; font-size: 16px; font-weight: bold; box-shadow: 0 2px 8px rgba(91,77,199,0.4); display: flex; align-items: center; justify-content: center; }
+  .badge { position: fixed; top: 8px; left: 8px; background: #333; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 11px; z-index: 10; }
+</style>
+</head>
+<body>
+  <div class="badge">VALIDATION: AI Sidebar - Open State</div>
+  <div class="app-content">
+    <h1>Project Dashboard</h1>
+    <p>This represents the main app content area. The AI sidebar is shown overlaid on the right side. It can be toggled with the floating "AI" button or the keyboard shortcut Ctrl+Shift+A.</p>
+    <p>The sidebar provides quick actions, a compact chat interface, and context-aware assistance based on the current project and route.</p>
+  </div>
+  <button class="toggle-btn">AI</button>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h3>AI Assistant</h3>
+      <button class="close-btn">x</button>
+    </div>
+    <div class="context-bar">
+      <span class="context-label">Context:</span>
+      <span class="context-value">Dashboard | proj-123</span>
+    </div>
+    <div class="quick-actions">
+      <button class="quick-btn">Add Idea</button>
+      <button class="quick-btn">Update Board</button>
+      <button class="quick-btn">Generate Tree</button>
+    </div>
+    <div class="messages">
+      <div class="msg msg-user">
+        <div class="msg-role">You</div>
+        Generate a directory tree for this project
+      </div>
+      <div class="msg msg-assistant">
+        <div class="msg-role">AI</div>
+        <div class="tool-tag">Tool: generate_tree (done)</div>
+        <div style="margin-top: 4px;">Directory tree generated with 12 nodes for project proj-123.</div>
+      </div>
+    </div>
+    <div class="input-form">
+      <input placeholder="Ask AI...">
+      <button class="send-btn">Go</button>
+    </div>
+  </div>
+</body>
+</html>

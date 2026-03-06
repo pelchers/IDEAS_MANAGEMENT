@@ -26,6 +26,8 @@ model User {
   passwordResets       PasswordResetToken[]
   subscriptions       Subscription[]
   entitlements        Entitlement[]
+  aiChatSessions      AiChatSession[]
+  aiToolOutputs       AiToolOutput[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -180,4 +182,60 @@ model BillingEvent {
   processedAt      DateTime @default(now())
 
   createdAt DateTime @default(now())
+}
+
+// ─── AI Chat ─────────────────────────────────────────────────────────
+
+enum AiMessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+  TOOL
+}
+
+model AiChatSession {
+  id        String   @id @default(cuid())
+  userId    String
+  projectId String?
+  title     String   @default("New Chat")
+
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages AiChatMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model AiChatMessage {
+  id          String        @id @default(cuid())
+  sessionId   String
+  role        AiMessageRole
+  content     String        @db.Text
+  toolCalls   Json?
+  toolResults Json?
+
+  session AiChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+}
+
+model AiToolOutput {
+  id        String   @id @default(cuid())
+  userId    String
+  sessionId String?
+  toolName  String
+  input     Json
+  output    Json
+  projectId String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([projectId])
 }

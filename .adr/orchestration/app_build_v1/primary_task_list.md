@@ -77,21 +77,21 @@ reference the screenshot paths. No phase is done without visual evidence.
 - [x] **Validation screenshots** — `.docs/validation/phase_3/` (checkout flow, entitlement gates, portal)
 
 ## Phase 4: AI (Full Page + Sidebar) With Tool Actions
-- [ ] /ai full page chat:
-  - [ ] project picker / context selector
-  - [ ] chat transcript persistence (ai/chats/*.ndjson locally, mirrored in cloud)
-  - [ ] tool invocation UI + confirmations
-- [ ] AI sidebar:
-  - [ ] context from current project + route
-  - [ ] quick actions
-- [ ] Tooling layer (typed, allowlisted):
-  - [ ] add_idea writes to ideas/ideas.json
-  - [ ] update_kanban modifies kanban/board.json
-  - [ ] generate_tree writes/updates directory-tree/tree.plan.json and generated outputs
-  - [ ] create_project_structure scaffolds default folders/files
-- [ ] Audit logging:
-  - [ ] every AI file mutation recorded with diff metadata and actor identity
-- [ ] **Validation screenshots** — `.docs/validation/phase_4/` (AI chat, sidebar, tool actions)
+- [x] /ai full page chat:
+  - [x] project picker / context selector
+  - [x] chat transcript persistence (Prisma-backed AiChatSession + AiChatMessage)
+  - [x] tool invocation UI + confirmations
+- [x] AI sidebar:
+  - [x] context from current project + route
+  - [x] quick actions
+- [x] Tooling layer (typed, allowlisted):
+  - [x] add_idea validates and persists via AiToolOutput (DB-backed)
+  - [x] update_kanban validates and modifies kanban state (DB-backed)
+  - [x] generate_tree creates/updates directory tree plan (DB-backed)
+  - [x] create_project_structure scaffolds default folders/files (DB-backed)
+- [x] Audit logging:
+  - [x] every AI tool mutation recorded with diff metadata and actor identity
+- [x] **Validation screenshots** — `.docs/validation/phase_4/` (AI chat, sidebar, tool actions)
 
 ## Phase 5: Project Browser + Sync Core
 - [ ] Cloud canonical project model:

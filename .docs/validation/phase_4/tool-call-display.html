@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 4 Validation - Tool Call Display</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f8f8f8; padding: 40px; max-width: 800px; margin: 0 auto; }
+  h1 { font-size: 20px; margin-bottom: 24px; color: #333; }
+  .tool-call { margin: 16px 0; border: 1px solid #e0e0e0; border-radius: 6px; padding: 10px 12px; background: #fafafa; font-size: 13px; }
+  .tool-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .tool-icon { font-weight: bold; font-size: 14px; }
+  .tool-name { font-weight: 600; color: #333; }
+  .tool-status { margin-left: auto; font-size: 12px; font-weight: 500; }
+  .tool-status.done { color: #16a34a; }
+  .tool-status.running { color: #d97706; }
+  details { margin-top: 4px; }
+  summary { cursor: pointer; font-size: 12px; color: #666; font-weight: 500; }
+  pre { margin: 4px 0 0 0; padding: 8px; background: #fff; border: 1px solid #eee; border-radius: 4px; font-size: 12px; overflow: auto; white-space: pre-wrap; word-break: break-word; max-height: 200px; }
+  .badge { position: fixed; top: 8px; right: 8px; background: #333; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 11px; }
+</style>
+</head>
+<body>
+  <div class="badge">VALIDATION: Tool Call Display</div>
+  <h1>AI Tool Call Display States</h1>
+
+  <h3 style="margin: 16px 0 8px; color: #666; font-size: 14px;">1. Completed - Add Idea</h3>
+  <div class="tool-call">
+    <div class="tool-header">
+      <span class="tool-icon">&#10003;</span>
+      <span class="tool-name">Add Idea</span>
+      <span class="tool-status done">Completed</span>
+    </div>
+    <details>
+      <summary>Parameters</summary>
+      <pre>{
+  "projectId": "proj-123",
+  "title": "Dark mode toggle",
+  "description": "Add a dark mode toggle to the dashboard header",
+  "tags": ["ui", "accessibility"],
+  "priority": "high"
+}</pre>
+    </details>
+    <div style="margin-top: 6px; border-top: 1px solid #e8e8e8; padding-top: 6px;">
+      <details open>
+        <summary>Result</summary>
+        <pre>{
+  "success": true,
+  "id": "output-abc123",
+  "title": "Dark mode toggle",
+  "projectId": "proj-123",
+  "message": "Idea \"Dark mode toggle\" added successfully to project proj-123."
+}</pre>
+      </details>
+    </div>
+  </div>
+
+  <h3 style="margin: 16px 0 8px; color: #666; font-size: 14px;">2. Running - Update Kanban</h3>
+  <div class="tool-call">
+    <div class="tool-header">
+      <span class="tool-icon">&#8230;</span>
+      <span class="tool-name">Update Kanban</span>
+      <span class="tool-status running">Running...</span>
+    </div>
+    <details>
+      <summary>Parameters</summary>
+      <pre>{
+  "projectId": "proj-123",
+  "action": "add",
+  "data": {
+    "title": "Implement dark mode",
+    "column": "todo",
+    "labels": ["feature", "ui"]
+  }
+}</pre>
+    </details>
+  </div>
+
+  <h3 style="margin: 16px 0 8px; color: #666; font-size: 14px;">3. Completed - Generate Tree</h3>
+  <div class="tool-call">
+    <div class="tool-header">
+      <span class="tool-icon">&#10003;</span>
+      <span class="tool-name">Generate Tree</span>
+      <span class="tool-status done">Completed</span>
+    </div>
+    <details>
+      <summary>Parameters</summary>
+      <pre>{
+  "projectId": "proj-123",
+  "structure": {
+    "name": "src",
+    "type": "directory",
+    "children": [
+      { "name": "components", "type": "directory" },
+      { "name": "pages", "type": "directory" },
+      { "name": "utils", "type": "directory" }
+    ]
+  }
+}</pre>
+    </details>
+    <div style="margin-top: 6px; border-top: 1px solid #e8e8e8; padding-top: 6px;">
+      <details open>
+        <summary>Result</summary>
+        <pre>{
+  "success": true,
+  "id": "output-def456",
+  "projectId": "proj-123",
+  "nodeCount": 4,
+  "message": "Directory tree generated with 4 nodes for project proj-123."
+}</pre>
+      </details>
+    </div>
+  </div>
+
+  <h3 style="margin: 16px 0 8px; color: #666; font-size: 14px;">4. Completed - Create Project Structure</h3>
+  <div class="tool-call">
+    <div class="tool-header">
+      <span class="tool-icon">&#10003;</span>
+      <span class="tool-name">Create Project Structure</span>
+      <span class="tool-status done">Completed</span>
+    </div>
+    <details>
+      <summary>Parameters</summary>
+      <pre>{
+  "projectId": "proj-789",
+  "name": "My Web App",
+  "template": "web-app"
+}</pre>
+    </details>
+    <div style="margin-top: 6px; border-top: 1px solid #e8e8e8; padding-top: 6px;">
+      <details open>
+        <summary>Result</summary>
+        <pre>{
+  "success": true,
+  "id": "output-ghi789",
+  "projectId": "proj-789",
+  "name": "My Web App",
+  "template": "web-app",
+  "folders": ["src/", "src/components/", "src/pages/", "src/styles/", "src/utils/", "public/", "ideas/", "kanban/", "docs/", "tests/"],
+  "message": "Project structure \"My Web App\" scaffolded with 10 folders using the \"web-app\" template."
+}</pre>
+      </details>
+    </div>
+  </div>
+</body>
+</html>
