@@ -2,6 +2,7 @@
 
 Session: app_build_v1
 Date: 2026-02-10
+Updated: 2026-03-05
 
 Primary requirements sources:
 - `.docs/planning/prd.md`
@@ -12,28 +13,38 @@ Primary requirements sources:
 
 Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 
+---
+
+**Validation policy (all phases):** Every phase MUST capture Playwright validation screenshots
+before marking complete. Screenshots go to `.docs/validation/phase_<N>/` with desktop
+and mobile viewport captures of all new/modified UI surfaces. Phase review files must
+reference the screenshot paths. No phase is done without visual evidence.
+
+---
+
 ## Phase 1: Repo + Platform Foundation (Web-First + Early Electron Spine)
-- [ ] Create monorepo layout (`apps/web`, `apps/desktop`, `packages/*`) and CI-friendly scripts.
-- [ ] Establish shared domain contracts in `packages/schemas` (zod) for:
-  - project.json
-  - ideas.json
-  - kanban board
-  - whiteboard
-  - schema graph
-  - sync ops and revisions
-- [ ] Implement API foundation in web stack:
-  - [ ] health endpoint
-  - [ ] request logging + correlation IDs
+- [x] Create monorepo layout (`apps/web`, `apps/desktop`, `packages/*`) and CI-friendly scripts.
+- [~] Establish shared domain contracts in `packages/schemas` (zod) for:
+  - [x] project.json
+  - [ ] ideas.json
+  - [ ] kanban board
+  - [ ] whiteboard
+  - [ ] schema graph
+  - [x] sync ops and revisions
+- [~] Implement API foundation in web stack:
+  - [x] health endpoint
+  - [x] request logging + correlation IDs
   - [ ] rate limiting middleware
   - [ ] error handling standards
 - [ ] Establish observability baseline:
   - [ ] Sentry wiring (web + API)
   - [ ] structured logs
-- [ ] Thin Electron spine (do early, minimal UI):
+- [~] Thin Electron spine (do early, minimal UI):
   - [ ] login screen shell
-  - [ ] choose local project root folder
-  - [ ] show local project browser view from filesystem
-  - [ ] stub sync queue writer (local ops recorded)
+  - [x] choose local project root folder
+  - [x] show local project browser view from filesystem
+  - [x] stub sync queue writer (local ops recorded)
+- [ ] **Validation screenshots** — `.docs/validation/phase_1/` (desktop + mobile)
 
 ## Phase 2: Auth + Sessions + Admin Override (Production-Grade)
 - [ ] DB + Prisma schema for users/credentials/sessions/refresh tokens/audit logs.
@@ -50,6 +61,7 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [ ] Desktop enforcement:
   - [ ] app startup session validation
   - [ ] logout and token revocation handling
+- [ ] **Validation screenshots** — `.docs/validation/phase_2/` (auth flows, admin panel, desktop gate)
 
 ## Phase 3: Subscriptions + Entitlements (Stripe)
 - [ ] Stripe product/price plan definitions (requires final tiers decision).
@@ -62,6 +74,7 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
   - [ ] server-side gates on premium endpoints
   - [ ] client-side UX gates
   - [ ] desktop gates at startup and feature entrypoints
+- [ ] **Validation screenshots** — `.docs/validation/phase_3/` (checkout flow, entitlement gates, portal)
 
 ## Phase 4: AI (Full Page + Sidebar) With Tool Actions
 - [ ] /ai full page chat:
@@ -78,6 +91,7 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
   - [ ] create_project_structure scaffolds default folders/files
 - [ ] Audit logging:
   - [ ] every AI file mutation recorded with diff metadata and actor identity
+- [ ] **Validation screenshots** — `.docs/validation/phase_4/` (AI chat, sidebar, tool actions)
 
 ## Phase 5: Project Browser + Sync Core
 - [ ] Cloud canonical project model:
@@ -95,6 +109,7 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
   - [ ] auto-merge for append-only artifacts (ideas, logs)
   - [ ] manual resolver UI for structured conflicts
   - [ ] snapshots and rollback
+- [ ] **Validation screenshots** — `.docs/validation/phase_5/` (project browser, sync UI, conflict resolver)
 
 ## Phase 6: Core Features (Kanban + Ideas + Whiteboard + Schema + Directory Generator)
 - [ ] Ideas list UI bound to ideas/ideas.json (with sync).
@@ -102,6 +117,7 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [ ] Whiteboard MVP -> containers with drag/resize/text/image (with sync + asset storage).
 - [ ] Schema planner nodes/edges + exports.
 - [ ] Directory generator preview/apply with safe writes.
+- [ ] **Validation screenshots** — `.docs/validation/phase_6/` (kanban, ideas, whiteboard, schema, directory generator)
 
 ## Phase 7: Production Hardening + Release
 - [ ] User story validation pass against `.docs/planning/user-stories.md` using:
@@ -122,6 +138,7 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
   - migrations
   - backups/restores
   - incident runbooks
+- [ ] **Validation screenshots** — `.docs/validation/phase_7/` (E2E test results, security audit, perf metrics)
 
 ## Deliverables Checklist
 - [ ] Web app deployable on Vercel
