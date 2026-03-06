@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 3 - Subscriptions &amp; Entitlements Validation</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a2e; padding: 2rem; }
+    .container { max-width: 960px; margin: 0 auto; }
+    h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .subtitle { color: #666; margin-bottom: 2rem; }
+    .card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .card h2 { font-size: 1.2rem; margin-bottom: 1rem; color: #16213e; border-bottom: 2px solid #e8e8e8; padding-bottom: 0.5rem; }
+    .check-list { list-style: none; }
+    .check-list li { padding: 0.4rem 0; display: flex; align-items: center; gap: 0.5rem; }
+    .check-list li::before { content: '\2713'; color: #27ae60; font-weight: bold; font-size: 1.1rem; }
+    .api-table { width: 100%; border-collapse: collapse; }
+    .api-table th, .api-table td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid #eee; }
+    .api-table th { font-weight: 600; color: #444; }
+    .method { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; }
+    .method-post { background: #e7f5e7; color: #27ae60; }
+    .method-get { background: #e7ecf5; color: #2980b9; }
+    code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+    .model-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+    .model-card { background: #f8f9fa; border-radius: 6px; padding: 1rem; border: 1px solid #e0e0e0; }
+    .model-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+    .model-card ul { font-size: 0.85rem; list-style: none; padding: 0; }
+    .model-card li { padding: 0.15rem 0; color: #555; }
+    .stats { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+    .stat { flex: 1; background: white; border-radius: 8px; padding: 1rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .stat .number { font-size: 2rem; font-weight: 700; color: #16213e; }
+    .stat .label { font-size: 0.85rem; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Phase 3: Subscriptions &amp; Entitlements</h1>
+    <p class="subtitle">Stripe billing integration validation - IDEA-MANAGEMENT</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="number">3</div>
+        <div class="label">API Endpoints</div>
+      </div>
+      <div class="stat">
+        <div class="number">3</div>
+        <div class="label">Prisma Models</div>
+      </div>
+      <div class="stat">
+        <div class="number">25</div>
+        <div class="label">New Tests</div>
+      </div>
+      <div class="stat">
+        <div class="number">42</div>
+        <div class="label">Total Tests Pass</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Task Checklist</h2>
+      <ul class="check-list">
+        <li>Prisma models: Subscription, Entitlement, BillingEvent</li>
+        <li>Migration SQL created for new tables</li>
+        <li>Stripe product/price tiers configured via environment variables</li>
+        <li>Checkout session creation endpoint (POST /api/billing/checkout)</li>
+        <li>Customer Portal redirect endpoint (POST /api/billing/portal)</li>
+        <li>Webhook handler with signature verification</li>
+        <li>Webhook idempotency (deduplicate by event ID)</li>
+        <li>Handles: checkout.session.completed</li>
+        <li>Handles: customer.subscription.updated</li>
+        <li>Handles: customer.subscription.deleted</li>
+        <li>Handles: invoice.payment_failed</li>
+        <li>Subscription + entitlement state updated in DB</li>
+        <li>All events logged to BillingEvent</li>
+        <li>Server-side entitlement enforcement (requireEntitlement middleware)</li>
+        <li>Client-side entitlement hook (useEntitlements / EntitlementProvider)</li>
+        <li>Desktop entitlement check IPC handler (auth:checkEntitlement)</li>
+        <li>Admin account bypasses entitlement gates</li>
+        <li>/api/auth/me includes entitlement data</li>
+        <li>Tests for webhook handler logic (9 tests)</li>
+        <li>Tests for entitlement checks (16 tests)</li>
+        <li>pnpm typecheck passes (all 6 packages)</li>
+        <li>pnpm test passes (42 tests total)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>API Endpoints</h2>
+      <table class="api-table">
+        <thead>
+          <tr><th>Method</th><th>Path</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="method method-post">POST</span></td>
+            <td><code>/api/billing/checkout</code></td>
+            <td>Create Stripe Checkout session, returns redirect URL</td>
+          </tr>
+          <tr>
+            <td><span class="method method-post">POST</span></td>
+            <td><code>/api/billing/portal</code></td>
+            <td>Create Customer Portal session, returns redirect URL</td>
+          </tr>
+          <tr>
+            <td><span class="method method-post">POST</span></td>
+            <td><code>/api/billing/webhook</code></td>
+            <td>Stripe webhook handler (signature verified)</td>
+          </tr>
+          <tr>
+            <td><span class="method method-get">GET</span></td>
+            <td><code>/api/auth/me</code></td>
+            <td>Updated: now includes entitlement data</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Prisma Models</h2>
+      <div class="model-grid">
+        <div class="model-card">
+          <h3>Subscription</h3>
+          <ul>
+            <li>userId, stripeCustomerId</li>
+            <li>stripeSubscriptionId (unique)</li>
+            <li>status: ACTIVE | PAST_DUE | CANCELED | TRIALING | UNPAID</li>
+            <li>plan: FREE | PRO | TEAM</li>
+            <li>currentPeriodStart, currentPeriodEnd</li>
+            <li>cancelAtPeriodEnd</li>
+          </ul>
+        </div>
+        <div class="model-card">
+          <h3>Entitlement</h3>
+          <ul>
+            <li>userId + feature (unique together)</li>
+            <li>grantedAt, expiresAt (optional)</li>
+            <li>source: SUBSCRIPTION | ADMIN_GRANT | TRIAL</li>
+          </ul>
+        </div>
+        <div class="model-card">
+          <h3>BillingEvent</h3>
+          <ul>
+            <li>stripeEventId (unique for idempotency)</li>
+            <li>eventType, stripeCustomerId</li>
+            <li>data (Json), processedAt</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Entitlement Features</h2>
+      <table class="api-table">
+        <thead>
+          <tr><th>Feature</th><th>FREE</th><th>PRO</th><th>TEAM</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>pro_access</code></td><td>-</td><td style="color:#27ae60">Yes</td><td style="color:#27ae60">Yes</td></tr>
+          <tr><td><code>team_access</code></td><td>-</td><td>-</td><td style="color:#27ae60">Yes</td></tr>
+          <tr><td><code>whiteboard</code></td><td>-</td><td style="color:#27ae60">Yes</td><td style="color:#27ae60">Yes</td></tr>
+          <tr><td><code>schema_planner</code></td><td>-</td><td style="color:#27ae60">Yes</td><td style="color:#27ae60">Yes</td></tr>
+          <tr><td><code>ai_chat</code></td><td>-</td><td style="color:#27ae60">Yes</td><td style="color:#27ae60">Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Architecture</h2>
+      <pre style="font-size: 0.85rem; line-height: 1.5; overflow-x: auto;">
+apps/web/
+  prisma/
+    schema.prisma          -- Subscription, Entitlement, BillingEvent models
+    migrations/            -- SQL migration for new tables
+  src/
+    server/
+      billing/
+        stripe.ts          -- Stripe client singleton + config
+        entitlements.ts    -- Entitlement check/sync logic
+        webhook-handler.ts -- Webhook event processing
+        require-entitlement.ts -- Server-side middleware
+        index.ts           -- Re-exports
+        entitlements.test.ts     -- 16 unit tests
+        webhook-handler.test.ts  -- 9 unit tests
+    hooks/
+      use-entitlements.ts  -- Client-side EntitlementProvider + useEntitlements hook
+    app/api/
+      billing/
+        checkout/route.ts  -- POST /api/billing/checkout
+        portal/route.ts    -- POST /api/billing/portal
+        webhook/route.ts   -- POST /api/billing/webhook
+      auth/me/route.ts     -- Updated with entitlement data
+
+apps/desktop/
+  src/main/
+    auth.ts                -- Added auth:checkEntitlement IPC handler
+      </pre>
+    </div>
+  </div>
+</body>
+</html>

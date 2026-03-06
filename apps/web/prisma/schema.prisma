@@ -23,7 +23,9 @@ model User {
   refreshes           RefreshToken[]
   auditLogs           AuditLog[]              @relation("audit_actor")
   emailVerifications  EmailVerificationToken[]
-  passwordResets      PasswordResetToken[]
+  passwordResets       PasswordResetToken[]
+  subscriptions       Subscription[]
+  entitlements        Entitlement[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -106,6 +108,76 @@ model AuditLog {
   metadata    Json?
 
   actor User? @relation("audit_actor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+}
+
+// ─── Billing & Subscriptions ──────────────────────────────────────────
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  TRIALING
+  UNPAID
+}
+
+enum SubscriptionPlan {
+  FREE
+  PRO
+  TEAM
+}
+
+enum EntitlementSource {
+  SUBSCRIPTION
+  ADMIN_GRANT
+  TRIAL
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String
+  stripeCustomerId     String
+  stripeSubscriptionId String             @unique
+  status               SubscriptionStatus
+  plan                 SubscriptionPlan
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean            @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([stripeCustomerId])
+}
+
+model Entitlement {
+  id        String           @id @default(cuid())
+  userId    String
+  feature   String
+  grantedAt DateTime         @default(now())
+  expiresAt DateTime?
+  source    EntitlementSource
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, feature])
+  @@index([userId])
+}
+
+model BillingEvent {
+  id               String   @id @default(cuid())
+  stripeEventId    String   @unique
+  eventType        String
+  stripeCustomerId String?
+  data             Json
+  processedAt      DateTime @default(now())
 
   createdAt DateTime @default(now())
 }

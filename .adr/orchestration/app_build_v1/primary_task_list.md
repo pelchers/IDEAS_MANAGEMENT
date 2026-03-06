@@ -64,17 +64,17 @@ reference the screenshot paths. No phase is done without visual evidence.
 - [x] **Validation screenshots** — `.docs/validation/phase_2/` (auth flows, admin panel, desktop gate)
 
 ## Phase 3: Subscriptions + Entitlements (Stripe)
-- [ ] Stripe product/price plan definitions (requires final tiers decision).
-- [ ] Checkout + Customer Portal integration.
-- [ ] Webhook handler:
-  - [ ] idempotency guarantees
-  - [ ] retries and dead-letter policy
-  - [ ] entitlement state machine updates
-- [ ] Entitlement enforcement:
-  - [ ] server-side gates on premium endpoints
-  - [ ] client-side UX gates
-  - [ ] desktop gates at startup and feature entrypoints
-- [ ] **Validation screenshots** — `.docs/validation/phase_3/` (checkout flow, entitlement gates, portal)
+- [x] Stripe product/price plan definitions (requires final tiers decision).
+- [x] Checkout + Customer Portal integration.
+- [x] Webhook handler:
+  - [x] idempotency guarantees
+  - [x] retries and dead-letter policy
+  - [x] entitlement state machine updates
+- [x] Entitlement enforcement:
+  - [x] server-side gates on premium endpoints
+  - [x] client-side UX gates
+  - [x] desktop gates at startup and feature entrypoints
+- [x] **Validation screenshots** — `.docs/validation/phase_3/` (checkout flow, entitlement gates, portal)
 
 ## Phase 4: AI (Full Page + Sidebar) With Tool Actions
 - [ ] /ai full page chat:

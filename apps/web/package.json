@@ -15,11 +15,12 @@
     "admin:bootstrap": "tsx scripts/bootstrap-admin.ts"
   },
   "dependencies": {
+    "@prisma/client": "^6.16.1",
+    "argon2": "^0.44.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "@prisma/client": "^6.16.1",
-    "argon2": "^0.44.0",
+    "stripe": "^20.4.0",
     "zod": "^4.1.5"
   },
   "devDependencies": {
@@ -30,7 +31,7 @@
     "eslint-config-next": "16.1.6",
     "prisma": "^6.16.1",
     "tsx": "^4.20.5",
-    "vitest": "^3.2.4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4"
   }
 }

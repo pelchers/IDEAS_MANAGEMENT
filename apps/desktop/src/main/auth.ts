@@ -43,13 +43,25 @@ async function clearTokens(): Promise<void> {
   }
 }
 
+interface MeResponse {
+  ok: boolean;
+  user: { id: string; email: string; role: string; emailVerified: boolean };
+  entitlements?: {
+    plan: string;
+    features: string[];
+    isAdmin: boolean;
+  };
+}
+
 /**
  * Validate the stored session against the web API.
  * Attempts refresh if the session is expired.
+ * Includes entitlement data from the /api/auth/me response.
  */
 async function validateStoredSession(): Promise<{
   valid: boolean;
-  user?: { id: string; email: string; role: string; emailVerified: boolean };
+  user?: MeResponse["user"];
+  entitlements?: MeResponse["entitlements"];
 }> {
   const tokens = await loadTokens();
   if (!tokens) return { valid: false };
@@ -61,11 +73,8 @@ async function validateStoredSession(): Promise<{
     });
 
     if (meRes.ok) {
-      const data = (await meRes.json()) as {
-        ok: boolean;
-        user: { id: string; email: string; role: string; emailVerified: boolean };
-      };
-      return { valid: true, user: data.user };
+      const data = (await meRes.json()) as MeResponse;
+      return { valid: true, user: data.user, entitlements: data.entitlements };
     }
 
     // Session expired, try refresh
@@ -102,11 +111,8 @@ async function validateStoredSession(): Promise<{
         headers: { cookie: `im_session=${newSession}` }
       });
       if (retryRes.ok) {
-        const data = (await retryRes.json()) as {
-          ok: boolean;
-          user: { id: string; email: string; role: string; emailVerified: boolean };
-        };
-        return { valid: true, user: data.user };
+        const data = (await retryRes.json()) as MeResponse;
+        return { valid: true, user: data.user, entitlements: data.entitlements };
       }
     }
 
@@ -115,6 +121,48 @@ async function validateStoredSession(): Promise<{
   } catch {
     // Network error
     return { valid: false };
+  }
+}
+
+/**
+ * Check if the current user has a specific entitlement/feature.
+ * Calls the web API to get current entitlements.
+ */
+async function checkEntitlementForFeature(
+  feature: string
+): Promise<{ entitled: boolean; plan?: string; features?: string[] }> {
+  const tokens = await loadTokens();
+  if (!tokens) return { entitled: false };
+
+  try {
+    const meRes = await fetch(`${tokens.apiBaseUrl}/api/auth/me`, {
+      headers: { cookie: `im_session=${tokens.sessionToken}` }
+    });
+
+    if (!meRes.ok) return { entitled: false };
+
+    const data = (await meRes.json()) as MeResponse;
+    const entitlements = data.entitlements;
+
+    if (!entitlements) return { entitled: false };
+
+    // Admin bypass
+    if (entitlements.isAdmin) {
+      return {
+        entitled: true,
+        plan: entitlements.plan,
+        features: entitlements.features,
+      };
+    }
+
+    const entitled = entitlements.features.includes(feature);
+    return {
+      entitled,
+      plan: entitlements.plan,
+      features: entitlements.features,
+    };
+  } catch {
+    return { entitled: false };
   }
 }
 
@@ -177,4 +225,16 @@ export function registerAuthIpc(): void {
     const tokens = await loadTokens();
     return { hasTokens: tokens !== null };
   });
+
+  /**
+   * auth:checkEntitlement — Check if the current user has a specific feature entitlement.
+   * Used by the desktop app to gate premium features.
+   * Returns { entitled: boolean, plan?: string, features?: string[] }.
+   */
+  ipcMain.handle(
+    "auth:checkEntitlement",
+    async (_evt, args: { feature: string }) => {
+      return checkEntitlementForFeature(args.feature);
+    }
+  );
 }
