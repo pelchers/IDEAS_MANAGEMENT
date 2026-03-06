@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 7 - Test Results Summary</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; padding: 32px; }
+  .header { text-align: center; margin-bottom: 40px; }
+  .header h1 { font-size: 28px; color: #f1f5f9; margin-bottom: 8px; }
+  .header p { font-size: 14px; color: #94a3b8; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: #1e293b; border-radius: 12px; padding: 24px; text-align: center; border: 1px solid #334155; }
+  .stat-card .number { font-size: 36px; font-weight: 700; color: #22c55e; }
+  .stat-card .label { font-size: 13px; color: #94a3b8; margin-top: 4px; }
+  .stat-card.warn .number { color: #f59e0b; }
+  .stat-card.info .number { color: #3b82f6; }
+  .section { background: #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid #334155; }
+  .section h2 { font-size: 18px; margin-bottom: 16px; color: #f1f5f9; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 10px 12px; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #334155; }
+  td { padding: 10px 12px; border-bottom: 1px solid #1e293b; font-size: 14px; }
+  tr:hover { background: #334155; }
+  .pass { color: #22c55e; font-weight: 600; }
+  .count { color: #94a3b8; }
+  .time { color: #3b82f6; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 600; }
+  .badge-pass { background: #052e16; color: #22c55e; border: 1px solid #166534; }
+  .footer { text-align: center; margin-top: 32px; font-size: 12px; color: #64748b; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Phase 7 - Test Results Summary</h1>
+  <p>IDEA-MANAGEMENT | Production Hardening + Release | 2026-03-05</p>
+</div>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="number">187</div>
+    <div class="label">Tests Passed</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">18</div>
+    <div class="label">Test Files</div>
+  </div>
+  <div class="stat-card info">
+    <div class="number">0</div>
+    <div class="label">Tests Failed</div>
+  </div>
+  <div class="stat-card warn">
+    <div class="number">1.1s</div>
+    <div class="label">Total Duration</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Test File Results</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Test File</th>
+        <th>Tests</th>
+        <th>Status</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>src/tests/user-stories.test.ts</td>
+        <td class="count">32</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">376ms</td>
+      </tr>
+      <tr>
+        <td>src/tests/e2e-flows.test.ts</td>
+        <td class="count">7</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">253ms</td>
+      </tr>
+      <tr>
+        <td>src/tests/security-review.test.ts</td>
+        <td class="count">13</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">332ms</td>
+      </tr>
+      <tr>
+        <td>src/tests/performance-baseline.test.ts</td>
+        <td class="count">9</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">200ms</td>
+      </tr>
+      <tr>
+        <td>src/server/auth/credentials.test.ts</td>
+        <td class="count">8</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">9ms</td>
+      </tr>
+      <tr>
+        <td>src/server/auth/password.test.ts</td>
+        <td class="count">1</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">179ms</td>
+      </tr>
+      <tr>
+        <td>src/server/auth/session.test.ts</td>
+        <td class="count">6</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">5ms</td>
+      </tr>
+      <tr>
+        <td>src/server/auth/tokens.test.ts</td>
+        <td class="count">2</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">3ms</td>
+      </tr>
+      <tr>
+        <td>src/server/billing/entitlements.test.ts</td>
+        <td class="count">16</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">7ms</td>
+      </tr>
+      <tr>
+        <td>src/server/billing/webhook-handler.test.ts</td>
+        <td class="count">9</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">13ms</td>
+      </tr>
+      <tr>
+        <td>src/server/ai/chat-endpoint.test.ts</td>
+        <td class="count">7</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">313ms</td>
+      </tr>
+      <tr>
+        <td>src/server/ai/tools/add-idea.test.ts</td>
+        <td class="count">8</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">15ms</td>
+      </tr>
+      <tr>
+        <td>src/server/ai/tools/update-kanban.test.ts</td>
+        <td class="count">8</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">11ms</td>
+      </tr>
+      <tr>
+        <td>src/server/projects/helpers.test.ts</td>
+        <td class="count">11</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">12ms</td>
+      </tr>
+      <tr>
+        <td>src/server/sync/merge.test.ts</td>
+        <td class="count">13</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">4ms</td>
+      </tr>
+      <tr>
+        <td>src/server/sync/snapshot.test.ts</td>
+        <td class="count">2</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">3ms</td>
+      </tr>
+      <tr>
+        <td>src/lib/sync-queue.test.ts</td>
+        <td class="count">9</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">9ms</td>
+      </tr>
+      <tr>
+        <td>src/server/schemas/schemas.test.ts</td>
+        <td class="count">26</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td class="time">13ms</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>User Story Coverage (13/13)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>User Story</th>
+        <th>Tests</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>US-1: Sign in securely</td><td class="count">4</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-2: Paid features unlocked</td><td class="count">3</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-3: Admin unrestricted access</td><td class="count">2</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-4: Drive-like dashboard</td><td class="count">3</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-5: Project maps to folder</td><td class="count">2</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-6: Split workspace view</td><td class="count">2</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-7: Kanban</td><td class="count">2</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-8: Whiteboard</td><td class="count">2</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-9: Schema planner</td><td class="count">2</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-10: Directory tree</td><td class="count">2</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-11: AI sidebar</td><td class="count">3</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-12: AI chat page</td><td class="count">2</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>US-13: Sync</td><td class="count">3</td><td><span class="badge badge-pass">PASS</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  <p>Generated by Phase 7 validation pipeline | IDEA-MANAGEMENT v0.1.0</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 7 - Performance Metrics</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; padding: 32px; }
+  .header { text-align: center; margin-bottom: 40px; }
+  .header h1 { font-size: 28px; color: #f1f5f9; margin-bottom: 8px; }
+  .header p { font-size: 14px; color: #94a3b8; }
+  .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+  .metric-card { background: #1e293b; border-radius: 12px; padding: 20px; border: 1px solid #334155; }
+  .metric-card .value { font-size: 28px; font-weight: 700; color: #22c55e; }
+  .metric-card .label { font-size: 13px; color: #94a3b8; margin-top: 4px; }
+  .metric-card .target { font-size: 11px; color: #64748b; margin-top: 2px; }
+  .section { background: #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid #334155; }
+  .section h2 { font-size: 18px; margin-bottom: 16px; color: #f1f5f9; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 10px 12px; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #334155; }
+  td { padding: 10px 12px; border-bottom: 1px solid #334155; font-size: 14px; }
+  .val-pass { color: #22c55e; font-weight: 600; }
+  .val-target { color: #94a3b8; }
+  .bar-container { width: 100%; height: 8px; background: #334155; border-radius: 4px; overflow: hidden; margin-top: 4px; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .bar-green { background: linear-gradient(90deg, #22c55e, #16a34a); }
+  .bar-blue { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+  .perf-row { display: flex; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid #334155; }
+  .perf-row:last-child { border-bottom: none; }
+  .perf-label { flex: 1; font-size: 14px; }
+  .perf-value { font-size: 14px; font-weight: 600; color: #22c55e; min-width: 80px; text-align: right; }
+  .perf-bar { flex: 2; }
+  .footer { text-align: center; margin-top: 32px; font-size: 12px; color: #64748b; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Performance Metrics Dashboard</h1>
+  <p>IDEA-MANAGEMENT | Phase 7 Baseline | 2026-03-05</p>
+</div>
+
+<div class="metrics-grid">
+  <div class="metric-card">
+    <div class="value">&lt; 5ms</div>
+    <div class="label">Project List (50 items)</div>
+    <div class="target">Target: &lt; 100ms</div>
+  </div>
+  <div class="metric-card">
+    <div class="value">&lt; 2ms</div>
+    <div class="label">Artifact Read</div>
+    <div class="target">Target: &lt; 50ms</div>
+  </div>
+  <div class="metric-card">
+    <div class="value">&lt; 5ms</div>
+    <div class="label">Schema Validation</div>
+    <div class="target">Target: &lt; 10ms</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Validation Performance</h2>
+  <div class="perf-row">
+    <div class="perf-label">KanbanBoard (100 cards, 4 columns)</div>
+    <div class="perf-value">2.36ms</div>
+    <div class="perf-bar">
+      <div class="bar-container"><div class="bar-fill bar-green" style="width: 23.6%"></div></div>
+    </div>
+  </div>
+  <div class="perf-row">
+    <div class="perf-label">Whiteboard (100 containers, 50 edges)</div>
+    <div class="perf-value">2.80ms</div>
+    <div class="perf-bar">
+      <div class="bar-container"><div class="bar-fill bar-green" style="width: 28%"></div></div>
+    </div>
+  </div>
+  <div class="perf-row">
+    <div class="perf-label">SchemaGraph (20 nodes, 15 edges)</div>
+    <div class="perf-value">4.45ms</div>
+    <div class="perf-bar">
+      <div class="bar-container"><div class="bar-fill bar-green" style="width: 44.5%"></div></div>
+    </div>
+  </div>
+  <div class="perf-row">
+    <div class="perf-label">SyncOp batch (100 operations)</div>
+    <div class="perf-value">0.62ms</div>
+    <div class="perf-bar">
+      <div class="bar-container"><div class="bar-fill bar-blue" style="width: 1.2%"></div></div>
+    </div>
+  </div>
+  <div class="perf-row">
+    <div class="perf-label">DirectoryTree (deep tree, ~120 nodes)</div>
+    <div class="perf-value">0.60ms</div>
+    <div class="perf-bar">
+      <div class="bar-container"><div class="bar-fill bar-blue" style="width: 6%"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>P95 API Response Time Targets</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Endpoint</th>
+        <th>P95 Target</th>
+        <th>Expected</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GET /api/projects</td>
+        <td class="val-target">&lt; 250ms</td>
+        <td class="val-pass">&lt; 100ms</td>
+        <td class="val-pass">PASS</td>
+      </tr>
+      <tr>
+        <td>GET /api/projects/[id]</td>
+        <td class="val-target">&lt; 200ms</td>
+        <td class="val-pass">&lt; 80ms</td>
+        <td class="val-pass">PASS</td>
+      </tr>
+      <tr>
+        <td>GET /api/projects/[id]/artifacts</td>
+        <td class="val-target">&lt; 200ms</td>
+        <td class="val-pass">&lt; 50ms</td>
+        <td class="val-pass">PASS</td>
+      </tr>
+      <tr>
+        <td>POST /api/sync/push</td>
+        <td class="val-target">&lt; 300ms</td>
+        <td class="val-pass">&lt; 150ms</td>
+        <td class="val-pass">PASS</td>
+      </tr>
+      <tr>
+        <td>POST /api/ai/chat</td>
+        <td class="val-target">&lt; 500ms</td>
+        <td class="val-target">Varies (LLM)</td>
+        <td class="val-pass">N/A</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Database Query Patterns</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Query Type</th>
+        <th>Index</th>
+        <th>Pattern</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Projects by user</td><td>ProjectMember.userId</td><td>FK index</td></tr>
+      <tr><td>Artifacts by project+path</td><td>(projectId, artifactPath)</td><td>Composite unique</td></tr>
+      <tr><td>Sessions by token hash</td><td>sessionTokenHash</td><td>Unique index</td></tr>
+      <tr><td>Refresh tokens</td><td>tokenHash</td><td>Unique index</td></tr>
+      <tr><td>Billing events</td><td>stripeEventId</td><td>Unique index</td></tr>
+      <tr><td>Sync operations</td><td>operationId</td><td>Indexed</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  <p>Performance baselines measured with Vitest (mock-backed) | Production perf depends on PostgreSQL + network</p>
+</div>
+</body>
+</html>

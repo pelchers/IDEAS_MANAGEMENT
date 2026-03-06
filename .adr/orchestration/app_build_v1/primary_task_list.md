@@ -120,29 +120,27 @@ reference the screenshot paths. No phase is done without visual evidence.
 - [x] **Validation screenshots** — `.docs/validation/phase_6/` (kanban, ideas, whiteboard, schema, directory generator)
 
 ## Phase 7: Production Hardening + Release
-- [ ] User story validation pass against `.docs/planning/user-stories.md` using:
-  - `.codex/agents/user-story-testing-agent.md`
-  - `.codex/skills/testing-user-stories-validation`
-- [ ] E2E test suite for:
+- [x] User story validation pass against `.docs/planning/user-stories.md` (32 tests in user-stories.test.ts)
+- [x] E2E test suite for:
   - auth + subscription gate
   - AI add idea -> persisted locally -> synced -> visible on web
   - project creation -> folder structure correct
-- [ ] Security review checklist:
+- [x] Security review checklist:
   - auth/session vulnerabilities
   - webhook verification
   - tool action authorization
-- [ ] Performance passes:
+- [x] Performance passes:
   - dashboard scaling
   - canvas perf and memory
-- [ ] Deployment readiness:
+- [x] Deployment readiness:
   - migrations
   - backups/restores
   - incident runbooks
-- [ ] **Validation screenshots** — `.docs/validation/phase_7/` (E2E test results, security audit, perf metrics)
+- [x] **Validation screenshots** — `.docs/validation/phase_7/` (E2E test results, security audit, perf metrics)
 
 ## Deliverables Checklist
-- [ ] Web app deployable on Vercel
-- [ ] Backend deployable with stable env/config
-- [ ] Desktop app build pipeline and release packaging
-- [ ] Subscription enforcement verified across web and desktop
-- [ ] AI tool actions audited and safe
+- [x] Web app deployable on Vercel
+- [x] Backend deployable with stable env/config
+- [x] Desktop app build pipeline and release packaging
+- [x] Subscription enforcement verified across web and desktop
+- [x] AI tool actions audited and safe

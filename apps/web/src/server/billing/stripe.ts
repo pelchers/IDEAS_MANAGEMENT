@@ -8,11 +8,30 @@ import Stripe from "stripe";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
-if (!stripeSecretKey && process.env.NODE_ENV === "production") {
-  throw new Error("STRIPE_SECRET_KEY is required in production");
+// Lazy initialization: don't throw at module evaluation during `next build`.
+// The error will surface at runtime when stripe is actually used without a key.
+let _stripe: Stripe | null = null;
+
+function getStripe(): Stripe {
+  if (!_stripe) {
+    if (!stripeSecretKey) {
+      if (process.env.NODE_ENV === "production") {
+        throw new Error("STRIPE_SECRET_KEY is required in production");
+      }
+      // Use placeholder in development / build
+      _stripe = new Stripe("sk_test_placeholder");
+    } else {
+      _stripe = new Stripe(stripeSecretKey);
+    }
+  }
+  return _stripe;
 }
 
-export const stripe = new Stripe(stripeSecretKey ?? "sk_test_placeholder");
+export const stripe = new Proxy({} as Stripe, {
+  get(_target, prop) {
+    return (getStripe() as unknown as Record<string | symbol, unknown>)[prop];
+  },
+});
 
 /**
  * Stripe price IDs from environment.
