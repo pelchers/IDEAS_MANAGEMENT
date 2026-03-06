@@ -11,6 +11,20 @@ declare global {
         projectRoot: string,
         op: Record<string, unknown>
       ) => Promise<{ ok: true; queuePath: string }>;
+
+      auth: {
+        storeTokens: (args: {
+          sessionToken: string;
+          refreshToken: string;
+          apiBaseUrl: string;
+        }) => Promise<{ ok: true }>;
+        validateSession: () => Promise<{
+          valid: boolean;
+          user?: { id: string; email: string; role: string; emailVerified: boolean };
+        }>;
+        logout: (args?: { allDevices?: boolean }) => Promise<{ ok: true }>;
+        hasStoredTokens: () => Promise<{ hasTokens: boolean }>;
+      };
     };
   }
 }

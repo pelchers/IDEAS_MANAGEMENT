@@ -2,6 +2,48 @@ import { prisma } from "../db";
 import { authConfig } from "./config";
 import { newToken, sha256Hex } from "./tokens";
 
+/**
+ * Validate a session token against the DB.
+ * Returns the session row + user if valid, null otherwise.
+ */
+export async function validateSession(sessionToken: string) {
+  const hash = sha256Hex(sessionToken);
+  const session = await prisma.session.findUnique({
+    where: { sessionTokenHash: hash },
+    include: { user: { select: { id: true, email: true, role: true, emailVerifiedAt: true } } }
+  });
+  if (!session) return null;
+  if (session.revokedAt) return null;
+  if (session.expiresAt.getTime() < Date.now()) return null;
+
+  // Touch lastSeenAt (fire-and-forget, do not block)
+  prisma.session
+    .update({ where: { id: session.id }, data: { lastSeenAt: new Date() } })
+    .catch(() => {});
+
+  return session;
+}
+
+/**
+ * Revoke all sessions for a given user (sign out all devices).
+ */
+export async function revokeAllSessionsForUser(userId: string) {
+  await prisma.session.updateMany({
+    where: { userId, revokedAt: null },
+    data: { revokedAt: new Date() }
+  });
+}
+
+/**
+ * Revoke all refresh tokens for a given user (sign out all devices).
+ */
+export async function revokeAllRefreshTokensForUser(userId: string) {
+  await prisma.refreshToken.updateMany({
+    where: { userId, revokedAt: null },
+    data: { revokedAt: new Date() }
+  });
+}
+
 export async function issueSession(userId: string) {
   const sessionToken = newToken(32);
   const refreshToken = newToken(32);

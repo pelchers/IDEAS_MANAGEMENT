@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { CredentialsSchema } from "@/server/auth/credentials";
 import { prisma } from "@/server/db";
-import { hashPassword, verifyPassword } from "@/server/auth/password";
+import { hashPassword } from "@/server/auth/password";
 import { issueSession } from "@/server/auth/session";
 import { setAuthCookies } from "@/server/auth/cookies";
+import { issueEmailVerificationToken } from "@/server/auth/email-verification";
 import { auditLog } from "@/server/audit";
 
 function reqMeta(req: Request) {
@@ -39,9 +40,21 @@ export async function POST(req: Request) {
     select: { id: true, email: true, role: true, createdAt: true }
   });
 
+  // Issue email verification token (stub: would send email in production)
+  const verification = await issueEmailVerificationToken(user.id);
+
   const session = await issueSession(user.id);
 
-  const res = NextResponse.json({ ok: true, user }, { status: 201 });
+  const res = NextResponse.json(
+    {
+      ok: true,
+      user,
+      // In production, verificationToken would NOT be in the response.
+      // It's included here for dev/testing convenience.
+      _dev: { verificationToken: verification.token }
+    },
+    { status: 201 }
+  );
   setAuthCookies(res, { sessionToken: session.sessionToken, refreshToken: session.refreshToken });
 
   const meta = reqMeta(req);
@@ -49,7 +62,8 @@ export async function POST(req: Request) {
     actorUserId: user.id,
     action: "auth.signup",
     ip: meta.ip,
-    userAgent: meta.userAgent
+    userAgent: meta.userAgent,
+    metadata: { emailVerificationIssued: true }
   });
 
   return res;

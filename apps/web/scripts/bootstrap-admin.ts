@@ -1,5 +1,6 @@
 import { prisma } from "../src/server/db";
 import { hashPassword } from "../src/server/auth/password";
+import { auditLog } from "../src/server/audit";
 
 function arg(name: string) {
   const idx = process.argv.indexOf(name);
@@ -23,6 +24,10 @@ async function main() {
     throw new Error("Missing ADMIN_EMAIL or ADMIN_PASSWORD");
   }
 
+  if (password.length < 12) {
+    throw new Error("ADMIN_PASSWORD must be at least 12 characters.");
+  }
+
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
     console.log(`Admin user already exists: ${existing.id}`);
@@ -34,6 +39,7 @@ async function main() {
     data: {
       email,
       role: "ADMIN",
+      emailVerifiedAt: new Date(), // Admin email is pre-verified
       credential: {
         create: {
           passwordHash,
@@ -42,6 +48,12 @@ async function main() {
       }
     },
     select: { id: true, email: true, role: true }
+  });
+
+  await auditLog({
+    actorUserId: user.id,
+    action: "admin.bootstrap",
+    metadata: { email: user.email, role: user.role }
   });
 
   console.log(`Created admin user: ${user.id} (${user.email}) role=${user.role}`);

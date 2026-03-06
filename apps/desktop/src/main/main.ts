@@ -1,6 +1,7 @@
 import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import path from "node:path";
 import fs from "node:fs/promises";
+import { registerAuthIpc } from "./auth";
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -31,6 +32,8 @@ async function ensureMetaDir(projectRoot: string) {
 }
 
 app.whenReady().then(() => {
+  // Register auth IPC handlers for session validation and logout
+  registerAuthIpc();
   ipcMain.handle("selectDirectory", async () => {
     const res = await dialog.showOpenDialog({
       properties: ["openDirectory"],

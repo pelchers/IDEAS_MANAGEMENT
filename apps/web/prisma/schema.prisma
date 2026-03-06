@@ -18,10 +18,12 @@ model User {
   role            UserRole  @default(USER)
   emailVerifiedAt DateTime?
 
-  credential Credential?
-  sessions   Session[]
-  refreshes  RefreshToken[]
-  auditLogs  AuditLog[] @relation("audit_actor")
+  credential          Credential?
+  sessions            Session[]
+  refreshes           RefreshToken[]
+  auditLogs           AuditLog[]              @relation("audit_actor")
+  emailVerifications  EmailVerificationToken[]
+  passwordResets      PasswordResetToken[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -63,6 +65,30 @@ model RefreshToken {
   replacedById  String?  @unique
   replacedBy    RefreshToken? @relation("refresh_rotation", fields: [replacedById], references: [id])
   replaces      RefreshToken? @relation("refresh_rotation")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
