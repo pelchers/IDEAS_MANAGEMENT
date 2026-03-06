@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea Management — Swiss Style</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- CDN Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <!-- ============================== -->
+  <!-- MOBILE HEADER                  -->
+  <!-- ============================== -->
+  <header class="mobile-header" id="mobileHeader">
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    <span class="mobile-title">Idea Management</span>
+  </header>
+
+  <!-- ============================== -->
+  <!-- LEFT RAIL NAVIGATION           -->
+  <!-- ============================== -->
+  <nav class="left-rail" id="leftRail" role="navigation" aria-label="Main navigation">
+    <div class="rail-header">
+      <span class="rail-logo">IM</span>
+      <span class="rail-title">Idea<br>Management</span>
+    </div>
+    <ul class="rail-links">
+      <li><a href="#dashboard" class="rail-link active" data-view="dashboard">Dashboard</a></li>
+      <li><a href="#projects" class="rail-link" data-view="projects">Projects</a></li>
+      <li><a href="#workspace" class="rail-link" data-view="workspace">Workspace</a></li>
+      <li><a href="#kanban" class="rail-link" data-view="kanban">Kanban</a></li>
+      <li><a href="#whiteboard" class="rail-link" data-view="whiteboard">Whiteboard</a></li>
+      <li><a href="#schema" class="rail-link" data-view="schema">Schema</a></li>
+      <li><a href="#directory" class="rail-link" data-view="directory">Directory Tree</a></li>
+      <li><a href="#ideas" class="rail-link" data-view="ideas">Ideas</a></li>
+      <li><a href="#chat" class="rail-link" data-view="chat">AI Chat</a></li>
+      <li><a href="#settings" class="rail-link" data-view="settings">Settings</a></li>
+    </ul>
+    <div class="rail-footer">
+      <button class="grid-toggle" id="gridToggle" aria-label="Toggle grid overlay">Grid</button>
+    </div>
+  </nav>
+
+  <!-- ============================== -->
+  <!-- MOBILE NAV OVERLAY             -->
+  <!-- ============================== -->
+  <div class="nav-overlay" id="navOverlay"></div>
+
+  <!-- ============================== -->
+  <!-- GRID OVERLAY                   -->
+  <!-- ============================== -->
+  <div class="grid-overlay" id="gridOverlay">
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+    <div class="grid-col"></div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- MAIN CONTENT                   -->
+  <!-- ============================== -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ========================== -->
+    <!-- VIEW: DASHBOARD            -->
+    <!-- ========================== -->
+    <section class="view" id="dashboard">
+      <div class="view-header">
+        <h1 class="view-title">Dashboard</h1>
+        <p class="view-subtitle">Overview of your workspace activity and metrics.</p>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-number">24</span>
+          <span class="stat-label">Total Ideas</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">6</span>
+          <span class="stat-label">Active Projects</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">12</span>
+          <span class="stat-label">In Progress</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">87%</span>
+          <span class="stat-label">Completion</span>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="dashboard-chart-card">
+          <h3 class="card-title">Weekly Activity</h3>
+          <canvas id="weeklyChart" width="400" height="200"></canvas>
+        </div>
+        <div class="dashboard-chart-card">
+          <h3 class="card-title">Project Distribution</h3>
+          <canvas id="projectChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+
+      <div class="activity-section">
+        <h3 class="section-heading">Recent Activity</h3>
+        <ul class="activity-list">
+          <li class="activity-item">
+            <span class="activity-time">2m ago</span>
+            <span class="activity-text">Sarah updated <strong>Brand Redesign</strong> project status</span>
+          </li>
+          <li class="activity-item">
+            <span class="activity-time">15m ago</span>
+            <span class="activity-text">New idea added: <strong>Mobile onboarding flow</strong></span>
+          </li>
+          <li class="activity-item">
+            <span class="activity-time">1h ago</span>
+            <span class="activity-text">Schema updated for <strong>User Auth</strong> module</span>
+          </li>
+          <li class="activity-item">
+            <span class="activity-time">2h ago</span>
+            <span class="activity-text">Kanban card moved to <strong>Done</strong> column</span>
+          </li>
+          <li class="activity-item">
+            <span class="activity-time">3h ago</span>
+            <span class="activity-text">AI Chat session completed with <strong>5 suggestions</strong></span>
+          </li>
+          <li class="activity-item">
+            <span class="activity-time">4h ago</span>
+            <span class="activity-text">Directory restructured: <strong>components/</strong> folder</span>
+          </li>
+          <li class="activity-item">
+            <span class="activity-time">5h ago</span>
+            <span class="activity-text">Whiteboard sketch added for <strong>Dashboard v2</strong></span>
+          </li>
+          <li class="activity-item">
+            <span class="activity-time">6h ago</span>
+            <span class="activity-text">Project <strong>API Integration</strong> created</span>
+          </li>
+          <li class="activity-item">
+            <span class="activity-time">1d ago</span>
+            <span class="activity-text">Settings updated: <strong>notification preferences</strong></span>
+          </li>
+          <li class="activity-item">
+            <span class="activity-time">1d ago</span>
+            <span class="activity-text">Workspace layout changed to <strong>split view</strong></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========================== -->
+    <!-- VIEW: PROJECTS             -->
+    <!-- ========================== -->
+    <section class="view" id="projects">
+      <div class="view-header">
+        <h1 class="view-title">Projects</h1>
+        <p class="view-subtitle">Manage and track your active projects.</p>
+      </div>
+
+      <div class="projects-grid">
+        <article class="project-card">
+          <div class="project-card-header">
+            <h3 class="project-name">Brand Redesign</h3>
+            <span class="project-status status-active">Active</span>
+          </div>
+          <p class="project-desc">Complete visual identity overhaul including logo, colors, and typography system.</p>
+          <div class="project-meta">
+            <span class="project-date">Due: Mar 15</span>
+            <span class="project-tasks">8 / 12 tasks</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width: 67%"></div></div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-card-header">
+            <h3 class="project-name">API Integration</h3>
+            <span class="project-status status-active">Active</span>
+          </div>
+          <p class="project-desc">Connect third-party services via RESTful APIs and webhook handlers.</p>
+          <div class="project-meta">
+            <span class="project-date">Due: Apr 02</span>
+            <span class="project-tasks">3 / 9 tasks</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width: 33%"></div></div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-card-header">
+            <h3 class="project-name">Mobile App</h3>
+            <span class="project-status status-planning">Planning</span>
+          </div>
+          <p class="project-desc">Native mobile companion app for iOS and Android platforms.</p>
+          <div class="project-meta">
+            <span class="project-date">Due: May 20</span>
+            <span class="project-tasks">1 / 15 tasks</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width: 7%"></div></div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-card-header">
+            <h3 class="project-name">User Research</h3>
+            <span class="project-status status-active">Active</span>
+          </div>
+          <p class="project-desc">Conduct interviews and usability tests with target demographic users.</p>
+          <div class="project-meta">
+            <span class="project-date">Due: Mar 28</span>
+            <span class="project-tasks">5 / 7 tasks</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width: 71%"></div></div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-card-header">
+            <h3 class="project-name">Data Pipeline</h3>
+            <span class="project-status status-review">Review</span>
+          </div>
+          <p class="project-desc">Build ETL pipeline for analytics data processing and reporting system.</p>
+          <div class="project-meta">
+            <span class="project-date">Due: Mar 10</span>
+            <span class="project-tasks">10 / 11 tasks</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width: 91%"></div></div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-card-header">
+            <h3 class="project-name">Documentation</h3>
+            <span class="project-status status-active">Active</span>
+          </div>
+          <p class="project-desc">Create comprehensive developer docs and user guides for the platform.</p>
+          <div class="project-meta">
+            <span class="project-date">Due: Apr 15</span>
+            <span class="project-tasks">4 / 10 tasks</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width: 40%"></div></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================== -->
+    <!-- VIEW: WORKSPACE            -->
+    <!-- ========================== -->
+    <section class="view" id="workspace">
+      <div class="view-header">
+        <h1 class="view-title">Workspace</h1>
+        <p class="view-subtitle">Your personal working environment.</p>
+      </div>
+
+      <div class="workspace-layout">
+        <div class="workspace-panel workspace-editor">
+          <div class="panel-header">
+            <h3 class="panel-title">Editor</h3>
+            <div class="panel-actions">
+              <button class="btn-swiss btn-small">Save</button>
+              <button class="btn-swiss btn-small btn-outline">Preview</button>
+            </div>
+          </div>
+          <div class="editor-area">
+            <div class="editor-toolbar">
+              <button class="toolbar-btn">B</button>
+              <button class="toolbar-btn">I</button>
+              <button class="toolbar-btn">U</button>
+              <span class="toolbar-divider"></span>
+              <button class="toolbar-btn">H1</button>
+              <button class="toolbar-btn">H2</button>
+              <button class="toolbar-btn">H3</button>
+              <span class="toolbar-divider"></span>
+              <button class="toolbar-btn">UL</button>
+              <button class="toolbar-btn">OL</button>
+              <button class="toolbar-btn">Code</button>
+            </div>
+            <div class="editor-content" contenteditable="true">
+              <h2>Project Overview</h2>
+              <p>This document outlines the key objectives for the Q1 2026 product roadmap. The focus will be on three primary areas: user engagement, performance optimization, and developer experience.</p>
+              <h3>Key Objectives</h3>
+              <ul>
+                <li>Reduce time-to-first-interaction by 40%</li>
+                <li>Implement real-time collaboration features</li>
+                <li>Launch public API v2 with GraphQL support</li>
+              </ul>
+              <p>Each objective has been broken down into measurable milestones with clear ownership assignments.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="workspace-panel workspace-sidebar">
+          <div class="panel-header">
+            <h3 class="panel-title">Quick Notes</h3>
+          </div>
+          <ul class="notes-list">
+            <li class="note-item">
+              <span class="note-text">Review API endpoints with backend team</span>
+              <span class="note-time">Today</span>
+            </li>
+            <li class="note-item">
+              <span class="note-text">Update wireframes for settings page</span>
+              <span class="note-time">Yesterday</span>
+            </li>
+            <li class="note-item">
+              <span class="note-text">Schedule user testing sessions</span>
+              <span class="note-time">Mar 3</span>
+            </li>
+            <li class="note-item">
+              <span class="note-text">Prepare sprint retrospective slides</span>
+              <span class="note-time">Mar 2</span>
+            </li>
+          </ul>
+          <div class="panel-header" style="margin-top: 2rem">
+            <h3 class="panel-title">Bookmarks</h3>
+          </div>
+          <ul class="notes-list">
+            <li class="note-item">
+              <span class="note-text">Design System Components</span>
+            </li>
+            <li class="note-item">
+              <span class="note-text">API Documentation v2</span>
+            </li>
+            <li class="note-item">
+              <span class="note-text">Sprint Board - Q1</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================== -->
+    <!-- VIEW: KANBAN               -->
+    <!-- ========================== -->
+    <section class="view" id="kanban">
+      <div class="view-header">
+        <h1 class="view-title">Kanban</h1>
+        <p class="view-subtitle">Visual task management with drag-and-drop columns.</p>
+      </div>
+
+      <div class="kanban-board">
+        <div class="kanban-column" data-column="backlog">
+          <div class="column-header">
+            <h3 class="column-title">Backlog</h3>
+            <span class="column-count">3</span>
+          </div>
+          <div class="kanban-cards" id="backlogCards">
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-feature">Feature</span>
+              <h4 class="card-title">Dark mode support</h4>
+              <p class="card-desc">Implement system-wide dark mode with theme toggle.</p>
+              <span class="card-assignee">AK</span>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-research">Research</span>
+              <h4 class="card-title">Competitor analysis</h4>
+              <p class="card-desc">Evaluate top 5 competitor platforms for feature gaps.</p>
+              <span class="card-assignee">MB</span>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-design">Design</span>
+              <h4 class="card-title">Icon set refresh</h4>
+              <p class="card-desc">Update icon library to match new brand guidelines.</p>
+              <span class="card-assignee">SC</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column" data-column="todo">
+          <div class="column-header">
+            <h3 class="column-title">To Do</h3>
+            <span class="column-count">3</span>
+          </div>
+          <div class="kanban-cards" id="todoCards">
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-bug">Bug</span>
+              <h4 class="card-title">Fix login redirect loop</h4>
+              <p class="card-desc">Users stuck in redirect after OAuth callback.</p>
+              <span class="card-assignee">JD</span>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-feature">Feature</span>
+              <h4 class="card-title">Export to PDF</h4>
+              <p class="card-desc">Generate formatted PDF reports from project data.</p>
+              <span class="card-assignee">AK</span>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-improvement">Improvement</span>
+              <h4 class="card-title">Optimize image loading</h4>
+              <p class="card-desc">Implement lazy loading and WebP conversion pipeline.</p>
+              <span class="card-assignee">LR</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column" data-column="progress">
+          <div class="column-header">
+            <h3 class="column-title">In Progress</h3>
+            <span class="column-count">3</span>
+          </div>
+          <div class="kanban-cards" id="progressCards">
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-feature">Feature</span>
+              <h4 class="card-title">Real-time notifications</h4>
+              <p class="card-desc">WebSocket-based notification system with desktop alerts.</p>
+              <span class="card-assignee">JD</span>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-design">Design</span>
+              <h4 class="card-title">Dashboard redesign</h4>
+              <p class="card-desc">New layout with customizable widget placement.</p>
+              <span class="card-assignee">SC</span>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-improvement">Improvement</span>
+              <h4 class="card-title">Search performance</h4>
+              <p class="card-desc">Implement Elasticsearch for full-text search across ideas.</p>
+              <span class="card-assignee">MB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column" data-column="done">
+          <div class="column-header">
+            <h3 class="column-title">Done</h3>
+            <span class="column-count">3</span>
+          </div>
+          <div class="kanban-cards" id="doneCards">
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-feature">Feature</span>
+              <h4 class="card-title">User authentication</h4>
+              <p class="card-desc">Clerk-based auth with SSO and MFA support.</p>
+              <span class="card-assignee">JD</span>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-bug">Bug</span>
+              <h4 class="card-title">Memory leak fix</h4>
+              <p class="card-desc">Resolved WebSocket connection cleanup on unmount.</p>
+              <span class="card-assignee">AK</span>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <span class="card-tag tag-design">Design</span>
+              <h4 class="card-title">Onboarding flow</h4>
+              <p class="card-desc">Step-by-step guided onboarding with progress tracking.</p>
+              <span class="card-assignee">SC</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================== -->
+    <!-- VIEW: WHITEBOARD           -->
+    <!-- ========================== -->
+    <section class="view" id="whiteboard">
+      <div class="view-header">
+        <h1 class="view-title">Whiteboard</h1>
+        <p class="view-subtitle">Freeform visual thinking canvas.</p>
+      </div>
+
+      <div class="whiteboard-toolbar">
+        <button class="wb-tool wb-tool-active" data-tool="select">Select</button>
+        <button class="wb-tool" data-tool="rectangle">Rect</button>
+        <button class="wb-tool" data-tool="circle">Circle</button>
+        <button class="wb-tool" data-tool="line">Line</button>
+        <button class="wb-tool" data-tool="text">Text</button>
+        <span class="toolbar-divider"></span>
+        <button class="wb-tool" data-tool="clear">Clear</button>
+      </div>
+      <div class="whiteboard-canvas-wrapper">
+        <canvas id="whiteboardCanvas" width="1200" height="600"></canvas>
+      </div>
+    </section>
+
+    <!-- ========================== -->
+    <!-- VIEW: SCHEMA               -->
+    <!-- ========================== -->
+    <section class="view" id="schema">
+      <div class="view-header">
+        <h1 class="view-title">Schema Planner</h1>
+        <p class="view-subtitle">Database entity relationships and field definitions.</p>
+      </div>
+
+      <div class="schema-layout">
+        <div class="schema-entity">
+          <div class="entity-header">User</div>
+          <ul class="entity-fields">
+            <li class="entity-field"><span class="field-key">PK</span> <span class="field-name">id</span> <span class="field-type">uuid</span></li>
+            <li class="entity-field"><span class="field-name">email</span> <span class="field-type">string</span></li>
+            <li class="entity-field"><span class="field-name">name</span> <span class="field-type">string</span></li>
+            <li class="entity-field"><span class="field-name">avatar_url</span> <span class="field-type">string?</span></li>
+            <li class="entity-field"><span class="field-name">created_at</span> <span class="field-type">datetime</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity">
+          <div class="entity-header">Project</div>
+          <ul class="entity-fields">
+            <li class="entity-field"><span class="field-key">PK</span> <span class="field-name">id</span> <span class="field-type">uuid</span></li>
+            <li class="entity-field"><span class="field-key">FK</span> <span class="field-name">owner_id</span> <span class="field-type">uuid</span></li>
+            <li class="entity-field"><span class="field-name">title</span> <span class="field-type">string</span></li>
+            <li class="entity-field"><span class="field-name">description</span> <span class="field-type">text</span></li>
+            <li class="entity-field"><span class="field-name">status</span> <span class="field-type">enum</span></li>
+            <li class="entity-field"><span class="field-name">due_date</span> <span class="field-type">date?</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity">
+          <div class="entity-header">Idea</div>
+          <ul class="entity-fields">
+            <li class="entity-field"><span class="field-key">PK</span> <span class="field-name">id</span> <span class="field-type">uuid</span></li>
+            <li class="entity-field"><span class="field-key">FK</span> <span class="field-name">project_id</span> <span class="field-type">uuid</span></li>
+            <li class="entity-field"><span class="field-name">title</span> <span class="field-type">string</span></li>
+            <li class="entity-field"><span class="field-name">body</span> <span class="field-type">text</span></li>
+            <li class="entity-field"><span class="field-name">priority</span> <span class="field-type">int</span></li>
+            <li class="entity-field"><span class="field-name">tags</span> <span class="field-type">string[]</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity">
+          <div class="entity-header">Task</div>
+          <ul class="entity-fields">
+            <li class="entity-field"><span class="field-key">PK</span> <span class="field-name">id</span> <span class="field-type">uuid</span></li>
+            <li class="entity-field"><span class="field-key">FK</span> <span class="field-name">project_id</span> <span class="field-type">uuid</span></li>
+            <li class="entity-field"><span class="field-name">title</span> <span class="field-type">string</span></li>
+            <li class="entity-field"><span class="field-name">status</span> <span class="field-type">enum</span></li>
+            <li class="entity-field"><span class="field-name">assignee_id</span> <span class="field-type">uuid?</span></li>
+            <li class="entity-field"><span class="field-name">position</span> <span class="field-type">int</span></li>
+          </ul>
+        </div>
+
+        <div class="schema-entity">
+          <div class="entity-header">ChatMessage</div>
+          <ul class="entity-fields">
+            <li class="entity-field"><span class="field-key">PK</span> <span class="field-name">id</span> <span class="field-type">uuid</span></li>
+            <li class="entity-field"><span class="field-key">FK</span> <span class="field-name">user_id</span> <span class="field-type">uuid</span></li>
+            <li class="entity-field"><span class="field-name">role</span> <span class="field-type">enum</span></li>
+            <li class="entity-field"><span class="field-name">content</span> <span class="field-type">text</span></li>
+            <li class="entity-field"><span class="field-name">created_at</span> <span class="field-type">datetime</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="schema-relationships">
+        <h3 class="section-heading">Relationships</h3>
+        <ul class="relationship-list">
+          <li>User <span class="rel-arrow">1 : N</span> Project</li>
+          <li>Project <span class="rel-arrow">1 : N</span> Idea</li>
+          <li>Project <span class="rel-arrow">1 : N</span> Task</li>
+          <li>User <span class="rel-arrow">1 : N</span> ChatMessage</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========================== -->
+    <!-- VIEW: DIRECTORY TREE       -->
+    <!-- ========================== -->
+    <section class="view" id="directory">
+      <div class="view-header">
+        <h1 class="view-title">Directory Tree</h1>
+        <p class="view-subtitle">Project file structure and navigation.</p>
+      </div>
+
+      <div class="directory-tree">
+        <ul class="tree-root">
+          <li class="tree-node tree-folder open">
+            <span class="tree-toggle" tabindex="0" role="button" aria-expanded="true">src/</span>
+            <ul class="tree-children">
+              <li class="tree-node tree-folder open">
+                <span class="tree-toggle" tabindex="0" role="button" aria-expanded="true">components/</span>
+                <ul class="tree-children">
+                  <li class="tree-node tree-file"><span class="tree-label">Dashboard.tsx</span></li>
+                  <li class="tree-node tree-file"><span class="tree-label">Sidebar.tsx</span></li>
+                  <li class="tree-node tree-file"><span class="tree-label">KanbanBoard.tsx</span></li>
+                  <li class="tree-node tree-file"><span class="tree-label">ProjectCard.tsx</span></li>
+                </ul>
+              </li>
+              <li class="tree-node tree-folder">
+                <span class="tree-toggle" tabindex="0" role="button" aria-expanded="false">hooks/</span>
+                <ul class="tree-children" style="display:none">
+                  <li class="tree-node tree-file"><span class="tree-label">useProjects.ts</span></li>
+                  <li class="tree-node tree-file"><span class="tree-label">useIdeas.ts</span></li>
+                  <li class="tree-node tree-file"><span class="tree-label">useAuth.ts</span></li>
+                </ul>
+              </li>
+              <li class="tree-node tree-folder">
+                <span class="tree-toggle" tabindex="0" role="button" aria-expanded="false">lib/</span>
+                <ul class="tree-children" style="display:none">
+                  <li class="tree-node tree-file"><span class="tree-label">api.ts</span></li>
+                  <li class="tree-node tree-file"><span class="tree-label">utils.ts</span></li>
+                  <li class="tree-node tree-file"><span class="tree-label">constants.ts</span></li>
+                </ul>
+              </li>
+              <li class="tree-node tree-folder">
+                <span class="tree-toggle" tabindex="0" role="button" aria-expanded="false">pages/</span>
+                <ul class="tree-children" style="display:none">
+                  <li class="tree-node tree-file"><span class="tree-label">index.tsx</span></li>
+                  <li class="tree-node tree-file"><span class="tree-label">projects.tsx</span></li>
+                  <li class="tree-node tree-file"><span class="tree-label">settings.tsx</span></li>
+                </ul>
+              </li>
+              <li class="tree-node tree-file"><span class="tree-label">App.tsx</span></li>
+              <li class="tree-node tree-file"><span class="tree-label">main.ts</span></li>
+            </ul>
+          </li>
+          <li class="tree-node tree-folder">
+            <span class="tree-toggle" tabindex="0" role="button" aria-expanded="false">convex/</span>
+            <ul class="tree-children" style="display:none">
+              <li class="tree-node tree-file"><span class="tree-label">schema.ts</span></li>
+              <li class="tree-node tree-file"><span class="tree-label">projects.ts</span></li>
+              <li class="tree-node tree-file"><span class="tree-label">ideas.ts</span></li>
+              <li class="tree-node tree-file"><span class="tree-label">auth.ts</span></li>
+            </ul>
+          </li>
+          <li class="tree-node tree-folder">
+            <span class="tree-toggle" tabindex="0" role="button" aria-expanded="false">public/</span>
+            <ul class="tree-children" style="display:none">
+              <li class="tree-node tree-file"><span class="tree-label">favicon.ico</span></li>
+              <li class="tree-node tree-file"><span class="tree-label">robots.txt</span></li>
+            </ul>
+          </li>
+          <li class="tree-node tree-file"><span class="tree-label">package.json</span></li>
+          <li class="tree-node tree-file"><span class="tree-label">tsconfig.json</span></li>
+          <li class="tree-node tree-file"><span class="tree-label">.env.local</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========================== -->
+    <!-- VIEW: IDEAS                -->
+    <!-- ========================== -->
+    <section class="view" id="ideas">
+      <div class="view-header">
+        <h1 class="view-title">Ideas</h1>
+        <p class="view-subtitle">Capture and organize your creative ideas.</p>
+      </div>
+
+      <div class="ideas-toolbar">
+        <input type="text" class="ideas-search" placeholder="Search ideas...">
+        <button class="btn-swiss">New Idea</button>
+      </div>
+
+      <div class="ideas-list">
+        <article class="idea-card">
+          <div class="idea-header">
+            <h3 class="idea-title">Mobile onboarding flow</h3>
+            <span class="idea-priority priority-high">High</span>
+          </div>
+          <p class="idea-body">Create an interactive tutorial that guides new users through core features within their first 3 minutes.</p>
+          <div class="idea-tags">
+            <span class="idea-tag">UX</span>
+            <span class="idea-tag">Mobile</span>
+            <span class="idea-tag">Onboarding</span>
+          </div>
+        </article>
+
+        <article class="idea-card">
+          <div class="idea-header">
+            <h3 class="idea-title">AI-powered tagging</h3>
+            <span class="idea-priority priority-medium">Medium</span>
+          </div>
+          <p class="idea-body">Use NLP to automatically suggest tags and categories when a new idea is created.</p>
+          <div class="idea-tags">
+            <span class="idea-tag">AI</span>
+            <span class="idea-tag">Automation</span>
+          </div>
+        </article>
+
+        <article class="idea-card">
+          <div class="idea-header">
+            <h3 class="idea-title">Collaboration spaces</h3>
+            <span class="idea-priority priority-high">High</span>
+          </div>
+          <p class="idea-body">Shared virtual rooms where team members can brainstorm in real-time with cursors and reactions.</p>
+          <div class="idea-tags">
+            <span class="idea-tag">Collaboration</span>
+            <span class="idea-tag">Real-time</span>
+          </div>
+        </article>
+
+        <article class="idea-card">
+          <div class="idea-header">
+            <h3 class="idea-title">Voice note capture</h3>
+            <span class="idea-priority priority-low">Low</span>
+          </div>
+          <p class="idea-body">Record voice memos that get transcribed and added as ideas with automatic tagging.</p>
+          <div class="idea-tags">
+            <span class="idea-tag">Mobile</span>
+            <span class="idea-tag">Voice</span>
+          </div>
+        </article>
+
+        <article class="idea-card">
+          <div class="idea-header">
+            <h3 class="idea-title">Template marketplace</h3>
+            <span class="idea-priority priority-medium">Medium</span>
+          </div>
+          <p class="idea-body">Community-driven template library where users can share and download project templates.</p>
+          <div class="idea-tags">
+            <span class="idea-tag">Community</span>
+            <span class="idea-tag">Templates</span>
+          </div>
+        </article>
+
+        <article class="idea-card">
+          <div class="idea-header">
+            <h3 class="idea-title">Analytics dashboard</h3>
+            <span class="idea-priority priority-medium">Medium</span>
+          </div>
+          <p class="idea-body">Visual reports showing idea trends, team productivity, and project health over time.</p>
+          <div class="idea-tags">
+            <span class="idea-tag">Analytics</span>
+            <span class="idea-tag">Dashboard</span>
+          </div>
+        </article>
+
+        <article class="idea-card">
+          <div class="idea-header">
+            <h3 class="idea-title">Keyboard shortcuts</h3>
+            <span class="idea-priority priority-low">Low</span>
+          </div>
+          <p class="idea-body">Power user keyboard shortcut system with customizable key bindings and cheat sheet modal.</p>
+          <div class="idea-tags">
+            <span class="idea-tag">UX</span>
+            <span class="idea-tag">Productivity</span>
+          </div>
+        </article>
+
+        <article class="idea-card">
+          <div class="idea-header">
+            <h3 class="idea-title">Integration hub</h3>
+            <span class="idea-priority priority-high">High</span>
+          </div>
+          <p class="idea-body">Central management panel for all third-party integrations with health monitoring and logs.</p>
+          <div class="idea-tags">
+            <span class="idea-tag">Integration</span>
+            <span class="idea-tag">DevOps</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================== -->
+    <!-- VIEW: AI CHAT              -->
+    <!-- ========================== -->
+    <section class="view" id="chat">
+      <div class="view-header">
+        <h1 class="view-title">AI Chat</h1>
+        <p class="view-subtitle">Intelligent assistant for brainstorming and analysis.</p>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-message chat-user">
+            <div class="message-header">
+              <span class="message-author">You</span>
+              <span class="message-time">10:23 AM</span>
+            </div>
+            <p class="message-text">What are the best practices for implementing a kanban board in a web app?</p>
+          </div>
+          <div class="chat-message chat-ai">
+            <div class="message-header">
+              <span class="message-author">AI Assistant</span>
+              <span class="message-time">10:23 AM</span>
+            </div>
+            <p class="message-text">Here are the key best practices for kanban implementation: Use virtual scrolling for large card sets, implement optimistic UI updates for drag operations, and ensure column WIP limits are configurable per team.</p>
+          </div>
+          <div class="chat-message chat-user">
+            <div class="message-header">
+              <span class="message-author">You</span>
+              <span class="message-time">10:25 AM</span>
+            </div>
+            <p class="message-text">How should I handle real-time sync when multiple users move cards simultaneously?</p>
+          </div>
+          <div class="chat-message chat-ai">
+            <div class="message-header">
+              <span class="message-author">AI Assistant</span>
+              <span class="message-time">10:25 AM</span>
+            </div>
+            <p class="message-text">For real-time kanban sync, use operational transforms or CRDTs. Convex provides built-in real-time subscriptions that handle conflict resolution. Implement position-based ordering with fractional indices to avoid reindexing entire columns.</p>
+          </div>
+          <div class="chat-message chat-user">
+            <div class="message-header">
+              <span class="message-author">You</span>
+              <span class="message-time">10:28 AM</span>
+            </div>
+            <p class="message-text">Can you suggest a data model for the card positions?</p>
+          </div>
+          <div class="chat-message chat-ai">
+            <div class="message-header">
+              <span class="message-author">AI Assistant</span>
+              <span class="message-time">10:28 AM</span>
+            </div>
+            <p class="message-text">Use a lexicographic ordering system: assign each card a string position like "a0", "a1", etc. When inserting between two cards, compute the midpoint string. This avoids updating all card positions on every move and scales well with concurrent edits.</p>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" class="chat-input" placeholder="Ask the AI assistant..." id="chatInput">
+          <button class="btn-swiss chat-send" id="chatSend">Send</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================== -->
+    <!-- VIEW: SETTINGS             -->
+    <!-- ========================== -->
+    <section class="view" id="settings">
+      <div class="view-header">
+        <h1 class="view-title">Settings</h1>
+        <p class="view-subtitle">Configure your workspace preferences.</p>
+      </div>
+
+      <div class="settings-layout">
+        <div class="settings-section">
+          <h3 class="settings-group-title">Profile</h3>
+          <div class="setting-row">
+            <label class="setting-label" for="settingName">Display Name</label>
+            <input type="text" class="setting-input" id="settingName" value="Alex Kerner">
+          </div>
+          <div class="setting-row">
+            <label class="setting-label" for="settingEmail">Email</label>
+            <input type="email" class="setting-input" id="settingEmail" value="alex@example.com">
+          </div>
+          <div class="setting-row">
+            <label class="setting-label" for="settingRole">Role</label>
+            <select class="setting-input" id="settingRole">
+              <option>Admin</option>
+              <option>Editor</option>
+              <option selected>Member</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3 class="settings-group-title">Appearance</h3>
+          <div class="setting-row">
+            <label class="setting-label">Theme</label>
+            <div class="toggle-group">
+              <button class="toggle-btn toggle-active">Light</button>
+              <button class="toggle-btn">Dark</button>
+              <button class="toggle-btn">System</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <label class="setting-label">Compact Mode</label>
+            <label class="switch">
+              <input type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <label class="setting-label">Show Grid Overlay</label>
+            <label class="switch">
+              <input type="checkbox" id="settingsGridToggle">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3 class="settings-group-title">Notifications</h3>
+          <div class="setting-row">
+            <label class="setting-label">Email Notifications</label>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <label class="setting-label">Desktop Alerts</label>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <label class="setting-label">Weekly Digest</label>
+            <label class="switch">
+              <input type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="settings-actions">
+          <button class="btn-swiss">Save Changes</button>
+          <button class="btn-swiss btn-outline">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

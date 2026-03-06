@@ -92,16 +92,57 @@ Every pass produces a single showcase page with these regions:
 - `README.md` - Concept overview, library usage, technique description
 - `validation/handoff.json` - Domain/style/library metadata
 
-## Playwright Visual Validation (Required)
+## Mandatory Workflow: Plan → Generate → Validate → Fix Loop
 
-After generating all files, the orchestrator runs the Playwright validation script:
+**The subagent itself (NOT the orchestrator) owns the full validation lifecycle. A pass is not complete until the subagent has validated and visually reviewed its own output.**
+
+### Phase 1: Plan
+- Review all inputs (domain, style, palette, brief, library directive, anti-repeat)
+- Read the library-catalog.json for correct CDN URLs
+- Plan design approach
+
+### Phase 2: Pre-validate CDN URLs
+Before writing HTML, verify every CDN URL resolves:
+```bash
+curl -s -o /dev/null -w "%{http_code}" "<CDN_URL>"
+```
+- Non-200 → find alternative URL/version from catalog or CDN provider
+- Check `note` fields in library-catalog.json for version-specific issues (e.g., UMD vs ESM)
+
+### Phase 3: Generate
+- Write all files with verified CDN URLs only
+
+### Phase 4: Validate (Playwright)
+The **subagent** runs the Playwright validation script (not the orchestrator):
 ```bash
 node .claude/skills/visual-creative-subagent/scripts/validate-visuals-playwright.mjs --pass-dir <outputDir>
 ```
 
+### Phase 5: Review Screenshots
+The **subagent** reads the generated PNG screenshots and visually assesses them. Failure conditions:
+- Blank/black canvas (library load failure or JS error)
+- Missing primary content (visualization/animation/graphic not visible)
+- Text unreadable (poor contrast, wrong font, overlap)
+- Layout broken (overflow, misalignment)
+- Controls missing
+- Mobile broken
+
+### Phase 6: Fix and Re-validate (Loop, max 3 cycles)
+If failures detected → fix root cause → re-run Phase 4 → re-review Phase 5.
+After 3 cycles, document remaining issues in `validation/handoff.json` under `unresolvedIssues`.
+
+### Phase 7: Complete
+Write final `validation/handoff.json` with:
+- `validationPassed`: boolean
+- `fixCycles`: number of fix iterations performed
+- `cdnUrlsVerified`: true
+- `screenshotsReviewed`: true
+
 ### Required Screenshots Per Pass
 - `validation/desktop/showcase.png` — Full-page screenshot at 1536x960
+- `validation/desktop/showcase-viewport.png` — Viewport-only screenshot
 - `validation/mobile/showcase.png` — Full-page screenshot at 390x844 (2x scale)
+- `validation/mobile/showcase-viewport.png` — Viewport-only screenshot
 - `validation/report.playwright.json` — Structured report
 
-A pass is NOT considered complete until screenshots exist on disk.
+**Completion gate:** A pass is NOT complete until screenshots exist on disk AND the subagent has visually reviewed them AND no failure conditions remain.

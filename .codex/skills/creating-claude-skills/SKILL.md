@@ -69,9 +69,9 @@ skill-name/
 
 | File | Required | Purpose | Size Limit |
 |------|----------|---------|------------|
-| **SKILL.md** | ✅ Yes | Main instructions | < 500 lines |
-| **scripts/** | ⬜ Optional | Executable code | None |
-| **resources/** | ⬜ Optional | Reference docs | None |
+| **SKILL.md** | Yes | Main instructions | < 500 lines |
+| **scripts/** | Optional | Executable code | None |
+| **resources/** | Optional | Reference docs | None |
 
 ---
 
@@ -97,12 +97,12 @@ description: What the skill does and when to use it (max 1024 chars)
 
 ### Description Format
 
-❌ **Bad** (vague):
+**Bad** (vague):
 ```yaml
 description: Helps with Stripe payments
 ```
 
-✅ **Good** (specific + when to use):
+**Good** (specific + when to use):
 ```yaml
 description: Processes Stripe payments including subscriptions, webhooks, and checkout flows. Use when implementing payment processing, handling Stripe webhooks, or managing customer billing.
 ```
@@ -115,7 +115,7 @@ description: Processes Stripe payments including subscriptions, webhooks, and ch
 
 Always use **gerund form** (verb + -ing):
 
-| ✅ Correct | ❌ Incorrect |
+| Correct | Incorrect |
 |-----------|-------------|
 | `processing-pdfs` | `pdf-processor` |
 | `analyzing-data` | `data-analyzer` |
@@ -136,12 +136,12 @@ Always use **gerund form** (verb + -ing):
 
 ### Voice and Tone
 
-**✅ Use third person** (skill perspective):
+**Use third person** (skill perspective):
 ```markdown
 Processes Excel files with formulas and formatting.
 ```
 
-**❌ Avoid first/second person**:
+**Avoid first/second person**:
 ```markdown
 I can help you process Excel files.
 ```
@@ -175,13 +175,13 @@ For advanced usage, see resources/advanced-patterns.md
 
 ### When to Use Scripts
 
-✅ **Good use cases:**
+**Good use cases:**
 - Deterministic operations (validation, formatting)
 - Data processing utilities
 - Code generation templates
 - Test utilities
 
-❌ **Not for:**
+**Not for:**
 - Just code examples (put in SKILL.md)
 - Non-executable documentation (put in resources/)
 
@@ -208,7 +208,7 @@ function validateSchema(filePath: string): boolean {
     return false;
   }
 
-  console.log('✓ Schema valid');
+  console.log('Schema valid');
   return true;
 }
 
@@ -237,7 +237,7 @@ export { validateSchema };
 
 ### When to Use Resources
 
-✅ **Good use cases:**
+**Good use cases:**
 - Complete API references
 - Advanced patterns and techniques
 - Large data sets or templates
@@ -259,7 +259,7 @@ resources/
 **Best practices:**
 - Add table of contents for files > 100 lines
 - Link from SKILL.md: `See resources/api-reference.md`
-- Keep one level deep (SKILL.md → resources/doc.md)
+- Keep one level deep (SKILL.md -> resources/doc.md)
 - Use descriptive filenames
 
 ---
@@ -397,32 +397,32 @@ Detailed documentation...
 ## Best Practices Summary
 
 ### Metadata
-- ✅ Use gerund naming (`processing-data` not `data-processor`)
-- ✅ Description includes what + when (max 1024 chars)
-- ✅ No extra YAML fields
+- Use gerund naming (`processing-data` not `data-processor`)
+- Description includes what + when (max 1024 chars)
+- No extra YAML fields
 
 ### Content
-- ✅ SKILL.md under 500 lines
-- ✅ Third person voice
-- ✅ Concise, actionable instructions
-- ✅ Link to resources for details
+- SKILL.md under 500 lines
+- Third person voice
+- Concise, actionable instructions
+- Link to resources for details
 
 ### Structure
-- ✅ Scripts are executable utilities
-- ✅ Resources are reference docs
-- ✅ One level deep (SKILL.md → resource)
-- ✅ Forward slashes in paths
+- Scripts are executable utilities
+- Resources are reference docs
+- One level deep (SKILL.md -> resource)
+- Forward slashes in paths
 
 ### Progressive Disclosure
-- ✅ Metadata always loaded (~100 tokens)
-- ✅ SKILL.md loaded when relevant (<5k tokens)
-- ✅ Resources loaded as needed (unlimited)
+- Metadata always loaded (~100 tokens)
+- SKILL.md loaded when relevant (<5k tokens)
+- Resources loaded as needed (unlimited)
 
 ---
 
 ## Common Mistakes
 
-| ❌ Mistake | ✅ Correct |
+| Mistake | Correct |
 |-----------|----------|
 | Name: `pdf-processor` | Name: `processing-pdfs` |
 | "I can help you..." | "Processes files..." |
@@ -436,9 +436,9 @@ Detailed documentation...
 ## Advanced Topics
 
 For detailed information on:
-- **Progressive disclosure architecture** → `resources/progressive-disclosure.md`
-- **Real-world skill examples** → `resources/skill-examples.md`
-- **Using skills with Claude API** → `resources/api-usage.md`
+- **Progressive disclosure architecture** -> `resources/progressive-disclosure.md`
+- **Real-world skill examples** -> `resources/skill-examples.md`
+- **Using skills with Claude API** -> `resources/api-usage.md`
 
 ## References
 
@@ -446,4 +446,3 @@ For detailed information on:
 - **Best Practices**: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
 - **GitHub Examples**: https://github.com/anthropics/skills
 - **Skill Template**: `scripts/skill-template.md`
-

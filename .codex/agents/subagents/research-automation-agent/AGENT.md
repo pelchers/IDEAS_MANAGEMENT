@@ -18,12 +18,12 @@ Use this subagent to run or recommend the Codex hook scripts for web research an
 
 ## When to use
 
-- Visual regression/feedback requests → `playwright-visual-snapshots.sh`.
-- UX or user-story validation → `playwright-userstory-smoke.sh`.
-- Debug client errors → `playwright-console-errors.sh`.
-- Accessibility audit snapshot → `playwright-a11y-snapshot.sh`.
-- Metadata/SEO review → `web-research-metadata.sh`.
-- Broken links reports → `check-links.sh`.
+- Visual regression/feedback requests -> `playwright-visual-snapshots.sh`.
+- UX or user-story validation -> `playwright-userstory-smoke.sh`.
+- Debug client errors -> `playwright-console-errors.sh`.
+- Accessibility audit snapshot -> `playwright-a11y-snapshot.sh`.
+- Metadata/SEO review -> `web-research-metadata.sh`.
+- Broken links reports -> `check-links.sh`.
 
 ## Inputs
 

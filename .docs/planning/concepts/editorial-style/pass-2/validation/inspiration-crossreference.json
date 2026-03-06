@@ -1,0 +1,46 @@
+{
+  "references": [
+    {
+      "url": "https://www.nytimes.com",
+      "name": "The New York Times",
+      "observedPatterns": [
+        "Strong serif typography hierarchy on dark sections",
+        "Kicker + headline + standfirst pattern for article headers",
+        "Thin decorative rules between content sections"
+      ],
+      "adaptedElements": [
+        "Editorial kicker/headline/standfirst hero layout for each view",
+        "Serif headings with sans-serif UI elements",
+        "Thin gradient accent rules as section dividers"
+      ]
+    },
+    {
+      "url": "https://www.bloomberg.com",
+      "name": "Bloomberg",
+      "observedPatterns": [
+        "Dark mode with high-contrast data visualization",
+        "Card-based content layout with subtle borders",
+        "Clean sans-serif UI paired with editorial content"
+      ],
+      "adaptedElements": [
+        "Dark surface cards with subtle border hover states",
+        "Steel blue accent color for data charts and interactive elements",
+        "Outfit sans-serif for UI controls against Libre Baskerville editorial content"
+      ]
+    },
+    {
+      "url": "https://www.pentagram.com",
+      "name": "Pentagram",
+      "observedPatterns": [
+        "Full-bleed immersive hero sections",
+        "Generous whitespace with editorial pacing",
+        "Cinematic transitions between project pages"
+      ],
+      "adaptedElements": [
+        "Full-bleed hero sections with gradient overlays on each view",
+        "Generous spacing with editorial rhythm between content blocks",
+        "Anime.js choreographed stagger animations on view transitions"
+      ]
+    }
+  ]
+}

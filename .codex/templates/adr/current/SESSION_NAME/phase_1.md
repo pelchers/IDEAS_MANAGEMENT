@@ -7,13 +7,13 @@ Owner: AGENT
 Status: planned | in_progress | blocked | complete
 
 ## Objectives
-- 
+-
 
 ## Task checklist
-- [ ] 
+- [ ]
 
 ## Deliverables
-- 
+-
 
 ## Validation checklist
 - [ ] All tasks complete
@@ -25,7 +25,7 @@ Status: planned | in_progress | blocked | complete
 - [ ] Changes committed and pushed
 
 ## Risks / blockers
-- 
+-
 
 ## Notes
-- 
+-

@@ -11,13 +11,13 @@ Owner: AGENT
 ```
 
 ## Overview
-- 
+-
 
 ## Technical breakdown
-- 
+-
 
 ## Validations completed
-- 
+-
 
 ## Notes
-- 
+-

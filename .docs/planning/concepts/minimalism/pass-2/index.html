@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea Management Platform — Minimalism Pass 2</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+  <!-- Anime.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ============================== -->
+  <!-- TOP BAR NAVIGATION             -->
+  <!-- ============================== -->
+  <header class="top-bar" id="top-bar">
+    <div class="top-bar__inner">
+      <div class="top-bar__brand">
+        <svg class="top-bar__logo" width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect width="28" height="28" rx="6" fill="var(--color-accent)"/>
+          <path d="M8 14h12M14 8v12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <span class="top-bar__title">IdeaHub</span>
+      </div>
+      <nav class="top-bar__nav" id="main-nav" aria-label="Main navigation">
+        <a href="#dashboard" class="nav-link active" data-view="dashboard">Dashboard</a>
+        <a href="#projects" class="nav-link" data-view="projects">Projects</a>
+        <a href="#workspace" class="nav-link" data-view="workspace">Workspace</a>
+        <a href="#kanban" class="nav-link" data-view="kanban">Kanban</a>
+        <a href="#whiteboard" class="nav-link" data-view="whiteboard">Whiteboard</a>
+        <a href="#schema" class="nav-link" data-view="schema">Schema</a>
+        <a href="#directory-tree" class="nav-link" data-view="directory-tree">Directory</a>
+        <a href="#ideas" class="nav-link" data-view="ideas">Ideas</a>
+        <a href="#ai-chat" class="nav-link" data-view="ai-chat">AI Chat</a>
+        <a href="#settings" class="nav-link" data-view="settings">Settings</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile slide-out nav overlay -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+    <a href="#dashboard" class="mobile-nav__link active" data-view="dashboard">Dashboard</a>
+    <a href="#projects" class="mobile-nav__link" data-view="projects">Projects</a>
+    <a href="#workspace" class="mobile-nav__link" data-view="workspace">Workspace</a>
+    <a href="#kanban" class="mobile-nav__link" data-view="kanban">Kanban</a>
+    <a href="#whiteboard" class="mobile-nav__link" data-view="whiteboard">Whiteboard</a>
+    <a href="#schema" class="mobile-nav__link" data-view="schema">Schema</a>
+    <a href="#directory-tree" class="mobile-nav__link" data-view="directory-tree">Directory</a>
+    <a href="#ideas" class="mobile-nav__link" data-view="ideas">Ideas</a>
+    <a href="#ai-chat" class="mobile-nav__link" data-view="ai-chat">AI Chat</a>
+    <a href="#settings" class="mobile-nav__link" data-view="settings">Settings</a>
+  </nav>
+
+  <!-- ============================== -->
+  <!-- MAIN CONTENT                   -->
+  <!-- ============================== -->
+  <main class="main-content" id="main-content">
+
+    <!-- ===== DASHBOARD VIEW ===== -->
+    <section class="view" id="dashboard" aria-label="Dashboard">
+      <div class="view__container">
+        <h1 class="view__heading">Dashboard</h1>
+        <p class="view__subheading">Overview of your workspace activity and project health.</p>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <span class="stat-card__value">24</span>
+            <span class="stat-card__label">Active Projects</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card__value">142</span>
+            <span class="stat-card__label">Total Ideas</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card__value">87%</span>
+            <span class="stat-card__label">Completion Rate</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card__value">18</span>
+            <span class="stat-card__label">Team Members</span>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Activity Timeline -->
+        <div class="dashboard-grid">
+          <div class="card">
+            <h2 class="card__title">Recent Activity</h2>
+            <ul class="activity-list">
+              <li class="activity-item"><span class="activity-dot activity-dot--blue"></span><span class="activity-text">Sarah updated <strong>Brand Redesign</strong> project</span><time class="activity-time">2m ago</time></li>
+              <li class="activity-item"><span class="activity-dot activity-dot--green"></span><span class="activity-text">New idea added: <strong>Mobile onboarding flow</strong></span><time class="activity-time">15m ago</time></li>
+              <li class="activity-item"><span class="activity-dot activity-dot--blue"></span><span class="activity-text">James moved task to <strong>Done</strong></span><time class="activity-time">32m ago</time></li>
+              <li class="activity-item"><span class="activity-dot activity-dot--amber"></span><span class="activity-text">Schema updated for <strong>User Entity</strong></span><time class="activity-time">1h ago</time></li>
+              <li class="activity-item"><span class="activity-dot activity-dot--green"></span><span class="activity-text">AI chat session completed with <strong>12 insights</strong></span><time class="activity-time">2h ago</time></li>
+              <li class="activity-item"><span class="activity-dot activity-dot--blue"></span><span class="activity-text">Whiteboard snapshot saved for <strong>Sprint 4</strong></span><time class="activity-time">3h ago</time></li>
+              <li class="activity-item"><span class="activity-dot activity-dot--amber"></span><span class="activity-text">Maria archived <strong>Legacy API</strong> project</span><time class="activity-time">4h ago</time></li>
+              <li class="activity-item"><span class="activity-dot activity-dot--green"></span><span class="activity-text">New team member <strong>Alex Chen</strong> joined</span><time class="activity-time">5h ago</time></li>
+              <li class="activity-item"><span class="activity-dot activity-dot--blue"></span><span class="activity-text">Directory structure reorganized for <strong>v2.0</strong></span><time class="activity-time">6h ago</time></li>
+              <li class="activity-item"><span class="activity-dot activity-dot--amber"></span><span class="activity-text">Settings updated: <strong>notification preferences</strong></span><time class="activity-time">1d ago</time></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h2 class="card__title">Project Health</h2>
+            <div class="health-list">
+              <div class="health-item">
+                <span class="health-name">Brand Redesign</span>
+                <div class="health-bar"><div class="health-bar__fill" style="width:85%"></div></div>
+                <span class="health-pct">85%</span>
+              </div>
+              <div class="health-item">
+                <span class="health-name">Mobile App v2</span>
+                <div class="health-bar"><div class="health-bar__fill" style="width:62%"></div></div>
+                <span class="health-pct">62%</span>
+              </div>
+              <div class="health-item">
+                <span class="health-name">API Refactor</span>
+                <div class="health-bar"><div class="health-bar__fill" style="width:40%"></div></div>
+                <span class="health-pct">40%</span>
+              </div>
+              <div class="health-item">
+                <span class="health-name">Analytics Dashboard</span>
+                <div class="health-bar"><div class="health-bar__fill" style="width:93%"></div></div>
+                <span class="health-pct">93%</span>
+              </div>
+              <div class="health-item">
+                <span class="health-name">User Onboarding</span>
+                <div class="health-bar"><div class="health-bar__fill" style="width:28%"></div></div>
+                <span class="health-pct">28%</span>
+              </div>
+              <div class="health-item">
+                <span class="health-name">Data Pipeline</span>
+                <div class="health-bar"><div class="health-bar__fill" style="width:71%"></div></div>
+                <span class="health-pct">71%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECTS VIEW ===== -->
+    <section class="view" id="projects" aria-label="Projects" style="display:none">
+      <div class="view__container">
+        <h1 class="view__heading">Projects</h1>
+        <p class="view__subheading">Manage and track all your team projects.</p>
+
+        <!-- Filters -->
+        <div class="filter-bar">
+          <button class="filter-btn active">All</button>
+          <button class="filter-btn">Active</button>
+          <button class="filter-btn">Completed</button>
+          <button class="filter-btn">Archived</button>
+        </div>
+
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--active">Active</span>
+              <time class="project-card__date">Mar 1, 2026</time>
+            </div>
+            <h3 class="project-card__name">Brand Redesign</h3>
+            <p class="project-card__desc">Complete overhaul of visual identity including logo, typography system, and color palette across all touchpoints.</p>
+            <div class="project-card__footer">
+              <span class="project-card__tasks">12 tasks</span>
+              <span class="project-card__progress">85%</span>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--active">Active</span>
+              <time class="project-card__date">Feb 14, 2026</time>
+            </div>
+            <h3 class="project-card__name">Mobile App v2</h3>
+            <p class="project-card__desc">Next generation mobile application with offline-first architecture and redesigned navigation patterns.</p>
+            <div class="project-card__footer">
+              <span class="project-card__tasks">28 tasks</span>
+              <span class="project-card__progress">62%</span>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--review">Review</span>
+              <time class="project-card__date">Jan 20, 2026</time>
+            </div>
+            <h3 class="project-card__name">API Refactor</h3>
+            <p class="project-card__desc">Migration from REST to GraphQL with improved type safety, caching layer, and real-time subscriptions.</p>
+            <div class="project-card__footer">
+              <span class="project-card__tasks">34 tasks</span>
+              <span class="project-card__progress">40%</span>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--active">Active</span>
+              <time class="project-card__date">Feb 28, 2026</time>
+            </div>
+            <h3 class="project-card__name">Analytics Dashboard</h3>
+            <p class="project-card__desc">Real-time analytics with customizable widgets, exportable reports, and team performance metrics.</p>
+            <div class="project-card__footer">
+              <span class="project-card__tasks">9 tasks</span>
+              <span class="project-card__progress">93%</span>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--planning">Planning</span>
+              <time class="project-card__date">Mar 3, 2026</time>
+            </div>
+            <h3 class="project-card__name">User Onboarding</h3>
+            <p class="project-card__desc">Streamlined onboarding flow with progressive profiling, contextual tooltips, and guided product tours.</p>
+            <div class="project-card__footer">
+              <span class="project-card__tasks">16 tasks</span>
+              <span class="project-card__progress">28%</span>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="project-card__header">
+              <span class="project-card__status project-card__status--active">Active</span>
+              <time class="project-card__date">Feb 5, 2026</time>
+            </div>
+            <h3 class="project-card__name">Data Pipeline</h3>
+            <p class="project-card__desc">Automated ETL pipeline with monitoring, alerting, and self-healing capabilities for data warehouse.</p>
+            <div class="project-card__footer">
+              <span class="project-card__tasks">21 tasks</span>
+              <span class="project-card__progress">71%</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WORKSPACE VIEW ===== -->
+    <section class="view" id="workspace" aria-label="Workspace" style="display:none">
+      <div class="view__container">
+        <h1 class="view__heading">Workspace</h1>
+        <p class="view__subheading">File explorer and editor for your project assets.</p>
+
+        <div class="workspace-split">
+          <!-- File Tree -->
+          <aside class="workspace-sidebar">
+            <h2 class="workspace-sidebar__title">Files</h2>
+            <ul class="file-tree">
+              <li class="file-tree__folder open">
+                <span class="file-tree__toggle">src/</span>
+                <ul>
+                  <li class="file-tree__folder open">
+                    <span class="file-tree__toggle">components/</span>
+                    <ul>
+                      <li class="file-tree__file">Header.tsx</li>
+                      <li class="file-tree__file">Sidebar.tsx</li>
+                      <li class="file-tree__file">Card.tsx</li>
+                      <li class="file-tree__file">Modal.tsx</li>
+                    </ul>
+                  </li>
+                  <li class="file-tree__folder">
+                    <span class="file-tree__toggle">hooks/</span>
+                    <ul>
+                      <li class="file-tree__file">useAuth.ts</li>
+                      <li class="file-tree__file">useQuery.ts</li>
+                    </ul>
+                  </li>
+                  <li class="file-tree__file">App.tsx</li>
+                  <li class="file-tree__file">index.ts</li>
+                </ul>
+              </li>
+              <li class="file-tree__folder">
+                <span class="file-tree__toggle">public/</span>
+                <ul>
+                  <li class="file-tree__file">favicon.ico</li>
+                  <li class="file-tree__file">manifest.json</li>
+                </ul>
+              </li>
+              <li class="file-tree__file">package.json</li>
+              <li class="file-tree__file">tsconfig.json</li>
+            </ul>
+          </aside>
+
+          <!-- Editor Pane -->
+          <div class="workspace-editor">
+            <div class="workspace-editor__tab-bar">
+              <span class="workspace-editor__tab active">Header.tsx</span>
+              <span class="workspace-editor__tab">Card.tsx</span>
+            </div>
+            <div class="workspace-editor__content">
+              <pre class="code-block"><code><span class="code-keyword">import</span> React <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+<span class="code-keyword">import</span> { Link } <span class="code-keyword">from</span> <span class="code-string">'react-router-dom'</span>;
+
+<span class="code-keyword">interface</span> <span class="code-type">HeaderProps</span> {
+  title: <span class="code-type">string</span>;
+  user: <span class="code-type">User</span>;
+}
+
+<span class="code-keyword">export const</span> <span class="code-fn">Header</span> = ({ title, user }: <span class="code-type">HeaderProps</span>) =&gt; {
+  <span class="code-keyword">return</span> (
+    &lt;<span class="code-tag">header</span> className=<span class="code-string">"app-header"</span>&gt;
+      &lt;<span class="code-tag">h1</span>&gt;{title}&lt;/<span class="code-tag">h1</span>&gt;
+      &lt;<span class="code-tag">nav</span>&gt;
+        &lt;<span class="code-tag">Link</span> to=<span class="code-string">"/dashboard"</span>&gt;Home&lt;/<span class="code-tag">Link</span>&gt;
+      &lt;/<span class="code-tag">nav</span>&gt;
+    &lt;/<span class="code-tag">header</span>&gt;
+  );
+};</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KANBAN VIEW ===== -->
+    <section class="view" id="kanban" aria-label="Kanban" style="display:none">
+      <div class="view__container">
+        <h1 class="view__heading">Kanban Board</h1>
+        <p class="view__subheading">Drag cards between columns to update task status.</p>
+
+        <div class="kanban-board">
+          <!-- Backlog -->
+          <div class="kanban-column">
+            <div class="kanban-column__header">
+              <h3 class="kanban-column__title">Backlog</h3>
+              <span class="kanban-column__count">3</span>
+            </div>
+            <div class="kanban-column__cards">
+              <div class="kanban-card">
+                <span class="kanban-card__tag kanban-card__tag--feature">Feature</span>
+                <h4 class="kanban-card__title">Dark mode support</h4>
+                <p class="kanban-card__desc">Add system-wide dark theme toggle with persisted preference.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">SC</span>
+                  <span class="kanban-card__priority kanban-card__priority--low">Low</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="kanban-card__tag kanban-card__tag--bug">Bug</span>
+                <h4 class="kanban-card__title">Fix date picker overflow</h4>
+                <p class="kanban-card__desc">Calendar popup extends beyond viewport on small screens.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">JM</span>
+                  <span class="kanban-card__priority kanban-card__priority--high">High</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="kanban-card__tag kanban-card__tag--task">Task</span>
+                <h4 class="kanban-card__title">Update API documentation</h4>
+                <p class="kanban-card__desc">Document new endpoints and deprecate old v1 routes.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">AL</span>
+                  <span class="kanban-card__priority kanban-card__priority--medium">Med</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- To Do -->
+          <div class="kanban-column">
+            <div class="kanban-column__header">
+              <h3 class="kanban-column__title">To Do</h3>
+              <span class="kanban-column__count">3</span>
+            </div>
+            <div class="kanban-column__cards">
+              <div class="kanban-card">
+                <span class="kanban-card__tag kanban-card__tag--feature">Feature</span>
+                <h4 class="kanban-card__title">Export to PDF</h4>
+                <p class="kanban-card__desc">Generate PDF reports from project data and analytics.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">MR</span>
+                  <span class="kanban-card__priority kanban-card__priority--medium">Med</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="kanban-card__tag kanban-card__tag--task">Task</span>
+                <h4 class="kanban-card__title">Set up CI/CD pipeline</h4>
+                <p class="kanban-card__desc">Configure GitHub Actions for automated testing and deployment.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">AC</span>
+                  <span class="kanban-card__priority kanban-card__priority--high">High</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="kanban-card__tag kanban-card__tag--bug">Bug</span>
+                <h4 class="kanban-card__title">Memory leak in chat</h4>
+                <p class="kanban-card__desc">WebSocket connections not properly cleaned up on unmount.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">JM</span>
+                  <span class="kanban-card__priority kanban-card__priority--high">High</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- In Progress -->
+          <div class="kanban-column">
+            <div class="kanban-column__header">
+              <h3 class="kanban-column__title">In Progress</h3>
+              <span class="kanban-column__count">3</span>
+            </div>
+            <div class="kanban-column__cards">
+              <div class="kanban-card">
+                <span class="kanban-card__tag kanban-card__tag--feature">Feature</span>
+                <h4 class="kanban-card__title">Real-time collaboration</h4>
+                <p class="kanban-card__desc">Implement CRDT-based shared editing for whiteboard.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">SC</span>
+                  <span class="kanban-card__priority kanban-card__priority--high">High</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="kanban-card__tag kanban-card__tag--task">Task</span>
+                <h4 class="kanban-card__title">Migrate to TypeScript 5</h4>
+                <p class="kanban-card__desc">Update project config and fix type errors from strict mode.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">AL</span>
+                  <span class="kanban-card__priority kanban-card__priority--medium">Med</span>
+                </div>
+              </div>
+              <div class="kanban-card">
+                <span class="kanban-card__tag kanban-card__tag--feature">Feature</span>
+                <h4 class="kanban-card__title">Search with filters</h4>
+                <p class="kanban-card__desc">Full-text search across projects, ideas, and chat history.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">MR</span>
+                  <span class="kanban-card__priority kanban-card__priority--medium">Med</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Done -->
+          <div class="kanban-column">
+            <div class="kanban-column__header">
+              <h3 class="kanban-column__title">Done</h3>
+              <span class="kanban-column__count">3</span>
+            </div>
+            <div class="kanban-column__cards">
+              <div class="kanban-card kanban-card--done">
+                <span class="kanban-card__tag kanban-card__tag--task">Task</span>
+                <h4 class="kanban-card__title">Set up linting rules</h4>
+                <p class="kanban-card__desc">Configure ESLint and Prettier with project standards.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">AC</span>
+                  <span class="kanban-card__priority kanban-card__priority--low">Low</span>
+                </div>
+              </div>
+              <div class="kanban-card kanban-card--done">
+                <span class="kanban-card__tag kanban-card__tag--bug">Bug</span>
+                <h4 class="kanban-card__title">Fix auth redirect loop</h4>
+                <p class="kanban-card__desc">OAuth callback causing infinite redirect on expired tokens.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">JM</span>
+                  <span class="kanban-card__priority kanban-card__priority--high">High</span>
+                </div>
+              </div>
+              <div class="kanban-card kanban-card--done">
+                <span class="kanban-card__tag kanban-card__tag--feature">Feature</span>
+                <h4 class="kanban-card__title">User avatar upload</h4>
+                <p class="kanban-card__desc">Image upload with crop, resize, and format validation.</p>
+                <div class="kanban-card__meta">
+                  <span class="kanban-card__assignee">SC</span>
+                  <span class="kanban-card__priority kanban-card__priority--low">Low</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHITEBOARD VIEW ===== -->
+    <section class="view" id="whiteboard" aria-label="Whiteboard" style="display:none">
+      <div class="view__container">
+        <h1 class="view__heading">Whiteboard</h1>
+        <p class="view__subheading">Freeform canvas for visual brainstorming.</p>
+
+        <div class="whiteboard-toolbar">
+          <button class="tool-btn active" data-tool="select" title="Select">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 3l5 12 2-5 5-2L3 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="tool-btn" data-tool="pen" title="Pen">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 16l3-1L14.5 5.5a1.4 1.4 0 00-2-2L3 13l-1 3z" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <button class="tool-btn" data-tool="rect" title="Rectangle">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <button class="tool-btn" data-tool="circle" title="Circle">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <button class="tool-btn" data-tool="text" title="Text">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 4h12M9 4v11M6 15h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+          <button class="tool-btn" data-tool="eraser" title="Eraser">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 15h8M3 11l6-6 5 5-4 5H6l-3-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="tool-separator"></div>
+          <div class="color-swatches">
+            <button class="swatch" data-color="#1A1A2E" style="background:#1A1A2E" title="Navy"></button>
+            <button class="swatch" data-color="#4A90D9" style="background:#4A90D9" title="Blue"></button>
+            <button class="swatch" data-color="#E53E3E" style="background:#E53E3E" title="Red"></button>
+            <button class="swatch" data-color="#38A169" style="background:#38A169" title="Green"></button>
+            <button class="swatch" data-color="#A0AEC0" style="background:#A0AEC0" title="Gray"></button>
+          </div>
+        </div>
+        <canvas class="whiteboard-canvas" id="whiteboard-canvas" width="1200" height="600"></canvas>
+      </div>
+    </section>
+
+    <!-- ===== SCHEMA VIEW ===== -->
+    <section class="view" id="schema" aria-label="Schema" style="display:none">
+      <div class="view__container">
+        <h1 class="view__heading">Schema Planner</h1>
+        <p class="view__subheading">Entity relationship diagram for your data model.</p>
+
+        <div class="schema-canvas">
+          <!-- Entity: User -->
+          <div class="entity-card" style="left:60px;top:40px">
+            <div class="entity-card__header">User</div>
+            <ul class="entity-card__fields">
+              <li><span class="field-key">PK</span> id: <span class="field-type">string</span></li>
+              <li>name: <span class="field-type">string</span></li>
+              <li>email: <span class="field-type">string</span></li>
+              <li>role: <span class="field-type">enum</span></li>
+              <li>createdAt: <span class="field-type">datetime</span></li>
+            </ul>
+          </div>
+
+          <!-- Entity: Project -->
+          <div class="entity-card" style="left:360px;top:40px">
+            <div class="entity-card__header">Project</div>
+            <ul class="entity-card__fields">
+              <li><span class="field-key">PK</span> id: <span class="field-type">string</span></li>
+              <li><span class="field-key">FK</span> ownerId: <span class="field-type">string</span></li>
+              <li>name: <span class="field-type">string</span></li>
+              <li>status: <span class="field-type">enum</span></li>
+              <li>description: <span class="field-type">text</span></li>
+            </ul>
+          </div>
+
+          <!-- Entity: Idea -->
+          <div class="entity-card" style="left:660px;top:40px">
+            <div class="entity-card__header">Idea</div>
+            <ul class="entity-card__fields">
+              <li><span class="field-key">PK</span> id: <span class="field-type">string</span></li>
+              <li><span class="field-key">FK</span> projectId: <span class="field-type">string</span></li>
+              <li>title: <span class="field-type">string</span></li>
+              <li>body: <span class="field-type">text</span></li>
+              <li>priority: <span class="field-type">enum</span></li>
+              <li>tags: <span class="field-type">string[]</span></li>
+            </ul>
+          </div>
+
+          <!-- Entity: Task -->
+          <div class="entity-card" style="left:210px;top:320px">
+            <div class="entity-card__header">Task</div>
+            <ul class="entity-card__fields">
+              <li><span class="field-key">PK</span> id: <span class="field-type">string</span></li>
+              <li><span class="field-key">FK</span> projectId: <span class="field-type">string</span></li>
+              <li><span class="field-key">FK</span> assigneeId: <span class="field-type">string</span></li>
+              <li>title: <span class="field-type">string</span></li>
+              <li>status: <span class="field-type">enum</span></li>
+            </ul>
+          </div>
+
+          <!-- Entity: ChatMessage -->
+          <div class="entity-card" style="left:540px;top:320px">
+            <div class="entity-card__header">ChatMessage</div>
+            <ul class="entity-card__fields">
+              <li><span class="field-key">PK</span> id: <span class="field-type">string</span></li>
+              <li><span class="field-key">FK</span> userId: <span class="field-type">string</span></li>
+              <li>role: <span class="field-type">enum</span></li>
+              <li>content: <span class="field-type">text</span></li>
+              <li>timestamp: <span class="field-type">datetime</span></li>
+            </ul>
+          </div>
+
+          <!-- Relationship lines drawn via SVG -->
+          <svg class="schema-lines" viewBox="0 0 900 550" preserveAspectRatio="none">
+            <!-- User -> Project (ownerId) -->
+            <line x1="240" y1="100" x2="360" y2="100" stroke="var(--color-accent)" stroke-width="2" stroke-dasharray="6,3"/>
+            <!-- Project -> Idea (projectId) -->
+            <line x1="540" y1="100" x2="660" y2="100" stroke="var(--color-accent)" stroke-width="2" stroke-dasharray="6,3"/>
+            <!-- Project -> Task (projectId) -->
+            <line x1="450" y1="200" x2="350" y2="320" stroke="var(--color-accent)" stroke-width="2" stroke-dasharray="6,3"/>
+            <!-- User -> Task (assigneeId) -->
+            <line x1="160" y1="200" x2="280" y2="320" stroke="var(--color-muted)" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <!-- User -> ChatMessage (userId) -->
+            <line x1="200" y1="200" x2="600" y2="320" stroke="var(--color-muted)" stroke-width="1.5" stroke-dasharray="4,4"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DIRECTORY TREE VIEW ===== -->
+    <section class="view" id="directory-tree" aria-label="Directory Tree" style="display:none">
+      <div class="view__container">
+        <h1 class="view__heading">Directory Tree</h1>
+        <p class="view__subheading">Browse and organize your project file structure.</p>
+
+        <div class="card" style="max-width:640px">
+          <div class="dir-search">
+            <input type="text" class="dir-search__input" placeholder="Search files and folders...">
+          </div>
+          <ul class="dir-tree">
+            <li class="dir-tree__item dir-tree__item--folder open">
+              <span class="dir-tree__toggle">idea-management/</span>
+              <ul>
+                <li class="dir-tree__item dir-tree__item--folder open">
+                  <span class="dir-tree__toggle">src/</span>
+                  <ul>
+                    <li class="dir-tree__item dir-tree__item--folder">
+                      <span class="dir-tree__toggle">app/</span>
+                      <ul>
+                        <li class="dir-tree__item dir-tree__item--file">layout.tsx <span class="dir-tree__size">2.1 KB</span></li>
+                        <li class="dir-tree__item dir-tree__item--file">page.tsx <span class="dir-tree__size">1.4 KB</span></li>
+                        <li class="dir-tree__item dir-tree__item--folder">
+                          <span class="dir-tree__toggle">dashboard/</span>
+                          <ul>
+                            <li class="dir-tree__item dir-tree__item--file">page.tsx <span class="dir-tree__size">3.2 KB</span></li>
+                          </ul>
+                        </li>
+                        <li class="dir-tree__item dir-tree__item--folder">
+                          <span class="dir-tree__toggle">projects/</span>
+                          <ul>
+                            <li class="dir-tree__item dir-tree__item--file">page.tsx <span class="dir-tree__size">4.8 KB</span></li>
+                            <li class="dir-tree__item dir-tree__item--file">[id]/page.tsx <span class="dir-tree__size">6.1 KB</span></li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="dir-tree__item dir-tree__item--folder">
+                      <span class="dir-tree__toggle">components/</span>
+                      <ul>
+                        <li class="dir-tree__item dir-tree__item--file">Header.tsx <span class="dir-tree__size">1.8 KB</span></li>
+                        <li class="dir-tree__item dir-tree__item--file">Sidebar.tsx <span class="dir-tree__size">2.4 KB</span></li>
+                        <li class="dir-tree__item dir-tree__item--file">Card.tsx <span class="dir-tree__size">0.9 KB</span></li>
+                        <li class="dir-tree__item dir-tree__item--file">KanbanColumn.tsx <span class="dir-tree__size">3.6 KB</span></li>
+                      </ul>
+                    </li>
+                    <li class="dir-tree__item dir-tree__item--folder">
+                      <span class="dir-tree__toggle">lib/</span>
+                      <ul>
+                        <li class="dir-tree__item dir-tree__item--file">utils.ts <span class="dir-tree__size">0.6 KB</span></li>
+                        <li class="dir-tree__item dir-tree__item--file">api.ts <span class="dir-tree__size">2.2 KB</span></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li class="dir-tree__item dir-tree__item--folder">
+                  <span class="dir-tree__toggle">convex/</span>
+                  <ul>
+                    <li class="dir-tree__item dir-tree__item--file">schema.ts <span class="dir-tree__size">1.1 KB</span></li>
+                    <li class="dir-tree__item dir-tree__item--file">projects.ts <span class="dir-tree__size">2.8 KB</span></li>
+                    <li class="dir-tree__item dir-tree__item--file">ideas.ts <span class="dir-tree__size">1.9 KB</span></li>
+                  </ul>
+                </li>
+                <li class="dir-tree__item dir-tree__item--file">package.json <span class="dir-tree__size">1.2 KB</span></li>
+                <li class="dir-tree__item dir-tree__item--file">tsconfig.json <span class="dir-tree__size">0.8 KB</span></li>
+                <li class="dir-tree__item dir-tree__item--file">.env.local <span class="dir-tree__size">0.3 KB</span></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== IDEAS VIEW ===== -->
+    <section class="view" id="ideas" aria-label="Ideas" style="display:none">
+      <div class="view__container">
+        <h1 class="view__heading">Ideas</h1>
+        <p class="view__subheading">Capture, tag, and prioritize your ideas.</p>
+
+        <!-- Idea Capture Form -->
+        <div class="idea-capture card">
+          <h2 class="card__title">New Idea</h2>
+          <form class="idea-form" onsubmit="return false">
+            <input type="text" class="idea-form__input" placeholder="Idea title...">
+            <textarea class="idea-form__textarea" placeholder="Describe your idea..." rows="3"></textarea>
+            <div class="idea-form__row">
+              <select class="idea-form__select">
+                <option>Low Priority</option>
+                <option>Medium Priority</option>
+                <option selected>High Priority</option>
+              </select>
+              <input type="text" class="idea-form__input idea-form__input--tags" placeholder="Tags (comma-separated)">
+              <button type="submit" class="btn btn--primary">Add Idea</button>
+            </div>
+          </form>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Ideas List -->
+        <div class="ideas-grid">
+          <div class="idea-card">
+            <div class="idea-card__header">
+              <span class="idea-card__priority idea-card__priority--high">High</span>
+              <span class="idea-card__id">#001</span>
+            </div>
+            <h3 class="idea-card__title">AI-powered search suggestions</h3>
+            <p class="idea-card__desc">Use embeddings to suggest similar ideas and prevent duplicates during idea creation.</p>
+            <div class="idea-card__tags">
+              <span class="tag">AI</span><span class="tag">Search</span><span class="tag">UX</span>
+            </div>
+          </div>
+          <div class="idea-card">
+            <div class="idea-card__header">
+              <span class="idea-card__priority idea-card__priority--medium">Med</span>
+              <span class="idea-card__id">#002</span>
+            </div>
+            <h3 class="idea-card__title">Collaborative whiteboard</h3>
+            <p class="idea-card__desc">Real-time multi-user whiteboard with cursor presence and conflict resolution.</p>
+            <div class="idea-card__tags">
+              <span class="tag">Collab</span><span class="tag">Real-time</span>
+            </div>
+          </div>
+          <div class="idea-card">
+            <div class="idea-card__header">
+              <span class="idea-card__priority idea-card__priority--high">High</span>
+              <span class="idea-card__id">#003</span>
+            </div>
+            <h3 class="idea-card__title">Mobile-first kanban</h3>
+            <p class="idea-card__desc">Swipe-based kanban interaction optimized for touch devices with haptic feedback.</p>
+            <div class="idea-card__tags">
+              <span class="tag">Mobile</span><span class="tag">Kanban</span>
+            </div>
+          </div>
+          <div class="idea-card">
+            <div class="idea-card__header">
+              <span class="idea-card__priority idea-card__priority--low">Low</span>
+              <span class="idea-card__id">#004</span>
+            </div>
+            <h3 class="idea-card__title">Keyboard shortcuts system</h3>
+            <p class="idea-card__desc">Vim-style keyboard navigation with command palette for power users.</p>
+            <div class="idea-card__tags">
+              <span class="tag">A11y</span><span class="tag">Power User</span>
+            </div>
+          </div>
+          <div class="idea-card">
+            <div class="idea-card__header">
+              <span class="idea-card__priority idea-card__priority--medium">Med</span>
+              <span class="idea-card__id">#005</span>
+            </div>
+            <h3 class="idea-card__title">Template marketplace</h3>
+            <p class="idea-card__desc">Community-driven template sharing for project structures and kanban workflows.</p>
+            <div class="idea-card__tags">
+              <span class="tag">Community</span><span class="tag">Templates</span>
+            </div>
+          </div>
+          <div class="idea-card">
+            <div class="idea-card__header">
+              <span class="idea-card__priority idea-card__priority--high">High</span>
+              <span class="idea-card__id">#006</span>
+            </div>
+            <h3 class="idea-card__title">Version history for ideas</h3>
+            <p class="idea-card__desc">Git-like version control for idea iterations with diff view and rollback.</p>
+            <div class="idea-card__tags">
+              <span class="tag">Versioning</span><span class="tag">History</span>
+            </div>
+          </div>
+          <div class="idea-card">
+            <div class="idea-card__header">
+              <span class="idea-card__priority idea-card__priority--low">Low</span>
+              <span class="idea-card__id">#007</span>
+            </div>
+            <h3 class="idea-card__title">Custom color themes</h3>
+            <p class="idea-card__desc">Let users create and share custom color themes beyond light and dark modes.</p>
+            <div class="idea-card__tags">
+              <span class="tag">Theming</span><span class="tag">Personalization</span>
+            </div>
+          </div>
+          <div class="idea-card">
+            <div class="idea-card__header">
+              <span class="idea-card__priority idea-card__priority--medium">Med</span>
+              <span class="idea-card__id">#008</span>
+            </div>
+            <h3 class="idea-card__title">Notification center</h3>
+            <p class="idea-card__desc">Centralized notification hub with filters, read/unread state, and digest emails.</p>
+            <div class="idea-card__tags">
+              <span class="tag">Notifications</span><span class="tag">Email</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== AI CHAT VIEW ===== -->
+    <section class="view" id="ai-chat" aria-label="AI Chat" style="display:none">
+      <div class="view__container">
+        <h1 class="view__heading">AI Chat</h1>
+        <p class="view__subheading">Have a conversation with AI about your projects and ideas.</p>
+
+        <div class="chat-container card">
+          <div class="chat-messages" id="chat-messages">
+            <div class="chat-msg chat-msg--user">
+              <div class="chat-msg__avatar">You</div>
+              <div class="chat-msg__bubble">
+                <p>Can you help me prioritize the features for the next sprint?</p>
+              </div>
+            </div>
+            <div class="chat-msg chat-msg--ai">
+              <div class="chat-msg__avatar">AI</div>
+              <div class="chat-msg__bubble">
+                <p>Of course! Based on your current project data, I'd suggest focusing on three high-impact items: the real-time collaboration feature, the search improvements, and the CI/CD pipeline setup. These align with your team's velocity and will unblock other work streams.</p>
+              </div>
+            </div>
+            <div class="chat-msg chat-msg--user">
+              <div class="chat-msg__avatar">You</div>
+              <div class="chat-msg__bubble">
+                <p>What about the dark mode feature? Lots of users have requested it.</p>
+              </div>
+            </div>
+            <div class="chat-msg chat-msg--ai">
+              <div class="chat-msg__avatar">AI</div>
+              <div class="chat-msg__bubble">
+                <p>Dark mode is popular but lower effort. I'd recommend adding it to the sprint as a "stretch goal" — if your team finishes the core items early, it can be picked up. It doesn't block any other features and the implementation is largely CSS-scoped.</p>
+              </div>
+            </div>
+            <div class="chat-msg chat-msg--user">
+              <div class="chat-msg__avatar">You</div>
+              <div class="chat-msg__bubble">
+                <p>Good thinking. Can you generate a sprint plan document?</p>
+              </div>
+            </div>
+            <div class="chat-msg chat-msg--ai">
+              <div class="chat-msg__avatar">AI</div>
+              <div class="chat-msg__bubble">
+                <p>I've drafted a sprint plan with 3 core features, 1 stretch goal, and estimated story points. The total comes to 34 points, which matches your team's 2-week average of 32-38. Would you like me to export this as a Markdown document or create tasks directly in your Kanban board?</p>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" class="chat-input" placeholder="Type a message..." id="chat-input">
+            <button class="btn btn--primary chat-send" id="chat-send">Send</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SETTINGS VIEW ===== -->
+    <section class="view" id="settings" aria-label="Settings" style="display:none">
+      <div class="view__container">
+        <h1 class="view__heading">Settings</h1>
+        <p class="view__subheading">Configure your workspace preferences.</p>
+
+        <div class="settings-layout">
+          <nav class="settings-tabs" aria-label="Settings tabs">
+            <button class="settings-tab active" data-settings-tab="profile">Profile</button>
+            <button class="settings-tab" data-settings-tab="notifications">Notifications</button>
+            <button class="settings-tab" data-settings-tab="appearance">Appearance</button>
+            <button class="settings-tab" data-settings-tab="integrations">Integrations</button>
+          </nav>
+
+          <div class="settings-panel active" id="settings-profile">
+            <h2 class="settings-panel__title">Profile Settings</h2>
+            <form class="settings-form" onsubmit="return false">
+              <div class="form-group">
+                <label class="form-label" for="setting-name">Display Name</label>
+                <input type="text" id="setting-name" class="form-input" value="Sarah Chen" placeholder="Your name">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="setting-email">Email Address</label>
+                <input type="email" id="setting-email" class="form-input" value="sarah@ideahub.io" placeholder="email@example.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="setting-bio">Bio</label>
+                <textarea id="setting-bio" class="form-input form-input--textarea" rows="3" placeholder="Tell us about yourself...">Product designer and frontend engineer focused on building great user experiences.</textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="setting-role">Role</label>
+                <select id="setting-role" class="form-input form-input--select">
+                  <option>Admin</option>
+                  <option selected>Editor</option>
+                  <option>Viewer</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn--primary">Save Changes</button>
+            </form>
+          </div>
+
+          <div class="settings-panel" id="settings-notifications" style="display:none">
+            <h2 class="settings-panel__title">Notification Preferences</h2>
+            <form class="settings-form" onsubmit="return false">
+              <div class="toggle-group">
+                <div class="toggle-row">
+                  <span class="toggle-label">Email notifications</span>
+                  <label class="toggle">
+                    <input type="checkbox" checked>
+                    <span class="toggle__track"></span>
+                  </label>
+                </div>
+                <div class="toggle-row">
+                  <span class="toggle-label">Push notifications</span>
+                  <label class="toggle">
+                    <input type="checkbox" checked>
+                    <span class="toggle__track"></span>
+                  </label>
+                </div>
+                <div class="toggle-row">
+                  <span class="toggle-label">Weekly digest</span>
+                  <label class="toggle">
+                    <input type="checkbox">
+                    <span class="toggle__track"></span>
+                  </label>
+                </div>
+                <div class="toggle-row">
+                  <span class="toggle-label">Mention alerts</span>
+                  <label class="toggle">
+                    <input type="checkbox" checked>
+                    <span class="toggle__track"></span>
+                  </label>
+                </div>
+                <div class="toggle-row">
+                  <span class="toggle-label">Project updates</span>
+                  <label class="toggle">
+                    <input type="checkbox" checked>
+                    <span class="toggle__track"></span>
+                  </label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn--primary">Save Changes</button>
+            </form>
+          </div>
+
+          <div class="settings-panel" id="settings-appearance" style="display:none">
+            <h2 class="settings-panel__title">Appearance</h2>
+            <form class="settings-form" onsubmit="return false">
+              <div class="form-group">
+                <label class="form-label">Theme</label>
+                <div class="radio-group">
+                  <label class="radio-option">
+                    <input type="radio" name="theme" value="light" checked>
+                    <span>Light</span>
+                  </label>
+                  <label class="radio-option">
+                    <input type="radio" name="theme" value="dark">
+                    <span>Dark</span>
+                  </label>
+                  <label class="radio-option">
+                    <input type="radio" name="theme" value="system">
+                    <span>System</span>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="setting-density">Information Density</label>
+                <select id="setting-density" class="form-input form-input--select">
+                  <option>Compact</option>
+                  <option selected>Comfortable</option>
+                  <option>Spacious</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="setting-font-size">Font Size</label>
+                <input type="range" id="setting-font-size" min="14" max="20" value="16" class="form-range">
+                <span class="range-value">16px</span>
+              </div>
+              <button type="submit" class="btn btn--primary">Save Changes</button>
+            </form>
+          </div>
+
+          <div class="settings-panel" id="settings-integrations" style="display:none">
+            <h2 class="settings-panel__title">Integrations</h2>
+            <div class="integration-list">
+              <div class="integration-item">
+                <div class="integration-item__info">
+                  <span class="integration-item__name">GitHub</span>
+                  <span class="integration-item__desc">Sync repositories and pull requests</span>
+                </div>
+                <button class="btn btn--secondary">Connected</button>
+              </div>
+              <div class="integration-item">
+                <div class="integration-item__info">
+                  <span class="integration-item__name">Slack</span>
+                  <span class="integration-item__desc">Send notifications to channels</span>
+                </div>
+                <button class="btn btn--primary">Connect</button>
+              </div>
+              <div class="integration-item">
+                <div class="integration-item__info">
+                  <span class="integration-item__name">Figma</span>
+                  <span class="integration-item__desc">Import designs and prototypes</span>
+                </div>
+                <button class="btn btn--primary">Connect</button>
+              </div>
+              <div class="integration-item">
+                <div class="integration-item__info">
+                  <span class="integration-item__name">Linear</span>
+                  <span class="integration-item__desc">Two-way issue sync</span>
+                </div>
+                <button class="btn btn--secondary">Connected</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>

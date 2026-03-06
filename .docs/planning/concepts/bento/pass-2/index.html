@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea Management Platform — Bento Pass 2</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+  <!-- App Script -->
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <!-- ============================================================
+       TOP NAVIGATION BAR
+       ============================================================ -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect width="12" height="12" rx="3" fill="var(--color-accent)"/>
+          <rect x="14" y="0" width="14" height="12" rx="3" fill="var(--color-gradient-start)" opacity="0.7"/>
+          <rect x="0" y="14" width="14" height="14" rx="3" fill="var(--color-gradient-start)" opacity="0.5"/>
+          <rect x="16" y="14" width="12" height="14" rx="3" fill="var(--color-secondary)"/>
+        </svg>
+      </div>
+      <span class="topbar-title">IdeaFlow</span>
+    </div>
+    <nav class="topbar-nav" id="topbar-nav" role="navigation" aria-label="Main navigation">
+      <a href="#dashboard" class="topbar-link active" data-view="dashboard">Dashboard</a>
+      <a href="#projects" class="topbar-link" data-view="projects">Projects</a>
+      <a href="#workspace" class="topbar-link" data-view="workspace">Workspace</a>
+      <a href="#kanban" class="topbar-link" data-view="kanban">Kanban</a>
+      <a href="#whiteboard" class="topbar-link" data-view="whiteboard">Whiteboard</a>
+      <a href="#schema" class="topbar-link" data-view="schema">Schema</a>
+      <a href="#directory" class="topbar-link" data-view="directory">Directory</a>
+      <a href="#ideas" class="topbar-link" data-view="ideas">Ideas</a>
+      <a href="#chat" class="topbar-link" data-view="chat">AI Chat</a>
+      <a href="#settings" class="topbar-link" data-view="settings">Settings</a>
+    </nav>
+    <button class="topbar-hamburger" id="hamburger-btn" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </header>
+
+  <!-- Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <a href="#dashboard" class="mobile-nav-link active" data-view="dashboard">Dashboard</a>
+      <a href="#projects" class="mobile-nav-link" data-view="projects">Projects</a>
+      <a href="#workspace" class="mobile-nav-link" data-view="workspace">Workspace</a>
+      <a href="#kanban" class="mobile-nav-link" data-view="kanban">Kanban</a>
+      <a href="#whiteboard" class="mobile-nav-link" data-view="whiteboard">Whiteboard</a>
+      <a href="#schema" class="mobile-nav-link" data-view="schema">Schema</a>
+      <a href="#directory" class="mobile-nav-link" data-view="directory">Directory</a>
+      <a href="#ideas" class="mobile-nav-link" data-view="ideas">Ideas</a>
+      <a href="#chat" class="mobile-nav-link" data-view="chat">AI Chat</a>
+      <a href="#settings" class="mobile-nav-link" data-view="settings">Settings</a>
+    </nav>
+  </div>
+
+  <!-- ============================================================
+       MAIN CONTENT AREA
+       ============================================================ -->
+  <main class="main-content" id="main-content">
+
+    <!-- ========== DASHBOARD VIEW ========== -->
+    <section class="view" id="dashboard" data-view="dashboard">
+      <div class="view-header">
+        <h1 class="view-title">Dashboard</h1>
+        <p class="view-subtitle">Your creative command center at a glance</p>
+      </div>
+      <div class="bento-grid bento-dashboard">
+        <!-- Stat Tiles -->
+        <article class="bento-tile tile-stat tile-gradient" data-expandable>
+          <div class="tile-header">
+            <span class="tile-label">Total Ideas</span>
+            <span class="tile-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 00-6 6c0 2.2 1.2 4.1 3 5.2V15a1 1 0 001 1h4a1 1 0 001-1v-1.8c1.8-1.1 3-3 3-5.2a6 6 0 00-6-6zM8 17v1a2 2 0 004 0v-1H8z"/></svg>
+            </span>
+          </div>
+          <div class="tile-value">247</div>
+          <div class="tile-change positive">+12% this month</div>
+          <div class="tile-expanded-content">
+            <div class="mini-sparkline" data-values="12,18,15,22,28,25,31,35,29,38,42,47"></div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-stat" data-expandable>
+          <div class="tile-header">
+            <span class="tile-label">Active Projects</span>
+            <span class="tile-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3h14a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V5a2 2 0 012-2zm0 4v8h14V7H3z"/></svg>
+            </span>
+          </div>
+          <div class="tile-value">18</div>
+          <div class="tile-change positive">+3 new</div>
+          <div class="tile-expanded-content">
+            <ul class="mini-list">
+              <li>Brand Redesign <span class="badge badge-active">Active</span></li>
+              <li>Mobile App <span class="badge badge-active">Active</span></li>
+              <li>API Integration <span class="badge badge-review">Review</span></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-stat" data-expandable>
+          <div class="tile-header">
+            <span class="tile-label">Team Members</span>
+            <span class="tile-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg>
+            </span>
+          </div>
+          <div class="tile-value">12</div>
+          <div class="tile-change neutral">No change</div>
+          <div class="tile-expanded-content">
+            <div class="avatar-stack">
+              <div class="avatar" style="background: var(--color-accent)">JD</div>
+              <div class="avatar" style="background: var(--color-secondary)">AK</div>
+              <div class="avatar" style="background: var(--color-gradient-start)">ML</div>
+              <div class="avatar" style="background: #8B7355">RS</div>
+              <div class="avatar avatar-more">+8</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-stat tile-gradient" data-expandable>
+          <div class="tile-header">
+            <span class="tile-label">Completion Rate</span>
+            <span class="tile-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-5l5-5-1.4-1.4L9 10.2 7.4 8.6 6 10l3 3z"/></svg>
+            </span>
+          </div>
+          <div class="tile-value">78%</div>
+          <div class="tile-change positive">+5% vs last month</div>
+          <div class="tile-expanded-content">
+            <div class="progress-bar-container">
+              <div class="progress-bar" data-progress="78"></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Chart Tile (wide) -->
+        <article class="bento-tile tile-chart tile-wide" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Idea Flow Over Time</h3>
+            <div class="tile-chart-controls">
+              <button class="chart-period-btn active" data-period="week">Week</button>
+              <button class="chart-period-btn" data-period="month">Month</button>
+              <button class="chart-period-btn" data-period="year">Year</button>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="dashboard-line-chart"></canvas>
+          </div>
+        </article>
+
+        <!-- Activity Tile -->
+        <article class="bento-tile tile-activity" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Recent Activity</h3>
+          </div>
+          <ul class="activity-list">
+            <li class="activity-item">
+              <span class="activity-dot" style="background: var(--color-accent)"></span>
+              <div class="activity-text">
+                <strong>Sarah</strong> added new idea to <em>Brand Redesign</em>
+                <span class="activity-time">2 min ago</span>
+              </div>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot" style="background: var(--color-secondary)"></span>
+              <div class="activity-text">
+                <strong>Mike</strong> completed task <em>Design Review</em>
+                <span class="activity-time">15 min ago</span>
+              </div>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot" style="background: var(--color-gradient-start)"></span>
+              <div class="activity-text">
+                <strong>Lisa</strong> created project <em>Mobile App v2</em>
+                <span class="activity-time">1 hour ago</span>
+              </div>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot" style="background: var(--color-accent)"></span>
+              <div class="activity-text">
+                <strong>Tom</strong> moved card to <em>In Progress</em>
+                <span class="activity-time">2 hours ago</span>
+              </div>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot" style="background: var(--color-secondary)"></span>
+              <div class="activity-text">
+                <strong>Anna</strong> commented on <em>API Docs</em>
+                <span class="activity-time">3 hours ago</span>
+              </div>
+            </li>
+          </ul>
+        </article>
+
+        <!-- Donut Chart Tile -->
+        <article class="bento-tile tile-chart" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Ideas by Category</h3>
+          </div>
+          <div class="chart-container chart-donut-container">
+            <canvas id="dashboard-donut-chart"></canvas>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS VIEW ========== -->
+    <section class="view" id="projects" data-view="projects">
+      <div class="view-header">
+        <h1 class="view-title">Projects</h1>
+        <p class="view-subtitle">Manage your creative endeavors</p>
+        <button class="btn btn-primary">+ New Project</button>
+      </div>
+      <div class="bento-grid bento-projects">
+        <article class="bento-tile tile-project tile-gradient" data-expandable>
+          <div class="project-status-bar"></div>
+          <h3 class="project-name">Brand Redesign</h3>
+          <p class="project-desc">Complete visual identity overhaul for Q2 launch</p>
+          <div class="project-meta">
+            <span class="project-progress">
+              <div class="progress-bar-sm"><div class="progress-bar-fill" style="width:72%"></div></div>
+              <span>72%</span>
+            </span>
+            <span class="project-date">Due: Mar 15</span>
+          </div>
+          <div class="tile-expanded-content">
+            <div class="project-tags">
+              <span class="tag">Design</span>
+              <span class="tag">Branding</span>
+              <span class="tag">Marketing</span>
+            </div>
+            <div class="project-team-row">
+              <div class="avatar-sm" style="background:var(--color-accent)">JD</div>
+              <div class="avatar-sm" style="background:var(--color-secondary)">AK</div>
+              <div class="avatar-sm" style="background:var(--color-gradient-start)">ML</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-project" data-expandable>
+          <div class="project-status-bar" style="background:var(--color-secondary)"></div>
+          <h3 class="project-name">Mobile App v2</h3>
+          <p class="project-desc">Native iOS and Android app with offline sync</p>
+          <div class="project-meta">
+            <span class="project-progress">
+              <div class="progress-bar-sm"><div class="progress-bar-fill" style="width:45%"></div></div>
+              <span>45%</span>
+            </span>
+            <span class="project-date">Due: Apr 30</span>
+          </div>
+          <div class="tile-expanded-content">
+            <div class="project-tags">
+              <span class="tag">Mobile</span>
+              <span class="tag">React Native</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-project" data-expandable>
+          <div class="project-status-bar" style="background:var(--color-gradient-start)"></div>
+          <h3 class="project-name">API Integration</h3>
+          <p class="project-desc">Third-party API connectors and webhook system</p>
+          <div class="project-meta">
+            <span class="project-progress">
+              <div class="progress-bar-sm"><div class="progress-bar-fill" style="width:88%"></div></div>
+              <span>88%</span>
+            </span>
+            <span class="project-date">Due: Mar 1</span>
+          </div>
+          <div class="tile-expanded-content">
+            <div class="project-tags">
+              <span class="tag">Backend</span>
+              <span class="tag">Integration</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-project tile-gradient" data-expandable>
+          <div class="project-status-bar" style="background:#8B7355"></div>
+          <h3 class="project-name">Analytics Dashboard</h3>
+          <p class="project-desc">Real-time data visualization and reporting engine</p>
+          <div class="project-meta">
+            <span class="project-progress">
+              <div class="progress-bar-sm"><div class="progress-bar-fill" style="width:30%"></div></div>
+              <span>30%</span>
+            </span>
+            <span class="project-date">Due: May 20</span>
+          </div>
+          <div class="tile-expanded-content">
+            <div class="project-tags">
+              <span class="tag">Data</span>
+              <span class="tag">Visualization</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-project" data-expandable>
+          <div class="project-status-bar" style="background:var(--color-accent)"></div>
+          <h3 class="project-name">Design System</h3>
+          <p class="project-desc">Component library with tokens and documentation</p>
+          <div class="project-meta">
+            <span class="project-progress">
+              <div class="progress-bar-sm"><div class="progress-bar-fill" style="width:60%"></div></div>
+              <span>60%</span>
+            </span>
+            <span class="project-date">Due: Jun 10</span>
+          </div>
+          <div class="tile-expanded-content">
+            <div class="project-tags">
+              <span class="tag">Design</span>
+              <span class="tag">Components</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-project" data-expandable>
+          <div class="project-status-bar" style="background:var(--color-secondary)"></div>
+          <h3 class="project-name">User Research</h3>
+          <p class="project-desc">Customer interviews and persona development</p>
+          <div class="project-meta">
+            <span class="project-progress">
+              <div class="progress-bar-sm"><div class="progress-bar-fill" style="width:15%"></div></div>
+              <span>15%</span>
+            </span>
+            <span class="project-date">Due: Jul 1</span>
+          </div>
+          <div class="tile-expanded-content">
+            <div class="project-tags">
+              <span class="tag">Research</span>
+              <span class="tag">UX</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== WORKSPACE VIEW ========== -->
+    <section class="view" id="workspace" data-view="workspace">
+      <div class="view-header">
+        <h1 class="view-title">Workspace</h1>
+        <p class="view-subtitle">Your personal creative environment</p>
+      </div>
+      <div class="bento-grid bento-workspace">
+        <article class="bento-tile tile-wide tile-workspace-editor" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Document Editor</h3>
+            <div class="editor-toolbar">
+              <button class="toolbar-btn" title="Bold"><strong>B</strong></button>
+              <button class="toolbar-btn" title="Italic"><em>I</em></button>
+              <button class="toolbar-btn" title="Underline"><u>U</u></button>
+              <span class="toolbar-divider"></span>
+              <button class="toolbar-btn" title="List">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 4h12v1.5H2V4zm0 3.5h12V9H2V7.5zm0 3.5h12V12.5H2V11z"/></svg>
+              </button>
+              <button class="toolbar-btn" title="Link">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6.354 5.354l-2 2a2.5 2.5 0 003.536 3.536l.707-.707-1.414-1.414-.707.707a.5.5 0 01-.708-.708l2-2a.5.5 0 01.708.708L7.06 8.89a2.5 2.5 0 003.536-3.536l-.707.707 1.414 1.414.707-.707a2.5 2.5 0 00-3.536-3.536L6.354 5.354z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="editor-content" contenteditable="true">
+            <h2>Brand Redesign Brief</h2>
+            <p>The new brand identity should communicate innovation, warmth, and approachability. We're moving away from the corporate blue palette toward warmer tones that resonate with our creative user base.</p>
+            <p>Key deliverables include a revised logo suite, updated typography guidelines, and a comprehensive color system with accessibility documentation.</p>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-workspace-notes" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Quick Notes</h3>
+            <button class="btn-icon" title="Add note">+</button>
+          </div>
+          <ul class="notes-list">
+            <li class="note-item">
+              <input type="checkbox" id="note-1" class="note-check">
+              <label for="note-1">Review typography pairings</label>
+            </li>
+            <li class="note-item">
+              <input type="checkbox" id="note-2" class="note-check" checked>
+              <label for="note-2">Send mood board to team</label>
+            </li>
+            <li class="note-item">
+              <input type="checkbox" id="note-3" class="note-check">
+              <label for="note-3">Schedule stakeholder review</label>
+            </li>
+            <li class="note-item">
+              <input type="checkbox" id="note-4" class="note-check">
+              <label for="note-4">Update project timeline</label>
+            </li>
+            <li class="note-item">
+              <input type="checkbox" id="note-5" class="note-check" checked>
+              <label for="note-5">Export assets to Figma</label>
+            </li>
+          </ul>
+        </article>
+
+        <article class="bento-tile tile-workspace-files" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Recent Files</h3>
+          </div>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-icon file-icon-doc"></span>
+              <div class="file-info">
+                <span class="file-name">brand-brief.md</span>
+                <span class="file-meta">Modified 2 hours ago</span>
+              </div>
+            </li>
+            <li class="file-item">
+              <span class="file-icon file-icon-img"></span>
+              <div class="file-info">
+                <span class="file-name">logo-concepts.fig</span>
+                <span class="file-meta">Modified yesterday</span>
+              </div>
+            </li>
+            <li class="file-item">
+              <span class="file-icon file-icon-code"></span>
+              <div class="file-info">
+                <span class="file-name">color-tokens.json</span>
+                <span class="file-meta">Modified 3 days ago</span>
+              </div>
+            </li>
+          </ul>
+        </article>
+
+        <article class="bento-tile tile-workspace-timer tile-gradient" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Focus Timer</h3>
+          </div>
+          <div class="timer-display">
+            <span class="timer-value" id="timer-value">25:00</span>
+            <div class="timer-controls">
+              <button class="btn btn-secondary btn-sm" id="timer-start">Start</button>
+              <button class="btn btn-ghost btn-sm" id="timer-reset">Reset</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== KANBAN VIEW ========== -->
+    <section class="view" id="kanban" data-view="kanban">
+      <div class="view-header">
+        <h1 class="view-title">Kanban Board</h1>
+        <p class="view-subtitle">Drag and organize your workflow</p>
+      </div>
+      <div class="kanban-board">
+        <div class="kanban-column">
+          <div class="kanban-column-header">
+            <h3 class="kanban-column-title">
+              <span class="kanban-dot" style="background:var(--color-gradient-start)"></span>
+              Backlog
+            </h3>
+            <span class="kanban-count">4</span>
+          </div>
+          <div class="kanban-cards">
+            <article class="kanban-card" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Research</span></div>
+              <h4 class="kanban-card-title">User interview synthesis</h4>
+              <p class="kanban-card-desc">Compile insights from 12 user interviews</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:var(--color-accent)">JD</div>
+                <span class="kanban-card-date">Mar 8</span>
+              </div>
+            </article>
+            <article class="kanban-card" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Design</span></div>
+              <h4 class="kanban-card-title">Icon set exploration</h4>
+              <p class="kanban-card-desc">Custom icon set for navigation</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:var(--color-secondary)">AK</div>
+                <span class="kanban-card-date">Mar 10</span>
+              </div>
+            </article>
+            <article class="kanban-card" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Dev</span></div>
+              <h4 class="kanban-card-title">API rate limiting</h4>
+              <p class="kanban-card-desc">Implement throttle middleware</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:var(--color-gradient-start)">ML</div>
+                <span class="kanban-card-date">Mar 12</span>
+              </div>
+            </article>
+            <article class="kanban-card" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Content</span></div>
+              <h4 class="kanban-card-title">Blog post series</h4>
+              <p class="kanban-card-desc">Write 5-part launch series</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:#8B7355">RS</div>
+                <span class="kanban-card-date">Mar 15</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="kanban-column-header">
+            <h3 class="kanban-column-title">
+              <span class="kanban-dot" style="background:var(--color-accent)"></span>
+              In Progress
+            </h3>
+            <span class="kanban-count">3</span>
+          </div>
+          <div class="kanban-cards">
+            <article class="kanban-card kanban-card-active" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Design</span></div>
+              <h4 class="kanban-card-title">Homepage redesign</h4>
+              <p class="kanban-card-desc">New hero section with animation</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:var(--color-accent)">JD</div>
+                <span class="kanban-card-date">Mar 5</span>
+              </div>
+            </article>
+            <article class="kanban-card kanban-card-active" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Dev</span></div>
+              <h4 class="kanban-card-title">Auth flow update</h4>
+              <p class="kanban-card-desc">OAuth2 + passwordless login</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:var(--color-gradient-start)">ML</div>
+                <span class="kanban-card-date">Mar 4</span>
+              </div>
+            </article>
+            <article class="kanban-card kanban-card-active" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Research</span></div>
+              <h4 class="kanban-card-title">Competitor analysis</h4>
+              <p class="kanban-card-desc">Feature comparison matrix</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:var(--color-secondary)">AK</div>
+                <span class="kanban-card-date">Mar 3</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="kanban-column-header">
+            <h3 class="kanban-column-title">
+              <span class="kanban-dot" style="background:var(--color-secondary)"></span>
+              Review
+            </h3>
+            <span class="kanban-count">2</span>
+          </div>
+          <div class="kanban-cards">
+            <article class="kanban-card" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Design</span></div>
+              <h4 class="kanban-card-title">Color system v2</h4>
+              <p class="kanban-card-desc">Updated palette with a11y checks</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:var(--color-accent)">JD</div>
+                <span class="kanban-card-date">Mar 1</span>
+              </div>
+            </article>
+            <article class="kanban-card" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Dev</span></div>
+              <h4 class="kanban-card-title">Database migration</h4>
+              <p class="kanban-card-desc">Schema v3 with new indexes</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:var(--color-gradient-start)">ML</div>
+                <span class="kanban-card-date">Feb 28</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="kanban-column-header">
+            <h3 class="kanban-column-title">
+              <span class="kanban-dot" style="background:#5a9e6f"></span>
+              Done
+            </h3>
+            <span class="kanban-count">3</span>
+          </div>
+          <div class="kanban-cards">
+            <article class="kanban-card kanban-card-done" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Design</span></div>
+              <h4 class="kanban-card-title">Logo variations</h4>
+              <p class="kanban-card-desc">6 logo concepts delivered</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:var(--color-accent)">JD</div>
+                <span class="kanban-card-date">Feb 25</span>
+              </div>
+            </article>
+            <article class="kanban-card kanban-card-done" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Dev</span></div>
+              <h4 class="kanban-card-title">CI/CD pipeline</h4>
+              <p class="kanban-card-desc">GitHub Actions setup</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:var(--color-gradient-start)">ML</div>
+                <span class="kanban-card-date">Feb 22</span>
+              </div>
+            </article>
+            <article class="kanban-card kanban-card-done" draggable="true">
+              <div class="kanban-card-tags"><span class="tag tag-sm">Content</span></div>
+              <h4 class="kanban-card-title">Copywriting guide</h4>
+              <p class="kanban-card-desc">Tone and voice documentation</p>
+              <div class="kanban-card-footer">
+                <div class="avatar-xs" style="background:#8B7355">RS</div>
+                <span class="kanban-card-date">Feb 20</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHITEBOARD VIEW ========== -->
+    <section class="view" id="whiteboard" data-view="whiteboard">
+      <div class="view-header">
+        <h1 class="view-title">Whiteboard</h1>
+        <p class="view-subtitle">Freeform visual thinking space</p>
+      </div>
+      <div class="bento-grid bento-whiteboard">
+        <article class="bento-tile tile-wide tile-tall tile-whiteboard-canvas">
+          <div class="whiteboard-toolbar">
+            <button class="wb-tool active" data-tool="select" title="Select">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M3 2l10 6-4 1.5L7.5 14z"/></svg>
+            </button>
+            <button class="wb-tool" data-tool="pen" title="Pen">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M13.5 2.5l2 2-9 9-3 1 1-3z"/></svg>
+            </button>
+            <button class="wb-tool" data-tool="rect" title="Rectangle">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="12" height="10" rx="1"/></svg>
+            </button>
+            <button class="wb-tool" data-tool="circle" title="Circle">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="9" r="6"/></svg>
+            </button>
+            <button class="wb-tool" data-tool="text" title="Text">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M4 4h10v2H10v8H8V6H4V4z"/></svg>
+            </button>
+            <span class="wb-divider"></span>
+            <button class="wb-tool" data-tool="undo" title="Undo">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M6 8l-4 3 4 3V8zm2 0v6c4 0 7-1.5 7-3S12 8 8 8z"/></svg>
+            </button>
+          </div>
+          <canvas id="whiteboard-canvas" class="wb-canvas"></canvas>
+        </article>
+        <article class="bento-tile tile-whiteboard-layers" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Layers</h3>
+          </div>
+          <ul class="layer-list">
+            <li class="layer-item layer-active">
+              <span class="layer-visibility">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 3C3.5 3 1 7 1 7s2.5 4 6 4 6-4 6-4-2.5-4-6-4zm0 6a2 2 0 110-4 2 2 0 010 4z"/></svg>
+              </span>
+              <span class="layer-name">Wireframe Sketch</span>
+            </li>
+            <li class="layer-item">
+              <span class="layer-visibility">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 3C3.5 3 1 7 1 7s2.5 4 6 4 6-4 6-4-2.5-4-6-4zm0 6a2 2 0 110-4 2 2 0 010 4z"/></svg>
+              </span>
+              <span class="layer-name">Annotations</span>
+            </li>
+            <li class="layer-item">
+              <span class="layer-visibility">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 3C3.5 3 1 7 1 7s2.5 4 6 4 6-4 6-4-2.5-4-6-4zm0 6a2 2 0 110-4 2 2 0 010 4z"/></svg>
+              </span>
+              <span class="layer-name">Background Grid</span>
+            </li>
+          </ul>
+        </article>
+        <article class="bento-tile tile-whiteboard-colors" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Palette</h3>
+          </div>
+          <div class="wb-color-grid">
+            <button class="wb-color-swatch active" style="background:#2D2A26" title="Dark brown"></button>
+            <button class="wb-color-swatch" style="background:#E8734A" title="Coral"></button>
+            <button class="wb-color-swatch" style="background:#FFB347" title="Amber"></button>
+            <button class="wb-color-swatch" style="background:#B8860B" title="Goldenrod"></button>
+            <button class="wb-color-swatch" style="background:#5a9e6f" title="Green"></button>
+            <button class="wb-color-swatch" style="background:#4A90D9" title="Blue"></button>
+            <button class="wb-color-swatch" style="background:#9B59B6" title="Purple"></button>
+            <button class="wb-color-swatch" style="background:#FFFFFF; border: 1px solid #ddd" title="White"></button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== SCHEMA VIEW ========== -->
+    <section class="view" id="schema" data-view="schema">
+      <div class="view-header">
+        <h1 class="view-title">Schema Planner</h1>
+        <p class="view-subtitle">Design your data architecture</p>
+      </div>
+      <div class="bento-grid bento-schema">
+        <article class="bento-tile tile-wide tile-schema-editor" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Entity Editor</h3>
+            <div class="schema-actions">
+              <button class="btn btn-secondary btn-sm">+ Add Field</button>
+              <button class="btn btn-ghost btn-sm">Export</button>
+            </div>
+          </div>
+          <div class="schema-table-wrapper">
+            <table class="schema-table">
+              <thead>
+                <tr>
+                  <th>Field Name</th>
+                  <th>Type</th>
+                  <th>Required</th>
+                  <th>Default</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id</code></td>
+                  <td><span class="type-badge">string</span></td>
+                  <td><span class="required-check">Yes</span></td>
+                  <td><code>uuid()</code></td>
+                  <td>Unique identifier</td>
+                </tr>
+                <tr>
+                  <td><code>title</code></td>
+                  <td><span class="type-badge">string</span></td>
+                  <td><span class="required-check">Yes</span></td>
+                  <td>-</td>
+                  <td>Idea title</td>
+                </tr>
+                <tr>
+                  <td><code>description</code></td>
+                  <td><span class="type-badge">text</span></td>
+                  <td><span class="required-no">No</span></td>
+                  <td><code>""</code></td>
+                  <td>Detailed description</td>
+                </tr>
+                <tr>
+                  <td><code>status</code></td>
+                  <td><span class="type-badge type-enum">enum</span></td>
+                  <td><span class="required-check">Yes</span></td>
+                  <td><code>"draft"</code></td>
+                  <td>Current status</td>
+                </tr>
+                <tr>
+                  <td><code>priority</code></td>
+                  <td><span class="type-badge type-num">number</span></td>
+                  <td><span class="required-no">No</span></td>
+                  <td><code>0</code></td>
+                  <td>Priority level (0-5)</td>
+                </tr>
+                <tr>
+                  <td><code>created_at</code></td>
+                  <td><span class="type-badge type-date">datetime</span></td>
+                  <td><span class="required-check">Yes</span></td>
+                  <td><code>now()</code></td>
+                  <td>Creation timestamp</td>
+                </tr>
+                <tr>
+                  <td><code>tags</code></td>
+                  <td><span class="type-badge type-arr">array</span></td>
+                  <td><span class="required-no">No</span></td>
+                  <td><code>[]</code></td>
+                  <td>Associated tags</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-schema-entities" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Entities</h3>
+          </div>
+          <ul class="entity-list">
+            <li class="entity-item entity-active">
+              <span class="entity-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="12" height="12" rx="2"/></svg>
+              </span>
+              <span class="entity-name">Idea</span>
+              <span class="entity-fields">7 fields</span>
+            </li>
+            <li class="entity-item">
+              <span class="entity-icon" style="color:var(--color-secondary)">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="12" height="12" rx="2"/></svg>
+              </span>
+              <span class="entity-name">Project</span>
+              <span class="entity-fields">9 fields</span>
+            </li>
+            <li class="entity-item">
+              <span class="entity-icon" style="color:var(--color-gradient-start)">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="12" height="12" rx="2"/></svg>
+              </span>
+              <span class="entity-name">User</span>
+              <span class="entity-fields">6 fields</span>
+            </li>
+            <li class="entity-item">
+              <span class="entity-icon" style="color:#8B7355">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="12" height="12" rx="2"/></svg>
+              </span>
+              <span class="entity-name">Comment</span>
+              <span class="entity-fields">5 fields</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="bento-tile tile-schema-relations" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Relations</h3>
+          </div>
+          <ul class="relation-list">
+            <li class="relation-item">
+              <code>Idea</code>
+              <span class="relation-arrow">belongs to</span>
+              <code>Project</code>
+            </li>
+            <li class="relation-item">
+              <code>Idea</code>
+              <span class="relation-arrow">has many</span>
+              <code>Comment</code>
+            </li>
+            <li class="relation-item">
+              <code>Project</code>
+              <span class="relation-arrow">has many</span>
+              <code>User</code>
+            </li>
+            <li class="relation-item">
+              <code>User</code>
+              <span class="relation-arrow">has many</span>
+              <code>Idea</code>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== DIRECTORY TREE VIEW ========== -->
+    <section class="view" id="directory" data-view="directory">
+      <div class="view-header">
+        <h1 class="view-title">Directory Tree</h1>
+        <p class="view-subtitle">Navigate your project structure</p>
+      </div>
+      <div class="bento-grid bento-directory">
+        <article class="bento-tile tile-wide tile-directory-tree" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Project Files</h3>
+            <div class="directory-search">
+              <input type="text" class="dir-search-input" placeholder="Search files...">
+            </div>
+          </div>
+          <div class="tree-container">
+            <ul class="tree">
+              <li class="tree-node tree-folder tree-open">
+                <span class="tree-toggle" tabindex="0" role="button" aria-expanded="true">
+                  <span class="tree-icon folder-icon"></span>
+                  <span class="tree-label">idea-management/</span>
+                </span>
+                <ul class="tree-children">
+                  <li class="tree-node tree-folder tree-open">
+                    <span class="tree-toggle" tabindex="0" role="button" aria-expanded="true">
+                      <span class="tree-icon folder-icon"></span>
+                      <span class="tree-label">src/</span>
+                    </span>
+                    <ul class="tree-children">
+                      <li class="tree-node tree-folder">
+                        <span class="tree-toggle" tabindex="0" role="button" aria-expanded="false">
+                          <span class="tree-icon folder-icon"></span>
+                          <span class="tree-label">components/</span>
+                        </span>
+                        <ul class="tree-children">
+                          <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">Dashboard.tsx</span></li>
+                          <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">Kanban.tsx</span></li>
+                          <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">Sidebar.tsx</span></li>
+                        </ul>
+                      </li>
+                      <li class="tree-node tree-folder">
+                        <span class="tree-toggle" tabindex="0" role="button" aria-expanded="false">
+                          <span class="tree-icon folder-icon"></span>
+                          <span class="tree-label">hooks/</span>
+                        </span>
+                        <ul class="tree-children">
+                          <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">useAuth.ts</span></li>
+                          <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">useProjects.ts</span></li>
+                        </ul>
+                      </li>
+                      <li class="tree-node tree-folder">
+                        <span class="tree-toggle" tabindex="0" role="button" aria-expanded="false">
+                          <span class="tree-icon folder-icon"></span>
+                          <span class="tree-label">utils/</span>
+                        </span>
+                        <ul class="tree-children">
+                          <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">api.ts</span></li>
+                          <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">helpers.ts</span></li>
+                        </ul>
+                      </li>
+                      <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">App.tsx</span></li>
+                      <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">index.tsx</span></li>
+                    </ul>
+                  </li>
+                  <li class="tree-node tree-folder">
+                    <span class="tree-toggle" tabindex="0" role="button" aria-expanded="false">
+                      <span class="tree-icon folder-icon"></span>
+                      <span class="tree-label">convex/</span>
+                    </span>
+                    <ul class="tree-children">
+                      <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">schema.ts</span></li>
+                      <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">ideas.ts</span></li>
+                      <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">projects.ts</span></li>
+                    </ul>
+                  </li>
+                  <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">package.json</span></li>
+                  <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">tsconfig.json</span></li>
+                  <li class="tree-node tree-file"><span class="tree-icon file-icon"></span><span class="tree-label">README.md</span></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-directory-info" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">File Details</h3>
+          </div>
+          <div class="file-detail">
+            <div class="file-detail-name">Dashboard.tsx</div>
+            <dl class="file-detail-meta">
+              <dt>Size</dt><dd>4.2 KB</dd>
+              <dt>Modified</dt><dd>Mar 3, 2026</dd>
+              <dt>Type</dt><dd>TypeScript React</dd>
+              <dt>Lines</dt><dd>142</dd>
+            </dl>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-directory-stats tile-gradient" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Project Stats</h3>
+          </div>
+          <div class="dir-stats">
+            <div class="dir-stat-item">
+              <span class="dir-stat-value">38</span>
+              <span class="dir-stat-label">Files</span>
+            </div>
+            <div class="dir-stat-item">
+              <span class="dir-stat-value">12</span>
+              <span class="dir-stat-label">Folders</span>
+            </div>
+            <div class="dir-stat-item">
+              <span class="dir-stat-value">2.8k</span>
+              <span class="dir-stat-label">Lines</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== IDEAS VIEW ========== -->
+    <section class="view" id="ideas" data-view="ideas">
+      <div class="view-header">
+        <h1 class="view-title">Ideas</h1>
+        <p class="view-subtitle">Capture and organize your creative sparks</p>
+        <button class="btn btn-primary">+ New Idea</button>
+      </div>
+      <div class="ideas-filters">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Active</button>
+        <button class="filter-btn">Archived</button>
+        <button class="filter-btn">Starred</button>
+        <input type="text" class="ideas-search" placeholder="Search ideas...">
+      </div>
+      <div class="bento-grid bento-ideas">
+        <article class="bento-tile tile-idea tile-gradient" data-expandable>
+          <div class="idea-header">
+            <span class="idea-category">Product</span>
+            <button class="idea-star starred" aria-label="Unstar idea">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6L15 6.3l-3.5 3.5.8 4.8L8 12.4l-4.3 2.2.8-4.8L1 6.3l4.8-.7z"/></svg>
+            </button>
+          </div>
+          <h3 class="idea-title">AI-Powered Idea Clustering</h3>
+          <p class="idea-desc">Use embeddings to automatically group similar ideas together and surface connections between projects.</p>
+          <div class="idea-footer">
+            <div class="idea-tags">
+              <span class="tag tag-sm">AI</span>
+              <span class="tag tag-sm">ML</span>
+            </div>
+            <span class="idea-date">Mar 4</span>
+          </div>
+          <div class="tile-expanded-content">
+            <div class="idea-notes">
+              <strong>Notes:</strong> Look into HDBSCAN for clustering. Could use OpenAI embeddings API.
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-idea" data-expandable>
+          <div class="idea-header">
+            <span class="idea-category">Design</span>
+            <button class="idea-star" aria-label="Star idea">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1l2.2 4.6L15 6.3l-3.5 3.5.8 4.8L8 12.4l-4.3 2.2.8-4.8L1 6.3l4.8-.7z"/></svg>
+            </button>
+          </div>
+          <h3 class="idea-title">Gesture-Based Whiteboard</h3>
+          <p class="idea-desc">Touch and stylus gestures for natural whiteboard interaction on tablets.</p>
+          <div class="idea-footer">
+            <div class="idea-tags">
+              <span class="tag tag-sm">UX</span>
+              <span class="tag tag-sm">Mobile</span>
+            </div>
+            <span class="idea-date">Mar 2</span>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-idea" data-expandable>
+          <div class="idea-header">
+            <span class="idea-category">Engineering</span>
+            <button class="idea-star" aria-label="Star idea">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1l2.2 4.6L15 6.3l-3.5 3.5.8 4.8L8 12.4l-4.3 2.2.8-4.8L1 6.3l4.8-.7z"/></svg>
+            </button>
+          </div>
+          <h3 class="idea-title">Real-Time Collaboration Engine</h3>
+          <p class="idea-desc">CRDT-based conflict-free editing for simultaneous multi-user document editing.</p>
+          <div class="idea-footer">
+            <div class="idea-tags">
+              <span class="tag tag-sm">Backend</span>
+              <span class="tag tag-sm">Sync</span>
+            </div>
+            <span class="idea-date">Feb 28</span>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-idea tile-gradient" data-expandable>
+          <div class="idea-header">
+            <span class="idea-category">Growth</span>
+            <button class="idea-star starred" aria-label="Unstar idea">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6L15 6.3l-3.5 3.5.8 4.8L8 12.4l-4.3 2.2.8-4.8L1 6.3l4.8-.7z"/></svg>
+            </button>
+          </div>
+          <h3 class="idea-title">Template Marketplace</h3>
+          <p class="idea-desc">Community-driven template sharing for project structures, kanban boards, and schema patterns.</p>
+          <div class="idea-footer">
+            <div class="idea-tags">
+              <span class="tag tag-sm">Community</span>
+              <span class="tag tag-sm">Revenue</span>
+            </div>
+            <span class="idea-date">Feb 25</span>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-idea" data-expandable>
+          <div class="idea-header">
+            <span class="idea-category">Product</span>
+            <button class="idea-star" aria-label="Star idea">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1l2.2 4.6L15 6.3l-3.5 3.5.8 4.8L8 12.4l-4.3 2.2.8-4.8L1 6.3l4.8-.7z"/></svg>
+            </button>
+          </div>
+          <h3 class="idea-title">Smart Notifications</h3>
+          <p class="idea-desc">Context-aware notification system that learns user preferences and avoids alert fatigue.</p>
+          <div class="idea-footer">
+            <div class="idea-tags">
+              <span class="tag tag-sm">AI</span>
+              <span class="tag tag-sm">UX</span>
+            </div>
+            <span class="idea-date">Feb 22</span>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-idea" data-expandable>
+          <div class="idea-header">
+            <span class="idea-category">Design</span>
+            <button class="idea-star" aria-label="Star idea">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1l2.2 4.6L15 6.3l-3.5 3.5.8 4.8L8 12.4l-4.3 2.2.8-4.8L1 6.3l4.8-.7z"/></svg>
+            </button>
+          </div>
+          <h3 class="idea-title">Dark Mode Theme Engine</h3>
+          <p class="idea-desc">Dynamic theme system with automatic palette generation from a single brand color.</p>
+          <div class="idea-footer">
+            <div class="idea-tags">
+              <span class="tag tag-sm">Theming</span>
+              <span class="tag tag-sm">A11y</span>
+            </div>
+            <span class="idea-date">Feb 18</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== AI CHAT VIEW ========== -->
+    <section class="view" id="chat" data-view="chat">
+      <div class="view-header">
+        <h1 class="view-title">AI Chat</h1>
+        <p class="view-subtitle">Your creative thinking partner</p>
+      </div>
+      <div class="bento-grid bento-chat">
+        <article class="bento-tile tile-wide tile-tall tile-chat-main">
+          <div class="chat-messages" id="chat-messages">
+            <div class="chat-msg chat-msg-ai">
+              <div class="chat-avatar chat-avatar-ai">AI</div>
+              <div class="chat-bubble chat-bubble-ai">
+                <p>Hello! I'm your creative assistant. I can help you brainstorm ideas, refine concepts, organize projects, or explore design directions. What would you like to work on today?</p>
+              </div>
+            </div>
+            <div class="chat-msg chat-msg-user">
+              <div class="chat-bubble chat-bubble-user">
+                <p>I need help brainstorming features for our mobile app v2. We want to focus on offline-first capabilities.</p>
+              </div>
+              <div class="chat-avatar chat-avatar-user">You</div>
+            </div>
+            <div class="chat-msg chat-msg-ai">
+              <div class="chat-avatar chat-avatar-ai">AI</div>
+              <div class="chat-bubble chat-bubble-ai">
+                <p>Great focus area! Here are some offline-first feature ideas:</p>
+                <ul>
+                  <li><strong>Local-first data sync</strong> using CRDTs for conflict-free merging</li>
+                  <li><strong>Offline idea capture</strong> with rich text, voice notes, and sketches</li>
+                  <li><strong>Background sync queue</strong> that batches and retries when connectivity returns</li>
+                  <li><strong>Cached project views</strong> with last-synced timestamps</li>
+                  <li><strong>Progressive image loading</strong> with low-res placeholders</li>
+                </ul>
+                <p>Would you like me to explore any of these in more detail?</p>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <div class="chat-input-wrapper">
+              <textarea class="chat-input" id="chat-input" placeholder="Type your message..." rows="1"></textarea>
+              <button class="chat-send-btn" id="chat-send-btn" aria-label="Send message">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M2 10l16-8-4 8 4 8z"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-chat-history" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Chat History</h3>
+          </div>
+          <ul class="chat-history-list">
+            <li class="chat-history-item active">
+              <span class="chat-history-title">Mobile App Features</span>
+              <span class="chat-history-date">Today</span>
+            </li>
+            <li class="chat-history-item">
+              <span class="chat-history-title">Brand Color Exploration</span>
+              <span class="chat-history-date">Yesterday</span>
+            </li>
+            <li class="chat-history-item">
+              <span class="chat-history-title">Schema Design Review</span>
+              <span class="chat-history-date">Mar 2</span>
+            </li>
+            <li class="chat-history-item">
+              <span class="chat-history-title">Competitor Analysis</span>
+              <span class="chat-history-date">Feb 28</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="bento-tile tile-chat-suggestions" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Suggested Prompts</h3>
+          </div>
+          <div class="suggestion-chips">
+            <button class="suggestion-chip">Brainstorm new features</button>
+            <button class="suggestion-chip">Review project plan</button>
+            <button class="suggestion-chip">Generate user stories</button>
+            <button class="suggestion-chip">Design critique</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS VIEW ========== -->
+    <section class="view" id="settings" data-view="settings">
+      <div class="view-header">
+        <h1 class="view-title">Settings</h1>
+        <p class="view-subtitle">Customize your experience</p>
+      </div>
+      <div class="bento-grid bento-settings">
+        <article class="bento-tile tile-wide tile-settings-profile" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Profile</h3>
+          </div>
+          <div class="settings-profile">
+            <div class="settings-avatar">
+              <div class="avatar-lg" style="background: linear-gradient(135deg, var(--color-gradient-start), var(--color-accent))">JD</div>
+              <button class="btn btn-ghost btn-sm">Change Photo</button>
+            </div>
+            <div class="settings-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="settings-name">Full Name</label>
+                  <input type="text" id="settings-name" class="form-input" value="Jordan Davis">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="settings-email">Email</label>
+                  <input type="email" id="settings-email" class="form-input" value="jordan@ideaflow.io">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="settings-role">Role</label>
+                  <input type="text" id="settings-role" class="form-input" value="Product Designer">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="settings-timezone">Timezone</label>
+                  <select id="settings-timezone" class="form-input">
+                    <option>UTC-8 (Pacific)</option>
+                    <option selected>UTC-5 (Eastern)</option>
+                    <option>UTC+0 (GMT)</option>
+                    <option>UTC+1 (CET)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-settings-appearance" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Appearance</h3>
+          </div>
+          <div class="settings-appearance">
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-name">Theme</span>
+                <span class="setting-desc">Choose light or dark mode</span>
+              </div>
+              <div class="theme-toggle-group">
+                <button class="theme-btn active">Light</button>
+                <button class="theme-btn">Dark</button>
+                <button class="theme-btn">Auto</button>
+              </div>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-name">Accent Color</span>
+                <span class="setting-desc">Personalize your interface</span>
+              </div>
+              <div class="accent-picker">
+                <button class="accent-swatch active" style="background:#E8734A"></button>
+                <button class="accent-swatch" style="background:#4A90D9"></button>
+                <button class="accent-swatch" style="background:#9B59B6"></button>
+                <button class="accent-swatch" style="background:#5a9e6f"></button>
+              </div>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-name">Compact Mode</span>
+                <span class="setting-desc">Reduce spacing for denser layout</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" class="toggle-input">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-settings-notifications" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Notifications</h3>
+          </div>
+          <div class="settings-notifications">
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-name">Email Digests</span>
+                <span class="setting-desc">Weekly summary of activity</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" class="toggle-input" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-name">Push Notifications</span>
+                <span class="setting-desc">Real-time browser alerts</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" class="toggle-input" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-name">Sound Effects</span>
+                <span class="setting-desc">Notification sounds</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" class="toggle-input">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-name">Mentions Only</span>
+                <span class="setting-desc">Only notify on direct mentions</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" class="toggle-input">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-tile tile-settings-save" data-expandable>
+          <div class="tile-header">
+            <h3 class="tile-chart-title">Actions</h3>
+          </div>
+          <div class="settings-actions">
+            <button class="btn btn-primary btn-block">Save Changes</button>
+            <button class="btn btn-secondary btn-block">Export Data</button>
+            <button class="btn btn-ghost btn-block btn-danger">Delete Account</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

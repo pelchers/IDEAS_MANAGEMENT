@@ -1,0 +1,71 @@
+{
+  "concept": "Swiss Style — Pass 2",
+  "pass": "2",
+  "domain": "frontend-concept",
+  "style": "Swiss Style",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "AOS", "version": "2.3.4", "url": "https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" },
+    { "library": "AOS CSS", "version": "2.3.4", "url": "https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" },
+    { "library": "Chart.js", "version": "4.4.7", "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" },
+    { "library": "SortableJS", "version": "1.15.6", "url": "https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js" }
+  ],
+  "fonts": ["Inter", "JetBrains Mono"],
+  "sections": [
+    { "id": "view-dashboard", "name": "Dashboard", "description": "Stats grid (6-column), bar chart for idea volume, doughnut for categories, activity table" },
+    { "id": "view-projects", "name": "Projects", "description": "Filterable data table with progress bars, status badges, project metadata" },
+    { "id": "view-workspace", "name": "Workspace", "description": "Split-panel editor with rich text toolbar, properties sidebar, activity feed" },
+    { "id": "view-kanban", "name": "Kanban", "description": "5-column drag-and-drop board (Backlog, To Do, In Progress, Review, Done)" },
+    { "id": "view-whiteboard", "name": "Whiteboard", "description": "SVG canvas with tool palette, grid background, pre-placed architecture diagram" },
+    { "id": "view-schema", "name": "Schema Planner", "description": "6-entity ER diagram grid with PK/FK indicators and data types" },
+    { "id": "view-directory", "name": "Directory Tree", "description": "Collapsible file tree with file type icons, sizes, and indentation" },
+    { "id": "view-ideas", "name": "Ideas", "description": "3-column card grid with priority indicators, votes, tags, descriptions" },
+    { "id": "view-chat", "name": "AI Chat", "description": "Message feed with user/AI avatars, inline data table, input area" },
+    { "id": "view-settings", "name": "Settings", "description": "Tabbed panel (General, Appearance, Notifications, Integrations, Team, Billing)" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#000000",
+      "secondary": "#F0F0F0",
+      "accent": "#D72638",
+      "background": "#FAFAFA",
+      "surface": "#FFFFFF",
+      "text": "#111111",
+      "muted": "#888888",
+      "border": "#E0E0E0"
+    },
+    "typography": {
+      "headingFamily": "Inter",
+      "bodyFamily": "Inter",
+      "monoFamily": "JetBrains Mono",
+      "headingWeight": "800",
+      "bodySize": "16px",
+      "lineHeight": "1.5"
+    },
+    "borderRadius": "2px",
+    "transition": "180ms ease"
+  },
+  "coreFlags": {
+    "layoutArchetype": "sidebar-driven",
+    "navigationModel": "sticky-top-bar",
+    "informationDensity": "high-data-dense",
+    "animationPhilosophy": "scroll-reveal-parallax",
+    "colorTemperature": "monochromatic"
+  },
+  "subagentFlags": {
+    "gridSystem": "1px-gap-border-grid (timetable aesthetic)",
+    "typographicHierarchy": "4-level strict: 24px/16px/13px/11px",
+    "dataPresentation": "compact-table-first with mono-font data columns",
+    "accentUsage": "surgical-red — active states, priority indicators, schema highlights only",
+    "sidebarDesign": "black-panel-220px with red left-border active indicator",
+    "cardStyle": "borderless-within-border-grid (cards share 1px borders)",
+    "interactionModel": "hover-reveal with subtle background shifts"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum (black text on white/near-white backgrounds)",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T00:00:00Z"
+}

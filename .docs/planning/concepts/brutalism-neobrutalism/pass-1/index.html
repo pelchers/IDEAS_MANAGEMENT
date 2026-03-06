@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDEA MGMT // Brutalism &amp; Neobrutalism — Pass 1</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- CDN Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <!-- ============================================ -->
+  <!-- HAMBURGER BUTTON (always visible)            -->
+  <!-- ============================================ -->
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </button>
+
+  <!-- ============================================ -->
+  <!-- NAVIGATION DRAWER                            -->
+  <!-- ============================================ -->
+  <nav class="nav-drawer" id="navDrawer" aria-label="Main navigation">
+    <div class="nav-drawer-header">
+      <div class="nav-logo">
+        <span class="nav-logo-icon">&#9670;</span>
+        <span class="nav-logo-text">IDEA<br>MGMT</span>
+      </div>
+      <button class="nav-close-btn" id="navCloseBtn" aria-label="Close navigation">&#10005;</button>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#dashboard" class="nav-link active" data-view="dashboard"><span class="nav-link-num">01</span> Dashboard</a></li>
+      <li><a href="#projects" class="nav-link" data-view="projects"><span class="nav-link-num">02</span> Projects</a></li>
+      <li><a href="#workspace" class="nav-link" data-view="workspace"><span class="nav-link-num">03</span> Workspace</a></li>
+      <li><a href="#kanban" class="nav-link" data-view="kanban"><span class="nav-link-num">04</span> Kanban</a></li>
+      <li><a href="#whiteboard" class="nav-link" data-view="whiteboard"><span class="nav-link-num">05</span> Whiteboard</a></li>
+      <li><a href="#schema" class="nav-link" data-view="schema"><span class="nav-link-num">06</span> Schema</a></li>
+      <li><a href="#directory-tree" class="nav-link" data-view="directory-tree"><span class="nav-link-num">07</span> Directory</a></li>
+      <li><a href="#ideas" class="nav-link" data-view="ideas"><span class="nav-link-num">08</span> Ideas</a></li>
+      <li><a href="#ai-chat" class="nav-link" data-view="ai-chat"><span class="nav-link-num">09</span> AI Chat</a></li>
+      <li><a href="#settings" class="nav-link" data-view="settings"><span class="nav-link-num">10</span> Settings</a></li>
+    </ul>
+    <div class="nav-drawer-footer">
+      <div class="nav-user">
+        <div class="nav-user-avatar">JD</div>
+        <div class="nav-user-info">
+          <span class="nav-user-name">Jane Doe</span>
+          <span class="nav-user-role">Admin</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================ -->
+  <!-- OVERLAY (behind drawer)                      -->
+  <!-- ============================================ -->
+  <div class="nav-overlay" id="navOverlay"></div>
+
+  <!-- ============================================ -->
+  <!-- TOP BAR                                      -->
+  <!-- ============================================ -->
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <span class="top-bar-crumb" id="viewTitle">DASHBOARD</span>
+    </div>
+    <div class="top-bar-right">
+      <div class="top-bar-search">
+        <input type="text" placeholder="SEARCH..." class="search-input" aria-label="Search">
+      </div>
+      <button class="top-bar-notif" aria-label="Notifications">
+        <span class="notif-dot"></span>
+        &#9872;
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================ -->
+  <!-- MAIN CONTENT                                 -->
+  <!-- ============================================ -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ========== DASHBOARD VIEW ========== -->
+    <section class="view" id="dashboard">
+      <div class="view-header">
+        <h1 class="view-title">DASHBOARD</h1>
+        <p class="view-subtitle">System overview and recent activity</p>
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats-row">
+        <div class="stat-card stat-card--orange">
+          <div class="stat-number">47</div>
+          <div class="stat-label">TOTAL IDEAS</div>
+          <div class="stat-trend stat-trend--up">+12%</div>
+        </div>
+        <div class="stat-card stat-card--green">
+          <div class="stat-number">6</div>
+          <div class="stat-label">ACTIVE PROJECTS</div>
+          <div class="stat-trend stat-trend--up">+2</div>
+        </div>
+        <div class="stat-card stat-card--pink">
+          <div class="stat-number">18</div>
+          <div class="stat-label">TASKS IN PROGRESS</div>
+          <div class="stat-trend stat-trend--down">-3</div>
+        </div>
+        <div class="stat-card stat-card--white">
+          <div class="stat-number">89%</div>
+          <div class="stat-label">COMPLETION RATE</div>
+          <div class="stat-trend stat-trend--up">+5%</div>
+        </div>
+      </div>
+
+      <!-- Chart + Activity -->
+      <div class="dashboard-grid">
+        <div class="brutalist-card chart-card">
+          <h2 class="card-title">WEEKLY ACTIVITY</h2>
+          <div class="chart-container">
+            <canvas id="dashboardChart"></canvas>
+          </div>
+        </div>
+        <div class="brutalist-card activity-card">
+          <h2 class="card-title">RECENT ACTIVITY</h2>
+          <ul class="activity-list" id="activityList">
+            <!-- populated by JS -->
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS VIEW ========== -->
+    <section class="view" id="projects">
+      <div class="view-header">
+        <h1 class="view-title">PROJECTS</h1>
+        <button class="brutalist-btn brutalist-btn--primary">+ NEW PROJECT</button>
+      </div>
+      <div class="projects-grid" id="projectsGrid">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <!-- ========== WORKSPACE VIEW ========== -->
+    <section class="view" id="workspace">
+      <div class="view-header">
+        <h1 class="view-title">WORKSPACE</h1>
+        <div class="workspace-tabs">
+          <button class="brutalist-tab active" data-tab="editor">EDITOR</button>
+          <button class="brutalist-tab" data-tab="preview">PREVIEW</button>
+          <button class="brutalist-tab" data-tab="notes">NOTES</button>
+        </div>
+      </div>
+      <div class="workspace-area">
+        <div class="workspace-panel workspace-panel--editor active" data-panel="editor">
+          <div class="workspace-toolbar">
+            <button class="toolbar-btn">B</button>
+            <button class="toolbar-btn">I</button>
+            <button class="toolbar-btn">U</button>
+            <button class="toolbar-btn">H1</button>
+            <button class="toolbar-btn">H2</button>
+            <button class="toolbar-btn">&#9776;</button>
+            <button class="toolbar-btn">&#128206;</button>
+          </div>
+          <div class="workspace-editor" contenteditable="true" role="textbox" aria-label="Content editor">
+            <h2>Project Architecture Notes</h2>
+            <p>The system uses a modular approach with clear separation between the frontend presentation layer and the Convex backend. Each view operates as an independent module that communicates through a shared state management layer built on Zustand.</p>
+            <p>Key considerations for the next iteration include implementing real-time collaboration via Convex subscriptions and adding optimistic updates for the kanban board interactions.</p>
+          </div>
+        </div>
+        <div class="workspace-panel workspace-panel--preview" data-panel="preview">
+          <div class="preview-content">
+            <div class="brutalist-card">
+              <h3>RENDERED PREVIEW</h3>
+              <p>This is a live preview of the editor content rendered with the selected theme and formatting options applied.</p>
+              <div class="preview-placeholder">
+                <svg viewBox="0 0 400 200" class="rough-placeholder" id="workspaceRoughSvg"></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="workspace-panel workspace-panel--notes" data-panel="notes">
+          <div class="notes-list">
+            <div class="brutalist-card note-card">
+              <span class="note-time">2h ago</span>
+              <p>Remember to check contrast ratios on the kanban view cards</p>
+            </div>
+            <div class="brutalist-card note-card">
+              <span class="note-time">5h ago</span>
+              <p>Schema planner needs drag-and-drop between entities</p>
+            </div>
+            <div class="brutalist-card note-card">
+              <span class="note-time">1d ago</span>
+              <p>Consider adding keyboard shortcuts for power users</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== KANBAN VIEW ========== -->
+    <section class="view" id="kanban">
+      <div class="view-header">
+        <h1 class="view-title">KANBAN</h1>
+        <button class="brutalist-btn brutalist-btn--primary">+ ADD CARD</button>
+      </div>
+      <div class="kanban-board" id="kanbanBoard">
+        <div class="kanban-column" data-status="backlog">
+          <div class="kanban-column-header kanban-column-header--backlog">
+            <h3>BACKLOG</h3>
+            <span class="kanban-count">3</span>
+          </div>
+          <div class="kanban-cards" id="kanbanBacklog">
+            <!-- populated by JS -->
+          </div>
+        </div>
+        <div class="kanban-column" data-status="todo">
+          <div class="kanban-column-header kanban-column-header--todo">
+            <h3>TO DO</h3>
+            <span class="kanban-count">3</span>
+          </div>
+          <div class="kanban-cards" id="kanbanTodo">
+            <!-- populated by JS -->
+          </div>
+        </div>
+        <div class="kanban-column" data-status="progress">
+          <div class="kanban-column-header kanban-column-header--progress">
+            <h3>IN PROGRESS</h3>
+            <span class="kanban-count">3</span>
+          </div>
+          <div class="kanban-cards" id="kanbanProgress">
+            <!-- populated by JS -->
+          </div>
+        </div>
+        <div class="kanban-column" data-status="done">
+          <div class="kanban-column-header kanban-column-header--done">
+            <h3>DONE</h3>
+            <span class="kanban-count">3</span>
+          </div>
+          <div class="kanban-cards" id="kanbanDone">
+            <!-- populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHITEBOARD VIEW ========== -->
+    <section class="view" id="whiteboard">
+      <div class="view-header">
+        <h1 class="view-title">WHITEBOARD</h1>
+        <div class="whiteboard-tools">
+          <button class="brutalist-btn tool-btn active" data-tool="select" title="Select">&#9754;</button>
+          <button class="brutalist-btn tool-btn" data-tool="draw" title="Draw">&#9998;</button>
+          <button class="brutalist-btn tool-btn" data-tool="rect" title="Rectangle">&#9633;</button>
+          <button class="brutalist-btn tool-btn" data-tool="text" title="Text">T</button>
+          <button class="brutalist-btn tool-btn" data-tool="sticky" title="Sticky Note">&#9632;</button>
+        </div>
+      </div>
+      <div class="whiteboard-canvas-wrap">
+        <canvas id="whiteboardCanvas" width="1200" height="600"></canvas>
+        <div class="whiteboard-stickies" id="whiteboardStickies">
+          <div class="sticky-note sticky-note--yellow" style="left:60px;top:40px;" data-draggable>
+            <p>User flow for onboarding</p>
+          </div>
+          <div class="sticky-note sticky-note--orange" style="left:280px;top:120px;" data-draggable>
+            <p>API rate limiting strategy</p>
+          </div>
+          <div class="sticky-note sticky-note--green" style="left:520px;top:60px;" data-draggable>
+            <p>Dashboard layout v2</p>
+          </div>
+          <div class="sticky-note sticky-note--pink" style="left:180px;top:280px;" data-draggable>
+            <p>Auth flow with Clerk</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCHEMA VIEW ========== -->
+    <section class="view" id="schema">
+      <div class="view-header">
+        <h1 class="view-title">SCHEMA PLANNER</h1>
+        <button class="brutalist-btn brutalist-btn--primary">+ ADD ENTITY</button>
+      </div>
+      <div class="schema-grid" id="schemaGrid">
+        <div class="schema-entity">
+          <div class="schema-entity-header">USERS</div>
+          <ul class="schema-fields">
+            <li><code>id</code> <span class="field-type">string</span> <span class="field-badge field-badge--pk">PK</span></li>
+            <li><code>name</code> <span class="field-type">string</span></li>
+            <li><code>email</code> <span class="field-type">string</span> <span class="field-badge field-badge--unique">UQ</span></li>
+            <li><code>role</code> <span class="field-type">enum</span></li>
+            <li><code>createdAt</code> <span class="field-type">datetime</span></li>
+          </ul>
+        </div>
+        <div class="schema-entity">
+          <div class="schema-entity-header">PROJECTS</div>
+          <ul class="schema-fields">
+            <li><code>id</code> <span class="field-type">string</span> <span class="field-badge field-badge--pk">PK</span></li>
+            <li><code>title</code> <span class="field-type">string</span></li>
+            <li><code>description</code> <span class="field-type">text</span></li>
+            <li><code>ownerId</code> <span class="field-type">string</span> <span class="field-badge field-badge--fk">FK</span></li>
+            <li><code>status</code> <span class="field-type">enum</span></li>
+            <li><code>dueDate</code> <span class="field-type">date</span></li>
+          </ul>
+        </div>
+        <div class="schema-entity">
+          <div class="schema-entity-header">IDEAS</div>
+          <ul class="schema-fields">
+            <li><code>id</code> <span class="field-type">string</span> <span class="field-badge field-badge--pk">PK</span></li>
+            <li><code>title</code> <span class="field-type">string</span></li>
+            <li><code>body</code> <span class="field-type">text</span></li>
+            <li><code>projectId</code> <span class="field-type">string</span> <span class="field-badge field-badge--fk">FK</span></li>
+            <li><code>tags</code> <span class="field-type">array</span></li>
+            <li><code>priority</code> <span class="field-type">enum</span></li>
+          </ul>
+        </div>
+        <div class="schema-entity">
+          <div class="schema-entity-header">TASKS</div>
+          <ul class="schema-fields">
+            <li><code>id</code> <span class="field-type">string</span> <span class="field-badge field-badge--pk">PK</span></li>
+            <li><code>title</code> <span class="field-type">string</span></li>
+            <li><code>status</code> <span class="field-type">enum</span></li>
+            <li><code>ideaId</code> <span class="field-type">string</span> <span class="field-badge field-badge--fk">FK</span></li>
+            <li><code>assigneeId</code> <span class="field-type">string</span> <span class="field-badge field-badge--fk">FK</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="schema-relations">
+        <svg id="schemaRelationsSvg" class="schema-svg"></svg>
+      </div>
+    </section>
+
+    <!-- ========== DIRECTORY TREE VIEW ========== -->
+    <section class="view" id="directory-tree">
+      <div class="view-header">
+        <h1 class="view-title">DIRECTORY TREE</h1>
+        <button class="brutalist-btn brutalist-btn--primary">+ NEW FOLDER</button>
+      </div>
+      <div class="directory-container">
+        <div class="brutalist-card directory-card">
+          <ul class="dir-tree" id="dirTree">
+            <li class="dir-item dir-item--folder open">
+              <span class="dir-toggle">&#9660;</span>
+              <span class="dir-icon">&#128193;</span>
+              <span class="dir-name">idea-management/</span>
+              <ul>
+                <li class="dir-item dir-item--folder open">
+                  <span class="dir-toggle">&#9660;</span>
+                  <span class="dir-icon">&#128193;</span>
+                  <span class="dir-name">src/</span>
+                  <ul>
+                    <li class="dir-item dir-item--folder">
+                      <span class="dir-toggle">&#9654;</span>
+                      <span class="dir-icon">&#128193;</span>
+                      <span class="dir-name">components/</span>
+                      <ul class="collapsed">
+                        <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">Dashboard.tsx</span></li>
+                        <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">Kanban.tsx</span></li>
+                        <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">Whiteboard.tsx</span></li>
+                      </ul>
+                    </li>
+                    <li class="dir-item dir-item--folder">
+                      <span class="dir-toggle">&#9654;</span>
+                      <span class="dir-icon">&#128193;</span>
+                      <span class="dir-name">hooks/</span>
+                      <ul class="collapsed">
+                        <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">useProjects.ts</span></li>
+                        <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">useAuth.ts</span></li>
+                      </ul>
+                    </li>
+                    <li class="dir-item dir-item--folder">
+                      <span class="dir-toggle">&#9654;</span>
+                      <span class="dir-icon">&#128193;</span>
+                      <span class="dir-name">convex/</span>
+                      <ul class="collapsed">
+                        <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">schema.ts</span></li>
+                        <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">projects.ts</span></li>
+                        <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">ideas.ts</span></li>
+                      </ul>
+                    </li>
+                    <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">app.tsx</span></li>
+                    <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">index.css</span></li>
+                  </ul>
+                </li>
+                <li class="dir-item dir-item--folder">
+                  <span class="dir-toggle">&#9654;</span>
+                  <span class="dir-icon">&#128193;</span>
+                  <span class="dir-name">public/</span>
+                  <ul class="collapsed">
+                    <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">favicon.ico</span></li>
+                    <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">robots.txt</span></li>
+                  </ul>
+                </li>
+                <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">package.json</span></li>
+                <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">tsconfig.json</span></li>
+                <li class="dir-item dir-item--file"><span class="dir-icon">&#128196;</span><span class="dir-name">.env.local</span></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="brutalist-card file-preview-card">
+          <h3 class="card-title">FILE PREVIEW</h3>
+          <div class="file-preview" id="filePreview">
+            <pre><code>// Select a file to preview its contents
+// Click any file in the directory tree</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== IDEAS VIEW ========== -->
+    <section class="view" id="ideas">
+      <div class="view-header">
+        <h1 class="view-title">IDEAS</h1>
+        <button class="brutalist-btn brutalist-btn--primary">+ CAPTURE IDEA</button>
+      </div>
+      <div class="ideas-filters">
+        <button class="filter-chip active">ALL</button>
+        <button class="filter-chip">FEATURE</button>
+        <button class="filter-chip">BUG FIX</button>
+        <button class="filter-chip">RESEARCH</button>
+        <button class="filter-chip">DESIGN</button>
+      </div>
+      <div class="ideas-grid" id="ideasGrid">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <!-- ========== AI CHAT VIEW ========== -->
+    <section class="view" id="ai-chat">
+      <div class="view-header">
+        <h1 class="view-title">AI CHAT</h1>
+        <span class="chat-status">&#9679; CONNECTED</span>
+      </div>
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <!-- populated by JS -->
+        </div>
+        <div class="chat-input-area">
+          <textarea class="chat-input" id="chatInput" placeholder="TYPE YOUR MESSAGE..." rows="2" aria-label="Chat message input"></textarea>
+          <button class="brutalist-btn brutalist-btn--primary chat-send-btn" id="chatSendBtn">SEND &#9654;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS VIEW ========== -->
+    <section class="view" id="settings">
+      <div class="view-header">
+        <h1 class="view-title">SETTINGS</h1>
+      </div>
+      <div class="settings-grid">
+        <div class="brutalist-card settings-section">
+          <h2 class="card-title">PROFILE</h2>
+          <form class="settings-form">
+            <div class="form-group">
+              <label class="form-label">DISPLAY NAME</label>
+              <input type="text" class="form-input" value="Jane Doe">
+            </div>
+            <div class="form-group">
+              <label class="form-label">EMAIL</label>
+              <input type="email" class="form-input" value="jane@example.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">BIO</label>
+              <textarea class="form-input form-textarea" rows="3">Product designer and idea collector. Building the future one concept at a time.</textarea>
+            </div>
+            <button type="button" class="brutalist-btn brutalist-btn--primary">SAVE CHANGES</button>
+          </form>
+        </div>
+        <div class="brutalist-card settings-section">
+          <h2 class="card-title">PREFERENCES</h2>
+          <div class="settings-toggles">
+            <div class="toggle-row">
+              <span class="toggle-label">DARK MODE</span>
+              <label class="brutalist-toggle">
+                <input type="checkbox">
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <div class="toggle-row">
+              <span class="toggle-label">EMAIL NOTIFICATIONS</span>
+              <label class="brutalist-toggle">
+                <input type="checkbox" checked>
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <div class="toggle-row">
+              <span class="toggle-label">PUSH NOTIFICATIONS</span>
+              <label class="brutalist-toggle">
+                <input type="checkbox" checked>
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <div class="toggle-row">
+              <span class="toggle-label">SOUND EFFECTS</span>
+              <label class="brutalist-toggle">
+                <input type="checkbox">
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="brutalist-card settings-section">
+          <h2 class="card-title">INTEGRATIONS</h2>
+          <div class="integrations-list">
+            <div class="integration-item">
+              <div class="integration-icon">&#9881;</div>
+              <div class="integration-info">
+                <span class="integration-name">GITHUB</span>
+                <span class="integration-status connected">Connected</span>
+              </div>
+              <button class="brutalist-btn brutalist-btn--small">DISCONNECT</button>
+            </div>
+            <div class="integration-item">
+              <div class="integration-icon">&#9993;</div>
+              <div class="integration-info">
+                <span class="integration-name">SLACK</span>
+                <span class="integration-status">Not connected</span>
+              </div>
+              <button class="brutalist-btn brutalist-btn--small brutalist-btn--primary">CONNECT</button>
+            </div>
+            <div class="integration-item">
+              <div class="integration-icon">&#9729;</div>
+              <div class="integration-info">
+                <span class="integration-name">STRIPE</span>
+                <span class="integration-status connected">Connected</span>
+              </div>
+              <button class="brutalist-btn brutalist-btn--small">DISCONNECT</button>
+            </div>
+          </div>
+        </div>
+        <div class="brutalist-card settings-section settings-danger">
+          <h2 class="card-title">DANGER ZONE</h2>
+          <p class="danger-text">These actions are irreversible. Proceed with extreme caution.</p>
+          <div class="danger-actions">
+            <button class="brutalist-btn brutalist-btn--danger">EXPORT ALL DATA</button>
+            <button class="brutalist-btn brutalist-btn--danger">DELETE ACCOUNT</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

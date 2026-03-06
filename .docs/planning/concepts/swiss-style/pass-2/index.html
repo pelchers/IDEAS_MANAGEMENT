@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea Management — Swiss Style Pass 2</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+  <!-- AOS CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="20" height="20" stroke="currentColor" stroke-width="2"/>
+          <line x1="2" y1="8" x2="22" y2="8" stroke="currentColor" stroke-width="2"/>
+          <line x1="8" y1="8" x2="8" y2="22" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <span class="sidebar-title">IDEA MGMT</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#dashboard" class="nav-item active" data-view="dashboard">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><rect x="1" y="1" width="7" height="7" rx="1"/><rect x="12" y="1" width="7" height="7" rx="1"/><rect x="1" y="12" width="7" height="7" rx="1"/><rect x="12" y="12" width="7" height="7" rx="1"/></svg>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a href="#projects" class="nav-item" data-view="projects">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M2 4h5l2 2h9v10H2V4z"/></svg>
+        <span class="nav-label">Projects</span>
+      </a>
+      <a href="#workspace" class="nav-item" data-view="workspace">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><rect x="2" y="3" width="16" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="7" y1="3" x2="7" y2="17" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="nav-label">Workspace</span>
+      </a>
+      <a href="#kanban" class="nav-item" data-view="kanban">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><rect x="1" y="2" width="5" height="16" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.5" y="2" width="5" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="2" width="5" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="nav-label">Kanban</span>
+      </a>
+      <a href="#whiteboard" class="nav-item" data-view="whiteboard">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><rect x="2" y="2" width="16" height="16" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="7" r="2" fill="currentColor"/><circle cx="13" cy="13" r="2" fill="currentColor"/><line x1="8.5" y1="8.5" x2="11.5" y2="11.5" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="nav-label">Whiteboard</span>
+      </a>
+      <a href="#schema" class="nav-item" data-view="schema">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><rect x="1" y="1" width="8" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="7" width="8" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="14" width="8" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="9" y1="3.5" x2="11" y2="9.5" stroke="currentColor" stroke-width="1.5"/><line x1="9" y1="16.5" x2="11" y2="9.5" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="nav-label">Schema</span>
+      </a>
+      <a href="#directory" class="nav-item" data-view="directory">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><line x1="6" y1="4" x2="18" y2="4" stroke="currentColor" stroke-width="1.5"/><line x1="6" y1="8" x2="18" y2="8" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="12" x2="18" y2="12" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="16" x2="18" y2="16" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="3" width="2" height="2" fill="currentColor"/><rect x="2" y="7" width="2" height="2" fill="currentColor"/><rect x="4" y="11" width="2" height="2" fill="currentColor"/><rect x="4" y="15" width="2" height="2" fill="currentColor"/></svg>
+        <span class="nav-label">Directory</span>
+      </a>
+      <a href="#ideas" class="nav-item" data-view="ideas">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 014 10.5V15a1 1 0 01-1 1H7a1 1 0 01-1-1v-2.5A6 6 0 0110 2z" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="7" y1="18" x2="13" y2="18" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="nav-label">Ideas</span>
+      </a>
+      <a href="#chat" class="nav-item" data-view="chat">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3h14a1 1 0 011 1v9a1 1 0 01-1 1H6l-3 3V4a1 1 0 011-1z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="nav-label">AI Chat</span>
+      </a>
+      <a href="#settings" class="nav-item" data-view="settings">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 1v3M10 16v3M1 10h3M16 10h3M3.5 3.5l2 2M14.5 14.5l2 2M3.5 16.5l2-2M14.5 5.5l2-2" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="nav-label">Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar">JB</div>
+        <span class="user-name">J. Brockmann</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========== MOBILE HEADER ========== -->
+  <header class="mobile-header">
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="mobile-brand">IDEA MGMT</div>
+    <div class="mobile-user">JB</div>
+  </header>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="main-content">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="breadcrumb">
+        <span class="breadcrumb-root">IDEA MGMT</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current" id="breadcrumbCurrent">Dashboard</span>
+      </div>
+      <div class="top-bar-actions">
+        <span class="top-bar-time" id="topBarTime"></span>
+        <button class="top-bar-btn" title="Notifications">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a4 4 0 014 4v3l1.5 2H2.5L4 8V5a4 4 0 014-4zM6 13h4a2 2 0 01-4 0z"/></svg>
+          <span class="notification-dot"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== DASHBOARD VIEW ========== -->
+    <section class="view active" id="view-dashboard">
+      <div class="view-header">
+        <h1 class="view-title">Dashboard</h1>
+        <div class="view-subtitle">System overview — real-time metrics</div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-grid" data-aos="fade-up" data-aos-duration="400">
+        <div class="stat-card">
+          <div class="stat-label">Total Ideas</div>
+          <div class="stat-value">1,247</div>
+          <div class="stat-trend up">+12.4%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Projects</div>
+          <div class="stat-value">23</div>
+          <div class="stat-trend up">+3</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tasks Complete</div>
+          <div class="stat-value">847</div>
+          <div class="stat-trend neutral">67.9%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Team Members</div>
+          <div class="stat-value">18</div>
+          <div class="stat-trend down">-2</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Completion Rate</div>
+          <div class="stat-value">84.2%</div>
+          <div class="stat-trend up">+5.1%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Avg. Cycle Time</div>
+          <div class="stat-value">4.2d</div>
+          <div class="stat-trend up">-0.8d</div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="dashboard-grid" data-aos="fade-up" data-aos-duration="400" data-aos-delay="100">
+        <div class="grid-card chart-card">
+          <div class="card-header">
+            <h3 class="card-title">Idea Volume — Last 12 Weeks</h3>
+            <span class="card-meta mono">W01–W12 2026</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="chartIdeaVolume"></canvas>
+          </div>
+        </div>
+        <div class="grid-card chart-card">
+          <div class="card-header">
+            <h3 class="card-title">Category Distribution</h3>
+            <span class="card-meta mono">All projects</span>
+          </div>
+          <div class="chart-container chart-container-sm">
+            <canvas id="chartCategory"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Table -->
+      <div class="grid-card" data-aos="fade-up" data-aos-duration="400" data-aos-delay="200">
+        <div class="card-header">
+          <h3 class="card-title">Recent Activity</h3>
+          <span class="card-meta mono">Last 24 hours</span>
+        </div>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>Target</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">09:42</td><td>A. Mueller</td><td>Created idea</td><td>API Gateway Redesign</td><td><span class="badge badge-active">New</span></td></tr>
+              <tr><td class="mono">09:38</td><td>K. Zwingli</td><td>Updated task</td><td>Auth Flow v2</td><td><span class="badge badge-progress">In Progress</span></td></tr>
+              <tr><td class="mono">09:21</td><td>R. Frey</td><td>Completed task</td><td>Schema Migration</td><td><span class="badge badge-done">Done</span></td></tr>
+              <tr><td class="mono">09:15</td><td>L. Bernoulli</td><td>Commented</td><td>Dashboard Metrics</td><td><span class="badge badge-review">Review</span></td></tr>
+              <tr><td class="mono">08:58</td><td>M. Euler</td><td>Archived</td><td>Legacy Importer</td><td><span class="badge badge-archived">Archived</span></td></tr>
+              <tr><td class="mono">08:44</td><td>A. Mueller</td><td>Created project</td><td>Q2 Platform Sprint</td><td><span class="badge badge-active">New</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS VIEW ========== -->
+    <section class="view" id="view-projects">
+      <div class="view-header">
+        <h1 class="view-title">Projects</h1>
+        <div class="view-subtitle">All active and archived projects</div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button class="btn btn-primary"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><line x1="7" y1="1" x2="7" y2="13" stroke="currentColor" stroke-width="2"/><line x1="1" y1="7" x2="13" y2="7" stroke="currentColor" stroke-width="2"/></svg> New Project</button>
+          <div class="toolbar-filter">
+            <select class="select-compact">
+              <option>All Status</option>
+              <option>Active</option>
+              <option>Completed</option>
+              <option>Archived</option>
+            </select>
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <input type="text" class="input-compact" placeholder="Search projects...">
+        </div>
+      </div>
+
+      <div class="grid-card" data-aos="fade-up" data-aos-duration="400">
+        <div class="data-table-wrap">
+          <table class="data-table data-table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Project Name</th>
+                <th>Lead</th>
+                <th>Status</th>
+                <th>Tasks</th>
+                <th>Progress</th>
+                <th>Due Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">P-001</td><td>Platform Redesign</td><td>A. Mueller</td><td><span class="badge badge-active">Active</span></td><td class="mono">34/42</td><td><div class="progress-bar"><div class="progress-fill" style="width:81%"></div></div></td><td class="mono">2026-04-15</td></tr>
+              <tr><td class="mono">P-002</td><td>API Gateway v3</td><td>K. Zwingli</td><td><span class="badge badge-active">Active</span></td><td class="mono">18/25</td><td><div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div></td><td class="mono">2026-03-28</td></tr>
+              <tr><td class="mono">P-003</td><td>Mobile App Beta</td><td>R. Frey</td><td><span class="badge badge-progress">In Progress</span></td><td class="mono">56/89</td><td><div class="progress-bar"><div class="progress-fill" style="width:63%"></div></div></td><td class="mono">2026-05-01</td></tr>
+              <tr><td class="mono">P-004</td><td>Auth System Refactor</td><td>L. Bernoulli</td><td><span class="badge badge-review">Review</span></td><td class="mono">22/22</td><td><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></td><td class="mono">2026-03-10</td></tr>
+              <tr><td class="mono">P-005</td><td>Data Pipeline v2</td><td>M. Euler</td><td><span class="badge badge-active">Active</span></td><td class="mono">11/30</td><td><div class="progress-bar"><div class="progress-fill" style="width:37%"></div></div></td><td class="mono">2026-06-01</td></tr>
+              <tr><td class="mono">P-006</td><td>Design System 4.0</td><td>A. Mueller</td><td><span class="badge badge-done">Done</span></td><td class="mono">48/48</td><td><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></td><td class="mono">2026-02-28</td></tr>
+              <tr><td class="mono">P-007</td><td>User Analytics</td><td>K. Zwingli</td><td><span class="badge badge-progress">In Progress</span></td><td class="mono">29/45</td><td><div class="progress-bar"><div class="progress-fill" style="width:64%"></div></div></td><td class="mono">2026-04-20</td></tr>
+              <tr><td class="mono">P-008</td><td>Legacy Migration</td><td>R. Frey</td><td><span class="badge badge-archived">Archived</span></td><td class="mono">67/67</td><td><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></td><td class="mono">2025-12-15</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WORKSPACE VIEW ========== -->
+    <section class="view" id="view-workspace">
+      <div class="view-header">
+        <h1 class="view-title">Workspace</h1>
+        <div class="view-subtitle">Active working environment</div>
+      </div>
+
+      <div class="workspace-layout" data-aos="fade-up" data-aos-duration="400">
+        <div class="workspace-panel workspace-panel-main">
+          <div class="card-header">
+            <h3 class="card-title">Editor — Platform Redesign</h3>
+            <div class="card-actions">
+              <button class="btn-icon" title="Save"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M11 1H3a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2V4l-2-3z" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="1" width="6" height="4" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="8" width="8" height="4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+              <button class="btn-icon" title="Fullscreen"><svg width="14" height="14" viewBox="0 0 14 14"><polyline points="4,1 1,1 1,4" fill="none" stroke="currentColor" stroke-width="1.5"/><polyline points="10,1 13,1 13,4" fill="none" stroke="currentColor" stroke-width="1.5"/><polyline points="4,13 1,13 1,10" fill="none" stroke="currentColor" stroke-width="1.5"/><polyline points="10,13 13,13 13,10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+            </div>
+          </div>
+          <div class="workspace-editor">
+            <div class="editor-toolbar">
+              <button class="editor-btn active">H1</button>
+              <button class="editor-btn">H2</button>
+              <button class="editor-btn">B</button>
+              <button class="editor-btn"><em>I</em></button>
+              <span class="editor-divider"></span>
+              <button class="editor-btn">List</button>
+              <button class="editor-btn">Link</button>
+              <button class="editor-btn">Code</button>
+            </div>
+            <div class="editor-content" contenteditable="true">
+              <h2>Platform Redesign — Technical Specification</h2>
+              <p>This document outlines the redesign approach for the Idea Management platform. The goal is to modernize the frontend architecture while preserving the data-dense interface that power users rely on.</p>
+              <h3>Objectives</h3>
+              <ul>
+                <li>Migrate to Next.js App Router with server components</li>
+                <li>Implement real-time collaboration via Convex</li>
+                <li>Redesign the dashboard with Swiss-style data grids</li>
+                <li>Achieve 95+ Lighthouse accessibility score</li>
+              </ul>
+              <h3>Timeline</h3>
+              <p>Phase 1 (Q1): Architecture setup and component library<br>Phase 2 (Q2): View implementation and data integration<br>Phase 3 (Q3): Testing, optimization, and launch</p>
+            </div>
+          </div>
+        </div>
+        <div class="workspace-panel workspace-panel-side">
+          <div class="card-header">
+            <h3 class="card-title">Properties</h3>
+          </div>
+          <div class="workspace-properties">
+            <div class="property-row">
+              <span class="property-label">Status</span>
+              <span class="badge badge-active">Active</span>
+            </div>
+            <div class="property-row">
+              <span class="property-label">Priority</span>
+              <span class="property-value accent">High</span>
+            </div>
+            <div class="property-row">
+              <span class="property-label">Assignee</span>
+              <span class="property-value">A. Mueller</span>
+            </div>
+            <div class="property-row">
+              <span class="property-label">Created</span>
+              <span class="property-value mono">2026-01-15</span>
+            </div>
+            <div class="property-row">
+              <span class="property-label">Modified</span>
+              <span class="property-value mono">2026-03-05</span>
+            </div>
+            <div class="property-row">
+              <span class="property-label">Tags</span>
+              <div class="tag-group">
+                <span class="tag">frontend</span>
+                <span class="tag">redesign</span>
+                <span class="tag">Q2</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-header" style="margin-top: 0;">
+            <h3 class="card-title">Activity</h3>
+          </div>
+          <div class="activity-feed">
+            <div class="activity-item"><span class="mono">09:42</span> A. Mueller updated status</div>
+            <div class="activity-item"><span class="mono">09:15</span> K. Zwingli added comment</div>
+            <div class="activity-item"><span class="mono">08:30</span> R. Frey assigned task</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== KANBAN VIEW ========== -->
+    <section class="view" id="view-kanban">
+      <div class="view-header">
+        <h1 class="view-title">Kanban</h1>
+        <div class="view-subtitle">Task workflow management</div>
+      </div>
+
+      <div class="kanban-board" data-aos="fade-up" data-aos-duration="400">
+        <div class="kanban-column" data-status="backlog">
+          <div class="kanban-col-header">
+            <span class="kanban-col-title">Backlog</span>
+            <span class="kanban-col-count">4</span>
+          </div>
+          <div class="kanban-cards" id="kanban-backlog">
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card-id mono">T-101</div>
+              <div class="kanban-card-title">Implement OAuth2 flow</div>
+              <div class="kanban-card-meta"><span class="tag">auth</span><span class="kanban-card-assignee">KZ</span></div>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card-id mono">T-102</div>
+              <div class="kanban-card-title">Design schema migration tool</div>
+              <div class="kanban-card-meta"><span class="tag">database</span><span class="kanban-card-assignee">RF</span></div>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card-id mono">T-103</div>
+              <div class="kanban-card-title">Write API documentation</div>
+              <div class="kanban-card-meta"><span class="tag">docs</span><span class="kanban-card-assignee">LB</span></div>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card-id mono">T-104</div>
+              <div class="kanban-card-title">Performance benchmarks</div>
+              <div class="kanban-card-meta"><span class="tag">testing</span><span class="kanban-card-assignee">ME</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column" data-status="todo">
+          <div class="kanban-col-header">
+            <span class="kanban-col-title">To Do</span>
+            <span class="kanban-col-count">3</span>
+          </div>
+          <div class="kanban-cards" id="kanban-todo">
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card-id mono">T-098</div>
+              <div class="kanban-card-title">Refactor state management</div>
+              <div class="kanban-card-meta"><span class="tag">frontend</span><span class="kanban-card-assignee">AM</span></div>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card-id mono">T-099</div>
+              <div class="kanban-card-title">Set up CI/CD pipeline</div>
+              <div class="kanban-card-meta"><span class="tag">devops</span><span class="kanban-card-assignee">KZ</span></div>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card-id mono">T-100</div>
+              <div class="kanban-card-title">User role permissions</div>
+              <div class="kanban-card-meta"><span class="tag">auth</span><span class="kanban-card-assignee">RF</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column" data-status="in-progress">
+          <div class="kanban-col-header">
+            <span class="kanban-col-title">In Progress</span>
+            <span class="kanban-col-count">3</span>
+          </div>
+          <div class="kanban-cards" id="kanban-progress">
+            <div class="kanban-card kanban-card-active" draggable="true">
+              <div class="kanban-card-id mono">T-094</div>
+              <div class="kanban-card-title">Dashboard component library</div>
+              <div class="kanban-card-meta"><span class="tag">frontend</span><span class="kanban-card-assignee">AM</span></div>
+            </div>
+            <div class="kanban-card kanban-card-active" draggable="true">
+              <div class="kanban-card-id mono">T-095</div>
+              <div class="kanban-card-title">Real-time sync engine</div>
+              <div class="kanban-card-meta"><span class="tag">backend</span><span class="kanban-card-assignee">LB</span></div>
+            </div>
+            <div class="kanban-card kanban-card-active" draggable="true">
+              <div class="kanban-card-id mono">T-096</div>
+              <div class="kanban-card-title">Notification service</div>
+              <div class="kanban-card-meta"><span class="tag">backend</span><span class="kanban-card-assignee">ME</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column" data-status="review">
+          <div class="kanban-col-header">
+            <span class="kanban-col-title">Review</span>
+            <span class="kanban-col-count">2</span>
+          </div>
+          <div class="kanban-cards" id="kanban-review">
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card-id mono">T-091</div>
+              <div class="kanban-card-title">Search indexing module</div>
+              <div class="kanban-card-meta"><span class="tag">search</span><span class="kanban-card-assignee">RF</span></div>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card-id mono">T-092</div>
+              <div class="kanban-card-title">File upload service</div>
+              <div class="kanban-card-meta"><span class="tag">backend</span><span class="kanban-card-assignee">KZ</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column" data-status="done">
+          <div class="kanban-col-header">
+            <span class="kanban-col-title">Done</span>
+            <span class="kanban-col-count">2</span>
+          </div>
+          <div class="kanban-cards" id="kanban-done">
+            <div class="kanban-card kanban-card-done" draggable="true">
+              <div class="kanban-card-id mono">T-088</div>
+              <div class="kanban-card-title">Database schema v2</div>
+              <div class="kanban-card-meta"><span class="tag">database</span><span class="kanban-card-assignee">LB</span></div>
+            </div>
+            <div class="kanban-card kanban-card-done" draggable="true">
+              <div class="kanban-card-id mono">T-089</div>
+              <div class="kanban-card-title">Environment config</div>
+              <div class="kanban-card-meta"><span class="tag">devops</span><span class="kanban-card-assignee">ME</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHITEBOARD VIEW ========== -->
+    <section class="view" id="view-whiteboard">
+      <div class="view-header">
+        <h1 class="view-title">Whiteboard</h1>
+        <div class="view-subtitle">Freeform collaborative canvas</div>
+      </div>
+
+      <div class="whiteboard-container" data-aos="fade-up" data-aos-duration="400">
+        <div class="whiteboard-toolbar">
+          <button class="wb-tool active" data-tool="select" title="Select"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 1l10 6-5 1.5L6.5 14z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+          <button class="wb-tool" data-tool="rect" title="Rectangle"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+          <button class="wb-tool" data-tool="circle" title="Circle"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+          <button class="wb-tool" data-tool="line" title="Line"><svg width="16" height="16" viewBox="0 0 16 16"><line x1="2" y1="14" x2="14" y2="2" stroke="currentColor" stroke-width="1.5"/></svg></button>
+          <button class="wb-tool" data-tool="text" title="Text"><svg width="16" height="16" viewBox="0 0 16 16"><text x="3" y="13" font-size="13" font-weight="800" fill="currentColor">T</text></svg></button>
+          <span class="wb-divider"></span>
+          <button class="wb-tool" data-tool="zoomin" title="Zoom In">+</button>
+          <button class="wb-tool" data-tool="zoomout" title="Zoom Out">&minus;</button>
+          <span class="wb-zoom-level mono">100%</span>
+        </div>
+        <div class="whiteboard-canvas" id="whiteboardCanvas">
+          <!-- SVG canvas rendered by JS -->
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" id="wbSvg">
+            <!-- Pre-placed shapes for visual demo -->
+            <rect x="60" y="50" width="180" height="80" fill="none" stroke="#000" stroke-width="2"/>
+            <text x="95" y="96" font-family="Inter" font-size="14" font-weight="600" fill="#111">User Auth</text>
+            <rect x="320" y="50" width="180" height="80" fill="none" stroke="#000" stroke-width="2"/>
+            <text x="355" y="96" font-family="Inter" font-size="14" font-weight="600" fill="#111">API Gateway</text>
+            <rect x="580" y="50" width="180" height="80" fill="none" stroke="#D72638" stroke-width="2"/>
+            <text x="615" y="96" font-family="Inter" font-size="14" font-weight="600" fill="#D72638">Dashboard</text>
+            <line x1="240" y1="90" x2="320" y2="90" stroke="#000" stroke-width="1.5" marker-end="url(#arrow)"/>
+            <line x1="500" y1="90" x2="580" y2="90" stroke="#000" stroke-width="1.5" marker-end="url(#arrow)"/>
+            <rect x="60" y="200" width="180" height="80" fill="none" stroke="#000" stroke-width="2"/>
+            <text x="100" y="246" font-family="Inter" font-size="14" font-weight="600" fill="#111">Database</text>
+            <rect x="320" y="200" width="180" height="80" fill="none" stroke="#000" stroke-width="2"/>
+            <text x="340" y="246" font-family="Inter" font-size="14" font-weight="600" fill="#111">Sync Engine</text>
+            <line x1="150" y1="130" x2="150" y2="200" stroke="#888" stroke-width="1" stroke-dasharray="4"/>
+            <line x1="410" y1="130" x2="410" y2="200" stroke="#888" stroke-width="1" stroke-dasharray="4"/>
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6" fill="#000"/>
+              </marker>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCHEMA VIEW ========== -->
+    <section class="view" id="view-schema">
+      <div class="view-header">
+        <h1 class="view-title">Schema Planner</h1>
+        <div class="view-subtitle">Database entity relationships</div>
+      </div>
+
+      <div class="schema-container" data-aos="fade-up" data-aos-duration="400">
+        <div class="schema-grid">
+          <div class="schema-entity">
+            <div class="schema-entity-header">Users</div>
+            <div class="schema-field"><span class="schema-field-key">PK</span><span class="schema-field-name">id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-name">email</span><span class="schema-field-type mono">varchar(255)</span></div>
+            <div class="schema-field"><span class="schema-field-name">name</span><span class="schema-field-type mono">varchar(100)</span></div>
+            <div class="schema-field"><span class="schema-field-name">role</span><span class="schema-field-type mono">enum</span></div>
+            <div class="schema-field"><span class="schema-field-name">created_at</span><span class="schema-field-type mono">timestamp</span></div>
+          </div>
+          <div class="schema-entity">
+            <div class="schema-entity-header">Projects</div>
+            <div class="schema-field"><span class="schema-field-key">PK</span><span class="schema-field-name">id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-key">FK</span><span class="schema-field-name">owner_id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-name">name</span><span class="schema-field-type mono">varchar(200)</span></div>
+            <div class="schema-field"><span class="schema-field-name">status</span><span class="schema-field-type mono">enum</span></div>
+            <div class="schema-field"><span class="schema-field-name">due_date</span><span class="schema-field-type mono">date</span></div>
+          </div>
+          <div class="schema-entity">
+            <div class="schema-entity-header accent">Ideas</div>
+            <div class="schema-field"><span class="schema-field-key">PK</span><span class="schema-field-name">id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-key">FK</span><span class="schema-field-name">project_id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-key">FK</span><span class="schema-field-name">author_id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-name">title</span><span class="schema-field-type mono">varchar(300)</span></div>
+            <div class="schema-field"><span class="schema-field-name">body</span><span class="schema-field-type mono">text</span></div>
+            <div class="schema-field"><span class="schema-field-name">category</span><span class="schema-field-type mono">enum</span></div>
+            <div class="schema-field"><span class="schema-field-name">priority</span><span class="schema-field-type mono">int</span></div>
+          </div>
+          <div class="schema-entity">
+            <div class="schema-entity-header">Tasks</div>
+            <div class="schema-field"><span class="schema-field-key">PK</span><span class="schema-field-name">id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-key">FK</span><span class="schema-field-name">idea_id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-key">FK</span><span class="schema-field-name">assignee_id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-name">title</span><span class="schema-field-type mono">varchar(300)</span></div>
+            <div class="schema-field"><span class="schema-field-name">status</span><span class="schema-field-type mono">enum</span></div>
+            <div class="schema-field"><span class="schema-field-name">due_date</span><span class="schema-field-type mono">date</span></div>
+          </div>
+          <div class="schema-entity">
+            <div class="schema-entity-header">Comments</div>
+            <div class="schema-field"><span class="schema-field-key">PK</span><span class="schema-field-name">id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-key">FK</span><span class="schema-field-name">idea_id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-key">FK</span><span class="schema-field-name">author_id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-name">body</span><span class="schema-field-type mono">text</span></div>
+            <div class="schema-field"><span class="schema-field-name">created_at</span><span class="schema-field-type mono">timestamp</span></div>
+          </div>
+          <div class="schema-entity">
+            <div class="schema-entity-header">Tags</div>
+            <div class="schema-field"><span class="schema-field-key">PK</span><span class="schema-field-name">id</span><span class="schema-field-type mono">uuid</span></div>
+            <div class="schema-field"><span class="schema-field-name">name</span><span class="schema-field-type mono">varchar(50)</span></div>
+            <div class="schema-field"><span class="schema-field-name">color</span><span class="schema-field-type mono">varchar(7)</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIRECTORY VIEW ========== -->
+    <section class="view" id="view-directory">
+      <div class="view-header">
+        <h1 class="view-title">Directory Tree</h1>
+        <div class="view-subtitle">Project file structure</div>
+      </div>
+
+      <div class="directory-container" data-aos="fade-up" data-aos-duration="400">
+        <div class="grid-card">
+          <div class="card-header">
+            <h3 class="card-title">idea-management/</h3>
+            <span class="card-meta mono">127 files, 34 directories</span>
+          </div>
+          <div class="tree">
+            <div class="tree-item tree-folder open" data-depth="0">
+              <span class="tree-toggle">&#9660;</span>
+              <span class="tree-icon">&#128193;</span>
+              <span class="tree-name">src/</span>
+            </div>
+            <div class="tree-item tree-folder open" data-depth="1">
+              <span class="tree-toggle">&#9660;</span>
+              <span class="tree-icon">&#128193;</span>
+              <span class="tree-name">app/</span>
+            </div>
+            <div class="tree-item tree-file" data-depth="2">
+              <span class="tree-icon file-icon">TS</span>
+              <span class="tree-name">layout.tsx</span>
+              <span class="tree-meta mono">2.4 KB</span>
+            </div>
+            <div class="tree-item tree-file" data-depth="2">
+              <span class="tree-icon file-icon">TS</span>
+              <span class="tree-name">page.tsx</span>
+              <span class="tree-meta mono">1.8 KB</span>
+            </div>
+            <div class="tree-item tree-folder" data-depth="2">
+              <span class="tree-toggle">&#9654;</span>
+              <span class="tree-icon">&#128193;</span>
+              <span class="tree-name">dashboard/</span>
+            </div>
+            <div class="tree-item tree-folder" data-depth="2">
+              <span class="tree-toggle">&#9654;</span>
+              <span class="tree-icon">&#128193;</span>
+              <span class="tree-name">projects/</span>
+            </div>
+            <div class="tree-item tree-folder open" data-depth="1">
+              <span class="tree-toggle">&#9660;</span>
+              <span class="tree-icon">&#128193;</span>
+              <span class="tree-name">components/</span>
+            </div>
+            <div class="tree-item tree-folder" data-depth="2">
+              <span class="tree-toggle">&#9654;</span>
+              <span class="tree-icon">&#128193;</span>
+              <span class="tree-name">ui/</span>
+            </div>
+            <div class="tree-item tree-file" data-depth="2">
+              <span class="tree-icon file-icon">TS</span>
+              <span class="tree-name">sidebar.tsx</span>
+              <span class="tree-meta mono">3.1 KB</span>
+            </div>
+            <div class="tree-item tree-file" data-depth="2">
+              <span class="tree-icon file-icon">TS</span>
+              <span class="tree-name">kanban-board.tsx</span>
+              <span class="tree-meta mono">5.7 KB</span>
+            </div>
+            <div class="tree-item tree-folder open" data-depth="1">
+              <span class="tree-toggle">&#9660;</span>
+              <span class="tree-icon">&#128193;</span>
+              <span class="tree-name">convex/</span>
+            </div>
+            <div class="tree-item tree-file" data-depth="2">
+              <span class="tree-icon file-icon accent">CV</span>
+              <span class="tree-name">schema.ts</span>
+              <span class="tree-meta mono">4.2 KB</span>
+            </div>
+            <div class="tree-item tree-file" data-depth="2">
+              <span class="tree-icon file-icon">CV</span>
+              <span class="tree-name">ideas.ts</span>
+              <span class="tree-meta mono">2.9 KB</span>
+            </div>
+            <div class="tree-item tree-file" data-depth="2">
+              <span class="tree-icon file-icon">CV</span>
+              <span class="tree-name">projects.ts</span>
+              <span class="tree-meta mono">3.4 KB</span>
+            </div>
+            <div class="tree-item tree-folder" data-depth="1">
+              <span class="tree-toggle">&#9654;</span>
+              <span class="tree-icon">&#128193;</span>
+              <span class="tree-name">lib/</span>
+            </div>
+            <div class="tree-item tree-folder" data-depth="1">
+              <span class="tree-toggle">&#9654;</span>
+              <span class="tree-icon">&#128193;</span>
+              <span class="tree-name">styles/</span>
+            </div>
+            <div class="tree-item tree-file" data-depth="0">
+              <span class="tree-icon file-icon">JS</span>
+              <span class="tree-name">package.json</span>
+              <span class="tree-meta mono">1.1 KB</span>
+            </div>
+            <div class="tree-item tree-file" data-depth="0">
+              <span class="tree-icon file-icon">TS</span>
+              <span class="tree-name">tsconfig.json</span>
+              <span class="tree-meta mono">0.6 KB</span>
+            </div>
+            <div class="tree-item tree-file" data-depth="0">
+              <span class="tree-icon file-icon">MD</span>
+              <span class="tree-name">README.md</span>
+              <span class="tree-meta mono">2.8 KB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== IDEAS VIEW ========== -->
+    <section class="view" id="view-ideas">
+      <div class="view-header">
+        <h1 class="view-title">Ideas</h1>
+        <div class="view-subtitle">Capture and organize ideas</div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button class="btn btn-primary"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><line x1="7" y1="1" x2="7" y2="13" stroke="currentColor" stroke-width="2"/><line x1="1" y1="7" x2="13" y2="7" stroke="currentColor" stroke-width="2"/></svg> New Idea</button>
+          <div class="toolbar-filter">
+            <select class="select-compact">
+              <option>All Categories</option>
+              <option>Feature</option>
+              <option>Bug Fix</option>
+              <option>Research</option>
+              <option>Design</option>
+            </select>
+          </div>
+          <div class="toolbar-filter">
+            <select class="select-compact">
+              <option>Sort: Newest</option>
+              <option>Sort: Priority</option>
+              <option>Sort: Votes</option>
+            </select>
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <input type="text" class="input-compact" placeholder="Search ideas...">
+        </div>
+      </div>
+
+      <div class="ideas-grid" data-aos="fade-up" data-aos-duration="400">
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-priority high"></span>
+            <span class="idea-id mono">I-247</span>
+            <span class="idea-votes"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z" fill="currentColor"/></svg> 24</span>
+          </div>
+          <h4 class="idea-title">Real-time collaboration cursors</h4>
+          <p class="idea-desc">Show live cursor positions of other team members editing the same document or whiteboard simultaneously.</p>
+          <div class="idea-footer">
+            <span class="tag">feature</span>
+            <span class="tag">collaboration</span>
+            <span class="idea-author">A. Mueller</span>
+          </div>
+        </div>
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-priority medium"></span>
+            <span class="idea-id mono">I-246</span>
+            <span class="idea-votes"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z" fill="currentColor"/></svg> 18</span>
+          </div>
+          <h4 class="idea-title">Keyboard shortcut overlay</h4>
+          <p class="idea-desc">Display a modal with all available keyboard shortcuts when pressing Ctrl+/ for power user efficiency.</p>
+          <div class="idea-footer">
+            <span class="tag">UX</span>
+            <span class="tag">productivity</span>
+            <span class="idea-author">K. Zwingli</span>
+          </div>
+        </div>
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-priority high"></span>
+            <span class="idea-id mono">I-245</span>
+            <span class="idea-votes"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z" fill="currentColor"/></svg> 31</span>
+          </div>
+          <h4 class="idea-title">AI-powered idea clustering</h4>
+          <p class="idea-desc">Automatically group related ideas using NLP embeddings to surface themes and reduce duplication.</p>
+          <div class="idea-footer">
+            <span class="tag">AI</span>
+            <span class="tag">research</span>
+            <span class="idea-author">L. Bernoulli</span>
+          </div>
+        </div>
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-priority low"></span>
+            <span class="idea-id mono">I-244</span>
+            <span class="idea-votes"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z" fill="currentColor"/></svg> 7</span>
+          </div>
+          <h4 class="idea-title">Dark mode toggle</h4>
+          <p class="idea-desc">Add a system-aware dark theme that preserves the Swiss design language with inverted contrast ratios.</p>
+          <div class="idea-footer">
+            <span class="tag">design</span>
+            <span class="tag">accessibility</span>
+            <span class="idea-author">R. Frey</span>
+          </div>
+        </div>
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-priority medium"></span>
+            <span class="idea-id mono">I-243</span>
+            <span class="idea-votes"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z" fill="currentColor"/></svg> 14</span>
+          </div>
+          <h4 class="idea-title">Export to PDF reports</h4>
+          <p class="idea-desc">Generate clean PDF reports of project status, idea backlogs, and team activity for stakeholder presentations.</p>
+          <div class="idea-footer">
+            <span class="tag">feature</span>
+            <span class="tag">export</span>
+            <span class="idea-author">M. Euler</span>
+          </div>
+        </div>
+        <div class="idea-card">
+          <div class="idea-card-header">
+            <span class="idea-priority high"></span>
+            <span class="idea-id mono">I-242</span>
+            <span class="idea-votes"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z" fill="currentColor"/></svg> 29</span>
+          </div>
+          <h4 class="idea-title">Webhook integration API</h4>
+          <p class="idea-desc">Expose webhooks for idea creation, status changes, and comments to enable third-party tool integrations.</p>
+          <div class="idea-footer">
+            <span class="tag">API</span>
+            <span class="tag">integration</span>
+            <span class="idea-author">K. Zwingli</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== AI CHAT VIEW ========== -->
+    <section class="view" id="view-chat">
+      <div class="view-header">
+        <h1 class="view-title">AI Chat</h1>
+        <div class="view-subtitle">Intelligent assistant interface</div>
+      </div>
+
+      <div class="chat-container" data-aos="fade-up" data-aos-duration="400">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-msg chat-msg-system">
+            <div class="chat-msg-content">
+              <div class="chat-msg-sender mono">SYSTEM</div>
+              <p>AI assistant initialized. Context: Idea Management Platform, 23 active projects, 1,247 ideas in database.</p>
+            </div>
+          </div>
+          <div class="chat-msg chat-msg-user">
+            <div class="chat-msg-avatar">JB</div>
+            <div class="chat-msg-content">
+              <div class="chat-msg-sender">J. Brockmann</div>
+              <p>What are the highest-voted ideas from the last month that haven't been assigned to any project yet?</p>
+            </div>
+          </div>
+          <div class="chat-msg chat-msg-ai">
+            <div class="chat-msg-avatar">AI</div>
+            <div class="chat-msg-content">
+              <div class="chat-msg-sender mono">AI ASSISTANT</div>
+              <p>I found 5 unassigned ideas from the past 30 days, sorted by votes:</p>
+              <div class="chat-data-table">
+                <table class="data-table data-table-compact">
+                  <thead>
+                    <tr><th>ID</th><th>Title</th><th>Votes</th><th>Category</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="mono">I-245</td><td>AI-powered idea clustering</td><td class="mono">31</td><td>Research</td></tr>
+                    <tr><td class="mono">I-242</td><td>Webhook integration API</td><td class="mono">29</td><td>API</td></tr>
+                    <tr><td class="mono">I-247</td><td>Real-time collaboration cursors</td><td class="mono">24</td><td>Feature</td></tr>
+                    <tr><td class="mono">I-246</td><td>Keyboard shortcut overlay</td><td class="mono">18</td><td>UX</td></tr>
+                    <tr><td class="mono">I-243</td><td>Export to PDF reports</td><td class="mono">14</td><td>Feature</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>Would you like me to create tasks for any of these ideas, or assign them to specific projects?</p>
+            </div>
+          </div>
+          <div class="chat-msg chat-msg-user">
+            <div class="chat-msg-avatar">JB</div>
+            <div class="chat-msg-content">
+              <div class="chat-msg-sender">J. Brockmann</div>
+              <p>Assign the top 3 to the Platform Redesign project and create corresponding tasks in the backlog.</p>
+            </div>
+          </div>
+          <div class="chat-msg chat-msg-ai">
+            <div class="chat-msg-avatar">AI</div>
+            <div class="chat-msg-content">
+              <div class="chat-msg-sender mono">AI ASSISTANT</div>
+              <p>Done. I've assigned the top 3 ideas to Platform Redesign (P-001) and created backlog tasks:</p>
+              <ul>
+                <li><span class="mono">T-105</span> — AI-powered idea clustering (from I-245)</li>
+                <li><span class="mono">T-106</span> — Webhook integration API (from I-242)</li>
+                <li><span class="mono">T-107</span> — Real-time collaboration cursors (from I-247)</li>
+              </ul>
+              <p>All three tasks are now in the Backlog column on the Kanban board.</p>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <div class="chat-input-wrap">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Type a message...">
+            <button class="chat-send-btn" id="chatSendBtn">
+              <svg width="16" height="16" viewBox="0 0 16 16"><path d="M1 8l6-6v4h7v4H7v4z" fill="currentColor" transform="rotate(-90 8 8)"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS VIEW ========== -->
+    <section class="view" id="view-settings">
+      <div class="view-header">
+        <h1 class="view-title">Settings</h1>
+        <div class="view-subtitle">Application configuration</div>
+      </div>
+
+      <div class="settings-container" data-aos="fade-up" data-aos-duration="400">
+        <div class="settings-nav">
+          <button class="settings-tab active" data-settings-tab="general">General</button>
+          <button class="settings-tab" data-settings-tab="appearance">Appearance</button>
+          <button class="settings-tab" data-settings-tab="notifications">Notifications</button>
+          <button class="settings-tab" data-settings-tab="integrations">Integrations</button>
+          <button class="settings-tab" data-settings-tab="team">Team</button>
+          <button class="settings-tab" data-settings-tab="billing">Billing</button>
+        </div>
+
+        <div class="settings-panels">
+          <div class="settings-panel active" id="settings-general">
+            <h3 class="settings-section-title">General Settings</h3>
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Workspace Name</span>
+                  <span class="settings-label-desc">The display name for your workspace</span>
+                </div>
+                <input type="text" class="input-compact" value="Idea Management HQ">
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Default Language</span>
+                  <span class="settings-label-desc">Interface language for all users</span>
+                </div>
+                <select class="select-compact">
+                  <option>English</option>
+                  <option>Deutsch</option>
+                  <option>Fran&ccedil;ais</option>
+                </select>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Time Zone</span>
+                  <span class="settings-label-desc">Affects timestamps and scheduling</span>
+                </div>
+                <select class="select-compact">
+                  <option>UTC+1 (Zurich)</option>
+                  <option>UTC+0 (London)</option>
+                  <option>UTC-5 (New York)</option>
+                  <option>UTC-8 (Los Angeles)</option>
+                </select>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Auto-save</span>
+                  <span class="settings-label-desc">Automatically save changes every 30 seconds</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Compact Mode</span>
+                  <span class="settings-label-desc">Reduce spacing for higher information density</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-panel" id="settings-appearance">
+            <h3 class="settings-section-title">Appearance</h3>
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Theme</span>
+                  <span class="settings-label-desc">Choose light or dark interface</span>
+                </div>
+                <select class="select-compact">
+                  <option selected>Light (Swiss)</option>
+                  <option>Dark</option>
+                  <option>System</option>
+                </select>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Accent Color</span>
+                  <span class="settings-label-desc">Primary accent used throughout the interface</span>
+                </div>
+                <div class="color-picker-row">
+                  <span class="color-swatch active" style="background: #D72638"></span>
+                  <span class="color-swatch" style="background: #1A73E8"></span>
+                  <span class="color-swatch" style="background: #0D9488"></span>
+                  <span class="color-swatch" style="background: #7C3AED"></span>
+                  <span class="color-swatch" style="background: #000000"></span>
+                </div>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Font Size</span>
+                  <span class="settings-label-desc">Base font size for the interface</span>
+                </div>
+                <select class="select-compact">
+                  <option>14px</option>
+                  <option selected>16px</option>
+                  <option>18px</option>
+                </select>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Sidebar Width</span>
+                  <span class="settings-label-desc">Narrow saves space, wide shows labels</span>
+                </div>
+                <select class="select-compact">
+                  <option>Narrow (64px)</option>
+                  <option selected>Standard (220px)</option>
+                  <option>Wide (280px)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-panel" id="settings-notifications">
+            <h3 class="settings-section-title">Notifications</h3>
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Email Notifications</span>
+                  <span class="settings-label-desc">Receive updates via email</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Push Notifications</span>
+                  <span class="settings-label-desc">Browser push for real-time updates</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Digest Frequency</span>
+                  <span class="settings-label-desc">Summary email schedule</span>
+                </div>
+                <select class="select-compact">
+                  <option>Daily</option>
+                  <option selected>Weekly</option>
+                  <option>Monthly</option>
+                  <option>Never</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-panel" id="settings-integrations">
+            <h3 class="settings-section-title">Integrations</h3>
+            <div class="settings-group">
+              <div class="integration-card">
+                <div class="integration-info">
+                  <div class="integration-name">GitHub</div>
+                  <div class="integration-desc">Sync issues and pull requests</div>
+                </div>
+                <span class="badge badge-done">Connected</span>
+              </div>
+              <div class="integration-card">
+                <div class="integration-info">
+                  <div class="integration-name">Slack</div>
+                  <div class="integration-desc">Post updates to channels</div>
+                </div>
+                <span class="badge badge-done">Connected</span>
+              </div>
+              <div class="integration-card">
+                <div class="integration-info">
+                  <div class="integration-name">Jira</div>
+                  <div class="integration-desc">Import and sync tickets</div>
+                </div>
+                <button class="btn btn-outline btn-sm">Connect</button>
+              </div>
+              <div class="integration-card">
+                <div class="integration-info">
+                  <div class="integration-name">Figma</div>
+                  <div class="integration-desc">Embed design files</div>
+                </div>
+                <button class="btn btn-outline btn-sm">Connect</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-panel" id="settings-team">
+            <h3 class="settings-section-title">Team Members</h3>
+            <div class="data-table-wrap">
+              <table class="data-table data-table-hover">
+                <thead>
+                  <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>A. Mueller</td><td class="mono">a.mueller@idea.ch</td><td>Admin</td><td><span class="badge badge-active">Active</span></td></tr>
+                  <tr><td>K. Zwingli</td><td class="mono">k.zwingli@idea.ch</td><td>Editor</td><td><span class="badge badge-active">Active</span></td></tr>
+                  <tr><td>R. Frey</td><td class="mono">r.frey@idea.ch</td><td>Editor</td><td><span class="badge badge-active">Active</span></td></tr>
+                  <tr><td>L. Bernoulli</td><td class="mono">l.bernoulli@idea.ch</td><td>Viewer</td><td><span class="badge badge-progress">Pending</span></td></tr>
+                  <tr><td>M. Euler</td><td class="mono">m.euler@idea.ch</td><td>Editor</td><td><span class="badge badge-active">Active</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="settings-panel" id="settings-billing">
+            <h3 class="settings-section-title">Billing</h3>
+            <div class="settings-group">
+              <div class="billing-plan">
+                <div class="billing-plan-header">
+                  <span class="billing-plan-name">Professional Plan</span>
+                  <span class="billing-plan-price mono">CHF 49/mo</span>
+                </div>
+                <div class="billing-plan-details">
+                  <div class="billing-detail">Users: 18 / 25</div>
+                  <div class="billing-detail">Storage: 42 GB / 100 GB</div>
+                  <div class="billing-detail">Next billing: <span class="mono">2026-04-01</span></div>
+                </div>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span class="settings-label-text">Payment Method</span>
+                  <span class="settings-label-desc">Visa ending in 4242</span>
+                </div>
+                <button class="btn btn-outline btn-sm">Update</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- CDN Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js"></script>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

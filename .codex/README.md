@@ -20,4 +20,4 @@ longrunning orchestration loop:
 - Launch the **longrunning-session** agent to own the phase plan and validations.
 - Use the **orchestrator-session** agent to spawn one subagent per phase.
 - Each phase ends with a review file, updates the task list status, and a commit/push.
-- The orchestrator “pokes” the next subagent and continues until all phases complete.
+- The orchestrator "pokes" the next subagent and continues until all phases complete.

@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Idea Management - Watercolor &amp; Ink</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Patrick+Hand&family=Quicksand:wght@500;600&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- CDN Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ===== SVG Filter Definitions ===== -->
+  <svg class="svg-defs" aria-hidden="true">
+    <defs>
+      <!-- Watercolor paper texture filter -->
+      <filter id="paperTexture">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise" />
+        <feDiffuseLighting in="noise" lighting-color="#FDF8F0" surfaceScale="2" result="light">
+          <feDistantLight azimuth="45" elevation="55" />
+        </feDiffuseLighting>
+        <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" />
+      </filter>
+
+      <!-- Watercolor edge bleed filter -->
+      <filter id="watercolorEdge" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="4" seed="2" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+
+      <!-- Ink splatter filter -->
+      <filter id="inkSplatter">
+        <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="3" seed="5" result="turbulence" />
+        <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="4" />
+      </filter>
+
+      <!-- Watercolor blob shape -->
+      <filter id="blobFilter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" seed="8" result="warp" />
+        <feDisplacementMap in="SourceGraphic" in2="warp" scale="20" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ===== Ambient Canvas for ink splatter particles ===== -->
+  <canvas id="ink-canvas" aria-hidden="true"></canvas>
+
+  <!-- ===== Watercolor Blob Backgrounds ===== -->
+  <div class="watercolor-blobs" aria-hidden="true">
+    <div class="blob blob-purple"></div>
+    <div class="blob blob-teal"></div>
+    <div class="blob blob-rose"></div>
+  </div>
+
+  <!-- ===== Floating Action Button Navigation ===== -->
+  <nav class="fab-nav" aria-label="Main navigation">
+    <button class="fab-trigger" aria-label="Open navigation menu" aria-expanded="false">
+      <svg class="fab-icon" viewBox="0 0 40 40" width="40" height="40">
+        <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2" />
+        <line x1="12" y1="20" x2="28" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        <line x1="20" y1="12" x2="20" y2="28" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
+    <div class="fab-menu" role="menu">
+      <a href="#dashboard" class="fab-item active" role="menuitem" data-view="dashboard" title="Dashboard">
+        <span class="fab-item-icon">&#x1f3e0;</span>
+        <span class="fab-item-label">Dashboard</span>
+      </a>
+      <a href="#projects" class="fab-item" role="menuitem" data-view="projects" title="Projects">
+        <span class="fab-item-icon">&#x1f4c1;</span>
+        <span class="fab-item-label">Projects</span>
+      </a>
+      <a href="#workspace" class="fab-item" role="menuitem" data-view="workspace" title="Workspace">
+        <span class="fab-item-icon">&#x1f4bb;</span>
+        <span class="fab-item-label">Workspace</span>
+      </a>
+      <a href="#kanban" class="fab-item" role="menuitem" data-view="kanban" title="Kanban">
+        <span class="fab-item-icon">&#x1f4cb;</span>
+        <span class="fab-item-label">Kanban</span>
+      </a>
+      <a href="#whiteboard" class="fab-item" role="menuitem" data-view="whiteboard" title="Whiteboard">
+        <span class="fab-item-icon">&#x1f3a8;</span>
+        <span class="fab-item-label">Whiteboard</span>
+      </a>
+      <a href="#schema" class="fab-item" role="menuitem" data-view="schema" title="Schema">
+        <span class="fab-item-icon">&#x1f9e9;</span>
+        <span class="fab-item-label">Schema</span>
+      </a>
+      <a href="#directory" class="fab-item" role="menuitem" data-view="directory" title="Directory">
+        <span class="fab-item-icon">&#x1f4c2;</span>
+        <span class="fab-item-label">Directory</span>
+      </a>
+      <a href="#ideas" class="fab-item" role="menuitem" data-view="ideas" title="Ideas">
+        <span class="fab-item-icon">&#x1f4a1;</span>
+        <span class="fab-item-label">Ideas</span>
+      </a>
+      <a href="#chat" class="fab-item" role="menuitem" data-view="chat" title="AI Chat">
+        <span class="fab-item-icon">&#x1f4ac;</span>
+        <span class="fab-item-label">AI Chat</span>
+      </a>
+      <a href="#settings" class="fab-item" role="menuitem" data-view="settings" title="Settings">
+        <span class="fab-item-icon">&#x2699;</span>
+        <span class="fab-item-label">Settings</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ===== Top Header Bar ===== -->
+  <header class="top-bar">
+    <div class="top-bar-brand">
+      <svg class="brand-icon" viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"></svg>
+      <h1 class="brand-title">IdeaFlow</h1>
+    </div>
+    <div class="top-bar-current" id="current-view-label">Dashboard</div>
+    <div class="top-bar-user">
+      <span class="user-avatar">JD</span>
+      <span class="user-name">Jane Doe</span>
+    </div>
+  </header>
+
+  <!-- ===== Mobile Navigation Bar ===== -->
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <button class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    <div class="mobile-nav-drawer">
+      <a href="#dashboard" class="mobile-nav-item active" data-view="dashboard">Dashboard</a>
+      <a href="#projects" class="mobile-nav-item" data-view="projects">Projects</a>
+      <a href="#workspace" class="mobile-nav-item" data-view="workspace">Workspace</a>
+      <a href="#kanban" class="mobile-nav-item" data-view="kanban">Kanban</a>
+      <a href="#whiteboard" class="mobile-nav-item" data-view="whiteboard">Whiteboard</a>
+      <a href="#schema" class="mobile-nav-item" data-view="schema">Schema</a>
+      <a href="#directory" class="mobile-nav-item" data-view="directory">Directory</a>
+      <a href="#ideas" class="mobile-nav-item" data-view="ideas">Ideas</a>
+      <a href="#chat" class="mobile-nav-item" data-view="chat">AI Chat</a>
+      <a href="#settings" class="mobile-nav-item" data-view="settings">Settings</a>
+    </div>
+  </nav>
+
+  <!-- ===== Main Content Area ===== -->
+  <main class="app-main">
+
+    <!-- ===== Dashboard View ===== -->
+    <section id="dashboard" class="view active">
+      <div class="view-header">
+        <h2 class="view-title">Dashboard</h2>
+        <p class="view-subtitle">Your creative workspace at a glance</p>
+      </div>
+      <div class="dashboard-grid">
+        <!-- Stat Cards -->
+        <div class="wc-card stat-card">
+          <div class="stat-number">24</div>
+          <div class="stat-label">Active Ideas</div>
+          <div class="stat-trend positive">+3 this week</div>
+        </div>
+        <div class="wc-card stat-card">
+          <div class="stat-number">8</div>
+          <div class="stat-label">Projects</div>
+          <div class="stat-trend positive">+1 new</div>
+        </div>
+        <div class="wc-card stat-card">
+          <div class="stat-number">67%</div>
+          <div class="stat-label">Completion</div>
+          <div class="stat-trend positive">+12%</div>
+        </div>
+        <div class="wc-card stat-card">
+          <div class="stat-number">5</div>
+          <div class="stat-label">Team Members</div>
+          <div class="stat-trend neutral">No change</div>
+        </div>
+        <!-- Chart Card -->
+        <div class="wc-card chart-card">
+          <h3 class="card-title">Ideas Over Time</h3>
+          <canvas id="chart-ideas-timeline"></canvas>
+        </div>
+        <!-- Activity Feed -->
+        <div class="wc-card activity-card">
+          <h3 class="card-title">Recent Activity</h3>
+          <ul class="activity-list">
+            <li class="activity-item">
+              <span class="activity-dot"></span>
+              <span class="activity-text">New idea added: "Collaborative Whiteboard"</span>
+              <span class="activity-time">2 hours ago</span>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot"></span>
+              <span class="activity-text">Project "Mobile App" moved to In Progress</span>
+              <span class="activity-time">4 hours ago</span>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot"></span>
+              <span class="activity-text">Schema updated for "User Auth" module</span>
+              <span class="activity-time">Yesterday</span>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot"></span>
+              <span class="activity-text">AI Chat session: "API Architecture Review"</span>
+              <span class="activity-time">Yesterday</span>
+            </li>
+            <li class="activity-item">
+              <span class="activity-dot"></span>
+              <span class="activity-text">Directory restructured: /src/components</span>
+              <span class="activity-time">2 days ago</span>
+            </li>
+          </ul>
+        </div>
+        <!-- Quick Actions -->
+        <div class="wc-card quick-card">
+          <h3 class="card-title">Quick Actions</h3>
+          <div class="quick-actions">
+            <button class="wc-btn wc-btn-primary">New Idea</button>
+            <button class="wc-btn wc-btn-secondary">Create Project</button>
+            <button class="wc-btn wc-btn-accent">Start Chat</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Projects View ===== -->
+    <section id="projects" class="view">
+      <div class="view-header">
+        <h2 class="view-title">Projects</h2>
+        <p class="view-subtitle">Manage and track your project portfolio</p>
+      </div>
+      <div class="projects-toolbar">
+        <div class="search-wrap">
+          <input type="text" class="wc-input" placeholder="Search projects..." aria-label="Search projects" />
+        </div>
+        <button class="wc-btn wc-btn-primary">+ New Project</button>
+      </div>
+      <div class="projects-grid">
+        <div class="wc-card project-card">
+          <div class="project-status status-active"></div>
+          <h3 class="project-name">Mobile App Redesign</h3>
+          <p class="project-desc">Complete overhaul of the mobile experience with new UI patterns</p>
+          <div class="project-meta">
+            <span class="project-tasks">12 tasks</span>
+            <span class="project-date">Due Mar 15</span>
+          </div>
+          <div class="project-progress">
+            <div class="progress-bar" style="--progress: 75%"></div>
+            <span class="progress-label">75%</span>
+          </div>
+          <div class="project-team">
+            <span class="team-avatar">JD</span>
+            <span class="team-avatar">MK</span>
+            <span class="team-avatar">SL</span>
+          </div>
+        </div>
+        <div class="wc-card project-card">
+          <div class="project-status status-planning"></div>
+          <h3 class="project-name">AI Integration</h3>
+          <p class="project-desc">Integrate GPT-based features for smart idea suggestions</p>
+          <div class="project-meta">
+            <span class="project-tasks">8 tasks</span>
+            <span class="project-date">Due Apr 01</span>
+          </div>
+          <div class="project-progress">
+            <div class="progress-bar" style="--progress: 30%"></div>
+            <span class="progress-label">30%</span>
+          </div>
+          <div class="project-team">
+            <span class="team-avatar">AL</span>
+            <span class="team-avatar">RB</span>
+          </div>
+        </div>
+        <div class="wc-card project-card">
+          <div class="project-status status-review"></div>
+          <h3 class="project-name">Data Pipeline</h3>
+          <p class="project-desc">Real-time data synchronization and analytics engine</p>
+          <div class="project-meta">
+            <span class="project-tasks">20 tasks</span>
+            <span class="project-date">Due Feb 28</span>
+          </div>
+          <div class="project-progress">
+            <div class="progress-bar" style="--progress: 90%"></div>
+            <span class="progress-label">90%</span>
+          </div>
+          <div class="project-team">
+            <span class="team-avatar">TC</span>
+            <span class="team-avatar">JD</span>
+            <span class="team-avatar">MK</span>
+            <span class="team-avatar">+2</span>
+          </div>
+        </div>
+        <div class="wc-card project-card">
+          <div class="project-status status-active"></div>
+          <h3 class="project-name">User Authentication</h3>
+          <p class="project-desc">OAuth2 and SSO integration with Clerk for secure login flows</p>
+          <div class="project-meta">
+            <span class="project-tasks">6 tasks</span>
+            <span class="project-date">Due Mar 20</span>
+          </div>
+          <div class="project-progress">
+            <div class="progress-bar" style="--progress: 55%"></div>
+            <span class="progress-label">55%</span>
+          </div>
+          <div class="project-team">
+            <span class="team-avatar">SL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Workspace View ===== -->
+    <section id="workspace" class="view">
+      <div class="view-header">
+        <h2 class="view-title">Workspace</h2>
+        <p class="view-subtitle">Your personal creative environment</p>
+      </div>
+      <div class="workspace-layout">
+        <div class="workspace-sidebar">
+          <h3 class="sidebar-title">Notebooks</h3>
+          <ul class="notebook-list">
+            <li class="notebook-item active">
+              <span class="notebook-icon">&#x1f4d3;</span>
+              <span>Design Notes</span>
+            </li>
+            <li class="notebook-item">
+              <span class="notebook-icon">&#x1f4d5;</span>
+              <span>Research</span>
+            </li>
+            <li class="notebook-item">
+              <span class="notebook-icon">&#x1f4d7;</span>
+              <span>Sprint Plans</span>
+            </li>
+            <li class="notebook-item">
+              <span class="notebook-icon">&#x1f4d8;</span>
+              <span>Architecture</span>
+            </li>
+          </ul>
+        </div>
+        <div class="workspace-main">
+          <div class="wc-card editor-card">
+            <div class="editor-toolbar">
+              <button class="tool-btn" title="Bold"><strong>B</strong></button>
+              <button class="tool-btn" title="Italic"><em>I</em></button>
+              <button class="tool-btn" title="Heading">H</button>
+              <button class="tool-btn" title="List">&#x2630;</button>
+              <button class="tool-btn" title="Link">&#x1f517;</button>
+            </div>
+            <div class="editor-content" contenteditable="true" aria-label="Editor content area">
+              <h3>Design Notes - Watercolor UI System</h3>
+              <p>Exploring organic, hand-painted aesthetics for the idea management platform. Key principles include:</p>
+              <ul>
+                <li>Soft watercolor washes as background elements</li>
+                <li>Ink splatter accents for visual interest</li>
+                <li>Brush-stroke borders on cards and panels</li>
+                <li>Analogous color scheme: purple, teal, rose</li>
+              </ul>
+              <p>The goal is to make every interaction feel like painting on a canvas rather than clicking buttons.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Kanban View ===== -->
+    <section id="kanban" class="view">
+      <div class="view-header">
+        <h2 class="view-title">Kanban Board</h2>
+        <p class="view-subtitle">Drag and organize your workflow</p>
+      </div>
+      <div class="kanban-board">
+        <div class="kanban-column">
+          <div class="column-header column-backlog">
+            <h3>Backlog</h3>
+            <span class="column-count">4</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-feature">Feature</span>
+              <h4>Dark mode support</h4>
+              <p>Implement theme switching with dark color scheme</p>
+              <div class="card-footer">
+                <span class="card-priority priority-low">Low</span>
+                <span class="team-avatar small">MK</span>
+              </div>
+            </div>
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-enhancement">Enhancement</span>
+              <h4>Keyboard shortcuts</h4>
+              <p>Add Ctrl+K command palette for power users</p>
+              <div class="card-footer">
+                <span class="card-priority priority-medium">Med</span>
+                <span class="team-avatar small">AL</span>
+              </div>
+            </div>
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-bug">Bug</span>
+              <h4>Fix scroll position</h4>
+              <p>Scroll resets on view switch in mobile</p>
+              <div class="card-footer">
+                <span class="card-priority priority-high">High</span>
+                <span class="team-avatar small">JD</span>
+              </div>
+            </div>
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-feature">Feature</span>
+              <h4>Export to PDF</h4>
+              <p>Allow users to export ideas and notes as PDF</p>
+              <div class="card-footer">
+                <span class="card-priority priority-medium">Med</span>
+                <span class="team-avatar small">SL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kanban-column">
+          <div class="column-header column-todo">
+            <h3>To Do</h3>
+            <span class="column-count">3</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-feature">Feature</span>
+              <h4>Real-time collaboration</h4>
+              <p>WebSocket-based live editing for whiteboard</p>
+              <div class="card-footer">
+                <span class="card-priority priority-high">High</span>
+                <span class="team-avatar small">TC</span>
+              </div>
+            </div>
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-enhancement">Enhancement</span>
+              <h4>Search improvements</h4>
+              <p>Fuzzy search across all ideas and projects</p>
+              <div class="card-footer">
+                <span class="card-priority priority-medium">Med</span>
+                <span class="team-avatar small">RB</span>
+              </div>
+            </div>
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-feature">Feature</span>
+              <h4>Notification system</h4>
+              <p>In-app and email notifications for updates</p>
+              <div class="card-footer">
+                <span class="card-priority priority-low">Low</span>
+                <span class="team-avatar small">MK</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kanban-column">
+          <div class="column-header column-progress">
+            <h3>In Progress</h3>
+            <span class="column-count">2</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-feature">Feature</span>
+              <h4>AI chat integration</h4>
+              <p>Connect to GPT API for idea brainstorming</p>
+              <div class="card-footer">
+                <span class="card-priority priority-high">High</span>
+                <span class="team-avatar small">JD</span>
+              </div>
+            </div>
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-bug">Bug</span>
+              <h4>Memory leak in canvas</h4>
+              <p>Whiteboard canvas not cleaning up on unmount</p>
+              <div class="card-footer">
+                <span class="card-priority priority-high">High</span>
+                <span class="team-avatar small">AL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kanban-column">
+          <div class="column-header column-done">
+            <h3>Done</h3>
+            <span class="column-count">3</span>
+          </div>
+          <div class="kanban-cards">
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-feature">Feature</span>
+              <h4>User authentication</h4>
+              <p>Clerk integration with OAuth2 providers</p>
+              <div class="card-footer">
+                <span class="card-priority priority-high">High</span>
+                <span class="team-avatar small">SL</span>
+              </div>
+            </div>
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-enhancement">Enhancement</span>
+              <h4>Responsive layout</h4>
+              <p>Mobile-first responsive grid system</p>
+              <div class="card-footer">
+                <span class="card-priority priority-medium">Med</span>
+                <span class="team-avatar small">JD</span>
+              </div>
+            </div>
+            <div class="wc-card kanban-card" draggable="true">
+              <span class="card-tag tag-feature">Feature</span>
+              <h4>Project dashboard</h4>
+              <p>Overview cards with progress tracking</p>
+              <div class="card-footer">
+                <span class="card-priority priority-medium">Med</span>
+                <span class="team-avatar small">TC</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Whiteboard View ===== -->
+    <section id="whiteboard" class="view">
+      <div class="view-header">
+        <h2 class="view-title">Whiteboard</h2>
+        <p class="view-subtitle">Sketch, draw, and visualize your ideas</p>
+      </div>
+      <div class="whiteboard-toolbar">
+        <button class="tool-btn active" data-tool="pencil" title="Pencil">&#x270F;</button>
+        <button class="tool-btn" data-tool="brush" title="Brush">&#x1f58c;</button>
+        <button class="tool-btn" data-tool="eraser" title="Eraser">&#x1f9f9;</button>
+        <button class="tool-btn" data-tool="shape" title="Shape">&#x25cb;</button>
+        <button class="tool-btn" data-tool="text" title="Text">T</button>
+        <div class="toolbar-divider"></div>
+        <input type="color" class="color-picker" value="#4A2C6A" aria-label="Color picker" />
+        <input type="range" class="brush-size" min="1" max="20" value="3" aria-label="Brush size" />
+        <button class="tool-btn" data-tool="clear" title="Clear canvas">&#x1f5d1;</button>
+      </div>
+      <div class="whiteboard-canvas-wrap">
+        <canvas id="whiteboard-canvas" width="1200" height="600"></canvas>
+      </div>
+    </section>
+
+    <!-- ===== Schema View ===== -->
+    <section id="schema" class="view">
+      <div class="view-header">
+        <h2 class="view-title">Schema Planner</h2>
+        <p class="view-subtitle">Design your data architecture visually</p>
+      </div>
+      <div class="schema-layout">
+        <div class="schema-sidebar">
+          <h3 class="sidebar-title">Entities</h3>
+          <button class="wc-btn wc-btn-primary wc-btn-sm">+ Add Entity</button>
+          <ul class="entity-list">
+            <li class="entity-item active" data-entity="users">
+              <span class="entity-color" style="--color: var(--color-primary)"></span>
+              Users
+            </li>
+            <li class="entity-item" data-entity="projects">
+              <span class="entity-color" style="--color: var(--color-secondary)"></span>
+              Projects
+            </li>
+            <li class="entity-item" data-entity="ideas">
+              <span class="entity-color" style="--color: var(--color-accent)"></span>
+              Ideas
+            </li>
+            <li class="entity-item" data-entity="tasks">
+              <span class="entity-color" style="--color: #D4A574"></span>
+              Tasks
+            </li>
+          </ul>
+        </div>
+        <div class="schema-canvas-wrap">
+          <svg id="schema-canvas" class="schema-canvas" viewBox="0 0 900 500"></svg>
+        </div>
+        <div class="schema-detail">
+          <h3 class="sidebar-title">Fields: Users</h3>
+          <div class="field-list">
+            <div class="field-item">
+              <span class="field-name">id</span>
+              <span class="field-type">string (PK)</span>
+            </div>
+            <div class="field-item">
+              <span class="field-name">name</span>
+              <span class="field-type">string</span>
+            </div>
+            <div class="field-item">
+              <span class="field-name">email</span>
+              <span class="field-type">string</span>
+            </div>
+            <div class="field-item">
+              <span class="field-name">role</span>
+              <span class="field-type">enum</span>
+            </div>
+            <div class="field-item">
+              <span class="field-name">created_at</span>
+              <span class="field-type">datetime</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Directory Tree View ===== -->
+    <section id="directory" class="view">
+      <div class="view-header">
+        <h2 class="view-title">Directory Tree</h2>
+        <p class="view-subtitle">Navigate your project file structure</p>
+      </div>
+      <div class="directory-layout">
+        <div class="wc-card directory-card">
+          <div class="tree-controls">
+            <button class="wc-btn wc-btn-sm" id="expand-all">Expand All</button>
+            <button class="wc-btn wc-btn-sm" id="collapse-all">Collapse All</button>
+          </div>
+          <ul class="tree-root" role="tree">
+            <li class="tree-folder open" role="treeitem" aria-expanded="true">
+              <span class="folder-toggle">&#x25BE;</span>
+              <span class="folder-icon">&#x1f4c1;</span>
+              <span class="folder-name">src</span>
+              <ul class="tree-children" role="group">
+                <li class="tree-folder open" role="treeitem" aria-expanded="true">
+                  <span class="folder-toggle">&#x25BE;</span>
+                  <span class="folder-icon">&#x1f4c1;</span>
+                  <span class="folder-name">components</span>
+                  <ul class="tree-children" role="group">
+                    <li class="tree-file" role="treeitem">
+                      <span class="file-icon">&#x1f4c4;</span>
+                      <span class="file-name">Dashboard.tsx</span>
+                      <span class="file-size">4.2 KB</span>
+                    </li>
+                    <li class="tree-file" role="treeitem">
+                      <span class="file-icon">&#x1f4c4;</span>
+                      <span class="file-name">KanbanBoard.tsx</span>
+                      <span class="file-size">6.8 KB</span>
+                    </li>
+                    <li class="tree-file" role="treeitem">
+                      <span class="file-icon">&#x1f4c4;</span>
+                      <span class="file-name">Whiteboard.tsx</span>
+                      <span class="file-size">8.1 KB</span>
+                    </li>
+                    <li class="tree-file" role="treeitem">
+                      <span class="file-icon">&#x1f4c4;</span>
+                      <span class="file-name">SchemaPlanner.tsx</span>
+                      <span class="file-size">5.5 KB</span>
+                    </li>
+                  </ul>
+                </li>
+                <li class="tree-folder" role="treeitem" aria-expanded="false">
+                  <span class="folder-toggle">&#x25B8;</span>
+                  <span class="folder-icon">&#x1f4c1;</span>
+                  <span class="folder-name">hooks</span>
+                  <ul class="tree-children" role="group">
+                    <li class="tree-file" role="treeitem">
+                      <span class="file-icon">&#x1f4c4;</span>
+                      <span class="file-name">useAuth.ts</span>
+                      <span class="file-size">1.2 KB</span>
+                    </li>
+                    <li class="tree-file" role="treeitem">
+                      <span class="file-icon">&#x1f4c4;</span>
+                      <span class="file-name">useRealtime.ts</span>
+                      <span class="file-size">2.3 KB</span>
+                    </li>
+                  </ul>
+                </li>
+                <li class="tree-folder" role="treeitem" aria-expanded="false">
+                  <span class="folder-toggle">&#x25B8;</span>
+                  <span class="folder-icon">&#x1f4c1;</span>
+                  <span class="folder-name">utils</span>
+                  <ul class="tree-children" role="group">
+                    <li class="tree-file" role="treeitem">
+                      <span class="file-icon">&#x1f4c4;</span>
+                      <span class="file-name">helpers.ts</span>
+                      <span class="file-size">890 B</span>
+                    </li>
+                    <li class="tree-file" role="treeitem">
+                      <span class="file-icon">&#x1f4c4;</span>
+                      <span class="file-name">validators.ts</span>
+                      <span class="file-size">1.5 KB</span>
+                    </li>
+                  </ul>
+                </li>
+                <li class="tree-file" role="treeitem">
+                  <span class="file-icon">&#x1f4c4;</span>
+                  <span class="file-name">App.tsx</span>
+                  <span class="file-size">2.1 KB</span>
+                </li>
+                <li class="tree-file" role="treeitem">
+                  <span class="file-icon">&#x1f4c4;</span>
+                  <span class="file-name">index.tsx</span>
+                  <span class="file-size">450 B</span>
+                </li>
+              </ul>
+            </li>
+            <li class="tree-folder" role="treeitem" aria-expanded="false">
+              <span class="folder-toggle">&#x25B8;</span>
+              <span class="folder-icon">&#x1f4c1;</span>
+              <span class="folder-name">convex</span>
+              <ul class="tree-children" role="group">
+                <li class="tree-file" role="treeitem">
+                  <span class="file-icon">&#x1f4c4;</span>
+                  <span class="file-name">schema.ts</span>
+                  <span class="file-size">3.4 KB</span>
+                </li>
+                <li class="tree-file" role="treeitem">
+                  <span class="file-icon">&#x1f4c4;</span>
+                  <span class="file-name">ideas.ts</span>
+                  <span class="file-size">2.8 KB</span>
+                </li>
+                <li class="tree-file" role="treeitem">
+                  <span class="file-icon">&#x1f4c4;</span>
+                  <span class="file-name">projects.ts</span>
+                  <span class="file-size">2.1 KB</span>
+                </li>
+              </ul>
+            </li>
+            <li class="tree-file" role="treeitem">
+              <span class="file-icon">&#x1f4c4;</span>
+              <span class="file-name">package.json</span>
+              <span class="file-size">1.8 KB</span>
+            </li>
+            <li class="tree-file" role="treeitem">
+              <span class="file-icon">&#x1f4c4;</span>
+              <span class="file-name">tsconfig.json</span>
+              <span class="file-size">680 B</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Ideas View ===== -->
+    <section id="ideas" class="view">
+      <div class="view-header">
+        <h2 class="view-title">Ideas Capture</h2>
+        <p class="view-subtitle">Collect and nurture your creative sparks</p>
+      </div>
+      <div class="ideas-toolbar">
+        <div class="search-wrap">
+          <input type="text" class="wc-input" placeholder="Search ideas..." aria-label="Search ideas" />
+        </div>
+        <div class="ideas-filter">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="new">New</button>
+          <button class="filter-btn" data-filter="developing">Developing</button>
+          <button class="filter-btn" data-filter="mature">Mature</button>
+        </div>
+      </div>
+      <div class="ideas-grid">
+        <div class="wc-card idea-card" data-category="new">
+          <div class="idea-category cat-new">New</div>
+          <h3 class="idea-title">Voice-to-Idea Transcription</h3>
+          <p class="idea-desc">Record voice memos that automatically transcribe and categorize into the idea system</p>
+          <div class="idea-tags">
+            <span class="idea-tag">AI</span>
+            <span class="idea-tag">Mobile</span>
+          </div>
+          <div class="idea-footer">
+            <span class="idea-date">Mar 3, 2026</span>
+            <button class="wc-btn wc-btn-sm">View</button>
+          </div>
+        </div>
+        <div class="wc-card idea-card" data-category="developing">
+          <div class="idea-category cat-developing">Developing</div>
+          <h3 class="idea-title">Collaborative Mind Maps</h3>
+          <p class="idea-desc">Real-time shared mind mapping with branching idea trees and voting</p>
+          <div class="idea-tags">
+            <span class="idea-tag">Collaboration</span>
+            <span class="idea-tag">UX</span>
+          </div>
+          <div class="idea-footer">
+            <span class="idea-date">Feb 28, 2026</span>
+            <button class="wc-btn wc-btn-sm">View</button>
+          </div>
+        </div>
+        <div class="wc-card idea-card" data-category="mature">
+          <div class="idea-category cat-mature">Mature</div>
+          <h3 class="idea-title">Smart Tagging System</h3>
+          <p class="idea-desc">AI-powered auto-tagging that learns from user patterns and suggests categories</p>
+          <div class="idea-tags">
+            <span class="idea-tag">AI</span>
+            <span class="idea-tag">Automation</span>
+          </div>
+          <div class="idea-footer">
+            <span class="idea-date">Feb 20, 2026</span>
+            <button class="wc-btn wc-btn-sm">View</button>
+          </div>
+        </div>
+        <div class="wc-card idea-card" data-category="new">
+          <div class="idea-category cat-new">New</div>
+          <h3 class="idea-title">Gesture-Based Navigation</h3>
+          <p class="idea-desc">Swipe gestures for quick navigation between views on mobile devices</p>
+          <div class="idea-tags">
+            <span class="idea-tag">Mobile</span>
+            <span class="idea-tag">UX</span>
+          </div>
+          <div class="idea-footer">
+            <span class="idea-date">Mar 4, 2026</span>
+            <button class="wc-btn wc-btn-sm">View</button>
+          </div>
+        </div>
+        <div class="wc-card idea-card" data-category="developing">
+          <div class="idea-category cat-developing">Developing</div>
+          <h3 class="idea-title">Idea Version History</h3>
+          <p class="idea-desc">Track how ideas evolve over time with visual diff comparisons</p>
+          <div class="idea-tags">
+            <span class="idea-tag">Tracking</span>
+          </div>
+          <div class="idea-footer">
+            <span class="idea-date">Feb 25, 2026</span>
+            <button class="wc-btn wc-btn-sm">View</button>
+          </div>
+        </div>
+        <div class="wc-card idea-card" data-category="mature">
+          <div class="idea-category cat-mature">Mature</div>
+          <h3 class="idea-title">Template Library</h3>
+          <p class="idea-desc">Pre-built templates for common project types and idea frameworks</p>
+          <div class="idea-tags">
+            <span class="idea-tag">Productivity</span>
+            <span class="idea-tag">Templates</span>
+          </div>
+          <div class="idea-footer">
+            <span class="idea-date">Feb 15, 2026</span>
+            <button class="wc-btn wc-btn-sm">View</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== AI Chat View ===== -->
+    <section id="chat" class="view">
+      <div class="view-header">
+        <h2 class="view-title">AI Chat</h2>
+        <p class="view-subtitle">Brainstorm with your AI assistant</p>
+      </div>
+      <div class="chat-layout">
+        <div class="chat-sidebar">
+          <h3 class="sidebar-title">Conversations</h3>
+          <button class="wc-btn wc-btn-primary wc-btn-sm">+ New Chat</button>
+          <ul class="chat-history">
+            <li class="chat-session active">
+              <span class="chat-session-title">API Architecture Review</span>
+              <span class="chat-session-date">Today</span>
+            </li>
+            <li class="chat-session">
+              <span class="chat-session-title">UI Color Palette Ideas</span>
+              <span class="chat-session-date">Yesterday</span>
+            </li>
+            <li class="chat-session">
+              <span class="chat-session-title">Database Schema Design</span>
+              <span class="chat-session-date">Mar 2</span>
+            </li>
+            <li class="chat-session">
+              <span class="chat-session-title">Sprint Planning Help</span>
+              <span class="chat-session-date">Feb 28</span>
+            </li>
+          </ul>
+        </div>
+        <div class="chat-main">
+          <div class="chat-messages" id="chat-messages">
+            <div class="chat-msg msg-user">
+              <div class="msg-avatar">JD</div>
+              <div class="msg-content">
+                <p>Can you help me review the API architecture for the idea management platform?</p>
+              </div>
+            </div>
+            <div class="chat-msg msg-ai">
+              <div class="msg-avatar">AI</div>
+              <div class="msg-content">
+                <p>I'd be happy to help review your API architecture! Here are some key areas to consider:</p>
+                <ul>
+                  <li><strong>RESTful endpoints</strong> for CRUD operations on ideas, projects, and tasks</li>
+                  <li><strong>WebSocket connections</strong> for real-time collaboration features</li>
+                  <li><strong>Authentication middleware</strong> using Clerk for secure access control</li>
+                  <li><strong>Rate limiting</strong> to prevent abuse of AI chat endpoints</li>
+                </ul>
+                <p>Would you like me to dive deeper into any of these areas?</p>
+              </div>
+            </div>
+            <div class="chat-msg msg-user">
+              <div class="msg-avatar">JD</div>
+              <div class="msg-content">
+                <p>Yes, let's focus on the WebSocket architecture for real-time collaboration.</p>
+              </div>
+            </div>
+            <div class="chat-msg msg-ai">
+              <div class="msg-avatar">AI</div>
+              <div class="msg-content">
+                <p>For real-time collaboration, I recommend a room-based WebSocket architecture:</p>
+                <p>Each whiteboard or kanban board creates a "room" that users join. Changes are broadcast to all room members via Convex's real-time subscriptions. This approach scales well and maintains consistency.</p>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-wrap">
+            <textarea class="wc-input chat-input" placeholder="Type your message..." rows="2" aria-label="Chat message input"></textarea>
+            <button class="wc-btn wc-btn-primary chat-send">Send</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Settings View ===== -->
+    <section id="settings" class="view">
+      <div class="view-header">
+        <h2 class="view-title">Settings</h2>
+        <p class="view-subtitle">Customize your experience</p>
+      </div>
+      <div class="settings-layout">
+        <div class="settings-nav">
+          <button class="settings-tab active" data-settings="profile">Profile</button>
+          <button class="settings-tab" data-settings="appearance">Appearance</button>
+          <button class="settings-tab" data-settings="notifications">Notifications</button>
+          <button class="settings-tab" data-settings="integrations">Integrations</button>
+        </div>
+        <div class="settings-content">
+          <!-- Profile Settings -->
+          <div class="settings-panel active" id="settings-profile">
+            <h3 class="panel-title">Profile Settings</h3>
+            <div class="form-group">
+              <label class="wc-label" for="setting-name">Display Name</label>
+              <input type="text" id="setting-name" class="wc-input" value="Jane Doe" />
+            </div>
+            <div class="form-group">
+              <label class="wc-label" for="setting-email">Email</label>
+              <input type="email" id="setting-email" class="wc-input" value="jane.doe@example.com" />
+            </div>
+            <div class="form-group">
+              <label class="wc-label" for="setting-bio">Bio</label>
+              <textarea id="setting-bio" class="wc-input" rows="3">Product designer and creative thinker</textarea>
+            </div>
+            <button class="wc-btn wc-btn-primary">Save Changes</button>
+          </div>
+          <!-- Appearance Settings -->
+          <div class="settings-panel" id="settings-appearance">
+            <h3 class="panel-title">Appearance</h3>
+            <div class="form-group">
+              <label class="wc-label">Theme</label>
+              <div class="toggle-group">
+                <button class="toggle-btn active">Watercolor Light</button>
+                <button class="toggle-btn">Ink Dark</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="wc-label">Font Size</label>
+              <div class="toggle-group">
+                <button class="toggle-btn">Small</button>
+                <button class="toggle-btn active">Medium</button>
+                <button class="toggle-btn">Large</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="wc-label">Animations</label>
+              <div class="switch-wrap">
+                <input type="checkbox" id="toggle-animations" class="toggle-switch" checked />
+                <label for="toggle-animations" class="toggle-label">Enable ambient animations</label>
+              </div>
+            </div>
+          </div>
+          <!-- Notifications Settings -->
+          <div class="settings-panel" id="settings-notifications">
+            <h3 class="panel-title">Notifications</h3>
+            <div class="form-group">
+              <div class="switch-wrap">
+                <input type="checkbox" id="notify-email" class="toggle-switch" checked />
+                <label for="notify-email" class="toggle-label">Email notifications</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="switch-wrap">
+                <input type="checkbox" id="notify-push" class="toggle-switch" checked />
+                <label for="notify-push" class="toggle-label">Push notifications</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="switch-wrap">
+                <input type="checkbox" id="notify-updates" class="toggle-switch" />
+                <label for="notify-updates" class="toggle-label">Product updates</label>
+              </div>
+            </div>
+          </div>
+          <!-- Integrations Settings -->
+          <div class="settings-panel" id="settings-integrations">
+            <h3 class="panel-title">Integrations</h3>
+            <div class="integration-list">
+              <div class="integration-item">
+                <div class="integration-info">
+                  <h4>Slack</h4>
+                  <p>Send notifications to your Slack workspace</p>
+                </div>
+                <button class="wc-btn wc-btn-secondary wc-btn-sm">Connect</button>
+              </div>
+              <div class="integration-item">
+                <div class="integration-info">
+                  <h4>GitHub</h4>
+                  <p>Sync issues and pull requests with projects</p>
+                </div>
+                <button class="wc-btn wc-btn-sm connected">Connected</button>
+              </div>
+              <div class="integration-item">
+                <div class="integration-info">
+                  <h4>Figma</h4>
+                  <p>Import designs directly into your whiteboard</p>
+                </div>
+                <button class="wc-btn wc-btn-secondary wc-btn-sm">Connect</button>
+              </div>
+              <div class="integration-item">
+                <div class="integration-info">
+                  <h4>Notion</h4>
+                  <p>Import and export notes between platforms</p>
+                </div>
+                <button class="wc-btn wc-btn-secondary wc-btn-sm">Connect</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

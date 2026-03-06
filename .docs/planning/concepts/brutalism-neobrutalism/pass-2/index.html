@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDEA-MGMT // Brutalist System v2</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================ -->
+  <!-- GRID OVERLAY (structural background) -->
+  <!-- ============================================ -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- ============================================ -->
+  <!-- MOBILE HEADER -->
+  <!-- ============================================ -->
+  <header class="mobile-header">
+    <div class="mobile-header__brand">
+      <span class="brand-block"></span>
+      <span class="brand-text">IDEA//SYS</span>
+    </div>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+    </button>
+  </header>
+
+  <!-- ============================================ -->
+  <!-- SPLIT PANE: LEFT PANEL (Navigation) -->
+  <!-- ============================================ -->
+  <aside class="left-panel" id="leftPanel">
+    <div class="left-panel__header">
+      <div class="brand">
+        <span class="brand-block"></span>
+        <span class="brand-text">IDEA//SYS</span>
+      </div>
+      <span class="brand-version">v2.0</span>
+    </div>
+
+    <!-- Breadcrumb-trail navigation with section numbers -->
+    <nav class="nav-trail" aria-label="Main navigation">
+      <a href="#dashboard" class="nav-item active" data-section="01">
+        <span class="nav-item__number">01</span>
+        <span class="nav-item__label">DASHBOARD</span>
+        <span class="nav-item__indicator"></span>
+      </a>
+      <a href="#projects" class="nav-item" data-section="02">
+        <span class="nav-item__number">02</span>
+        <span class="nav-item__label">PROJECTS</span>
+        <span class="nav-item__indicator"></span>
+      </a>
+      <a href="#workspace" class="nav-item" data-section="03">
+        <span class="nav-item__number">03</span>
+        <span class="nav-item__label">WORKSPACE</span>
+        <span class="nav-item__indicator"></span>
+      </a>
+      <a href="#kanban" class="nav-item" data-section="04">
+        <span class="nav-item__number">04</span>
+        <span class="nav-item__label">KANBAN</span>
+        <span class="nav-item__indicator"></span>
+      </a>
+      <a href="#whiteboard" class="nav-item" data-section="05">
+        <span class="nav-item__number">05</span>
+        <span class="nav-item__label">WHITEBOARD</span>
+        <span class="nav-item__indicator"></span>
+      </a>
+      <a href="#schema" class="nav-item" data-section="06">
+        <span class="nav-item__number">06</span>
+        <span class="nav-item__label">SCHEMA</span>
+        <span class="nav-item__indicator"></span>
+      </a>
+      <a href="#directory" class="nav-item" data-section="07">
+        <span class="nav-item__number">07</span>
+        <span class="nav-item__label">DIRECTORY</span>
+        <span class="nav-item__indicator"></span>
+      </a>
+      <a href="#ideas" class="nav-item" data-section="08">
+        <span class="nav-item__number">08</span>
+        <span class="nav-item__label">IDEAS</span>
+        <span class="nav-item__indicator"></span>
+      </a>
+      <a href="#chat" class="nav-item" data-section="09">
+        <span class="nav-item__number">09</span>
+        <span class="nav-item__label">AI CHAT</span>
+        <span class="nav-item__indicator"></span>
+      </a>
+      <a href="#settings" class="nav-item" data-section="10">
+        <span class="nav-item__number">10</span>
+        <span class="nav-item__label">SETTINGS</span>
+        <span class="nav-item__indicator"></span>
+      </a>
+    </nav>
+
+    <!-- Structural metadata -->
+    <div class="left-panel__footer">
+      <div class="struct-label">SYS.STATUS</div>
+      <div class="struct-meta">
+        <span class="meta-dot meta-dot--active"></span>
+        <span class="meta-text">OPERATIONAL</span>
+      </div>
+      <div class="struct-label">BUILD</div>
+      <div class="struct-meta">
+        <span class="meta-text">2026.03.05</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile nav overlay backdrop -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <!-- ============================================ -->
+  <!-- SPLIT PANE: RIGHT PANEL (Content) -->
+  <!-- ============================================ -->
+  <main class="right-panel" id="rightPanel">
+
+    <!-- Breadcrumb trail at top of content -->
+    <div class="breadcrumb-bar">
+      <span class="breadcrumb-segment">IDEA//SYS</span>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-segment breadcrumb-current" id="breadcrumbCurrent">DASHBOARD</span>
+      <div class="breadcrumb-bar__line"></div>
+    </div>
+
+    <!-- ========== VIEW: DASHBOARD ========== -->
+    <section class="view" id="dashboard">
+      <div class="view__header">
+        <h1 class="view__title"><span class="title-num">01.</span> DASHBOARD</h1>
+        <p class="view__subtitle">System overview and key performance metrics</p>
+      </div>
+
+      <!-- Stat cards row -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card__label">TOTAL PROJECTS</div>
+          <div class="stat-card__value">24</div>
+          <div class="stat-card__trend stat-card__trend--up">+3 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">ACTIVE IDEAS</div>
+          <div class="stat-card__value">147</div>
+          <div class="stat-card__trend stat-card__trend--up">+12 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">TASKS COMPLETE</div>
+          <div class="stat-card__value">89%</div>
+          <div class="stat-card__trend stat-card__trend--neutral">+2% this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">TEAM MEMBERS</div>
+          <div class="stat-card__value">8</div>
+          <div class="stat-card__trend stat-card__trend--neutral">No change</div>
+        </div>
+      </div>
+
+      <!-- Activity chart area -->
+      <div class="panel-row">
+        <div class="panel panel--wide">
+          <div class="panel__header">
+            <span class="panel__label">WEEKLY ACTIVITY</span>
+            <span class="panel__meta">LAST 7 DAYS</span>
+          </div>
+          <div class="chart-bars" id="dashboardChart">
+            <div class="chart-bar" style="--bar-height: 60%"><span class="chart-bar__label">Mon</span></div>
+            <div class="chart-bar" style="--bar-height: 85%"><span class="chart-bar__label">Tue</span></div>
+            <div class="chart-bar" style="--bar-height: 45%"><span class="chart-bar__label">Wed</span></div>
+            <div class="chart-bar" style="--bar-height: 70%"><span class="chart-bar__label">Thu</span></div>
+            <div class="chart-bar" style="--bar-height: 95%"><span class="chart-bar__label">Fri</span></div>
+            <div class="chart-bar" style="--bar-height: 30%"><span class="chart-bar__label">Sat</span></div>
+            <div class="chart-bar" style="--bar-height: 50%"><span class="chart-bar__label">Sun</span></div>
+          </div>
+        </div>
+        <div class="panel panel--narrow">
+          <div class="panel__header">
+            <span class="panel__label">RECENT ACTIONS</span>
+          </div>
+          <ul class="action-list">
+            <li class="action-item">
+              <span class="action-item__time">09:41</span>
+              <span class="action-item__text">Schema "Users" updated</span>
+            </li>
+            <li class="action-item">
+              <span class="action-item__time">09:23</span>
+              <span class="action-item__text">New idea captured: "AI Search"</span>
+            </li>
+            <li class="action-item">
+              <span class="action-item__time">08:55</span>
+              <span class="action-item__text">Project "Atlas" moved to review</span>
+            </li>
+            <li class="action-item">
+              <span class="action-item__time">08:30</span>
+              <span class="action-item__text">Kanban card assigned to JD</span>
+            </li>
+            <li class="action-item">
+              <span class="action-item__time">08:12</span>
+              <span class="action-item__text">Whiteboard "Flow v3" saved</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: PROJECTS ========== -->
+    <section class="view" id="projects">
+      <div class="view__header">
+        <h1 class="view__title"><span class="title-num">02.</span> PROJECTS</h1>
+        <p class="view__subtitle">All managed projects and their current status</p>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar__search">
+          <input type="text" class="input-field" placeholder="SEARCH PROJECTS...">
+        </div>
+        <div class="toolbar__actions">
+          <button class="btn btn--accent">+ NEW PROJECT</button>
+          <button class="btn btn--secondary">FILTER</button>
+        </div>
+      </div>
+
+      <div class="project-grid">
+        <div class="project-card">
+          <div class="project-card__status project-card__status--active"></div>
+          <div class="project-card__header">
+            <h3 class="project-card__name">Project Atlas</h3>
+            <span class="project-card__id">#PRJ-001</span>
+          </div>
+          <p class="project-card__desc">Global mapping and visualization platform for geographic data analysis.</p>
+          <div class="project-card__meta">
+            <span>12 tasks</span>
+            <span>3 members</span>
+            <span class="project-card__progress"><span class="progress-bar"><span class="progress-fill" style="width:75%"></span></span> 75%</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-card__status project-card__status--active"></div>
+          <div class="project-card__header">
+            <h3 class="project-card__name">Beacon CMS</h3>
+            <span class="project-card__id">#PRJ-002</span>
+          </div>
+          <p class="project-card__desc">Content management system with real-time collaborative editing features.</p>
+          <div class="project-card__meta">
+            <span>8 tasks</span>
+            <span>5 members</span>
+            <span class="project-card__progress"><span class="progress-bar"><span class="progress-fill" style="width:40%"></span></span> 40%</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-card__status project-card__status--review"></div>
+          <div class="project-card__header">
+            <h3 class="project-card__name">Cipher Auth</h3>
+            <span class="project-card__id">#PRJ-003</span>
+          </div>
+          <p class="project-card__desc">Authentication microservice with OAuth2 and SAML single sign-on support.</p>
+          <div class="project-card__meta">
+            <span>6 tasks</span>
+            <span>2 members</span>
+            <span class="project-card__progress"><span class="progress-bar"><span class="progress-fill" style="width:90%"></span></span> 90%</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-card__status project-card__status--paused"></div>
+          <div class="project-card__header">
+            <h3 class="project-card__name">DataForge</h3>
+            <span class="project-card__id">#PRJ-004</span>
+          </div>
+          <p class="project-card__desc">ETL pipeline builder for automated data transformation workflows.</p>
+          <div class="project-card__meta">
+            <span>15 tasks</span>
+            <span>4 members</span>
+            <span class="project-card__progress"><span class="progress-bar"><span class="progress-fill" style="width:20%"></span></span> 20%</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-card__status project-card__status--active"></div>
+          <div class="project-card__header">
+            <h3 class="project-card__name">Nexus API</h3>
+            <span class="project-card__id">#PRJ-005</span>
+          </div>
+          <p class="project-card__desc">Unified API gateway for internal microservices and third-party integrations.</p>
+          <div class="project-card__meta">
+            <span>20 tasks</span>
+            <span>6 members</span>
+            <span class="project-card__progress"><span class="progress-bar"><span class="progress-fill" style="width:55%"></span></span> 55%</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-card__status project-card__status--complete"></div>
+          <div class="project-card__header">
+            <h3 class="project-card__name">Pulse Analytics</h3>
+            <span class="project-card__id">#PRJ-006</span>
+          </div>
+          <p class="project-card__desc">Real-time analytics dashboard for system health monitoring and alerts.</p>
+          <div class="project-card__meta">
+            <span>10 tasks</span>
+            <span>3 members</span>
+            <span class="project-card__progress"><span class="progress-bar"><span class="progress-fill" style="width:100%"></span></span> 100%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: WORKSPACE ========== -->
+    <section class="view" id="workspace">
+      <div class="view__header">
+        <h1 class="view__title"><span class="title-num">03.</span> WORKSPACE</h1>
+        <p class="view__subtitle">Personal workspace and active task management</p>
+      </div>
+
+      <div class="workspace-layout">
+        <div class="workspace-main">
+          <div class="panel">
+            <div class="panel__header">
+              <span class="panel__label">MY TASKS</span>
+              <span class="panel__meta">6 ACTIVE</span>
+            </div>
+            <div class="task-list">
+              <div class="task-item">
+                <button class="task-check" aria-label="Toggle task complete"></button>
+                <div class="task-item__content">
+                  <span class="task-item__name">Finalize API schema for v2 endpoints</span>
+                  <span class="task-item__project">Atlas</span>
+                </div>
+                <span class="task-item__priority task-item__priority--high">HIGH</span>
+              </div>
+              <div class="task-item">
+                <button class="task-check" aria-label="Toggle task complete"></button>
+                <div class="task-item__content">
+                  <span class="task-item__name">Review pull request #347</span>
+                  <span class="task-item__project">Beacon CMS</span>
+                </div>
+                <span class="task-item__priority task-item__priority--medium">MED</span>
+              </div>
+              <div class="task-item">
+                <button class="task-check task-check--done" aria-label="Toggle task complete"></button>
+                <div class="task-item__content task-item__content--done">
+                  <span class="task-item__name">Write unit tests for auth module</span>
+                  <span class="task-item__project">Cipher Auth</span>
+                </div>
+                <span class="task-item__priority task-item__priority--low">LOW</span>
+              </div>
+              <div class="task-item">
+                <button class="task-check" aria-label="Toggle task complete"></button>
+                <div class="task-item__content">
+                  <span class="task-item__name">Update deployment configuration</span>
+                  <span class="task-item__project">Nexus API</span>
+                </div>
+                <span class="task-item__priority task-item__priority--high">HIGH</span>
+              </div>
+              <div class="task-item">
+                <button class="task-check" aria-label="Toggle task complete"></button>
+                <div class="task-item__content">
+                  <span class="task-item__name">Design error handling strategy</span>
+                  <span class="task-item__project">DataForge</span>
+                </div>
+                <span class="task-item__priority task-item__priority--medium">MED</span>
+              </div>
+              <div class="task-item">
+                <button class="task-check" aria-label="Toggle task complete"></button>
+                <div class="task-item__content">
+                  <span class="task-item__name">Prepare sprint retrospective notes</span>
+                  <span class="task-item__project">General</span>
+                </div>
+                <span class="task-item__priority task-item__priority--low">LOW</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="workspace-sidebar">
+          <div class="panel">
+            <div class="panel__header">
+              <span class="panel__label">QUICK NOTES</span>
+            </div>
+            <textarea class="note-area" placeholder="TYPE NOTES HERE..."></textarea>
+          </div>
+          <div class="panel">
+            <div class="panel__header">
+              <span class="panel__label">DEADLINES</span>
+            </div>
+            <div class="deadline-list">
+              <div class="deadline-item">
+                <span class="deadline-date">MAR 07</span>
+                <span class="deadline-text">Atlas API v2 release</span>
+              </div>
+              <div class="deadline-item">
+                <span class="deadline-date">MAR 12</span>
+                <span class="deadline-text">Beacon CMS beta</span>
+              </div>
+              <div class="deadline-item deadline-item--urgent">
+                <span class="deadline-date">MAR 06</span>
+                <span class="deadline-text">Security audit report</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: KANBAN ========== -->
+    <section class="view" id="kanban">
+      <div class="view__header">
+        <h1 class="view__title"><span class="title-num">04.</span> KANBAN</h1>
+        <p class="view__subtitle">Task board with drag-and-drop workflow columns</p>
+      </div>
+
+      <div class="kanban-board">
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <span class="kanban-column__title">BACKLOG</span>
+            <span class="kanban-column__count">3</span>
+          </div>
+          <div class="kanban-column__body">
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card__tag kanban-card__tag--feature">FEATURE</div>
+              <div class="kanban-card__title">Implement search indexing</div>
+              <div class="kanban-card__meta">Atlas / JD</div>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card__tag kanban-card__tag--bug">BUG</div>
+              <div class="kanban-card__title">Fix pagination offset</div>
+              <div class="kanban-card__meta">Beacon / KL</div>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card__tag kanban-card__tag--task">TASK</div>
+              <div class="kanban-card__title">Update documentation</div>
+              <div class="kanban-card__meta">General / MR</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <span class="kanban-column__title">IN PROGRESS</span>
+            <span class="kanban-column__count">2</span>
+          </div>
+          <div class="kanban-column__body">
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card__tag kanban-card__tag--feature">FEATURE</div>
+              <div class="kanban-card__title">Build OAuth2 flow</div>
+              <div class="kanban-card__meta">Cipher / AB</div>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card__tag kanban-card__tag--task">TASK</div>
+              <div class="kanban-card__title">Configure CI/CD pipeline</div>
+              <div class="kanban-card__meta">Nexus / JD</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <span class="kanban-column__title">REVIEW</span>
+            <span class="kanban-column__count">2</span>
+          </div>
+          <div class="kanban-column__body">
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card__tag kanban-card__tag--feature">FEATURE</div>
+              <div class="kanban-card__title">User role management</div>
+              <div class="kanban-card__meta">Cipher / KL</div>
+            </div>
+            <div class="kanban-card" draggable="true">
+              <div class="kanban-card__tag kanban-card__tag--bug">BUG</div>
+              <div class="kanban-card__title">Memory leak in websocket</div>
+              <div class="kanban-card__meta">Pulse / MR</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <span class="kanban-column__title">DONE</span>
+            <span class="kanban-column__count">2</span>
+          </div>
+          <div class="kanban-column__body">
+            <div class="kanban-card kanban-card--done" draggable="true">
+              <div class="kanban-card__tag kanban-card__tag--task">TASK</div>
+              <div class="kanban-card__title">Database migration script</div>
+              <div class="kanban-card__meta">DataForge / AB</div>
+            </div>
+            <div class="kanban-card kanban-card--done" draggable="true">
+              <div class="kanban-card__tag kanban-card__tag--feature">FEATURE</div>
+              <div class="kanban-card__title">Export to CSV</div>
+              <div class="kanban-card__meta">Pulse / JD</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: WHITEBOARD ========== -->
+    <section class="view" id="whiteboard">
+      <div class="view__header">
+        <h1 class="view__title"><span class="title-num">05.</span> WHITEBOARD</h1>
+        <p class="view__subtitle">Freeform canvas for diagramming and brainstorming</p>
+      </div>
+
+      <div class="whiteboard-toolbar">
+        <button class="wb-tool wb-tool--active" data-tool="select" aria-label="Select tool">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 2L15 9L9 11L7 17L3 2Z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        </button>
+        <button class="wb-tool" data-tool="rect" aria-label="Rectangle tool">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button class="wb-tool" data-tool="circle" aria-label="Circle tool">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button class="wb-tool" data-tool="line" aria-label="Line tool">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><line x1="2" y1="16" x2="16" y2="2" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button class="wb-tool" data-tool="text" aria-label="Text tool">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><text x="4" y="14" font-size="14" fill="currentColor" font-weight="bold">T</text></svg>
+        </button>
+        <div class="wb-tool-sep"></div>
+        <button class="wb-tool" data-tool="undo" aria-label="Undo">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 8L2 5L5 2" stroke="currentColor" stroke-width="2"/><path d="M2 5H12C14.2 5 16 6.8 16 9C16 11.2 14.2 13 12 13H8" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button class="wb-tool" data-tool="clear" aria-label="Clear canvas">CLR</button>
+      </div>
+
+      <div class="whiteboard-canvas" id="whiteboardCanvas">
+        <!-- SVG elements rendered by app.js -->
+        <svg class="wb-svg" id="wbSvg" width="100%" height="100%">
+          <rect x="80" y="60" width="180" height="80" fill="none" stroke="var(--color-text)" stroke-width="2"/>
+          <text x="170" y="105" text-anchor="middle" fill="var(--color-text)" font-family="var(--font-mono)" font-size="13">USER SERVICE</text>
+          <rect x="360" y="60" width="180" height="80" fill="none" stroke="var(--color-text)" stroke-width="2"/>
+          <text x="450" y="105" text-anchor="middle" fill="var(--color-text)" font-family="var(--font-mono)" font-size="13">AUTH SERVICE</text>
+          <line x1="260" y1="100" x2="360" y2="100" stroke="var(--color-accent)" stroke-width="2" stroke-dasharray="6,4"/>
+          <rect x="220" y="200" width="180" height="80" fill="none" stroke="var(--color-text)" stroke-width="2"/>
+          <text x="310" y="245" text-anchor="middle" fill="var(--color-text)" font-family="var(--font-mono)" font-size="13">DATABASE</text>
+          <line x1="170" y1="140" x2="310" y2="200" stroke="var(--color-grid)" stroke-width="2"/>
+          <line x1="450" y1="140" x2="310" y2="200" stroke="var(--color-grid)" stroke-width="2"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: SCHEMA ========== -->
+    <section class="view" id="schema">
+      <div class="view__header">
+        <h1 class="view__title"><span class="title-num">06.</span> SCHEMA</h1>
+        <p class="view__subtitle">Database schema planner and entity relationship modeling</p>
+      </div>
+
+      <div class="schema-layout">
+        <div class="schema-table">
+          <div class="schema-table__header">
+            <span class="schema-table__name">USERS</span>
+            <span class="schema-table__badge">PK: id</span>
+          </div>
+          <div class="schema-table__body">
+            <div class="schema-field">
+              <span class="schema-field__name">id</span>
+              <span class="schema-field__type">UUID</span>
+              <span class="schema-field__key">PK</span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">email</span>
+              <span class="schema-field__type">VARCHAR(255)</span>
+              <span class="schema-field__key">UQ</span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">name</span>
+              <span class="schema-field__type">VARCHAR(100)</span>
+              <span class="schema-field__key"></span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">role</span>
+              <span class="schema-field__type">ENUM</span>
+              <span class="schema-field__key"></span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">created_at</span>
+              <span class="schema-field__type">TIMESTAMP</span>
+              <span class="schema-field__key"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="schema-table">
+          <div class="schema-table__header">
+            <span class="schema-table__name">PROJECTS</span>
+            <span class="schema-table__badge">PK: id</span>
+          </div>
+          <div class="schema-table__body">
+            <div class="schema-field">
+              <span class="schema-field__name">id</span>
+              <span class="schema-field__type">UUID</span>
+              <span class="schema-field__key">PK</span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">name</span>
+              <span class="schema-field__type">VARCHAR(200)</span>
+              <span class="schema-field__key"></span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">owner_id</span>
+              <span class="schema-field__type">UUID</span>
+              <span class="schema-field__key">FK</span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">status</span>
+              <span class="schema-field__type">ENUM</span>
+              <span class="schema-field__key"></span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">created_at</span>
+              <span class="schema-field__type">TIMESTAMP</span>
+              <span class="schema-field__key"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="schema-table">
+          <div class="schema-table__header">
+            <span class="schema-table__name">IDEAS</span>
+            <span class="schema-table__badge">PK: id</span>
+          </div>
+          <div class="schema-table__body">
+            <div class="schema-field">
+              <span class="schema-field__name">id</span>
+              <span class="schema-field__type">UUID</span>
+              <span class="schema-field__key">PK</span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">title</span>
+              <span class="schema-field__type">VARCHAR(300)</span>
+              <span class="schema-field__key"></span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">project_id</span>
+              <span class="schema-field__type">UUID</span>
+              <span class="schema-field__key">FK</span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">author_id</span>
+              <span class="schema-field__type">UUID</span>
+              <span class="schema-field__key">FK</span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">body</span>
+              <span class="schema-field__type">TEXT</span>
+              <span class="schema-field__key"></span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">status</span>
+              <span class="schema-field__type">ENUM</span>
+              <span class="schema-field__key"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="schema-table">
+          <div class="schema-table__header">
+            <span class="schema-table__name">TASKS</span>
+            <span class="schema-table__badge">PK: id</span>
+          </div>
+          <div class="schema-table__body">
+            <div class="schema-field">
+              <span class="schema-field__name">id</span>
+              <span class="schema-field__type">UUID</span>
+              <span class="schema-field__key">PK</span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">title</span>
+              <span class="schema-field__type">VARCHAR(300)</span>
+              <span class="schema-field__key"></span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">project_id</span>
+              <span class="schema-field__type">UUID</span>
+              <span class="schema-field__key">FK</span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">assignee_id</span>
+              <span class="schema-field__type">UUID</span>
+              <span class="schema-field__key">FK</span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">priority</span>
+              <span class="schema-field__type">ENUM</span>
+              <span class="schema-field__key"></span>
+            </div>
+            <div class="schema-field">
+              <span class="schema-field__name">status</span>
+              <span class="schema-field__type">ENUM</span>
+              <span class="schema-field__key"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: DIRECTORY ========== -->
+    <section class="view" id="directory">
+      <div class="view__header">
+        <h1 class="view__title"><span class="title-num">07.</span> DIRECTORY</h1>
+        <p class="view__subtitle">File and folder tree structure explorer</p>
+      </div>
+
+      <div class="directory-tree">
+        <div class="tree-node tree-node--root">
+          <button class="tree-toggle" aria-expanded="true" aria-label="Toggle folder">
+            <span class="tree-icon">&#9660;</span>
+          </button>
+          <span class="tree-name tree-name--folder">idea-management/</span>
+        </div>
+        <div class="tree-children">
+          <div class="tree-node">
+            <button class="tree-toggle" aria-expanded="true" aria-label="Toggle folder">
+              <span class="tree-icon">&#9660;</span>
+            </button>
+            <span class="tree-name tree-name--folder">src/</span>
+          </div>
+          <div class="tree-children">
+            <div class="tree-node">
+              <button class="tree-toggle" aria-expanded="true" aria-label="Toggle folder">
+                <span class="tree-icon">&#9660;</span>
+              </button>
+              <span class="tree-name tree-name--folder">components/</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-node tree-node--file">
+                <span class="tree-icon tree-icon--file">&#9642;</span>
+                <span class="tree-name">Dashboard.tsx</span>
+                <span class="tree-meta">4.2 KB</span>
+              </div>
+              <div class="tree-node tree-node--file">
+                <span class="tree-icon tree-icon--file">&#9642;</span>
+                <span class="tree-name">Kanban.tsx</span>
+                <span class="tree-meta">6.1 KB</span>
+              </div>
+              <div class="tree-node tree-node--file">
+                <span class="tree-icon tree-icon--file">&#9642;</span>
+                <span class="tree-name">Sidebar.tsx</span>
+                <span class="tree-meta">2.8 KB</span>
+              </div>
+              <div class="tree-node tree-node--file">
+                <span class="tree-icon tree-icon--file">&#9642;</span>
+                <span class="tree-name">SchemaPlanner.tsx</span>
+                <span class="tree-meta">5.4 KB</span>
+              </div>
+            </div>
+            <div class="tree-node">
+              <button class="tree-toggle" aria-expanded="false" aria-label="Toggle folder">
+                <span class="tree-icon">&#9654;</span>
+              </button>
+              <span class="tree-name tree-name--folder">hooks/</span>
+            </div>
+            <div class="tree-children tree-children--collapsed">
+              <div class="tree-node tree-node--file">
+                <span class="tree-icon tree-icon--file">&#9642;</span>
+                <span class="tree-name">useProjects.ts</span>
+                <span class="tree-meta">1.2 KB</span>
+              </div>
+              <div class="tree-node tree-node--file">
+                <span class="tree-icon tree-icon--file">&#9642;</span>
+                <span class="tree-name">useAuth.ts</span>
+                <span class="tree-meta">0.9 KB</span>
+              </div>
+            </div>
+            <div class="tree-node">
+              <button class="tree-toggle" aria-expanded="false" aria-label="Toggle folder">
+                <span class="tree-icon">&#9654;</span>
+              </button>
+              <span class="tree-name tree-name--folder">utils/</span>
+            </div>
+            <div class="tree-children tree-children--collapsed">
+              <div class="tree-node tree-node--file">
+                <span class="tree-icon tree-icon--file">&#9642;</span>
+                <span class="tree-name">helpers.ts</span>
+                <span class="tree-meta">3.1 KB</span>
+              </div>
+            </div>
+          </div>
+          <div class="tree-node">
+            <button class="tree-toggle" aria-expanded="false" aria-label="Toggle folder">
+              <span class="tree-icon">&#9654;</span>
+            </button>
+            <span class="tree-name tree-name--folder">convex/</span>
+          </div>
+          <div class="tree-children tree-children--collapsed">
+            <div class="tree-node tree-node--file">
+              <span class="tree-icon tree-icon--file">&#9642;</span>
+              <span class="tree-name">schema.ts</span>
+              <span class="tree-meta">2.4 KB</span>
+            </div>
+            <div class="tree-node tree-node--file">
+              <span class="tree-icon tree-icon--file">&#9642;</span>
+              <span class="tree-name">projects.ts</span>
+              <span class="tree-meta">3.6 KB</span>
+            </div>
+          </div>
+          <div class="tree-node tree-node--file">
+            <span class="tree-icon tree-icon--file">&#9642;</span>
+            <span class="tree-name">package.json</span>
+            <span class="tree-meta">1.1 KB</span>
+          </div>
+          <div class="tree-node tree-node--file">
+            <span class="tree-icon tree-icon--file">&#9642;</span>
+            <span class="tree-name">tsconfig.json</span>
+            <span class="tree-meta">0.6 KB</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: IDEAS ========== -->
+    <section class="view" id="ideas">
+      <div class="view__header">
+        <h1 class="view__title"><span class="title-num">08.</span> IDEAS</h1>
+        <p class="view__subtitle">Capture, organize, and develop raw ideas</p>
+      </div>
+
+      <div class="ideas-toolbar">
+        <button class="btn btn--accent" id="newIdeaBtn">+ CAPTURE IDEA</button>
+        <div class="ideas-filter">
+          <button class="filter-btn filter-btn--active">ALL</button>
+          <button class="filter-btn">NEW</button>
+          <button class="filter-btn">DEVELOPING</button>
+          <button class="filter-btn">ARCHIVED</button>
+        </div>
+      </div>
+
+      <!-- Idea capture form (hidden by default) -->
+      <div class="idea-form" id="ideaForm" style="display:none;">
+        <div class="panel">
+          <div class="panel__header">
+            <span class="panel__label">NEW IDEA</span>
+            <button class="btn btn--small" id="closeIdeaForm">CLOSE</button>
+          </div>
+          <div class="form-group">
+            <label class="form-label">TITLE</label>
+            <input type="text" class="input-field" placeholder="IDEA TITLE...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">DESCRIPTION</label>
+            <textarea class="input-field input-field--textarea" placeholder="DESCRIBE YOUR IDEA..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">PROJECT</label>
+            <select class="input-field">
+              <option>Select project...</option>
+              <option>Atlas</option>
+              <option>Beacon CMS</option>
+              <option>Cipher Auth</option>
+              <option>DataForge</option>
+              <option>Nexus API</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">TAGS</label>
+            <input type="text" class="input-field" placeholder="COMMA SEPARATED TAGS...">
+          </div>
+          <button class="btn btn--accent">SAVE IDEA</button>
+        </div>
+      </div>
+
+      <div class="ideas-grid">
+        <div class="idea-card">
+          <div class="idea-card__status idea-card__status--new">NEW</div>
+          <h3 class="idea-card__title">AI-Powered Search</h3>
+          <p class="idea-card__desc">Natural language search across all projects using vector embeddings and semantic matching.</p>
+          <div class="idea-card__tags">
+            <span class="tag">AI</span>
+            <span class="tag">SEARCH</span>
+            <span class="tag">NLP</span>
+          </div>
+          <div class="idea-card__footer">
+            <span>Atlas</span>
+            <span>Mar 04</span>
+          </div>
+        </div>
+        <div class="idea-card">
+          <div class="idea-card__status idea-card__status--dev">DEVELOPING</div>
+          <h3 class="idea-card__title">Real-time Collaboration</h3>
+          <p class="idea-card__desc">Simultaneous editing with cursor presence and conflict resolution for team workflows.</p>
+          <div class="idea-card__tags">
+            <span class="tag">COLLAB</span>
+            <span class="tag">REALTIME</span>
+          </div>
+          <div class="idea-card__footer">
+            <span>Beacon CMS</span>
+            <span>Mar 02</span>
+          </div>
+        </div>
+        <div class="idea-card">
+          <div class="idea-card__status idea-card__status--new">NEW</div>
+          <h3 class="idea-card__title">Custom Workflow Engine</h3>
+          <p class="idea-card__desc">User-definable pipeline stages with conditional branching and automation triggers.</p>
+          <div class="idea-card__tags">
+            <span class="tag">AUTOMATION</span>
+            <span class="tag">WORKFLOW</span>
+          </div>
+          <div class="idea-card__footer">
+            <span>DataForge</span>
+            <span>Mar 01</span>
+          </div>
+        </div>
+        <div class="idea-card">
+          <div class="idea-card__status idea-card__status--dev">DEVELOPING</div>
+          <h3 class="idea-card__title">Plugin Architecture</h3>
+          <p class="idea-card__desc">Extensible plugin system allowing third-party integrations with sandboxed execution.</p>
+          <div class="idea-card__tags">
+            <span class="tag">PLUGINS</span>
+            <span class="tag">API</span>
+          </div>
+          <div class="idea-card__footer">
+            <span>Nexus API</span>
+            <span>Feb 28</span>
+          </div>
+        </div>
+        <div class="idea-card">
+          <div class="idea-card__status idea-card__status--archived">ARCHIVED</div>
+          <h3 class="idea-card__title">Biometric Auth</h3>
+          <p class="idea-card__desc">Fingerprint and face recognition login for enhanced security on supported devices.</p>
+          <div class="idea-card__tags">
+            <span class="tag">AUTH</span>
+            <span class="tag">SECURITY</span>
+          </div>
+          <div class="idea-card__footer">
+            <span>Cipher Auth</span>
+            <span>Feb 20</span>
+          </div>
+        </div>
+        <div class="idea-card">
+          <div class="idea-card__status idea-card__status--new">NEW</div>
+          <h3 class="idea-card__title">Offline Mode</h3>
+          <p class="idea-card__desc">Service worker-based offline support with background sync when connectivity returns.</p>
+          <div class="idea-card__tags">
+            <span class="tag">PWA</span>
+            <span class="tag">OFFLINE</span>
+          </div>
+          <div class="idea-card__footer">
+            <span>General</span>
+            <span>Feb 25</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: AI CHAT ========== -->
+    <section class="view" id="chat">
+      <div class="view__header">
+        <h1 class="view__title"><span class="title-num">09.</span> AI CHAT</h1>
+        <p class="view__subtitle">AI-powered assistant for project and idea discussions</p>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-msg chat-msg--system">
+            <div class="chat-msg__avatar">SYS</div>
+            <div class="chat-msg__body">
+              <div class="chat-msg__text">System initialized. AI assistant ready. How can I help with your project?</div>
+              <div class="chat-msg__time">09:00</div>
+            </div>
+          </div>
+          <div class="chat-msg chat-msg--user">
+            <div class="chat-msg__body">
+              <div class="chat-msg__text">What are the top priority tasks for Project Atlas this sprint?</div>
+              <div class="chat-msg__time">09:02</div>
+            </div>
+            <div class="chat-msg__avatar">JD</div>
+          </div>
+          <div class="chat-msg chat-msg--ai">
+            <div class="chat-msg__avatar">AI</div>
+            <div class="chat-msg__body">
+              <div class="chat-msg__text">For Project Atlas this sprint, the top priority tasks are:<br><br>1. <strong>Finalize API schema for v2 endpoints</strong> (HIGH priority, assigned to you)<br>2. <strong>Implement search indexing</strong> (in backlog, needs assignment)<br>3. <strong>Atlas API v2 release</strong> deadline is March 7<br><br>I recommend focusing on the API schema first since the release deadline is approaching.</div>
+              <div class="chat-msg__time">09:02</div>
+            </div>
+          </div>
+          <div class="chat-msg chat-msg--user">
+            <div class="chat-msg__body">
+              <div class="chat-msg__text">Can you draft an outline for the API v2 documentation?</div>
+              <div class="chat-msg__time">09:05</div>
+            </div>
+            <div class="chat-msg__avatar">JD</div>
+          </div>
+          <div class="chat-msg chat-msg--ai">
+            <div class="chat-msg__avatar">AI</div>
+            <div class="chat-msg__body">
+              <div class="chat-msg__text">Here is a documentation outline for Atlas API v2:<br><br><strong>1. Overview</strong> - Purpose, versioning, base URL<br><strong>2. Authentication</strong> - OAuth2 flow, token refresh<br><strong>3. Endpoints</strong> - CRUD for projects, ideas, tasks<br><strong>4. Webhooks</strong> - Event subscriptions<br><strong>5. Rate Limits</strong> - Quotas and throttling<br><strong>6. Error Codes</strong> - Standard response formats<br><strong>7. Migration Guide</strong> - v1 to v2 changes</div>
+              <div class="chat-msg__time">09:05</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <input type="text" class="chat-input" id="chatInput" placeholder="TYPE YOUR MESSAGE...">
+          <button class="btn btn--accent chat-send" id="chatSend">SEND</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VIEW: SETTINGS ========== -->
+    <section class="view" id="settings">
+      <div class="view__header">
+        <h1 class="view__title"><span class="title-num">10.</span> SETTINGS</h1>
+        <p class="view__subtitle">Application configuration and user preferences</p>
+      </div>
+
+      <div class="settings-layout">
+        <div class="settings-section">
+          <h2 class="settings-section__title">PROFILE</h2>
+          <div class="form-group">
+            <label class="form-label">DISPLAY NAME</label>
+            <input type="text" class="input-field" value="John Developer">
+          </div>
+          <div class="form-group">
+            <label class="form-label">EMAIL</label>
+            <input type="email" class="input-field" value="john@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">ROLE</label>
+            <select class="input-field">
+              <option selected>Admin</option>
+              <option>Editor</option>
+              <option>Viewer</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h2 class="settings-section__title">APPEARANCE</h2>
+          <div class="form-group form-group--inline">
+            <label class="form-label">THEME</label>
+            <div class="toggle-group">
+              <button class="toggle-btn toggle-btn--active">CONCRETE</button>
+              <button class="toggle-btn">DARK</button>
+              <button class="toggle-btn">BLUEPRINT</button>
+            </div>
+          </div>
+          <div class="form-group form-group--inline">
+            <label class="form-label">GRID OVERLAY</label>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="switch__slider"></span>
+            </label>
+          </div>
+          <div class="form-group form-group--inline">
+            <label class="form-label">ANIMATIONS</label>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="switch__slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h2 class="settings-section__title">NOTIFICATIONS</h2>
+          <div class="form-group form-group--inline">
+            <label class="form-label">EMAIL NOTIFICATIONS</label>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="switch__slider"></span>
+            </label>
+          </div>
+          <div class="form-group form-group--inline">
+            <label class="form-label">PUSH NOTIFICATIONS</label>
+            <label class="switch">
+              <input type="checkbox">
+              <span class="switch__slider"></span>
+            </label>
+          </div>
+          <div class="form-group form-group--inline">
+            <label class="form-label">TASK REMINDERS</label>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="switch__slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h2 class="settings-section__title">DATA & PRIVACY</h2>
+          <div class="settings-actions">
+            <button class="btn btn--secondary">EXPORT DATA</button>
+            <button class="btn btn--danger">DELETE ACCOUNT</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

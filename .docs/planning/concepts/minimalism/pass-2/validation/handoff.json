@@ -1,0 +1,74 @@
+{
+  "concept": "Minimalism",
+  "pass": "2",
+  "domain": "frontend-concept",
+  "style": "minimalism",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    {
+      "library": "Anime.js",
+      "version": "3.2.2",
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"
+    }
+  ],
+  "fonts": ["DM Sans", "Fira Code"],
+  "sections": [
+    { "id": "dashboard", "name": "Dashboard", "description": "Stats row, activity timeline, project health bars" },
+    { "id": "projects", "name": "Projects", "description": "Filterable card grid with 6 project cards" },
+    { "id": "workspace", "name": "Workspace", "description": "Split pane with file tree and code editor" },
+    { "id": "kanban", "name": "Kanban", "description": "4-column board with 12 task cards" },
+    { "id": "whiteboard", "name": "Whiteboard", "description": "Canvas with drawing tools and color swatches" },
+    { "id": "schema", "name": "Schema", "description": "Entity relationship diagram with 5 entities and relationship lines" },
+    { "id": "directory-tree", "name": "Directory Tree", "description": "Expandable folder tree with search" },
+    { "id": "ideas", "name": "Ideas", "description": "Capture form and 8 idea cards with tags and priority" },
+    { "id": "ai-chat", "name": "AI Chat", "description": "Chat thread with 6 messages and input" },
+    { "id": "settings", "name": "Settings", "description": "4-tab settings panel with profile, notifications, appearance, integrations" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#1A1A2E",
+      "secondary": "#E8EDF3",
+      "accent": "#4A90D9",
+      "background": "#F8FAFB",
+      "surface": "#FFFFFF",
+      "text": "#2D3748",
+      "muted": "#A0AEC0",
+      "border": "#E2E8F0",
+      "success": "#38A169",
+      "warning": "#D69E2E",
+      "danger": "#E53E3E"
+    },
+    "typography": {
+      "headings": "DM Sans 700",
+      "body": "DM Sans 400",
+      "mono": "Fira Code 400",
+      "baseSize": "16px",
+      "lineHeight": "1.6"
+    },
+    "borderRadius": "6px",
+    "transition": "200ms ease"
+  },
+  "coreFlags": {
+    "layoutArchetype": "top-bar-centered",
+    "navigationModel": "sticky-top-bar",
+    "informationDensity": "medium-balanced",
+    "animationPhilosophy": "page-transition-choreography",
+    "colorTemperature": "cool-dominant"
+  },
+  "subagentFlags": {
+    "cardLayout": "centered-grid-cards",
+    "typographyScale": "restrained-scale",
+    "dividerStyle": "thin-horizontal-rules",
+    "transitionStyle": "opacity-crossfade",
+    "interactiveElements": "subtle-hover-lift",
+    "mobileNav": "slide-out-panel"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum",
+    "bodyFontSize": "16px",
+    "reducedMotion": true,
+    "focusIndicators": "outline-2px-accent"
+  },
+  "timestamp": "2026-03-05T00:00:00Z"
+}

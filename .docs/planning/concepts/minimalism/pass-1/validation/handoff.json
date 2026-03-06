@@ -1,0 +1,74 @@
+{
+  "concept": "Minimalism Pass 1",
+  "pass": "1",
+  "domain": "frontend-concept",
+  "style": "minimalism",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "GSAP", "version": "3.12.5", "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" },
+    { "library": "Chart.js", "version": "4.4.7", "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" },
+    { "library": "SortableJS", "version": "1.15.6", "url": "https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js" }
+  ],
+  "fonts": ["Inter", "JetBrains Mono"],
+  "sections": [
+    { "id": "dashboard", "name": "Dashboard", "description": "Stat cards with project counts, activity chart, activity feed, project health indicators" },
+    { "id": "projects", "name": "Projects", "description": "Grid/list toggle, search bar, sort dropdown, 6 project cards with name/status/date" },
+    { "id": "workspace", "name": "Workspace", "description": "Split pane with file tree left, document editor right, breadcrumbs" },
+    { "id": "kanban", "name": "Kanban Board", "description": "4 columns (Backlog, In Progress, Review, Done) with 12 draggable cards" },
+    { "id": "whiteboard", "name": "Whiteboard", "description": "Canvas with toolbar (select, draw, text, shape), sticky notes, zoom controls" },
+    { "id": "schema", "name": "Schema Planner", "description": "4 entity boxes (User, Project, Idea, Task) with relationship lines" },
+    { "id": "directory-tree", "name": "Directory Tree", "description": "Expandable nested folder/file structure with path breadcrumb" },
+    { "id": "ideas", "name": "Ideas", "description": "Capture input, 8 idea cards with tags/priority/linked project" },
+    { "id": "ai-chat", "name": "AI Chat", "description": "Message thread with 6 messages, typing indicator, send input" },
+    { "id": "settings", "name": "Settings", "description": "4 tabs (Profile, Billing, Preferences, Integrations) with forms and toggles" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#111111",
+      "secondary": "#F5F5F5",
+      "accent": "#0066FF",
+      "background": "#FFFFFF",
+      "surface": "#FAFAFA",
+      "text": "#333333",
+      "muted": "#999999",
+      "border": "#E5E5E5",
+      "positive": "#22C55E",
+      "negative": "#EF4444",
+      "warning": "#F59E0B"
+    },
+    "typography": {
+      "headingFamily": "Inter",
+      "headingWeights": [600, 700],
+      "bodyFamily": "Inter",
+      "bodyWeights": [400, 500],
+      "monoFamily": "JetBrains Mono",
+      "baseFontSize": "16px",
+      "lineHeight": "1.6"
+    },
+    "borderRadius": "6px",
+    "transition": "250ms ease"
+  },
+  "coreFlags": {
+    "layoutArchetype": "sidebar-driven",
+    "navigationModel": "persistent-left-rail",
+    "informationDensity": "low-whitespace-generous",
+    "animationPhilosophy": "subtle-micro-interactions",
+    "colorTemperature": "monochromatic"
+  },
+  "subagentFlags": {
+    "gridSystem": "8px-spatial-grid",
+    "cardStyle": "borderless-hairline-separators",
+    "interactionPattern": "hover-reveal-lift",
+    "iconApproach": "svg-line-icons-1-5px-stroke",
+    "dataDensity": "sparse-one-metric-per-card",
+    "navWidth": "220px-persistent",
+    "chartLibrary": "chart-js-line-chart"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T07:36:46.000Z"
+}

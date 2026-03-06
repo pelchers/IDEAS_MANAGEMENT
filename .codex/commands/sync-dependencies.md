@@ -136,4 +136,3 @@ npm install
 - Consider using Dependabot or Renovate for automation
 - Pin versions for production stability
 - Keep lock files committed to version control
-

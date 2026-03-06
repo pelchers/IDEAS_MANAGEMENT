@@ -1,0 +1,75 @@
+{
+  "concept": "Brutalism & Neobrutalism",
+  "pass": "1",
+  "domain": "frontend-concept",
+  "style": "Brutalism & Neobrutalism",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "Rough.js", "version": "4.6.6", "url": "https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js" },
+    { "library": "SortableJS", "version": "1.15.6", "url": "https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js" },
+    { "library": "Chart.js", "version": "4.4.7", "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" }
+  ],
+  "fonts": ["Space Grotesk", "IBM Plex Mono"],
+  "sections": [
+    { "id": "dashboard", "name": "Dashboard", "description": "System overview with stat cards, weekly activity bar chart (Chart.js), and recent activity feed" },
+    { "id": "projects", "name": "Projects", "description": "Grid of 6 project cards with status badges, progress bars, task counts, and due dates" },
+    { "id": "workspace", "name": "Workspace", "description": "Tabbed editor/preview/notes interface with contenteditable rich text and Rough.js preview sketches" },
+    { "id": "kanban", "name": "Kanban", "description": "4-column kanban board (Backlog/To Do/In Progress/Done) with 12 draggable cards via SortableJS" },
+    { "id": "whiteboard", "name": "Whiteboard", "description": "Canvas-based drawing area with tool selector, grid background, and draggable sticky notes" },
+    { "id": "schema", "name": "Schema Planner", "description": "4 entity cards (Users/Projects/Ideas/Tasks) with field types, badges (PK/FK/UQ), and Rough.js relation lines" },
+    { "id": "directory-tree", "name": "Directory Tree", "description": "Collapsible file tree with file preview panel showing mock TypeScript/JSON content" },
+    { "id": "ideas", "name": "Ideas", "description": "Filterable grid of 8 idea cards with priority badges, tags, author info, and timestamps" },
+    { "id": "ai-chat", "name": "AI Chat", "description": "Chat interface with 6 messages, user/AI avatars, message input with Enter-to-send, and simulated AI responses" },
+    { "id": "settings", "name": "Settings", "description": "Profile form, preference toggles, integrations list, and danger zone with export/delete actions" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#282828",
+      "secondary": "#FF5E54",
+      "accent": "#2BBF5D",
+      "background": "#F8F3EC",
+      "surface": "#FFFFFF",
+      "text": "#282828",
+      "blue": "#1283EB",
+      "yellow": "#FFE459",
+      "purple": "#7B61FF"
+    },
+    "typography": {
+      "headingFont": "Space Grotesk",
+      "bodyFont": "Space Grotesk",
+      "monoFont": "IBM Plex Mono",
+      "headingWeight": 700,
+      "bodyWeight": 400,
+      "bodySize": "16px",
+      "lineHeight": 1.6
+    },
+    "borderRadius": "0px",
+    "transition": "250ms ease"
+  },
+  "coreFlags": {
+    "layoutArchetype": "full-bleed-immersive",
+    "navigationModel": "hamburger-drawer",
+    "informationDensity": "high-data-dense",
+    "animationPhilosophy": "hover-expand-transform",
+    "colorTemperature": "high-contrast-complementary"
+  },
+  "subagentFlags": {
+    "borderLanguage": "thick-solid-black-4px",
+    "shadowStyle": "hard-offset-no-blur",
+    "hoverBehavior": "translate-rotate-scale",
+    "gridStrategy": "deliberately-varied-per-view",
+    "typographicTone": "all-caps-monospace-labels",
+    "interactiveLibraries": "sortablejs-chartjs-roughjs",
+    "colorClashIntensity": "aggressive-7-color-neo-brutalist",
+    "scrollbarTreatment": "thick-styled-visible"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum",
+    "bodyFontSize": "16px",
+    "reducedMotion": true,
+    "focusIndicators": "3px solid outline on all interactive elements",
+    "minimumTapTarget": "44px"
+  },
+  "timestamp": "2026-03-05T00:00:00.000Z"
+}

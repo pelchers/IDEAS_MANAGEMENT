@@ -1,0 +1,69 @@
+{
+  "concept": "brutalism-neobrutalism",
+  "pass": "2",
+  "domain": "frontend-concept",
+  "style": "Brutalism & Neobrutalism",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    {
+      "library": "GSAP",
+      "version": "3.12.5",
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    }
+  ],
+  "fonts": ["Archivo Black", "Archivo", "Roboto Mono"],
+  "sections": [
+    { "id": "dashboard", "name": "Dashboard", "description": "System overview with stat cards, weekly activity chart, and recent actions list" },
+    { "id": "projects", "name": "Projects", "description": "Project grid with search, status indicators, progress bars, and project metadata" },
+    { "id": "workspace", "name": "Workspace", "description": "Personal task list with checkable items, quick notes textarea, and deadline tracker" },
+    { "id": "kanban", "name": "Kanban", "description": "Four-column drag-and-drop task board: Backlog, In Progress, Review, Done" },
+    { "id": "whiteboard", "name": "Whiteboard", "description": "SVG canvas with drawing toolbar and pre-rendered service architecture diagram" },
+    { "id": "schema", "name": "Schema", "description": "Database entity tables showing Users, Projects, Ideas, Tasks with field types and keys" },
+    { "id": "directory", "name": "Directory", "description": "Collapsible file/folder tree with toggle controls and file size metadata" },
+    { "id": "ideas", "name": "Ideas", "description": "Idea capture form and card grid with status badges, tags, and filter controls" },
+    { "id": "chat", "name": "AI Chat", "description": "Chat interface with system, user, and AI messages plus text input for sending" },
+    { "id": "settings", "name": "Settings", "description": "Profile form, appearance toggles, notification switches, and data/privacy actions" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#1A1A1A",
+      "secondary": "#D4D4D4",
+      "accent": "#E63946",
+      "background": "#E8E8E8",
+      "surface": "#F5F5F5",
+      "text": "#0D0D0D",
+      "grid": "#C0C0C0"
+    },
+    "typography": {
+      "headingFont": "Archivo Black",
+      "bodyFont": "Archivo",
+      "monoFont": "Roboto Mono",
+      "bodySize": "16px",
+      "lineHeight": "1.6"
+    },
+    "borderRadius": "0px",
+    "transition": "200ms ease"
+  },
+  "coreFlags": {
+    "layoutArchetype": "split-pane",
+    "navigationModel": "breadcrumb-trail",
+    "informationDensity": "medium-balanced",
+    "animationPhilosophy": "continuous-ambient",
+    "colorTemperature": "monochromatic"
+  },
+  "subagentFlags": {
+    "gridSystem": "visible-80px-structural-overlay",
+    "sectionLabeling": "numbered-construction-style",
+    "typographicVoice": "monospace-industrial-labeling",
+    "surfaceTreatment": "flat-concrete-with-border-accents",
+    "interactionModel": "state-toggle-with-gsap-entrance",
+    "spatialOrganization": "persistent-left-nav-with-scrollable-content"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T07:30:00.000Z"
+}

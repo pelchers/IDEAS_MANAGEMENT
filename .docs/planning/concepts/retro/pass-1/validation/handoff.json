@@ -1,0 +1,68 @@
+{
+  "concept": "IDEA-OS Retro Terminal",
+  "pass": "1",
+  "domain": "frontend-concept",
+  "style": "retro",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "Typed.js", "version": "2.1.0", "url": "https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js" },
+    { "library": "Chart.js", "version": "4.4.7", "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" },
+    { "library": "SortableJS", "version": "1.15.6", "url": "https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js" }
+  ],
+  "fonts": ["Press Start 2P", "VT323", "Share Tech Mono"],
+  "sections": [
+    { "id": "view-dashboard", "name": "Dashboard", "description": "System overview with stat cards, activity charts, and event log in terminal style" },
+    { "id": "view-projects", "name": "Projects", "description": "Searchable project list with status badges and date stamps" },
+    { "id": "view-workspace", "name": "Workspace", "description": "File browser sidebar with code editor area featuring line numbers" },
+    { "id": "view-kanban", "name": "Kanban", "description": "Three-column drag-and-drop board (Backlog, In Progress, Done)" },
+    { "id": "view-whiteboard", "name": "Whiteboard", "description": "Canvas-based drawing tool with color picker and tool selection" },
+    { "id": "view-schema", "name": "Schema", "description": "Database schema planner with positioned tables and FK relationship lines" },
+    { "id": "view-directory", "name": "Directory Tree", "description": "Collapsible file tree with expand/collapse all controls" },
+    { "id": "view-ideas", "name": "Ideas", "description": "Filterable idea card grid with tags, starring, and capture button" },
+    { "id": "view-chat", "name": "AI Chat", "description": "Terminal-style chat interface with command prompt input" },
+    { "id": "view-settings", "name": "Settings", "description": "Multi-panel settings with CRT controls, keybinds, account, and about" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#00FF41",
+      "secondary": "#FF6B00",
+      "accent": "#FF00FF",
+      "background": "#0A0A0A",
+      "surface": "#1A1A2E",
+      "text": "#00FF41",
+      "danger": "#FF3333",
+      "cyan": "#00FFFF"
+    },
+    "typography": {
+      "heading": "Press Start 2P, monospace",
+      "body": "VT323, monospace",
+      "mono": "Share Tech Mono, monospace",
+      "bodySize": "18px",
+      "lineHeight": "1.5"
+    },
+    "borderRadius": "0px",
+    "transition": "150ms ease"
+  },
+  "coreFlags": {
+    "layoutArchetype": "full-bleed-immersive",
+    "navigationModel": "bottom-tabs",
+    "informationDensity": "high-data-dense",
+    "animationPhilosophy": "continuous-ambient",
+    "colorTemperature": "warm-dominant"
+  },
+  "subagentFlags": {
+    "windowChrome": "retro-os-chrome",
+    "terminalPrompts": "c-drive-path-style",
+    "glowEffects": "per-color-neon-glow",
+    "scanlineOverlay": "css-repeating-gradient",
+    "chartStyle": "phosphor-green-line-charts",
+    "inputStyle": "terminal-command-prompt"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum (green #00FF41 on black #0A0A0A exceeds 4.5:1)",
+    "bodyFontSize": "18px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T00:00:00Z"
+}

@@ -1,0 +1,23 @@
+{
+  "references": [
+    {
+      "url": "self-directed",
+      "name": "1950s-60s Mid-Century Modern / Googie Architecture",
+      "observedPatterns": [
+        "Pastel color palettes with coral, mint, and cream",
+        "Boomerang and atomic starburst decorative shapes",
+        "Streamlined curves with generous border-radius",
+        "Space-age optimism in layout spaciousness",
+        "Vintage jukebox-style navigation panels"
+      ],
+      "adaptedElements": [
+        "Sidebar designed as vintage jukebox menu with colorful active states",
+        "Atomic starburst SVG brand icon with CSS rotation",
+        "Springy elastic GSAP hover animations mimicking playful 50s energy",
+        "Pastel-bordered cards with boomerang corner accents",
+        "Rounded pill-shaped buttons with 3D shadow press effect",
+        "Warm cream background with dot-grid whiteboard patterns"
+      ]
+    }
+  ]
+}

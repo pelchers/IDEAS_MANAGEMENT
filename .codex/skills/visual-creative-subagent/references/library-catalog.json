@@ -113,13 +113,14 @@
     "graphics": {
       "three-js": {
         "name": "Three.js",
-        "version": "0.170.0",
-        "cdn": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.170.0/three.min.js",
+        "version": "0.160.0",
+        "cdn": "https://unpkg.com/three@0.160.0/build/three.min.js",
         "module": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
         "addons": {
-          "OrbitControls": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js",
-          "GLTFLoader": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js"
+          "OrbitControls": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js",
+          "GLTFLoader": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js"
         },
+        "note": "v0.170.0 dropped UMD builds; use 0.160.0 for <script> tag with global THREE. Use module URL for ES module imports.",
         "type": "script",
         "rendering": ["webgl"],
         "bestFor": "3D scenes, globes, particle clouds, interactive 3D graphics",

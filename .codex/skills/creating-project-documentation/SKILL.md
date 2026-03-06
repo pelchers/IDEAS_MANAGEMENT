@@ -78,10 +78,10 @@ One-line description of what this project does.
 
 ## Features
 
-- 🚀 Feature 1
-- ✨ Feature 2
-- 🎯 Feature 3
-- 🔒 Feature 4
+- Feature 1
+- Feature 2
+- Feature 3
+- Feature 4
 
 ## Demo
 
@@ -329,7 +329,7 @@ Thanks to these wonderful people:
 
 ---
 
-**Made with ❤️ by [Your Name](https://github.com/username)**
+**Made with by [Your Name](https://github.com/username)**
 ```
 
 ---
@@ -715,7 +715,7 @@ describe('createUser', () => {
 - Issues: [GitHub Issues](https://github.com/username/project/issues)
 - Email: maintainers@example.com
 
-Thank you for contributing! 🎉
+Thank you for contributing!
 ```
 
 ---
@@ -806,4 +806,3 @@ For detailed information:
 - [Write the Docs](https://www.writethedocs.org/)
 - [JSDoc Reference](https://jsdoc.app/)
 - [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-

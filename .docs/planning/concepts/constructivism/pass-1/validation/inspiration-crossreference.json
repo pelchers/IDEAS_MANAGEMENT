@@ -1,0 +1,46 @@
+{
+  "references": [
+    {
+      "url": "https://keboto.org/the-legacy-of-the-constructivism-art-movement-in-graphic-design",
+      "name": "Keboto - Legacy of Constructivism Art Movement in Graphic Design",
+      "observedPatterns": [
+        "Stark red/black/white color contrasts for maximum visual impact",
+        "Angular forms and sharp geometric compositions creating dynamic energy",
+        "Diagonal text placement for compositional movement and progress"
+      ],
+      "adaptedElements": [
+        "Zero border-radius throughout entire UI for sharp geometric feel",
+        "Diagonal accent stripes on stat cards and project banners",
+        "Red/black/gold palette with parchment background"
+      ]
+    },
+    {
+      "url": "https://designmodo.com/websites-diagonal-lines/",
+      "name": "DesignModo - Diagonal Lines in Website Designs",
+      "observedPatterns": [
+        "Diagonal section dividers guiding the user eye through content",
+        "CSS skewX transforms for creating angular visual elements",
+        "Triangular and angular shapes breaking up rectangular layouts"
+      ],
+      "adaptedElements": [
+        "Banner diagonal stripe using skewX(-20deg) transform",
+        "Card hover states with slight rotation and offset shadows",
+        "Decorative triangles and angled line overlays as background elements"
+      ]
+    },
+    {
+      "url": "https://creativepro.com/russian-constructivism-and-graphic-design/",
+      "name": "CreativePro - Russian Constructivism and Graphic Design",
+      "observedPatterns": [
+        "Typography as visual architecture with oversized condensed fonts",
+        "Functional design where every element serves both form and purpose",
+        "Photomontage and layered composition techniques"
+      ],
+      "adaptedElements": [
+        "Oswald condensed headings as poster-style visual anchors",
+        "Bebas Neue for decorative labels and section markers with letter-spacing",
+        "Layered banner composition with overlapping geometric shapes"
+      ]
+    }
+  ]
+}

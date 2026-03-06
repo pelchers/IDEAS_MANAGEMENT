@@ -1,0 +1,49 @@
+{
+  "references": [
+    {
+      "url": "https://www.swissted.com",
+      "name": "Swissted",
+      "observedPatterns": [
+        "Strict geometric grid layouts",
+        "Single accent color on neutral background",
+        "Uppercase sans-serif type as primary visual element",
+        "Asymmetric balance with large whitespace"
+      ],
+      "adaptedElements": [
+        "Uppercase small-caps labels for section headings and metadata",
+        "Single Swiss blue accent on monochrome base",
+        "Asymmetric left-heavy layouts with generous margin"
+      ]
+    },
+    {
+      "url": "https://www.helveticafilm.com",
+      "name": "Helvetica Documentary Site",
+      "observedPatterns": [
+        "Helvetica as sole typeface across all sizes",
+        "Extreme weight contrast (300 for display, 700 for labels)",
+        "Minimal decoration — type weight and size create hierarchy",
+        "Horizontal rules as structural dividers"
+      ],
+      "adaptedElements": [
+        "Light-weight (300) display headings with tight letter-spacing",
+        "Bold (700) micro-labels at 0.75rem with wide letter-spacing",
+        "1px horizontal rules as section separators"
+      ]
+    },
+    {
+      "url": "https://www.bfriendsoftype.com",
+      "name": "Friends of Type",
+      "observedPatterns": [
+        "Grid-based card layouts with consistent gutters",
+        "Monospaced type for technical metadata",
+        "Black border outlines instead of shadows for card edges",
+        "Mathematical spacing rhythm"
+      ],
+      "adaptedElements": [
+        "Border-only card styling (no shadows, no border-radius)",
+        "Source Code Pro monospace for timestamps, counts, and technical labels",
+        "8px base spacing unit for mathematical rhythm"
+      ]
+    }
+  ]
+}

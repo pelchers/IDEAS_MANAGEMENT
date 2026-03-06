@@ -377,4 +377,3 @@ npx playwright show-report
 - [Playwright Documentation](https://playwright.dev)
 - [Best Practices](https://playwright.dev/docs/best-practices)
 - [API Reference](https://playwright.dev/docs/api/class-playwright)
-

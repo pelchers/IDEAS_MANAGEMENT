@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea Management Platform — Bento</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- CDN Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <!-- ============================================= -->
+  <!-- SIDEBAR NAVIGATION (persistent left rail)     -->
+  <!-- ============================================= -->
+  <nav class="sidebar" id="sidebar" aria-label="Main Navigation">
+    <div class="sidebar-brand">
+      <svg class="sidebar-logo" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="var(--accent)"/>
+        <path d="M9 10h6v6H9zM17 10h6v6h-6zM9 18h6v4H9zM17 18h6v4h-6z" fill="#fff" opacity="0.9"/>
+      </svg>
+      <span class="sidebar-title">IdeaHub</span>
+    </div>
+
+    <ul class="sidebar-nav-list">
+      <li>
+        <a href="#dashboard" class="sidebar-link active" data-view="dashboard" aria-label="Dashboard">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span class="sidebar-label">Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="#projects" class="sidebar-link" data-view="projects" aria-label="Projects">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+          <span class="sidebar-label">Projects</span>
+        </a>
+      </li>
+      <li>
+        <a href="#workspace" class="sidebar-link" data-view="workspace" aria-label="Workspace">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span class="sidebar-label">Workspace</span>
+        </a>
+      </li>
+      <li>
+        <a href="#kanban" class="sidebar-link" data-view="kanban" aria-label="Kanban">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>
+          <span class="sidebar-label">Kanban</span>
+        </a>
+      </li>
+      <li>
+        <a href="#whiteboard" class="sidebar-link" data-view="whiteboard" aria-label="Whiteboard">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+          <span class="sidebar-label">Whiteboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="#schema" class="sidebar-link" data-view="schema" aria-label="Schema">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          <span class="sidebar-label">Schema</span>
+        </a>
+      </li>
+      <li>
+        <a href="#directory" class="sidebar-link" data-view="directory" aria-label="Directory Tree">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18"/><path d="M3 9h6"/><path d="M3 15h6"/><path d="M9 6h6"/><path d="M9 12h6"/><path d="M9 18h6"/><path d="M15 9h4"/><path d="M15 15h4"/></svg>
+          <span class="sidebar-label">Directory</span>
+        </a>
+      </li>
+      <li>
+        <a href="#ideas" class="sidebar-link" data-view="ideas" aria-label="Ideas">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>
+          <span class="sidebar-label">Ideas</span>
+        </a>
+      </li>
+      <li>
+        <a href="#aichat" class="sidebar-link" data-view="aichat" aria-label="AI Chat">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span class="sidebar-label">AI Chat</span>
+        </a>
+      </li>
+      <li>
+        <a href="#settings" class="sidebar-link" data-view="settings" aria-label="Settings">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <span class="sidebar-label">Settings</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">JD</div>
+      <span class="sidebar-label sidebar-username">Jane Doe</span>
+    </div>
+  </nav>
+
+  <!-- ============================================= -->
+  <!-- MOBILE BOTTOM NAV                             -->
+  <!-- ============================================= -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile Navigation">
+    <a href="#dashboard" class="mobile-nav-item active" data-view="dashboard" aria-label="Dashboard">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="#projects" class="mobile-nav-item" data-view="projects" aria-label="Projects">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+      <span>Projects</span>
+    </a>
+    <a href="#kanban" class="mobile-nav-item" data-view="kanban" aria-label="Kanban">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>
+      <span>Kanban</span>
+    </a>
+    <a href="#ideas" class="mobile-nav-item" data-view="ideas" aria-label="Ideas">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>
+      <span>Ideas</span>
+    </a>
+    <button class="mobile-nav-item mobile-more-btn" aria-label="More views" id="mobileMoreBtn">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+      <span>More</span>
+    </button>
+  </nav>
+
+  <!-- Mobile "More" menu overlay -->
+  <div class="mobile-more-menu" id="mobileMoreMenu" aria-hidden="true">
+    <div class="mobile-more-menu-inner">
+      <a href="#workspace" class="mobile-more-link" data-view="workspace">Workspace</a>
+      <a href="#whiteboard" class="mobile-more-link" data-view="whiteboard">Whiteboard</a>
+      <a href="#schema" class="mobile-more-link" data-view="schema">Schema</a>
+      <a href="#directory" class="mobile-more-link" data-view="directory">Directory</a>
+      <a href="#aichat" class="mobile-more-link" data-view="aichat">AI Chat</a>
+      <a href="#settings" class="mobile-more-link" data-view="settings">Settings</a>
+    </div>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- MAIN CONTENT AREA                             -->
+  <!-- ============================================= -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ======= DASHBOARD VIEW ======= -->
+    <section class="view" id="view-dashboard" aria-label="Dashboard">
+      <header class="view-header">
+        <h1 class="view-title">Dashboard</h1>
+        <p class="view-subtitle">Welcome back, Jane. Here is your overview.</p>
+      </header>
+      <div class="bento-grid bento-grid--dashboard">
+        <!-- Stat tile: Total Ideas -->
+        <div class="bento-tile bento-tile--2x1 bento-tile--accent-gradient" data-tile>
+          <div class="tile-stat-content">
+            <span class="tile-stat-number">142</span>
+            <span class="tile-stat-label">Total Ideas</span>
+            <span class="tile-stat-change positive">+12 this week</span>
+          </div>
+          <div class="tile-stat-icon">
+            <svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"><path d="M18 36h12M20 42h8M24 6a13 13 0 00-7.5 23.6V34h15v-4.4A13 13 0 0024 6z"/></svg>
+          </div>
+        </div>
+        <!-- Stat tile: Active Projects -->
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <span class="tile-stat-number">6</span>
+          <span class="tile-stat-label">Active Projects</span>
+          <span class="tile-stat-change positive">+1 new</span>
+        </div>
+        <!-- Stat tile: Tasks Completed -->
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <span class="tile-stat-number">87</span>
+          <span class="tile-stat-label">Tasks Done</span>
+          <span class="tile-stat-change positive">92% rate</span>
+        </div>
+        <!-- Chart tile: Weekly Activity -->
+        <div class="bento-tile bento-tile--2x1" data-tile>
+          <h3 class="tile-heading">Weekly Activity</h3>
+          <canvas id="chartWeeklyActivity" class="tile-chart"></canvas>
+        </div>
+        <!-- Activity feed tile -->
+        <div class="bento-tile bento-tile--1x2" data-tile>
+          <h3 class="tile-heading">Recent Activity</h3>
+          <ul class="activity-feed" id="activityFeed">
+            <!-- Populated by JS -->
+          </ul>
+        </div>
+        <!-- Chart tile: Ideas by Category -->
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">By Category</h3>
+          <canvas id="chartCategories" class="tile-chart-sm"></canvas>
+        </div>
+        <!-- Quick Actions tile -->
+        <div class="bento-tile bento-tile--1x1 bento-tile--glass" data-tile>
+          <h3 class="tile-heading">Quick Actions</h3>
+          <div class="quick-actions">
+            <button class="quick-action-btn" aria-label="New Idea">+ Idea</button>
+            <button class="quick-action-btn" aria-label="New Project">+ Project</button>
+          </div>
+        </div>
+        <!-- Team tile -->
+        <div class="bento-tile bento-tile--2x1" data-tile>
+          <h3 class="tile-heading">Team Members</h3>
+          <div class="team-avatars">
+            <div class="team-avatar" style="--avatar-color: #0071E3">JD</div>
+            <div class="team-avatar" style="--avatar-color: #30D158">AK</div>
+            <div class="team-avatar" style="--avatar-color: #FF9F0A">MB</div>
+            <div class="team-avatar" style="--avatar-color: #BF5AF2">SC</div>
+            <div class="team-avatar" style="--avatar-color: #FF375F">TR</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= PROJECTS VIEW ======= -->
+    <section class="view" id="view-projects" aria-label="Projects" hidden>
+      <header class="view-header">
+        <h1 class="view-title">Projects</h1>
+        <p class="view-subtitle">6 active projects across your workspace.</p>
+      </header>
+      <div class="bento-grid bento-grid--projects">
+        <!-- Project cards populated by JS -->
+      </div>
+    </section>
+
+    <!-- ======= WORKSPACE VIEW ======= -->
+    <section class="view" id="view-workspace" aria-label="Workspace" hidden>
+      <header class="view-header">
+        <h1 class="view-title">Workspace</h1>
+        <p class="view-subtitle">Your personal working environment.</p>
+      </header>
+      <div class="bento-grid bento-grid--workspace">
+        <div class="bento-tile bento-tile--2x2" data-tile>
+          <h3 class="tile-heading">Editor</h3>
+          <div class="workspace-editor">
+            <div class="editor-toolbar">
+              <button class="editor-btn active" aria-label="Bold"><strong>B</strong></button>
+              <button class="editor-btn" aria-label="Italic"><em>I</em></button>
+              <button class="editor-btn" aria-label="Underline"><u>U</u></button>
+              <span class="editor-divider"></span>
+              <button class="editor-btn" aria-label="Heading">H1</button>
+              <button class="editor-btn" aria-label="List">List</button>
+            </div>
+            <div class="editor-body" contenteditable="true" aria-label="Editor content">
+              <h2>Project Brief: Mobile Redesign</h2>
+              <p>The primary goal is to modernize the mobile experience with a focus on reducing cognitive load and improving navigation flow. Key areas include the onboarding sequence, dashboard layout, and notification system.</p>
+              <p>Timeline: Q2 2026. Team size: 4 designers, 2 developers.</p>
+            </div>
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Word Count</h3>
+          <span class="tile-stat-number" id="wordCount">48</span>
+          <span class="tile-stat-label">words</span>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Last Saved</h3>
+          <span class="tile-stat-number tile-stat-number--sm">2 min</span>
+          <span class="tile-stat-label">ago</span>
+        </div>
+        <div class="bento-tile bento-tile--2x1" data-tile>
+          <h3 class="tile-heading">Recent Files</h3>
+          <ul class="file-list">
+            <li class="file-item"><span class="file-icon">doc</span> Mobile Redesign Brief.md</li>
+            <li class="file-item"><span class="file-icon">doc</span> API Integration Notes.md</li>
+            <li class="file-item"><span class="file-icon">img</span> Wireframe-v2.png</li>
+            <li class="file-item"><span class="file-icon">doc</span> Sprint Retrospective.md</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= KANBAN VIEW ======= -->
+    <section class="view" id="view-kanban" aria-label="Kanban Board" hidden>
+      <header class="view-header">
+        <h1 class="view-title">Kanban Board</h1>
+        <p class="view-subtitle">12 cards across your workflow pipeline.</p>
+      </header>
+      <div class="kanban-board" id="kanbanBoard">
+        <!-- Columns populated by JS -->
+      </div>
+    </section>
+
+    <!-- ======= WHITEBOARD VIEW ======= -->
+    <section class="view" id="view-whiteboard" aria-label="Whiteboard" hidden>
+      <header class="view-header">
+        <h1 class="view-title">Whiteboard</h1>
+        <p class="view-subtitle">Freeform canvas for brainstorming.</p>
+      </header>
+      <div class="bento-grid bento-grid--whiteboard">
+        <div class="bento-tile bento-tile--3x2" data-tile>
+          <div class="whiteboard-canvas" id="whiteboardCanvas">
+            <div class="wb-toolbar">
+              <button class="wb-tool active" data-tool="select" aria-label="Select">
+                <svg viewBox="0 0 20 20" width="18" height="18" fill="currentColor"><path d="M4 2l12 8-5 1.5L8.5 17z"/></svg>
+              </button>
+              <button class="wb-tool" data-tool="pen" aria-label="Pen">
+                <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 3.5l3 3L7 16H4v-3z"/></svg>
+              </button>
+              <button class="wb-tool" data-tool="rect" aria-label="Rectangle">
+                <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/></svg>
+              </button>
+              <button class="wb-tool" data-tool="circle" aria-label="Circle">
+                <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7"/></svg>
+              </button>
+              <button class="wb-tool" data-tool="text" aria-label="Text">
+                <svg viewBox="0 0 20 20" width="18" height="18" fill="currentColor"><text x="4" y="16" font-size="16" font-weight="600">T</text></svg>
+              </button>
+            </div>
+            <!-- Sticky notes on canvas -->
+            <div class="wb-sticky" style="--sticky-x: 60px; --sticky-y: 80px; --sticky-color: #FFE08A">User Research</div>
+            <div class="wb-sticky" style="--sticky-x: 240px; --sticky-y: 120px; --sticky-color: #B8F0D5">Prototype v2</div>
+            <div class="wb-sticky" style="--sticky-x: 420px; --sticky-y: 70px; --sticky-color: #D4C5F9">Design System</div>
+            <div class="wb-sticky" style="--sticky-x: 150px; --sticky-y: 250px; --sticky-color: #FFD1D1">API Review</div>
+            <div class="wb-connector" style="--c-x1: 140px; --c-y1: 100px; --c-x2: 240px; --c-y2: 140px"></div>
+            <div class="wb-connector" style="--c-x1: 320px; --c-y1: 140px; --c-x2: 420px; --c-y2: 90px"></div>
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Colors</h3>
+          <div class="wb-colors">
+            <button class="wb-color-swatch" style="background:#FFE08A" aria-label="Yellow"></button>
+            <button class="wb-color-swatch" style="background:#B8F0D5" aria-label="Green"></button>
+            <button class="wb-color-swatch" style="background:#D4C5F9" aria-label="Purple"></button>
+            <button class="wb-color-swatch" style="background:#FFD1D1" aria-label="Pink"></button>
+            <button class="wb-color-swatch" style="background:#BAE1FF" aria-label="Blue"></button>
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Layers</h3>
+          <ul class="layer-list">
+            <li class="layer-item active">Sticky Notes</li>
+            <li class="layer-item">Connectors</li>
+            <li class="layer-item">Shapes</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= SCHEMA VIEW ======= -->
+    <section class="view" id="view-schema" aria-label="Schema Planner" hidden>
+      <header class="view-header">
+        <h1 class="view-title">Schema Planner</h1>
+        <p class="view-subtitle">Database entities and relationships.</p>
+      </header>
+      <div class="bento-grid bento-grid--schema">
+        <div class="bento-tile bento-tile--2x2" data-tile>
+          <h3 class="tile-heading">Entity Diagram</h3>
+          <div class="schema-diagram" id="schemaDiagram">
+            <div class="schema-entity" style="--ex: 40px; --ey: 30px">
+              <div class="schema-entity-header">Users</div>
+              <ul class="schema-fields">
+                <li><span class="field-key">PK</span> id: uuid</li>
+                <li>name: string</li>
+                <li>email: string</li>
+                <li>role: enum</li>
+              </ul>
+            </div>
+            <div class="schema-entity" style="--ex: 300px; --ey: 30px">
+              <div class="schema-entity-header">Projects</div>
+              <ul class="schema-fields">
+                <li><span class="field-key">PK</span> id: uuid</li>
+                <li><span class="field-key">FK</span> owner_id: uuid</li>
+                <li>title: string</li>
+                <li>status: enum</li>
+              </ul>
+            </div>
+            <div class="schema-entity" style="--ex: 170px; --ey: 240px">
+              <div class="schema-entity-header">Ideas</div>
+              <ul class="schema-fields">
+                <li><span class="field-key">PK</span> id: uuid</li>
+                <li><span class="field-key">FK</span> project_id: uuid</li>
+                <li>title: string</li>
+                <li>priority: int</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Entities</h3>
+          <span class="tile-stat-number">8</span>
+          <span class="tile-stat-label">tables defined</span>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Relations</h3>
+          <span class="tile-stat-number">12</span>
+          <span class="tile-stat-label">foreign keys</span>
+        </div>
+        <div class="bento-tile bento-tile--2x1" data-tile>
+          <h3 class="tile-heading">Recent Changes</h3>
+          <ul class="schema-changes">
+            <li class="schema-change"><span class="change-type add">ADD</span> Added <code>priority</code> field to Ideas</li>
+            <li class="schema-change"><span class="change-type mod">MOD</span> Changed Users.role to enum type</li>
+            <li class="schema-change"><span class="change-type del">DEL</span> Removed deprecated Tags table</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= DIRECTORY TREE VIEW ======= -->
+    <section class="view" id="view-directory" aria-label="Directory Tree" hidden>
+      <header class="view-header">
+        <h1 class="view-title">Directory Tree</h1>
+        <p class="view-subtitle">Navigate your project structure.</p>
+      </header>
+      <div class="bento-grid bento-grid--directory">
+        <div class="bento-tile bento-tile--2x2" data-tile>
+          <h3 class="tile-heading">File Explorer</h3>
+          <div class="tree-container" id="fileTree">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Files</h3>
+          <span class="tile-stat-number">34</span>
+          <span class="tile-stat-label">total files</span>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Storage</h3>
+          <span class="tile-stat-number">2.4</span>
+          <span class="tile-stat-label">GB used</span>
+        </div>
+        <div class="bento-tile bento-tile--2x1" data-tile>
+          <h3 class="tile-heading">Recently Modified</h3>
+          <ul class="file-list">
+            <li class="file-item"><span class="file-icon">ts</span> components/Dashboard.tsx <span class="file-meta">2h ago</span></li>
+            <li class="file-item"><span class="file-icon">css</span> styles/theme.css <span class="file-meta">5h ago</span></li>
+            <li class="file-item"><span class="file-icon">ts</span> lib/api/projects.ts <span class="file-meta">1d ago</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= IDEAS VIEW ======= -->
+    <section class="view" id="view-ideas" aria-label="Ideas" hidden>
+      <header class="view-header">
+        <h1 class="view-title">Ideas</h1>
+        <p class="view-subtitle">Capture and organize your ideas.</p>
+      </header>
+      <div class="ideas-toolbar">
+        <div class="ideas-search">
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="var(--secondary)" stroke-width="1.5"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+          <input type="text" class="ideas-search-input" placeholder="Search ideas..." aria-label="Search ideas">
+        </div>
+        <div class="ideas-filters">
+          <button class="filter-btn active">All</button>
+          <button class="filter-btn">Feature</button>
+          <button class="filter-btn">Bug Fix</button>
+          <button class="filter-btn">Research</button>
+        </div>
+      </div>
+      <div class="bento-grid bento-grid--ideas" id="ideasGrid">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ======= AI CHAT VIEW ======= -->
+    <section class="view" id="view-aichat" aria-label="AI Chat" hidden>
+      <header class="view-header">
+        <h1 class="view-title">AI Chat</h1>
+        <p class="view-subtitle">Talk with your AI assistant.</p>
+      </header>
+      <div class="bento-grid bento-grid--chat">
+        <div class="bento-tile bento-tile--2x2 bento-tile--chat" data-tile>
+          <div class="chat-messages" id="chatMessages">
+            <!-- Populated by JS -->
+          </div>
+          <div class="chat-input-area">
+            <input type="text" class="chat-input" placeholder="Ask something..." aria-label="Chat message input" id="chatInput">
+            <button class="chat-send-btn" aria-label="Send message" id="chatSendBtn">
+              <svg viewBox="0 0 20 20" width="18" height="18" fill="var(--white)" ><path d="M2 10l7-7v4.5h9v5H9V17z" transform="rotate(180 10 10)"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Suggestions</h3>
+          <div class="chat-suggestions">
+            <button class="suggestion-chip">Summarize my ideas</button>
+            <button class="suggestion-chip">Find duplicates</button>
+            <button class="suggestion-chip">Generate report</button>
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Context</h3>
+          <div class="chat-context">
+            <span class="context-tag">Mobile Redesign</span>
+            <span class="context-tag">6 ideas loaded</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= SETTINGS VIEW ======= -->
+    <section class="view" id="view-settings" aria-label="Settings" hidden>
+      <header class="view-header">
+        <h1 class="view-title">Settings</h1>
+        <p class="view-subtitle">Configure your account and preferences.</p>
+      </header>
+      <div class="bento-grid bento-grid--settings">
+        <div class="bento-tile bento-tile--2x1" data-tile>
+          <h3 class="tile-heading">Profile</h3>
+          <div class="settings-profile">
+            <div class="settings-avatar">JD</div>
+            <div class="settings-profile-info">
+              <div class="settings-field">
+                <label class="settings-label" for="settingsName">Name</label>
+                <input type="text" class="settings-input" id="settingsName" value="Jane Doe">
+              </div>
+              <div class="settings-field">
+                <label class="settings-label" for="settingsEmail">Email</label>
+                <input type="email" class="settings-input" id="settingsEmail" value="jane@example.com">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Theme</h3>
+          <div class="theme-toggle-group">
+            <button class="theme-btn active" data-theme="light" aria-label="Light theme">Light</button>
+            <button class="theme-btn" data-theme="dark" aria-label="Dark theme">Dark</button>
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Plan</h3>
+          <span class="tile-stat-number tile-stat-number--sm">Pro</span>
+          <span class="tile-stat-label">Active until Dec 2026</span>
+        </div>
+        <div class="bento-tile bento-tile--2x1" data-tile>
+          <h3 class="tile-heading">Notifications</h3>
+          <div class="settings-toggles">
+            <div class="toggle-row">
+              <span class="toggle-label">Email notifications</span>
+              <label class="toggle-switch" aria-label="Toggle email notifications">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="toggle-row">
+              <span class="toggle-label">Push notifications</span>
+              <label class="toggle-switch" aria-label="Toggle push notifications">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="toggle-row">
+              <span class="toggle-label">Weekly digest</span>
+              <label class="toggle-switch" aria-label="Toggle weekly digest">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--2x1" data-tile>
+          <h3 class="tile-heading">Integrations</h3>
+          <div class="integrations-list">
+            <div class="integration-item">
+              <span class="integration-icon connected">G</span>
+              <div class="integration-info">
+                <span class="integration-name">GitHub</span>
+                <span class="integration-status connected">Connected</span>
+              </div>
+            </div>
+            <div class="integration-item">
+              <span class="integration-icon connected">S</span>
+              <div class="integration-info">
+                <span class="integration-name">Slack</span>
+                <span class="integration-status connected">Connected</span>
+              </div>
+            </div>
+            <div class="integration-item">
+              <span class="integration-icon">F</span>
+              <div class="integration-info">
+                <span class="integration-name">Figma</span>
+                <span class="integration-status">Not connected</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Storage</h3>
+          <div class="storage-meter">
+            <div class="storage-bar">
+              <div class="storage-fill" style="--storage-pct: 48%"></div>
+            </div>
+            <span class="tile-stat-label">2.4 GB of 5 GB used</span>
+          </div>
+        </div>
+        <div class="bento-tile bento-tile--1x1" data-tile>
+          <h3 class="tile-heading">Security</h3>
+          <div class="security-status">
+            <span class="security-badge">2FA Enabled</span>
+            <span class="tile-stat-label">Last login: Today</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

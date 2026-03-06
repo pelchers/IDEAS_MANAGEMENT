@@ -53,13 +53,48 @@ Write these files into the output directory:
 6. **Library loaded**: CDN script must load successfully
 7. **Palette applied**: Colors must match the provided palette
 
-## Playwright Screenshot Capture (MANDATORY FINAL STEP)
+## Mandatory Workflow: Plan → Generate → Validate → Fix Loop
 
-After generating all HTML/CSS/JS files, you MUST run the Playwright screenshot script before reporting the pass as complete.
+**You MUST follow this exact workflow. Do NOT skip steps. Do NOT report the pass as complete until the validation loop passes.**
 
-**Command:**
+### Phase 1: Plan
+- Review all inputs (domain, style, palette, creative brief, library directive, anti-repeat)
+- Read the library-catalog.json to get the correct CDN URL
+- Plan your design approach
+
+### Phase 2: Pre-validate CDN URLs
+Before writing HTML, verify every CDN URL resolves:
+```bash
+curl -s -o /dev/null -w "%{http_code}" "<CDN_URL>"
+```
+- Non-200 response → find alternative URL/version
+- Check the library-catalog.json `note` field for version-specific gotchas
+- **Do NOT proceed with unverified CDN URLs**
+
+### Phase 3: Generate
+- Write all files: `index.html`, `style.css`, `app.js`, `README.md`, `validation/handoff.json`
+- Use only verified CDN URLs from Phase 2
+
+### Phase 4: Validate (Playwright)
 ```bash
 node .claude/skills/visual-creative-subagent/scripts/validate-visuals-playwright.mjs --pass-dir <outputDir>
 ```
 
-**Completion gate:** A pass is NOT complete until screenshots + report exist on disk.
+### Phase 5: Review Screenshots
+**Read the generated PNG files and visually assess them.** Check for:
+- Blank/black canvas (library load failure or JS error)
+- Missing primary content (visualization/animation/graphic not visible)
+- Text unreadable (poor contrast, wrong font, overlap)
+- Layout broken (overflow, misalignment)
+- Controls missing (play/pause, regenerate, filters)
+- Mobile broken (overflow, tiny text, off-screen elements)
+
+### Phase 6: Fix and Re-validate (Loop)
+If ANY failure detected:
+1. Identify root cause → fix files → re-run Phase 4 → re-review Phase 5
+2. **Maximum 3 fix cycles.** If still failing, document issues in `validation/handoff.json` under `unresolvedIssues`.
+
+### Phase 7: Complete
+Only after screenshots exist AND visual review passes. Write final `validation/handoff.json` with `validationPassed`, `fixCycles`, `cdnUrlsVerified`, `screenshotsReviewed` fields.
+
+**Completion gate:** A pass is NOT complete until Playwright screenshots exist, you have visually reviewed them, and no failure conditions remain.

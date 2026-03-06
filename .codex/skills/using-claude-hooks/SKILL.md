@@ -193,13 +193,13 @@ CMD=$(jq -r '.tool_input.command')
 
 # Block rm -rf from root
 if echo "$CMD" | grep -qE '^rm\s+-rf\s+/'; then
-  echo "🚫 BLOCKED: Cannot rm -rf from root" >&2
+  echo "BLOCKED: Cannot rm -rf from root" >&2
   exit 2
 fi
 
 # Block force push to main
 if echo "$CMD" | grep -qE 'git\s+push.*--force.*(main|master)'; then
-  echo "🚫 BLOCKED: Cannot force push to main/master" >&2
+  echo "BLOCKED: Cannot force push to main/master" >&2
   exit 2
 fi
 
@@ -238,13 +238,13 @@ BASENAME=$(basename "$FILE_PATH")
 
 # Block .env files
 if echo "$BASENAME" | grep -qE '^\.env'; then
-  echo "🚫 BLOCKED: Cannot edit .env files" >&2
+  echo "BLOCKED: Cannot edit .env files" >&2
   exit 2
 fi
 
 # Block key files
 if echo "$FILE_PATH" | grep -qE '\.(key|pem|secret)$'; then
-  echo "🚫 BLOCKED: Cannot edit secret files" >&2
+  echo "BLOCKED: Cannot edit secret files" >&2
   exit 2
 fi
 
@@ -265,7 +265,7 @@ FILE_PATH=$(jq -r '.tool_input.file_path')
 if echo "$FILE_PATH" | grep -qE '\.(ts|tsx|js|jsx)$'; then
   if command -v prettier &> /dev/null; then
     prettier --write "$FILE_PATH" 2>/dev/null
-    echo "✨ Formatted: $FILE_PATH"
+    echo "Formatted: $FILE_PATH"
   fi
 fi
 
@@ -273,7 +273,7 @@ fi
 if echo "$FILE_PATH" | grep -qE '\.py$'; then
   if command -v black &> /dev/null; then
     black "$FILE_PATH" 2>/dev/null
-    echo "✨ Formatted: $FILE_PATH"
+    echo "Formatted: $FILE_PATH"
   fi
 fi
 
@@ -314,24 +314,24 @@ exit 0
 # session-start-setup.sh
 
 echo ""
-echo "🚀 Claude Code session started"
-echo "📁 $(pwd)"
+echo "Claude Code session started"
+echo "$(pwd)"
 echo ""
 
 # Git status
 if git rev-parse --git-dir > /dev/null 2>&1; then
-  echo "🌿 Branch: $(git branch --show-current)"
+  echo "Branch: $(git branch --show-current)"
   UNCOMMITTED=$(git status --porcelain | wc -l)
   if [ "$UNCOMMITTED" -gt 0 ]; then
-    echo "📝 $UNCOMMITTED uncommitted changes"
+    echo "$UNCOMMITTED uncommitted changes"
   fi
 fi
 
 # Tool versions
 echo ""
-echo "🔧 Tools:"
-[ -x "$(command -v node)" ] && echo "  ✓ Node $(node --version)"
-[ -x "$(command -v npm)" ] && echo "  ✓ npm $(npm --version)"
+echo "Tools:"
+[ -x "$(command -v node)" ] && echo "  Node $(node --version)"
+[ -x "$(command -v npm)" ] && echo "  npm $(npm --version)"
 
 echo ""
 ```
@@ -468,7 +468,7 @@ PROJECT_ROOT="$(pwd)"
         "hooks": [
           {
             "type": "command",
-            "command": "echo '\\n📝 Remember to commit your changes\\n'"
+            "command": "echo '\\nRemember to commit your changes\\n'"
           }
         ]
       }
@@ -489,7 +489,7 @@ MSG=$(jq -r '.tool_input.message')
 
 # Check conventional commits format
 if ! echo "$MSG" | grep -qE '^(feat|fix|docs|chore|test|refactor):'; then
-  echo "🚫 BLOCKED: Must use conventional commits" >&2
+  echo "BLOCKED: Must use conventional commits" >&2
   echo "Format: type: description" >&2
   echo "Types: feat, fix, docs, chore, test, refactor" >&2
   exit 2
@@ -513,11 +513,11 @@ if echo "$CMD" | grep -qE '^git\s+(commit|push)'; then
   echo "Running tests before $CMD..."
 
   if ! npm test 2>&1; then
-    echo "🚫 BLOCKED: Tests must pass before $CMD" >&2
+    echo "BLOCKED: Tests must pass before $CMD" >&2
     exit 2
   fi
 
-  echo "✅ Tests passed"
+  echo "Tests passed"
 fi
 
 exit 0
@@ -562,7 +562,7 @@ exit 0  # Don't block on missing tools
 
 ```bash
 # Good
-echo "🚫 BLOCKED: Cannot rm -rf from root directory" >&2
+echo "BLOCKED: Cannot rm -rf from root directory" >&2
 echo "This command could delete critical system files" >&2
 
 # Bad
@@ -774,4 +774,3 @@ Claude Code hooks enable powerful automation and safety guardrails:
 - Remind to commit before ending session
 
 For comprehensive documentation, see `CLAUDE-HOOKS-GUIDE.md` in the project root.
-

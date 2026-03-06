@@ -1,0 +1,72 @@
+{
+  "concept": "Watercolor & Ink",
+  "pass": "2",
+  "domain": "frontend-concept",
+  "style": "hand-drawn-style",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "Rough.js", "version": "4.6.6", "url": "https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js" },
+    { "library": "Anime.js", "version": "3.2.2", "url": "https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" },
+    { "library": "Chart.js", "version": "4.4.7", "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" }
+  ],
+  "fonts": ["Kalam", "Patrick Hand", "Quicksand"],
+  "sections": [
+    { "id": "dashboard", "name": "Dashboard", "description": "Overview with stat cards, ideas timeline chart, activity feed, and quick actions" },
+    { "id": "projects", "name": "Projects", "description": "Project portfolio with search, status indicators, progress bars, and team avatars" },
+    { "id": "workspace", "name": "Workspace", "description": "Personal notebook editor with sidebar notebook list and rich text editing" },
+    { "id": "kanban", "name": "Kanban Board", "description": "Four-column board (Backlog, To Do, In Progress, Done) with draggable cards" },
+    { "id": "whiteboard", "name": "Whiteboard", "description": "Drawing canvas with pencil/brush/eraser tools, color picker, and brush size" },
+    { "id": "schema", "name": "Schema Planner", "description": "Entity-relationship diagram with Rough.js rendering, entity list, and field details" },
+    { "id": "directory", "name": "Directory Tree", "description": "Collapsible file tree with expand/collapse all controls" },
+    { "id": "ideas", "name": "Ideas Capture", "description": "Filterable idea cards with categories (New, Developing, Mature) and tags" },
+    { "id": "chat", "name": "AI Chat", "description": "Chat interface with conversation history sidebar and message input" },
+    { "id": "settings", "name": "Settings", "description": "Tabbed settings: Profile, Appearance, Notifications, Integrations" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#4A2C6A",
+      "secondary": "#2D8B8B",
+      "accent": "#C75B7A",
+      "background": "#FDF8F0",
+      "surface": "#FFFFFF",
+      "text": "#2A2A2A",
+      "muted": "#8A7A9A",
+      "success": "#4A9A6E",
+      "warning": "#D4A843",
+      "danger": "#C75B5B"
+    },
+    "typography": {
+      "heading": "Kalam (700)",
+      "body": "Patrick Hand (400)",
+      "ui": "Quicksand (500, 600)"
+    },
+    "borderRadius": "8px / 12px / 20px / 28px",
+    "transition": "200ms / 350ms / 600ms ease"
+  },
+  "coreFlags": {
+    "layoutArchetype": "dashboard-grid",
+    "navigationModel": "floating-fab-menu",
+    "informationDensity": "medium-balanced",
+    "animationPhilosophy": "continuous-ambient",
+    "colorTemperature": "analogous-gradient"
+  },
+  "subagentFlags": {
+    "watercolorBlobMorphing": true,
+    "inkSplatterParticles": true,
+    "petalBloomFabNav": true,
+    "roughJsBorders": true,
+    "roughJsSchemaERD": true,
+    "brushStrokeGradientHeaders": true,
+    "svgFilterWatercolorEdge": true,
+    "canvasWhiteboardDrawing": true,
+    "chartJsDashboardViz": true,
+    "ambientAnimeJsAnimations": true
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T12:00:00Z"
+}

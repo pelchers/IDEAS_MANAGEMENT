@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea Management - Hand-Drawn Style</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@400;600&family=Courier+Prime&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- CDN Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+
+  <!-- ============================== -->
+  <!-- SPLIT PANE LAYOUT              -->
+  <!-- ============================== -->
+  <div class="app-shell">
+
+    <!-- LEFT SIDEBAR (Notebook Panel) -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-area">
+          <svg class="logo-doodle" viewBox="0 0 40 40" width="40" height="40">
+            <circle cx="20" cy="20" r="16" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-dasharray="4 2"/>
+            <text x="20" y="25" text-anchor="middle" font-family="Caveat" font-size="16" font-weight="700" fill="var(--color-primary)">IM</text>
+          </svg>
+          <h1 class="app-title">Idea Mgmt</h1>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sidebar Navigation Links -->
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        <a href="#dashboard" class="nav-link active" data-view="dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#projects" class="nav-link" data-view="projects">
+          <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 012-2h4l2 2h8a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+          <span>Projects</span>
+        </a>
+        <a href="#workspace" class="nav-link" data-view="workspace">
+          <svg class="nav-icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="8" y1="3" x2="8" y2="21"/></svg>
+          <span>Workspace</span>
+        </a>
+        <a href="#kanban" class="nav-link" data-view="kanban">
+          <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>
+          <span>Kanban</span>
+        </a>
+        <a href="#whiteboard" class="nav-link" data-view="whiteboard">
+          <svg class="nav-icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="16" rx="2"/><line x1="6" y1="22" x2="18" y2="22"/><line x1="12" y1="18" x2="12" y2="22"/></svg>
+          <span>Whiteboard</span>
+        </a>
+        <a href="#schema" class="nav-link" data-view="schema">
+          <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><line x1="8.5" y1="7.5" x2="10" y2="16"/><line x1="15.5" y1="7.5" x2="14" y2="16"/></svg>
+          <span>Schema</span>
+        </a>
+        <a href="#directory" class="nav-link" data-view="directory">
+          <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 012-2h4l2 2h8a2 2 0 012 2v1"/><rect x="3" y="9" width="18" height="10" rx="2"/></svg>
+          <span>Dir Tree</span>
+        </a>
+        <a href="#ideas" class="nav-link" data-view="ideas">
+          <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17a1 1 0 001 1h6a1 1 0 001-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7z"/><rect x="9" y="20" width="6" height="2" rx="1"/></svg>
+          <span>Ideas</span>
+        </a>
+        <a href="#ai-chat" class="nav-link" data-view="ai-chat">
+          <svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+          <span>AI Chat</span>
+        </a>
+        <a href="#settings" class="nav-link" data-view="settings">
+          <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="user-badge">
+          <div class="user-avatar">JD</div>
+          <div class="user-info">
+            <span class="user-name">Jane Doe</span>
+            <span class="user-role">Creator</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT MAIN CONTENT (Canvas Panel) -->
+    <main class="main-content" id="mainContent">
+
+      <!-- Mobile Top Bar -->
+      <header class="mobile-header" id="mobileHeader">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <span class="mobile-title">Idea Management</span>
+      </header>
+
+      <!-- Overlay for mobile sidebar -->
+      <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+      <!-- ============================== -->
+      <!-- VIEW: DASHBOARD                -->
+      <!-- ============================== -->
+      <section class="view active" id="view-dashboard" aria-label="Dashboard view">
+        <div class="view-header">
+          <h2 class="view-title">Dashboard</h2>
+          <p class="view-subtitle">Your creative notebook at a glance</p>
+        </div>
+
+        <!-- Stat Cards Row -->
+        <div class="stat-cards">
+          <div class="sketch-card stat-card">
+            <div class="tape-decoration tape-top-left"></div>
+            <div class="stat-value">24</div>
+            <div class="stat-label">Active Ideas</div>
+            <div class="stat-trend trend-up">+3 this week</div>
+          </div>
+          <div class="sketch-card stat-card">
+            <div class="tape-decoration tape-top-right"></div>
+            <div class="stat-value">8</div>
+            <div class="stat-label">Projects</div>
+            <div class="stat-trend trend-up">+1 new</div>
+          </div>
+          <div class="sketch-card stat-card">
+            <div class="pin-decoration"></div>
+            <div class="stat-value">67%</div>
+            <div class="stat-label">Completion</div>
+            <div class="stat-trend trend-neutral">On track</div>
+          </div>
+          <div class="sketch-card stat-card">
+            <div class="tape-decoration tape-top-left"></div>
+            <div class="stat-value">12</div>
+            <div class="stat-label">Collaborators</div>
+            <div class="stat-trend trend-up">+2 joined</div>
+          </div>
+        </div>
+
+        <!-- Recent Activity + Quick Actions -->
+        <div class="dashboard-grid">
+          <div class="sketch-card activity-card">
+            <h3 class="card-title">Recent Activity</h3>
+            <ul class="activity-list">
+              <li class="activity-item">
+                <span class="activity-dot"></span>
+                <span class="activity-text">Added "Mobile App Redesign" to Projects</span>
+                <span class="activity-time">2h ago</span>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot"></span>
+                <span class="activity-text">Moved "API Integration" to In Progress</span>
+                <span class="activity-time">4h ago</span>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot"></span>
+                <span class="activity-text">Created new schema for User Auth</span>
+                <span class="activity-time">Yesterday</span>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot"></span>
+                <span class="activity-text">Brainstormed 5 new ideas in AI Chat</span>
+                <span class="activity-time">Yesterday</span>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot"></span>
+                <span class="activity-text">Updated whiteboard for Sprint 4</span>
+                <span class="activity-time">2 days ago</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sketch-card quickactions-card">
+            <h3 class="card-title">Quick Actions</h3>
+            <div class="quick-actions">
+              <button class="quick-action-btn">
+                <svg viewBox="0 0 24 24" width="20" height="20"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                New Idea
+              </button>
+              <button class="quick-action-btn">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 7V5a2 2 0 012-2h4l2 2h8a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+                New Project
+              </button>
+              <button class="quick-action-btn">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7"/></svg>
+                Ask AI
+              </button>
+              <button class="quick-action-btn">
+                <svg viewBox="0 0 24 24" width="20" height="20"><rect x="2" y="2" width="20" height="16" rx="2"/></svg>
+                Open Board
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart placeholder -->
+        <div class="sketch-card chart-card">
+          <h3 class="card-title">Ideas Over Time</h3>
+          <canvas id="dashboardChart" width="600" height="200"></canvas>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- VIEW: PROJECTS                 -->
+      <!-- ============================== -->
+      <section class="view" id="view-projects" aria-label="Projects view">
+        <div class="view-header">
+          <h2 class="view-title">Projects</h2>
+          <p class="view-subtitle">Your organized creative folders</p>
+        </div>
+
+        <div class="projects-toolbar">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search projects..." class="search-input">
+          </div>
+          <button class="btn-sketch">+ New Project</button>
+        </div>
+
+        <div class="projects-grid">
+          <div class="sketch-card project-card">
+            <div class="clip-decoration"></div>
+            <div class="project-color-bar" style="background: var(--color-accent)"></div>
+            <h3 class="project-name">Mobile App Redesign</h3>
+            <p class="project-desc">Overhaul the mobile experience with new navigation patterns</p>
+            <div class="project-meta">
+              <span class="project-tasks">12 tasks</span>
+              <span class="project-progress">
+                <span class="progress-bar"><span class="progress-fill" style="width:75%"></span></span>
+                75%
+              </span>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-design">Design</span>
+              <span class="tag tag-dev">Dev</span>
+            </div>
+          </div>
+
+          <div class="sketch-card project-card">
+            <div class="tape-decoration tape-top-right"></div>
+            <div class="project-color-bar" style="background: var(--color-highlight)"></div>
+            <h3 class="project-name">API Integration Hub</h3>
+            <p class="project-desc">Central integration layer for third-party services</p>
+            <div class="project-meta">
+              <span class="project-tasks">8 tasks</span>
+              <span class="project-progress">
+                <span class="progress-bar"><span class="progress-fill" style="width:40%"></span></span>
+                40%
+              </span>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-dev">Dev</span>
+              <span class="tag tag-backend">Backend</span>
+            </div>
+          </div>
+
+          <div class="sketch-card project-card">
+            <div class="pin-decoration"></div>
+            <div class="project-color-bar" style="background: #8B6BB9"></div>
+            <h3 class="project-name">Brand Refresh 2024</h3>
+            <p class="project-desc">Updated visual identity and design system tokens</p>
+            <div class="project-meta">
+              <span class="project-tasks">18 tasks</span>
+              <span class="project-progress">
+                <span class="progress-bar"><span class="progress-fill" style="width:90%"></span></span>
+                90%
+              </span>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-design">Design</span>
+              <span class="tag tag-brand">Brand</span>
+            </div>
+          </div>
+
+          <div class="sketch-card project-card">
+            <div class="clip-decoration"></div>
+            <div class="project-color-bar" style="background: #D4A574"></div>
+            <h3 class="project-name">User Research Sprint</h3>
+            <p class="project-desc">Interview sessions and usability testing round 3</p>
+            <div class="project-meta">
+              <span class="project-tasks">6 tasks</span>
+              <span class="project-progress">
+                <span class="progress-bar"><span class="progress-fill" style="width:20%"></span></span>
+                20%
+              </span>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-research">Research</span>
+            </div>
+          </div>
+
+          <div class="sketch-card project-card">
+            <div class="tape-decoration tape-top-left"></div>
+            <div class="project-color-bar" style="background: #E07B39"></div>
+            <h3 class="project-name">Analytics Dashboard</h3>
+            <p class="project-desc">Real-time metrics and reporting pipeline</p>
+            <div class="project-meta">
+              <span class="project-tasks">15 tasks</span>
+              <span class="project-progress">
+                <span class="progress-bar"><span class="progress-fill" style="width:55%"></span></span>
+                55%
+              </span>
+            </div>
+            <div class="project-tags">
+              <span class="tag tag-dev">Dev</span>
+              <span class="tag tag-design">Design</span>
+            </div>
+          </div>
+
+          <div class="sketch-card project-card project-card-new">
+            <div class="project-add-icon">+</div>
+            <p class="project-add-text">Create New Project</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- VIEW: WORKSPACE                -->
+      <!-- ============================== -->
+      <section class="view" id="view-workspace" aria-label="Workspace view">
+        <div class="view-header">
+          <h2 class="view-title">Workspace</h2>
+          <p class="view-subtitle">Your personal creative desk</p>
+        </div>
+
+        <div class="workspace-layout">
+          <div class="workspace-tabs">
+            <button class="workspace-tab active" data-workspace-tab="notes">Notes</button>
+            <button class="workspace-tab" data-workspace-tab="bookmarks">Bookmarks</button>
+            <button class="workspace-tab" data-workspace-tab="files">Files</button>
+          </div>
+
+          <div class="workspace-panel active" id="workspace-notes">
+            <div class="sketch-card note-card">
+              <div class="tape-decoration tape-top-left"></div>
+              <h4 class="note-title">Meeting Notes - Sprint Review</h4>
+              <p class="note-body">Discussed the new feature pipeline. Need to prioritize mobile-first approach. Team agreed on 2-week sprint cycles. Follow up with design team about component library.</p>
+              <span class="note-date">Mar 4, 2026</span>
+            </div>
+            <div class="sketch-card note-card">
+              <div class="pin-decoration"></div>
+              <h4 class="note-title">UI Inspiration</h4>
+              <p class="note-body">Explore hand-drawn aesthetics for the idea capture flow. Look into Rough.js for sketch borders. Consider warm color palette with paper textures.</p>
+              <span class="note-date">Mar 3, 2026</span>
+            </div>
+            <div class="sketch-card note-card">
+              <div class="clip-decoration"></div>
+              <h4 class="note-title">Architecture Decisions</h4>
+              <p class="note-body">Convex for real-time sync. Clerk for auth. Zustand for client state. Need to evaluate caching strategy for offline support.</p>
+              <span class="note-date">Mar 1, 2026</span>
+            </div>
+          </div>
+
+          <div class="workspace-panel" id="workspace-bookmarks">
+            <div class="bookmark-list">
+              <div class="sketch-card bookmark-item">
+                <span class="bookmark-icon">&#9733;</span>
+                <div class="bookmark-info">
+                  <span class="bookmark-title">Convex Documentation</span>
+                  <span class="bookmark-url">docs.convex.dev</span>
+                </div>
+              </div>
+              <div class="sketch-card bookmark-item">
+                <span class="bookmark-icon">&#9733;</span>
+                <div class="bookmark-info">
+                  <span class="bookmark-title">Tailwind CSS Components</span>
+                  <span class="bookmark-url">tailwindui.com</span>
+                </div>
+              </div>
+              <div class="sketch-card bookmark-item">
+                <span class="bookmark-icon">&#9733;</span>
+                <div class="bookmark-info">
+                  <span class="bookmark-title">Rough.js Examples</span>
+                  <span class="bookmark-url">roughjs.com</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="workspace-panel" id="workspace-files">
+            <div class="file-grid">
+              <div class="sketch-card file-item">
+                <div class="file-icon">&#128196;</div>
+                <span class="file-name">design-brief.pdf</span>
+                <span class="file-size">2.4 MB</span>
+              </div>
+              <div class="sketch-card file-item">
+                <div class="file-icon">&#128248;</div>
+                <span class="file-name">wireframes-v2.png</span>
+                <span class="file-size">1.1 MB</span>
+              </div>
+              <div class="sketch-card file-item">
+                <div class="file-icon">&#128196;</div>
+                <span class="file-name">requirements.docx</span>
+                <span class="file-size">340 KB</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- VIEW: KANBAN                   -->
+      <!-- ============================== -->
+      <section class="view" id="view-kanban" aria-label="Kanban view">
+        <div class="view-header">
+          <h2 class="view-title">Kanban Board</h2>
+          <p class="view-subtitle">Drag your ideas across the board</p>
+        </div>
+
+        <div class="kanban-board">
+          <!-- Backlog Column -->
+          <div class="kanban-column">
+            <div class="kanban-column-header">
+              <h3 class="column-title">Backlog</h3>
+              <span class="column-count">4</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="sketch-card kanban-card" draggable="true">
+                <div class="tape-decoration tape-top-left"></div>
+                <h4 class="kanban-card-title">Dark mode support</h4>
+                <p class="kanban-card-desc">Add system-wide dark theme toggle</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-design">Design</span>
+                  <span class="kanban-avatar">JD</span>
+                </div>
+              </div>
+              <div class="sketch-card kanban-card" draggable="true">
+                <h4 class="kanban-card-title">Export to PDF</h4>
+                <p class="kanban-card-desc">Generate PDF reports from ideas</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-dev">Dev</span>
+                  <span class="kanban-avatar">MR</span>
+                </div>
+              </div>
+              <div class="sketch-card kanban-card" draggable="true">
+                <h4 class="kanban-card-title">Search improvements</h4>
+                <p class="kanban-card-desc">Fuzzy search and filters</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-dev">Dev</span>
+                  <span class="kanban-avatar">AK</span>
+                </div>
+              </div>
+              <div class="sketch-card kanban-card" draggable="true">
+                <div class="pin-decoration"></div>
+                <h4 class="kanban-card-title">Onboarding flow</h4>
+                <p class="kanban-card-desc">New user welcome experience</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-design">Design</span>
+                  <span class="kanban-avatar">JD</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- In Progress Column -->
+          <div class="kanban-column">
+            <div class="kanban-column-header">
+              <h3 class="column-title">In Progress</h3>
+              <span class="column-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="sketch-card kanban-card" draggable="true">
+                <div class="clip-decoration"></div>
+                <h4 class="kanban-card-title">API integration layer</h4>
+                <p class="kanban-card-desc">REST + WebSocket bridges</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-backend">Backend</span>
+                  <span class="kanban-avatar">MR</span>
+                </div>
+              </div>
+              <div class="sketch-card kanban-card" draggable="true">
+                <h4 class="kanban-card-title">Kanban drag-drop</h4>
+                <p class="kanban-card-desc">Smooth card reordering</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-dev">Dev</span>
+                  <span class="kanban-avatar">AK</span>
+                </div>
+              </div>
+              <div class="sketch-card kanban-card" draggable="true">
+                <h4 class="kanban-card-title">Color theme editor</h4>
+                <p class="kanban-card-desc">Custom palette controls</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-design">Design</span>
+                  <span class="kanban-avatar">JD</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review Column -->
+          <div class="kanban-column">
+            <div class="kanban-column-header">
+              <h3 class="column-title">Review</h3>
+              <span class="column-count">2</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="sketch-card kanban-card" draggable="true">
+                <div class="tape-decoration tape-top-right"></div>
+                <h4 class="kanban-card-title">Dashboard charts</h4>
+                <p class="kanban-card-desc">Activity and progress graphs</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-dev">Dev</span>
+                  <span class="kanban-avatar">MR</span>
+                </div>
+              </div>
+              <div class="sketch-card kanban-card" draggable="true">
+                <h4 class="kanban-card-title">Auth flow</h4>
+                <p class="kanban-card-desc">Clerk integration complete</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-backend">Backend</span>
+                  <span class="kanban-avatar">AK</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Done Column -->
+          <div class="kanban-column">
+            <div class="kanban-column-header">
+              <h3 class="column-title">Done</h3>
+              <span class="column-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="sketch-card kanban-card done" draggable="true">
+                <h4 class="kanban-card-title">Project setup</h4>
+                <p class="kanban-card-desc">Next.js + Convex boilerplate</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-dev">Dev</span>
+                  <span class="kanban-avatar">MR</span>
+                </div>
+              </div>
+              <div class="sketch-card kanban-card done" draggable="true">
+                <h4 class="kanban-card-title">Design tokens</h4>
+                <p class="kanban-card-desc">Color, type, spacing system</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-design">Design</span>
+                  <span class="kanban-avatar">JD</span>
+                </div>
+              </div>
+              <div class="sketch-card kanban-card done" draggable="true">
+                <h4 class="kanban-card-title">CI/CD pipeline</h4>
+                <p class="kanban-card-desc">GitHub Actions workflow</p>
+                <div class="kanban-card-footer">
+                  <span class="tag tag-backend">Backend</span>
+                  <span class="kanban-avatar">AK</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- VIEW: WHITEBOARD               -->
+      <!-- ============================== -->
+      <section class="view" id="view-whiteboard" aria-label="Whiteboard view">
+        <div class="view-header">
+          <h2 class="view-title">Whiteboard</h2>
+          <p class="view-subtitle">Sketch your ideas freely</p>
+        </div>
+
+        <div class="whiteboard-toolbar">
+          <button class="tool-btn active" data-tool="select" aria-label="Select tool">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+          </button>
+          <button class="tool-btn" data-tool="pen" aria-label="Pen tool">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+          </button>
+          <button class="tool-btn" data-tool="rect" aria-label="Rectangle tool">
+            <svg viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          </button>
+          <button class="tool-btn" data-tool="circle" aria-label="Circle tool">
+            <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="10"/></svg>
+          </button>
+          <button class="tool-btn" data-tool="text" aria-label="Text tool">
+            <svg viewBox="0 0 24 24" width="18" height="18"><text x="6" y="18" font-size="16" font-weight="bold">T</text></svg>
+          </button>
+          <div class="tool-separator"></div>
+          <button class="tool-btn" data-tool="eraser" aria-label="Eraser tool">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M20 20H7L3 16l10-10 8 8-4 4"/><line x1="6" y1="20" x2="20" y2="20"/></svg>
+          </button>
+          <div class="color-swatches">
+            <button class="swatch active" data-color="#3D3D3D" style="background:#3D3D3D" aria-label="Dark gray"></button>
+            <button class="swatch" data-color="#E07B39" style="background:#E07B39" aria-label="Orange"></button>
+            <button class="swatch" data-color="#5B8C5A" style="background:#5B8C5A" aria-label="Green"></button>
+            <button class="swatch" data-color="#4A7AB5" style="background:#4A7AB5" aria-label="Blue"></button>
+          </div>
+        </div>
+
+        <div class="whiteboard-canvas-area">
+          <canvas id="whiteboardCanvas" width="1200" height="600"></canvas>
+          <div class="whiteboard-hint">Click and drag to sketch. Select a tool from the toolbar above.</div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- VIEW: SCHEMA                   -->
+      <!-- ============================== -->
+      <section class="view" id="view-schema" aria-label="Schema view">
+        <div class="view-header">
+          <h2 class="view-title">Schema Planner</h2>
+          <p class="view-subtitle">Map your data relationships</p>
+        </div>
+
+        <div class="schema-layout">
+          <div class="schema-sidebar">
+            <h3 class="schema-sidebar-title">Entities</h3>
+            <div class="entity-list">
+              <button class="entity-btn active" data-entity="user">User</button>
+              <button class="entity-btn" data-entity="project">Project</button>
+              <button class="entity-btn" data-entity="idea">Idea</button>
+              <button class="entity-btn" data-entity="task">Task</button>
+              <button class="entity-btn" data-entity="comment">Comment</button>
+            </div>
+            <button class="btn-sketch btn-small">+ Add Entity</button>
+          </div>
+
+          <div class="schema-canvas">
+            <!-- Entity cards positioned on canvas -->
+            <div class="schema-entity-card" id="entity-user" style="left: 50px; top: 30px;">
+              <div class="entity-header">User</div>
+              <ul class="entity-fields">
+                <li><span class="field-key">PK</span> id: string</li>
+                <li>name: string</li>
+                <li>email: string</li>
+                <li>avatar: string</li>
+                <li>role: enum</li>
+                <li>createdAt: datetime</li>
+              </ul>
+            </div>
+            <div class="schema-entity-card" id="entity-project" style="left: 320px; top: 30px;">
+              <div class="entity-header">Project</div>
+              <ul class="entity-fields">
+                <li><span class="field-key">PK</span> id: string</li>
+                <li><span class="field-key">FK</span> ownerId: User</li>
+                <li>name: string</li>
+                <li>description: text</li>
+                <li>status: enum</li>
+                <li>color: string</li>
+              </ul>
+            </div>
+            <div class="schema-entity-card" id="entity-idea" style="left: 590px; top: 30px;">
+              <div class="entity-header">Idea</div>
+              <ul class="entity-fields">
+                <li><span class="field-key">PK</span> id: string</li>
+                <li><span class="field-key">FK</span> projectId: Project</li>
+                <li><span class="field-key">FK</span> authorId: User</li>
+                <li>title: string</li>
+                <li>body: text</li>
+                <li>priority: enum</li>
+              </ul>
+            </div>
+            <div class="schema-entity-card" id="entity-task" style="left: 180px; top: 300px;">
+              <div class="entity-header">Task</div>
+              <ul class="entity-fields">
+                <li><span class="field-key">PK</span> id: string</li>
+                <li><span class="field-key">FK</span> ideaId: Idea</li>
+                <li><span class="field-key">FK</span> assigneeId: User</li>
+                <li>title: string</li>
+                <li>status: enum</li>
+                <li>dueDate: datetime</li>
+              </ul>
+            </div>
+            <div class="schema-entity-card" id="entity-comment" style="left: 500px; top: 300px;">
+              <div class="entity-header">Comment</div>
+              <ul class="entity-fields">
+                <li><span class="field-key">PK</span> id: string</li>
+                <li><span class="field-key">FK</span> ideaId: Idea</li>
+                <li><span class="field-key">FK</span> authorId: User</li>
+                <li>body: text</li>
+                <li>createdAt: datetime</li>
+              </ul>
+            </div>
+            <!-- SVG for relationship lines -->
+            <svg class="schema-lines" id="schemaLines"></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- VIEW: DIRECTORY TREE           -->
+      <!-- ============================== -->
+      <section class="view" id="view-directory" aria-label="Directory tree view">
+        <div class="view-header">
+          <h2 class="view-title">Directory Tree</h2>
+          <p class="view-subtitle">Browse your project structure</p>
+        </div>
+
+        <div class="directory-layout">
+          <div class="sketch-card directory-tree-panel">
+            <div class="tree-node">
+              <span class="tree-toggle expanded" data-tree="root">&#9660;</span>
+              <span class="tree-icon">&#128193;</span>
+              <span class="tree-label">idea-management</span>
+            </div>
+            <div class="tree-children" id="tree-root">
+              <div class="tree-node">
+                <span class="tree-toggle expanded" data-tree="src">&#9660;</span>
+                <span class="tree-icon">&#128193;</span>
+                <span class="tree-label">src</span>
+              </div>
+              <div class="tree-children" id="tree-src">
+                <div class="tree-node">
+                  <span class="tree-toggle expanded" data-tree="components">&#9660;</span>
+                  <span class="tree-icon">&#128193;</span>
+                  <span class="tree-label">components</span>
+                </div>
+                <div class="tree-children" id="tree-components">
+                  <div class="tree-node leaf">
+                    <span class="tree-icon">&#128196;</span>
+                    <span class="tree-label">Dashboard.tsx</span>
+                  </div>
+                  <div class="tree-node leaf">
+                    <span class="tree-icon">&#128196;</span>
+                    <span class="tree-label">KanbanBoard.tsx</span>
+                  </div>
+                  <div class="tree-node leaf">
+                    <span class="tree-icon">&#128196;</span>
+                    <span class="tree-label">Whiteboard.tsx</span>
+                  </div>
+                  <div class="tree-node leaf">
+                    <span class="tree-icon">&#128196;</span>
+                    <span class="tree-label">IdeaCapture.tsx</span>
+                  </div>
+                </div>
+                <div class="tree-node">
+                  <span class="tree-toggle" data-tree="hooks">&#9654;</span>
+                  <span class="tree-icon">&#128193;</span>
+                  <span class="tree-label">hooks</span>
+                </div>
+                <div class="tree-children collapsed" id="tree-hooks">
+                  <div class="tree-node leaf">
+                    <span class="tree-icon">&#128196;</span>
+                    <span class="tree-label">useProjects.ts</span>
+                  </div>
+                  <div class="tree-node leaf">
+                    <span class="tree-icon">&#128196;</span>
+                    <span class="tree-label">useIdeas.ts</span>
+                  </div>
+                  <div class="tree-node leaf">
+                    <span class="tree-icon">&#128196;</span>
+                    <span class="tree-label">useAuth.ts</span>
+                  </div>
+                </div>
+                <div class="tree-node">
+                  <span class="tree-toggle" data-tree="utils">&#9654;</span>
+                  <span class="tree-icon">&#128193;</span>
+                  <span class="tree-label">utils</span>
+                </div>
+                <div class="tree-children collapsed" id="tree-utils">
+                  <div class="tree-node leaf">
+                    <span class="tree-icon">&#128196;</span>
+                    <span class="tree-label">helpers.ts</span>
+                  </div>
+                  <div class="tree-node leaf">
+                    <span class="tree-icon">&#128196;</span>
+                    <span class="tree-label">validators.ts</span>
+                  </div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <span class="tree-toggle" data-tree="convex">&#9654;</span>
+                <span class="tree-icon">&#128193;</span>
+                <span class="tree-label">convex</span>
+              </div>
+              <div class="tree-children collapsed" id="tree-convex">
+                <div class="tree-node leaf">
+                  <span class="tree-icon">&#128196;</span>
+                  <span class="tree-label">schema.ts</span>
+                </div>
+                <div class="tree-node leaf">
+                  <span class="tree-icon">&#128196;</span>
+                  <span class="tree-label">projects.ts</span>
+                </div>
+                <div class="tree-node leaf">
+                  <span class="tree-icon">&#128196;</span>
+                  <span class="tree-label">ideas.ts</span>
+                </div>
+              </div>
+              <div class="tree-node leaf">
+                <span class="tree-icon">&#128196;</span>
+                <span class="tree-label">package.json</span>
+              </div>
+              <div class="tree-node leaf">
+                <span class="tree-icon">&#128196;</span>
+                <span class="tree-label">tsconfig.json</span>
+              </div>
+              <div class="tree-node leaf">
+                <span class="tree-icon">&#128196;</span>
+                <span class="tree-label">README.md</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sketch-card directory-details-panel">
+            <h3 class="detail-title">File Details</h3>
+            <div class="detail-content" id="fileDetails">
+              <p class="detail-placeholder">Select a file to view details</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- VIEW: IDEAS                    -->
+      <!-- ============================== -->
+      <section class="view" id="view-ideas" aria-label="Ideas view">
+        <div class="view-header">
+          <h2 class="view-title">Ideas Capture</h2>
+          <p class="view-subtitle">Jot down every spark of inspiration</p>
+        </div>
+
+        <div class="ideas-toolbar">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search ideas..." class="search-input">
+          </div>
+          <div class="ideas-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="high">High Priority</button>
+            <button class="filter-btn" data-filter="medium">Medium</button>
+            <button class="filter-btn" data-filter="low">Low</button>
+          </div>
+          <button class="btn-sketch">+ New Idea</button>
+        </div>
+
+        <!-- New Idea Input -->
+        <div class="sketch-card idea-input-card">
+          <div class="tape-decoration tape-top-left"></div>
+          <input type="text" class="idea-title-input" placeholder="Give your idea a title...">
+          <textarea class="idea-body-input" placeholder="Describe your idea... let it flow..." rows="3"></textarea>
+          <div class="idea-input-footer">
+            <select class="idea-priority-select">
+              <option value="high">High Priority</option>
+              <option value="medium" selected>Medium Priority</option>
+              <option value="low">Low Priority</option>
+            </select>
+            <button class="btn-sketch">Save Idea</button>
+          </div>
+        </div>
+
+        <div class="ideas-grid">
+          <div class="sketch-card idea-card" data-priority="high">
+            <div class="pin-decoration"></div>
+            <div class="idea-priority-badge priority-high">High</div>
+            <h4 class="idea-title">AI-Powered Idea Suggestions</h4>
+            <p class="idea-body">Use GPT to suggest related ideas based on existing project context. Auto-categorize and tag incoming ideas.</p>
+            <div class="idea-footer">
+              <span class="idea-date">Mar 5, 2026</span>
+              <span class="idea-author">Jane D.</span>
+            </div>
+          </div>
+          <div class="sketch-card idea-card" data-priority="high">
+            <div class="tape-decoration tape-top-right"></div>
+            <div class="idea-priority-badge priority-high">High</div>
+            <h4 class="idea-title">Real-time Collaboration</h4>
+            <p class="idea-body">WebSocket-based live editing for whiteboard and kanban views. Show cursors of other users in real time.</p>
+            <div class="idea-footer">
+              <span class="idea-date">Mar 4, 2026</span>
+              <span class="idea-author">Mike R.</span>
+            </div>
+          </div>
+          <div class="sketch-card idea-card" data-priority="medium">
+            <div class="clip-decoration"></div>
+            <div class="idea-priority-badge priority-medium">Medium</div>
+            <h4 class="idea-title">Customizable Dashboards</h4>
+            <p class="idea-body">Drag-and-drop widget system for dashboard. Users pick what metrics matter most to them.</p>
+            <div class="idea-footer">
+              <span class="idea-date">Mar 3, 2026</span>
+              <span class="idea-author">Alice K.</span>
+            </div>
+          </div>
+          <div class="sketch-card idea-card" data-priority="medium">
+            <div class="idea-priority-badge priority-medium">Medium</div>
+            <h4 class="idea-title">Template Library</h4>
+            <p class="idea-body">Pre-built project templates for common workflows: sprint planning, design reviews, brainstorming sessions.</p>
+            <div class="idea-footer">
+              <span class="idea-date">Mar 2, 2026</span>
+              <span class="idea-author">Jane D.</span>
+            </div>
+          </div>
+          <div class="sketch-card idea-card" data-priority="low">
+            <div class="tape-decoration tape-top-left"></div>
+            <div class="idea-priority-badge priority-low">Low</div>
+            <h4 class="idea-title">Gamification System</h4>
+            <p class="idea-body">Achievement badges, streak tracking, and point system for consistent idea contribution.</p>
+            <div class="idea-footer">
+              <span class="idea-date">Mar 1, 2026</span>
+              <span class="idea-author">Mike R.</span>
+            </div>
+          </div>
+          <div class="sketch-card idea-card" data-priority="low">
+            <div class="idea-priority-badge priority-low">Low</div>
+            <h4 class="idea-title">Voice-to-Idea Capture</h4>
+            <p class="idea-body">Speech recognition for hands-free idea capture. Auto-transcribe and organize by topic.</p>
+            <div class="idea-footer">
+              <span class="idea-date">Feb 28, 2026</span>
+              <span class="idea-author">Alice K.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- VIEW: AI CHAT                  -->
+      <!-- ============================== -->
+      <section class="view" id="view-ai-chat" aria-label="AI Chat view">
+        <div class="view-header">
+          <h2 class="view-title">AI Chat</h2>
+          <p class="view-subtitle">Brainstorm with your AI assistant</p>
+        </div>
+
+        <div class="chat-container">
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-message ai-message">
+              <div class="chat-avatar ai-avatar">AI</div>
+              <div class="sketch-card chat-bubble">
+                <p>Hey there! I'm your creative brainstorming assistant. Tell me about your project and I'll help you explore ideas, suggest improvements, or think through problems.</p>
+              </div>
+            </div>
+            <div class="chat-message user-message">
+              <div class="sketch-card chat-bubble">
+                <p>I need ideas for improving user onboarding in our app. The current flow has a 40% drop-off rate.</p>
+              </div>
+              <div class="chat-avatar user-avatar">JD</div>
+            </div>
+            <div class="chat-message ai-message">
+              <div class="chat-avatar ai-avatar">AI</div>
+              <div class="sketch-card chat-bubble">
+                <p>Great question! Here are some approaches to reduce onboarding drop-off:</p>
+                <ul>
+                  <li><strong>Progressive disclosure</strong> - Show only essential steps first, reveal advanced features later</li>
+                  <li><strong>Interactive tutorial</strong> - Let users complete real tasks during onboarding instead of passive walkthroughs</li>
+                  <li><strong>Personalization</strong> - Ask what they want to achieve and tailor the first experience</li>
+                  <li><strong>Quick wins</strong> - Help them create their first idea or project within 60 seconds</li>
+                </ul>
+                <p>Which of these resonates most with your user base?</p>
+              </div>
+            </div>
+            <div class="chat-message user-message">
+              <div class="sketch-card chat-bubble">
+                <p>The progressive disclosure approach sounds great. Can you sketch out what the first 3 steps might look like?</p>
+              </div>
+              <div class="chat-avatar user-avatar">JD</div>
+            </div>
+            <div class="chat-message ai-message">
+              <div class="chat-avatar ai-avatar">AI</div>
+              <div class="sketch-card chat-bubble">
+                <p>Here's a 3-step progressive onboarding flow:</p>
+                <p><strong>Step 1 - Welcome & Intent (15 sec):</strong> Single screen asking "What brings you here?" with 3 big illustrated cards: "Brainstorm Ideas", "Manage Projects", "Collaborate with Team"</p>
+                <p><strong>Step 2 - First Creation (30 sec):</strong> Based on their choice, guide them to create their first item. Pre-filled templates make it feel effortless.</p>
+                <p><strong>Step 3 - Quick Tour (45 sec):</strong> Highlight 3 key areas of the app relevant to their choice. Use tooltips, not modals.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-area">
+            <div class="sketch-card chat-input-card">
+              <textarea class="chat-input" placeholder="Type your message..." rows="2" id="chatInput"></textarea>
+              <div class="chat-input-actions">
+                <button class="chat-attach-btn" aria-label="Attach file">
+                  <svg viewBox="0 0 24 24" width="18" height="18"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                </button>
+                <button class="btn-sketch chat-send-btn" id="chatSendBtn">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- VIEW: SETTINGS                 -->
+      <!-- ============================== -->
+      <section class="view" id="view-settings" aria-label="Settings view">
+        <div class="view-header">
+          <h2 class="view-title">Settings</h2>
+          <p class="view-subtitle">Personalize your experience</p>
+        </div>
+
+        <div class="settings-layout">
+          <div class="settings-nav">
+            <button class="settings-nav-btn active" data-settings="profile">Profile</button>
+            <button class="settings-nav-btn" data-settings="appearance">Appearance</button>
+            <button class="settings-nav-btn" data-settings="notifications">Notifications</button>
+            <button class="settings-nav-btn" data-settings="integrations">Integrations</button>
+            <button class="settings-nav-btn" data-settings="billing">Billing</button>
+          </div>
+
+          <div class="settings-content">
+            <!-- Profile Settings -->
+            <div class="settings-panel active" id="settings-profile">
+              <div class="sketch-card settings-card">
+                <h3 class="settings-section-title">Profile Information</h3>
+                <div class="settings-form">
+                  <div class="form-group">
+                    <label class="form-label">Display Name</label>
+                    <input type="text" class="form-input" value="Jane Doe">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" value="jane@example.com">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Bio</label>
+                    <textarea class="form-input form-textarea" rows="3">Creative designer and product thinker. Love turning ideas into reality.</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select class="form-input form-select">
+                      <option selected>Creator</option>
+                      <option>Editor</option>
+                      <option>Viewer</option>
+                      <option>Admin</option>
+                    </select>
+                  </div>
+                  <button class="btn-sketch">Save Changes</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Appearance Settings -->
+            <div class="settings-panel" id="settings-appearance">
+              <div class="sketch-card settings-card">
+                <h3 class="settings-section-title">Appearance</h3>
+                <div class="settings-form">
+                  <div class="form-group">
+                    <label class="form-label">Theme</label>
+                    <div class="theme-options">
+                      <button class="theme-option active" data-theme="light">
+                        <div class="theme-preview light-preview"></div>
+                        <span>Light</span>
+                      </button>
+                      <button class="theme-option" data-theme="dark">
+                        <div class="theme-preview dark-preview"></div>
+                        <span>Dark</span>
+                      </button>
+                      <button class="theme-option" data-theme="system">
+                        <div class="theme-preview system-preview"></div>
+                        <span>System</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Font Size</label>
+                    <input type="range" class="form-range" min="14" max="20" value="16">
+                    <span class="range-value">16px</span>
+                  </div>
+                  <div class="form-group toggle-group">
+                    <label class="form-label">Compact Mode</label>
+                    <button class="toggle-switch" role="switch" aria-checked="false">
+                      <span class="toggle-knob"></span>
+                    </button>
+                  </div>
+                  <div class="form-group toggle-group">
+                    <label class="form-label">Animations</label>
+                    <button class="toggle-switch on" role="switch" aria-checked="true">
+                      <span class="toggle-knob"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notifications Settings -->
+            <div class="settings-panel" id="settings-notifications">
+              <div class="sketch-card settings-card">
+                <h3 class="settings-section-title">Notifications</h3>
+                <div class="settings-form">
+                  <div class="form-group toggle-group">
+                    <label class="form-label">Email Notifications</label>
+                    <button class="toggle-switch on" role="switch" aria-checked="true">
+                      <span class="toggle-knob"></span>
+                    </button>
+                  </div>
+                  <div class="form-group toggle-group">
+                    <label class="form-label">Push Notifications</label>
+                    <button class="toggle-switch on" role="switch" aria-checked="true">
+                      <span class="toggle-knob"></span>
+                    </button>
+                  </div>
+                  <div class="form-group toggle-group">
+                    <label class="form-label">Weekly Summary</label>
+                    <button class="toggle-switch" role="switch" aria-checked="false">
+                      <span class="toggle-knob"></span>
+                    </button>
+                  </div>
+                  <div class="form-group toggle-group">
+                    <label class="form-label">Mention Alerts</label>
+                    <button class="toggle-switch on" role="switch" aria-checked="true">
+                      <span class="toggle-knob"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Integrations Settings -->
+            <div class="settings-panel" id="settings-integrations">
+              <div class="sketch-card settings-card">
+                <h3 class="settings-section-title">Integrations</h3>
+                <div class="integration-list">
+                  <div class="integration-item">
+                    <div class="integration-icon">&#9881;</div>
+                    <div class="integration-info">
+                      <span class="integration-name">GitHub</span>
+                      <span class="integration-status connected">Connected</span>
+                    </div>
+                    <button class="btn-sketch btn-small">Disconnect</button>
+                  </div>
+                  <div class="integration-item">
+                    <div class="integration-icon">&#9993;</div>
+                    <div class="integration-info">
+                      <span class="integration-name">Slack</span>
+                      <span class="integration-status connected">Connected</span>
+                    </div>
+                    <button class="btn-sketch btn-small">Disconnect</button>
+                  </div>
+                  <div class="integration-item">
+                    <div class="integration-icon">&#9729;</div>
+                    <div class="integration-info">
+                      <span class="integration-name">Figma</span>
+                      <span class="integration-status">Not connected</span>
+                    </div>
+                    <button class="btn-sketch btn-small">Connect</button>
+                  </div>
+                  <div class="integration-item">
+                    <div class="integration-icon">&#9888;</div>
+                    <div class="integration-info">
+                      <span class="integration-name">Jira</span>
+                      <span class="integration-status">Not connected</span>
+                    </div>
+                    <button class="btn-sketch btn-small">Connect</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Billing Settings -->
+            <div class="settings-panel" id="settings-billing">
+              <div class="sketch-card settings-card">
+                <h3 class="settings-section-title">Billing & Plan</h3>
+                <div class="billing-info">
+                  <div class="current-plan">
+                    <div class="plan-badge">Pro Plan</div>
+                    <p class="plan-price">$12/month</p>
+                    <p class="plan-desc">Unlimited ideas, projects, and collaborators</p>
+                  </div>
+                  <div class="plan-features">
+                    <div class="plan-feature">&#10003; Unlimited Ideas</div>
+                    <div class="plan-feature">&#10003; AI Chat Assistant</div>
+                    <div class="plan-feature">&#10003; Priority Support</div>
+                    <div class="plan-feature">&#10003; Custom Themes</div>
+                    <div class="plan-feature">&#10003; API Access</div>
+                  </div>
+                  <button class="btn-sketch">Manage Subscription</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- BOTTOM TAB BAR (Mobile) -->
+  <nav class="bottom-tabs" id="bottomTabs" aria-label="Mobile navigation">
+    <a href="#dashboard" class="bottom-tab active" data-view="dashboard" aria-label="Dashboard">
+      <svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Dash</span>
+    </a>
+    <a href="#projects" class="bottom-tab" data-view="projects" aria-label="Projects">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 7V5a2 2 0 012-2h4l2 2h8a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+      <span>Projects</span>
+    </a>
+    <a href="#kanban" class="bottom-tab" data-view="kanban" aria-label="Kanban">
+      <svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>
+      <span>Kanban</span>
+    </a>
+    <a href="#ideas" class="bottom-tab" data-view="ideas" aria-label="Ideas">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17a1 1 0 001 1h6a1 1 0 001-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7z"/><rect x="9" y="20" width="6" height="2" rx="1"/></svg>
+      <span>Ideas</span>
+    </a>
+    <a href="#ai-chat" class="bottom-tab" data-view="ai-chat" aria-label="AI Chat">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      <span>Chat</span>
+    </a>
+  </nav>
+
+  <!-- App JS -->
+  <script src="app.js"></script>
+</body>
+</html>

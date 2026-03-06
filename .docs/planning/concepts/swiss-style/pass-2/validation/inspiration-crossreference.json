@@ -1,0 +1,49 @@
+{
+  "references": [
+    {
+      "url": "https://www.ben-morris.com/josef-muller-brockmann-grid-based-layout-and-web-design/",
+      "name": "Ben Morris — Josef Muller Brockmann Grid-Based Layout",
+      "observedPatterns": [
+        "Rigid 8-column modular grid with mathematically consistent gutters",
+        "Rule-based visual hierarchy using horizontal lines for separation",
+        "Monochromatic palette with selective color used only for emphasis",
+        "Dense information organization within grid cells"
+      ],
+      "adaptedElements": [
+        "8-column stats grid with 1px gap borders (timetable aesthetic)",
+        "Horizontal rule under all section headers and card headers",
+        "Black/white/gray palette with #D72638 red restricted to active states and critical indicators only"
+      ]
+    },
+    {
+      "url": "https://www.navbar.gallery/blog/best-side-bar-navigation-menu-design-examples",
+      "name": "Navbar Gallery — Best Sidebar Navigation Menu Design Examples",
+      "observedPatterns": [
+        "200-300px sidebar width for content-dense navigation",
+        "Icon + label pairing for compact sidebar items",
+        "Active state indicated by left border accent stripe",
+        "Subtle separators between navigation groups"
+      ],
+      "adaptedElements": [
+        "220px black sidebar with red left-border accent for active items",
+        "18px SVG icons paired with compact 13px labels",
+        "User avatar in sidebar footer with initials display"
+      ]
+    },
+    {
+      "url": "https://swissthemes.design/insights/swiss-design-for-web-designers",
+      "name": "Swiss Themes — Swiss Design Principles for Web Designers",
+      "observedPatterns": [
+        "Typography as primary visual element, not decoration",
+        "Grid as constraint rather than suggestion",
+        "Whitespace as structural element",
+        "Clear size hierarchy between heading, subheading, body, and caption"
+      ],
+      "adaptedElements": [
+        "Inter (800) for headings with -0.02em tracking, uppercase transforms for section labels",
+        "JetBrains Mono for all technical/data content (timestamps, IDs, metrics)",
+        "Strict 4-level type hierarchy: 24px > 16px > 13px > 11px"
+      ]
+    }
+  ]
+}

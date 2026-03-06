@@ -1,0 +1,65 @@
+{
+  "concept": "Bento",
+  "pass": "1",
+  "domain": "frontend-concept",
+  "style": "bento",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "GSAP", "version": "3.12.5", "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" },
+    { "library": "Chart.js", "version": "4.4.7", "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" }
+  ],
+  "fonts": ["SF Pro Display / system-ui", "SF Pro Text / system-ui", "SF Mono / ui-monospace"],
+  "sections": [
+    { "id": "view-dashboard", "name": "Dashboard", "description": "Overview with stat tiles, weekly activity chart, category doughnut, activity feed, quick actions, and team avatars" },
+    { "id": "view-projects", "name": "Projects", "description": "6 project cards in bento grid with progress bars and color-coded icons" },
+    { "id": "view-workspace", "name": "Workspace", "description": "Rich text editor tile with toolbar, word count, last saved time, and recent files" },
+    { "id": "view-kanban", "name": "Kanban Board", "description": "4-column kanban board with 12 draggable cards, color-coded tags" },
+    { "id": "view-whiteboard", "name": "Whiteboard", "description": "Freeform canvas with sticky notes, tool palette, color swatches, and layers" },
+    { "id": "view-schema", "name": "Schema Planner", "description": "Entity relationship diagram with Users/Projects/Ideas tables, field details, and change log" },
+    { "id": "view-directory", "name": "Directory Tree", "description": "Collapsible file tree, file count stats, storage usage, and recently modified files" },
+    { "id": "view-ideas", "name": "Ideas", "description": "8 idea cards with search, category filters, priority indicators, and date metadata" },
+    { "id": "view-aichat", "name": "AI Chat", "description": "Chat interface with 6 messages, input bar, suggestion chips, and context tags" },
+    { "id": "view-settings", "name": "Settings", "description": "Profile fields, theme toggle, plan info, notification toggles, integrations, storage meter, security status" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#1D1D1F",
+      "secondary": "#86868B",
+      "accent": "#0071E3",
+      "background": "#F5F5F7",
+      "surface": "#FFFFFF",
+      "text": "#1D1D1F",
+      "tileHover": "#F0F0F2"
+    },
+    "typography": {
+      "headingFamily": "-apple-system, SF Pro Display, system-ui",
+      "bodyFamily": "-apple-system, SF Pro Text, system-ui",
+      "monoFamily": "SF Mono, ui-monospace",
+      "headingSizes": "28px / 20px / 16px",
+      "bodySize": "14-16px"
+    },
+    "borderRadius": "16px (tiles), 10px (buttons/inputs)",
+    "transition": "200ms ease (micro), 350ms ease (medium)"
+  },
+  "coreFlags": {
+    "layoutArchetype": "dashboard-grid",
+    "navigationModel": "persistent-left-rail",
+    "informationDensity": "high-data-dense",
+    "animationPhilosophy": "subtle-micro-interactions",
+    "colorTemperature": "cool-dominant"
+  },
+  "subagentFlags": {
+    "tileGridVariation": "auto-flow with explicit spans (1x1, 2x1, 1x2, 2x2, 3x2)",
+    "chartIntegration": "Chart.js line + doughnut embedded in stat tiles",
+    "interactiveElements": "contenteditable editor, tree expand/collapse, chat input, tool switching",
+    "mobileNavPattern": "bottom tab bar with overflow more-menu overlay",
+    "glassmorphismUsage": "selective — quick-actions tile only"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum (#1D1D1F on #F5F5F7 = 14.7:1)",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T00:00:00.000Z"
+}

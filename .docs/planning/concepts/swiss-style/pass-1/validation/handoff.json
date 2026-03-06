@@ -1,0 +1,68 @@
+{
+  "concept": "Swiss Style — Pass 1",
+  "pass": "1",
+  "domain": "frontend-concept",
+  "style": "Swiss Style",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "GSAP", "version": "3.12.5", "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" },
+    { "library": "Chart.js", "version": "4.4.7", "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" },
+    { "library": "SortableJS", "version": "1.15.6", "url": "https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js" }
+  ],
+  "fonts": ["Helvetica Neue", "system-ui", "Source Code Pro"],
+  "sections": [
+    { "id": "dashboard", "name": "Dashboard", "description": "Overview with stats, charts, and activity feed" },
+    { "id": "projects", "name": "Projects", "description": "6 project cards with status, progress, and metadata" },
+    { "id": "workspace", "name": "Workspace", "description": "Split editor and notes panel with rich text toolbar" },
+    { "id": "kanban", "name": "Kanban", "description": "4-column board with draggable cards via SortableJS" },
+    { "id": "whiteboard", "name": "Whiteboard", "description": "Canvas drawing surface with shape tools" },
+    { "id": "schema", "name": "Schema Planner", "description": "Entity relationship diagram with field definitions" },
+    { "id": "directory", "name": "Directory Tree", "description": "Collapsible file tree with folder/file distinction" },
+    { "id": "ideas", "name": "Ideas", "description": "8 idea cards with search, priority, and tags" },
+    { "id": "chat", "name": "AI Chat", "description": "Chat interface with 6 mock messages and interactive input" },
+    { "id": "settings", "name": "Settings", "description": "Profile, appearance, notification settings with toggles" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#0A0A0A",
+      "secondary": "#E8E8E8",
+      "accent": "#0057B7",
+      "background": "#FFFFFF",
+      "surface": "#F7F7F7",
+      "text": "#1A1A1A",
+      "muted": "#6B6B6B",
+      "border": "#D0D0D0"
+    },
+    "typography": {
+      "heading": "Helvetica Neue, system-ui",
+      "body": "Helvetica Neue, system-ui",
+      "mono": "Source Code Pro, monospace",
+      "headingWeight": "300/700",
+      "bodyWeight": "400",
+      "scale": "3rem / 2rem / 1.25rem / 1rem"
+    },
+    "borderRadius": "0px",
+    "transition": "200ms ease"
+  },
+  "coreFlags": {
+    "layoutArchetype": "top-bar-centered",
+    "navigationModel": "persistent-left-rail",
+    "informationDensity": "medium-balanced",
+    "animationPhilosophy": "subtle-micro-interactions",
+    "colorTemperature": "cool-dominant"
+  },
+  "subagentFlags": {
+    "gridVisibility": "toggleable-overlay",
+    "typeScale": "extreme-contrast",
+    "accentUsage": "surgical-minimal",
+    "whitespace": "generous-asymmetric",
+    "dividers": "horizontal-rules"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T07:40:00.000Z"
+}

@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea Management Platform — Dark Editorial</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========================================
+       HAMBURGER DRAWER NAVIGATION
+       ======================================== -->
+  <nav class="nav-drawer" id="navDrawer" aria-label="Main navigation">
+    <div class="nav-drawer__header">
+      <div class="nav-drawer__brand">
+        <svg class="nav-drawer__logo" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
+          <rect x="2" y="2" width="28" height="28" rx="4" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <line x1="8" y1="10" x2="24" y2="10" stroke="var(--highlight)" stroke-width="1.5"/>
+          <line x1="8" y1="16" x2="20" y2="16" stroke="var(--highlight)" stroke-width="1.5"/>
+          <line x1="8" y1="22" x2="16" y2="22" stroke="var(--highlight)" stroke-width="1.5"/>
+        </svg>
+        <span class="nav-drawer__title">IdeaFlow</span>
+      </div>
+      <button class="nav-drawer__close" id="navClose" aria-label="Close navigation">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <ul class="nav-drawer__list">
+      <li><a href="#dashboard" class="nav-drawer__link active" data-view="dashboard">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Dashboard</span>
+      </a></li>
+      <li><a href="#projects" class="nav-drawer__link" data-view="projects">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4a2 2 0 012-2h5l2 2h9a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V4z"/></svg>
+        <span>Projects</span>
+      </a></li>
+      <li><a href="#workspace" class="nav-drawer__link" data-view="workspace">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span>Workspace</span>
+      </a></li>
+      <li><a href="#kanban" class="nav-drawer__link" data-view="kanban">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>
+        <span>Kanban</span>
+      </a></li>
+      <li><a href="#whiteboard" class="nav-drawer__link" data-view="whiteboard">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="8" cy="8" r="2"/><path d="M2 16l5-5 3 3 4-4 8 8"/></svg>
+        <span>Whiteboard</span>
+      </a></li>
+      <li><a href="#schema" class="nav-drawer__link" data-view="schema">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><line x1="12" y1="8" x2="5" y2="16"/><line x1="12" y1="8" x2="19" y2="16"/></svg>
+        <span>Schema</span>
+      </a></li>
+      <li><a href="#directory" class="nav-drawer__link" data-view="directory">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7v13a1 1 0 001 1h16"/><path d="M7 3v13"/><path d="M7 8h8"/><path d="M7 12h6"/><path d="M7 16h10"/></svg>
+        <span>Directory</span>
+      </a></li>
+      <li><a href="#ideas" class="nav-drawer__link" data-view="ideas">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>
+        <span>Ideas</span>
+      </a></li>
+      <li><a href="#aichat" class="nav-drawer__link" data-view="aichat">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <span>AI Chat</span>
+      </a></li>
+      <li><a href="#settings" class="nav-drawer__link" data-view="settings">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1.08-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1.08 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001.08 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1.08z"/></svg>
+        <span>Settings</span>
+      </a></li>
+    </ul>
+    <div class="nav-drawer__footer">
+      <div class="nav-drawer__user">
+        <div class="nav-drawer__avatar">JD</div>
+        <div class="nav-drawer__user-info">
+          <span class="nav-drawer__user-name">Jane Doe</span>
+          <span class="nav-drawer__user-role">Editor-in-Chief</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Overlay for drawer -->
+  <div class="nav-overlay" id="navOverlay"></div>
+
+  <!-- ========================================
+       TOP BAR
+       ======================================== -->
+  <header class="topbar" id="topbar">
+    <button class="topbar__hamburger" id="navOpen" aria-label="Open navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar__section-title" id="topbarTitle">Dashboard</div>
+    <div class="topbar__actions">
+      <button class="topbar__action" aria-label="Search">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="topbar__action" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        <span class="topbar__badge">3</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================
+       MAIN CONTENT AREA
+       ======================================== -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ======== DASHBOARD VIEW ======== -->
+    <section class="view" id="view-dashboard" data-view="dashboard">
+      <div class="view__hero">
+        <div class="view__hero-content">
+          <p class="view__kicker">Issue No. 47 &mdash; March 2026</p>
+          <h1 class="view__headline">Your Creative<br>Command Center</h1>
+          <p class="view__standfirst">Track momentum, monitor progress, and surface the ideas that matter most.</p>
+        </div>
+        <div class="view__hero-decoration">
+          <svg viewBox="0 0 200 200" width="200" height="200" aria-hidden="true">
+            <circle cx="100" cy="100" r="80" fill="none" stroke="var(--accent)" stroke-width="0.5" opacity="0.3"/>
+            <circle cx="100" cy="100" r="60" fill="none" stroke="var(--highlight)" stroke-width="0.5" opacity="0.2"/>
+            <circle cx="100" cy="100" r="40" fill="none" stroke="var(--accent)" stroke-width="0.5" opacity="0.15"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <span class="stat-card__label">Active Ideas</span>
+          <span class="stat-card__value">127</span>
+          <span class="stat-card__trend stat-card__trend--up">+12%</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__label">Projects</span>
+          <span class="stat-card__value">18</span>
+          <span class="stat-card__trend stat-card__trend--up">+3</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__label">Completed</span>
+          <span class="stat-card__value">64</span>
+          <span class="stat-card__trend stat-card__trend--neutral">This Month</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__label">Team Members</span>
+          <span class="stat-card__value">9</span>
+          <span class="stat-card__trend stat-card__trend--up">+2</span>
+        </div>
+      </div>
+
+      <div class="dashboard-columns">
+        <div class="dashboard-chart-section">
+          <h2 class="section-heading">Activity Overview</h2>
+          <div class="chart-container">
+            <canvas id="dashboardChart"></canvas>
+          </div>
+        </div>
+        <div class="dashboard-recent">
+          <h2 class="section-heading">Recent Activity</h2>
+          <ul class="activity-feed">
+            <li class="activity-feed__item">
+              <div class="activity-feed__dot"></div>
+              <div class="activity-feed__content">
+                <strong>Mobile App Redesign</strong> moved to In Progress
+                <span class="activity-feed__time">2 hours ago</span>
+              </div>
+            </li>
+            <li class="activity-feed__item">
+              <div class="activity-feed__dot"></div>
+              <div class="activity-feed__content">
+                <strong>Brand Guidelines</strong> document updated
+                <span class="activity-feed__time">4 hours ago</span>
+              </div>
+            </li>
+            <li class="activity-feed__item">
+              <div class="activity-feed__dot"></div>
+              <div class="activity-feed__content">
+                <strong>API Integration</strong> schema finalized
+                <span class="activity-feed__time">Yesterday</span>
+              </div>
+            </li>
+            <li class="activity-feed__item">
+              <div class="activity-feed__dot"></div>
+              <div class="activity-feed__content">
+                <strong>Q1 Planning</strong> 3 new ideas added
+                <span class="activity-feed__time">Yesterday</span>
+              </div>
+            </li>
+            <li class="activity-feed__item">
+              <div class="activity-feed__dot"></div>
+              <div class="activity-feed__content">
+                <strong>User Research</strong> synthesis complete
+                <span class="activity-feed__time">2 days ago</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== PROJECTS VIEW ======== -->
+    <section class="view" id="view-projects" data-view="projects" style="display:none">
+      <div class="view__hero">
+        <div class="view__hero-content">
+          <p class="view__kicker">Portfolio</p>
+          <h1 class="view__headline">Projects</h1>
+          <p class="view__standfirst">Every project is a story waiting to unfold. Manage your creative portfolio here.</p>
+        </div>
+      </div>
+
+      <div class="projects-toolbar">
+        <div class="projects-toolbar__filters">
+          <button class="filter-btn active">All</button>
+          <button class="filter-btn">Active</button>
+          <button class="filter-btn">Archived</button>
+        </div>
+        <button class="btn btn--primary">+ New Project</button>
+      </div>
+
+      <div class="projects-grid">
+        <article class="project-card">
+          <div class="project-card__header">
+            <span class="project-card__status project-card__status--active">Active</span>
+            <span class="project-card__date">Mar 2026</span>
+          </div>
+          <h3 class="project-card__title">Mobile App Redesign</h3>
+          <p class="project-card__desc">Complete overhaul of the iOS and Android applications with a focus on accessibility and user delight.</p>
+          <div class="project-card__meta">
+            <div class="project-card__avatars">
+              <span class="avatar avatar--sm">JD</span>
+              <span class="avatar avatar--sm">AK</span>
+              <span class="avatar avatar--sm">+3</span>
+            </div>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill" style="width:65%"></div></div>
+              <span>65%</span>
+            </div>
+          </div>
+        </article>
+        <article class="project-card">
+          <div class="project-card__header">
+            <span class="project-card__status project-card__status--active">Active</span>
+            <span class="project-card__date">Feb 2026</span>
+          </div>
+          <h3 class="project-card__title">Brand Guidelines v3</h3>
+          <p class="project-card__desc">Updated brand identity system including typography, color palette, and illustration language.</p>
+          <div class="project-card__meta">
+            <div class="project-card__avatars">
+              <span class="avatar avatar--sm">ML</span>
+              <span class="avatar avatar--sm">SG</span>
+            </div>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill" style="width:40%"></div></div>
+              <span>40%</span>
+            </div>
+          </div>
+        </article>
+        <article class="project-card">
+          <div class="project-card__header">
+            <span class="project-card__status project-card__status--review">Review</span>
+            <span class="project-card__date">Jan 2026</span>
+          </div>
+          <h3 class="project-card__title">API Platform v2</h3>
+          <p class="project-card__desc">Next-generation API architecture with GraphQL endpoints and real-time subscriptions.</p>
+          <div class="project-card__meta">
+            <div class="project-card__avatars">
+              <span class="avatar avatar--sm">RW</span>
+              <span class="avatar avatar--sm">+4</span>
+            </div>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill" style="width:88%"></div></div>
+              <span>88%</span>
+            </div>
+          </div>
+        </article>
+        <article class="project-card">
+          <div class="project-card__header">
+            <span class="project-card__status project-card__status--planned">Planned</span>
+            <span class="project-card__date">Apr 2026</span>
+          </div>
+          <h3 class="project-card__title">Data Analytics Dashboard</h3>
+          <p class="project-card__desc">Real-time analytics dashboard for tracking user engagement and product metrics.</p>
+          <div class="project-card__meta">
+            <div class="project-card__avatars">
+              <span class="avatar avatar--sm">TN</span>
+            </div>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill" style="width:10%"></div></div>
+              <span>10%</span>
+            </div>
+          </div>
+        </article>
+        <article class="project-card">
+          <div class="project-card__header">
+            <span class="project-card__status project-card__status--active">Active</span>
+            <span class="project-card__date">Mar 2026</span>
+          </div>
+          <h3 class="project-card__title">Design System</h3>
+          <p class="project-card__desc">Component library with documentation, tokens, and Figma integration for cross-team adoption.</p>
+          <div class="project-card__meta">
+            <div class="project-card__avatars">
+              <span class="avatar avatar--sm">JD</span>
+              <span class="avatar avatar--sm">ML</span>
+              <span class="avatar avatar--sm">+2</span>
+            </div>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill" style="width:52%"></div></div>
+              <span>52%</span>
+            </div>
+          </div>
+        </article>
+        <article class="project-card">
+          <div class="project-card__header">
+            <span class="project-card__status project-card__status--archived">Archived</span>
+            <span class="project-card__date">Dec 2025</span>
+          </div>
+          <h3 class="project-card__title">Q4 Campaign</h3>
+          <p class="project-card__desc">Holiday marketing campaign with multi-channel creative assets and landing pages.</p>
+          <div class="project-card__meta">
+            <div class="project-card__avatars">
+              <span class="avatar avatar--sm">AK</span>
+              <span class="avatar avatar--sm">SG</span>
+            </div>
+            <div class="project-card__progress">
+              <div class="progress-bar"><div class="progress-bar__fill" style="width:100%"></div></div>
+              <span>100%</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======== WORKSPACE VIEW ======== -->
+    <section class="view" id="view-workspace" data-view="workspace" style="display:none">
+      <div class="view__hero">
+        <div class="view__hero-content">
+          <p class="view__kicker">Studio</p>
+          <h1 class="view__headline">Workspace</h1>
+          <p class="view__standfirst">Your personal creative studio. Write, plan, and organize with focus.</p>
+        </div>
+      </div>
+
+      <div class="workspace-layout">
+        <div class="workspace-editor">
+          <div class="editor-toolbar">
+            <div class="editor-toolbar__group">
+              <button class="editor-toolbar__btn" title="Bold"><strong>B</strong></button>
+              <button class="editor-toolbar__btn" title="Italic"><em>I</em></button>
+              <button class="editor-toolbar__btn" title="Underline"><u>U</u></button>
+            </div>
+            <div class="editor-toolbar__divider"></div>
+            <div class="editor-toolbar__group">
+              <button class="editor-toolbar__btn" title="Heading 1">H1</button>
+              <button class="editor-toolbar__btn" title="Heading 2">H2</button>
+              <button class="editor-toolbar__btn" title="Quote">&#8220;</button>
+            </div>
+            <div class="editor-toolbar__divider"></div>
+            <div class="editor-toolbar__group">
+              <button class="editor-toolbar__btn" title="List">&#8226;</button>
+              <button class="editor-toolbar__btn" title="Ordered List">1.</button>
+              <button class="editor-toolbar__btn" title="Link">&#128279;</button>
+            </div>
+          </div>
+          <div class="editor-body" contenteditable="true">
+            <h2>Mobile App Redesign &mdash; Draft Brief</h2>
+            <p>The mobile redesign project aims to reimagine our entire user experience from first touch to daily engagement. We are prioritizing three core pillars:</p>
+            <blockquote>&ldquo;Design is not just what it looks like. Design is how it works.&rdquo;</blockquote>
+            <h3>Key Objectives</h3>
+            <ul>
+              <li>Reduce onboarding friction by 40%</li>
+              <li>Introduce gesture-based navigation patterns</li>
+              <li>Implement dark mode as a first-class citizen</li>
+              <li>Achieve WCAG 2.1 AA accessibility compliance</li>
+            </ul>
+            <p>The timeline runs from Q1 through mid-Q2 2026, with design milestones every two weeks and engineering sprints aligned to feature releases.</p>
+          </div>
+        </div>
+        <aside class="workspace-sidebar">
+          <h3 class="workspace-sidebar__heading">Document Info</h3>
+          <dl class="workspace-sidebar__meta">
+            <dt>Created</dt>
+            <dd>Feb 14, 2026</dd>
+            <dt>Modified</dt>
+            <dd>Mar 5, 2026</dd>
+            <dt>Words</dt>
+            <dd>847</dd>
+            <dt>Author</dt>
+            <dd>Jane Doe</dd>
+          </dl>
+          <h3 class="workspace-sidebar__heading">Tags</h3>
+          <div class="tag-list">
+            <span class="tag">mobile</span>
+            <span class="tag">redesign</span>
+            <span class="tag">UX</span>
+            <span class="tag">Q1-2026</span>
+          </div>
+          <h3 class="workspace-sidebar__heading">Linked Files</h3>
+          <ul class="workspace-sidebar__links">
+            <li><a href="#">Wireframes_v2.fig</a></li>
+            <li><a href="#">User_Research.pdf</a></li>
+            <li><a href="#">Competitor_Analysis.md</a></li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ======== KANBAN VIEW ======== -->
+    <section class="view" id="view-kanban" data-view="kanban" style="display:none">
+      <div class="view__hero">
+        <div class="view__hero-content">
+          <p class="view__kicker">Workflow</p>
+          <h1 class="view__headline">Kanban Board</h1>
+          <p class="view__standfirst">Visualize your workflow. Move ideas from concept to completion.</p>
+        </div>
+      </div>
+
+      <div class="kanban-board">
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <h3>Backlog</h3>
+            <span class="kanban-column__count">4</span>
+          </div>
+          <div class="kanban-column__cards">
+            <div class="kanban-card">
+              <span class="kanban-card__priority kanban-card__priority--low">Low</span>
+              <h4 class="kanban-card__title">Research competitor pricing</h4>
+              <p class="kanban-card__desc">Analyze pricing models of top 5 competitors in our segment.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">SG</span><span>Mar 8</span></div>
+            </div>
+            <div class="kanban-card">
+              <span class="kanban-card__priority kanban-card__priority--medium">Med</span>
+              <h4 class="kanban-card__title">Update documentation</h4>
+              <p class="kanban-card__desc">Refresh API docs with new endpoint specifications.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">RW</span><span>Mar 12</span></div>
+            </div>
+            <div class="kanban-card">
+              <span class="kanban-card__priority kanban-card__priority--low">Low</span>
+              <h4 class="kanban-card__title">Social media calendar</h4>
+              <p class="kanban-card__desc">Plan Q2 social content strategy and posting schedule.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">AK</span><span>Mar 15</span></div>
+            </div>
+            <div class="kanban-card">
+              <span class="kanban-card__priority kanban-card__priority--medium">Med</span>
+              <h4 class="kanban-card__title">Performance audit</h4>
+              <p class="kanban-card__desc">Run Lighthouse audits on top 10 pages.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">TN</span><span>Mar 20</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <h3>In Progress</h3>
+            <span class="kanban-column__count">3</span>
+          </div>
+          <div class="kanban-column__cards">
+            <div class="kanban-card">
+              <span class="kanban-card__priority kanban-card__priority--high">High</span>
+              <h4 class="kanban-card__title">Mobile app redesign</h4>
+              <p class="kanban-card__desc">Implement new navigation patterns and dark mode support.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">JD</span><span>Mar 5</span></div>
+            </div>
+            <div class="kanban-card">
+              <span class="kanban-card__priority kanban-card__priority--high">High</span>
+              <h4 class="kanban-card__title">API v2 endpoints</h4>
+              <p class="kanban-card__desc">Build GraphQL resolvers for user and project entities.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">RW</span><span>Mar 3</span></div>
+            </div>
+            <div class="kanban-card">
+              <span class="kanban-card__priority kanban-card__priority--medium">Med</span>
+              <h4 class="kanban-card__title">Brand color system</h4>
+              <p class="kanban-card__desc">Define extended palette with dark mode variants.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">ML</span><span>Mar 4</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <h3>Review</h3>
+            <span class="kanban-column__count">2</span>
+          </div>
+          <div class="kanban-column__cards">
+            <div class="kanban-card">
+              <span class="kanban-card__priority kanban-card__priority--high">High</span>
+              <h4 class="kanban-card__title">Onboarding flow</h4>
+              <p class="kanban-card__desc">New user onboarding with progressive disclosure pattern.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">JD</span><span>Mar 1</span></div>
+            </div>
+            <div class="kanban-card">
+              <span class="kanban-card__priority kanban-card__priority--medium">Med</span>
+              <h4 class="kanban-card__title">Email templates</h4>
+              <p class="kanban-card__desc">Responsive transactional email designs for all triggers.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">AK</span><span>Feb 28</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="kanban-column">
+          <div class="kanban-column__header">
+            <h3>Done</h3>
+            <span class="kanban-column__count">3</span>
+          </div>
+          <div class="kanban-column__cards">
+            <div class="kanban-card kanban-card--done">
+              <h4 class="kanban-card__title">User research synthesis</h4>
+              <p class="kanban-card__desc">Compiled insights from 24 user interviews.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">SG</span><span>Feb 25</span></div>
+            </div>
+            <div class="kanban-card kanban-card--done">
+              <h4 class="kanban-card__title">Design token export</h4>
+              <p class="kanban-card__desc">Automated Figma-to-code token pipeline.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">ML</span><span>Feb 22</span></div>
+            </div>
+            <div class="kanban-card kanban-card--done">
+              <h4 class="kanban-card__title">CI/CD pipeline setup</h4>
+              <p class="kanban-card__desc">GitHub Actions workflow for staging and production.</p>
+              <div class="kanban-card__footer"><span class="avatar avatar--xs">TN</span><span>Feb 20</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== WHITEBOARD VIEW ======== -->
+    <section class="view" id="view-whiteboard" data-view="whiteboard" style="display:none">
+      <div class="view__hero">
+        <div class="view__hero-content">
+          <p class="view__kicker">Canvas</p>
+          <h1 class="view__headline">Whiteboard</h1>
+          <p class="view__standfirst">A boundless canvas for visual thinking and collaborative sketching.</p>
+        </div>
+      </div>
+
+      <div class="whiteboard-container">
+        <div class="whiteboard-toolbar">
+          <button class="whiteboard-tool active" data-tool="select" title="Select">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+          </button>
+          <button class="whiteboard-tool" data-tool="pen" title="Draw">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+          </button>
+          <button class="whiteboard-tool" data-tool="rect" title="Rectangle">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          </button>
+          <button class="whiteboard-tool" data-tool="circle" title="Circle">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg>
+          </button>
+          <button class="whiteboard-tool" data-tool="text" title="Text">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9.5" y1="20" x2="14.5" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+          </button>
+          <button class="whiteboard-tool" data-tool="sticky" title="Sticky Note">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V9l-6-6z"/><polyline points="14 3 14 9 21 9"/></svg>
+          </button>
+        </div>
+        <div class="whiteboard-canvas" id="whiteboardCanvas">
+          <div class="wb-sticky" style="left:60px;top:40px;background:rgba(108,142,191,0.15)">
+            <p>User Personas</p>
+            <small>Define 3 core personas for mobile app</small>
+          </div>
+          <div class="wb-sticky" style="left:300px;top:80px;background:rgba(139,168,217,0.15)">
+            <p>Navigation Patterns</p>
+            <small>Tab bar vs. hamburger vs. gesture</small>
+          </div>
+          <div class="wb-sticky" style="left:540px;top:30px;background:rgba(108,142,191,0.15)">
+            <p>Color System</p>
+            <small>Dark mode primary palette</small>
+          </div>
+          <div class="wb-sticky" style="left:180px;top:250px;background:rgba(139,168,217,0.15)">
+            <p>Onboarding Flow</p>
+            <small>3-step progressive disclosure</small>
+          </div>
+          <div class="wb-sticky" style="left:440px;top:220px;background:rgba(108,142,191,0.15)">
+            <p>Micro-interactions</p>
+            <small>Haptic feedback + animation timing</small>
+          </div>
+          <svg class="wb-connector" style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none">
+            <line x1="200" y1="90" x2="300" y2="110" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+            <line x1="440" y1="110" x2="540" y2="70" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+            <line x1="260" y1="150" x2="240" y2="250" stroke="var(--highlight)" stroke-width="1" opacity="0.3"/>
+            <line x1="380" y1="140" x2="460" y2="220" stroke="var(--highlight)" stroke-width="1" opacity="0.3"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== SCHEMA VIEW ======== -->
+    <section class="view" id="view-schema" data-view="schema" style="display:none">
+      <div class="view__hero">
+        <div class="view__hero-content">
+          <p class="view__kicker">Architecture</p>
+          <h1 class="view__headline">Schema Planner</h1>
+          <p class="view__standfirst">Define your data architecture with precision. Every field, every relationship, mapped.</p>
+        </div>
+      </div>
+
+      <div class="schema-layout">
+        <div class="schema-canvas">
+          <div class="schema-table" style="left:40px;top:30px">
+            <div class="schema-table__header">Users</div>
+            <div class="schema-table__row"><span class="schema-field-key">PK</span> id <span class="schema-field-type">uuid</span></div>
+            <div class="schema-table__row"><span class="schema-field-required">*</span> name <span class="schema-field-type">string</span></div>
+            <div class="schema-table__row"><span class="schema-field-required">*</span> email <span class="schema-field-type">string</span></div>
+            <div class="schema-table__row">avatar_url <span class="schema-field-type">string?</span></div>
+            <div class="schema-table__row">role <span class="schema-field-type">enum</span></div>
+            <div class="schema-table__row">created_at <span class="schema-field-type">datetime</span></div>
+          </div>
+          <div class="schema-table" style="left:380px;top:30px">
+            <div class="schema-table__header">Projects</div>
+            <div class="schema-table__row"><span class="schema-field-key">PK</span> id <span class="schema-field-type">uuid</span></div>
+            <div class="schema-table__row"><span class="schema-field-required">*</span> title <span class="schema-field-type">string</span></div>
+            <div class="schema-table__row">description <span class="schema-field-type">text?</span></div>
+            <div class="schema-table__row"><span class="schema-field-key">FK</span> owner_id <span class="schema-field-type">uuid</span></div>
+            <div class="schema-table__row">status <span class="schema-field-type">enum</span></div>
+            <div class="schema-table__row">created_at <span class="schema-field-type">datetime</span></div>
+          </div>
+          <div class="schema-table" style="left:380px;top:320px">
+            <div class="schema-table__header">Ideas</div>
+            <div class="schema-table__row"><span class="schema-field-key">PK</span> id <span class="schema-field-type">uuid</span></div>
+            <div class="schema-table__row"><span class="schema-field-required">*</span> title <span class="schema-field-type">string</span></div>
+            <div class="schema-table__row">body <span class="schema-field-type">text?</span></div>
+            <div class="schema-table__row"><span class="schema-field-key">FK</span> project_id <span class="schema-field-type">uuid</span></div>
+            <div class="schema-table__row"><span class="schema-field-key">FK</span> author_id <span class="schema-field-type">uuid</span></div>
+            <div class="schema-table__row">priority <span class="schema-field-type">enum</span></div>
+            <div class="schema-table__row">tags <span class="schema-field-type">string[]</span></div>
+          </div>
+          <div class="schema-table" style="left:40px;top:320px">
+            <div class="schema-table__header">Tasks</div>
+            <div class="schema-table__row"><span class="schema-field-key">PK</span> id <span class="schema-field-type">uuid</span></div>
+            <div class="schema-table__row"><span class="schema-field-required">*</span> title <span class="schema-field-type">string</span></div>
+            <div class="schema-table__row"><span class="schema-field-key">FK</span> project_id <span class="schema-field-type">uuid</span></div>
+            <div class="schema-table__row"><span class="schema-field-key">FK</span> assignee_id <span class="schema-field-type">uuid</span></div>
+            <div class="schema-table__row">status <span class="schema-field-type">enum</span></div>
+            <div class="schema-table__row">due_date <span class="schema-field-type">date?</span></div>
+          </div>
+          <svg class="schema-lines" viewBox="0 0 700 600" width="700" height="600">
+            <path d="M 260 80 L 380 80" stroke="var(--accent)" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+            <path d="M 260 400 L 380 400" stroke="var(--accent)" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+            <path d="M 130 250 L 130 320" stroke="var(--highlight)" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+            <path d="M 500 250 L 500 320" stroke="var(--highlight)" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+            <defs>
+              <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="var(--accent)"/>
+              </marker>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== DIRECTORY VIEW ======== -->
+    <section class="view" id="view-directory" data-view="directory" style="display:none">
+      <div class="view__hero">
+        <div class="view__hero-content">
+          <p class="view__kicker">Organization</p>
+          <h1 class="view__headline">Directory Tree</h1>
+          <p class="view__standfirst">Navigate your project structure with clarity and intention.</p>
+        </div>
+      </div>
+
+      <div class="directory-layout">
+        <div class="directory-tree">
+          <div class="tree-node tree-node--root">
+            <span class="tree-node__toggle tree-node__toggle--open"></span>
+            <span class="tree-node__icon">&#128193;</span>
+            <span class="tree-node__name">IdeaFlow Platform</span>
+          </div>
+          <div class="tree-children">
+            <div class="tree-node">
+              <span class="tree-node__toggle tree-node__toggle--open"></span>
+              <span class="tree-node__icon">&#128193;</span>
+              <span class="tree-node__name">Mobile App Redesign</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-node">
+                <span class="tree-node__toggle tree-node__toggle--open"></span>
+                <span class="tree-node__icon">&#128193;</span>
+                <span class="tree-node__name">Research</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-node tree-node--file">
+                  <span class="tree-node__icon">&#128196;</span>
+                  <span class="tree-node__name">User_Interviews.pdf</span>
+                  <span class="tree-node__size">2.4 MB</span>
+                </div>
+                <div class="tree-node tree-node--file">
+                  <span class="tree-node__icon">&#128196;</span>
+                  <span class="tree-node__name">Competitor_Analysis.xlsx</span>
+                  <span class="tree-node__size">890 KB</span>
+                </div>
+                <div class="tree-node tree-node--file">
+                  <span class="tree-node__icon">&#128196;</span>
+                  <span class="tree-node__name">Survey_Results.csv</span>
+                  <span class="tree-node__size">156 KB</span>
+                </div>
+              </div>
+              <div class="tree-node">
+                <span class="tree-node__toggle"></span>
+                <span class="tree-node__icon">&#128193;</span>
+                <span class="tree-node__name">Design</span>
+              </div>
+              <div class="tree-children collapsed">
+                <div class="tree-node tree-node--file">
+                  <span class="tree-node__icon">&#128196;</span>
+                  <span class="tree-node__name">Wireframes_v2.fig</span>
+                  <span class="tree-node__size">12.1 MB</span>
+                </div>
+                <div class="tree-node tree-node--file">
+                  <span class="tree-node__icon">&#128196;</span>
+                  <span class="tree-node__name">Prototype_v1.fig</span>
+                  <span class="tree-node__size">18.7 MB</span>
+                </div>
+              </div>
+              <div class="tree-node">
+                <span class="tree-node__toggle"></span>
+                <span class="tree-node__icon">&#128193;</span>
+                <span class="tree-node__name">Development</span>
+              </div>
+              <div class="tree-children collapsed">
+                <div class="tree-node tree-node--file">
+                  <span class="tree-node__icon">&#128196;</span>
+                  <span class="tree-node__name">tech-spec.md</span>
+                  <span class="tree-node__size">45 KB</span>
+                </div>
+              </div>
+            </div>
+            <div class="tree-node">
+              <span class="tree-node__toggle"></span>
+              <span class="tree-node__icon">&#128193;</span>
+              <span class="tree-node__name">Brand Guidelines v3</span>
+            </div>
+            <div class="tree-children collapsed">
+              <div class="tree-node tree-node--file">
+                <span class="tree-node__icon">&#128196;</span>
+                <span class="tree-node__name">Brand_Book.pdf</span>
+                <span class="tree-node__size">8.2 MB</span>
+              </div>
+            </div>
+            <div class="tree-node">
+              <span class="tree-node__toggle"></span>
+              <span class="tree-node__icon">&#128193;</span>
+              <span class="tree-node__name">API Platform v2</span>
+            </div>
+            <div class="tree-children collapsed">
+              <div class="tree-node tree-node--file">
+                <span class="tree-node__icon">&#128196;</span>
+                <span class="tree-node__name">schema.graphql</span>
+                <span class="tree-node__size">23 KB</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="directory-preview">
+          <div class="directory-preview__header">
+            <h3>User_Interviews.pdf</h3>
+            <span class="directory-preview__meta">2.4 MB &middot; PDF &middot; Modified Mar 2, 2026</span>
+          </div>
+          <div class="directory-preview__body">
+            <div class="preview-placeholder">
+              <svg viewBox="0 0 80 100" width="80" height="100" fill="none" stroke="var(--accent)" stroke-width="1">
+                <rect x="5" y="5" width="70" height="90" rx="3"/>
+                <line x1="15" y1="25" x2="65" y2="25"/>
+                <line x1="15" y1="35" x2="55" y2="35"/>
+                <line x1="15" y1="45" x2="60" y2="45"/>
+                <line x1="15" y1="55" x2="45" y2="55"/>
+                <line x1="15" y1="70" x2="65" y2="70"/>
+                <line x1="15" y1="80" x2="50" y2="80"/>
+              </svg>
+              <p>Document preview</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== IDEAS VIEW ======== -->
+    <section class="view" id="view-ideas" data-view="ideas" style="display:none">
+      <div class="view__hero">
+        <div class="view__hero-content">
+          <p class="view__kicker">Inspiration</p>
+          <h1 class="view__headline">Ideas Capture</h1>
+          <p class="view__standfirst">Collect sparks of inspiration before they vanish. Every great product starts with a single idea.</p>
+        </div>
+      </div>
+
+      <div class="ideas-capture">
+        <div class="ideas-input-area">
+          <textarea class="ideas-input" placeholder="What's on your mind? Capture an idea..." rows="3"></textarea>
+          <div class="ideas-input-actions">
+            <div class="ideas-tags-input">
+              <span class="tag tag--removable">feature <button>&times;</button></span>
+              <span class="tag tag--removable">mobile <button>&times;</button></span>
+              <input type="text" placeholder="Add tag..." class="ideas-tag-field">
+            </div>
+            <button class="btn btn--primary">Capture Idea</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ideas-filters">
+        <button class="filter-btn active">All Ideas</button>
+        <button class="filter-btn">Starred</button>
+        <button class="filter-btn">Recent</button>
+        <button class="filter-btn">Archived</button>
+      </div>
+
+      <div class="ideas-grid">
+        <article class="idea-card">
+          <div class="idea-card__header">
+            <button class="idea-card__star idea-card__star--active" aria-label="Starred">&#9733;</button>
+            <span class="idea-card__date">Mar 5</span>
+          </div>
+          <h3 class="idea-card__title">Gesture-based navigation for mobile</h3>
+          <p class="idea-card__body">Replace hamburger menu with swipe gestures. Left swipe for menu, right for back, pull down for search.</p>
+          <div class="idea-card__tags">
+            <span class="tag tag--sm">UX</span>
+            <span class="tag tag--sm">mobile</span>
+          </div>
+        </article>
+        <article class="idea-card">
+          <div class="idea-card__header">
+            <button class="idea-card__star" aria-label="Star">&#9734;</button>
+            <span class="idea-card__date">Mar 4</span>
+          </div>
+          <h3 class="idea-card__title">AI-powered idea clustering</h3>
+          <p class="idea-card__body">Use embeddings to automatically group similar ideas and surface connections users might miss.</p>
+          <div class="idea-card__tags">
+            <span class="tag tag--sm">AI</span>
+            <span class="tag tag--sm">feature</span>
+          </div>
+        </article>
+        <article class="idea-card">
+          <div class="idea-card__header">
+            <button class="idea-card__star idea-card__star--active" aria-label="Starred">&#9733;</button>
+            <span class="idea-card__date">Mar 3</span>
+          </div>
+          <h3 class="idea-card__title">Real-time collaborative whiteboard</h3>
+          <p class="idea-card__body">Multiple users can draw, add sticky notes, and comment simultaneously with cursor presence indicators.</p>
+          <div class="idea-card__tags">
+            <span class="tag tag--sm">collaboration</span>
+            <span class="tag tag--sm">whiteboard</span>
+          </div>
+        </article>
+        <article class="idea-card">
+          <div class="idea-card__header">
+            <button class="idea-card__star" aria-label="Star">&#9734;</button>
+            <span class="idea-card__date">Mar 1</span>
+          </div>
+          <h3 class="idea-card__title">Weekly digest email</h3>
+          <p class="idea-card__body">Automated summary of project activity, new ideas, and pending reviews sent every Monday morning.</p>
+          <div class="idea-card__tags">
+            <span class="tag tag--sm">notifications</span>
+            <span class="tag tag--sm">email</span>
+          </div>
+        </article>
+        <article class="idea-card">
+          <div class="idea-card__header">
+            <button class="idea-card__star" aria-label="Star">&#9734;</button>
+            <span class="idea-card__date">Feb 28</span>
+          </div>
+          <h3 class="idea-card__title">Voice-to-idea capture</h3>
+          <p class="idea-card__body">Record voice memos that get automatically transcribed and tagged using speech-to-text AI.</p>
+          <div class="idea-card__tags">
+            <span class="tag tag--sm">voice</span>
+            <span class="tag tag--sm">AI</span>
+          </div>
+        </article>
+        <article class="idea-card">
+          <div class="idea-card__header">
+            <button class="idea-card__star idea-card__star--active" aria-label="Starred">&#9733;</button>
+            <span class="idea-card__date">Feb 26</span>
+          </div>
+          <h3 class="idea-card__title">Template marketplace</h3>
+          <p class="idea-card__body">Community-driven templates for project structures, kanban workflows, and schema patterns.</p>
+          <div class="idea-card__tags">
+            <span class="tag tag--sm">marketplace</span>
+            <span class="tag tag--sm">templates</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======== AI CHAT VIEW ======== -->
+    <section class="view" id="view-aichat" data-view="aichat" style="display:none">
+      <div class="view__hero">
+        <div class="view__hero-content">
+          <p class="view__kicker">Intelligence</p>
+          <h1 class="view__headline">AI Chat</h1>
+          <p class="view__standfirst">Your creative thinking partner. Ask questions, brainstorm ideas, get insights.</p>
+        </div>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-message chat-message--ai">
+            <div class="chat-message__avatar">AI</div>
+            <div class="chat-message__content">
+              <p>Welcome back. I've analyzed your recent project activity. Your Mobile App Redesign is progressing well at 65% completion. Would you like me to suggest priorities for this week?</p>
+            </div>
+          </div>
+          <div class="chat-message chat-message--user">
+            <div class="chat-message__content">
+              <p>Yes, what should I focus on this week for the mobile redesign?</p>
+            </div>
+            <div class="chat-message__avatar">JD</div>
+          </div>
+          <div class="chat-message chat-message--ai">
+            <div class="chat-message__content">
+              <p>Based on your kanban board and timeline, here are my recommendations:</p>
+              <ol>
+                <li><strong>Dark mode implementation</strong> — This is in progress and blocking the design review. Aim to complete by Wednesday.</li>
+                <li><strong>Navigation pattern testing</strong> — You have 3 prototype variants. Run a quick A/B preference test with your team.</li>
+                <li><strong>Accessibility audit</strong> — The WCAG compliance items are in your backlog. Start with color contrast checks since you are finalizing the palette.</li>
+              </ol>
+              <p>Shall I create tasks for these on your kanban board?</p>
+            </div>
+          </div>
+          <div class="chat-message chat-message--user">
+            <div class="chat-message__content">
+              <p>That sounds great. Also, can you summarize the user research findings?</p>
+            </div>
+            <div class="chat-message__avatar">JD</div>
+          </div>
+          <div class="chat-message chat-message--ai">
+            <div class="chat-message__content">
+              <p>From your completed user research synthesis (24 interviews), the key themes are:</p>
+              <ul>
+                <li><strong>Speed is paramount</strong> — 78% of users cited app loading time as their primary frustration</li>
+                <li><strong>Discovery over search</strong> — Users prefer browsing and stumbling upon ideas rather than actively searching</li>
+                <li><strong>Context switching</strong> — Users frequently move between mobile and desktop and expect seamless continuity</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <textarea class="chat-input" placeholder="Ask anything..." rows="1"></textarea>
+          <button class="chat-send" aria-label="Send message">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== SETTINGS VIEW ======== -->
+    <section class="view" id="view-settings" data-view="settings" style="display:none">
+      <div class="view__hero">
+        <div class="view__hero-content">
+          <p class="view__kicker">Preferences</p>
+          <h1 class="view__headline">Settings</h1>
+          <p class="view__standfirst">Tailor your experience. Every detail is under your control.</p>
+        </div>
+      </div>
+
+      <div class="settings-layout">
+        <nav class="settings-nav">
+          <a href="#" class="settings-nav__link active" data-settings-tab="profile">Profile</a>
+          <a href="#" class="settings-nav__link" data-settings-tab="appearance">Appearance</a>
+          <a href="#" class="settings-nav__link" data-settings-tab="notifications">Notifications</a>
+          <a href="#" class="settings-nav__link" data-settings-tab="integrations">Integrations</a>
+          <a href="#" class="settings-nav__link" data-settings-tab="billing">Billing</a>
+        </nav>
+        <div class="settings-content">
+          <div class="settings-panel active" id="settings-profile">
+            <h2 class="settings-panel__title">Profile Settings</h2>
+            <div class="settings-form">
+              <div class="form-group">
+                <label class="form-label">Display Name</label>
+                <input type="text" class="form-input" value="Jane Doe">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" value="jane.doe@ideaflow.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Role</label>
+                <select class="form-select">
+                  <option selected>Editor-in-Chief</option>
+                  <option>Designer</option>
+                  <option>Developer</option>
+                  <option>Manager</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Bio</label>
+                <textarea class="form-textarea" rows="3">Creative director and product designer focused on user-centered design thinking.</textarea>
+              </div>
+              <div class="form-actions">
+                <button class="btn btn--primary">Save Changes</button>
+                <button class="btn btn--ghost">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="settings-panel" id="settings-appearance">
+            <h2 class="settings-panel__title">Appearance</h2>
+            <div class="settings-form">
+              <div class="form-group">
+                <label class="form-label">Theme</label>
+                <div class="toggle-group">
+                  <button class="toggle-btn">Light</button>
+                  <button class="toggle-btn active">Dark</button>
+                  <button class="toggle-btn">Auto</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Accent Color</label>
+                <div class="color-swatches">
+                  <button class="color-swatch active" style="background:#6C8EBF" aria-label="Steel Blue"></button>
+                  <button class="color-swatch" style="background:#8B5CF6" aria-label="Violet"></button>
+                  <button class="color-swatch" style="background:#10B981" aria-label="Emerald"></button>
+                  <button class="color-swatch" style="background:#F59E0B" aria-label="Amber"></button>
+                  <button class="color-swatch" style="background:#EF4444" aria-label="Rose"></button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Font Size</label>
+                <input type="range" class="form-range" min="14" max="20" value="16">
+                <span class="form-range__value">16px</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Reduce Motion</label>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="switch__slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="settings-panel" id="settings-notifications">
+            <h2 class="settings-panel__title">Notifications</h2>
+            <div class="settings-form">
+              <div class="form-group form-group--toggle">
+                <div>
+                  <label class="form-label">Email Notifications</label>
+                  <p class="form-help">Receive email updates for project changes</p>
+                </div>
+                <label class="switch"><input type="checkbox" checked><span class="switch__slider"></span></label>
+              </div>
+              <div class="form-group form-group--toggle">
+                <div>
+                  <label class="form-label">Push Notifications</label>
+                  <p class="form-help">Browser push for mentions and assignments</p>
+                </div>
+                <label class="switch"><input type="checkbox" checked><span class="switch__slider"></span></label>
+              </div>
+              <div class="form-group form-group--toggle">
+                <div>
+                  <label class="form-label">Weekly Digest</label>
+                  <p class="form-help">Monday morning summary of activity</p>
+                </div>
+                <label class="switch"><input type="checkbox"><span class="switch__slider"></span></label>
+              </div>
+            </div>
+          </div>
+          <div class="settings-panel" id="settings-integrations">
+            <h2 class="settings-panel__title">Integrations</h2>
+            <div class="integrations-list">
+              <div class="integration-item">
+                <div class="integration-item__info">
+                  <h4>Slack</h4>
+                  <p>Post updates to your Slack channels</p>
+                </div>
+                <button class="btn btn--ghost btn--sm">Connected</button>
+              </div>
+              <div class="integration-item">
+                <div class="integration-item__info">
+                  <h4>GitHub</h4>
+                  <p>Sync issues and pull requests</p>
+                </div>
+                <button class="btn btn--primary btn--sm">Connect</button>
+              </div>
+              <div class="integration-item">
+                <div class="integration-item__info">
+                  <h4>Figma</h4>
+                  <p>Embed designs and prototypes</p>
+                </div>
+                <button class="btn btn--primary btn--sm">Connect</button>
+              </div>
+              <div class="integration-item">
+                <div class="integration-item__info">
+                  <h4>Linear</h4>
+                  <p>Two-way sync with Linear issues</p>
+                </div>
+                <button class="btn btn--ghost btn--sm">Connected</button>
+              </div>
+            </div>
+          </div>
+          <div class="settings-panel" id="settings-billing">
+            <h2 class="settings-panel__title">Billing</h2>
+            <div class="billing-card">
+              <div class="billing-card__plan">
+                <h3>Professional Plan</h3>
+                <p class="billing-card__price">$24<span>/month</span></p>
+              </div>
+              <div class="billing-card__details">
+                <p>Next billing date: April 1, 2026</p>
+                <p>Payment method: Visa ending in 4242</p>
+              </div>
+              <div class="billing-card__actions">
+                <button class="btn btn--ghost btn--sm">Change Plan</button>
+                <button class="btn btn--ghost btn--sm">Update Payment</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CDN Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+  <!-- Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>

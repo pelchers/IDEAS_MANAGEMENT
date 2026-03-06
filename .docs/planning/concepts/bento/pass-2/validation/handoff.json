@@ -1,0 +1,80 @@
+{
+  "concept": "Bento Pass 2",
+  "pass": "2",
+  "domain": "frontend-concept",
+  "style": "bento",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    {
+      "library": "GSAP",
+      "version": "3.12.5",
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    },
+    {
+      "library": "Chart.js",
+      "version": "4.4.7",
+      "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"
+    }
+  ],
+  "fonts": ["Plus Jakarta Sans", "Fira Code"],
+  "sections": [
+    { "id": "dashboard", "name": "Dashboard", "description": "Overview with stat tiles, line chart, donut chart, and activity feed" },
+    { "id": "projects", "name": "Projects", "description": "Project cards with progress bars, tags, and team avatars" },
+    { "id": "workspace", "name": "Workspace", "description": "Document editor, quick notes, recent files, and focus timer" },
+    { "id": "kanban", "name": "Kanban Board", "description": "4-column drag-and-drop board with card categorization" },
+    { "id": "whiteboard", "name": "Whiteboard", "description": "Canvas drawing area with toolbar, layers, and color palette" },
+    { "id": "schema", "name": "Schema Planner", "description": "Entity editor table, entity list, and relation viewer" },
+    { "id": "directory", "name": "Directory Tree", "description": "Collapsible file tree with search, file details, and stats" },
+    { "id": "ideas", "name": "Ideas", "description": "Idea cards with filters, starring, categories, and tags" },
+    { "id": "chat", "name": "AI Chat", "description": "Chat interface with history sidebar and suggestion chips" },
+    { "id": "settings", "name": "Settings", "description": "Profile form, appearance, notifications, and actions" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#2D2A26",
+      "secondary": "#B8860B",
+      "accent": "#E8734A",
+      "background": "#FBF7F2",
+      "surface": "#FFFFFF",
+      "text": "#2D2A26",
+      "gradientStart": "#FFB347",
+      "gradientEnd": "#E8734A",
+      "muted": "#8B8177",
+      "border": "#E8E2DA",
+      "success": "#5a9e6f",
+      "danger": "#C0392B"
+    },
+    "typography": {
+      "headingFamily": "Plus Jakarta Sans",
+      "bodyFamily": "Plus Jakarta Sans",
+      "monoFamily": "Fira Code",
+      "baseFontSize": "16px",
+      "lineHeight": "1.6"
+    },
+    "borderRadius": "12-16px",
+    "transition": "200-500ms ease"
+  },
+  "coreFlags": {
+    "layoutArchetype": "magazine-editorial",
+    "navigationModel": "sticky-top-bar",
+    "informationDensity": "medium-balanced",
+    "animationPhilosophy": "hover-expand-transform",
+    "colorTemperature": "analogous-gradient"
+  },
+  "subagentFlags": {
+    "tileInteraction": "hover-expand-with-gsap-reveal",
+    "chartStyle": "warm-gradient-fills-coral-anchors",
+    "navIndicator": "gradient-underline-active-tab",
+    "typographicVoice": "editorial-bold-headings-medium-body",
+    "iconLanguage": "inline-svg-minimal",
+    "mobileBehavior": "hamburger-overlay-single-column",
+    "gradientUsage": "top-border-accent-on-feature-tiles"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T00:00:00Z"
+}

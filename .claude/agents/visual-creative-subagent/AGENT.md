@@ -83,18 +83,77 @@ Every pass produces a single showcase page with:
 4. **Polish**: Professional presentation — consistent spacing, proper typography, clean layout
 5. **Working interactivity**: All controls, tooltips, and interactive elements must function
 
-## Playwright Screenshot Capture (MANDATORY FINAL STEP)
+## Mandatory Workflow: Plan → Generate → Validate → Fix Loop
 
-After generating all HTML/CSS/JS files, you MUST run the Playwright screenshot script before reporting the pass as complete.
+**You MUST follow this exact workflow. Do NOT skip steps. Do NOT report the pass as complete until the validation loop passes.**
 
-**Command:**
+### Phase 1: Plan
+1. Review all inputs (domain, style, palette, creative brief, library directive, anti-repeat)
+2. Read the library-catalog.json to get the correct CDN URL for your library
+3. Plan your design approach — layout, color usage, interaction patterns, visual hierarchy
+
+### Phase 2: Pre-validate CDN URLs
+Before writing any HTML, verify every CDN URL you plan to use actually resolves:
+```bash
+curl -s -o /dev/null -w "%{http_code}" "<CDN_URL>"
+```
+- If any URL returns non-200, find an alternative URL or version that works
+- Check the library-catalog.json `note` field for version-specific gotchas (e.g., UMD vs ESM builds)
+- **Do NOT proceed to generation with unverified CDN URLs**
+
+### Phase 3: Generate
+1. Write all files: `index.html`, `style.css`, `app.js`, `README.md`, `validation/handoff.json`
+2. Use only verified CDN URLs from Phase 2
+
+### Phase 4: Validate (Playwright Screenshots)
+Run the Playwright validation script:
 ```bash
 node .claude/skills/visual-creative-subagent/scripts/validate-visuals-playwright.mjs --pass-dir <outputDir>
 ```
-
-**What it produces:**
+This produces:
 - `validation/desktop/showcase.png` — Screenshot at 1536x960
+- `validation/desktop/showcase-viewport.png` — Viewport-only screenshot
 - `validation/mobile/showcase.png` — Screenshot at 390x844 @2x
+- `validation/mobile/showcase-viewport.png` — Viewport-only screenshot
 - `validation/report.playwright.json` — Structured report
 
-**Completion gate:** A pass is NOT complete until this script has run and produced screenshots + report.
+### Phase 5: Review Screenshots
+**You MUST read the generated screenshots and visually assess them.** Use the Read tool on the PNG files.
+
+Check for these failure conditions:
+- [ ] **Blank/black canvas** — library failed to load or JS error prevented rendering
+- [ ] **Missing primary content** — the visualization/animation/graphic is not visible
+- [ ] **Text unreadable** — poor contrast, overlapping elements, wrong font loaded
+- [ ] **Layout broken** — elements overlapping, overflowing, or misaligned
+- [ ] **Controls missing** — play/pause, regenerate, or filter controls not visible
+- [ ] **Mobile broken** — content overflows, text too small, elements off-screen
+
+### Phase 6: Fix and Re-validate (Loop)
+If ANY failure condition is detected in Phase 5:
+1. Identify the root cause (broken CDN? JS error? CSS issue? wrong API usage?)
+2. Fix the specific files that need changes
+3. Return to **Phase 4** (run Playwright again)
+4. Return to **Phase 5** (review screenshots again)
+5. Repeat until all checks pass
+
+**Maximum 3 fix cycles.** If after 3 cycles the output still fails validation, document the remaining issues in `validation/handoff.json` under an `unresolvedIssues` array and report the pass with caveats.
+
+### Phase 7: Complete
+Only after screenshots exist AND visual review passes, the pass is complete. Write final `validation/handoff.json` with:
+```json
+{
+  "domain": "...",
+  "style": "...",
+  "pass": N,
+  "validationPassed": true,
+  "fixCycles": N,
+  "cdnUrlsVerified": true,
+  "screenshotsReviewed": true,
+  "timestamp": "ISO-8601"
+}
+```
+
+**Completion gate:** A pass is NOT complete until:
+1. Playwright screenshots exist on disk
+2. You have read and visually reviewed the screenshots
+3. No failure conditions remain (or max fix cycles exhausted with issues documented)

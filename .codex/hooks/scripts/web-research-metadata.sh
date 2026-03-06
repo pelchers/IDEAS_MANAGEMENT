@@ -59,9 +59,9 @@ for (const url of urls) {
   const data = await page.evaluate(() => ({
     title: document.title || null,
     h1: document.querySelector('h1')?.textContent?.trim() || null,
-    description: document.querySelector('meta[name=\"description\"]')?.getAttribute('content') || null,
-    ogTitle: document.querySelector('meta[property=\"og:title\"]')?.getAttribute('content') || null,
-    ogDescription: document.querySelector('meta[property=\"og:description\"]')?.getAttribute('content') || null,
+    description: document.querySelector('meta[name="description"]')?.getAttribute('content') || null,
+    ogTitle: document.querySelector('meta[property="og:title"]')?.getAttribute('content') || null,
+    ogDescription: document.querySelector('meta[property="og:description"]')?.getAttribute('content') || null,
   }));
   results.push({ url, ...data });
   await page.close();

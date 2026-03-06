@@ -105,7 +105,7 @@ Created comprehensive profile management with:
 - Profile deletion with cascade
 - Real-time profile subscriptions
 
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
+Generated with [Claude Code](https://claude.com/claude-code)
 
 Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
 ```
@@ -117,7 +117,7 @@ After each commit, update `logs/development-progress.md`:
 ```markdown
 ### Commit #42: Profile Management System
 **Date**: 2024-01-15
-**Status**: ✅ Complete
+**Status**: Complete
 
 #### Work Completed:
 - Created profile schema with indexed fields
@@ -313,7 +313,7 @@ gh pr create --title "Add profile management" --body "
 - [x] Update profile fields
 - [x] Delete profile with cascade
 
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
+Generated with [Claude Code](https://claude.com/claude-code)
 "
 ```
 
@@ -408,4 +408,3 @@ chore(deps): update Next.js to 14.1
 - [Conventional Commits](https://www.conventionalcommits.org)
 - [Git Best Practices](https://git-scm.com/book/en/v2)
 - [GitHub CLI](https://cli.github.com)
-

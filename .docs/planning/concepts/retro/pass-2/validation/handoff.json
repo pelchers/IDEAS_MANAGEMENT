@@ -1,0 +1,66 @@
+{
+  "concept": "Retro 50s-60s Mid-Century Atomic Age",
+  "pass": "2",
+  "domain": "frontend-concept",
+  "style": "retro",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "GSAP", "version": "3.12.5", "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" },
+    { "library": "Chart.js", "version": "4.4.7", "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" },
+    { "library": "SortableJS", "version": "1.15.6", "url": "https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js" }
+  ],
+  "fonts": ["Righteous", "Quicksand", "Pacifico"],
+  "sections": [
+    { "id": "view-dashboard", "name": "Dashboard", "description": "Overview with stat cards, weekly activity bar chart, and recent ideas list" },
+    { "id": "view-projects", "name": "Projects", "description": "Grid of project cards with progress bars and metadata" },
+    { "id": "view-workspace", "name": "Workspace", "description": "Document editor with toolbar and side info panel" },
+    { "id": "view-kanban", "name": "Kanban Board", "description": "4-column drag-and-drop kanban with SortableJS" },
+    { "id": "view-whiteboard", "name": "Whiteboard", "description": "Canvas with sticky notes, shapes, and toolbar" },
+    { "id": "view-schema", "name": "Schema Planner", "description": "Entity-relationship diagram with 5 entities and relationship lines" },
+    { "id": "view-directory", "name": "Directory Tree", "description": "Collapsible file tree with preview panel" },
+    { "id": "view-ideas", "name": "Ideas Capture", "description": "Filterable grid of idea cards with voting and tags" },
+    { "id": "view-chat", "name": "AI Chat", "description": "Chat interface with conversation history sidebar" },
+    { "id": "view-settings", "name": "Settings", "description": "Tabbed settings with profile, appearance, notifications, and billing" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#FF6B6B",
+      "secondary": "#4ECDC4",
+      "accent": "#FFE66D",
+      "background": "#FFF8F0",
+      "surface": "#FFFFFF",
+      "text": "#2C3E50",
+      "retro": "#95E1D3",
+      "teal": "#2ABFAB"
+    },
+    "typography": {
+      "heading": "Righteous, cursive",
+      "body": "Quicksand, sans-serif",
+      "accent": "Pacifico, cursive"
+    },
+    "borderRadius": "16px (md), 24px (lg), 50px (pill)",
+    "transition": "0.3s cubic-bezier(0.34, 1.56, 0.64, 1)"
+  },
+  "coreFlags": {
+    "layoutArchetype": "sidebar-driven",
+    "navigationModel": "hamburger-drawer",
+    "informationDensity": "low-whitespace-generous",
+    "animationPhilosophy": "hover-expand-transform",
+    "colorTemperature": "cool-dominant"
+  },
+  "subagentFlags": {
+    "decorativeMotif": "atomic-starburst-boomerang",
+    "cardStyle": "pastel-bordered-rounded",
+    "hoverBehavior": "elastic-springy-gsap",
+    "navFeel": "jukebox-sidebar-sliding-drawer",
+    "chartStyle": "rounded-bar-dual-dataset",
+    "interactionModel": "drag-sortable-kanban"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T12:00:00Z"
+}

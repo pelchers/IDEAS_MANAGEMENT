@@ -1,0 +1,67 @@
+{
+  "concept": "Constructivism Pass 2",
+  "pass": "2",
+  "domain": "frontend-concept",
+  "style": "constructivism",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "Anime.js", "version": "3.2.2", "url": "https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" },
+    { "library": "Chart.js", "version": "4.4.7", "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" },
+    { "library": "SortableJS", "version": "1.15.6", "url": "https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js" }
+  ],
+  "fonts": ["Playfair Display", "Work Sans", "Staatliches"],
+  "sections": [
+    { "id": "view-dashboard", "name": "Dashboard", "description": "Stat cards, line chart with Chart.js, activity feed" },
+    { "id": "view-projects", "name": "Projects", "description": "Searchable project list with editorial card layout and progress bars" },
+    { "id": "view-workspace", "name": "Workspace", "description": "Split sidebar/editor layout with rich text editing and collaborator avatars" },
+    { "id": "view-kanban", "name": "Kanban", "description": "4-column drag-and-drop board using SortableJS with priority indicators" },
+    { "id": "view-whiteboard", "name": "Whiteboard", "description": "Canvas-based drawing tool with geometric grid and tool palette" },
+    { "id": "view-schema", "name": "Schema", "description": "Entity-relationship diagram with 4 tables and dashed relationship lines" },
+    { "id": "view-directory", "name": "Directory Tree", "description": "Collapsible tree view with folder/file hierarchy" },
+    { "id": "view-ideas", "name": "Ideas", "description": "Idea capture input with priority/project selectors and masonry card grid" },
+    { "id": "view-chat", "name": "AI Chat", "description": "Conversational AI interface with message bubbles and simulated responses" },
+    { "id": "view-settings", "name": "Settings", "description": "Profile fields, toggle preferences, and danger zone" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#0D0D0D",
+      "secondary": "#008B8B",
+      "accent": "#FF6600",
+      "background": "#F2F2F2",
+      "surface": "#FFFFFF",
+      "text": "#1A1A1A"
+    },
+    "typography": {
+      "headings": "Playfair Display 700/900",
+      "body": "Work Sans 400/500",
+      "accent": "Staatliches 400"
+    },
+    "borderRadius": "2px (sharp constructivist edges)",
+    "transition": "200-700ms ease/cubic-bezier"
+  },
+  "coreFlags": {
+    "layoutArchetype": "magazine-editorial",
+    "navigationModel": "bottom-tabs",
+    "informationDensity": "medium-balanced",
+    "animationPhilosophy": "page-transition-choreography",
+    "colorTemperature": "high-contrast-complementary"
+  },
+  "subagentFlags": {
+    "editorialMotif": "lissitzky-book-design",
+    "spreadLayout": "headline-column-plus-content-column",
+    "geometricPunctuation": "circles-lines-rotated-squares",
+    "typographicHierarchy": "serif-heading-sans-body-condensed-labels",
+    "pullquoteStyle": "italic-serif-with-accent-border",
+    "cardPattern": "left-accent-bar-with-white-surface",
+    "transitionStyle": "sequential-color-wipe",
+    "dataVisualization": "dual-line-chart-teal-orange",
+    "kanbanInteraction": "sortablejs-cross-column-drag"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum (text #1A1A1A on #F2F2F2 = 11.7:1)",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T00:00:00Z"
+}

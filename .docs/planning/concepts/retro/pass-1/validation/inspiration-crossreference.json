@@ -1,0 +1,22 @@
+{
+  "references": [
+    {
+      "url": "https://poolsuite.net/",
+      "name": "Poolsuite FM",
+      "observedPatterns": ["Retro OS window chrome", "CRT-style aesthetics", "Neon color accents", "Bottom toolbar navigation"],
+      "adaptedElements": ["Window title bar with colored buttons", "Dark background with bright text", "Full-bleed immersive layout"]
+    },
+    {
+      "url": "https://terminalcss.xyz/",
+      "name": "Terminal CSS",
+      "observedPatterns": ["Monospace typography system", "Terminal-style form inputs", "Green-on-black color scheme", "Minimal border-based UI"],
+      "adaptedElements": ["Form input styling with monospace fonts", "Button hover glow effects", "Dashed border separators"]
+    },
+    {
+      "url": "https://www.masswerk.at/",
+      "name": "Masswerk - Virtual Terminal",
+      "observedPatterns": ["Blinking cursor animation", "Command prompt prefix styling", "Scanline overlay effects", "High-density text layouts"],
+      "adaptedElements": ["CRT scanline CSS overlay", "Cursor blink animation", "Terminal prompt prefix in chat view", "Dense activity log layout"]
+    }
+  ]
+}

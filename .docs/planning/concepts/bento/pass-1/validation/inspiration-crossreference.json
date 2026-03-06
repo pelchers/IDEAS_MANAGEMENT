@@ -1,0 +1,34 @@
+{
+  "references": [
+    {
+      "url": "https://developer.apple.com/design/human-interface-guidelines/",
+      "name": "Apple Human Interface Guidelines",
+      "observedPatterns": [
+        "System font stack (SF Pro) with clear weight hierarchy",
+        "Generous corner radii (16-20px) on content containers",
+        "Subtle elevation shadows for layering",
+        "Cool neutral palette with blue accent"
+      ],
+      "adaptedElements": [
+        "Corner radius values and shadow depths",
+        "System font stack approach",
+        "Color temperature (cool grays + blue)"
+      ]
+    },
+    {
+      "url": "https://www.apple.com/apple-events/",
+      "name": "Apple Keynote Bento Grid Layouts",
+      "observedPatterns": [
+        "Variably-sized modular tiles in a grid mosaic",
+        "Gradient fills on feature highlight tiles",
+        "High information density through tile sizing strategy",
+        "Glassmorphism accents on select containers"
+      ],
+      "adaptedElements": [
+        "Grid span system (1x1, 2x1, 1x2, 2x2)",
+        "Blue gradient for hero stat tile",
+        "Selective glassmorphism on quick-actions tile"
+      ]
+    }
+  ]
+}

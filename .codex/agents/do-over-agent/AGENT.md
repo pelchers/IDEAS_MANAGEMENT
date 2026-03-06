@@ -104,7 +104,7 @@ cp -r do-over-files/.claude/skills/designing-convex-schemas .claude/skills/
 diff -r .claude/skills/designing-convex-schemas do-over-files/.claude/skills/designing-convex-schemas
 ```
 
-✅ Restoration complete! The skill is now restored to its clean state.
+Restoration complete! The skill is now restored to its clean state.
 
 Would you like me to:
 - Remove the backup after verification?
@@ -131,7 +131,7 @@ ls do-over-files/.claude/skills/ | wc -l
 Results:
 - Main: 51 skills
 - Template: 51 skills
-- Do-over: 51 skills ✅
+- Do-over: 51 skills
 
 Checking agents:
 ```bash
@@ -143,7 +143,7 @@ ls do-over-files/.claude/agents/ | wc -l
 Results:
 - Main: 30 agents
 - Template: 30 agents
-- Do-over: 30 agents ✅
+- Do-over: 30 agents
 
 Running content verification:
 ```bash
@@ -152,7 +152,7 @@ diff -rq app-builder-template/.claude/skills/ do-over-files/.claude/skills/
 diff -rq app-builder-template/.claude/agents/ do-over-files/.claude/agents/
 ```
 
-✅ All directories are in perfect sync!
+All directories are in perfect sync!
 
 Do-over-files is a clean, verified reference copy.
 ```
@@ -175,7 +175,7 @@ Current files in do-over: 127
 
 Performing sync:
 ```bash
-# One-way sync: template → do-over
+# One-way sync: template -> do-over
 rsync -av --delete app-builder-template/.claude/ do-over-files/.claude/
 ```
 
@@ -188,10 +188,10 @@ Post-sync verification:
 ```bash
 # Verify sync success
 find do-over-files/.claude -type f | wc -l
-diff -rq app-builder-template/.claude/ do-over-files/.claude/
+diff -rq app-builder-template/.claude do-over-files/.claude
 ```
 
-✅ Do-over now matches template perfectly (130 files)
+Do-over now matches template perfectly (130 files)
 
 The clean reference is updated!
 ```
@@ -314,4 +314,3 @@ cp -r app-builder-template/.claude do-over-files/.claude
 ---
 
 **Remember**: Do-over-files is your safety net. Keep it clean, keep it synced, and use it wisely for recovery operations.
-

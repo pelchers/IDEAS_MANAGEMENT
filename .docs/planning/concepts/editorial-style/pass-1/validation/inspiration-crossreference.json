@@ -1,0 +1,52 @@
+{
+  "references": [
+    {
+      "url": "https://www.nytimes.com",
+      "name": "The New York Times",
+      "observedPatterns": [
+        "Slim masthead navigation with uppercase sans-serif links",
+        "Large serif headlines with generous letter-spacing",
+        "Kicker/byline metadata in small-caps above headlines",
+        "Thin ornamental rules separating content sections"
+      ],
+      "adaptedElements": [
+        "Masthead nav with Montserrat uppercase links",
+        "Cormorant Garamond headings at 48-72px",
+        "Volume/section kickers above each view title",
+        "Ornamental rule with dot accent"
+      ]
+    },
+    {
+      "url": "https://www.theparisreview.org",
+      "name": "The Paris Review",
+      "observedPatterns": [
+        "Warm cream background with dark brown text",
+        "Pull-quote formatting with large italic serif type",
+        "Drop caps on article openings",
+        "Editorial grid with asymmetric column widths"
+      ],
+      "adaptedElements": [
+        "Cream (#FAF5EE) background palette",
+        "Pull-quote card in dashboard with decorative quotation marks",
+        "Drop cap in workspace editor",
+        "Asymmetric layout in workspace sidebar/editor split"
+      ]
+    },
+    {
+      "url": "https://www.monocle.com",
+      "name": "Monocle",
+      "observedPatterns": [
+        "High-contrast editorial cards with minimal border treatment",
+        "Category labels in tiny uppercase sans-serif",
+        "Gold/amber accent color for highlights",
+        "Magazine-style grid layouts for content browsing"
+      ],
+      "adaptedElements": [
+        "Category labels on project and idea cards",
+        "Gold (#C17817) as highlight/accent color",
+        "Three-column grid for projects and ideas",
+        "Minimal card borders with hover elevation"
+      ]
+    }
+  ]
+}

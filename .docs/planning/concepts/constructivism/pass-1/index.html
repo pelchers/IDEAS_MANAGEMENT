@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDEA MANAGEMENT — Constructivism Pass 1</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Source+Sans+3:wght@400;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===================== FLOATING FAB NAVIGATION ===================== -->
+  <nav id="fab-nav" class="fab-nav" aria-label="Main navigation">
+    <button class="fab-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span class="fab-icon">
+        <span class="fab-bar"></span>
+        <span class="fab-bar"></span>
+        <span class="fab-bar"></span>
+      </span>
+    </button>
+    <ul class="fab-menu" role="menu">
+      <li><a href="#dashboard" class="fab-link active" role="menuitem" data-view="dashboard"><span class="fab-label">DASHBOARD</span></a></li>
+      <li><a href="#projects" class="fab-link" role="menuitem" data-view="projects"><span class="fab-label">PROJECTS</span></a></li>
+      <li><a href="#workspace" class="fab-link" role="menuitem" data-view="workspace"><span class="fab-label">WORKSPACE</span></a></li>
+      <li><a href="#kanban" class="fab-link" role="menuitem" data-view="kanban"><span class="fab-label">KANBAN</span></a></li>
+      <li><a href="#whiteboard" class="fab-link" role="menuitem" data-view="whiteboard"><span class="fab-label">WHITEBOARD</span></a></li>
+      <li><a href="#schema" class="fab-link" role="menuitem" data-view="schema"><span class="fab-label">SCHEMA</span></a></li>
+      <li><a href="#directory" class="fab-link" role="menuitem" data-view="directory"><span class="fab-label">DIRECTORY</span></a></li>
+      <li><a href="#ideas" class="fab-link" role="menuitem" data-view="ideas"><span class="fab-label">IDEAS</span></a></li>
+      <li><a href="#chat" class="fab-link" role="menuitem" data-view="chat"><span class="fab-label">AI CHAT</span></a></li>
+      <li><a href="#settings" class="fab-link" role="menuitem" data-view="settings"><span class="fab-label">SETTINGS</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- ===================== TOP BANNER ===================== -->
+  <header class="top-banner">
+    <div class="banner-diagonal"></div>
+    <div class="banner-content">
+      <span class="banner-tag">IDEA MGMT</span>
+      <h1 class="banner-title" id="view-title">DASHBOARD</h1>
+    </div>
+    <div class="banner-accent-circle"></div>
+  </header>
+
+  <!-- ===================== MAIN CONTENT ===================== -->
+  <main id="app-main">
+
+    <!-- ========== DASHBOARD VIEW ========== -->
+    <section id="dashboard" class="view-panel active-view">
+      <div class="view-container">
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-card card-anim">
+            <div class="stat-accent-stripe"></div>
+            <span class="stat-label">TOTAL PROJECTS</span>
+            <span class="stat-value">6</span>
+            <span class="stat-delta positive">+2 this week</span>
+          </div>
+          <div class="stat-card card-anim">
+            <div class="stat-accent-stripe"></div>
+            <span class="stat-label">ACTIVE IDEAS</span>
+            <span class="stat-value">8</span>
+            <span class="stat-delta positive">+3 new</span>
+          </div>
+          <div class="stat-card card-anim">
+            <div class="stat-accent-stripe"></div>
+            <span class="stat-label">TASKS IN PROGRESS</span>
+            <span class="stat-value">12</span>
+            <span class="stat-delta neutral">Steady</span>
+          </div>
+          <div class="stat-card card-anim">
+            <div class="stat-accent-stripe"></div>
+            <span class="stat-label">TEAM MEMBERS</span>
+            <span class="stat-value">5</span>
+            <span class="stat-delta positive">+1 joined</span>
+          </div>
+        </div>
+
+        <!-- Chart + Activity Grid -->
+        <div class="dashboard-grid">
+          <div class="chart-block card-anim">
+            <h3 class="block-heading">PRODUCTIVITY OVERVIEW</h3>
+            <div class="chart-wrapper"><canvas id="dashChart"></canvas></div>
+          </div>
+          <div class="activity-block card-anim">
+            <h3 class="block-heading">RECENT ACTIVITY</h3>
+            <ul class="activity-list">
+              <li class="activity-item"><span class="activity-dot"></span><span class="activity-text">Created project "Brand Refresh"</span><span class="activity-time">2m ago</span></li>
+              <li class="activity-item"><span class="activity-dot"></span><span class="activity-text">Moved "User Research" to Done</span><span class="activity-time">15m ago</span></li>
+              <li class="activity-item"><span class="activity-dot"></span><span class="activity-text">Added idea "AI-Powered Sorting"</span><span class="activity-time">1h ago</span></li>
+              <li class="activity-item"><span class="activity-dot"></span><span class="activity-text">Commented on "Homepage Redesign"</span><span class="activity-time">2h ago</span></li>
+              <li class="activity-item"><span class="activity-dot"></span><span class="activity-text">Schema updated for Projects table</span><span class="activity-time">3h ago</span></li>
+              <li class="activity-item"><span class="activity-dot"></span><span class="activity-text">New team member Elena joined</span><span class="activity-time">5h ago</span></li>
+              <li class="activity-item"><span class="activity-dot"></span><span class="activity-text">Deployed whiteboard v2.1</span><span class="activity-time">8h ago</span></li>
+              <li class="activity-item"><span class="activity-dot"></span><span class="activity-text">Kanban board reorganized</span><span class="activity-time">12h ago</span></li>
+              <li class="activity-item"><span class="activity-dot"></span><span class="activity-text">Completed sprint planning session</span><span class="activity-time">1d ago</span></li>
+              <li class="activity-item"><span class="activity-dot"></span><span class="activity-text">Archived project "Legacy Portal"</span><span class="activity-time">2d ago</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS VIEW ========== -->
+    <section id="projects" class="view-panel">
+      <div class="view-container">
+        <div class="projects-grid">
+          <article class="project-card card-anim">
+            <div class="project-banner red-banner"></div>
+            <div class="project-body">
+              <h3 class="project-title">Brand Refresh</h3>
+              <p class="project-desc">Complete visual identity overhaul for Q2 launch including logo, colors, and typography system.</p>
+              <div class="project-meta">
+                <span class="project-status status-active">ACTIVE</span>
+                <span class="project-date">Mar 1, 2026</span>
+              </div>
+              <div class="project-progress"><div class="progress-fill" style="width: 65%"></div></div>
+            </div>
+          </article>
+          <article class="project-card card-anim">
+            <div class="project-banner black-banner"></div>
+            <div class="project-body">
+              <h3 class="project-title">Mobile App v3</h3>
+              <p class="project-desc">Next-generation mobile experience with gesture navigation and offline-first architecture.</p>
+              <div class="project-meta">
+                <span class="project-status status-active">ACTIVE</span>
+                <span class="project-date">Feb 15, 2026</span>
+              </div>
+              <div class="project-progress"><div class="progress-fill" style="width: 40%"></div></div>
+            </div>
+          </article>
+          <article class="project-card card-anim">
+            <div class="project-banner gold-banner"></div>
+            <div class="project-body">
+              <h3 class="project-title">User Research Hub</h3>
+              <p class="project-desc">Centralized repository for user interviews, surveys, and behavioral analytics data.</p>
+              <div class="project-meta">
+                <span class="project-status status-planning">PLANNING</span>
+                <span class="project-date">Feb 28, 2026</span>
+              </div>
+              <div class="project-progress"><div class="progress-fill" style="width: 20%"></div></div>
+            </div>
+          </article>
+          <article class="project-card card-anim">
+            <div class="project-banner red-banner"></div>
+            <div class="project-body">
+              <h3 class="project-title">Homepage Redesign</h3>
+              <p class="project-desc">Landing page refresh with improved conversion funnel and A/B testing framework.</p>
+              <div class="project-meta">
+                <span class="project-status status-review">IN REVIEW</span>
+                <span class="project-date">Jan 20, 2026</span>
+              </div>
+              <div class="project-progress"><div class="progress-fill" style="width: 85%"></div></div>
+            </div>
+          </article>
+          <article class="project-card card-anim">
+            <div class="project-banner black-banner"></div>
+            <div class="project-body">
+              <h3 class="project-title">API Gateway</h3>
+              <p class="project-desc">Unified API layer with rate limiting, authentication, and real-time documentation.</p>
+              <div class="project-meta">
+                <span class="project-status status-active">ACTIVE</span>
+                <span class="project-date">Mar 3, 2026</span>
+              </div>
+              <div class="project-progress"><div class="progress-fill" style="width: 55%"></div></div>
+            </div>
+          </article>
+          <article class="project-card card-anim">
+            <div class="project-banner gold-banner"></div>
+            <div class="project-body">
+              <h3 class="project-title">Legacy Portal</h3>
+              <p class="project-desc">Migration of legacy admin portal to modern stack with improved security posture.</p>
+              <div class="project-meta">
+                <span class="project-status status-archived">ARCHIVED</span>
+                <span class="project-date">Dec 10, 2025</span>
+              </div>
+              <div class="project-progress"><div class="progress-fill" style="width: 100%"></div></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WORKSPACE VIEW ========== -->
+    <section id="workspace" class="view-panel">
+      <div class="view-container">
+        <div class="workspace-layout">
+          <div class="workspace-editor card-anim">
+            <div class="editor-toolbar">
+              <button class="tool-btn active">EDIT</button>
+              <button class="tool-btn">PREVIEW</button>
+              <button class="tool-btn">SPLIT</button>
+              <span class="toolbar-separator"></span>
+              <button class="tool-btn">B</button>
+              <button class="tool-btn">I</button>
+              <button class="tool-btn">U</button>
+              <button class="tool-btn">H1</button>
+              <button class="tool-btn">H2</button>
+              <button class="tool-btn">LIST</button>
+            </div>
+            <div class="editor-area" contenteditable="true">
+              <h2>Project Brief: Brand Refresh</h2>
+              <p>The current brand identity no longer reflects our evolved product vision. This refresh will establish a cohesive visual language spanning digital products, marketing materials, and physical touchpoints.</p>
+              <h3>Objectives</h3>
+              <ul>
+                <li>Define new color palette aligned with brand values</li>
+                <li>Create scalable typography system</li>
+                <li>Design icon library for product UI</li>
+                <li>Develop brand guidelines document</li>
+              </ul>
+              <h3>Timeline</h3>
+              <p>Phase 1 (Research): 2 weeks. Phase 2 (Design): 3 weeks. Phase 3 (Implementation): 2 weeks.</p>
+            </div>
+          </div>
+          <aside class="workspace-sidebar card-anim">
+            <h3 class="block-heading">DOCUMENT INFO</h3>
+            <div class="info-row"><span class="info-label">Author</span><span class="info-value">Alex K.</span></div>
+            <div class="info-row"><span class="info-label">Created</span><span class="info-value">Mar 1, 2026</span></div>
+            <div class="info-row"><span class="info-label">Modified</span><span class="info-value">Mar 5, 2026</span></div>
+            <div class="info-row"><span class="info-label">Words</span><span class="info-value">247</span></div>
+            <div class="info-row"><span class="info-label">Status</span><span class="info-value">Draft</span></div>
+            <h3 class="block-heading" style="margin-top: 1.5rem;">LINKED ITEMS</h3>
+            <ul class="linked-items">
+              <li><a href="#projects">Brand Refresh Project</a></li>
+              <li><a href="#ideas">Color Theory Research</a></li>
+              <li><a href="#kanban">Typography Task</a></li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== KANBAN VIEW ========== -->
+    <section id="kanban" class="view-panel">
+      <div class="view-container">
+        <div class="kanban-board">
+          <div class="kanban-column">
+            <div class="column-header backlog-header">
+              <h3>BACKLOG</h3>
+              <span class="column-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card card-anim">
+                <span class="card-tag tag-design">DESIGN</span>
+                <h4 class="card-title">Icon Library Research</h4>
+                <p class="card-desc">Survey existing icon sets and define style direction.</p>
+                <div class="card-footer"><span class="card-assignee">AK</span><span class="card-priority priority-low">LOW</span></div>
+              </div>
+              <div class="kanban-card card-anim">
+                <span class="card-tag tag-dev">DEV</span>
+                <h4 class="card-title">API Rate Limiter</h4>
+                <p class="card-desc">Implement token bucket algorithm for API gateway.</p>
+                <div class="card-footer"><span class="card-assignee">MR</span><span class="card-priority priority-med">MED</span></div>
+              </div>
+              <div class="kanban-card card-anim">
+                <span class="card-tag tag-research">RESEARCH</span>
+                <h4 class="card-title">User Survey Analysis</h4>
+                <p class="card-desc">Process Q1 survey results and generate insights report.</p>
+                <div class="card-footer"><span class="card-assignee">JL</span><span class="card-priority priority-high">HIGH</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="kanban-column">
+            <div class="column-header todo-header">
+              <h3>TO DO</h3>
+              <span class="column-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card card-anim">
+                <span class="card-tag tag-design">DESIGN</span>
+                <h4 class="card-title">Typography System</h4>
+                <p class="card-desc">Define type scale, weights, and responsive sizing rules.</p>
+                <div class="card-footer"><span class="card-assignee">AK</span><span class="card-priority priority-high">HIGH</span></div>
+              </div>
+              <div class="kanban-card card-anim">
+                <span class="card-tag tag-dev">DEV</span>
+                <h4 class="card-title">Auth Flow Refactor</h4>
+                <p class="card-desc">Migrate from session-based to JWT tokens with refresh.</p>
+                <div class="card-footer"><span class="card-assignee">SP</span><span class="card-priority priority-med">MED</span></div>
+              </div>
+              <div class="kanban-card card-anim">
+                <span class="card-tag tag-content">CONTENT</span>
+                <h4 class="card-title">Blog Post: Q1 Recap</h4>
+                <p class="card-desc">Write quarterly progress update for stakeholders.</p>
+                <div class="card-footer"><span class="card-assignee">EV</span><span class="card-priority priority-low">LOW</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="kanban-column">
+            <div class="column-header progress-header">
+              <h3>IN PROGRESS</h3>
+              <span class="column-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card card-anim">
+                <span class="card-tag tag-design">DESIGN</span>
+                <h4 class="card-title">Color Palette v2</h4>
+                <p class="card-desc">Refine primary and secondary palettes for accessibility.</p>
+                <div class="card-footer"><span class="card-assignee">AK</span><span class="card-priority priority-high">HIGH</span></div>
+              </div>
+              <div class="kanban-card card-anim">
+                <span class="card-tag tag-dev">DEV</span>
+                <h4 class="card-title">Dashboard Widgets</h4>
+                <p class="card-desc">Build reusable stat card and chart components.</p>
+                <div class="card-footer"><span class="card-assignee">MR</span><span class="card-priority priority-med">MED</span></div>
+              </div>
+              <div class="kanban-card card-anim">
+                <span class="card-tag tag-research">RESEARCH</span>
+                <h4 class="card-title">Competitor Analysis</h4>
+                <p class="card-desc">Benchmark features against top 5 competitors.</p>
+                <div class="card-footer"><span class="card-assignee">JL</span><span class="card-priority priority-med">MED</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="kanban-column">
+            <div class="column-header done-header">
+              <h3>DONE</h3>
+              <span class="column-count">3</span>
+            </div>
+            <div class="kanban-cards">
+              <div class="kanban-card card-anim done-card">
+                <span class="card-tag tag-design">DESIGN</span>
+                <h4 class="card-title">Logo Concepts</h4>
+                <p class="card-desc">Initial logo exploration with 8 directions presented.</p>
+                <div class="card-footer"><span class="card-assignee">AK</span><span class="card-priority priority-done">DONE</span></div>
+              </div>
+              <div class="kanban-card card-anim done-card">
+                <span class="card-tag tag-dev">DEV</span>
+                <h4 class="card-title">Database Migration</h4>
+                <p class="card-desc">Migrated from PostgreSQL 14 to 16 with zero downtime.</p>
+                <div class="card-footer"><span class="card-assignee">SP</span><span class="card-priority priority-done">DONE</span></div>
+              </div>
+              <div class="kanban-card card-anim done-card">
+                <span class="card-tag tag-content">CONTENT</span>
+                <h4 class="card-title">User Onboarding Copy</h4>
+                <p class="card-desc">Finalized welcome screens, tooltips, and help text.</p>
+                <div class="card-footer"><span class="card-assignee">EV</span><span class="card-priority priority-done">DONE</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHITEBOARD VIEW ========== -->
+    <section id="whiteboard" class="view-panel">
+      <div class="view-container">
+        <div class="whiteboard-toolbar card-anim">
+          <button class="wb-tool active" data-tool="select" title="Select">
+            <svg width="20" height="20" viewBox="0 0 20 20"><polygon points="3,2 3,16 7,12 11,18 13,17 9,11 14,11" fill="currentColor"/></svg>
+          </button>
+          <button class="wb-tool" data-tool="rect" title="Rectangle">
+            <svg width="20" height="20" viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+          <button class="wb-tool" data-tool="circle" title="Circle">
+            <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+          <button class="wb-tool" data-tool="line" title="Line">
+            <svg width="20" height="20" viewBox="0 0 20 20"><line x1="3" y1="17" x2="17" y2="3" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+          <button class="wb-tool" data-tool="text" title="Text">
+            <svg width="20" height="20" viewBox="0 0 20 20"><text x="4" y="16" font-size="16" font-weight="bold" fill="currentColor">T</text></svg>
+          </button>
+          <span class="wb-separator"></span>
+          <button class="wb-tool" data-tool="zoomin" title="Zoom In">+</button>
+          <button class="wb-tool" data-tool="zoomout" title="Zoom Out">-</button>
+        </div>
+        <div class="whiteboard-canvas card-anim" id="whiteboardCanvas">
+          <div class="wb-node wb-rect" style="left: 80px; top: 60px;">
+            <span>Product Vision</span>
+          </div>
+          <div class="wb-node wb-circle" style="left: 350px; top: 40px;">
+            <span>Users</span>
+          </div>
+          <div class="wb-node wb-rect" style="left: 200px; top: 200px;">
+            <span>Feature Set</span>
+          </div>
+          <div class="wb-node wb-rect" style="left: 500px; top: 180px;">
+            <span>Tech Stack</span>
+          </div>
+          <div class="wb-node wb-circle" style="left: 100px; top: 340px;">
+            <span>Revenue</span>
+          </div>
+          <div class="wb-node wb-rect" style="left: 400px; top: 320px;">
+            <span>Timeline</span>
+          </div>
+          <svg class="wb-connections" viewBox="0 0 800 500">
+            <line x1="180" y1="90" x2="350" y2="70" stroke="var(--color-primary)" stroke-width="2"/>
+            <line x1="140" y1="110" x2="260" y2="220" stroke="var(--color-primary)" stroke-width="2"/>
+            <line x1="340" y1="230" x2="500" y2="210" stroke="var(--color-accent)" stroke-width="2"/>
+            <line x1="260" y1="250" x2="160" y2="360" stroke="var(--color-accent)" stroke-width="2"/>
+            <line x1="340" y1="250" x2="460" y2="340" stroke="var(--color-primary)" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCHEMA VIEW ========== -->
+    <section id="schema" class="view-panel">
+      <div class="view-container">
+        <div class="schema-layout">
+          <div class="schema-table card-anim">
+            <div class="table-header">
+              <h3>PROJECTS</h3>
+              <span class="table-badge">6 records</span>
+            </div>
+            <table>
+              <thead>
+                <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>id</td><td>uuid</td><td>YES</td><td>auto</td></tr>
+                <tr><td>name</td><td>string</td><td>YES</td><td>--</td></tr>
+                <tr><td>description</td><td>text</td><td>NO</td><td>null</td></tr>
+                <tr><td>status</td><td>enum</td><td>YES</td><td>active</td></tr>
+                <tr><td>created_at</td><td>timestamp</td><td>YES</td><td>now()</td></tr>
+                <tr><td>owner_id</td><td>uuid FK</td><td>YES</td><td>--</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="schema-table card-anim">
+            <div class="table-header">
+              <h3>IDEAS</h3>
+              <span class="table-badge">8 records</span>
+            </div>
+            <table>
+              <thead>
+                <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>id</td><td>uuid</td><td>YES</td><td>auto</td></tr>
+                <tr><td>title</td><td>string</td><td>YES</td><td>--</td></tr>
+                <tr><td>body</td><td>text</td><td>NO</td><td>null</td></tr>
+                <tr><td>priority</td><td>enum</td><td>YES</td><td>medium</td></tr>
+                <tr><td>project_id</td><td>uuid FK</td><td>NO</td><td>null</td></tr>
+                <tr><td>tags</td><td>array</td><td>NO</td><td>[]</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="schema-table card-anim">
+            <div class="table-header">
+              <h3>TASKS</h3>
+              <span class="table-badge">12 records</span>
+            </div>
+            <table>
+              <thead>
+                <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>id</td><td>uuid</td><td>YES</td><td>auto</td></tr>
+                <tr><td>title</td><td>string</td><td>YES</td><td>--</td></tr>
+                <tr><td>status</td><td>enum</td><td>YES</td><td>backlog</td></tr>
+                <tr><td>assignee_id</td><td>uuid FK</td><td>NO</td><td>null</td></tr>
+                <tr><td>project_id</td><td>uuid FK</td><td>YES</td><td>--</td></tr>
+                <tr><td>due_date</td><td>date</td><td>NO</td><td>null</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIRECTORY TREE VIEW ========== -->
+    <section id="directory" class="view-panel">
+      <div class="view-container">
+        <div class="directory-container card-anim">
+          <div class="dir-toolbar">
+            <button class="tool-btn active">TREE VIEW</button>
+            <button class="tool-btn">LIST VIEW</button>
+            <span class="toolbar-separator"></span>
+            <button class="tool-btn">+ NEW FOLDER</button>
+            <button class="tool-btn">+ NEW FILE</button>
+          </div>
+          <div class="dir-tree">
+            <ul class="tree-root">
+              <li class="tree-folder open">
+                <span class="tree-toggle">&#9660;</span>
+                <span class="tree-icon folder-icon">&#9632;</span>
+                <span class="tree-name">Brand Refresh</span>
+                <ul>
+                  <li class="tree-folder open">
+                    <span class="tree-toggle">&#9660;</span>
+                    <span class="tree-icon folder-icon">&#9632;</span>
+                    <span class="tree-name">Design</span>
+                    <ul>
+                      <li class="tree-file"><span class="tree-icon file-icon">&#9679;</span><span class="tree-name">logo-v1.fig</span><span class="tree-size">2.4 MB</span></li>
+                      <li class="tree-file"><span class="tree-icon file-icon">&#9679;</span><span class="tree-name">color-palette.png</span><span class="tree-size">340 KB</span></li>
+                      <li class="tree-file"><span class="tree-icon file-icon">&#9679;</span><span class="tree-name">typography-guide.pdf</span><span class="tree-size">1.1 MB</span></li>
+                    </ul>
+                  </li>
+                  <li class="tree-folder">
+                    <span class="tree-toggle">&#9654;</span>
+                    <span class="tree-icon folder-icon">&#9632;</span>
+                    <span class="tree-name">Research</span>
+                  </li>
+                  <li class="tree-file"><span class="tree-icon file-icon">&#9679;</span><span class="tree-name">brief.md</span><span class="tree-size">12 KB</span></li>
+                </ul>
+              </li>
+              <li class="tree-folder">
+                <span class="tree-toggle">&#9654;</span>
+                <span class="tree-icon folder-icon">&#9632;</span>
+                <span class="tree-name">Mobile App v3</span>
+              </li>
+              <li class="tree-folder open">
+                <span class="tree-toggle">&#9660;</span>
+                <span class="tree-icon folder-icon">&#9632;</span>
+                <span class="tree-name">User Research Hub</span>
+                <ul>
+                  <li class="tree-file"><span class="tree-icon file-icon">&#9679;</span><span class="tree-name">survey-results.csv</span><span class="tree-size">890 KB</span></li>
+                  <li class="tree-file"><span class="tree-icon file-icon">&#9679;</span><span class="tree-name">interview-notes.md</span><span class="tree-size">45 KB</span></li>
+                  <li class="tree-file"><span class="tree-icon file-icon">&#9679;</span><span class="tree-name">persona-cards.fig</span><span class="tree-size">5.2 MB</span></li>
+                </ul>
+              </li>
+              <li class="tree-folder">
+                <span class="tree-toggle">&#9654;</span>
+                <span class="tree-icon folder-icon">&#9632;</span>
+                <span class="tree-name">API Gateway</span>
+              </li>
+              <li class="tree-folder">
+                <span class="tree-toggle">&#9654;</span>
+                <span class="tree-icon folder-icon">&#9632;</span>
+                <span class="tree-name">Homepage Redesign</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== IDEAS VIEW ========== -->
+    <section id="ideas" class="view-panel">
+      <div class="view-container">
+        <div class="ideas-header">
+          <div class="ideas-search card-anim">
+            <input type="text" placeholder="Search ideas..." class="search-input" aria-label="Search ideas">
+            <button class="search-btn">SEARCH</button>
+          </div>
+          <button class="new-idea-btn card-anim">+ NEW IDEA</button>
+        </div>
+        <div class="ideas-grid">
+          <article class="idea-card card-anim">
+            <div class="idea-priority priority-high">HIGH</div>
+            <h3 class="idea-title">AI-Powered Sorting</h3>
+            <p class="idea-body">Use machine learning to automatically categorize and prioritize incoming ideas based on historical patterns.</p>
+            <div class="idea-tags"><span class="idea-tag">AI</span><span class="idea-tag">Automation</span></div>
+            <div class="idea-footer"><span class="idea-author">Alex K.</span><span class="idea-date">Mar 5, 2026</span></div>
+          </article>
+          <article class="idea-card card-anim">
+            <div class="idea-priority priority-med">MED</div>
+            <h3 class="idea-title">Voice-to-Idea Capture</h3>
+            <p class="idea-body">Enable users to record voice memos that are automatically transcribed and stored as idea entries.</p>
+            <div class="idea-tags"><span class="idea-tag">Voice</span><span class="idea-tag">Mobile</span></div>
+            <div class="idea-footer"><span class="idea-author">Maria R.</span><span class="idea-date">Mar 4, 2026</span></div>
+          </article>
+          <article class="idea-card card-anim">
+            <div class="idea-priority priority-high">HIGH</div>
+            <h3 class="idea-title">Collaborative Whiteboard</h3>
+            <p class="idea-body">Real-time multi-user whiteboard with infinite canvas, sticky notes, and mind mapping tools.</p>
+            <div class="idea-tags"><span class="idea-tag">Collaboration</span><span class="idea-tag">Whiteboard</span></div>
+            <div class="idea-footer"><span class="idea-author">Sam P.</span><span class="idea-date">Mar 3, 2026</span></div>
+          </article>
+          <article class="idea-card card-anim">
+            <div class="idea-priority priority-low">LOW</div>
+            <h3 class="idea-title">Dark Mode Theme</h3>
+            <p class="idea-body">System-wide dark mode toggle with smooth transition animations and per-user preference storage.</p>
+            <div class="idea-tags"><span class="idea-tag">UI</span><span class="idea-tag">Theme</span></div>
+            <div class="idea-footer"><span class="idea-author">Elena V.</span><span class="idea-date">Mar 2, 2026</span></div>
+          </article>
+          <article class="idea-card card-anim">
+            <div class="idea-priority priority-med">MED</div>
+            <h3 class="idea-title">Idea Templates</h3>
+            <p class="idea-body">Pre-built templates for common idea types: feature request, bug report, research question, experiment.</p>
+            <div class="idea-tags"><span class="idea-tag">Templates</span><span class="idea-tag">Workflow</span></div>
+            <div class="idea-footer"><span class="idea-author">Jun L.</span><span class="idea-date">Mar 1, 2026</span></div>
+          </article>
+          <article class="idea-card card-anim">
+            <div class="idea-priority priority-high">HIGH</div>
+            <h3 class="idea-title">Smart Notifications</h3>
+            <p class="idea-body">Context-aware notification system that batches alerts and respects focus time settings.</p>
+            <div class="idea-tags"><span class="idea-tag">Notifications</span><span class="idea-tag">UX</span></div>
+            <div class="idea-footer"><span class="idea-author">Alex K.</span><span class="idea-date">Feb 28, 2026</span></div>
+          </article>
+          <article class="idea-card card-anim">
+            <div class="idea-priority priority-low">LOW</div>
+            <h3 class="idea-title">Emoji Reactions</h3>
+            <p class="idea-body">Allow team members to react to ideas with emoji for quick feedback without requiring comments.</p>
+            <div class="idea-tags"><span class="idea-tag">Social</span><span class="idea-tag">Feedback</span></div>
+            <div class="idea-footer"><span class="idea-author">Maria R.</span><span class="idea-date">Feb 25, 2026</span></div>
+          </article>
+          <article class="idea-card card-anim">
+            <div class="idea-priority priority-med">MED</div>
+            <h3 class="idea-title">Integration Hub</h3>
+            <p class="idea-body">Connect with Slack, GitHub, Figma, and Jira for seamless cross-tool idea capture and tracking.</p>
+            <div class="idea-tags"><span class="idea-tag">Integration</span><span class="idea-tag">API</span></div>
+            <div class="idea-footer"><span class="idea-author">Sam P.</span><span class="idea-date">Feb 20, 2026</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== AI CHAT VIEW ========== -->
+    <section id="chat" class="view-panel">
+      <div class="view-container">
+        <div class="chat-layout">
+          <div class="chat-messages card-anim" id="chatMessages">
+            <div class="chat-msg msg-ai">
+              <div class="msg-avatar ai-avatar">AI</div>
+              <div class="msg-content">
+                <p>Welcome to the Idea Management AI Assistant. I can help you brainstorm, refine ideas, analyze project data, and generate reports. What would you like to work on?</p>
+                <span class="msg-time">10:00 AM</span>
+              </div>
+            </div>
+            <div class="chat-msg msg-user">
+              <div class="msg-content">
+                <p>Can you summarize the current status of the Brand Refresh project?</p>
+                <span class="msg-time">10:02 AM</span>
+              </div>
+              <div class="msg-avatar user-avatar">AK</div>
+            </div>
+            <div class="chat-msg msg-ai">
+              <div class="msg-content">
+                <p>The Brand Refresh project is currently at 65% completion. Key milestones completed include logo concepts (8 directions presented) and initial color palette exploration. In progress: typography system definition and color palette v2 refinement for accessibility compliance.</p>
+                <span class="msg-time">10:02 AM</span>
+              </div>
+              <div class="msg-avatar ai-avatar">AI</div>
+            </div>
+            <div class="chat-msg msg-user">
+              <div class="msg-content">
+                <p>What are the highest priority tasks across all projects?</p>
+                <span class="msg-time">10:05 AM</span>
+              </div>
+              <div class="msg-avatar user-avatar">AK</div>
+            </div>
+            <div class="chat-msg msg-ai">
+              <div class="msg-content">
+                <p>Here are the highest priority tasks: 1) User Survey Analysis (Research) - assigned to JL, 2) Typography System (Design) - assigned to AK, 3) Color Palette v2 (Design) - currently in progress by AK. I recommend focusing on the survey analysis first as it may influence design decisions.</p>
+                <span class="msg-time">10:05 AM</span>
+              </div>
+              <div class="msg-avatar ai-avatar">AI</div>
+            </div>
+            <div class="chat-msg msg-user">
+              <div class="msg-content">
+                <p>Generate 3 name ideas for a new project about customer feedback analytics.</p>
+                <span class="msg-time">10:08 AM</span>
+              </div>
+              <div class="msg-avatar user-avatar">AK</div>
+            </div>
+            <div class="chat-msg msg-ai">
+              <div class="msg-content">
+                <p>Here are three project name suggestions: 1) "Pulse" - emphasizing the real-time heartbeat of customer sentiment, 2) "Echo Chamber" - reflecting how feedback reverberates through product decisions, 3) "Signal" - focusing on extracting meaningful signals from noise in feedback data.</p>
+                <span class="msg-time">10:08 AM</span>
+              </div>
+              <div class="msg-avatar ai-avatar">AI</div>
+            </div>
+          </div>
+          <div class="chat-input-area card-anim">
+            <input type="text" class="chat-input" placeholder="Type your message..." aria-label="Chat message input">
+            <button class="chat-send-btn">SEND</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS VIEW ========== -->
+    <section id="settings" class="view-panel">
+      <div class="view-container">
+        <div class="settings-layout">
+          <nav class="settings-nav card-anim">
+            <button class="settings-tab active" data-settings="profile">PROFILE</button>
+            <button class="settings-tab" data-settings="appearance">APPEARANCE</button>
+            <button class="settings-tab" data-settings="notifications">NOTIFICATIONS</button>
+            <button class="settings-tab" data-settings="integrations">INTEGRATIONS</button>
+            <button class="settings-tab" data-settings="billing">BILLING</button>
+          </nav>
+          <div class="settings-content card-anim">
+            <div class="settings-section active" id="settings-profile">
+              <h3 class="block-heading">PROFILE SETTINGS</h3>
+              <div class="form-group">
+                <label class="form-label">Display Name</label>
+                <input type="text" class="form-input" value="Alex Kowalski" aria-label="Display name">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" value="alex@ideamgmt.com" aria-label="Email address">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Role</label>
+                <select class="form-input" aria-label="User role">
+                  <option selected>Admin</option>
+                  <option>Editor</option>
+                  <option>Viewer</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Bio</label>
+                <textarea class="form-input form-textarea" aria-label="User bio">Product designer passionate about constructivist aesthetics and functional design systems.</textarea>
+              </div>
+              <button class="save-btn">SAVE CHANGES</button>
+            </div>
+            <div class="settings-section" id="settings-appearance">
+              <h3 class="block-heading">APPEARANCE SETTINGS</h3>
+              <div class="form-group">
+                <label class="form-label">Theme</label>
+                <div class="toggle-group">
+                  <button class="toggle-btn active">CONSTRUCTIVIST</button>
+                  <button class="toggle-btn">MODERN</button>
+                  <button class="toggle-btn">MINIMAL</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Font Size</label>
+                <input type="range" class="form-range" min="14" max="20" value="16" aria-label="Font size">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Compact Mode</label>
+                <label class="switch"><input type="checkbox" aria-label="Toggle compact mode"><span class="slider"></span></label>
+              </div>
+              <button class="save-btn">SAVE CHANGES</button>
+            </div>
+            <div class="settings-section" id="settings-notifications">
+              <h3 class="block-heading">NOTIFICATION SETTINGS</h3>
+              <div class="form-group">
+                <label class="form-label">Email Notifications</label>
+                <label class="switch"><input type="checkbox" checked aria-label="Toggle email notifications"><span class="slider"></span></label>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Push Notifications</label>
+                <label class="switch"><input type="checkbox" checked aria-label="Toggle push notifications"><span class="slider"></span></label>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Digest Frequency</label>
+                <select class="form-input" aria-label="Digest frequency">
+                  <option>Daily</option>
+                  <option selected>Weekly</option>
+                  <option>Monthly</option>
+                </select>
+              </div>
+              <button class="save-btn">SAVE CHANGES</button>
+            </div>
+            <div class="settings-section" id="settings-integrations">
+              <h3 class="block-heading">INTEGRATIONS</h3>
+              <div class="integration-card">
+                <span class="integration-name">Slack</span>
+                <span class="integration-status connected">CONNECTED</span>
+              </div>
+              <div class="integration-card">
+                <span class="integration-name">GitHub</span>
+                <span class="integration-status connected">CONNECTED</span>
+              </div>
+              <div class="integration-card">
+                <span class="integration-name">Figma</span>
+                <span class="integration-status disconnected">DISCONNECTED</span>
+              </div>
+              <div class="integration-card">
+                <span class="integration-name">Jira</span>
+                <span class="integration-status disconnected">DISCONNECTED</span>
+              </div>
+            </div>
+            <div class="settings-section" id="settings-billing">
+              <h3 class="block-heading">BILLING</h3>
+              <div class="billing-plan card-anim">
+                <h4>Current Plan: <strong>PRO</strong></h4>
+                <p>$29/month per seat. 5 seats active.</p>
+                <button class="save-btn">MANAGE PLAN</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== DECORATIVE ELEMENTS ===================== -->
+  <div class="deco-triangle deco-1" aria-hidden="true"></div>
+  <div class="deco-triangle deco-2" aria-hidden="true"></div>
+  <div class="deco-line deco-3" aria-hidden="true"></div>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

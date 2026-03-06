@@ -1,0 +1,29 @@
+{
+  "domain": "concepts",
+  "style": "editorial-style",
+  "pass": "pass-1",
+  "desktop": {
+    "viewport": {
+      "width": 1536,
+      "height": 960
+    },
+    "screenshots": [
+      "validation/desktop/showcase.png",
+      "validation/desktop/showcase-viewport.png"
+    ]
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844,
+      "deviceScaleFactor": 2,
+      "isMobile": true
+    },
+    "screenshots": [
+      "validation/mobile/showcase.png",
+      "validation/mobile/showcase-viewport.png"
+    ]
+  },
+  "totalScreenshots": 4,
+  "timestamp": "2026-03-05T22:01:11.063Z"
+}

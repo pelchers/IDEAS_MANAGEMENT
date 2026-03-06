@@ -1,0 +1,49 @@
+{
+  "references": [
+    {
+      "url": "https://linear.app",
+      "name": "Linear",
+      "observedPatterns": [
+        "Slim top navigation bar with horizontal tabs",
+        "Cool blue-gray color palette with minimal accent usage",
+        "Card-based project views with subtle elevation",
+        "Clean typography with DM Sans-like geometric sans-serif"
+      ],
+      "adaptedElements": [
+        "Top bar navigation pattern with horizontal view tabs",
+        "Card hover effect with subtle translateY lift",
+        "Muted status badges with tinted backgrounds"
+      ]
+    },
+    {
+      "url": "https://notion.so",
+      "name": "Notion",
+      "observedPatterns": [
+        "Centered content containers with generous max-width",
+        "Minimal chrome around content areas",
+        "File tree navigation with expand/collapse toggles",
+        "Clean settings page with sidebar tab navigation"
+      ],
+      "adaptedElements": [
+        "Centered container pattern with 1280px max-width",
+        "Settings layout with left sidebar tabs",
+        "Directory tree expand/collapse interaction"
+      ]
+    },
+    {
+      "url": "https://vercel.com/dashboard",
+      "name": "Vercel Dashboard",
+      "observedPatterns": [
+        "Monochrome palette with single accent color",
+        "Stats cards in horizontal row",
+        "Thin border separators between content sections",
+        "Small, precise typography with tight scale"
+      ],
+      "adaptedElements": [
+        "Stats row pattern with 4-column grid",
+        "1px horizontal dividers between dashboard sections",
+        "Restrained typographic scale (13px-28px range)"
+      ]
+    }
+  ]
+}

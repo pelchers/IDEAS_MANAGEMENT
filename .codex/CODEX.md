@@ -22,7 +22,7 @@
   - End with a review file in `.adr/history/<SESSION>/phase_N_review.md`.
   - Update task list checkboxes in `.adr/orchestration/<SESSION>/primary_task_list.md`.
   - Commit + push once validations pass.
-- Orchestrator must “poke” the next subagent after each phase.
+- Orchestrator must "poke" the next subagent after each phase.
 
 ### CLI references
 - Codex supports instruction discovery via `AGENTS.md` and fallback names, configurable in `~/.codex/config.toml`.

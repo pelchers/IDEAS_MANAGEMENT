@@ -1,0 +1,52 @@
+{
+  "references": [
+    {
+      "url": "https://designmanifestos.org/el-lissitzky-the-topology-of-typography/",
+      "name": "El Lissitzky — Topology of Typography",
+      "observedPatterns": [
+        "Asymmetric typographic layouts with diagonal energy",
+        "Limited color palettes (red, black, white) used for maximum impact",
+        "Grid-structured layouts with precise geometric accents",
+        "Sans-serif and condensed type for labels and captions"
+      ],
+      "adaptedElements": [
+        "Asymmetric 2-column editorial spread (headline column + content column)",
+        "Geometric punctuation elements (circles, lines, rotated squares) between sections",
+        "Condensed Staatliches font for labels echoing constructivist display type",
+        "High-contrast teal/orange replacing traditional red/black constructivist palette"
+      ]
+    },
+    {
+      "url": "https://visme.co/blog/layout-design/",
+      "name": "Visme — Layout Design Types of Grids",
+      "observedPatterns": [
+        "Hierarchical grids that are freeform and asymmetrical",
+        "Breaking the grid for energy and movement",
+        "Column-based content flow with clear visual hierarchy",
+        "Sidebar content paired with main content areas"
+      ],
+      "adaptedElements": [
+        "Sticky headline column alongside scrollable content column",
+        "Left accent bars on cards as editorial column markers",
+        "Variable card widths in masonry grid for ideas view",
+        "Pull-quotes with accent-colored left border"
+      ]
+    },
+    {
+      "url": "https://yesimadesigner.com/anatomy-of-a-magazine-layout/",
+      "name": "Yes I'm a Designer — Anatomy of a Magazine Layout",
+      "observedPatterns": [
+        "Section labels (kickers) above headlines in small caps",
+        "Pull-quotes breaking the text flow for emphasis",
+        "Drop caps and oversized initial characters",
+        "Editorial white space as a deliberate design element"
+      ],
+      "adaptedElements": [
+        "Staatliches section labels (OVERVIEW, PORTFOLIO, STUDIO, etc.) above each view title",
+        "Pull-quotes in italic Playfair Display with teal/orange left border",
+        "Generous white space in the headline column for breathing room",
+        "Magazine-style meta line in header (March 2026 / Vol. II)"
+      ]
+    }
+  ]
+}

@@ -264,4 +264,3 @@ Commands can reference environment variables and project context:
 - Root-level `CLAUDE-HOOKS-GUIDE.md` for hooks integration
 - `.claude/skills/` for reusable agent skills
 - `.claude/agents/` for specialized agents
-

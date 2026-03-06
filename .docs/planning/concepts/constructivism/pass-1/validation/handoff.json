@@ -1,0 +1,64 @@
+{
+  "concept": "constructivism",
+  "pass": "1",
+  "domain": "frontend-concept",
+  "style": "Constructivism",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "GSAP", "version": "3.12.5", "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" },
+    { "library": "GSAP ScrollTrigger", "version": "3.12.5", "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" },
+    { "library": "Chart.js", "version": "4.4.7", "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" }
+  ],
+  "fonts": ["Oswald", "Source Sans 3", "Bebas Neue"],
+  "sections": [
+    { "id": "dashboard", "name": "Dashboard", "description": "Stats cards, productivity bar chart, recent activity feed" },
+    { "id": "projects", "name": "Projects", "description": "6 project cards with progress bars and status badges" },
+    { "id": "workspace", "name": "Workspace", "description": "Rich text editor with toolbar and sidebar metadata panel" },
+    { "id": "kanban", "name": "Kanban", "description": "4-column board (Backlog, To Do, In Progress, Done) with 12 cards" },
+    { "id": "whiteboard", "name": "Whiteboard", "description": "Canvas with draggable nodes, SVG connections, drawing toolbar" },
+    { "id": "schema", "name": "Schema", "description": "3 database table schemas (Projects, Ideas, Tasks) with field definitions" },
+    { "id": "directory", "name": "Directory Tree", "description": "Collapsible file/folder tree with file sizes and nested structure" },
+    { "id": "ideas", "name": "Ideas", "description": "8 idea cards with search, priority badges, tags, and authorship" },
+    { "id": "chat", "name": "AI Chat", "description": "6 chat messages with AI/user avatars, input area with send button" },
+    { "id": "settings", "name": "Settings", "description": "5-tab settings panel (Profile, Appearance, Notifications, Integrations, Billing)" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#CC0000",
+      "secondary": "#1A1A1A",
+      "accent": "#D4A017",
+      "background": "#F5F0E8",
+      "surface": "#FFFFFF",
+      "text": "#1A1A1A"
+    },
+    "typography": {
+      "heading": "Oswald 600/700",
+      "body": "Source Sans 3 400/600",
+      "accent": "Bebas Neue 400"
+    },
+    "borderRadius": "0px",
+    "transition": "200-800ms ease / cubic-bezier"
+  },
+  "coreFlags": {
+    "layoutArchetype": "dashboard-grid",
+    "navigationModel": "floating-fab-menu",
+    "informationDensity": "high-data-dense",
+    "animationPhilosophy": "scroll-reveal-parallax",
+    "colorTemperature": "warm-dominant"
+  },
+  "subagentFlags": {
+    "cornerStyle": "sharp-zero-radius",
+    "shadowStyle": "offset-block-shadow",
+    "decorativeMotif": "diagonal-stripes-and-geometric-overlays",
+    "typographyTreatment": "rotated-accent-labels",
+    "interactionFeedback": "angular-translate-rotate",
+    "cardComposition": "accent-stripe-border"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T12:00:00Z"
+}

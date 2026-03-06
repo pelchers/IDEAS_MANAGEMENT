@@ -1,0 +1,40 @@
+{
+  "references": [
+    {
+      "url": "https://bejamas.com/blog/neubrutalism-web-design-trend",
+      "name": "Bejamas — Neubrutalism Web Design Trend",
+      "observedPatterns": [
+        "Thick black outlines on all components (buttons, cards, icons)",
+        "Raw neobrutalist shadows as rectangles beneath elements (no blur)",
+        "High-contrast clashing palettes (red+blue, red+green, orange+green)",
+        "Flat design prioritizing function over form",
+        "Generous whitespace between objects and text"
+      ],
+      "adaptedElements": [
+        "4px solid black borders on all cards, buttons, and containers",
+        "Hard drop shadows (4px 4px 0px black) with no blur or spread",
+        "Watermelon (#FF5E54) + Malachite (#2BBF5D) + Cornflower (#1283EB) + Lemon (#FFE459) + Amethyst (#7B61FF) on Creamy Milk (#F8F3EC) background",
+        "Minimal rounded corners (0px border-radius throughout)",
+        "Oversized stat card numbers and aggressive hover transforms"
+      ]
+    },
+    {
+      "url": "https://www.nngroup.com/articles/neobrutalism/",
+      "name": "NN/g — Neobrutalism: Definition and Best Practices",
+      "observedPatterns": [
+        "2-3 bold high-contrast colors for visual impact and accessibility",
+        "Solid single-color shadows offset by 4px",
+        "Chunky sans-serif headlines paired with clean body fonts",
+        "Generous padding (24-32px) around dense geometric shapes",
+        "Neon buttons with lighten-on-click feedback"
+      ],
+      "adaptedElements": [
+        "Space Grotesk 700 for chunky headlines, 400 for body, IBM Plex Mono for code",
+        "24-32px padding on all major cards and sections",
+        "Active states use translate(2px, 2px) with reduced shadow for press feedback",
+        "Kanban column headers use full-width solid background colors for bold contrast",
+        "Navigation drawer slams open with cubic-bezier(0.2, 0, 0, 1) for heavy feel"
+      ]
+    }
+  ]
+}

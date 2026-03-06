@@ -1,0 +1,51 @@
+{
+  "references": [
+    {
+      "url": "https://linear.app",
+      "name": "Linear",
+      "observedPatterns": [
+        "Persistent sidebar with icon + label navigation",
+        "Monochromatic color palette with single accent color",
+        "Generous whitespace and low information density",
+        "Hairline borders for separation instead of shadows",
+        "Clean sans-serif typography with precise hierarchy"
+      ],
+      "adaptedElements": [
+        "Sidebar layout structure with thin left rail",
+        "Card design with border-only containers (no shadows)",
+        "Muted color palette with blue accent for active states",
+        "Compact navigation link styling with active border-left indicator"
+      ]
+    },
+    {
+      "url": "https://vercel.com/dashboard",
+      "name": "Vercel Dashboard",
+      "observedPatterns": [
+        "Near-black text on pure white backgrounds",
+        "Stat cards with single metrics and trend indicators",
+        "Minimalist form inputs with subtle border focus states",
+        "Clean data tables and list views"
+      ],
+      "adaptedElements": [
+        "Stat card layout with label/value/change structure",
+        "Input focus states using border-color transition to accent",
+        "Toggle switch design for settings preferences"
+      ]
+    },
+    {
+      "url": "https://notion.so",
+      "name": "Notion",
+      "observedPatterns": [
+        "Workspace-style split pane with tree navigation",
+        "Breadcrumb-based navigation within content areas",
+        "Clean editor interface with minimal chrome",
+        "Expandable/collapsible tree structures"
+      ],
+      "adaptedElements": [
+        "File tree with expand/collapse in workspace view",
+        "Breadcrumb component for path navigation",
+        "Clean editor body with code blocks and heading hierarchy"
+      ]
+    }
+  ]
+}

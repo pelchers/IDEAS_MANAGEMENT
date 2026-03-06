@@ -1,0 +1,65 @@
+{
+  "concept": "Editorial Style",
+  "pass": "1",
+  "domain": "frontend-concept",
+  "style": "editorial-style",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "GSAP", "version": "3.12.5", "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" },
+    { "library": "GSAP ScrollTrigger", "version": "3.12.5", "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" },
+    { "library": "Splitting.js", "version": "1.0.6", "url": "https://unpkg.com/splitting@1.0.6/dist/splitting.min.js" }
+  ],
+  "fonts": ["Cormorant Garamond", "Lora", "Montserrat"],
+  "sections": [
+    { "id": "dashboard", "name": "Dashboard", "description": "Overview with stat cards, pull-quote, activity feed, and line chart" },
+    { "id": "projects", "name": "Projects", "description": "Project grid with search, progress bars, and card hover effects" },
+    { "id": "workspace", "name": "Workspace", "description": "Document editor with sidebar file list and rich-text toolbar" },
+    { "id": "kanban", "name": "Kanban", "description": "Four-column kanban board with draggable cards and priority tags" },
+    { "id": "whiteboard", "name": "Whiteboard", "description": "Freeform canvas with sticky notes, shapes, and connectors" },
+    { "id": "schema", "name": "Schema", "description": "Entity-relationship diagram with table definitions and relationship lines" },
+    { "id": "directory", "name": "Directory Tree", "description": "Collapsible file tree with document preview panel" },
+    { "id": "ideas", "name": "Ideas", "description": "Idea capture masonry grid with tags, votes, and comments" },
+    { "id": "chat", "name": "AI Chat", "description": "Conversational AI interface with suggestion chips and message bubbles" },
+    { "id": "settings", "name": "Settings", "description": "Tabbed settings with profile, appearance, notifications, billing, and integrations" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#2C1810",
+      "secondary": "#D4A574",
+      "accent": "#8B4513",
+      "background": "#FAF5EE",
+      "surface": "#FFFFFF",
+      "text": "#2C1810",
+      "highlight": "#C17817",
+      "muted": "#8C7A6B"
+    },
+    "typography": {
+      "heading": "Cormorant Garamond, Georgia, serif",
+      "body": "Lora, Georgia, serif",
+      "accent": "Montserrat, Helvetica Neue, sans-serif"
+    },
+    "borderRadius": "2px",
+    "transition": "300ms ease"
+  },
+  "coreFlags": {
+    "layoutArchetype": "magazine-editorial",
+    "navigationModel": "sticky-top-bar",
+    "informationDensity": "low-whitespace-generous",
+    "animationPhilosophy": "scroll-reveal-parallax",
+    "colorTemperature": "warm-dominant"
+  },
+  "subagentFlags": {
+    "typographicVoice": "editorial-serif-dominant",
+    "interactionPattern": "hash-routing-spa",
+    "cardDesign": "borderless-elevated-hover",
+    "ornamentalSystem": "rule-and-dot-dividers",
+    "chartStyle": "canvas-hand-drawn-bezier"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T12:00:00Z"
+}

@@ -1,0 +1,71 @@
+{
+  "concept": "Dark Editorial",
+  "pass": "2",
+  "domain": "frontend-concept",
+  "style": "editorial-style",
+  "files": ["index.html", "style.css", "app.js", "README.md"],
+  "cdns": [
+    { "library": "Anime.js", "version": "3.2.2", "url": "https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" },
+    { "library": "Lenis", "version": "1.1.18", "url": "https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" },
+    { "library": "Chart.js", "version": "4.4.7", "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" }
+  ],
+  "fonts": ["Libre Baskerville", "Outfit"],
+  "sections": [
+    { "id": "view-dashboard", "name": "Dashboard", "description": "Stats cards, activity chart, recent activity feed" },
+    { "id": "view-projects", "name": "Projects", "description": "Project cards grid with status, progress, and team avatars" },
+    { "id": "view-workspace", "name": "Workspace", "description": "Rich text editor with sidebar document metadata" },
+    { "id": "view-kanban", "name": "Kanban Board", "description": "4-column kanban with draggable priority-tagged cards" },
+    { "id": "view-whiteboard", "name": "Whiteboard", "description": "Canvas with draggable sticky notes and connector lines" },
+    { "id": "view-schema", "name": "Schema Planner", "description": "Entity-relationship diagram with 4 tables and connections" },
+    { "id": "view-directory", "name": "Directory Tree", "description": "Collapsible file tree with document preview panel" },
+    { "id": "view-ideas", "name": "Ideas Capture", "description": "Idea input area with tag system and card grid" },
+    { "id": "view-aichat", "name": "AI Chat", "description": "Conversational AI interface with message history" },
+    { "id": "view-settings", "name": "Settings", "description": "Tabbed settings with profile, appearance, notifications, integrations, billing" }
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#F5F0E8",
+      "secondary": "#1A1B2E",
+      "accent": "#6C8EBF",
+      "background": "#0D0E1A",
+      "surface": "#181A2E",
+      "text": "#E8E4DC",
+      "highlight": "#8BA8D9",
+      "textMuted": "#9A968E",
+      "textDim": "#6B6760",
+      "success": "#4ADE80",
+      "warning": "#FBBF24",
+      "danger": "#F87171"
+    },
+    "typography": {
+      "headingFont": "Libre Baskerville",
+      "bodyFont": "Libre Baskerville",
+      "uiFont": "Outfit",
+      "baseSize": "16px",
+      "lineHeight": "1.7"
+    },
+    "borderRadius": "8px",
+    "transition": "400ms ease"
+  },
+  "coreFlags": {
+    "layoutArchetype": "full-bleed-immersive",
+    "navigationModel": "hamburger-drawer",
+    "informationDensity": "medium-balanced",
+    "animationPhilosophy": "page-transition-choreography",
+    "colorTemperature": "analogous-gradient"
+  },
+  "subagentFlags": {
+    "heroTreatment": "cinematic-gradient-with-editorial-kicker",
+    "cardStyle": "dark-surface-subtle-border-hover-lift",
+    "typographicHierarchy": "serif-headlines-sans-ui-elements",
+    "interactionModel": "staggered-reveal-on-view-switch",
+    "decorativeElements": "thin-gradient-rules-concentric-circles"
+  },
+  "localInclusions": [],
+  "accessibility": {
+    "contrastRatio": "4.5:1 minimum",
+    "bodyFontSize": "16px",
+    "reducedMotion": true
+  },
+  "timestamp": "2026-03-05T12:00:00Z"
+}

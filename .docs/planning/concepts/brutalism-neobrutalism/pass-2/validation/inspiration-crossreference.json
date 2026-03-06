@@ -1,0 +1,52 @@
+{
+  "references": [
+    {
+      "url": "https://bejamas.com/blog/neubrutalism-web-design-trend",
+      "name": "Bejamas — Neubrutalism UI Design Trend",
+      "observedPatterns": [
+        "Monochromatic palettes with single accent color",
+        "Thick borders as primary visual structure",
+        "Monospace typography for labeling and metadata",
+        "Flat surfaces without shadows or gradients"
+      ],
+      "adaptedElements": [
+        "Single red accent (#E63946) on monochromatic gray base",
+        "2px solid borders as the dominant visual boundary element",
+        "Roboto Mono for all structural labels and metadata",
+        "Zero border-radius on all elements"
+      ]
+    },
+    {
+      "url": "https://www.designmantic.com/blog/brutalism-in-web-design/",
+      "name": "DesignMantic — Brutalism in Web Design Guide",
+      "observedPatterns": [
+        "Exposed structural grid systems",
+        "Section numbering as navigation pattern",
+        "Blueprint/construction-document labeling aesthetic",
+        "Raw HTML-first, default font approaches"
+      ],
+      "adaptedElements": [
+        "80px visible background grid overlay",
+        "01-10 numbered navigation items in left panel",
+        "Construction-style breadcrumb trail and section headers",
+        "Archivo Black for blocky, heavy heading typography"
+      ]
+    },
+    {
+      "url": "https://www.kittl.com/blogs/brutalist-design-art-stl/",
+      "name": "Kittl — Brutalist Design Art Style",
+      "observedPatterns": [
+        "Raw concrete texture inspiration for digital surfaces",
+        "Anti-decoration philosophy: no rounded corners, minimal shadows",
+        "Structural hierarchy through weight and scale rather than color",
+        "Exposed building blocks and inner workings as design feature"
+      ],
+      "adaptedElements": [
+        "Concrete gray palette (#E8E8E8 bg, #F5F5F5 surface, #D4D4D4 secondary)",
+        "All square corners, no decorative elements",
+        "Hierarchy through font weight (Archivo Black vs Archivo vs Roboto Mono)",
+        "System status footer, build date, version number as exposed metadata"
+      ]
+    }
+  ]
+}

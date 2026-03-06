@@ -1,0 +1,43 @@
+{
+  "references": [
+    {
+      "url": "https://bentogrids.com",
+      "name": "Bento Grids Gallery",
+      "observedPatterns": [
+        "Modular card grids with varying column spans",
+        "Gradient accent headers on feature cards",
+        "Rounded corners with subtle drop shadows"
+      ],
+      "adaptedElements": [
+        "Magazine-style tile layout with gradient top-borders on feature tiles",
+        "Medium density spacing between tiles for breathing room"
+      ]
+    },
+    {
+      "url": "https://linear.app",
+      "name": "Linear App",
+      "observedPatterns": [
+        "Clean top-bar navigation with horizontal tabs",
+        "Warm neutral backgrounds with white surface cards",
+        "Subtle hover state animations"
+      ],
+      "adaptedElements": [
+        "Sticky top bar with gradient underline indicators on active tab",
+        "Clean card-based content organization with hover-expand interactions"
+      ]
+    },
+    {
+      "url": "https://www.notion.so",
+      "name": "Notion",
+      "observedPatterns": [
+        "Content-first editorial approach to workspace tools",
+        "Inline editor with simple toolbar",
+        "Warm off-white backgrounds"
+      ],
+      "adaptedElements": [
+        "Workspace document editor with floating toolbar",
+        "Warm off-white (#FBF7F2) background temperature"
+      ]
+    }
+  ]
+}
