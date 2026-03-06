@@ -55,7 +55,7 @@ subagent and the current chat acts purely as an orchestrator.
 - Uses the poke template for consistency
 
 **Skill path:** `.claude/skills/orchestrator-session/SKILL.md`
-**Agent path:** `.claude/agents/orchestrator-agent/AGENT.md`
+**Agent path:** `.claude/agents/longrunning-orchestrator-agent/AGENT.md`
 
 ### research-docs-session
 

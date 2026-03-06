@@ -10,7 +10,7 @@ This folder holds repo-scoped Codex assets and team config.
 - `hooks/` contains repo-scoped hooks.
 - `skills/` contains Codex skills for this repository.
 - The Claude reference source for corollary skills lives at:
-  `C:\coding\apps\wavz.fm\.claude`
+  `<PROJECT_ROOT>/.claude`
 
 ## Longrunning Workflow Convention
 

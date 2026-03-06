@@ -6,4 +6,4 @@ This folder contains repo-scoped Codex agents and subagents.
 - `./.codex/agents/subagents/<subagent-name>/AGENT.md` for specialized subagents.
 
 These are corollary stubs derived from the Claude reference at:
-`C:\coding\apps\wavz.fm\.claude`
+`<PROJECT_ROOT>/.claude`

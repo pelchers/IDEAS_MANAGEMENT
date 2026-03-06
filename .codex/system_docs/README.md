@@ -125,6 +125,33 @@ system_docs/
 │         .ai-ingest-docs/project-goals-understanding.md
 │         .docs/planning/
 │
+├── game_development/                  ← Game Development (12 Domains)
+│   └── README.md
+│       Agents:
+│         .codex/agents/game-development-agent/
+│       Skills:
+│         .codex/skills/game-development-agent/
+│       Resources:
+│         .codex/skills/game-development-agent/resources/ (12 domain files + citations)
+│
+├── godot_development/                 ← Godot 4.x Engine Development
+│   └── README.md
+│       Agents:
+│         .codex/agents/godot-development-agent/
+│       Skills:
+│         .codex/skills/godot-development-agent/
+│       Resources:
+│         .codex/skills/godot-development-agent/resources/ (5 resource files + citations)
+│
+├── system_docs_management/            ← System Docs Creation & Maintenance
+│   └── README.md
+│       Agents:
+│         .codex/agents/system-docs-agent/
+│       Skills:
+│         .codex/skills/system-docs-agent/
+│       Output:
+│         .codex/system_docs/ (this directory)
+│
 └── deprecated/                        ← Superseded Systems
     ├── DEPRECATED.md
     └── frontend_planning/             (replaced by general_frontend/)
@@ -166,4 +193,7 @@ These skills are standalone utilities that don't warrant their own system docs f
 | Chat Reports | Session report generation | 1 | 1 |
 | Claude-Codex Sync | .claude ↔ .codex mirroring | 1 | 1 |
 | Repo Setup | Interactive project bootstrapper | 1 | 1 |
-| **Total** | | **9** | **18** |
+| Game Development | Engine-agnostic game dev (12 domains) | 1 | 1 |
+| Godot Development | Godot 4.x engine specialist | 1 | 1 |
+| System Docs Management | Auto-documentation for agents/skills | 1 | 1 |
+| **Total** | | **12** | **21** |

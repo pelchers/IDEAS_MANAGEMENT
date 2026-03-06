@@ -1,13 +1,21 @@
 #!/bin/bash
 # Session start setup script
-# Runs at the beginning of each Claude Code session
+# Runs at the beginning of each Codex session
 # Displays project info and performs environment checks
 
-PROJECT_NAME="LinkWave"
-PROJECT_ROOT="C:/coding/apps/wavz.fm"
+PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+PROJECT_NAME="$(basename "$PROJECT_ROOT")"
+
+# Try to get name from package.json if available
+if [ -f "$PROJECT_ROOT/package.json" ]; then
+  PKG_NAME="$(jq -r '.name // empty' "$PROJECT_ROOT/package.json" 2>/dev/null)"
+  if [ -n "$PKG_NAME" ]; then
+    PROJECT_NAME="$PKG_NAME"
+  fi
+fi
 
 echo ""
-echo "Claude Code session started for $PROJECT_NAME"
+echo "Codex session started for $PROJECT_NAME"
 echo "Working directory: $(pwd)"
 echo ""
 
@@ -41,9 +49,7 @@ fi
 echo ""
 echo "Quick commands:"
 echo "  /help - View custom commands"
-echo "  npm run dev - Start development server"
-echo "  npx convex dev - Start Convex backend"
 echo ""
-echo "Project memory loaded from .claude/CLAUDE.md"
-echo "See .claude/settings.json for active hooks"
+echo "Project memory loaded from .codex/CODEX.md or AGENTS.md"
+echo "See .codex/ for active hooks and skills"
 echo ""

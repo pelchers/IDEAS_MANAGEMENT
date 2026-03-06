@@ -4,20 +4,30 @@
  * Trinary Sync - Sync Single Skill
  *
  * Synchronizes a single skill across three locations:
- * 1. Main app: C:\coding\apps\wavz.fm\.claude\skills\
- * 2. App builder template: C:\coding\apps\wavz.fm\app-builder-template\.claude\skills\
- * 3. Do-over files: C:\coding\apps\wavz.fm\do-over-files\.claude\skills\
+ * 1. Main app: <PROJECT_ROOT>/.claude/skills/
+ * 2. App builder template: <PROJECT_ROOT>/app-builder-template/.claude/skills/
+ * 3. Do-over files: <PROJECT_ROOT>/do-over-files/.claude/skills/
  *
  * Usage:
  *   node sync-skill.js designing-convex-schemas
  *   node sync-skill.js designing-convex-schemas --force
+ *   node sync-skill.js designing-convex-schemas --base-dir /path/to/project
  */
 
 const fs = require('fs');
 const path = require('path');
 
-// Base paths
-const BASE_DIR = 'C:\\coding\\apps\\wavz.fm';
+// Base paths - resolve dynamically
+// Accepts --base-dir <path> or derives project root from script location
+// Script lives at <PROJECT_ROOT>/.claude/skills/maintaining-trinary-sync/scripts/
+function resolveBaseDir() {
+  const idx = process.argv.indexOf('--base-dir');
+  if (idx !== -1 && process.argv[idx + 1]) {
+    return path.resolve(process.argv[idx + 1]);
+  }
+  return path.resolve(__dirname, '..', '..', '..', '..');
+}
+const BASE_DIR = resolveBaseDir();
 const MAIN_SKILLS = path.join(BASE_DIR, '.claude', 'skills');
 const TEMPLATE_SKILLS = path.join(BASE_DIR, 'app-builder-template', '.claude', 'skills');
 const DOOVER_SKILLS = path.join(BASE_DIR, 'do-over-files', '.claude', 'skills');

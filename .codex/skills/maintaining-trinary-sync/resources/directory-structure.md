@@ -7,7 +7,7 @@ Complete guide to the trinary sync directory structure and file organization.
 The trinary sync system maintains three synchronized `.claude/` directories:
 
 ```
-C:\coding\apps\wavz.fm\
+<PROJECT_ROOT>\
 ├── .claude/                           # Main App (Active Development)
 ├── app-builder-template/.claude/      # PRIMARY TEMPLATE (New Projects)
 └── do-over-files/.claude/             # Clean Reference (Restart Source)
@@ -17,7 +17,7 @@ C:\coding\apps\wavz.fm\
 
 ## Directory Roles
 
-### 1. Main App: `wavz.fm/.claude/`
+### 1. Main App: `<PROJECT_ROOT>/.claude/`
 
 **Purpose**: Active development and testing
 

@@ -15,4 +15,4 @@ This repository uses Codex repo-scoped skills and agents. Place skills in `./.co
 
 ## Reference source for corollary skills
 
-Use the Claude workspace at `C:\coding\apps\wavz.fm\.claude` as a reference for creating corollary Codex skills. Port concepts from that folder into Codex-style skills here (one folder per skill with `SKILL.md` plus optional `scripts/`, `references/`, `assets/`), adapting content to Codex conventions rather than copying wholesale.
+Use the Claude workspace at `<PROJECT_ROOT>/.claude` as a reference for creating corollary Codex skills. Port concepts from that folder into Codex-style skills here (one folder per skill with `SKILL.md` plus optional `scripts/`, `references/`, `assets/`), adapting content to Codex conventions rather than copying wholesale.

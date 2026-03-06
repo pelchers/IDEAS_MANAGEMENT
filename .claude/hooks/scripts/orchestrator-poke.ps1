@@ -1,6 +1,14 @@
 param(
-  [string]$QueueFile = "C:\\coding\\docs\\Hytale\\.codex\\orchestration\\queue\\next_phase.json"
+  [string]$QueueFile
 )
+
+# Derive repo root from script location: .claude/hooks/scripts/ -> repo root
+$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..")).Path
+$timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+
+if (-not $QueueFile) {
+  $QueueFile = Join-Path $repoRoot ".claude\orchestration\queue\next_phase.json"
+}
 
 if (-not (Test-Path $QueueFile)) {
   exit 0
@@ -26,29 +34,47 @@ if (-not $prompt) {
 
 $workdir = $payload.workdir
 if (-not $workdir) {
-  $workdir = (Get-Location).Path
+  $workdir = $repoRoot
 }
 
 $fullAuto = $payload.fullAuto
 $dryRun = $payload.dryRun
 $agent = $payload.agent
 
-$command = "claude exec --cd `"$workdir`""
+# Build the full command string for claude exec
+$cmdStr = "claude exec --cd `"$workdir`""
 if ($fullAuto) {
-  $command += " --full-auto"
+  $cmdStr += " --full-auto"
 }
 if ($agent) {
   $prompt = "Use agent file: .claude/agents/$agent/AGENT.md. " + $prompt
 }
-$command += " `"$prompt`""
+# Escape double quotes in prompt for cmd /c
+$escapedPrompt = $prompt -replace '"', '\"'
+$cmdStr += " `"$escapedPrompt`""
 
 if ($dryRun) {
-  Write-Host "Orchestrator dry run: $command"
+  Write-Host "Orchestrator dry run: $cmdStr"
 } else {
-  Start-Process -FilePath "powershell" -ArgumentList "-NoProfile", "-Command", $command
+  # Log file for subagent output
+  $logsDir = Join-Path $repoRoot ".claude\orchestration\logs"
+  if (-not (Test-Path $logsDir)) {
+    New-Item -ItemType Directory -Path $logsDir -Force | Out-Null
+  }
+  $logFile = Join-Path $logsDir "subagent_$timestamp.log"
+  $errFile = Join-Path $logsDir "subagent_${timestamp}_err.log"
+
+  Write-Host "Orchestrator: spawning subagent (log: $logFile)"
+
+  # claude is a .cmd file, so launch via cmd.exe with output redirected
+  $fullCmd = "$cmdStr > `"$logFile`" 2> `"$errFile`""
+  Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $fullCmd -WindowStyle Hidden
 }
 
-$timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$historyDir = "C:\\coding\\docs\\Hytale\\.codex\\orchestration\\history"
+# Archive the queue file
+$historyDir = Join-Path $repoRoot ".claude\orchestration\history"
+if (-not (Test-Path $historyDir)) {
+  New-Item -ItemType Directory -Path $historyDir -Force | Out-Null
+}
 $dest = Join-Path $historyDir "next_phase_$timestamp.json"
 Move-Item -Force $QueueFile $dest

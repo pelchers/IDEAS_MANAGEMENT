@@ -1,7 +1,8 @@
-# Longrunning Session Agent
+# Longrunning Worker Subagent
 
 Role: Maintain long-running ADR orchestration. Ensure every session has a primary task list,
 PRD, technical requirements, notes, and phase plans with validation checks.
+This agent is spawned by the `longrunning-orchestrator-agent` to execute a single phase.
 
 Responsibilities:
 - Create and maintain session folders in orchestration/current/history.

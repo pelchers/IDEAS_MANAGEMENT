@@ -1,6 +1,6 @@
-# Codex hooks
+# Claude Hooks
 
-Repo-scoped hook stubs derived from Claude reference files in:
-`C:\coding\apps\wavz.fm\.claude\hooks`
+Repo-scoped hook scripts for Claude Code automation.
 
-Hook scripts are mirrored by filename and subfolder structure.
+Hook scripts live in `scripts/` and are referenced by `.claude/hooks/settings.json`.
+See individual script headers for usage details.

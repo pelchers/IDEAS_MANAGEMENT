@@ -76,12 +76,12 @@ Agent instructions and patterns...
 
 | Field | Required | Purpose | Example |
 |-------|----------|---------|---------|
-| **name** | Yes | Agent identifier | `TypeScript Agent` |
-| **description** | Yes | Purpose summary | `Specialist in TypeScript` |
-| **model** | Yes | Claude model | `claude-sonnet-4-5` |
-| **permissionMode** | Yes | Access control | `auto`, `full`, `manual` |
-| **tools** | Optional | Allowed tools | `[Read, Write, Bash]` |
-| **skills** | Optional | Loaded skills | `[designing-apis]` |
+| **name** | ✅ Yes | Agent identifier | `TypeScript Agent` |
+| **description** | ✅ Yes | Purpose summary | `Specialist in TypeScript` |
+| **model** | ✅ Yes | Claude model | `claude-sonnet-4-5` |
+| **permissionMode** | ✅ Yes | Access control | `auto`, `full`, `manual` |
+| **tools** | ⬜ Optional | Allowed tools | `[Read, Write, Bash]` |
+| **skills** | ⬜ Optional | Loaded skills | `[designing-apis]` |
 
 ---
 
@@ -355,7 +355,7 @@ export const getResource = query({
 
 ### Delegation Strategy
 
-**Main Agent** -> Delegates to -> **Specialized Subagents**
+**Main Agent** → Delegates to → **Specialized Subagents**
 
 ```mermaid
 graph LR
@@ -390,9 +390,9 @@ skills:
 ---
 
 Delegates specialized tasks:
-- UI components -> shadcn-ui-agent
-- Styling -> tailwind-css-agent
-- State -> state-management-agent
+- UI components → shadcn-ui-agent
+- Styling → tailwind-css-agent
+- State → state-management-agent
 ```
 
 **Subagent** (`shadcn-ui-agent.md`):
@@ -446,19 +446,19 @@ name: shadcn/ui Component Agent
 
 **Description Field**: Be specific about capabilities
 ```yaml
-# Vague
+# ❌ Vague
 description: Helps with databases
 
-# Specific
+# ✅ Specific
 description: Specialist in Convex database schemas, queries, mutations, and real-time subscriptions
 ```
 
 **Instructions**: Provide actionable patterns
 ```markdown
-# Abstract
+# ❌ Abstract
 "Design good schemas"
 
-# Actionable
+# ✅ Actionable
 "Use indexes for all query patterns:
 .index('by_field', ['field'])"
 ```
@@ -532,13 +532,31 @@ Performs comprehensive code reviews...
 
 ---
 
+## Post-Creation: System Documentation
+
+**IMPORTANT**: After creating any new agent, invoke the `system-docs-agent` to document it.
+
+The system-docs-agent will:
+1. Read the new agent's YAML frontmatter and instructions
+2. Determine if it needs a system_docs folder or just a table entry
+3. Create/update `.codex/system_docs/` with the appropriate documentation
+4. Update the master index at `.codex/system_docs/README.md`
+
+This ensures every agent is discoverable via the system documentation index. Do not skip this step.
+
+```
+Agent Created → Invoke system-docs-agent → System docs updated → Done
+```
+
+---
+
 ## Advanced Topics
 
 For detailed information on:
-- **Agent composition patterns** -> `resources/agent-architecture.md`
-- **Subagent delegation strategies** -> `resources/subagent-patterns.md`
-- **Agent validation** -> `scripts/validate-agent.js`
-- **Agent templates** -> `scripts/agent-template.md`
+- **Agent composition patterns** → `resources/agent-architecture.md`
+- **Subagent delegation strategies** → `resources/subagent-patterns.md`
+- **Agent validation** → `scripts/validate-agent.js`
+- **Agent templates** → `scripts/agent-template.md`
 
 ## References
 
@@ -546,3 +564,4 @@ For detailed information on:
 - **Agent Skills**: https://platform.claude.com/docs/en/agents-and-tools
 - **Permission Modes**: https://code.claude.com/docs/en/configuration
 - **Template**: `scripts/agent-template.md`
+

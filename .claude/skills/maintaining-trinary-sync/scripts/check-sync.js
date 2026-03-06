@@ -14,15 +14,24 @@
 const fs = require('fs');
 const path = require('path');
 
-// Base paths
-const BASE_DIR = 'C:\\coding\\apps\\wavz.fm';
-const MAIN_CLAUDE = path.join(BASE_DIR, '.claude');
-const TEMPLATE_CLAUDE = path.join(BASE_DIR, 'app-builder-template', '.claude');
-const DOOVER_CLAUDE = path.join(BASE_DIR, 'do-over-files', '.claude');
-
 // Parse arguments
 const args = process.argv.slice(2);
 const FIX = args.includes('--fix');
+
+// Base paths - resolve dynamically
+// Accepts --base-dir <path> or derives project root from script location
+// Script lives at <PROJECT_ROOT>/.claude/skills/maintaining-trinary-sync/scripts/
+function resolveBaseDir() {
+  const idx = args.indexOf('--base-dir');
+  if (idx !== -1 && args[idx + 1]) {
+    return path.resolve(args[idx + 1]);
+  }
+  return path.resolve(__dirname, '..', '..', '..', '..');
+}
+const BASE_DIR = resolveBaseDir();
+const MAIN_CLAUDE = path.join(BASE_DIR, '.claude');
+const TEMPLATE_CLAUDE = path.join(BASE_DIR, 'app-builder-template', '.claude');
+const DOOVER_CLAUDE = path.join(BASE_DIR, 'do-over-files', '.claude');
 
 // Sync status
 const status = {

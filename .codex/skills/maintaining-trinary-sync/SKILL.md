@@ -11,9 +11,9 @@ Automated synchronization system for Claude Code configurations across three rep
 
 Keeps Claude Code artifacts synchronized across three critical directories:
 
-1. **Main App**: `C:\coding\apps\wavz.fm\.claude\` - Active development directory
-2. **App Builder Template**: `C:\coding\apps\wavz.fm\app-builder-template\.claude\` - **Primary template** for new projects
-3. **Do-Over Files**: `C:\coding\apps\wavz.fm\do-over-files\.claude\` - Clean restart reference
+1. **Main App**: `<PROJECT_ROOT>\.claude\` - Active development directory
+2. **App Builder Template**: `<PROJECT_ROOT>\app-builder-template\.claude\` - **Primary template** for new projects
+3. **Do-Over Files**: `<PROJECT_ROOT>\do-over-files\.claude\` - Clean restart reference
 
 **Synchronized Artifacts**:
 - Skills (`skills/`)
@@ -66,8 +66,8 @@ node scripts/check-sync.js
 
 ```mermaid
 graph TD
-    A[Main App<br/>C:/coding/apps/wavz.fm/.claude/] -->|sync| B[App Builder Template<br/>PRIMARY TEMPLATE<br/>C:/coding/apps/wavz.fm/app-builder-template/.claude/]
-    A -->|sync| C[Do-Over Files<br/>CLEAN REFERENCE<br/>C:/coding/apps/wavz.fm/do-over-files/.claude/]
+    A[Main App<br/><PROJECT_ROOT>/.claude/] -->|sync| B[App Builder Template<br/>PRIMARY TEMPLATE<br/><PROJECT_ROOT>/app-builder-template/.claude/]
+    A -->|sync| C[Do-Over Files<br/>CLEAN REFERENCE<br/><PROJECT_ROOT>/do-over-files/.claude/]
 
     B -.->|source for new projects| D[New Project 1]
     B -.->|source for new projects| E[New Project 2]
@@ -81,7 +81,7 @@ graph TD
 
 ## Directory Roles
 
-### Main App (`wavz.fm/.claude/`)
+### Main App (`<PROJECT_ROOT>/.claude/`)
 **Role**: Active development and testing
 - Where new skills/agents are created
 - Where changes are tested first
@@ -272,7 +272,7 @@ Automatically sync before each commit:
 # .git/hooks/pre-commit
 
 echo "Checking Claude Code sync status..."
-cd "C:/coding/apps/wavz.fm"
+cd "<PROJECT_ROOT>"
 node .claude/skills/maintaining-trinary-sync/scripts/check-sync.js
 
 if [ $? -ne 0 ]; then
@@ -406,7 +406,7 @@ node scripts/sync-skill.js skill-name --force
 **Solution**:
 ```bash
 # Ensure template is up to date first
-cd C:/coding/apps/wavz.fm
+cd <PROJECT_ROOT>
 node .claude/skills/maintaining-trinary-sync/scripts/check-sync.js --fix
 
 # Then recreate project from template

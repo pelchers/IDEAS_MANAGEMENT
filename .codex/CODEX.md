@@ -51,20 +51,6 @@
 - The hook executes `codex exec` and archives the queue file in `.codex/orchestration/history/`.
 - If `agent` is set in the queue file, the hook prefixes the prompt with the agent file path.
 
-## Project-Specific Guidance (Hytale Forge)
+## Project-Specific Guidance
 
-### Goals
-- Host official + community Hytale documentation.
-- Provide marketplace for plugins/assets/mods.
-- Provide community guides, media, and forum Q&A.
-- Provide admin + analytics + developer docs panels.
-
-### Key paths
-- Docs: `content/sections/*` mapped in `sitemap.yaml`.
-- Admin: `app/admin/*`.
-- Auth: Convex Auth (`convex/auth.ts`, `convex/auth.config.ts`, `convex/http.ts`).
-- Site developer docs: `content/sections/site/*` and `/admin/developer-docs`.
-
-### Active sessions
-- `1_RESEARCH_AND_DOCS`: completed and archived.
-- `2_SITE_DESIGN_AND_BUILD`: in progress.
+Replace this section with project-specific goals, key paths, and active sessions when deploying this template to a new repo.

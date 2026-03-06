@@ -9,13 +9,15 @@ Completed queue items are moved to `.codex/orchestration/history/`.
 Example:
 ```
 {
-  "session": "2_SITE_DESIGN_AND_BUILD",
-  "phase": "phase_7",
+  "session": "<SESSION_KEY>",
+  "phase": "phase_<N>",
   "agent": "longrunning-agent",
-  "workdir": "C:\\coding\\docs\\Hytale",
+  "workdir": "",
   "fullAuto": true,
   "autoSpawn": true,
-  "dryRun": true,
-  "prompt": "Complete phase 7 using longrunning-session workflow."
+  "dryRun": false,
+  "prompt": "Complete phase <N> of <SESSION_KEY> using longrunning-session workflow."
 }
 ```
+
+Note: When `workdir` is empty, `orchestrator-poke.ps1` defaults to the repo root (derived from its own script location).

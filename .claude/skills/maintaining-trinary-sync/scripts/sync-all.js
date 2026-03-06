@@ -4,29 +4,39 @@
  * Trinary Sync - Sync All
  *
  * Synchronizes entire .claude/ directory across three locations:
- * 1. Main app: C:\coding\apps\wavz.fm\.claude\
- * 2. App builder template (PRIMARY): C:\coding\apps\wavz.fm\app-builder-template\.claude\
- * 3. Do-over files: C:\coding\apps\wavz.fm\do-over-files\.claude\
+ * 1. Main app: <PROJECT_ROOT>/.claude/
+ * 2. App builder template (PRIMARY): <PROJECT_ROOT>/app-builder-template/.claude/
+ * 3. Do-over files: <PROJECT_ROOT>/do-over-files/.claude/
  *
  * Usage:
  *   node sync-all.js
  *   node sync-all.js --dry-run
  *   node sync-all.js --verbose
+ *   node sync-all.js --base-dir /path/to/project
  */
 
 const fs = require('fs');
 const path = require('path');
 
-// Base paths
-const BASE_DIR = 'C:\\coding\\apps\\wavz.fm';
-const MAIN_CLAUDE = path.join(BASE_DIR, '.claude');
-const TEMPLATE_CLAUDE = path.join(BASE_DIR, 'app-builder-template', '.claude');
-const DOOVER_CLAUDE = path.join(BASE_DIR, 'do-over-files', '.claude');
-
 // Parse arguments
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const VERBOSE = args.includes('--verbose');
+
+// Base paths - resolve dynamically
+// Accepts --base-dir <path> or derives project root from script location
+// Script lives at <PROJECT_ROOT>/.claude/skills/maintaining-trinary-sync/scripts/
+function resolveBaseDir() {
+  const idx = args.indexOf('--base-dir');
+  if (idx !== -1 && args[idx + 1]) {
+    return path.resolve(args[idx + 1]);
+  }
+  return path.resolve(__dirname, '..', '..', '..', '..');
+}
+const BASE_DIR = resolveBaseDir();
+const MAIN_CLAUDE = path.join(BASE_DIR, '.claude');
+const TEMPLATE_CLAUDE = path.join(BASE_DIR, 'app-builder-template', '.claude');
+const DOOVER_CLAUDE = path.join(BASE_DIR, 'do-over-files', '.claude');
 
 // Directories to sync
 const SYNC_DIRS = ['skills', 'agents', 'subagents'];

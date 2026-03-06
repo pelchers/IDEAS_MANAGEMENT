@@ -433,6 +433,24 @@ Detailed documentation...
 
 ---
 
+## Post-Creation: System Documentation
+
+**IMPORTANT**: After creating any new skill, invoke the `system-docs-agent` to document it.
+
+The system-docs-agent will:
+1. Read the new skill's YAML frontmatter and structure
+2. Determine if it needs a system_docs folder or just a table entry
+3. Create/update `.codex/system_docs/` with the appropriate documentation
+4. Update the master index at `.codex/system_docs/README.md`
+
+This ensures every skill is discoverable via the system documentation index. Do not skip this step.
+
+```
+Skill Created → Invoke system-docs-agent → System docs updated → Done
+```
+
+---
+
 ## Advanced Topics
 
 For detailed information on:
