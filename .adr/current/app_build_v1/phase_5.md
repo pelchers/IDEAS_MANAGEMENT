@@ -99,7 +99,7 @@ Status: complete
 - [x] Desktop IPC handlers registered
 - [x] Phase file ready to move to history
 - [x] Phase review file created in history
-- [ ] Changes committed and pushed
+- [x] Changes committed and pushed
 
 ## Risks / blockers
 - Artifact storage is DB-backed (JSON columns); large artifacts may need object storage (R2) later.
