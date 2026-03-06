@@ -19,7 +19,8 @@ const PUBLIC_API_PREFIXES = [
   "/api/auth/refresh",
   "/api/auth/verify-email",
   "/api/auth/password-reset",
-  "/api/health"
+  "/api/health",
+  "/api/billing/webhook"
 ];
 
 function isPublicPath(pathname: string): boolean {
