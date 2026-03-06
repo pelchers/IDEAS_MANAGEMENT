@@ -94,22 +94,22 @@ reference the screenshot paths. No phase is done without visual evidence.
 - [x] **Validation screenshots** — `.docs/validation/phase_4/` (AI chat, sidebar, tool actions)
 
 ## Phase 5: Project Browser + Sync Core
-- [ ] Cloud canonical project model:
-  - [ ] projects table + membership
-  - [ ] artifact storage metadata
-- [ ] Local mirror contract enforcement:
-  - [ ] project.json template creation
-  - [ ] required folders/files bootstrap
-- [ ] Sync queue:
-  - [ ] operation format
-  - [ ] enqueue on local mutation
-  - [ ] background push
-  - [ ] pull/rehydrate local mirror from cloud
-- [ ] Conflict strategy:
-  - [ ] auto-merge for append-only artifacts (ideas, logs)
-  - [ ] manual resolver UI for structured conflicts
-  - [ ] snapshots and rollback
-- [ ] **Validation screenshots** — `.docs/validation/phase_5/` (project browser, sync UI, conflict resolver)
+- [x] Cloud canonical project model:
+  - [x] projects table + membership
+  - [x] artifact storage metadata
+- [x] Local mirror contract enforcement:
+  - [x] project.json template creation
+  - [x] required folders/files bootstrap
+- [x] Sync queue:
+  - [x] operation format
+  - [x] enqueue on local mutation
+  - [x] background push
+  - [x] pull/rehydrate local mirror from cloud
+- [x] Conflict strategy:
+  - [x] auto-merge for append-only artifacts (ideas, logs)
+  - [x] manual resolver UI for structured conflicts
+  - [x] snapshots and rollback
+- [x] **Validation screenshots** — `.docs/validation/phase_5/` (project browser, sync UI, conflict resolver)
 
 ## Phase 6: Core Features (Kanban + Ideas + Whiteboard + Schema + Directory Generator)
 - [ ] Ideas list UI bound to ideas/ideas.json (with sync).

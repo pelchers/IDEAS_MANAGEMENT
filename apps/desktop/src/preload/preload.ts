@@ -25,5 +25,33 @@ contextBridge.exposeInMainWorld("ideaApi", {
       ipcRenderer.invoke("auth:logout", args),
     hasStoredTokens: () =>
       ipcRenderer.invoke("auth:hasStoredTokens") as Promise<{ hasTokens: boolean }>
+  },
+
+  // Sync IPC methods
+  sync: {
+    getProjects: () =>
+      ipcRenderer.invoke("sync:getProjects") as Promise<{
+        ok: boolean;
+        data?: unknown;
+        error?: string;
+      }>,
+    pushOperations: (operations: unknown[]) =>
+      ipcRenderer.invoke("sync:pushOperations", { operations }) as Promise<{
+        ok: boolean;
+        data?: unknown;
+        error?: string;
+      }>,
+    pullChanges: (projectId: string, since?: number) =>
+      ipcRenderer.invoke("sync:pullChanges", { projectId, since }) as Promise<{
+        ok: boolean;
+        data?: unknown;
+        error?: string;
+      }>,
+    getStatus: (projectId: string) =>
+      ipcRenderer.invoke("sync:getStatus", { projectId }) as Promise<{
+        ok: boolean;
+        data?: unknown;
+        error?: string;
+      }>
   }
 });

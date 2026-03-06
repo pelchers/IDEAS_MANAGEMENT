@@ -2,6 +2,7 @@ import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import path from "node:path";
 import fs from "node:fs/promises";
 import { registerAuthIpc } from "./auth";
+import { registerSyncIpc } from "./sync";
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -34,6 +35,8 @@ async function ensureMetaDir(projectRoot: string) {
 app.whenReady().then(() => {
   // Register auth IPC handlers for session validation and logout
   registerAuthIpc();
+  // Register sync IPC handlers for project sync
+  registerSyncIpc();
   ipcMain.handle("selectDirectory", async () => {
     const res = await dialog.showOpenDialog({
       properties: ["openDirectory"],
