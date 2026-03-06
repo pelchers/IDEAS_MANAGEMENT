@@ -26,10 +26,10 @@ reference the screenshot paths. No phase is done without visual evidence.
 - [x] Create monorepo layout (`apps/web`, `apps/desktop`, `packages/*`) and CI-friendly scripts.
 - [~] Establish shared domain contracts in `packages/schemas` (zod) for:
   - [x] project.json
-  - [ ] ideas.json
-  - [ ] kanban board
-  - [ ] whiteboard
-  - [ ] schema graph
+  - [x] ideas.json
+  - [x] kanban board
+  - [x] whiteboard
+  - [x] schema graph
   - [x] sync ops and revisions
 - [~] Implement API foundation in web stack:
   - [x] health endpoint
@@ -112,12 +112,12 @@ reference the screenshot paths. No phase is done without visual evidence.
 - [x] **Validation screenshots** — `.docs/validation/phase_5/` (project browser, sync UI, conflict resolver)
 
 ## Phase 6: Core Features (Kanban + Ideas + Whiteboard + Schema + Directory Generator)
-- [ ] Ideas list UI bound to ideas/ideas.json (with sync).
-- [ ] Kanban MVP -> full interactions (with sync + revisioning).
-- [ ] Whiteboard MVP -> containers with drag/resize/text/image (with sync + asset storage).
-- [ ] Schema planner nodes/edges + exports.
-- [ ] Directory generator preview/apply with safe writes.
-- [ ] **Validation screenshots** — `.docs/validation/phase_6/` (kanban, ideas, whiteboard, schema, directory generator)
+- [x] Ideas list UI bound to ideas/ideas.json (with sync).
+- [x] Kanban MVP -> full interactions (with sync + revisioning).
+- [x] Whiteboard MVP -> containers with drag/resize/text/image (with sync + asset storage).
+- [x] Schema planner nodes/edges + exports.
+- [x] Directory generator preview/apply with safe writes.
+- [x] **Validation screenshots** — `.docs/validation/phase_6/` (kanban, ideas, whiteboard, schema, directory generator)
 
 ## Phase 7: Production Hardening + Release
 - [ ] User story validation pass against `.docs/planning/user-stories.md` using:
