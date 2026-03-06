@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schema Planner - IDEA-MANAGEMENT</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fff; color: #333; }
+  .page { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+  .breadcrumb { font-size: 13px; padding: 12px 24px 0; }
+  .breadcrumb a { color: #1a73e8; text-decoration: none; }
+  .breadcrumb .sep { margin: 0 6px; color: #999; }
+  .breadcrumb .current { color: #333; font-weight: 500; }
+  .toolbar { display: flex; gap: 6px; padding: 8px 24px; border-bottom: 1px solid #e0e0e0; align-items: center; background: #f8f9fa; }
+  .tool-btn { padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px; background: #fff; font-size: 12px; font-weight: 500; cursor: pointer; }
+  .spacer { flex: 1; }
+  .workspace { display: flex; flex: 1; overflow: hidden; }
+  .canvas { flex: 1; position: relative; overflow: auto; background: #fafafa; min-height: 600px; }
+  .node-card { position: absolute; width: 240px; background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); border: 1px solid #ddd; user-select: none; }
+  .node-card.selected { border: 2px solid #1a73e8; }
+  .node-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: #1a73e8; border-radius: 8px 8px 0 0; color: #fff; }
+  .node-name { font-size: 13px; font-weight: 600; }
+  .node-delete { background: none; border: none; color: #fff; cursor: pointer; font-size: 13px; opacity: 0.8; }
+  .field-row { display: flex; justify-content: space-between; padding: 4px 10px; border-bottom: 1px solid #f1f3f4; font-size: 12px; }
+  .field-type { color: #888; font-size: 11px; }
+  .edit-btn { display: block; width: 100%; padding: 6px; border: none; background: transparent; color: #1a73e8; cursor: pointer; font-size: 11px; text-align: center; }
+  .sidebar { width: 260px; border-left: 1px solid #e0e0e0; padding: 12px; overflow: auto; }
+  .sidebar-title { font-size: 13px; font-weight: 600; text-transform: uppercase; color: #888; margin-bottom: 8px; letter-spacing: 0.5px; }
+  .edge-item { display: flex; gap: 4px; align-items: center; padding: 6px 0; border-bottom: 1px solid #f1f3f4; font-size: 12px; }
+  .edge-type { font-size: 10px; background: #e8f0fe; padding: 1px 6px; border-radius: 3px; color: #1a73e8; margin-left: auto; }
+  .edge-delete { background: none; border: none; cursor: pointer; color: #d93025; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="breadcrumb">
+    <a href="#">Dashboard</a><span class="sep">/</span>
+    <a href="#">Project</a><span class="sep">/</span>
+    <span class="current">Schema Planner</span>
+  </nav>
+
+  <div class="toolbar">
+    <button class="tool-btn">+ Add Entity</button>
+    <button class="tool-btn">+ Add Relationship</button>
+    <div class="spacer"></div>
+    <button class="tool-btn">Export JSON</button>
+    <button class="tool-btn">Export SQL</button>
+  </div>
+
+  <div class="workspace">
+    <div class="canvas">
+      <!-- SVG Edges -->
+      <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;">
+        <line x1="290" y1="116" x2="380" y2="92" stroke="#1a73e8" stroke-width="2"/>
+        <circle cx="290" cy="116" r="4" fill="#1a73e8"/>
+        <circle cx="380" cy="92" r="4" fill="#1a73e8"/>
+        <text x="335" y="98" text-anchor="middle" font-size="11" fill="#1a73e8" font-weight="600">1:N</text>
+
+        <line x1="290" y1="164" x2="380" y2="212" stroke="#1a73e8" stroke-width="2"/>
+        <circle cx="290" cy="164" r="4" fill="#1a73e8"/>
+        <circle cx="380" cy="212" r="4" fill="#1a73e8"/>
+        <text x="335" y="182" text-anchor="middle" font-size="11" fill="#1a73e8" font-weight="600">1:N</text>
+
+        <line x1="620" y1="92" x2="380" y2="188" stroke="#1a73e8" stroke-width="2"/>
+        <circle cx="620" cy="92" r="4" fill="#1a73e8"/>
+        <circle cx="380" cy="188" r="4" fill="#1a73e8"/>
+        <text x="500" y="134" text-anchor="middle" font-size="11" fill="#1a73e8" font-weight="600">N:N</text>
+      </svg>
+
+      <!-- Users node -->
+      <div class="node-card selected" style="left:50px;top:60px;">
+        <div class="node-header">
+          <span class="node-name">users</span>
+          <button class="node-delete">x</button>
+        </div>
+        <div class="field-row"><span style="font-weight:600;font-size:11px">PK id</span><span class="field-type">number</span></div>
+        <div class="field-row"><span style="font-size:11px">U email</span><span class="field-type">string</span></div>
+        <div class="field-row"><span style="font-size:11px">name</span><span class="field-type">string</span></div>
+        <div class="field-row"><span style="font-size:11px">createdAt</span><span class="field-type">date</span></div>
+        <button class="edit-btn">Edit fields</button>
+      </div>
+
+      <!-- Posts node -->
+      <div class="node-card" style="left:380px;top:40px;">
+        <div class="node-header">
+          <span class="node-name">posts</span>
+          <button class="node-delete">x</button>
+        </div>
+        <div class="field-row"><span style="font-weight:600;font-size:11px">PK id</span><span class="field-type">number</span></div>
+        <div class="field-row"><span style="font-size:11px">userId</span><span class="field-type">reference</span></div>
+        <div class="field-row"><span style="font-size:11px">title</span><span class="field-type">string</span></div>
+        <div class="field-row"><span style="font-size:11px">content</span><span class="field-type">json</span></div>
+        <div class="field-row"><span style="font-size:11px">published</span><span class="field-type">boolean</span></div>
+        <button class="edit-btn">Edit fields</button>
+      </div>
+
+      <!-- Comments node -->
+      <div class="node-card" style="left:380px;top:250px;">
+        <div class="node-header">
+          <span class="node-name">comments</span>
+          <button class="node-delete">x</button>
+        </div>
+        <div class="field-row"><span style="font-weight:600;font-size:11px">PK id</span><span class="field-type">number</span></div>
+        <div class="field-row"><span style="font-size:11px">postId</span><span class="field-type">reference</span></div>
+        <div class="field-row"><span style="font-size:11px">userId</span><span class="field-type">reference</span></div>
+        <div class="field-row"><span style="font-size:11px">body</span><span class="field-type">string</span></div>
+        <div class="field-row"><span style="font-size:11px">createdAt</span><span class="field-type">date</span></div>
+        <button class="edit-btn">Edit fields</button>
+      </div>
+
+      <!-- Tags node -->
+      <div class="node-card" style="left:700px;top:40px;">
+        <div class="node-header">
+          <span class="node-name">tags</span>
+          <button class="node-delete">x</button>
+        </div>
+        <div class="field-row"><span style="font-weight:600;font-size:11px">PK id</span><span class="field-type">number</span></div>
+        <div class="field-row"><span style="font-size:11px">U name</span><span class="field-type">string</span></div>
+        <button class="edit-btn">Edit fields</button>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <h3 class="sidebar-title">Relationships</h3>
+      <div class="edge-item">
+        <span>users.id &rarr; posts.userId</span>
+        <span class="edge-type">one-to-many</span>
+        <button class="edge-delete">x</button>
+      </div>
+      <div class="edge-item">
+        <span>users.id &rarr; comments.userId</span>
+        <span class="edge-type">one-to-many</span>
+        <button class="edge-delete">x</button>
+      </div>
+      <div class="edge-item">
+        <span>tags.id &rarr; posts.id</span>
+        <span class="edge-type">many-to-many</span>
+        <button class="edge-delete">x</button>
+      </div>
+    </aside>
+  </div>
+</div>
+</body>
+</html>

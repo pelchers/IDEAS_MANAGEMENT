@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whiteboard - IDEA-MANAGEMENT</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fff; color: #333; }
+  .page { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+  .breadcrumb { font-size: 13px; padding: 12px 24px 0; }
+  .breadcrumb a { color: #1a73e8; text-decoration: none; }
+  .breadcrumb .sep { margin: 0 6px; color: #999; }
+  .breadcrumb .current { color: #333; font-weight: 500; }
+  .toolbar { display: flex; gap: 6px; padding: 8px 24px; border-bottom: 1px solid #e0e0e0; align-items: center; background: #f8f9fa; }
+  .tool-btn { padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px; background: #fff; font-size: 12px; font-weight: 500; cursor: pointer; }
+  .tool-btn.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+  .spacer { flex: 1; }
+  .zoom-label { font-size: 12px; color: #888; min-width: 40px; text-align: right; }
+  .canvas-wrapper { flex: 1; overflow: hidden; position: relative; background: #f0f0f0; }
+  .canvas {
+    position: absolute; top: 0; left: 0; width: 3000px; height: 2000px;
+    background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .container {
+    position: absolute; border-radius: 4px; cursor: grab;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .container.selected { border: 2px solid #1a73e8 !important; box-shadow: 0 0 0 2px rgba(26,115,232,0.3); }
+  .handle { position: absolute; width: 10px; height: 10px; background: #1a73e8; border-radius: 2px; }
+  .handle-tl { top: -5px; left: -5px; cursor: nwse-resize; }
+  .handle-tr { top: -5px; right: -5px; cursor: nesw-resize; }
+  .handle-bl { bottom: -5px; left: -5px; cursor: nesw-resize; }
+  .handle-br { bottom: -5px; right: -5px; cursor: nwse-resize; }
+  .connector { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; background: #4caf50; border-radius: 50%; border: 2px solid #fff; cursor: crosshair; }
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="breadcrumb">
+    <a href="#">Dashboard</a><span class="sep">/</span>
+    <a href="#">Project</a><span class="sep">/</span>
+    <span class="current">Whiteboard</span>
+  </nav>
+
+  <div class="toolbar">
+    <button class="tool-btn">+ Text</button>
+    <button class="tool-btn">+ Image</button>
+    <button class="tool-btn active">Connect</button>
+    <button class="tool-btn" style="color:#d93025">Delete</button>
+    <div class="spacer"></div>
+    <button class="tool-btn">Zoom +</button>
+    <button class="tool-btn">Zoom -</button>
+    <button class="tool-btn">Reset</button>
+    <span class="zoom-label">100%</span>
+  </div>
+
+  <div class="canvas-wrapper">
+    <div class="canvas">
+      <!-- SVG Edges -->
+      <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+          </marker>
+        </defs>
+        <line x1="250" y1="130" x2="420" y2="130" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="520" y1="180" x2="350" y2="310" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="250" y1="180" x2="250" y2="280" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+      </svg>
+
+      <!-- Container 1 - Selected text -->
+      <div class="container selected" style="left:100px;top:80px;width:300px;height:100px;background:#fff;border:2px solid #1a73e8;">
+        <div class="connector"></div>
+        <div class="handle handle-tl"></div>
+        <div class="handle handle-tr"></div>
+        <div class="handle handle-bl"></div>
+        <div class="handle handle-br"></div>
+        <div style="padding:8px;font-size:14px;">
+          <strong>User Authentication</strong><br>
+          OAuth2 flow with Google and GitHub providers. Session management via JWT tokens.
+        </div>
+      </div>
+
+      <!-- Container 2 - Text -->
+      <div class="container" style="left:420px;top:80px;width:200px;height:100px;background:#e8f5e9;border:2px solid #4caf50;">
+        <div style="padding:8px;font-size:14px;">
+          <strong>API Gateway</strong><br>
+          Rate limiting, CORS, request routing
+        </div>
+      </div>
+
+      <!-- Container 3 - Text -->
+      <div class="container" style="left:150px;top:280px;width:240px;height:80px;background:#fff3e0;border:2px solid #ff9800;">
+        <div style="padding:8px;font-size:14px;">
+          <strong>Database Layer</strong><br>
+          PostgreSQL with Prisma ORM
+        </div>
+      </div>
+
+      <!-- Container 4 - Image-like -->
+      <div class="container" style="left:500px;top:280px;width:200px;height:160px;background:#f3e5f5;border:2px solid #9c27b0;">
+        <div style="padding:8px;font-size:14px;">
+          <strong>WebSocket Server</strong><br>
+          Real-time collaboration, live cursors, presence
+        </div>
+      </div>
+
+      <!-- Container 5 -->
+      <div class="container" style="left:700px;top:100px;width:180px;height:80px;background:#e3f2fd;border:2px solid #2196f3;">
+        <div style="padding:8px;font-size:14px;">
+          <strong>CDN / Storage</strong><br>
+          S3 + CloudFront
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

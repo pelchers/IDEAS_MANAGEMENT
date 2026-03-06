@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanban Board - IDEA-MANAGEMENT</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fff; color: #333; }
+  .page { height: 100vh; display: flex; flex-direction: column; padding: 16px 24px; overflow: hidden; }
+  .breadcrumb { font-size: 13px; margin-bottom: 8px; }
+  .breadcrumb a { color: #1a73e8; text-decoration: none; }
+  .breadcrumb .sep { margin: 0 6px; color: #999; }
+  .breadcrumb .current { color: #333; font-weight: 500; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .header h1 { font-size: 22px; font-weight: 600; }
+  .btn-primary { padding: 8px 16px; background: #1a73e8; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; }
+  .board { display: flex; gap: 12px; flex: 1; overflow-x: auto; padding-bottom: 8px; }
+  .column { min-width: 260px; max-width: 300px; background: #f8f9fa; border-radius: 8px; padding: 10px; border: 1px solid #e0e0e0; display: flex; flex-direction: column; flex-shrink: 0; }
+  .col-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 4px 2px; }
+  .col-title { font-size: 14px; font-weight: 600; }
+  .col-count { font-weight: 400; color: #999; font-size: 12px; }
+  .card-list { flex: 1; display: flex; flex-direction: column; gap: 6px; min-height: 40px; }
+  .card { background: #fff; border-radius: 6px; padding: 10px 12px; border: 1px solid #e0e0e0; font-size: 13px; cursor: grab; }
+  .card-title { font-weight: 500; margin-bottom: 4px; }
+  .card-meta { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+  .priority-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot-high { background: #f44336; }
+  .dot-medium { background: #ff9800; }
+  .dot-low { background: #4caf50; }
+  .dot-critical { background: #9c27b0; }
+  .card-label { padding: 1px 6px; background: #e8f0fe; border-radius: 3px; font-size: 10px; color: #1a73e8; }
+  .card-footer { margin-top: 4px; display: flex; justify-content: space-between; font-size: 11px; color: #888; }
+  .add-card-btn { width: 100%; padding: 6px; border: none; background: none; color: #888; cursor: pointer; font-size: 12px; text-align: left; border-radius: 4px; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="breadcrumb">
+    <a href="#">Dashboard</a><span class="sep">/</span>
+    <a href="#">Project</a><span class="sep">/</span>
+    <span class="current">Kanban</span>
+  </nav>
+
+  <div class="header">
+    <h1>Kanban Board</h1>
+    <button class="btn-primary">+ Add Column</button>
+  </div>
+
+  <div class="board">
+    <!-- Backlog -->
+    <div class="column">
+      <div class="col-header">
+        <span class="col-title">Backlog <span class="col-count">(3)</span></span>
+      </div>
+      <div class="card-list">
+        <div class="card">
+          <div class="card-title">Design system documentation</div>
+          <div class="card-meta">
+            <span class="priority-dot dot-low"></span>
+            <span class="card-label">docs</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Accessibility audit</div>
+          <div class="card-meta">
+            <span class="priority-dot dot-medium"></span>
+            <span class="card-label">a11y</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Mobile responsive fixes</div>
+          <div class="card-meta">
+            <span class="priority-dot dot-high"></span>
+            <span class="card-label">frontend</span>
+            <span class="card-label">mobile</span>
+          </div>
+        </div>
+      </div>
+      <button class="add-card-btn">+ Add Card</button>
+    </div>
+
+    <!-- To Do -->
+    <div class="column">
+      <div class="col-header">
+        <span class="col-title">To Do <span class="col-count">(2)</span></span>
+      </div>
+      <div class="card-list">
+        <div class="card">
+          <div class="card-title">Implement search feature</div>
+          <div class="card-meta">
+            <span class="priority-dot dot-high"></span>
+            <span class="card-label">frontend</span>
+            <span class="card-label">api</span>
+          </div>
+          <div class="card-footer">
+            <span>Due: 2026-03-15</span>
+            <span style="font-style:italic">Alice</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Database migration script</div>
+          <div class="card-meta">
+            <span class="priority-dot dot-critical"></span>
+            <span class="card-label">backend</span>
+          </div>
+        </div>
+      </div>
+      <button class="add-card-btn">+ Add Card</button>
+    </div>
+
+    <!-- In Progress -->
+    <div class="column">
+      <div class="col-header">
+        <span class="col-title">In Progress <span class="col-count">(2)</span></span>
+      </div>
+      <div class="card-list">
+        <div class="card">
+          <div class="card-title">User authentication flow</div>
+          <div class="card-meta">
+            <span class="priority-dot dot-critical"></span>
+            <span class="card-label">auth</span>
+            <span class="card-label">security</span>
+          </div>
+          <div class="card-footer">
+            <span>Due: 2026-03-10</span>
+            <span style="font-style:italic">Bob</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">API endpoint tests</div>
+          <div class="card-meta">
+            <span class="priority-dot dot-medium"></span>
+            <span class="card-label">testing</span>
+          </div>
+        </div>
+      </div>
+      <button class="add-card-btn">+ Add Card</button>
+    </div>
+
+    <!-- Review -->
+    <div class="column">
+      <div class="col-header">
+        <span class="col-title">Review <span class="col-count">(1)</span></span>
+      </div>
+      <div class="card-list">
+        <div class="card">
+          <div class="card-title">Landing page redesign</div>
+          <div class="card-meta">
+            <span class="priority-dot dot-medium"></span>
+            <span class="card-label">design</span>
+            <span class="card-label">frontend</span>
+          </div>
+          <div class="card-footer">
+            <span></span>
+            <span style="font-style:italic">Carol</span>
+          </div>
+        </div>
+      </div>
+      <button class="add-card-btn">+ Add Card</button>
+    </div>
+
+    <!-- Done -->
+    <div class="column">
+      <div class="col-header">
+        <span class="col-title">Done <span class="col-count">(2)</span></span>
+      </div>
+      <div class="card-list">
+        <div class="card">
+          <div class="card-title">Setup CI/CD pipeline</div>
+          <div class="card-meta">
+            <span class="priority-dot dot-high"></span>
+            <span class="card-label">devops</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Error logging integration</div>
+          <div class="card-meta">
+            <span class="priority-dot dot-low"></span>
+            <span class="card-label">backend</span>
+          </div>
+        </div>
+      </div>
+      <button class="add-card-btn">+ Add Card</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

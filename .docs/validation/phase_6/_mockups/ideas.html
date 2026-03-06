@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ideas List - IDEA-MANAGEMENT</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fff; color: #333; }
+  .page { max-width: 960px; margin: 0 auto; padding: 24px; }
+  .breadcrumb { font-size: 13px; margin-bottom: 12px; }
+  .breadcrumb a { color: #1a73e8; text-decoration: none; }
+  .breadcrumb .sep { margin: 0 6px; color: #999; }
+  .breadcrumb .current { color: #333; font-weight: 500; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .header h1 { font-size: 24px; font-weight: 600; }
+  .btn-primary { padding: 8px 16px; background: #1a73e8; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+  .search-input { padding: 8px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; min-width: 200px; flex: 1; }
+  .tag-btn { padding: 4px 10px; border: none; border-radius: 12px; font-size: 12px; cursor: pointer; }
+  .tag-active { background: #1a73e8; color: #fff; }
+  .tag-inactive { background: #f1f3f4; color: #333; }
+  .idea-list { display: flex; flex-direction: column; gap: 8px; }
+  .idea-card { padding: 14px 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; }
+  .idea-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .idea-title { font-size: 15px; font-weight: 600; }
+  .priority-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; color: #fff; text-transform: uppercase; }
+  .priority-high { background: #f44336; }
+  .priority-medium { background: #ff9800; }
+  .priority-low { background: #4caf50; }
+  .priority-critical { background: #9c27b0; }
+  .idea-desc { margin: 4px 0 8px; font-size: 13px; color: #555; line-height: 1.4; }
+  .idea-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .status-badge { display: inline-block; padding: 2px 8px; background: #e8f0fe; border-radius: 4px; font-size: 11px; color: #1a73e8; font-weight: 500; }
+  .category-badge { display: inline-block; padding: 2px 8px; background: #fce8e6; border-radius: 4px; font-size: 11px; color: #c5221f; }
+  .idea-tag { display: inline-block; padding: 2px 8px; background: #f1f3f4; border-radius: 4px; font-size: 11px; color: #5f6368; }
+  .idea-actions { display: flex; gap: 8px; }
+  .action-btn { padding: 4px 10px; border: 1px solid #ddd; border-radius: 4px; background: #fff; font-size: 12px; cursor: pointer; }
+  .action-promote { color: #1a73e8; }
+  .action-delete { color: #d93025; }
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="breadcrumb">
+    <a href="#">Dashboard</a><span class="sep">/</span>
+    <a href="#">Project</a><span class="sep">/</span>
+    <span class="current">Ideas</span>
+  </nav>
+
+  <div class="header">
+    <h1>Ideas</h1>
+    <button class="btn-primary">+ New Idea</button>
+  </div>
+
+  <div class="filter-bar">
+    <input class="search-input" placeholder="Search ideas..." value="">
+    <button class="tag-btn tag-active">frontend</button>
+    <button class="tag-btn tag-inactive">backend</button>
+    <button class="tag-btn tag-inactive">ux</button>
+    <button class="tag-btn tag-inactive">performance</button>
+    <button class="tag-btn tag-inactive">security</button>
+  </div>
+
+  <div class="idea-list">
+    <div class="idea-card">
+      <div class="idea-header">
+        <h3 class="idea-title">Implement dark mode toggle</h3>
+        <span class="priority-badge priority-high">HIGH</span>
+      </div>
+      <p class="idea-desc">Add a dark mode toggle to the settings page that persists across sessions using local storage. Should respect system preference by default.</p>
+      <div class="idea-meta">
+        <span class="status-badge">Exploring</span>
+        <span class="category-badge">design</span>
+        <span class="idea-tag">frontend</span>
+        <span class="idea-tag">ux</span>
+      </div>
+      <div class="idea-actions">
+        <button class="action-btn">Edit</button>
+        <button class="action-btn action-promote">Promote to Kanban</button>
+        <button class="action-btn action-delete">Delete</button>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <div class="idea-header">
+        <h3 class="idea-title">Add real-time collaboration</h3>
+        <span class="priority-badge priority-critical">CRITICAL</span>
+      </div>
+      <p class="idea-desc">Enable multiple users to edit the same project simultaneously with conflict resolution. Consider using WebSockets or CRDTs.</p>
+      <div class="idea-meta">
+        <span class="status-badge">Captured</span>
+        <span class="idea-tag">backend</span>
+        <span class="idea-tag">frontend</span>
+      </div>
+      <div class="idea-actions">
+        <button class="action-btn">Edit</button>
+        <button class="action-btn action-promote">Promote to Kanban</button>
+        <button class="action-btn action-delete">Delete</button>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <div class="idea-header">
+        <h3 class="idea-title">Optimize image loading performance</h3>
+        <span class="priority-badge priority-medium">MEDIUM</span>
+      </div>
+      <p class="idea-desc">Implement lazy loading for images and use WebP format with fallbacks. Add blur placeholder while loading.</p>
+      <div class="idea-meta">
+        <span class="status-badge">Validated</span>
+        <span class="category-badge">performance</span>
+        <span class="idea-tag">frontend</span>
+        <span class="idea-tag">performance</span>
+      </div>
+      <div class="idea-actions">
+        <button class="action-btn">Edit</button>
+        <button class="action-btn action-promote">Promote to Kanban</button>
+        <button class="action-btn action-delete">Delete</button>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <div class="idea-header">
+        <h3 class="idea-title">API rate limiting</h3>
+        <span class="priority-badge priority-low">LOW</span>
+      </div>
+      <p class="idea-desc">Add rate limiting middleware to prevent abuse of API endpoints.</p>
+      <div class="idea-meta">
+        <span class="status-badge">Captured</span>
+        <span class="idea-tag">backend</span>
+        <span class="idea-tag">security</span>
+      </div>
+      <div class="idea-actions">
+        <button class="action-btn">Edit</button>
+        <button class="action-btn action-promote">Promote to Kanban</button>
+        <button class="action-btn action-delete">Delete</button>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <div class="idea-header">
+        <h3 class="idea-title">Keyboard shortcuts for common actions</h3>
+        <span class="priority-badge priority-medium">MEDIUM</span>
+      </div>
+      <div class="idea-meta">
+        <span class="status-badge">Promoted</span>
+        <span class="idea-tag">frontend</span>
+        <span class="idea-tag">ux</span>
+      </div>
+      <div class="idea-actions">
+        <button class="action-btn">Edit</button>
+        <button class="action-btn action-delete">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
