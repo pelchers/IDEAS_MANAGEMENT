@@ -74,7 +74,7 @@ Status: complete
 - [x] Admin bypass works for AI features
 - [x] Phase file ready to move to history
 - [x] Phase review file created in history
-- [ ] Changes committed and pushed
+- [x] Changes committed and pushed
 
 ## Risks / blockers
 - AI API keys needed — use env vars (OPENAI_API_KEY) via .env (not committed).
