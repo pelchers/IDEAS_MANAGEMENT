@@ -115,12 +115,12 @@ function FileTreeNode({
 
 /** Sub-views navigation links. */
 const SUB_VIEWS = [
-  { label: "Kanban", path: "kanban", icon: "[K]" },
-  { label: "Ideas", path: "ideas", icon: "[I]" },
-  { label: "Whiteboard", path: "whiteboard", icon: "[W]" },
-  { label: "Schema", path: "schema", icon: "[S]" },
-  { label: "Directory", path: "directory", icon: "[D]" },
-  { label: "AI Chat", path: "ai", icon: "[A]" },
+  { label: "Ideas", path: "ideas", icon: "\uD83D\uDCA1", desc: "Capture and organize ideas" },
+  { label: "Kanban", path: "kanban", icon: "\uD83D\uDCCB", desc: "Track work with boards and cards" },
+  { label: "Whiteboard", path: "whiteboard", icon: "\uD83C\uDFA8", desc: "Visual canvas for brainstorming" },
+  { label: "Schema", path: "schema", icon: "\uD83D\uDDD7\uFE0F", desc: "Design data models and schemas" },
+  { label: "Directory Tree", path: "directory-tree", icon: "\uD83D\uDCC2", desc: "Plan project file structure" },
+  { label: "AI Chat", path: "ai", icon: "\uD83E\uDD16", desc: "AI-powered project assistant" },
 ];
 
 export default function ProjectWorkspacePage({
@@ -286,6 +286,9 @@ export default function ProjectWorkspacePage({
                 >
                   <span style={styles.subViewIcon}>{view.icon}</span>
                   <span style={styles.subViewLabel}>{view.label}</span>
+                  {"desc" in view && (
+                    <span style={styles.subViewDesc}>{view.desc}</span>
+                  )}
                 </a>
               ))}
             </div>
@@ -449,8 +452,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   subViewGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-    gap: "8px",
+    gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
+    gap: "10px",
   },
   subViewCard: {
     display: "flex",
@@ -473,6 +476,12 @@ const styles: Record<string, React.CSSProperties> = {
   subViewLabel: {
     fontSize: "13px",
     fontWeight: 500,
+  },
+  subViewDesc: {
+    fontSize: "11px",
+    color: "#888",
+    textAlign: "center" as const,
+    lineHeight: "1.3",
   },
   loadingContainer: {
     display: "flex",

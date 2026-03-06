@@ -397,7 +397,7 @@ export default function DirectoryTreePage({
     });
   }
 
-  function renderNode(node: TreeNode, path: string[], depth: number): JSX.Element {
+  function renderNode(node: TreeNode, path: string[], depth: number): React.ReactElement {
     const pathKey = path.join("/");
     const isExpanded = expanded.has(pathKey);
     const isSelected =
