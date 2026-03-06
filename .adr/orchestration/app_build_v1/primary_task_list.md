@@ -47,21 +47,21 @@ reference the screenshot paths. No phase is done without visual evidence.
 - [ ] **Validation screenshots** — `.docs/validation/phase_1/` (desktop + mobile)
 
 ## Phase 2: Auth + Sessions + Admin Override (Production-Grade)
-- [ ] DB + Prisma schema for users/credentials/sessions/refresh tokens/audit logs.
-- [ ] Roll-your-own auth:
-  - [ ] sign up + email verification
-  - [ ] sign in
-  - [ ] refresh token rotation
-  - [ ] sign out (single device + all devices)
-  - [ ] password reset
-- [ ] Admin override account:
-  - [ ] bootstrap procedure (env-provided admin email + secret)
-  - [ ] admin role enforcement
-  - [ ] audit events for admin actions
-- [ ] Desktop enforcement:
-  - [ ] app startup session validation
-  - [ ] logout and token revocation handling
-- [ ] **Validation screenshots** — `.docs/validation/phase_2/` (auth flows, admin panel, desktop gate)
+- [x] DB + Prisma schema for users/credentials/sessions/refresh tokens/audit logs.
+- [x] Roll-your-own auth:
+  - [x] sign up + email verification
+  - [x] sign in
+  - [x] refresh token rotation
+  - [x] sign out (single device + all devices)
+  - [x] password reset
+- [x] Admin override account:
+  - [x] bootstrap procedure (env-provided admin email + secret)
+  - [x] admin role enforcement
+  - [x] audit events for admin actions
+- [x] Desktop enforcement:
+  - [x] app startup session validation
+  - [x] logout and token revocation handling
+- [x] **Validation screenshots** — `.docs/validation/phase_2/` (auth flows, admin panel, desktop gate)
 
 ## Phase 3: Subscriptions + Entitlements (Stripe)
 - [ ] Stripe product/price plan definitions (requires final tiers decision).
