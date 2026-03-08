@@ -14,11 +14,11 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 ---
 
 ## Phase 1: Database + Prisma Audit
-- [ ] Review Prisma schema against PRD data model (users, projects, kanban, whiteboard, schema, ideas, AI, sync, billing)
-- [ ] Run `prisma migrate reset` for a clean database
-- [ ] Verify all 18 tables create correctly
-- [ ] Document any missing or incorrect models
-- [ ] Seed admin bootstrap account
+- [x] Review Prisma schema against PRD data model (users, projects, kanban, whiteboard, schema, ideas, AI, sync, billing)
+- [x] Run `prisma migrate reset` for a clean database
+- [x] Verify all 18 tables create correctly
+- [x] Document any missing or incorrect models
+- [x] Seed admin bootstrap account
 
 ## Phase 2: Auth Endpoints
 - [ ] Test signup (email/password, 12+ char validation, duplicate rejection)
