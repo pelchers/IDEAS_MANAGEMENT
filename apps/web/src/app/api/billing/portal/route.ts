@@ -14,6 +14,15 @@ const PortalSchema = z.object({
  * Returns { ok: true, url: string } with the portal URL.
  */
 export async function POST(req: Request) {
+  // Pre-flight: check if Stripe is configured
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
+  if (!stripeKey || stripeKey === "sk_test_..." || stripeKey.length < 20) {
+    return NextResponse.json(
+      { ok: false, error: "billing_not_configured", message: "Stripe is not configured. Set STRIPE_SECRET_KEY in environment." },
+      { status: 503 }
+    );
+  }
+
   const authResult = await requireAuth(req);
   if (isErrorResponse(authResult)) return authResult;
 

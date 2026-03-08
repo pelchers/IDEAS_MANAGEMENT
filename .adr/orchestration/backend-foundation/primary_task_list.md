@@ -49,10 +49,10 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Fix any broken endpoints (added error handling for missing API key in AI chat)
 
 ## Phase 5: Billing + Proxy + Health
-- [ ] Test Stripe checkout session creation
-- [ ] Test customer portal redirect
-- [ ] Test webhook handler (signature verification, idempotency)
-- [ ] Test proxy middleware (public routes pass, private routes require auth)
-- [ ] Test health endpoint
-- [ ] Verify rate limiting middleware (if implemented)
-- [ ] Fix any broken endpoints
+- [x] Test Stripe checkout session creation
+- [x] Test customer portal redirect
+- [x] Test webhook handler (signature verification, idempotency)
+- [x] Test proxy middleware (public routes pass, private routes require auth)
+- [x] Test health endpoint
+- [x] Verify rate limiting middleware (if implemented) — not implemented, documented
+- [x] Fix any broken endpoints (added pre-flight Stripe key checks in checkout and portal)
