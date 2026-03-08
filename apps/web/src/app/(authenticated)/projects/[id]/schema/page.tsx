@@ -3,39 +3,26 @@
 import { useState, useEffect, use, useCallback, useRef } from "react";
 
 /* ------------------------------------------------------------------ */
-/*  Types (matching @idea-management/schemas SchemaGraph)              */
+/*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
 interface SchemaField {
-  name: string;
-  type: string;
-  nullable: boolean;
-  primaryKey: boolean;
-  unique: boolean;
-  defaultValue?: string;
-  reference?: { table: string; field: string };
-}
-
-interface SchemaNode {
   id: string;
   name: string;
-  x: number;
-  y: number;
+  type: "String" | "Number" | "Boolean" | "Date" | "JSON" | "Relation";
+  required: boolean;
+  unique: boolean;
+  relatedEntity?: string; // only used when type === "Relation"
+}
+
+interface SchemaEntity {
+  id: string;
+  name: string;
   fields: SchemaField[];
 }
 
-interface SchemaEdge {
-  id: string;
-  fromNodeId: string;
-  fromField: string;
-  toNodeId: string;
-  toField: string;
-  type: "one-to-one" | "one-to-many" | "many-to-many";
-}
-
-interface SchemaGraph {
-  nodes: SchemaNode[];
-  edges: SchemaEdge[];
+interface SchemaData {
+  entities: SchemaEntity[];
 }
 
 /* ------------------------------------------------------------------ */
@@ -48,38 +35,23 @@ function uid(): string {
     : `id-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-const FIELD_TYPES = ["string", "number", "boolean", "date", "json", "reference"];
+const FIELD_TYPES: SchemaField["type"][] = [
+  "String",
+  "Number",
+  "Boolean",
+  "Date",
+  "JSON",
+  "Relation",
+];
 
-function generateDDL(graph: SchemaGraph): string {
-  const lines: string[] = [];
-  for (const node of graph.nodes) {
-    lines.push(`CREATE TABLE "${node.name}" (`);
-    const fieldLines: string[] = [];
-    for (const f of node.fields) {
-      let line = `  "${f.name}" ${mapSQLType(f.type)}`;
-      if (f.primaryKey) line += " PRIMARY KEY";
-      if (f.unique && !f.primaryKey) line += " UNIQUE";
-      if (!f.nullable && !f.primaryKey) line += " NOT NULL";
-      if (f.defaultValue) line += ` DEFAULT ${f.defaultValue}`;
-      fieldLines.push(line);
-    }
-    lines.push(fieldLines.join(",\n"));
-    lines.push(");\n");
-  }
-  return lines.join("\n");
-}
-
-function mapSQLType(t: string): string {
-  switch (t) {
-    case "string": return "TEXT";
-    case "number": return "INTEGER";
-    case "boolean": return "BOOLEAN";
-    case "date": return "TIMESTAMP";
-    case "json": return "JSONB";
-    case "reference": return "INTEGER";
-    default: return "TEXT";
-  }
-}
+const TYPE_COLORS: Record<SchemaField["type"], string> = {
+  String: "var(--nb-cornflower)",
+  Number: "var(--nb-amethyst)",
+  Boolean: "var(--nb-malachite)",
+  Date: "var(--nb-lemon)",
+  JSON: "var(--nb-gray-mid)",
+  Relation: "var(--nb-watermelon)",
+};
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
@@ -92,69 +64,84 @@ export default function SchemaPage({
 }) {
   const { id: projectId } = use(params);
 
-  const [nodes, setNodes] = useState<SchemaNode[]>([]);
-  const [edges, setEdges] = useState<SchemaEdge[]>([]);
+  const [entities, setEntities] = useState<SchemaEntity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
-  // Selection & drag
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  const [dragState, setDragState] = useState<{
-    nodeId: string;
-    startX: number;
-    startY: number;
-    origX: number;
-    origY: number;
-  } | null>(null);
+  // Expanded entity (for editing)
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  // Node editing
-  const [editingNode, setEditingNode] = useState<SchemaNode | null>(null);
-  const [editName, setEditName] = useState("");
-  const [editFields, setEditFields] = useState<SchemaField[]>([]);
+  // Inline add-entity
+  const [showAddEntity, setShowAddEntity] = useState(false);
+  const [newEntityName, setNewEntityName] = useState("");
 
-  // Add field form
+  // Edit entity name
+  const [editingNameId, setEditingNameId] = useState<string | null>(null);
+  const [editNameValue, setEditNameValue] = useState("");
+
+  // Add field form per entity
+  const [addFieldEntityId, setAddFieldEntityId] = useState<string | null>(null);
   const [newFieldName, setNewFieldName] = useState("");
-  const [newFieldType, setNewFieldType] = useState("string");
+  const [newFieldType, setNewFieldType] = useState<SchemaField["type"]>("String");
+  const [newFieldRequired, setNewFieldRequired] = useState(false);
+  const [newFieldRelated, setNewFieldRelated] = useState("");
 
-  // Edge creation
-  const [addingEdge, setAddingEdge] = useState(false);
-  const [edgeFromNodeId, setEdgeFromNodeId] = useState("");
-  const [edgeFromField, setEdgeFromField] = useState("");
-  const [edgeToNodeId, setEdgeToNodeId] = useState("");
-  const [edgeToField, setEdgeToField] = useState("");
-  const [edgeType, setEdgeType] = useState<SchemaEdge["type"]>("one-to-many");
-
-  // Delete confirm
+  // Delete confirmation
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
-  // DDL modal
-  const [showDDL, setShowDDL] = useState(false);
+  const artifactUrl = `/api/projects/${projectId}/artifacts/schema/schema.json`;
 
-  const artifactUrl = `/api/projects/${projectId}/artifacts/schema/schema.graph.json`;
+  /* ---------- Debounced save ---------- */
+
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const persist = useCallback(
-    async (graph: SchemaGraph) => {
-      await fetch(artifactUrl, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(graph),
-      });
+    async (data: SchemaData) => {
+      setSaving(true);
+      try {
+        await fetch(artifactUrl, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ content: data }),
+        });
+      } catch {
+        // silently fail
+      } finally {
+        setSaving(false);
+      }
     },
     [artifactUrl]
   );
+
+  const debouncedPersist = useCallback(
+    (data: SchemaData) => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = setTimeout(() => persist(data), 500);
+    },
+    [persist]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    };
+  }, []);
+
+  /* ---------- Load ---------- */
 
   useEffect(() => {
     async function load() {
       try {
         const res = await fetch(artifactUrl, { credentials: "include" });
         if (res.ok) {
-          const data: SchemaGraph = await res.json();
-          setNodes(data.nodes ?? []);
-          setEdges(data.edges ?? []);
+          const json = await res.json();
+          // API returns { ok, artifact: { content: ... } }
+          const data: SchemaData = json.artifact?.content ?? json;
+          setEntities(data.entities ?? []);
         } else if (res.status === 404) {
-          setNodes([]);
-          setEdges([]);
+          setEntities([]);
         } else {
           setError("Failed to load schema");
         }
@@ -167,181 +154,118 @@ export default function SchemaPage({
     load();
   }, [artifactUrl]);
 
-  function updateGraph(n: SchemaNode[], e: SchemaEdge[]) {
-    setNodes(n);
-    setEdges(e);
-    persist({ nodes: n, edges: e });
+  /* ---------- Update helper ---------- */
+
+  function updateEntities(next: SchemaEntity[]) {
+    setEntities(next);
+    debouncedPersist({ entities: next });
   }
 
-  /* ---------- Node operations ---------- */
+  /* ---------- Entity operations ---------- */
 
-  function addNode() {
-    const node: SchemaNode = {
+  function addEntity() {
+    const name = newEntityName.trim();
+    if (!name) return;
+    const entity: SchemaEntity = {
       id: uid(),
-      name: `Entity${nodes.length + 1}`,
-      x: 100 + nodes.length * 40,
-      y: 100 + nodes.length * 40,
-      fields: [
-        { name: "id", type: "number", nullable: false, primaryKey: true, unique: true },
-      ],
+      name,
+      fields: [],
     };
-    updateGraph([...nodes, node], edges);
+    updateEntities([...entities, entity]);
+    setNewEntityName("");
+    setShowAddEntity(false);
+    setExpandedId(entity.id);
   }
 
-  function deleteNode(nodeId: string) {
-    updateGraph(
-      nodes.filter((n) => n.id !== nodeId),
-      edges.filter((e) => e.fromNodeId !== nodeId && e.toNodeId !== nodeId)
-    );
+  function deleteEntity(entityId: string) {
+    updateEntities(entities.filter((e) => e.id !== entityId));
     setDeleteConfirmId(null);
-    setSelectedNodeId(null);
+    if (expandedId === entityId) setExpandedId(null);
   }
 
-  function openEditNode(node: SchemaNode) {
-    setEditingNode(node);
-    setEditName(node.name);
-    setEditFields([...node.fields]);
-  }
-
-  function saveEditNode() {
-    if (!editingNode) return;
-    const updated: SchemaNode = {
-      ...editingNode,
-      name: editName.trim() || editingNode.name,
-      fields: editFields,
-    };
-    updateGraph(
-      nodes.map((n) => (n.id === editingNode.id ? updated : n)),
-      edges
+  function saveEntityName(entityId: string) {
+    const trimmed = editNameValue.trim();
+    if (!trimmed) {
+      setEditingNameId(null);
+      return;
+    }
+    updateEntities(
+      entities.map((e) => (e.id === entityId ? { ...e, name: trimmed } : e))
     );
-    setEditingNode(null);
+    setEditingNameId(null);
   }
 
-  function addField() {
-    if (!newFieldName.trim()) return;
-    setEditFields((prev) => [
-      ...prev,
-      {
-        name: newFieldName.trim(),
-        type: newFieldType,
-        nullable: false,
-        primaryKey: false,
-        unique: false,
-      },
-    ]);
-    setNewFieldName("");
-    setNewFieldType("string");
-  }
+  /* ---------- Field operations ---------- */
 
-  function removeField(idx: number) {
-    setEditFields((prev) => prev.filter((_, i) => i !== idx));
-  }
-
-  function toggleFieldProp(idx: number, prop: "nullable" | "primaryKey" | "unique") {
-    setEditFields((prev) =>
-      prev.map((f, i) => (i === idx ? { ...f, [prop]: !f[prop] } : f))
-    );
-  }
-
-  /* ---------- Edge operations ---------- */
-
-  function handleAddEdge() {
-    if (!edgeFromNodeId || !edgeFromField || !edgeToNodeId || !edgeToField) return;
-    const edge: SchemaEdge = {
+  function addField(entityId: string) {
+    const name = newFieldName.trim();
+    if (!name) return;
+    const field: SchemaField = {
       id: uid(),
-      fromNodeId: edgeFromNodeId,
-      fromField: edgeFromField,
-      toNodeId: edgeToNodeId,
-      toField: edgeToField,
-      type: edgeType,
+      name,
+      type: newFieldType,
+      required: newFieldRequired,
+      unique: false,
+      ...(newFieldType === "Relation" ? { relatedEntity: newFieldRelated || undefined } : {}),
     };
-    updateGraph(nodes, [...edges, edge]);
-    setAddingEdge(false);
-    setEdgeFromNodeId("");
-    setEdgeFromField("");
-    setEdgeToNodeId("");
-    setEdgeToField("");
+    updateEntities(
+      entities.map((e) =>
+        e.id === entityId ? { ...e, fields: [...e.fields, field] } : e
+      )
+    );
+    setNewFieldName("");
+    setNewFieldType("String");
+    setNewFieldRequired(false);
+    setNewFieldRelated("");
   }
 
-  function deleteEdge(edgeId: string) {
-    updateGraph(nodes, edges.filter((e) => e.id !== edgeId));
-  }
-
-  /* ---------- Drag ---------- */
-
-  function handleNodeMouseDown(e: React.MouseEvent, nodeId: string) {
-    e.stopPropagation();
-    const node = nodes.find((n) => n.id === nodeId);
-    if (!node) return;
-    setSelectedNodeId(nodeId);
-    setDragState({
-      nodeId,
-      startX: e.clientX,
-      startY: e.clientY,
-      origX: node.x,
-      origY: node.y,
-    });
-  }
-
-  function handleMouseMove(e: React.MouseEvent) {
-    if (!dragState) return;
-    const dx = e.clientX - dragState.startX;
-    const dy = e.clientY - dragState.startY;
-    setNodes((prev) =>
-      prev.map((n) =>
-        n.id === dragState.nodeId
-          ? { ...n, x: dragState.origX + dx, y: dragState.origY + dy }
-          : n
+  function deleteField(entityId: string, fieldId: string) {
+    updateEntities(
+      entities.map((e) =>
+        e.id === entityId
+          ? { ...e, fields: e.fields.filter((f) => f.id !== fieldId) }
+          : e
       )
     );
   }
 
-  function handleMouseUp() {
-    if (dragState) {
-      // Persist position
-      persist({ nodes, edges });
-    }
-    setDragState(null);
-  }
-
-  /* ---------- Export ---------- */
-
-  function downloadJSON() {
-    const blob = new Blob([JSON.stringify({ nodes, edges }, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "schema.graph.json";
-    a.click();
-    URL.revokeObjectURL(url);
+  function toggleFieldProp(entityId: string, fieldId: string, prop: "required" | "unique") {
+    updateEntities(
+      entities.map((e) =>
+        e.id === entityId
+          ? {
+              ...e,
+              fields: e.fields.map((f) =>
+                f.id === fieldId ? { ...f, [prop]: !f[prop] } : f
+              ),
+            }
+          : e
+      )
+    );
   }
 
   /* ---------- Render ---------- */
 
   if (loading) {
     return (
-      <div className="nb-loading" style={{ height: "100vh" }}>
-        Loading schema planner...
+      <div className="nb-loading" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "14px", textTransform: "uppercase", fontWeight: 700 }}>Loading schema planner...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="nb-loading" style={{ height: "100vh", color: "var(--nb-watermelon)" }}>
-        {error}
+      <div className="nb-loading" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--nb-watermelon)" }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "14px", fontWeight: 700 }}>{error}</span>
       </div>
     );
   }
 
-  const selectedNode = nodes.find((n) => n.id === selectedNodeId);
-
   return (
-    <div className="nb-page" style={{ height: "100vh", overflow: "hidden" }}>
+    <div className="nb-page" style={{ minHeight: "100vh", padding: "0 24px 48px" }}>
       {/* Breadcrumb */}
-      <nav style={{ fontFamily: "var(--font-mono)", fontSize: "13px", padding: "12px 24px 0", textTransform: "uppercase" }}>
+      <nav style={{ fontFamily: "var(--font-mono)", fontSize: "13px", padding: "12px 0 0", textTransform: "uppercase" }}>
         <a href="/dashboard" style={{ color: "var(--nb-black)", textDecoration: "none", fontWeight: 700 }}>Dashboard</a>
         <span style={{ margin: "0 6px", color: "var(--nb-gray-mid)" }}>/</span>
         <a href={`/projects/${projectId}`} style={{ color: "var(--nb-black)", textDecoration: "none", fontWeight: 700 }}>Project</a>
@@ -349,358 +273,467 @@ export default function SchemaPage({
         <span style={{ color: "var(--nb-gray-dark)" }}>Schema Planner</span>
       </nav>
 
-      {/* Toolbar */}
-      <div className="nb-flex" style={{ gap: "6px", padding: "8px 24px", borderBottom: "4px solid var(--nb-black)", alignItems: "center", flexShrink: 0, backgroundColor: "var(--nb-cream)" }}>
-        <button className="nb-btn nb-btn-primary" onClick={addNode}>+ Add Entity</button>
-        <button className="nb-btn nb-btn-info" onClick={() => setAddingEdge(!addingEdge)}>
-          {addingEdge ? "Cancel Edge" : "+ Add Relationship"}
-        </button>
-        <div style={{ flex: 1 }} />
-        <button className="nb-btn nb-btn-secondary" onClick={downloadJSON}>Export JSON</button>
-        <button className="nb-btn nb-btn-accent" onClick={() => setShowDDL(true)}>Export SQL</button>
+      {/* Header */}
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "16px 0 12px",
+        borderBottom: "4px solid var(--nb-black)",
+        marginBottom: "24px",
+      }}>
+        <h1 style={{
+          fontFamily: "var(--font-heading)",
+          fontSize: "28px",
+          fontWeight: 800,
+          textTransform: "uppercase",
+          letterSpacing: "0.05em",
+          margin: 0,
+        }}>
+          Schema Planner
+        </h1>
+        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+          {saving && (
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--nb-gray-mid)", textTransform: "uppercase" }}>
+              Saving...
+            </span>
+          )}
+          <button
+            className="nb-btn nb-btn-primary"
+            onClick={() => {
+              setShowAddEntity(true);
+              setNewEntityName("");
+            }}
+          >
+            + Add Entity
+          </button>
+        </div>
       </div>
 
-      {/* Edge creation form */}
-      {addingEdge && (
-        <div className="nb-flex nb-flex-wrap" style={{ gap: "6px", padding: "8px 24px", backgroundColor: "var(--nb-cornflower)", alignItems: "center", borderBottom: "4px solid var(--nb-black)" }}>
-          <select className="nb-select" value={edgeFromNodeId} onChange={(e) => setEdgeFromNodeId(e.target.value)}>
-            <option value="">From table...</option>
-            {nodes.map((n) => <option key={n.id} value={n.id}>{n.name}</option>)}
-          </select>
-          <select className="nb-select" value={edgeFromField} onChange={(e) => setEdgeFromField(e.target.value)}>
-            <option value="">From field...</option>
-            {nodes.find((n) => n.id === edgeFromNodeId)?.fields.map((f) => (
-              <option key={f.name} value={f.name}>{f.name}</option>
-            ))}
-          </select>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: "16px", fontWeight: 900, color: "var(--nb-black)" }}>&rarr;</span>
-          <select className="nb-select" value={edgeToNodeId} onChange={(e) => setEdgeToNodeId(e.target.value)}>
-            <option value="">To table...</option>
-            {nodes.map((n) => <option key={n.id} value={n.id}>{n.name}</option>)}
-          </select>
-          <select className="nb-select" value={edgeToField} onChange={(e) => setEdgeToField(e.target.value)}>
-            <option value="">To field...</option>
-            {nodes.find((n) => n.id === edgeToNodeId)?.fields.map((f) => (
-              <option key={f.name} value={f.name}>{f.name}</option>
-            ))}
-          </select>
-          <select className="nb-select" value={edgeType} onChange={(e) => setEdgeType(e.target.value as SchemaEdge["type"])}>
-            <option value="one-to-one">1:1</option>
-            <option value="one-to-many">1:N</option>
-            <option value="many-to-many">N:N</option>
-          </select>
-          <button className="nb-btn nb-btn-primary nb-btn-sm" onClick={handleAddEdge}>Create</button>
+      {/* Add entity inline form */}
+      {showAddEntity && (
+        <div style={{
+          display: "flex",
+          gap: "8px",
+          alignItems: "center",
+          marginBottom: "20px",
+          padding: "12px",
+          border: "4px solid var(--nb-black)",
+          boxShadow: "var(--shadow-brutal)",
+          background: "var(--nb-white)",
+        }}>
+          <input
+            className="nb-input"
+            style={{ flex: 1, marginBottom: 0 }}
+            placeholder="Entity name (e.g. User, Post, Comment)"
+            value={newEntityName}
+            onChange={(e) => setNewEntityName(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && addEntity()}
+            autoFocus
+          />
+          <button className="nb-btn nb-btn-primary nb-btn-sm" onClick={addEntity}>
+            Create
+          </button>
+          <button className="nb-btn nb-btn-secondary nb-btn-sm" onClick={() => setShowAddEntity(false)}>
+            Cancel
+          </button>
         </div>
       )}
 
-      {/* Canvas + sidebar layout */}
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-        {/* Canvas */}
-        <div
-          style={{
-            flex: 1,
-            position: "relative",
-            overflow: "auto",
-            backgroundColor: "var(--nb-cream)",
-            minHeight: "600px",
-          }}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onClick={() => setSelectedNodeId(null)}
-        >
-          {/* SVG edges */}
-          <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none", overflow: "visible" }}>
-            {edges.map((edge) => {
-              const fromNode = nodes.find((n) => n.id === edge.fromNodeId);
-              const toNode = nodes.find((n) => n.id === edge.toNodeId);
-              if (!fromNode || !toNode) return null;
-              const x1 = fromNode.x + 120;
-              const y1 = fromNode.y + 20 + (fromNode.fields.findIndex((f) => f.name === edge.fromField) + 1) * 24;
-              const x2 = toNode.x;
-              const y2 = toNode.y + 20 + (toNode.fields.findIndex((f) => f.name === edge.toField) + 1) * 24;
-              const label = edge.type === "one-to-one" ? "1:1" : edge.type === "one-to-many" ? "1:N" : "N:N";
-              return (
-                <g key={edge.id}>
-                  <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="var(--nb-black)" strokeWidth={3} />
-                  <text
-                    x={(x1 + x2) / 2}
-                    y={(y1 + y2) / 2 - 6}
-                    textAnchor="middle"
-                    fontSize="12"
-                    fill="var(--nb-black)"
-                    fontWeight="800"
-                    fontFamily="var(--font-mono)"
-                  >
-                    {label}
-                  </text>
-                  <rect x={x1 - 5} y={y1 - 5} width={10} height={10} fill="var(--nb-black)" />
-                  <rect x={x2 - 5} y={y2 - 5} width={10} height={10} fill="var(--nb-black)" />
-                </g>
-              );
-            })}
-          </svg>
+      {/* Empty state */}
+      {entities.length === 0 && !showAddEntity && (
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "80px 24px",
+          border: "4px dashed var(--nb-black)",
+          background: "var(--nb-white)",
+          textAlign: "center",
+        }}>
+          <div style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "20px",
+            fontWeight: 800,
+            textTransform: "uppercase",
+            marginBottom: "12px",
+          }}>
+            No entities defined
+          </div>
+          <div style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "13px",
+            color: "var(--nb-gray-mid)",
+            marginBottom: "20px",
+          }}>
+            Start designing your data schema by adding entities
+          </div>
+          <button
+            className="nb-btn nb-btn-primary"
+            onClick={() => {
+              setShowAddEntity(true);
+              setNewEntityName("");
+            }}
+          >
+            + Add First Entity
+          </button>
+        </div>
+      )}
 
-          {/* Nodes */}
-          {nodes.map((node) => (
-            <div
-              key={node.id}
-              className="nb-card"
-              style={{
-                position: "absolute",
-                left: `${node.x}px`,
-                top: `${node.y}px`,
-                width: "240px",
-                cursor: "grab",
-                userSelect: "none",
-                border: selectedNodeId === node.id ? "4px solid var(--nb-watermelon)" : "4px solid var(--nb-black)",
-                boxShadow: selectedNodeId === node.id ? "6px 6px 0px var(--nb-watermelon)" : "var(--shadow-brutal)",
-                padding: 0,
-              }}
-              onMouseDown={(e) => handleNodeMouseDown(e, node.id)}
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedNodeId(node.id);
-              }}
-              onDoubleClick={(e) => {
-                e.stopPropagation();
-                openEditNode(node);
-              }}
-            >
-              <div style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "8px 10px",
-                backgroundColor: "var(--nb-watermelon)",
-                color: "var(--nb-white)",
-                borderBottom: "4px solid var(--nb-black)",
-              }}>
-                <span style={{ fontSize: "13px", fontWeight: 800, fontFamily: "var(--font-heading)", textTransform: "uppercase" }}>{node.name}</span>
-                <button
-                  className="nb-btn nb-btn-sm"
-                  style={{ background: "none", border: "2px solid var(--nb-white)", color: "var(--nb-white)", padding: "2px 6px", fontSize: "11px" }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (deleteConfirmId === node.id) {
-                      deleteNode(node.id);
-                    } else {
-                      setDeleteConfirmId(node.id);
-                    }
-                  }}
-                >
-                  {deleteConfirmId === node.id ? "Confirm?" : "x"}
-                </button>
-              </div>
-              {node.fields.map((f) => (
-                <div key={f.name} style={{
+      {/* Entity cards grid */}
+      <div className="schema-grid">
+        {entities.map((entity) => {
+          const isExpanded = expandedId === entity.id;
+          const isEditingName = editingNameId === entity.id;
+          const isDeleting = deleteConfirmId === entity.id;
+          const isAddingField = addFieldEntityId === entity.id;
+
+          return (
+            <div key={entity.id} className="schema-entity">
+              {/* Entity header */}
+              <div
+                className="schema-entity-header"
+                style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  padding: "4px 10px",
-                  borderBottom: "2px solid var(--nb-black)",
-                  fontSize: "12px",
-                }}>
-                  <span className="nb-label" style={{ fontWeight: f.primaryKey ? 800 : 500, margin: 0, letterSpacing: 0 }}>
-                    {f.primaryKey && "PK "}
-                    {f.unique && !f.primaryKey && "U "}
-                    {f.name}
-                  </span>
-                  <span className="nb-tag" style={{ fontSize: "10px", padding: "1px 4px" }}>{f.type}</span>
-                </div>
-              ))}
-              <button
-                className="nb-btn nb-btn-info nb-btn-sm"
-                style={{ display: "block", width: "100%", border: "none", borderTop: "2px solid var(--nb-black)" }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openEditNode(node);
+                  alignItems: "center",
+                  cursor: "pointer",
                 }}
+                onClick={() => setExpandedId(isExpanded ? null : entity.id)}
               >
-                Edit fields
-              </button>
-            </div>
-          ))}
-        </div>
-
-        {/* Sidebar: edges list */}
-        <aside style={{
-          width: "260px",
-          borderLeft: "4px solid var(--nb-black)",
-          padding: "12px",
-          overflow: "auto",
-          flexShrink: 0,
-          backgroundColor: "var(--nb-white)",
-        }}>
-          <h3 className="nb-label" style={{ fontSize: "13px", margin: "0 0 8px" }}>Relationships</h3>
-          {edges.length === 0 && (
-            <div className="nb-empty" style={{ padding: "12px", fontSize: "12px" }}>No relationships yet</div>
-          )}
-          {edges.map((edge) => {
-            const from = nodes.find((n) => n.id === edge.fromNodeId);
-            const to = nodes.find((n) => n.id === edge.toNodeId);
-            return (
-              <div key={edge.id} style={{
-                display: "flex",
-                gap: "4px",
-                alignItems: "center",
-                padding: "6px 0",
-                borderBottom: "2px solid var(--nb-black)",
-              }}>
-                <span style={{ fontSize: "12px", fontFamily: "var(--font-mono)" }}>
-                  {from?.name}.{edge.fromField} &rarr; {to?.name}.{edge.toField}
-                </span>
-                <span className="nb-badge nb-badge-cornflower" style={{ marginLeft: "auto", fontSize: "10px" }}>{edge.type}</span>
-                <button
-                  className="nb-btn nb-btn-sm"
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--nb-watermelon)", fontWeight: 900, fontSize: "14px", padding: "0 4px" }}
-                  onClick={() => deleteEdge(edge.id)}
-                >
-                  x
-                </button>
+                {isEditingName ? (
+                  <input
+                    style={{
+                      background: "transparent",
+                      border: "none",
+                      borderBottom: "2px solid var(--nb-malachite)",
+                      color: "var(--nb-malachite)",
+                      fontFamily: "var(--font-heading)",
+                      fontWeight: 700,
+                      fontSize: "1rem",
+                      letterSpacing: "0.1em",
+                      outline: "none",
+                      width: "60%",
+                    }}
+                    value={editNameValue}
+                    onChange={(e) => setEditNameValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") saveEntityName(entity.id);
+                      if (e.key === "Escape") setEditingNameId(null);
+                    }}
+                    onBlur={() => saveEntityName(entity.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    autoFocus
+                  />
+                ) : (
+                  <span
+                    onDoubleClick={(e) => {
+                      e.stopPropagation();
+                      setEditingNameId(entity.id);
+                      setEditNameValue(entity.name);
+                    }}
+                    title="Double-click to rename"
+                  >
+                    {entity.name}
+                  </span>
+                )}
+                <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                  <span style={{
+                    fontSize: "11px",
+                    fontFamily: "var(--font-mono)",
+                    color: "var(--nb-malachite)",
+                    opacity: 0.7,
+                  }}>
+                    {entity.fields.length} field{entity.fields.length !== 1 ? "s" : ""}
+                  </span>
+                  {!isEditingName && (
+                    <button
+                      style={{
+                        background: "none",
+                        border: "2px solid var(--nb-malachite)",
+                        color: "var(--nb-malachite)",
+                        cursor: "pointer",
+                        padding: "0 6px",
+                        fontSize: "14px",
+                        fontWeight: 900,
+                        lineHeight: "20px",
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (isDeleting) {
+                          deleteEntity(entity.id);
+                        } else {
+                          setDeleteConfirmId(entity.id);
+                        }
+                      }}
+                      title={isDeleting ? "Click to confirm deletion" : "Delete entity"}
+                    >
+                      {isDeleting ? "Confirm?" : "\u00d7"}
+                    </button>
+                  )}
+                </div>
               </div>
-            );
-          })}
-        </aside>
+
+              {/* Fields list */}
+              <ul className="schema-fields">
+                {entity.fields.length === 0 && (
+                  <li style={{ color: "var(--nb-gray-mid)", fontStyle: "italic", fontSize: "0.8rem" }}>
+                    No fields yet
+                  </li>
+                )}
+                {entity.fields.map((field) => (
+                  <li key={field.id}>
+                    <code style={{ fontWeight: field.required ? 700 : 400 }}>{field.name}</code>
+                    <span
+                      className="field-type"
+                      style={{
+                        color: TYPE_COLORS[field.type],
+                        fontWeight: 600,
+                      }}
+                    >
+                      {field.type}
+                    </span>
+                    {field.required && (
+                      <span className="field-badge field-badge--pk" style={{ background: "var(--nb-watermelon)", color: "var(--nb-white)" }}>
+                        REQ
+                      </span>
+                    )}
+                    {field.unique && (
+                      <span className="field-badge field-badge--unique">
+                        UQ
+                      </span>
+                    )}
+                    {field.type === "Relation" && field.relatedEntity && (
+                      <span className="field-badge field-badge--fk" title={`References ${field.relatedEntity}`}>
+                        &rarr; {field.relatedEntity}
+                      </span>
+                    )}
+                    {isExpanded && (
+                      <div style={{ display: "flex", gap: "4px", marginLeft: "auto" }}>
+                        <button
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            fontSize: "10px",
+                            fontFamily: "var(--font-mono)",
+                            fontWeight: 700,
+                            textTransform: "uppercase",
+                            color: field.required ? "var(--nb-watermelon)" : "var(--nb-gray-mid)",
+                            textDecoration: "underline",
+                          }}
+                          onClick={() => toggleFieldProp(entity.id, field.id, "required")}
+                          title="Toggle required"
+                        >
+                          {field.required ? "REQ" : "opt"}
+                        </button>
+                        <button
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            fontSize: "10px",
+                            fontFamily: "var(--font-mono)",
+                            fontWeight: 700,
+                            textTransform: "uppercase",
+                            color: field.unique ? "var(--nb-cornflower)" : "var(--nb-gray-mid)",
+                            textDecoration: "underline",
+                          }}
+                          onClick={() => toggleFieldProp(entity.id, field.id, "unique")}
+                          title="Toggle unique"
+                        >
+                          {field.unique ? "UQ" : "nu"}
+                        </button>
+                        <button
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            color: "var(--nb-watermelon)",
+                            fontWeight: 900,
+                            fontSize: "14px",
+                            padding: "0 2px",
+                            lineHeight: 1,
+                          }}
+                          onClick={() => deleteField(entity.id, field.id)}
+                          title="Delete field"
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Expanded: add field form */}
+              {isExpanded && (
+                <div style={{
+                  padding: "8px 12px 12px",
+                  borderTop: "2px solid var(--nb-black)",
+                  background: "var(--nb-cream)",
+                }}>
+                  {isAddingField ? (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      <input
+                        className="nb-input"
+                        style={{ marginBottom: 0, fontSize: "13px" }}
+                        placeholder="Field name"
+                        value={newFieldName}
+                        onChange={(e) => setNewFieldName(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            addField(entity.id);
+                          }
+                          if (e.key === "Escape") {
+                            setAddFieldEntityId(null);
+                            setNewFieldName("");
+                          }
+                        }}
+                        autoFocus
+                      />
+                      <div style={{ display: "flex", gap: "6px", alignItems: "center", flexWrap: "wrap" }}>
+                        <select
+                          className="nb-select"
+                          style={{ fontSize: "12px", padding: "4px 8px" }}
+                          value={newFieldType}
+                          onChange={(e) => setNewFieldType(e.target.value as SchemaField["type"])}
+                        >
+                          {FIELD_TYPES.map((t) => (
+                            <option key={t} value={t}>{t}</option>
+                          ))}
+                        </select>
+                        <label style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "3px",
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "11px",
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          cursor: "pointer",
+                        }}>
+                          <input
+                            type="checkbox"
+                            checked={newFieldRequired}
+                            onChange={(e) => setNewFieldRequired(e.target.checked)}
+                          />
+                          Required
+                        </label>
+                      </div>
+                      {newFieldType === "Relation" && (
+                        <select
+                          className="nb-select"
+                          style={{ fontSize: "12px", padding: "4px 8px" }}
+                          value={newFieldRelated}
+                          onChange={(e) => setNewFieldRelated(e.target.value)}
+                        >
+                          <option value="">Select related entity...</option>
+                          {entities
+                            .filter((e) => e.id !== entity.id)
+                            .map((e) => (
+                              <option key={e.id} value={e.name}>{e.name}</option>
+                            ))}
+                        </select>
+                      )}
+                      <div style={{ display: "flex", gap: "6px" }}>
+                        <button
+                          className="nb-btn nb-btn-primary nb-btn-sm"
+                          style={{ fontSize: "12px" }}
+                          onClick={() => addField(entity.id)}
+                        >
+                          + Add Field
+                        </button>
+                        <button
+                          className="nb-btn nb-btn-secondary nb-btn-sm"
+                          style={{ fontSize: "12px" }}
+                          onClick={() => {
+                            setAddFieldEntityId(null);
+                            setNewFieldName("");
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ display: "flex", gap: "6px" }}>
+                      <button
+                        className="nb-btn nb-btn-info nb-btn-sm"
+                        style={{ fontSize: "12px", flex: 1 }}
+                        onClick={() => {
+                          setAddFieldEntityId(entity.id);
+                          setNewFieldName("");
+                          setNewFieldType("String");
+                          setNewFieldRequired(false);
+                          setNewFieldRelated("");
+                        }}
+                      >
+                        + Add Field
+                      </button>
+                      <button
+                        className="nb-btn nb-btn-secondary nb-btn-sm"
+                        style={{ fontSize: "12px" }}
+                        onClick={() => {
+                          setEditingNameId(entity.id);
+                          setEditNameValue(entity.name);
+                        }}
+                      >
+                        Rename
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
-      {/* Node edit modal */}
-      {editingNode && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-          }}
-          onClick={() => setEditingNode(null)}
-        >
-          <div
-            className="nb-card"
-            style={{ width: "520px", maxWidth: "90vw", maxHeight: "80vh", overflow: "auto", padding: "24px" }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 style={{ margin: "0 0 16px", fontSize: "18px", fontWeight: 800, fontFamily: "var(--font-heading)", textTransform: "uppercase" }}>Edit Entity</h2>
-            <label className="nb-label">Name</label>
-            <input
-              className="nb-input"
-              value={editName}
-              onChange={(e) => setEditName(e.target.value)}
-            />
-            <h3 style={{ fontSize: "14px", fontWeight: 800, fontFamily: "var(--font-heading)", textTransform: "uppercase", margin: "12px 0 8px" }}>Fields</h3>
-            {editFields.map((f, idx) => (
-              <div key={idx} className="nb-flex nb-flex-wrap" style={{ gap: "6px", alignItems: "center", marginBottom: "6px" }}>
-                <input
-                  className="nb-input"
-                  style={{ width: "120px", marginBottom: 0 }}
-                  value={f.name}
-                  onChange={(e) =>
-                    setEditFields((prev) =>
-                      prev.map((fi, i) => (i === idx ? { ...fi, name: e.target.value } : fi))
-                    )
-                  }
-                />
-                <select
-                  className="nb-select"
-                  value={f.type}
-                  onChange={(e) =>
-                    setEditFields((prev) =>
-                      prev.map((fi, i) => (i === idx ? { ...fi, type: e.target.value } : fi))
-                    )
-                  }
-                >
-                  {FIELD_TYPES.map((t) => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                </select>
-                <label style={{ fontSize: "11px", display: "flex", alignItems: "center", gap: "2px", fontFamily: "var(--font-mono)", textTransform: "uppercase", fontWeight: 700 }}>
-                  <input type="checkbox" checked={f.primaryKey} onChange={() => toggleFieldProp(idx, "primaryKey")} />
-                  PK
-                </label>
-                <label style={{ fontSize: "11px", display: "flex", alignItems: "center", gap: "2px", fontFamily: "var(--font-mono)", textTransform: "uppercase", fontWeight: 700 }}>
-                  <input type="checkbox" checked={f.unique} onChange={() => toggleFieldProp(idx, "unique")} />
-                  U
-                </label>
-                <label style={{ fontSize: "11px", display: "flex", alignItems: "center", gap: "2px", fontFamily: "var(--font-mono)", textTransform: "uppercase", fontWeight: 700 }}>
-                  <input type="checkbox" checked={f.nullable} onChange={() => toggleFieldProp(idx, "nullable")} />
-                  Null
-                </label>
-                <button
-                  className="nb-btn nb-btn-sm"
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--nb-watermelon)", fontSize: "16px", fontWeight: 900, padding: "2px 4px" }}
-                  onClick={() => removeField(idx)}
-                >
-                  x
-                </button>
-              </div>
-            ))}
-            {/* Add new field */}
-            <div className="nb-flex nb-flex-wrap" style={{ gap: "6px", alignItems: "center", marginBottom: "6px" }}>
-              <input
-                className="nb-input"
-                style={{ width: "120px", marginBottom: 0 }}
-                placeholder="Field name"
-                value={newFieldName}
-                onChange={(e) => setNewFieldName(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && addField()}
-              />
-              <select
-                className="nb-select"
-                value={newFieldType}
-                onChange={(e) => setNewFieldType(e.target.value)}
-              >
-                {FIELD_TYPES.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
-              <button className="nb-btn nb-btn-success nb-btn-sm" onClick={addField}>+ Add</button>
-            </div>
-            <div className="nb-form-actions">
-              <button className="nb-btn nb-btn-primary" onClick={saveEditNode}>Save</button>
-              <button className="nb-btn nb-btn-secondary" onClick={() => setEditingNode(null)}>Cancel</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* DDL Modal */}
-      {showDDL && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-          }}
-          onClick={() => setShowDDL(false)}
-        >
-          <div
-            className="nb-card"
-            style={{ width: "600px", maxWidth: "90vw", maxHeight: "80vh", overflow: "auto", padding: "24px" }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 style={{ margin: "0 0 16px", fontSize: "18px", fontWeight: 800, fontFamily: "var(--font-heading)", textTransform: "uppercase" }}>SQL DDL</h2>
-            <pre style={{
-              backgroundColor: "var(--nb-cream)",
-              padding: "12px",
-              border: "4px solid var(--nb-black)",
-              fontSize: "12px",
-              fontFamily: "var(--font-mono)",
-              overflow: "auto",
-              maxHeight: "400px",
-              whiteSpace: "pre-wrap",
-              boxShadow: "var(--shadow-brutal)",
-            }}>
-              {generateDDL({ nodes, edges })}
-            </pre>
-            <div className="nb-form-actions">
-              <button className="nb-btn nb-btn-secondary" onClick={() => setShowDDL(false)}>Close</button>
-            </div>
+      {/* Relationships summary (text-based) */}
+      {entities.some((e) => e.fields.some((f) => f.type === "Relation" && f.relatedEntity)) && (
+        <div style={{
+          marginTop: "32px",
+          padding: "16px",
+          border: "4px solid var(--nb-black)",
+          boxShadow: "var(--shadow-brutal)",
+          background: "var(--nb-white)",
+        }}>
+          <h2 style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "16px",
+            fontWeight: 800,
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+            marginBottom: "12px",
+          }}>
+            Relationships
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            {entities.flatMap((entity) =>
+              entity.fields
+                .filter((f) => f.type === "Relation" && f.relatedEntity)
+                .map((field) => (
+                  <div
+                    key={`${entity.id}-${field.id}`}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "6px 10px",
+                      borderBottom: "2px solid var(--nb-cream)",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "13px",
+                    }}
+                  >
+                    <span style={{ fontWeight: 700 }}>{entity.name}</span>
+                    <span style={{ color: "var(--nb-gray-mid)" }}>.{field.name}</span>
+                    <span style={{ color: "var(--nb-watermelon)", fontWeight: 800 }}>&rarr;</span>
+                    <span style={{ fontWeight: 700 }}>{field.relatedEntity}</span>
+                  </div>
+                ))
+            )}
           </div>
         </div>
       )}

@@ -37,12 +37,12 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Test canvas rendering and interaction
 
 ## Phase 4: Schema Planner
-- [ ] Build schema planner view matching pass-1 concept (entity cards, relationships)
-- [ ] Wire to artifact CRUD endpoints (type=schema)
-- [ ] Implement entity create/edit/delete with fields
-- [ ] Add relationship lines between entities
-- [ ] Add field type selection and validation rules
-- [ ] Test with empty schema and 5+ entity schema
+- [x] Build schema planner view matching pass-1 concept (entity cards, relationships)
+- [x] Wire to artifact CRUD endpoints (type=schema)
+- [x] Implement entity create/edit/delete with fields
+- [x] Add relationship lines between entities
+- [x] Add field type selection and validation rules
+- [x] Test with empty schema and 5+ entity schema
 
 ## Phase 5: Directory Tree
 - [ ] Build directory tree view matching pass-1 concept (tree structure, file icons)
