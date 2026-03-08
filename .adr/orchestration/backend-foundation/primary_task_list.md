@@ -40,13 +40,13 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Fix any broken endpoints (added missing PATCH handler for member role changes)
 
 ## Phase 4: Artifact + Sync + AI Endpoints
-- [ ] Test artifact CRUD (read/write project files: kanban, ideas, whiteboard, schema, directory-tree)
-- [ ] Test sync push/pull/force endpoints
-- [ ] Test conflict resolution endpoint
-- [ ] Test AI chat session CRUD
-- [ ] Test AI chat message send/receive
-- [ ] Test AI tool actions (add_idea, update_kanban, generate_tree, create_project_structure)
-- [ ] Fix any broken endpoints
+- [x] Test artifact CRUD (read/write project files: kanban, ideas, whiteboard, schema, directory-tree)
+- [x] Test sync push/pull/force endpoints
+- [x] Test conflict resolution endpoint
+- [x] Test AI chat session CRUD
+- [x] Test AI chat message send/receive
+- [x] Test AI tool actions (add_idea, update_kanban, generate_tree, create_project_structure)
+- [x] Fix any broken endpoints (added error handling for missing API key in AI chat)
 
 ## Phase 5: Billing + Proxy + Health
 - [ ] Test Stripe checkout session creation

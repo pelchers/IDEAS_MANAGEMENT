@@ -94,64 +94,99 @@ export async function POST(req: Request) {
   }
   const systemPrompt = systemParts.join("\n");
 
+  // Check for API key before attempting to call OpenAI
+  if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "sk-...") {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "ai_not_configured",
+        message: "The AI chat feature requires a valid OPENAI_API_KEY to be configured.",
+        sessionId: activeSessionId,
+      },
+      { status: 503 }
+    );
+  }
+
   // Convert UI messages to model messages for streamText
-  const modelMessages = await convertToModelMessages(messages as Parameters<typeof convertToModelMessages>[0]);
+  let modelMessages;
+  try {
+    modelMessages = await convertToModelMessages(messages as Parameters<typeof convertToModelMessages>[0]);
+  } catch {
+    return NextResponse.json(
+      { ok: false, error: "invalid_message_format", message: "Could not convert messages to model format." },
+      { status: 400 }
+    );
+  }
 
   // Stream response with tools
-  const result = streamText({
-    model: openai("gpt-4o"),
-    system: systemPrompt,
-    messages: modelMessages,
-    tools: {
-      add_idea: tool({
-        description: "Add a new idea to a project. Use this when the user wants to create or capture a new idea.",
-        inputSchema: addIdeaSchema,
-        execute: async (params) => {
-          return executeAddIdea(params, user.id, activeSessionId);
-        },
-      }),
-      update_kanban: tool({
-        description: "Update a kanban board. Use this to add, move, update, or delete cards on the kanban board.",
-        inputSchema: updateKanbanSchema,
-        execute: async (params) => {
-          return executeUpdateKanban(params, user.id, activeSessionId);
-        },
-      }),
-      generate_tree: tool({
-        description: "Generate a directory tree structure for a project. Use this when the user wants to plan or scaffold a file/folder structure.",
-        inputSchema: generateTreeSchema,
-        execute: async (params) => {
-          return executeGenerateTree(params, user.id, activeSessionId);
-        },
-      }),
-      create_project_structure: tool({
-        description: "Create a project structure from a template. Use this to scaffold a new project with default folders and files.",
-        inputSchema: createProjectStructureSchema,
-        execute: async (params) => {
-          return executeCreateProjectStructure(params, user.id, activeSessionId);
-        },
-      }),
-    },
-    stopWhen: stepCountIs(5),
-    onFinish: async ({ text }) => {
-      // Persist assistant response
-      if (text && activeSessionId) {
-        await prisma.aiChatMessage.create({
-          data: {
-            sessionId: activeSessionId,
-            role: "ASSISTANT",
-            content: text,
+  try {
+    const result = streamText({
+      model: openai("gpt-4o"),
+      system: systemPrompt,
+      messages: modelMessages,
+      tools: {
+        add_idea: tool({
+          description: "Add a new idea to a project. Use this when the user wants to create or capture a new idea.",
+          inputSchema: addIdeaSchema,
+          execute: async (params) => {
+            return executeAddIdea(params, user.id, activeSessionId);
           },
-        });
-      }
-    },
-  });
+        }),
+        update_kanban: tool({
+          description: "Update a kanban board. Use this to add, move, update, or delete cards on the kanban board.",
+          inputSchema: updateKanbanSchema,
+          execute: async (params) => {
+            return executeUpdateKanban(params, user.id, activeSessionId);
+          },
+        }),
+        generate_tree: tool({
+          description: "Generate a directory tree structure for a project. Use this when the user wants to plan or scaffold a file/folder structure.",
+          inputSchema: generateTreeSchema,
+          execute: async (params) => {
+            return executeGenerateTree(params, user.id, activeSessionId);
+          },
+        }),
+        create_project_structure: tool({
+          description: "Create a project structure from a template. Use this to scaffold a new project with default folders and files.",
+          inputSchema: createProjectStructureSchema,
+          execute: async (params) => {
+            return executeCreateProjectStructure(params, user.id, activeSessionId);
+          },
+        }),
+      },
+      stopWhen: stepCountIs(5),
+      onFinish: async ({ text }) => {
+        // Persist assistant response
+        if (text && activeSessionId) {
+          await prisma.aiChatMessage.create({
+            data: {
+              sessionId: activeSessionId,
+              role: "ASSISTANT",
+              content: text,
+            },
+          });
+        }
+      },
+    });
 
-  // Return streaming UI message response with session ID header
-  const response = result.toUIMessageStreamResponse();
+    // Return streaming UI message response with session ID header
+    const response = result.toUIMessageStreamResponse();
 
-  // Add session ID to response headers so the client can track it
-  response.headers.set("X-Session-Id", activeSessionId);
+    // Add session ID to response headers so the client can track it
+    response.headers.set("X-Session-Id", activeSessionId);
 
-  return response;
+    return response;
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Unknown AI error";
+    console.error("[AI Chat] streamText error:", message);
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "ai_stream_error",
+        message,
+        sessionId: activeSessionId,
+      },
+      { status: 502 }
+    );
+  }
 }
