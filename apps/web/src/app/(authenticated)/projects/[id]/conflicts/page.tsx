@@ -26,14 +26,17 @@ export default function ConflictResolverPage({
   const [conflicts, setConflicts] = useState<ConflictItem[]>([]);
   const [artifacts, setArtifacts] = useState<ArtifactState[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedConflict, setSelectedConflict] = useState<ConflictItem | null>(
     null
   );
   const [editContent, setEditContent] = useState("");
   const [resolving, setResolving] = useState(false);
+  const [resolveError, setResolveError] = useState<string | null>(null);
 
   const fetchConflicts = useCallback(async () => {
     try {
+      setError(null);
       const res = await fetch(`/api/sync/pull/${projectId}?since=0`, {
         credentials: "include",
       });
@@ -41,9 +44,11 @@ export default function ConflictResolverPage({
         const data = await res.json();
         setConflicts(data.conflicts ?? []);
         setArtifacts(data.artifacts ?? []);
+      } else {
+        setError("Failed to load sync data");
       }
     } catch {
-      // error
+      setError("Network error loading conflicts");
     } finally {
       setLoading(false);
     }
@@ -80,10 +85,13 @@ export default function ConflictResolverPage({
       if (res.ok) {
         setSelectedConflict(null);
         setEditContent("");
+        setResolveError(null);
         fetchConflicts();
+      } else {
+        setResolveError("Failed to resolve conflict. Please try again.");
       }
     } catch {
-      // error
+      setResolveError("Network error resolving conflict.");
     } finally {
       setResolving(false);
     }
@@ -109,8 +117,30 @@ export default function ConflictResolverPage({
 
   if (loading) {
     return (
-      <div className="nb-loading" style={{ height: "100vh" }}>
+      <div className="nb-loading nb-loading-pulse" style={{ height: "100vh" }}>
         Loading conflicts...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="nb-page" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="nb-alert nb-alert-error" style={{ maxWidth: "400px", textAlign: "center" }}>
+          <div style={{ fontWeight: 900, fontFamily: "var(--font-heading)", textTransform: "uppercase", marginBottom: "var(--space-sm)" }}>
+            Error
+          </div>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: "13px" }}>
+            {error}
+          </div>
+          <button
+            className="nb-btn nb-btn-secondary"
+            style={{ marginTop: "var(--space-md)" }}
+            onClick={() => { setLoading(true); fetchConflicts(); }}
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
@@ -306,6 +336,13 @@ export default function ConflictResolverPage({
                   </pre>
                 </div>
               </div>
+
+              {/* Resolve error */}
+              {resolveError && (
+                <div className="nb-alert nb-alert-error" style={{ marginBottom: "16px", fontSize: "13px" }}>
+                  {resolveError}
+                </div>
+              )}
 
               {/* Action Buttons */}
               <div className="nb-flex" style={{ gap: "8px", marginBottom: "16px" }}>

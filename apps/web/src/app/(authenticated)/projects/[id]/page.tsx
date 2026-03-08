@@ -138,6 +138,7 @@ export default function ProjectWorkspacePage({
   const { id } = use(params);
   const [project, setProject] = useState<ProjectDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [syncState, setSyncState] = useState<SyncState>("offline");
   const [lastSync, setLastSync] = useState<string | null>(null);
 
@@ -152,8 +153,13 @@ export default function ProjectWorkspacePage({
           setProject(data.project);
           setSyncState("synced");
           setLastSync(new Date().toISOString());
+        } else if (res.status === 404) {
+          setError("Project not found");
+        } else {
+          setError("Failed to load project");
         }
       } catch {
+        setError("Network error");
         setSyncState("offline");
       } finally {
         setLoading(false);
@@ -164,16 +170,22 @@ export default function ProjectWorkspacePage({
 
   if (loading) {
     return (
-      <div className="nb-loading" style={{ height: "100vh" }}>
+      <div className="nb-loading nb-loading-pulse" style={{ height: "100vh" }}>
         Loading project...
       </div>
     );
   }
 
-  if (!project) {
+  if (error || !project) {
     return (
-      <div className="nb-empty" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        Project not found
+      <div className="nb-page" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="nb-empty" style={{ maxWidth: "400px" }}>
+          <span className="nb-empty-icon">&#9888;</span>
+          <p className="nb-empty-text">{error || "Project not found"}</p>
+          <a href="/dashboard" className="nb-btn nb-btn-primary" style={{ textDecoration: "none", marginTop: "var(--space-md)", display: "inline-block" }}>
+            Back to Dashboard
+          </a>
+        </div>
       </div>
     );
   }

@@ -248,7 +248,7 @@ export default function SchemaPage({
 
   if (loading) {
     return (
-      <div className="nb-loading" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div className="nb-loading nb-loading-pulse" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <span style={{ fontFamily: "var(--font-mono)", fontSize: "14px", textTransform: "uppercase", fontWeight: 700 }}>Loading schema planner...</span>
       </div>
     );
@@ -256,8 +256,15 @@ export default function SchemaPage({
 
   if (error) {
     return (
-      <div className="nb-loading" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--nb-watermelon)" }}>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "14px", fontWeight: 700 }}>{error}</span>
+      <div className="nb-page" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="nb-alert nb-alert-error" style={{ maxWidth: "400px", textAlign: "center" }}>
+          <div style={{ fontWeight: 900, fontFamily: "var(--font-heading)", textTransform: "uppercase", marginBottom: "var(--space-sm)" }}>
+            Error
+          </div>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: "13px" }}>
+            {error}
+          </div>
+        </div>
       </div>
     );
   }

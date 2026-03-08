@@ -685,7 +685,7 @@ export default function WhiteboardPage({
 
   if (loading) {
     return (
-      <div className="nb-loading" style={{ height: "100vh" }}>
+      <div className="nb-loading nb-loading-pulse" style={{ height: "100vh" }}>
         Loading whiteboard...
       </div>
     );
@@ -693,11 +693,15 @@ export default function WhiteboardPage({
 
   if (error) {
     return (
-      <div
-        className="nb-loading"
-        style={{ height: "100vh", color: "var(--nb-watermelon)" }}
-      >
-        {error}
+      <div className="nb-page" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="nb-alert nb-alert-error" style={{ maxWidth: "400px", textAlign: "center" }}>
+          <div style={{ fontWeight: 900, fontFamily: "var(--font-heading)", textTransform: "uppercase", marginBottom: "var(--space-sm)" }}>
+            Error
+          </div>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: "13px" }}>
+            {error}
+          </div>
+        </div>
       </div>
     );
   }

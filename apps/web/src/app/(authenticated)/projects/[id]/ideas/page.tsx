@@ -265,7 +265,7 @@ export default function IdeasPage({
 
   if (loading) {
     return (
-      <div className="nb-loading" style={{ height: "100vh" }}>
+      <div className="nb-loading nb-loading-pulse" style={{ height: "100vh" }}>
         Loading ideas...
       </div>
     );
@@ -273,24 +273,30 @@ export default function IdeasPage({
 
   if (error) {
     return (
-      <div
-        className="nb-empty"
-        style={{
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <span style={{ color: "var(--nb-watermelon)", fontWeight: 700 }}>
-          {error}
-        </span>
+      <div className="nb-page" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="nb-alert nb-alert-error" style={{ maxWidth: "400px", textAlign: "center" }}>
+          <div style={{ fontWeight: 900, fontFamily: "var(--font-heading)", textTransform: "uppercase", marginBottom: "var(--space-sm)" }}>
+            Error
+          </div>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: "13px" }}>
+            {error}
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="nb-page" style={{ maxWidth: 1080, margin: "0 auto" }}>
+      {/* Breadcrumb */}
+      <nav style={{ fontFamily: "var(--font-mono)", fontSize: "13px", marginBottom: "var(--space-xs)", textTransform: "uppercase" }}>
+        <a href="/dashboard" style={{ color: "var(--nb-black)", textDecoration: "none", fontWeight: 700 }}>Dashboard</a>
+        <span style={{ margin: "0 6px", color: "var(--nb-gray-mid)" }}>/</span>
+        <a href={`/projects/${projectId}`} style={{ color: "var(--nb-black)", textDecoration: "none", fontWeight: 700 }}>Project</a>
+        <span style={{ margin: "0 6px", color: "var(--nb-gray-mid)" }}>/</span>
+        <span style={{ color: "var(--nb-gray-dark)" }}>Ideas</span>
+      </nav>
+
       {/* Header */}
       <header className="nb-header nb-mb-md">
         <h1

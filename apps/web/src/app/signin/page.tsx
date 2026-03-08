@@ -10,11 +10,25 @@ export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
   const [loading, setLoading] = useState(false);
+
+  function validate(): boolean {
+    const errors: typeof fieldErrors = {};
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.email = 'Valid email address required';
+    }
+    if (!password) {
+      errors.password = 'Password is required';
+    }
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError('');
+    if (!validate()) return;
     setLoading(true);
 
     try {
@@ -60,22 +74,30 @@ export default function SignInPage() {
               className="auth-input"
               placeholder="Email address"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={e => { setEmail(e.target.value); setFieldErrors(prev => ({ ...prev, email: undefined })); }}
               required
               autoComplete="email"
+              style={fieldErrors.email ? { borderColor: 'var(--nb-watermelon)' } : undefined}
             />
+            {fieldErrors.email && (
+              <span className="auth-field-error">{fieldErrors.email}</span>
+            )}
           </div>
 
           <div>
             <input
               type="password"
               className="auth-input"
-              placeholder="Password (12+ characters)"
+              placeholder="Password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={e => { setPassword(e.target.value); setFieldErrors(prev => ({ ...prev, password: undefined })); }}
               required
               autoComplete="current-password"
+              style={fieldErrors.password ? { borderColor: 'var(--nb-watermelon)' } : undefined}
             />
+            {fieldErrors.password && (
+              <span className="auth-field-error">{fieldErrors.password}</span>
+            )}
           </div>
 
           <button
