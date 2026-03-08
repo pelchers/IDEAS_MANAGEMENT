@@ -13,12 +13,12 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 ---
 
 ## Phase 1: Kanban Board
-- [ ] Build kanban view matching pass-1 concept (columns, cards, drag-drop zones)
-- [ ] Wire to artifact CRUD endpoints (GET/PUT /api/projects/[id]/artifacts?type=kanban)
-- [ ] Implement drag-and-drop card movement
-- [ ] Add card create/edit/delete
-- [ ] Add column create/rename/reorder
-- [ ] Test with empty board, single column, and full board states
+- [x] Build kanban view matching pass-1 concept (columns, cards, drag-drop zones)
+- [x] Wire to artifact CRUD endpoints (GET/PUT /api/projects/[id]/artifacts?type=kanban)
+- [x] Implement drag-and-drop card movement
+- [x] Add card create/edit/delete
+- [x] Add column create/rename/reorder
+- [x] Test with empty board, single column, and full board states
 
 ## Phase 2: Ideas Capture
 - [ ] Build ideas view matching pass-1 concept (idea cards, categories, quick-add)
