@@ -2856,6 +2856,55 @@ a {
 }
 
 /* ============================================ */
+/* APP CONTAINER                                */
+/* ============================================ */
+.app-container {
+  min-height: 100vh;
+}
+
+/* Page content wrapper inside main-content */
+.page-content {
+  padding: 0;
+}
+
+/* Sign-out button in nav drawer */
+.nav-signout-btn {
+  text-align: center;
+  justify-content: center;
+}
+
+/* ============================================ */
+/* RESPONSIVE — DESKTOP (>= 1025px)            */
+/* Sidebar always visible, hamburger hidden     */
+/* ============================================ */
+@media (min-width: 1025px) {
+  .hamburger-btn {
+    display: none;
+  }
+
+  .nav-drawer {
+    transform: translateX(0);
+  }
+
+  .nav-close-btn {
+    display: none;
+  }
+
+  .nav-overlay {
+    display: none;
+  }
+
+  .top-bar {
+    left: var(--drawer-width);
+    padding-left: var(--space-lg);
+  }
+
+  .main-content {
+    margin-left: var(--drawer-width);
+  }
+}
+
+/* ============================================ */
 /* RESPONSIVE — LARGE DESKTOP (> 1440px)        */
 /* ============================================ */
 @media (min-width: 1441px) {

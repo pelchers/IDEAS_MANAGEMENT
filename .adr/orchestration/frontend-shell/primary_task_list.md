@@ -20,12 +20,12 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Verify design tokens render correctly in isolation
 
 ## Phase 2: App Shell + Navigation
-- [ ] Build hamburger drawer / sidebar from pass-1 concept
-- [ ] Build top bar with user info, search, notifications
-- [ ] Implement responsive layout (desktop sidebar, mobile drawer)
-- [ ] Add view switching / route navigation
-- [ ] Wire up signout button to /api/auth/signout
-- [ ] Test shell renders on all breakpoints (desktop, tablet, mobile)
+- [x] Build hamburger drawer / sidebar from pass-1 concept
+- [x] Build top bar with user info, search, notifications
+- [x] Implement responsive layout (desktop sidebar, mobile drawer)
+- [x] Add view switching / route navigation
+- [x] Wire up signout button to /api/auth/signout
+- [x] Test shell renders on all breakpoints (desktop, tablet, mobile)
 
 ## Phase 3: Auth Pages
 - [ ] Rebuild signin page matching pass-1 styling exactly
