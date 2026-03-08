@@ -29,12 +29,12 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Test with 0, 1, and 20+ ideas
 
 ## Phase 3: Whiteboard
-- [ ] Build whiteboard view matching pass-1 concept (canvas, toolbar, shapes)
-- [ ] Wire to artifact CRUD endpoints (type=whiteboard)
-- [ ] Implement basic drawing tools (shapes, text, connectors)
-- [ ] Add pan/zoom controls
-- [ ] Implement save/load whiteboard state
-- [ ] Test canvas rendering and interaction
+- [x] Build whiteboard view matching pass-1 concept (canvas, toolbar, shapes)
+- [x] Wire to artifact CRUD endpoints (type=whiteboard)
+- [x] Implement basic drawing tools (shapes, text, connectors)
+- [x] Add pan/zoom controls
+- [x] Implement save/load whiteboard state
+- [x] Test canvas rendering and interaction
 
 ## Phase 4: Schema Planner
 - [ ] Build schema planner view matching pass-1 concept (entity cards, relationships)
