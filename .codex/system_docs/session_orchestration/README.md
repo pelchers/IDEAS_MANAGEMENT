@@ -67,9 +67,24 @@ Every session produces these files in the orchestration directory:
 
 ## Related Documentation
 
-- [Phase Lifecycle](./phase-lifecycle.md) -- The 10-step lifecycle every phase follows
-- [Subagent Spawning](./subagent-spawning.md) -- Queue file format and hook mechanism
+- [Phase Lifecycle](./phase-lifecycle.md) -- The 11-step lifecycle every phase follows
+- [Subagent Spawning](./subagent-spawning.md) -- Queue file format, context handoff, and hook mechanism
 - [Session Variants](./session-variants.md) -- Differences between the three session types
+
+## Context Handoff
+
+The orchestrator MUST pass a comprehensive context prompt to each subagent on spawn,
+including prior phase summary, current scope, app state expectations, files to read,
+design system reference (if UI work), and validation requirements. See
+[Subagent Spawning](./subagent-spawning.md) for the full checklist.
+
+## Mandatory Validation
+
+Every phase must produce:
+- **Playwright PNG screenshots** (desktop 1536x960, mobile 390x844 @2x) for UI work
+- **User story tests** against the LIVE running app with a real database
+- **User story report** at `.docs/validation/<SESSION>/<PHASE>/user-story-report.md`
+- ALL stories must PASS before phase completion
 
 ## Testing Policy
 

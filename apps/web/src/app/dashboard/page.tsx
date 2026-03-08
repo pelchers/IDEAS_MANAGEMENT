@@ -15,11 +15,11 @@ interface ProjectSummary {
   updatedAt: string;
 }
 
-const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
-  PLANNING: { bg: "#e8f4fd", text: "#1a73e8" },
-  ACTIVE: { bg: "#e6f4ea", text: "#1e8e3e" },
-  PAUSED: { bg: "#fef7e0", text: "#f9ab00" },
-  ARCHIVED: { bg: "#f1f3f4", text: "#5f6368" },
+const STATUS_CLASS: Record<string, string> = {
+  PLANNING: "nb-badge nb-status-planning",
+  ACTIVE: "nb-badge nb-status-active",
+  PAUSED: "nb-badge nb-status-paused",
+  ARCHIVED: "nb-badge nb-status-archived",
 };
 
 export default function DashboardPage() {
@@ -97,46 +97,46 @@ export default function DashboardPage() {
   };
 
   if (loading) {
-    return (
-      <div style={styles.loadingContainer}>
-        <div style={styles.loadingText}>Loading projects...</div>
-      </div>
-    );
+    return <div className="nb-loading">Loading Projects...</div>;
   }
 
   return (
-    <div style={styles.page}>
-      <header style={styles.header}>
-        <h1 style={styles.title}>Projects</h1>
+    <div className="nb-page">
+      <header className="nb-header">
+        <h1>Projects</h1>
         <button
-          style={styles.createBtn}
+          className="nb-btn nb-btn-primary"
           onClick={() => setShowCreateForm(true)}
         >
           + New Project
         </button>
       </header>
 
-      {/* Create Project Form */}
       {showCreateForm && (
-        <div style={styles.createForm}>
-          <h3 style={styles.formTitle}>Create New Project</h3>
-          <input
-            type="text"
-            placeholder="Project name"
-            value={newProjectName}
-            onChange={(e) => setNewProjectName(e.target.value)}
-            style={styles.input}
-            autoFocus
-          />
-          <textarea
-            placeholder="Description (optional)"
-            value={newProjectDesc}
-            onChange={(e) => setNewProjectDesc(e.target.value)}
-            style={{ ...styles.input, minHeight: "60px", resize: "vertical" }}
-          />
-          <div style={styles.formActions}>
+        <div className="nb-card" style={{ marginBottom: 20 }}>
+          <h3 style={{ marginBottom: 16 }}>Create New Project</h3>
+          <div className="nb-form-group">
+            <input
+              type="text"
+              className="nb-input"
+              placeholder="Project name"
+              value={newProjectName}
+              onChange={(e) => setNewProjectName(e.target.value)}
+              autoFocus
+            />
+          </div>
+          <div className="nb-form-group">
+            <textarea
+              className="nb-input"
+              placeholder="Description (optional)"
+              value={newProjectDesc}
+              onChange={(e) => setNewProjectDesc(e.target.value)}
+              style={{ minHeight: 60, resize: "vertical" }}
+            />
+          </div>
+          <div className="nb-form-actions">
             <button
-              style={styles.cancelBtn}
+              className="nb-btn nb-btn-secondary"
               onClick={() => {
                 setShowCreateForm(false);
                 setNewProjectName("");
@@ -146,9 +146,10 @@ export default function DashboardPage() {
               Cancel
             </button>
             <button
-              style={styles.submitBtn}
+              className="nb-btn nb-btn-success"
               onClick={handleCreateProject}
               disabled={creating || !newProjectName.trim()}
+              style={{ opacity: creating || !newProjectName.trim() ? 0.5 : 1 }}
             >
               {creating ? "Creating..." : "Create"}
             </button>
@@ -156,36 +157,36 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Filters & Controls */}
-      <div style={styles.controls}>
+      <div className="nb-flex nb-flex-wrap" style={{ marginBottom: 20 }}>
         <input
           type="text"
+          className="nb-input"
           placeholder="Search projects..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={styles.searchInput}
+          style={{ flex: 1, minWidth: 200 }}
         />
         <select
+          className="nb-select"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          style={styles.select}
         >
           <option value="updated">Last Updated</option>
           <option value="created">Created</option>
           <option value="name">Name</option>
         </select>
         <select
+          className="nb-select"
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
-          style={styles.select}
         >
           <option value="desc">Newest First</option>
           <option value="asc">Oldest First</option>
         </select>
         <select
+          className="nb-select"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          style={styles.select}
         >
           <option value="">All Statuses</option>
           <option value="PLANNING">Planning</option>
@@ -193,112 +194,86 @@ export default function DashboardPage() {
           <option value="PAUSED">Paused</option>
           <option value="ARCHIVED">Archived</option>
         </select>
-        <div style={styles.viewToggle}>
+        <div className="nb-flex" style={{ gap: 0 }}>
           <button
-            style={{
-              ...styles.viewBtn,
-              ...(viewMode === "grid" ? styles.viewBtnActive : {}),
-            }}
+            className={`nb-btn nb-btn-sm ${viewMode === "grid" ? "nb-btn-info" : "nb-btn-secondary"}`}
             onClick={() => setViewMode("grid")}
-            title="Grid View"
           >
             Grid
           </button>
           <button
-            style={{
-              ...styles.viewBtn,
-              ...(viewMode === "list" ? styles.viewBtnActive : {}),
-            }}
+            className={`nb-btn nb-btn-sm ${viewMode === "list" ? "nb-btn-info" : "nb-btn-secondary"}`}
             onClick={() => setViewMode("list")}
-            title="List View"
+            style={{ marginLeft: -4 }}
           >
             List
           </button>
         </div>
       </div>
 
-      {/* Project List */}
       {projects.length === 0 ? (
-        <div style={styles.emptyState}>
-          <p style={styles.emptyText}>No projects found.</p>
+        <div className="nb-empty">
+          <p style={{ marginBottom: 16 }}>No projects found.</p>
           <button
-            style={styles.createBtn}
+            className="nb-btn nb-btn-primary"
             onClick={() => setShowCreateForm(true)}
           >
             Create your first project
           </button>
         </div>
       ) : viewMode === "grid" ? (
-        <div style={styles.grid}>
+        <div className="nb-grid nb-grid-2">
           {projects.map((p) => (
-            <a
-              key={p.id}
-              href={`/projects/${p.id}`}
-              style={styles.card}
-            >
-              <div style={styles.cardHeader}>
-                <h3 style={styles.cardTitle}>{p.name}</h3>
-                <span
-                  style={{
-                    ...styles.statusBadge,
-                    backgroundColor: STATUS_COLORS[p.status]?.bg ?? "#f1f3f4",
-                    color: STATUS_COLORS[p.status]?.text ?? "#5f6368",
-                  }}
-                >
+            <a key={p.id} href={`/projects/${p.id}`} className="nb-card" style={{ display: "block", textDecoration: "none", color: "inherit" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+                <h3 style={{ flex: 1, margin: 0 }}>{p.name}</h3>
+                <span className={STATUS_CLASS[p.status] || "nb-badge nb-badge-neutral"}>
                   {p.status.toLowerCase()}
                 </span>
               </div>
               {p.description && (
-                <p style={styles.cardDesc}>{p.description}</p>
+                <p style={{ fontSize: 14, color: "var(--nb-gray-mid)", marginBottom: 8, overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const }}>
+                  {p.description}
+                </p>
               )}
               {p.tags.length > 0 && (
-                <div style={styles.tagRow}>
+                <div className="nb-flex nb-flex-wrap" style={{ marginBottom: 8 }}>
                   {p.tags.slice(0, 4).map((tag) => (
-                    <span key={tag} style={styles.tag}>
-                      {tag}
-                    </span>
+                    <span key={tag} className="nb-tag">{tag}</span>
                   ))}
                 </div>
               )}
-              <div style={styles.cardFooter}>
-                <span style={styles.metaText}>
+              <div style={{ display: "flex", justifyContent: "space-between", borderTop: "var(--border-thick)", paddingTop: 8, marginTop: 4 }}>
+                <span className="nb-label" style={{ marginBottom: 0 }}>
                   {p.memberCount} member{p.memberCount !== 1 ? "s" : ""}
                 </span>
-                <span style={styles.metaText}>
-                  Updated {formatDate(p.updatedAt)}
+                <span className="nb-label" style={{ marginBottom: 0 }}>
+                  {formatDate(p.updatedAt)}
                 </span>
               </div>
             </a>
           ))}
         </div>
       ) : (
-        <div style={styles.list}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {projects.map((p) => (
-            <a
-              key={p.id}
-              href={`/projects/${p.id}`}
-              style={styles.listRow}
-            >
-              <div style={styles.listMain}>
-                <h3 style={styles.listTitle}>{p.name}</h3>
-                <span
-                  style={{
-                    ...styles.statusBadge,
-                    backgroundColor: STATUS_COLORS[p.status]?.bg ?? "#f1f3f4",
-                    color: STATUS_COLORS[p.status]?.text ?? "#5f6368",
-                  }}
-                >
+            <a key={p.id} href={`/projects/${p.id}`} className="nb-card" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", textDecoration: "none", color: "inherit", padding: "12px 16px", gap: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, flex: 1, overflow: "hidden" }}>
+                <h3 style={{ margin: 0, whiteSpace: "nowrap" }}>{p.name}</h3>
+                <span className={STATUS_CLASS[p.status] || "nb-badge nb-badge-neutral"}>
                   {p.status.toLowerCase()}
                 </span>
                 {p.description && (
-                  <span style={styles.listDesc}>{p.description}</span>
+                  <span style={{ fontSize: 13, color: "var(--nb-gray-mid)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {p.description}
+                  </span>
                 )}
               </div>
-              <div style={styles.listMeta}>
-                <span style={styles.metaText}>
+              <div className="nb-flex" style={{ flexShrink: 0, gap: 16 }}>
+                <span className="nb-label" style={{ marginBottom: 0 }}>
                   {p.memberCount} member{p.memberCount !== 1 ? "s" : ""}
                 </span>
-                <span style={styles.metaText}>
+                <span className="nb-label" style={{ marginBottom: 0 }}>
                   {formatDate(p.updatedAt)}
                 </span>
               </div>
@@ -309,252 +284,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  page: {
-    maxWidth: "1200px",
-    margin: "0 auto",
-    padding: "24px",
-    fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "24px",
-  },
-  title: {
-    fontSize: "24px",
-    fontWeight: 600,
-    margin: 0,
-  },
-  createBtn: {
-    padding: "8px 16px",
-    backgroundColor: "#1a73e8",
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontSize: "14px",
-    fontWeight: 500,
-  },
-  controls: {
-    display: "flex",
-    gap: "8px",
-    marginBottom: "20px",
-    flexWrap: "wrap" as const,
-    alignItems: "center",
-  },
-  searchInput: {
-    flex: 1,
-    minWidth: "200px",
-    padding: "8px 12px",
-    border: "1px solid #ddd",
-    borderRadius: "6px",
-    fontSize: "14px",
-  },
-  select: {
-    padding: "8px 12px",
-    border: "1px solid #ddd",
-    borderRadius: "6px",
-    fontSize: "14px",
-    backgroundColor: "#fff",
-  },
-  viewToggle: {
-    display: "flex",
-    border: "1px solid #ddd",
-    borderRadius: "6px",
-    overflow: "hidden",
-  },
-  viewBtn: {
-    padding: "8px 12px",
-    border: "none",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    fontSize: "13px",
-  },
-  viewBtnActive: {
-    backgroundColor: "#1a73e8",
-    color: "#fff",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-    gap: "16px",
-  },
-  card: {
-    display: "block",
-    border: "1px solid #e0e0e0",
-    borderRadius: "8px",
-    padding: "16px",
-    textDecoration: "none",
-    color: "inherit",
-    transition: "box-shadow 0.2s",
-    backgroundColor: "#fff",
-  },
-  cardHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: "8px",
-  },
-  cardTitle: {
-    fontSize: "16px",
-    fontWeight: 600,
-    margin: 0,
-    flex: 1,
-  },
-  cardDesc: {
-    fontSize: "14px",
-    color: "#666",
-    margin: "0 0 8px",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    display: "-webkit-box",
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: "vertical" as const,
-  },
-  statusBadge: {
-    display: "inline-block",
-    padding: "2px 8px",
-    borderRadius: "12px",
-    fontSize: "12px",
-    fontWeight: 500,
-    textTransform: "capitalize" as const,
-    whiteSpace: "nowrap" as const,
-    marginLeft: "8px",
-    flexShrink: 0,
-  },
-  tagRow: {
-    display: "flex",
-    gap: "4px",
-    flexWrap: "wrap" as const,
-    marginBottom: "8px",
-  },
-  tag: {
-    display: "inline-block",
-    padding: "2px 6px",
-    backgroundColor: "#f1f3f4",
-    borderRadius: "4px",
-    fontSize: "11px",
-    color: "#5f6368",
-  },
-  cardFooter: {
-    display: "flex",
-    justifyContent: "space-between",
-    borderTop: "1px solid #f1f3f4",
-    paddingTop: "8px",
-    marginTop: "4px",
-  },
-  metaText: {
-    fontSize: "12px",
-    color: "#999",
-  },
-  list: {
-    display: "flex",
-    flexDirection: "column" as const,
-    gap: "4px",
-  },
-  listRow: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "12px 16px",
-    border: "1px solid #e0e0e0",
-    borderRadius: "6px",
-    textDecoration: "none",
-    color: "inherit",
-    backgroundColor: "#fff",
-    gap: "16px",
-  },
-  listMain: {
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-    flex: 1,
-    overflow: "hidden",
-  },
-  listTitle: {
-    fontSize: "15px",
-    fontWeight: 500,
-    margin: 0,
-    whiteSpace: "nowrap" as const,
-  },
-  listDesc: {
-    fontSize: "13px",
-    color: "#888",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap" as const,
-  },
-  listMeta: {
-    display: "flex",
-    gap: "16px",
-    flexShrink: 0,
-  },
-  emptyState: {
-    textAlign: "center" as const,
-    padding: "60px 20px",
-  },
-  emptyText: {
-    fontSize: "16px",
-    color: "#888",
-    marginBottom: "16px",
-  },
-  createForm: {
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    padding: "20px",
-    marginBottom: "20px",
-    backgroundColor: "#fafafa",
-  },
-  formTitle: {
-    fontSize: "16px",
-    fontWeight: 600,
-    margin: "0 0 12px",
-  },
-  input: {
-    display: "block",
-    width: "100%",
-    padding: "8px 12px",
-    border: "1px solid #ddd",
-    borderRadius: "6px",
-    fontSize: "14px",
-    marginBottom: "8px",
-    boxSizing: "border-box" as const,
-  },
-  formActions: {
-    display: "flex",
-    justifyContent: "flex-end",
-    gap: "8px",
-    marginTop: "8px",
-  },
-  cancelBtn: {
-    padding: "8px 16px",
-    border: "1px solid #ddd",
-    borderRadius: "6px",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    fontSize: "14px",
-  },
-  submitBtn: {
-    padding: "8px 16px",
-    backgroundColor: "#1a73e8",
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontSize: "14px",
-    fontWeight: 500,
-  },
-  loadingContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-  },
-  loadingText: {
-    fontSize: "14px",
-    color: "#888",
-  },
-};

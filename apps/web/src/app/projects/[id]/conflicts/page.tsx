@@ -109,52 +109,108 @@ export default function ConflictResolverPage({
 
   if (loading) {
     return (
-      <div style={styles.loadingContainer}>
-        <div style={styles.loadingText}>Loading conflicts...</div>
+      <div className="nb-loading" style={{ height: "100vh" }}>
+        Loading conflicts...
       </div>
     );
   }
 
   return (
-    <div style={styles.page}>
-      <header style={styles.header}>
+    <div className="nb-page" style={{ height: "100vh", overflow: "hidden" }}>
+      <header className="nb-header" style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "16px 24px",
+        borderBottom: "4px solid var(--nb-black)",
+        flexShrink: 0,
+        backgroundColor: "var(--nb-cream)",
+      }}>
         <div>
-          <a href={`/projects/${projectId}`} style={styles.backLink}>
+          <a href={`/projects/${projectId}`} style={{
+            fontSize: "13px",
+            color: "var(--nb-black)",
+            textDecoration: "none",
+            display: "block",
+            marginBottom: "4px",
+            fontFamily: "var(--font-mono)",
+            fontWeight: 700,
+            textTransform: "uppercase",
+          }}>
             &larr; Back to Project
           </a>
-          <h1 style={styles.title}>Conflict Resolver</h1>
+          <h1 style={{
+            fontSize: "20px",
+            fontWeight: 900,
+            margin: 0,
+            fontFamily: "var(--font-heading)",
+            textTransform: "uppercase",
+          }}>
+            Conflict Resolver
+          </h1>
         </div>
-        <span style={styles.conflictCount}>
+        <span className="nb-badge nb-badge-watermelon" style={{ fontSize: "14px" }}>
           {conflicts.length} conflict{conflicts.length !== 1 ? "s" : ""}
         </span>
       </header>
 
       {conflicts.length === 0 ? (
-        <div style={styles.emptyState}>
-          <p style={styles.emptyText}>
+        <div className="nb-empty" style={{ margin: "60px auto", maxWidth: "400px" }}>
+          <p style={{
+            fontSize: "16px",
+            fontFamily: "var(--font-mono)",
+            textTransform: "uppercase",
+            fontWeight: 700,
+            textAlign: "center",
+          }}>
             No conflicts found. All artifacts are in sync.
           </p>
         </div>
       ) : (
-        <div style={styles.content}>
+        <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
           {/* Conflict List */}
-          <div style={styles.conflictList}>
+          <div style={{
+            width: "300px",
+            borderRight: "4px solid var(--nb-black)",
+            overflow: "auto",
+            flexShrink: 0,
+            backgroundColor: "var(--nb-white)",
+          }}>
             {conflicts.map((c) => (
               <div
                 key={c.id}
+                className="nb-card"
                 style={{
-                  ...styles.conflictItem,
-                  ...(selectedConflict?.id === c.id
-                    ? styles.conflictItemActive
-                    : {}),
+                  padding: "12px 16px",
+                  borderBottom: "4px solid var(--nb-black)",
+                  cursor: "pointer",
+                  backgroundColor: selectedConflict?.id === c.id ? "var(--nb-lemon)" : "var(--nb-white)",
+                  borderLeft: "none",
+                  borderRight: "none",
+                  borderTop: "none",
+                  boxShadow: "none",
                 }}
                 onClick={() => {
                   setSelectedConflict(c);
                   setEditContent(formatJson(c.payload));
                 }}
               >
-                <div style={styles.conflictPath}>{c.artifactPath}</div>
-                <div style={styles.conflictMeta}>
+                <div style={{
+                  fontSize: "14px",
+                  fontWeight: 800,
+                  color: "var(--nb-black)",
+                  wordBreak: "break-all",
+                  fontFamily: "var(--font-mono)",
+                }}>
+                  {c.artifactPath}
+                </div>
+                <div style={{
+                  fontSize: "11px",
+                  color: "var(--nb-gray-dark)",
+                  marginTop: "4px",
+                  fontFamily: "var(--font-mono)",
+                  textTransform: "uppercase",
+                }}>
                   Base revision: {c.baseRevision} | Created:{" "}
                   {new Date(c.createdAt).toLocaleString()}
                 </div>
@@ -164,21 +220,69 @@ export default function ConflictResolverPage({
 
           {/* Diff / Resolution View */}
           {selectedConflict && (
-            <div style={styles.diffView}>
-              <h3 style={styles.diffTitle}>
+            <div style={{ flex: 1, overflow: "auto", padding: "20px" }}>
+              <h3 style={{
+                fontSize: "16px",
+                fontWeight: 900,
+                margin: "0 0 12px",
+                fontFamily: "var(--font-heading)",
+                textTransform: "uppercase",
+              }}>
                 Conflict: {selectedConflict.artifactPath}
               </h3>
 
-              <div style={styles.diffPanes}>
-                <div style={styles.diffPane}>
-                  <h4 style={styles.paneTitle}>Local (Your Changes)</h4>
-                  <pre style={styles.codeBlock}>
+              <div className="nb-grid-2" style={{ gap: "12px", marginBottom: "16px" }}>
+                <div className="nb-card" style={{ padding: 0, overflow: "hidden" }}>
+                  <h4 style={{
+                    fontSize: "13px",
+                    fontWeight: 800,
+                    margin: 0,
+                    padding: "8px 12px",
+                    backgroundColor: "var(--nb-malachite)",
+                    borderBottom: "4px solid var(--nb-black)",
+                    fontFamily: "var(--font-mono)",
+                    textTransform: "uppercase",
+                    color: "var(--nb-white)",
+                  }}>
+                    Local (Your Changes)
+                  </h4>
+                  <pre style={{
+                    margin: 0,
+                    padding: "12px",
+                    fontSize: "12px",
+                    fontFamily: "var(--font-mono)",
+                    overflow: "auto",
+                    maxHeight: "300px",
+                    whiteSpace: "pre-wrap",
+                    backgroundColor: "var(--nb-cream)",
+                  }}>
                     {formatJson(selectedConflict.payload)}
                   </pre>
                 </div>
-                <div style={styles.diffPane}>
-                  <h4 style={styles.paneTitle}>Remote (Server)</h4>
-                  <pre style={styles.codeBlock}>
+                <div className="nb-card" style={{ padding: 0, overflow: "hidden" }}>
+                  <h4 style={{
+                    fontSize: "13px",
+                    fontWeight: 800,
+                    margin: 0,
+                    padding: "8px 12px",
+                    backgroundColor: "var(--nb-cornflower)",
+                    borderBottom: "4px solid var(--nb-black)",
+                    fontFamily: "var(--font-mono)",
+                    textTransform: "uppercase",
+                    color: "var(--nb-white)",
+                  }}>
+                    Remote (Server)
+                  </h4>
+                  <pre style={{
+                    margin: 0,
+                    padding: "12px",
+                    fontSize: "12px",
+                    fontFamily: "var(--font-mono)",
+                    overflow: "auto",
+                    maxHeight: "300px",
+                    whiteSpace: "pre-wrap",
+                    backgroundColor: "var(--nb-cream)",
+                  }}>
                     {formatJson(
                       getRemoteContent(selectedConflict.artifactPath)
                     )}
@@ -187,9 +291,9 @@ export default function ConflictResolverPage({
               </div>
 
               {/* Action Buttons */}
-              <div style={styles.actions}>
+              <div className="nb-flex" style={{ gap: "8px", marginBottom: "16px" }}>
                 <button
-                  style={styles.actionBtn}
+                  className="nb-btn nb-btn-success"
                   onClick={() =>
                     handleResolve(
                       selectedConflict.operationId,
@@ -201,7 +305,7 @@ export default function ConflictResolverPage({
                   Keep Local
                 </button>
                 <button
-                  style={styles.actionBtn}
+                  className="nb-btn nb-btn-primary"
                   onClick={() =>
                     handleResolve(
                       selectedConflict.operationId,
@@ -213,7 +317,7 @@ export default function ConflictResolverPage({
                   Keep Remote
                 </button>
                 <button
-                  style={{ ...styles.actionBtn, ...styles.mergeBtn }}
+                  className="nb-btn nb-btn-accent"
                   onClick={() => {
                     // Already showing edit view since editContent is set
                   }}
@@ -224,18 +328,32 @@ export default function ConflictResolverPage({
               </div>
 
               {/* Manual Edit */}
-              <div style={styles.editSection}>
-                <h4 style={styles.paneTitle}>
+              <div className="nb-divider" style={{ paddingTop: "16px" }}>
+                <h4 style={{
+                  fontSize: "13px",
+                  fontWeight: 800,
+                  margin: "0 0 8px",
+                  fontFamily: "var(--font-mono)",
+                  textTransform: "uppercase",
+                }}>
                   Edit Merged Content (JSON)
                 </h4>
                 <textarea
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
-                  style={styles.editArea}
+                  className="nb-input"
+                  style={{
+                    width: "100%",
+                    minHeight: "200px",
+                    fontFamily: "var(--font-mono)",
+                    marginBottom: "8px",
+                    resize: "vertical",
+                    boxSizing: "border-box",
+                  }}
                   spellCheck={false}
                 />
                 <button
-                  style={{ ...styles.actionBtn, ...styles.saveBtn }}
+                  className="nb-btn nb-btn-primary"
                   onClick={handleManualMerge}
                   disabled={resolving}
                 >
@@ -249,165 +367,3 @@ export default function ConflictResolverPage({
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  page: {
-    fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    overflow: "hidden",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "16px 24px",
-    borderBottom: "1px solid #e0e0e0",
-    flexShrink: 0,
-  },
-  backLink: {
-    fontSize: "13px",
-    color: "#1a73e8",
-    textDecoration: "none",
-    display: "block",
-    marginBottom: "4px",
-  },
-  title: {
-    fontSize: "20px",
-    fontWeight: 600,
-    margin: 0,
-  },
-  conflictCount: {
-    fontSize: "14px",
-    color: "#d93025",
-    fontWeight: 500,
-  },
-  content: {
-    display: "flex",
-    flex: 1,
-    overflow: "hidden",
-  },
-  conflictList: {
-    width: "300px",
-    borderRight: "1px solid #e0e0e0",
-    overflow: "auto",
-    flexShrink: 0,
-  },
-  conflictItem: {
-    padding: "12px 16px",
-    borderBottom: "1px solid #f1f3f4",
-    cursor: "pointer",
-    transition: "background-color 0.1s",
-  },
-  conflictItemActive: {
-    backgroundColor: "#e8f4fd",
-  },
-  conflictPath: {
-    fontSize: "14px",
-    fontWeight: 500,
-    color: "#333",
-    wordBreak: "break-all" as const,
-  },
-  conflictMeta: {
-    fontSize: "11px",
-    color: "#999",
-    marginTop: "4px",
-  },
-  diffView: {
-    flex: 1,
-    overflow: "auto",
-    padding: "20px",
-  },
-  diffTitle: {
-    fontSize: "16px",
-    fontWeight: 600,
-    margin: "0 0 12px",
-  },
-  diffPanes: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "12px",
-    marginBottom: "16px",
-  },
-  diffPane: {
-    border: "1px solid #e0e0e0",
-    borderRadius: "6px",
-    overflow: "hidden",
-  },
-  paneTitle: {
-    fontSize: "13px",
-    fontWeight: 600,
-    margin: 0,
-    padding: "8px 12px",
-    backgroundColor: "#f8f9fa",
-    borderBottom: "1px solid #e0e0e0",
-  },
-  codeBlock: {
-    margin: 0,
-    padding: "12px",
-    fontSize: "12px",
-    fontFamily: "var(--font-geist-mono), monospace",
-    overflow: "auto",
-    maxHeight: "300px",
-    whiteSpace: "pre-wrap" as const,
-    backgroundColor: "#fafafa",
-  },
-  actions: {
-    display: "flex",
-    gap: "8px",
-    marginBottom: "16px",
-  },
-  actionBtn: {
-    padding: "8px 16px",
-    border: "1px solid #ddd",
-    borderRadius: "6px",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    fontSize: "13px",
-    fontWeight: 500,
-  },
-  mergeBtn: {
-    borderColor: "#1a73e8",
-    color: "#1a73e8",
-  },
-  editSection: {
-    borderTop: "1px solid #e0e0e0",
-    paddingTop: "16px",
-  },
-  editArea: {
-    width: "100%",
-    minHeight: "200px",
-    padding: "12px",
-    border: "1px solid #ddd",
-    borderRadius: "6px",
-    fontSize: "12px",
-    fontFamily: "var(--font-geist-mono), monospace",
-    marginBottom: "8px",
-    resize: "vertical" as const,
-    boxSizing: "border-box" as const,
-  },
-  saveBtn: {
-    backgroundColor: "#1a73e8",
-    color: "#fff",
-    border: "none",
-  },
-  emptyState: {
-    textAlign: "center" as const,
-    padding: "60px 20px",
-  },
-  emptyText: {
-    fontSize: "16px",
-    color: "#888",
-  },
-  loadingContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-  },
-  loadingText: {
-    fontSize: "14px",
-    color: "#888",
-  },
-};

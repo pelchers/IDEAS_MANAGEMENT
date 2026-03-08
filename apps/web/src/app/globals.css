@@ -1,42 +1,390 @@
+/* ============================================ */
+/* NEO-BRUTALISM DESIGN SYSTEM                  */
+/* Idea Management Application                  */
+/* ============================================ */
+
+/* ============================================ */
+/* CSS CUSTOM PROPERTIES                        */
+/* ============================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core palette — Neo Brutalism */
+  --nb-black: #282828;
+  --nb-cream: #F8F3EC;
+  --nb-white: #FFFFFF;
+  --nb-watermelon: #FF5E54;
+  --nb-malachite: #2BBF5D;
+  --nb-cornflower: #1283EB;
+  --nb-lemon: #FFE459;
+  --nb-amethyst: #7B61FF;
+  --nb-gray-dark: #3a3a3a;
+  --nb-gray-mid: #666666;
+
+  /* Semantic aliases */
+  --color-primary: var(--nb-black);
+  --color-background: var(--nb-cream);
+  --color-surface: var(--nb-white);
+  --color-text: var(--nb-black);
+  --color-error: var(--nb-watermelon);
+  --color-success: var(--nb-malachite);
+  --color-info: var(--nb-cornflower);
+  --color-warning: var(--nb-lemon);
+  --color-accent: var(--nb-amethyst);
+
+  /* Typography */
+  --font-heading: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  --font-body: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), 'IBM Plex Mono', 'Courier New', monospace;
+
+  /* Borders and shadows — the brutalist signature */
+  --border-thin: 2px solid var(--nb-black);
+  --border-thick: 3px solid var(--nb-black);
+  --border-thicker: 4px solid var(--nb-black);
+  --shadow-brutal: 4px 4px 0px var(--nb-black);
+  --shadow-brutal-hover: 6px 6px 0px var(--nb-black);
+  --shadow-brutal-active: 2px 2px 0px var(--nb-black);
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================ */
+/* RESET & BASE                                 */
+/* ============================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html,
+html {
+  font-size: 16px;
+}
+
 body {
-  max-width: 100vw;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-background);
   overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Custom scrollbar — thick, brutalist */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+::-webkit-scrollbar-track {
+  background: var(--nb-cream);
+  border-left: var(--border-thick);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--nb-black);
+  border: 2px solid var(--nb-cream);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--nb-watermelon);
+}
+
+/* ============================================ */
+/* TYPOGRAPHY                                   */
+/* ============================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--nb-black);
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+
+code, pre {
+  font-family: var(--font-mono);
+  font-weight: 600;
 }
 
 a {
-  color: inherit;
+  color: var(--color-text);
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* ============================================ */
+/* COMPONENT CLASSES                            */
+/* ============================================ */
+
+/* Cards */
+.nb-card {
+  background: var(--nb-white);
+  border: var(--border-thicker);
+  box-shadow: var(--shadow-brutal);
+  padding: var(--space-lg);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.nb-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-brutal-hover);
+}
+.nb-card:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-brutal-active);
+}
+
+/* Buttons */
+.nb-btn {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 24px;
+  border: var(--border-thicker);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: var(--shadow-brutal);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.nb-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-brutal-hover);
+}
+.nb-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-brutal-active);
+}
+.nb-btn:focus-visible {
+  outline: 3px solid var(--nb-black);
+  outline-offset: 2px;
+}
+
+.nb-btn-primary {
+  background: var(--nb-watermelon);
+  color: var(--nb-black);
+}
+.nb-btn-secondary {
+  background: var(--nb-white);
+  color: var(--nb-black);
+}
+.nb-btn-success {
+  background: var(--nb-malachite);
+  color: var(--nb-black);
+}
+.nb-btn-info {
+  background: var(--nb-cornflower);
+  color: var(--nb-white);
+}
+.nb-btn-warning {
+  background: var(--nb-lemon);
+  color: var(--nb-black);
+}
+.nb-btn-accent {
+  background: var(--nb-amethyst);
+  color: var(--nb-white);
+}
+.nb-btn-sm {
+  padding: 8px 16px;
+  font-size: 0.75rem;
+}
+
+/* Inputs */
+.nb-input {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: 12px 16px;
+  border: var(--border-thicker);
+  background: var(--nb-white);
+  color: var(--nb-black);
+  width: 100%;
+  transition: box-shadow var(--transition-fast);
+}
+.nb-input:focus {
+  outline: none;
+  box-shadow: var(--shadow-brutal);
+}
+.nb-input::placeholder {
+  color: var(--nb-gray-mid);
+}
+
+/* Select */
+.nb-select {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: 12px 16px;
+  border: var(--border-thicker);
+  background: var(--nb-white);
+  color: var(--nb-black);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23282828' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+.nb-select:focus {
+  outline: none;
+  box-shadow: var(--shadow-brutal);
+}
+
+/* Badges */
+.nb-badge {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border: var(--border-thin);
+  display: inline-block;
+}
+.nb-badge-watermelon { background: var(--nb-watermelon); }
+.nb-badge-malachite { background: var(--nb-malachite); }
+.nb-badge-cornflower { background: var(--nb-cornflower); color: var(--nb-white); }
+.nb-badge-lemon { background: var(--nb-lemon); }
+.nb-badge-amethyst { background: var(--nb-amethyst); color: var(--nb-white); }
+.nb-badge-neutral { background: var(--nb-cream); }
+
+/* Tags */
+.nb-tag {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border: var(--border-thin);
+  background: var(--nb-lemon);
+  display: inline-block;
+}
+
+/* Labels */
+.nb-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--nb-gray-dark);
+  margin-bottom: var(--space-xs);
+  display: block;
+}
+
+/* Dividers */
+.nb-divider {
+  border: none;
+  border-top: var(--border-thick);
+  margin: var(--space-lg) 0;
+}
+
+/* ============================================ */
+/* LAYOUT UTILITIES                             */
+/* ============================================ */
+.nb-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+
+.nb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: var(--border-thicker);
+}
+
+.nb-grid {
+  display: grid;
+  gap: var(--space-md);
+}
+.nb-grid-2 { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.nb-grid-3 { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+.nb-grid-4 { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+
+.nb-flex {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+.nb-flex-wrap { flex-wrap: wrap; }
+
+/* ============================================ */
+/* STATUS COLORS (for badges)                   */
+/* ============================================ */
+.nb-status-planning { background: var(--nb-cornflower); color: var(--nb-white); }
+.nb-status-active { background: var(--nb-malachite); }
+.nb-status-paused { background: var(--nb-lemon); }
+.nb-status-archived { background: var(--nb-cream); border: var(--border-thin); }
+
+/* ============================================ */
+/* FORM CONTAINERS                              */
+/* ============================================ */
+.nb-form-card {
+  background: var(--nb-white);
+  border: var(--border-thicker);
+  box-shadow: var(--shadow-brutal);
+  padding: var(--space-xl);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.nb-form-group {
+  margin-bottom: var(--space-md);
+}
+
+.nb-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+/* ============================================ */
+/* EMPTY STATES                                 */
+/* ============================================ */
+.nb-empty {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-lg);
+  border: var(--border-thick);
+  border-style: dashed;
+}
+
+/* ============================================ */
+/* LOADING STATES                               */
+/* ============================================ */
+.nb-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--nb-gray-mid);
 }

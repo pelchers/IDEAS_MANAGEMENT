@@ -1,0 +1,69 @@
+# Primary Task List
+
+Session: feature-views
+Date: 2026-03-07
+
+Sources:
+- `.docs/planning/prd.md`
+- `.docs/planning/concepts/brutalism-neobrutalism/pass-1/`
+- `.docs/planning/technical-specification.md`
+
+Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
+
+---
+
+## Phase 1: Kanban Board
+- [ ] Build kanban view matching pass-1 concept (columns, cards, drag-drop zones)
+- [ ] Wire to artifact CRUD endpoints (GET/PUT /api/projects/[id]/artifacts?type=kanban)
+- [ ] Implement drag-and-drop card movement
+- [ ] Add card create/edit/delete
+- [ ] Add column create/rename/reorder
+- [ ] Test with empty board, single column, and full board states
+
+## Phase 2: Ideas Capture
+- [ ] Build ideas view matching pass-1 concept (idea cards, categories, quick-add)
+- [ ] Wire to artifact CRUD endpoints (type=ideas)
+- [ ] Implement idea create/edit/delete
+- [ ] Add category filtering and search
+- [ ] Add priority/status indicators
+- [ ] Test with 0, 1, and 20+ ideas
+
+## Phase 3: Whiteboard
+- [ ] Build whiteboard view matching pass-1 concept (canvas, toolbar, shapes)
+- [ ] Wire to artifact CRUD endpoints (type=whiteboard)
+- [ ] Implement basic drawing tools (shapes, text, connectors)
+- [ ] Add pan/zoom controls
+- [ ] Implement save/load whiteboard state
+- [ ] Test canvas rendering and interaction
+
+## Phase 4: Schema Planner
+- [ ] Build schema planner view matching pass-1 concept (entity cards, relationships)
+- [ ] Wire to artifact CRUD endpoints (type=schema)
+- [ ] Implement entity create/edit/delete with fields
+- [ ] Add relationship lines between entities
+- [ ] Add field type selection and validation rules
+- [ ] Test with empty schema and 5+ entity schema
+
+## Phase 5: Directory Tree
+- [ ] Build directory tree view matching pass-1 concept (tree structure, file icons)
+- [ ] Wire to artifact CRUD endpoints (type=directory-tree)
+- [ ] Implement node create/rename/delete/move
+- [ ] Add file/folder type indicators
+- [ ] Add expand/collapse tree nodes
+- [ ] Test with empty tree and deep nested structure
+
+## Phase 6: AI Chat
+- [ ] Build AI chat view matching pass-1 concept (message list, input, tool actions)
+- [ ] Wire to AI chat session CRUD endpoints
+- [ ] Wire to AI message send/receive endpoints
+- [ ] Implement streaming message display
+- [ ] Add tool action buttons (add_idea, update_kanban, etc.)
+- [ ] Test conversation flow and tool actions
+
+## Phase 7: Settings + Conflicts
+- [ ] Build settings view matching pass-1 concept (profile, preferences, billing)
+- [ ] Build conflicts view matching pass-1 concept (diff display, resolve actions)
+- [ ] Wire settings to user profile endpoints
+- [ ] Wire conflicts to sync conflict resolution endpoints
+- [ ] Add Stripe billing portal link
+- [ ] Test settings save and conflict resolution flow

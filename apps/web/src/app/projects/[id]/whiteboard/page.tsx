@@ -315,7 +315,7 @@ export default function WhiteboardPage({
     };
     if (type === "image") {
       setShowImageInput(true);
-      // We'll add after URL is entered — store temp container
+      // We'll add after URL is entered -- store temp container
       setContainers((prev) => [...prev, { ...c, imageUrl: "" }]);
       setSelectedId(c.id);
       return;
@@ -360,85 +360,90 @@ export default function WhiteboardPage({
 
   if (loading) {
     return (
-      <div style={s.center}>
-        <span>Loading whiteboard...</span>
+      <div className="nb-loading" style={{ height: "100vh" }}>
+        Loading whiteboard...
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={s.center}>
-        <span style={{ color: "#d93025" }}>{error}</span>
+      <div className="nb-loading" style={{ height: "100vh", color: "var(--nb-watermelon)" }}>
+        {error}
       </div>
     );
   }
 
   return (
-    <div style={s.page}>
+    <div className="nb-page" style={{ height: "100vh", overflow: "hidden" }}>
       {/* Breadcrumb */}
-      <nav style={s.breadcrumb}>
-        <a href="/dashboard" style={s.breadcrumbLink}>Dashboard</a>
-        <span style={s.breadcrumbSep}>/</span>
-        <a href={`/projects/${projectId}`} style={s.breadcrumbLink}>Project</a>
-        <span style={s.breadcrumbSep}>/</span>
-        <span style={s.breadcrumbCurrent}>Whiteboard</span>
+      <nav style={{ fontFamily: "var(--font-mono)", fontSize: "13px", padding: "12px 24px 0", textTransform: "uppercase" }}>
+        <a href="/dashboard" style={{ color: "var(--nb-black)", textDecoration: "none", fontWeight: 700 }}>Dashboard</a>
+        <span style={{ margin: "0 6px", color: "var(--nb-gray-mid)" }}>/</span>
+        <a href={`/projects/${projectId}`} style={{ color: "var(--nb-black)", textDecoration: "none", fontWeight: 700 }}>Project</a>
+        <span style={{ margin: "0 6px", color: "var(--nb-gray-mid)" }}>/</span>
+        <span style={{ color: "var(--nb-gray-dark)" }}>Whiteboard</span>
       </nav>
 
       {/* Toolbar */}
-      <div style={s.toolbar}>
-        <button style={s.toolBtn} onClick={() => addContainer("text")}>
+      <div className="nb-flex" style={{ gap: "6px", padding: "8px 24px", borderBottom: "4px solid var(--nb-black)", alignItems: "center", flexShrink: 0, backgroundColor: "var(--nb-cream)" }}>
+        <button className="nb-btn nb-btn-primary" onClick={() => addContainer("text")}>
           + Text
         </button>
-        <button style={s.toolBtn} onClick={() => addContainer("image")}>
+        <button className="nb-btn nb-btn-info" onClick={() => addContainer("image")}>
           + Image
         </button>
         {selectedId && (
           <>
-            <button style={s.toolBtn} onClick={startEdgeFrom}>
+            <button className="nb-btn nb-btn-warning" onClick={startEdgeFrom}>
               {edgeFrom ? "Drawing edge..." : "Connect"}
             </button>
-            <button
-              style={{ ...s.toolBtn, color: "#d93025" }}
-              onClick={deleteSelected}
-            >
+            <button className="nb-btn nb-btn-secondary" onClick={deleteSelected} style={{ color: "var(--nb-watermelon)" }}>
               Delete
             </button>
           </>
         )}
         <div style={{ flex: 1 }} />
-        <button style={s.toolBtn} onClick={() => setViewport((v) => ({ ...v, zoom: Math.min(5, v.zoom + 0.2) }))}>
+        <button className="nb-btn nb-btn-secondary nb-btn-sm" onClick={() => setViewport((v) => ({ ...v, zoom: Math.min(5, v.zoom + 0.2) }))}>
           Zoom +
         </button>
-        <button style={s.toolBtn} onClick={() => setViewport((v) => ({ ...v, zoom: Math.max(0.1, v.zoom - 0.2) }))}>
+        <button className="nb-btn nb-btn-secondary nb-btn-sm" onClick={() => setViewport((v) => ({ ...v, zoom: Math.max(0.1, v.zoom - 0.2) }))}>
           Zoom -
         </button>
-        <button style={s.toolBtn} onClick={resetView}>
+        <button className="nb-btn nb-btn-secondary nb-btn-sm" onClick={resetView}>
           Reset
         </button>
-        <span style={s.zoomLabel}>{Math.round(viewport.zoom * 100)}%</span>
+        <span className="nb-tag">{Math.round(viewport.zoom * 100)}%</span>
       </div>
 
       {/* Image URL input */}
       {showImageInput && (
-        <div style={s.imageBar}>
+        <div className="nb-flex" style={{ gap: "6px", padding: "6px 24px", backgroundColor: "var(--nb-lemon)", alignItems: "center", borderBottom: "4px solid var(--nb-black)" }}>
           <input
-            style={s.input}
+            className="nb-input"
             placeholder="Image URL"
             autoFocus
             value={imageUrlInput}
             onChange={(e) => setImageUrlInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleAddImage()}
+            style={{ flex: 1, marginBottom: 0 }}
           />
-          <button style={s.smallBtn} onClick={handleAddImage}>Set</button>
-          <button style={s.ghostBtn} onClick={() => setShowImageInput(false)}>Cancel</button>
+          <button className="nb-btn nb-btn-primary nb-btn-sm" onClick={handleAddImage}>Set</button>
+          <button className="nb-btn nb-btn-secondary nb-btn-sm" onClick={() => setShowImageInput(false)}>Cancel</button>
         </div>
       )}
 
       {/* Canvas */}
       <div
         ref={canvasRef}
-        style={s.canvasWrapper}
+        style={{
+          flex: 1,
+          overflow: "hidden",
+          position: "relative",
+          backgroundColor: "var(--nb-cream)",
+          cursor: "default",
+          border: "4px solid var(--nb-black)",
+        }}
         onMouseDown={handleCanvasMouseDown}
         onMouseMove={handleCanvasMouseMove}
         onMouseUp={handleCanvasMouseUp}
@@ -448,14 +453,28 @@ export default function WhiteboardPage({
         <div
           data-canvas="true"
           style={{
-            ...s.canvas,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "10000px",
+            height: "10000px",
+            backgroundImage: "radial-gradient(circle, var(--nb-gray-mid) 1.5px, transparent 1.5px)",
+            backgroundSize: "24px 24px",
             transform: `scale(${viewport.zoom}) translate(${viewport.x}px, ${viewport.y}px)`,
             transformOrigin: "0 0",
           }}
         >
           {/* SVG edges */}
           <svg
-            style={s.edgeSvg}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              pointerEvents: "none",
+              overflow: "visible",
+            }}
             data-canvas="true"
           >
             {edges.map((edge) => {
@@ -471,8 +490,8 @@ export default function WhiteboardPage({
                     y1={from.cy}
                     x2={to.cx}
                     y2={to.cy}
-                    stroke="#666"
-                    strokeWidth={2}
+                    stroke="var(--nb-black)"
+                    strokeWidth={3}
                     markerEnd="url(#arrowhead)"
                   />
                   {edge.label && (
@@ -480,8 +499,10 @@ export default function WhiteboardPage({
                       x={(from.cx + to.cx) / 2}
                       y={(from.cy + to.cy) / 2 - 6}
                       textAnchor="middle"
-                      fontSize="11"
-                      fill="#555"
+                      fontSize="12"
+                      fill="var(--nb-black)"
+                      fontWeight="700"
+                      fontFamily="var(--font-mono)"
                     >
                       {edge.label}
                     </text>
@@ -498,7 +519,7 @@ export default function WhiteboardPage({
                 refY="3.5"
                 orient="auto"
               >
-                <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+                <polygon points="0 0, 10 3.5, 0 7" fill="var(--nb-black)" />
               </marker>
             </defs>
           </svg>
@@ -508,23 +529,21 @@ export default function WhiteboardPage({
             <div
               key={c.id}
               style={{
-                position: "absolute" as const,
+                position: "absolute",
                 left: `${c.x}px`,
                 top: `${c.y}px`,
                 width: `${c.width}px`,
                 height: `${c.height}px`,
-                backgroundColor: c.style.backgroundColor,
-                border: `2px solid ${
-                  selectedId === c.id ? "#1a73e8" : c.style.borderColor
-                }`,
-                borderRadius: "4px",
+                backgroundColor: "var(--nb-white)",
+                border: selectedId === c.id
+                  ? "4px solid var(--nb-watermelon)"
+                  : "4px solid var(--nb-black)",
                 cursor: edgeFrom ? "crosshair" : "grab",
                 overflow: "hidden",
-                userSelect: "none" as const,
-                boxShadow:
-                  selectedId === c.id
-                    ? "0 0 0 2px rgba(26,115,232,0.3)"
-                    : "0 1px 3px rgba(0,0,0,0.1)",
+                userSelect: "none",
+                boxShadow: selectedId === c.id
+                  ? "6px 6px 0px var(--nb-watermelon)"
+                  : "var(--shadow-brutal)",
               }}
               onMouseDown={(e) => handleContainerMouseDown(e, c.id)}
               onDoubleClick={(e) => {
@@ -544,8 +563,8 @@ export default function WhiteboardPage({
                         resize: "none",
                         fontSize: `${c.style.fontSize}px`,
                         padding: "8px",
-                        boxSizing: "border-box" as const,
-                        fontFamily: "inherit",
+                        boxSizing: "border-box",
+                        fontFamily: "var(--font-body)",
                         backgroundColor: "transparent",
                       }}
                       autoFocus
@@ -567,9 +586,10 @@ export default function WhiteboardPage({
                       style={{
                         padding: "8px",
                         fontSize: `${c.style.fontSize}px`,
-                        whiteSpace: "pre-wrap" as const,
+                        whiteSpace: "pre-wrap",
                         overflow: "hidden",
                         height: "100%",
+                        fontFamily: "var(--font-body)",
                       }}
                     >
                       {c.content}
@@ -584,8 +604,8 @@ export default function WhiteboardPage({
                   style={{
                     width: "100%",
                     height: "100%",
-                    objectFit: "cover" as const,
-                    pointerEvents: "none" as const,
+                    objectFit: "cover",
+                    pointerEvents: "none",
                   }}
                 />
               )}
@@ -596,8 +616,10 @@ export default function WhiteboardPage({
                     alignItems: "center",
                     justifyContent: "center",
                     height: "100%",
-                    color: "#999",
+                    color: "var(--nb-gray-mid)",
                     fontSize: "12px",
+                    fontFamily: "var(--font-mono)",
+                    textTransform: "uppercase",
                   }}
                 >
                   No image URL set
@@ -611,14 +633,14 @@ export default function WhiteboardPage({
                     <div
                       key={corner}
                       style={{
-                        position: "absolute" as const,
-                        width: "10px",
-                        height: "10px",
-                        backgroundColor: "#1a73e8",
-                        borderRadius: "2px",
+                        position: "absolute",
+                        width: "12px",
+                        height: "12px",
+                        backgroundColor: "var(--nb-black)",
+                        border: "2px solid var(--nb-white)",
                         cursor: `${corner.replace("-", "")}-resize`,
-                        ...(corner.includes("top") ? { top: "-5px" } : { bottom: "-5px" }),
-                        ...(corner.includes("left") ? { left: "-5px" } : { right: "-5px" }),
+                        ...(corner.includes("top") ? { top: "-6px" } : { bottom: "-6px" }),
+                        ...(corner.includes("left") ? { left: "-6px" } : { right: "-6px" }),
                       }}
                       onMouseDown={(e) => handleResizeMouseDown(e, c.id, corner)}
                     />
@@ -629,16 +651,15 @@ export default function WhiteboardPage({
               {selectedId === c.id && (
                 <div
                   style={{
-                    position: "absolute" as const,
-                    top: "-8px",
+                    position: "absolute",
+                    top: "-10px",
                     left: "50%",
                     transform: "translateX(-50%)",
-                    width: "12px",
-                    height: "12px",
-                    backgroundColor: edgeFrom === c.id ? "#ff9800" : "#4caf50",
-                    borderRadius: "50%",
+                    width: "14px",
+                    height: "14px",
+                    backgroundColor: edgeFrom === c.id ? "var(--nb-lemon)" : "var(--nb-malachite)",
                     cursor: "crosshair",
-                    border: "2px solid #fff",
+                    border: "3px solid var(--nb-black)",
                   }}
                   title="Click to start drawing an edge"
                   onMouseDown={(e) => {
@@ -658,105 +679,3 @@ export default function WhiteboardPage({
     </div>
   );
 }
-
-/* ------------------------------------------------------------------ */
-/*  Styles                                                             */
-/* ------------------------------------------------------------------ */
-
-const s: Record<string, React.CSSProperties> = {
-  page: {
-    fontFamily: "var(--font-geist-sans), system-ui, sans-serif",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    overflow: "hidden",
-  },
-  center: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-    fontSize: "14px",
-    color: "#888",
-  },
-  breadcrumb: { fontSize: "13px", padding: "12px 24px 0" },
-  breadcrumbLink: { color: "#1a73e8", textDecoration: "none" },
-  breadcrumbSep: { margin: "0 6px", color: "#999" },
-  breadcrumbCurrent: { color: "#333", fontWeight: 500 },
-  toolbar: {
-    display: "flex",
-    gap: "6px",
-    padding: "8px 24px",
-    borderBottom: "1px solid #e0e0e0",
-    alignItems: "center",
-    flexShrink: 0,
-    backgroundColor: "#f8f9fa",
-  },
-  toolBtn: {
-    padding: "6px 12px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    fontSize: "12px",
-    fontWeight: 500,
-  },
-  zoomLabel: { fontSize: "12px", color: "#888", minWidth: "40px", textAlign: "right" as const },
-  imageBar: {
-    display: "flex",
-    gap: "6px",
-    padding: "6px 24px",
-    backgroundColor: "#fffde7",
-    alignItems: "center",
-  },
-  input: {
-    padding: "6px 10px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    fontSize: "13px",
-    flex: 1,
-  },
-  smallBtn: {
-    padding: "6px 12px",
-    backgroundColor: "#1a73e8",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    fontSize: "12px",
-  },
-  ghostBtn: {
-    padding: "6px 12px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    fontSize: "12px",
-  },
-  canvasWrapper: {
-    flex: 1,
-    overflow: "hidden",
-    position: "relative" as const,
-    backgroundColor: "#f0f0f0",
-    cursor: "default",
-  },
-  canvas: {
-    position: "absolute" as const,
-    top: 0,
-    left: 0,
-    width: "10000px",
-    height: "10000px",
-    backgroundImage:
-      "radial-gradient(circle, #ccc 1px, transparent 1px)",
-    backgroundSize: "20px 20px",
-  },
-  edgeSvg: {
-    position: "absolute" as const,
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    pointerEvents: "none" as const,
-    overflow: "visible" as const,
-  },
-};

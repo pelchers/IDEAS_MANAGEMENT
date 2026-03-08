@@ -86,8 +86,8 @@ export default function AiChatPage() {
   // Show loading state
   if (entitlementLoading) {
     return (
-      <div style={styles.loadingContainer}>
-        <div style={styles.loadingText}>Loading...</div>
+      <div className="nb-loading" style={{ height: "100vh" }}>
+        Loading...
       </div>
     );
   }
@@ -98,14 +98,14 @@ export default function AiChatPage() {
   }
 
   return (
-    <div style={styles.page}>
+    <div className="nb-flex" style={{ height: "100vh" }}>
       <SessionList
         activeSessionId={activeSessionId}
         onSelectSession={handleSelectSession}
         onNewSession={handleNewSession}
         refreshTrigger={refreshTrigger}
       />
-      <div style={styles.main}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
         <ProjectSelector projectId={projectId} onProjectChange={setProjectId} />
         <ChatMessageList messages={messages} isLoading={isLoading} />
         <ChatInput
@@ -116,27 +116,3 @@ export default function AiChatPage() {
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  page: {
-    display: "flex",
-    height: "100vh",
-    fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif",
-  },
-  main: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    overflow: "hidden",
-  },
-  loadingContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-  },
-  loadingText: {
-    fontSize: "14px",
-    color: "#888",
-  },
-};

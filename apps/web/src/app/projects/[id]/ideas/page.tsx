@@ -36,11 +36,11 @@ function uid(): string {
     : `id-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-const PRIORITY_COLORS: Record<Priority, string> = {
-  low: "#4caf50",
-  medium: "#ff9800",
-  high: "#f44336",
-  critical: "#9c27b0",
+const PRIORITY_BADGE: Record<Priority, string> = {
+  low: "nb-badge-malachite",
+  medium: "nb-badge-lemon",
+  high: "nb-badge-watermelon",
+  critical: "nb-badge-amethyst",
 };
 
 const STATUS_LABELS: Record<IdeaStatus, string> = {
@@ -49,6 +49,14 @@ const STATUS_LABELS: Record<IdeaStatus, string> = {
   validated: "Validated",
   promoted: "Promoted",
   archived: "Archived",
+};
+
+const STATUS_BADGE: Record<IdeaStatus, string> = {
+  captured: "nb-badge-cornflower",
+  exploring: "nb-badge-lemon",
+  validated: "nb-badge-malachite",
+  promoted: "nb-badge-amethyst",
+  archived: "nb-badge-neutral",
 };
 
 /* ------------------------------------------------------------------ */
@@ -276,69 +284,83 @@ export default function IdeasPage({
 
   if (loading) {
     return (
-      <div style={s.center}>
-        <span>Loading ideas...</span>
+      <div className="nb-loading" style={{ height: "100vh" }}>
+        Loading ideas...
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={s.center}>
-        <span style={{ color: "#d93025" }}>{error}</span>
+      <div className="nb-empty" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <span style={{ color: "var(--nb-watermelon)", fontWeight: 700 }}>{error}</span>
       </div>
     );
   }
 
   return (
-    <div style={s.page}>
+    <div className="nb-page" style={{ maxWidth: "960px", margin: "0 auto" }}>
       {/* Breadcrumb */}
-      <nav style={s.breadcrumb}>
-        <a href="/dashboard" style={s.breadcrumbLink}>
+      <nav style={{ fontFamily: "var(--font-mono)", fontSize: "13px", marginBottom: "var(--space-sm)", textTransform: "uppercase" }}>
+        <a href="/dashboard" className="nb-btn nb-btn-sm nb-btn-secondary" style={{ textDecoration: "none" }}>
           Dashboard
         </a>
-        <span style={s.breadcrumbSep}>/</span>
-        <a href={`/projects/${projectId}`} style={s.breadcrumbLink}>
+        <span style={{ margin: "0 var(--space-xs)", color: "var(--nb-gray-mid)", fontWeight: 900 }}>/</span>
+        <a href={`/projects/${projectId}`} className="nb-btn nb-btn-sm nb-btn-secondary" style={{ textDecoration: "none" }}>
           Project
         </a>
-        <span style={s.breadcrumbSep}>/</span>
-        <span style={s.breadcrumbCurrent}>Ideas</span>
+        <span style={{ margin: "0 var(--space-xs)", color: "var(--nb-gray-mid)", fontWeight: 900 }}>/</span>
+        <span style={{ fontWeight: 900 }}>Ideas</span>
       </nav>
 
-      <header style={s.header}>
-        <h1 style={s.title}>Ideas</h1>
-        <button style={s.primaryBtn} onClick={() => setShowAddForm(!showAddForm)}>
+      <header className="nb-header" style={{ marginBottom: "var(--space-md)" }}>
+        <h1 style={{ fontSize: "28px", fontWeight: 900, fontFamily: "var(--font-heading)", margin: 0, textTransform: "uppercase" }}>
+          Ideas
+        </h1>
+        <button className="nb-btn nb-btn-primary" onClick={() => setShowAddForm(!showAddForm)}>
           {showAddForm ? "Cancel" : "+ New Idea"}
         </button>
       </header>
 
       {/* Add Form */}
       {showAddForm && (
-        <div style={s.formCard}>
-          <h3 style={s.formTitle}>New Idea</h3>
-          <input
-            style={s.input}
-            placeholder="Title (required)"
-            value={addTitle}
-            onChange={(e) => setAddTitle(e.target.value)}
-          />
-          <textarea
-            style={{ ...s.input, minHeight: "60px" }}
-            placeholder="Description"
-            value={addDesc}
-            onChange={(e) => setAddDesc(e.target.value)}
-          />
-          <input
-            style={s.input}
-            placeholder="Tags (comma-separated)"
-            value={addTags}
-            onChange={(e) => setAddTags(e.target.value)}
-          />
-          <div style={s.formRow}>
-            <label style={s.label}>
-              Priority:
+        <div className="nb-form-card" style={{ marginBottom: "var(--space-md)" }}>
+          <h3 style={{ margin: "0 0 var(--space-sm)", fontSize: "18px", fontWeight: 900, fontFamily: "var(--font-heading)", textTransform: "uppercase" }}>
+            New Idea
+          </h3>
+          <div className="nb-form-group">
+            <label className="nb-label">Title</label>
+            <input
+              className="nb-input"
+              placeholder="Title (required)"
+              value={addTitle}
+              onChange={(e) => setAddTitle(e.target.value)}
+            />
+          </div>
+          <div className="nb-form-group">
+            <label className="nb-label">Description</label>
+            <textarea
+              className="nb-input"
+              style={{ minHeight: "60px" }}
+              placeholder="Description"
+              value={addDesc}
+              onChange={(e) => setAddDesc(e.target.value)}
+            />
+          </div>
+          <div className="nb-form-group">
+            <label className="nb-label">Tags</label>
+            <input
+              className="nb-input"
+              placeholder="Tags (comma-separated)"
+              value={addTags}
+              onChange={(e) => setAddTags(e.target.value)}
+            />
+          </div>
+          <div className="nb-flex" style={{ gap: "var(--space-sm)", marginBottom: "var(--space-sm)" }}>
+            <div className="nb-form-group" style={{ flex: 1 }}>
+              <label className="nb-label">Priority</label>
               <select
-                style={s.select}
+                className="nb-select"
                 value={addPriority}
                 onChange={(e) => setAddPriority(e.target.value as Priority)}
               >
@@ -347,34 +369,35 @@ export default function IdeasPage({
                 <option value="high">High</option>
                 <option value="critical">Critical</option>
               </select>
-            </label>
-            <label style={s.label}>
-              Category:
+            </div>
+            <div className="nb-form-group" style={{ flex: 1 }}>
+              <label className="nb-label">Category</label>
               <input
-                style={s.input}
+                className="nb-input"
                 value={addCategory}
                 onChange={(e) => setAddCategory(e.target.value)}
               />
-            </label>
+            </div>
           </div>
-          <button style={s.primaryBtn} onClick={handleAdd}>
+          <button className="nb-btn nb-btn-primary" onClick={handleAdd}>
             Add Idea
           </button>
         </div>
       )}
 
       {/* Filters */}
-      <div style={s.filterBar}>
+      <div className="nb-flex-wrap" style={{ gap: "var(--space-xs)", marginBottom: "var(--space-md)", alignItems: "center" }}>
         <input
-          style={s.searchInput}
+          className="nb-input"
           placeholder="Search ideas..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ minWidth: "200px", flex: 1, marginBottom: 0 }}
         />
-        <div style={s.tagFilters}>
+        <div className="nb-flex-wrap" style={{ gap: "var(--space-xs)" }}>
           {activeTag && (
             <button
-              style={{ ...s.tagBtn, backgroundColor: "#e0e0e0" }}
+              className="nb-btn nb-btn-sm nb-btn-secondary"
               onClick={() => setActiveTag(null)}
             >
               Clear filter
@@ -383,12 +406,7 @@ export default function IdeasPage({
           {allTags.map((tag) => (
             <button
               key={tag}
-              style={{
-                ...s.tagBtn,
-                backgroundColor:
-                  activeTag === tag ? "#1a73e8" : "#f1f3f4",
-                color: activeTag === tag ? "#fff" : "#333",
-              }}
+              className={`nb-btn nb-btn-sm ${activeTag === tag ? "nb-btn-info" : "nb-btn-secondary"}`}
               onClick={() => setActiveTag(activeTag === tag ? null : tag)}
             >
               {tag}
@@ -398,53 +416,53 @@ export default function IdeasPage({
       </div>
 
       {/* Ideas list */}
-      <div style={s.ideaList}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-sm)" }}>
         {filtered.length === 0 && (
-          <div style={s.empty}>No ideas yet. Create your first one!</div>
+          <div className="nb-empty">No ideas yet. Create your first one!</div>
         )}
         {filtered.map((idea) => (
-          <div key={idea.id} style={s.ideaCard}>
-            <div style={s.ideaHeader}>
-              <h3 style={s.ideaTitle}>{idea.title}</h3>
-              <span
-                style={{
-                  ...s.priorityBadge,
-                  backgroundColor: PRIORITY_COLORS[idea.priority],
-                }}
-              >
+          <div key={idea.id} className="nb-card" style={{ padding: "var(--space-md)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-xs)" }}>
+              <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 900, fontFamily: "var(--font-heading)" }}>
+                {idea.title}
+              </h3>
+              <span className={`nb-badge ${PRIORITY_BADGE[idea.priority]}`}>
                 {idea.priority}
               </span>
             </div>
             {idea.description && (
-              <p style={s.ideaDesc}>{idea.description}</p>
+              <p style={{ margin: "var(--space-xs) 0 var(--space-sm)", fontSize: "14px", color: "var(--nb-gray-dark)", lineHeight: "1.5", fontFamily: "var(--font-body)" }}>
+                {idea.description}
+              </p>
             )}
-            <div style={s.ideaMeta}>
-              <span style={s.statusBadge}>
+            <div className="nb-flex-wrap" style={{ gap: "var(--space-xs)", marginBottom: "var(--space-sm)" }}>
+              <span className={`nb-badge ${STATUS_BADGE[idea.status]}`}>
                 {STATUS_LABELS[idea.status]}
               </span>
               {idea.category !== "general" && (
-                <span style={s.categoryBadge}>{idea.category}</span>
+                <span className="nb-badge nb-badge-watermelon">{idea.category}</span>
               )}
               {idea.tags.map((tag) => (
-                <span key={tag} style={s.ideaTag}>
+                <span key={tag} className="nb-tag">
                   {tag}
                 </span>
               ))}
             </div>
-            <div style={s.ideaActions}>
-              <button style={s.actionBtn} onClick={() => openEdit(idea)}>
+            <div className="nb-flex" style={{ gap: "var(--space-xs)" }}>
+              <button className="nb-btn nb-btn-sm nb-btn-secondary" onClick={() => openEdit(idea)}>
                 Edit
               </button>
               {idea.status !== "promoted" && (
                 <button
-                  style={{ ...s.actionBtn, color: "#1a73e8" }}
+                  className="nb-btn nb-btn-sm nb-btn-info"
                   onClick={() => handlePromoteToKanban(idea)}
                 >
                   Promote to Kanban
                 </button>
               )}
               <button
-                style={{ ...s.actionBtn, color: "#d93025" }}
+                className="nb-btn nb-btn-sm"
+                style={{ backgroundColor: "var(--nb-watermelon)", color: "var(--nb-black)", border: "var(--border-thick) solid var(--nb-black)" }}
                 onClick={() => setDeletingId(idea.id)}
               >
                 Delete
@@ -453,16 +471,17 @@ export default function IdeasPage({
 
             {/* Delete confirmation */}
             {deletingId === idea.id && (
-              <div style={s.confirmBar}>
-                <span>Delete this idea?</span>
+              <div className="nb-card" style={{ marginTop: "var(--space-sm)", padding: "var(--space-sm)", backgroundColor: "var(--nb-lemon)", display: "flex", gap: "var(--space-xs)", alignItems: "center" }}>
+                <span style={{ fontWeight: 700, fontFamily: "var(--font-mono)", fontSize: "13px" }}>Delete this idea?</span>
                 <button
-                  style={s.dangerBtn}
+                  className="nb-btn nb-btn-sm"
+                  style={{ backgroundColor: "var(--nb-watermelon)", color: "var(--nb-black)", border: "var(--border-thick) solid var(--nb-black)" }}
                   onClick={() => handleDelete(idea.id)}
                 >
                   Yes, Delete
                 </button>
                 <button
-                  style={s.actionBtn}
+                  className="nb-btn nb-btn-sm nb-btn-secondary"
                   onClick={() => setDeletingId(null)}
                 >
                   Cancel
@@ -475,32 +494,59 @@ export default function IdeasPage({
 
       {/* Edit Modal */}
       {editingIdea && (
-        <div style={s.modalOverlay} onClick={() => setEditingIdea(null)}>
-          <div style={s.modal} onClick={(e) => e.stopPropagation()}>
-            <h2 style={s.modalTitle}>Edit Idea</h2>
-            <input
-              style={s.input}
-              placeholder="Title"
-              value={editTitle}
-              onChange={(e) => setEditTitle(e.target.value)}
-            />
-            <textarea
-              style={{ ...s.input, minHeight: "80px" }}
-              placeholder="Description"
-              value={editDesc}
-              onChange={(e) => setEditDesc(e.target.value)}
-            />
-            <input
-              style={s.input}
-              placeholder="Tags (comma-separated)"
-              value={editTags}
-              onChange={(e) => setEditTags(e.target.value)}
-            />
-            <div style={s.formRow}>
-              <label style={s.label}>
-                Priority:
+        <div
+          style={{
+            position: "fixed",
+            inset: "0",
+            backgroundColor: "rgba(0,0,0,0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+          onClick={() => setEditingIdea(null)}
+        >
+          <div
+            className="nb-form-card"
+            style={{ width: "480px", maxWidth: "90vw", maxHeight: "80vh", overflow: "auto" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 style={{ margin: "0 0 var(--space-md)", fontSize: "20px", fontWeight: 900, fontFamily: "var(--font-heading)", textTransform: "uppercase" }}>
+              Edit Idea
+            </h2>
+            <div className="nb-form-group">
+              <label className="nb-label">Title</label>
+              <input
+                className="nb-input"
+                placeholder="Title"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+              />
+            </div>
+            <div className="nb-form-group">
+              <label className="nb-label">Description</label>
+              <textarea
+                className="nb-input"
+                style={{ minHeight: "80px" }}
+                placeholder="Description"
+                value={editDesc}
+                onChange={(e) => setEditDesc(e.target.value)}
+              />
+            </div>
+            <div className="nb-form-group">
+              <label className="nb-label">Tags</label>
+              <input
+                className="nb-input"
+                placeholder="Tags (comma-separated)"
+                value={editTags}
+                onChange={(e) => setEditTags(e.target.value)}
+              />
+            </div>
+            <div className="nb-flex" style={{ gap: "var(--space-sm)", marginBottom: "var(--space-sm)" }}>
+              <div className="nb-form-group" style={{ flex: 1 }}>
+                <label className="nb-label">Priority</label>
                 <select
-                  style={s.select}
+                  className="nb-select"
                   value={editPriority}
                   onChange={(e) =>
                     setEditPriority(e.target.value as Priority)
@@ -511,11 +557,11 @@ export default function IdeasPage({
                   <option value="high">High</option>
                   <option value="critical">Critical</option>
                 </select>
-              </label>
-              <label style={s.label}>
-                Status:
+              </div>
+              <div className="nb-form-group" style={{ flex: 1 }}>
+                <label className="nb-label">Status</label>
                 <select
-                  style={s.select}
+                  className="nb-select"
                   value={editStatus}
                   onChange={(e) =>
                     setEditStatus(e.target.value as IdeaStatus)
@@ -527,22 +573,22 @@ export default function IdeasPage({
                   <option value="promoted">Promoted</option>
                   <option value="archived">Archived</option>
                 </select>
-              </label>
+              </div>
             </div>
-            <label style={s.label}>
-              Category:
+            <div className="nb-form-group">
+              <label className="nb-label">Category</label>
               <input
-                style={s.input}
+                className="nb-input"
                 value={editCategory}
                 onChange={(e) => setEditCategory(e.target.value)}
               />
-            </label>
-            <div style={s.modalActions}>
-              <button style={s.primaryBtn} onClick={handleSaveEdit}>
+            </div>
+            <div className="nb-form-actions">
+              <button className="nb-btn nb-btn-primary" onClick={handleSaveEdit}>
                 Save
               </button>
               <button
-                style={s.actionBtn}
+                className="nb-btn nb-btn-secondary"
                 onClick={() => setEditingIdea(null)}
               >
                 Cancel
@@ -554,195 +600,3 @@ export default function IdeasPage({
     </div>
   );
 }
-
-/* ------------------------------------------------------------------ */
-/*  Styles                                                             */
-/* ------------------------------------------------------------------ */
-
-const s: Record<string, React.CSSProperties> = {
-  page: {
-    fontFamily: "var(--font-geist-sans), system-ui, sans-serif",
-    maxWidth: "960px",
-    margin: "0 auto",
-    padding: "24px",
-  },
-  center: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-    fontSize: "14px",
-    color: "#888",
-  },
-  breadcrumb: { fontSize: "13px", marginBottom: "12px" },
-  breadcrumbLink: { color: "#1a73e8", textDecoration: "none" },
-  breadcrumbSep: { margin: "0 6px", color: "#999" },
-  breadcrumbCurrent: { color: "#333", fontWeight: 500 },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "16px",
-  },
-  title: { fontSize: "24px", fontWeight: 600, margin: 0 },
-  primaryBtn: {
-    padding: "8px 16px",
-    backgroundColor: "#1a73e8",
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontSize: "13px",
-    fontWeight: 500,
-  },
-  formCard: {
-    padding: "16px",
-    border: "1px solid #e0e0e0",
-    borderRadius: "8px",
-    marginBottom: "16px",
-    backgroundColor: "#fafafa",
-  },
-  formTitle: { margin: "0 0 12px", fontSize: "16px", fontWeight: 600 },
-  formRow: { display: "flex", gap: "12px", marginBottom: "8px" },
-  input: {
-    display: "block",
-    width: "100%",
-    padding: "8px 10px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    fontSize: "13px",
-    marginBottom: "8px",
-    boxSizing: "border-box" as const,
-  },
-  select: {
-    padding: "6px 8px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    fontSize: "13px",
-    marginLeft: "6px",
-  },
-  label: { fontSize: "13px", color: "#555", display: "flex", alignItems: "center", gap: "4px" },
-  filterBar: {
-    display: "flex",
-    flexWrap: "wrap" as const,
-    gap: "8px",
-    marginBottom: "16px",
-    alignItems: "center",
-  },
-  searchInput: {
-    padding: "8px 10px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    fontSize: "13px",
-    minWidth: "200px",
-    flex: "1",
-  },
-  tagFilters: { display: "flex", gap: "4px", flexWrap: "wrap" as const },
-  tagBtn: {
-    padding: "4px 10px",
-    border: "none",
-    borderRadius: "12px",
-    fontSize: "12px",
-    cursor: "pointer",
-  },
-  ideaList: { display: "flex", flexDirection: "column" as const, gap: "8px" },
-  ideaCard: {
-    padding: "14px 16px",
-    border: "1px solid #e0e0e0",
-    borderRadius: "8px",
-    backgroundColor: "#fff",
-  },
-  ideaHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "4px",
-  },
-  ideaTitle: { margin: 0, fontSize: "15px", fontWeight: 600 },
-  priorityBadge: {
-    display: "inline-block",
-    padding: "2px 8px",
-    borderRadius: "10px",
-    fontSize: "11px",
-    fontWeight: 600,
-    color: "#fff",
-    textTransform: "uppercase" as const,
-  },
-  ideaDesc: { margin: "4px 0 8px", fontSize: "13px", color: "#555", lineHeight: "1.4" },
-  ideaMeta: { display: "flex", gap: "6px", flexWrap: "wrap" as const, marginBottom: "8px" },
-  statusBadge: {
-    display: "inline-block",
-    padding: "2px 8px",
-    backgroundColor: "#e8f0fe",
-    borderRadius: "4px",
-    fontSize: "11px",
-    color: "#1a73e8",
-    fontWeight: 500,
-  },
-  categoryBadge: {
-    display: "inline-block",
-    padding: "2px 8px",
-    backgroundColor: "#fce8e6",
-    borderRadius: "4px",
-    fontSize: "11px",
-    color: "#c5221f",
-  },
-  ideaTag: {
-    display: "inline-block",
-    padding: "2px 8px",
-    backgroundColor: "#f1f3f4",
-    borderRadius: "4px",
-    fontSize: "11px",
-    color: "#5f6368",
-  },
-  ideaActions: { display: "flex", gap: "8px" },
-  actionBtn: {
-    padding: "4px 10px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    fontSize: "12px",
-    color: "#333",
-  },
-  dangerBtn: {
-    padding: "4px 10px",
-    border: "none",
-    borderRadius: "4px",
-    backgroundColor: "#d93025",
-    color: "#fff",
-    cursor: "pointer",
-    fontSize: "12px",
-  },
-  confirmBar: {
-    marginTop: "8px",
-    padding: "8px",
-    backgroundColor: "#fff3e0",
-    borderRadius: "4px",
-    display: "flex",
-    gap: "8px",
-    alignItems: "center",
-    fontSize: "13px",
-  },
-  empty: { textAlign: "center" as const, color: "#888", fontSize: "14px", padding: "40px 0" },
-  modalOverlay: {
-    position: "fixed" as const,
-    inset: "0",
-    backgroundColor: "rgba(0,0,0,0.4)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 1000,
-  },
-  modal: {
-    backgroundColor: "#fff",
-    borderRadius: "12px",
-    padding: "24px",
-    width: "480px",
-    maxWidth: "90vw",
-    maxHeight: "80vh",
-    overflow: "auto",
-  },
-  modalTitle: { margin: "0 0 16px", fontSize: "18px", fontWeight: 600 },
-  modalActions: { display: "flex", gap: "8px", marginTop: "12px" },
-};

@@ -42,11 +42,11 @@ function uid(): string {
     : `id-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-const PRIORITY_COLORS: Record<Priority, string> = {
-  low: "#4caf50",
-  medium: "#ff9800",
-  high: "#f44336",
-  critical: "#9c27b0",
+const PRIORITY_BADGE: Record<Priority, string> = {
+  low: "nb-badge-malachite",
+  medium: "nb-badge-lemon",
+  high: "nb-badge-watermelon",
+  critical: "nb-badge-amethyst",
 };
 
 const DEFAULT_COLUMNS: KanbanColumn[] = [
@@ -322,16 +322,16 @@ export default function KanbanPage({
 
   if (loading) {
     return (
-      <div style={s.center}>
-        <span>Loading kanban board...</span>
+      <div className="nb-loading" style={{ height: "100vh" }}>
+        Loading kanban board...
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={s.center}>
-        <span style={{ color: "#d93025" }}>{error}</span>
+      <div className="nb-empty" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <span style={{ color: "var(--nb-watermelon)", fontWeight: 700 }}>{error}</span>
       </div>
     );
   }
@@ -339,20 +339,22 @@ export default function KanbanPage({
   const sortedCols = [...board.columns].sort((a, b) => a.order - b.order);
 
   return (
-    <div style={s.page}>
+    <div className="nb-page" style={{ height: "100vh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {/* Breadcrumb */}
-      <nav style={s.breadcrumb}>
-        <a href="/dashboard" style={s.breadcrumbLink}>Dashboard</a>
-        <span style={s.breadcrumbSep}>/</span>
-        <a href={`/projects/${projectId}`} style={s.breadcrumbLink}>Project</a>
-        <span style={s.breadcrumbSep}>/</span>
-        <span style={s.breadcrumbCurrent}>Kanban</span>
+      <nav style={{ fontFamily: "var(--font-mono)", fontSize: "13px", marginBottom: "var(--space-xs)", textTransform: "uppercase" }}>
+        <a href="/dashboard" className="nb-btn nb-btn-sm nb-btn-secondary" style={{ textDecoration: "none" }}>Dashboard</a>
+        <span style={{ margin: "0 var(--space-xs)", color: "var(--nb-gray-mid)", fontWeight: 900 }}>/</span>
+        <a href={`/projects/${projectId}`} className="nb-btn nb-btn-sm nb-btn-secondary" style={{ textDecoration: "none" }}>Project</a>
+        <span style={{ margin: "0 var(--space-xs)", color: "var(--nb-gray-mid)", fontWeight: 900 }}>/</span>
+        <span style={{ fontWeight: 900 }}>Kanban</span>
       </nav>
 
-      <header style={s.header}>
-        <h1 style={s.title}>Kanban Board</h1>
+      <header className="nb-header" style={{ marginBottom: "var(--space-sm)" }}>
+        <h1 style={{ fontSize: "28px", fontWeight: 900, fontFamily: "var(--font-heading)", margin: 0, textTransform: "uppercase" }}>
+          Kanban Board
+        </h1>
         <button
-          style={s.primaryBtn}
+          className="nb-btn nb-btn-primary"
           onClick={() => setShowAddCol(!showAddCol)}
         >
           + Add Column
@@ -360,36 +362,43 @@ export default function KanbanPage({
       </header>
 
       {showAddCol && (
-        <div style={s.addColBar}>
+        <div className="nb-flex" style={{ gap: "var(--space-xs)", marginBottom: "var(--space-sm)", alignItems: "center" }}>
           <input
-            style={s.input}
+            className="nb-input"
             placeholder="Column title"
             value={newColTitle}
             onChange={(e) => setNewColTitle(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleAddCol()}
+            style={{ marginBottom: 0, flex: 1, maxWidth: "300px" }}
           />
-          <button style={s.primaryBtn} onClick={handleAddCol}>Add</button>
-          <button style={s.ghostBtn} onClick={() => setShowAddCol(false)}>Cancel</button>
+          <button className="nb-btn nb-btn-primary nb-btn-sm" onClick={handleAddCol}>Add</button>
+          <button className="nb-btn nb-btn-secondary nb-btn-sm" onClick={() => setShowAddCol(false)}>Cancel</button>
         </div>
       )}
 
       {/* Board */}
-      <div style={s.board}>
+      <div style={{ display: "flex", gap: "var(--space-sm)", flex: 1, overflowX: "auto", overflowY: "hidden", paddingBottom: "var(--space-xs)" }}>
         {sortedCols.map((col) => (
           <div
             key={col.id}
+            className="nb-card"
             style={{
-              ...s.column,
-              border:
-                dragOverCol === col.id
-                  ? "2px dashed #1a73e8"
-                  : dragOverColTarget === col.id
-                  ? "2px dashed #ff9800"
-                  : "1px solid #e0e0e0",
+              minWidth: "260px",
+              maxWidth: "300px",
+              padding: "var(--space-sm)",
+              display: "flex",
+              flexDirection: "column",
+              flexShrink: 0,
+              backgroundColor: "var(--nb-cream)",
+              border: dragOverCol === col.id
+                ? "4px dashed var(--nb-cornflower)"
+                : dragOverColTarget === col.id
+                ? "4px dashed var(--nb-lemon)"
+                : "var(--border-thick) solid var(--nb-black)",
             }}
             draggable
             onDragStart={(e) => {
-              if (dragCardId) return; // don't conflict with card drag
+              if (dragCardId) return;
               e.dataTransfer.effectAllowed = "move";
               handleColDragStart(col.id);
             }}
@@ -409,10 +418,10 @@ export default function KanbanPage({
             }}
           >
             {/* Column header */}
-            <div style={s.colHeader}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-xs)", padding: "var(--space-xs)" }}>
               {renamingCol === col.id ? (
                 <input
-                  style={s.inlineInput}
+                  className="nb-input"
                   autoFocus
                   value={renameValue}
                   onChange={(e) => setRenameValue(e.target.value)}
@@ -421,24 +430,29 @@ export default function KanbanPage({
                     if (e.key === "Escape") setRenamingCol(null);
                   }}
                   onBlur={() => handleRenameCol(col.id)}
+                  style={{ marginBottom: 0, width: "140px", padding: "4px 6px", fontWeight: 900 }}
                 />
               ) : (
                 <span
-                  style={s.colTitle}
+                  className="nb-label"
+                  style={{ cursor: "default", fontSize: "14px" }}
                   onDoubleClick={() => {
                     setRenamingCol(col.id);
                     setRenameValue(col.title);
                   }}
                 >
                   {col.title}{" "}
-                  <span style={s.colCount}>({col.cardIds.length})</span>
+                  <span className="nb-badge nb-badge-neutral">
+                    {col.cardIds.length}
+                  </span>
                 </span>
               )}
               {col.cardIds.length === 0 && (
                 <button
-                  style={s.colDeleteBtn}
+                  className="nb-btn nb-btn-sm nb-btn-secondary"
                   onClick={() => handleDeleteCol(col.id)}
                   title="Delete empty column"
+                  style={{ padding: "2px 8px", fontSize: "12px" }}
                 >
                   x
                 </button>
@@ -446,16 +460,20 @@ export default function KanbanPage({
             </div>
 
             {/* Cards */}
-            <div style={s.cardList}>
+            <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: "var(--space-xs)", minHeight: "40px" }}>
               {col.cardIds.map((cardId) => {
                 const card = board.cards[cardId];
                 if (!card) return null;
                 return (
                   <div
                     key={card.id}
+                    className="nb-card"
                     style={{
-                      ...s.card,
+                      padding: "var(--space-sm)",
+                      cursor: "grab",
+                      fontSize: "13px",
                       opacity: dragCardId === card.id ? 0.5 : 1,
+                      backgroundColor: "var(--nb-white)",
                     }}
                     draggable
                     onDragStart={(e) => {
@@ -465,28 +483,23 @@ export default function KanbanPage({
                     }}
                     onClick={() => openDetail(card)}
                   >
-                    <div style={s.cardTitle}>{card.title}</div>
-                    <div style={s.cardMeta}>
-                      <span
-                        style={{
-                          ...s.priorityDot,
-                          backgroundColor: PRIORITY_COLORS[card.priority],
-                        }}
-                      />
+                    <div style={{ fontWeight: 700, marginBottom: "4px", fontFamily: "var(--font-heading)" }}>
+                      {card.title}
+                    </div>
+                    <div className="nb-flex-wrap" style={{ gap: "4px", alignItems: "center" }}>
+                      <span className={`nb-badge ${PRIORITY_BADGE[card.priority]}`}>
+                        {card.priority}
+                      </span>
                       {card.labels.slice(0, 3).map((l) => (
-                        <span key={l} style={s.cardLabel}>
+                        <span key={l} className="nb-tag">
                           {l}
                         </span>
                       ))}
                     </div>
                     {(card.dueDate || card.assignee) && (
-                      <div style={s.cardFooter}>
-                        {card.dueDate && (
-                          <span style={s.cardDue}>{card.dueDate}</span>
-                        )}
-                        {card.assignee && (
-                          <span style={s.cardAssignee}>{card.assignee}</span>
-                        )}
+                      <div style={{ marginTop: "4px", display: "flex", justifyContent: "space-between", fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--nb-gray-dark)" }}>
+                        {card.dueDate && <span>{card.dueDate}</span>}
+                        {card.assignee && <span style={{ fontWeight: 700 }}>{card.assignee}</span>}
                       </div>
                     )}
                   </div>
@@ -496,9 +509,9 @@ export default function KanbanPage({
 
             {/* Add card inline */}
             {addingInCol === col.id ? (
-              <div style={s.addCardForm}>
+              <div style={{ marginTop: "var(--space-xs)" }}>
                 <input
-                  style={s.input}
+                  className="nb-input"
                   placeholder="Card title"
                   autoFocus
                   value={addCardTitle}
@@ -507,19 +520,21 @@ export default function KanbanPage({
                     if (e.key === "Enter") handleAddCard(col.id);
                     if (e.key === "Escape") setAddingInCol(null);
                   }}
+                  style={{ marginBottom: "var(--space-xs)" }}
                 />
-                <div style={s.addCardActions}>
-                  <button style={s.smallBtn} onClick={() => handleAddCard(col.id)}>
+                <div className="nb-flex" style={{ gap: "var(--space-xs)" }}>
+                  <button className="nb-btn nb-btn-primary nb-btn-sm" onClick={() => handleAddCard(col.id)}>
                     Add
                   </button>
-                  <button style={s.ghostBtn} onClick={() => setAddingInCol(null)}>
+                  <button className="nb-btn nb-btn-secondary nb-btn-sm" onClick={() => setAddingInCol(null)}>
                     Cancel
                   </button>
                 </div>
               </div>
             ) : (
               <button
-                style={s.addCardBtn}
+                className="nb-btn nb-btn-secondary"
+                style={{ width: "100%", marginTop: "var(--space-xs)", fontSize: "12px", textAlign: "left" }}
                 onClick={() => {
                   setAddingInCol(col.id);
                   setAddCardTitle("");
@@ -534,32 +549,56 @@ export default function KanbanPage({
 
       {/* Card Detail Modal */}
       {detailCard && (
-        <div style={s.modalOverlay} onClick={() => setDetailCard(null)}>
-          <div style={s.modal} onClick={(e) => e.stopPropagation()}>
-            <h2 style={s.modalTitle}>Card Details</h2>
-            <label style={s.label}>Title</label>
-            <input
-              style={s.input}
-              value={detailTitle}
-              onChange={(e) => setDetailTitle(e.target.value)}
-            />
-            <label style={s.label}>Description</label>
-            <textarea
-              style={{ ...s.input, minHeight: "80px" }}
-              value={detailDesc}
-              onChange={(e) => setDetailDesc(e.target.value)}
-            />
-            <label style={s.label}>Labels (comma-separated)</label>
-            <input
-              style={s.input}
-              value={detailLabels}
-              onChange={(e) => setDetailLabels(e.target.value)}
-            />
-            <div style={s.formRow}>
-              <label style={s.label}>
-                Priority:
+        <div
+          style={{
+            position: "fixed",
+            inset: "0",
+            backgroundColor: "rgba(0,0,0,0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+          onClick={() => setDetailCard(null)}
+        >
+          <div
+            className="nb-form-card"
+            style={{ width: "500px", maxWidth: "90vw", maxHeight: "80vh", overflow: "auto" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 style={{ margin: "0 0 var(--space-md)", fontSize: "20px", fontWeight: 900, fontFamily: "var(--font-heading)", textTransform: "uppercase" }}>
+              Card Details
+            </h2>
+            <div className="nb-form-group">
+              <label className="nb-label">Title</label>
+              <input
+                className="nb-input"
+                value={detailTitle}
+                onChange={(e) => setDetailTitle(e.target.value)}
+              />
+            </div>
+            <div className="nb-form-group">
+              <label className="nb-label">Description</label>
+              <textarea
+                className="nb-input"
+                style={{ minHeight: "80px" }}
+                value={detailDesc}
+                onChange={(e) => setDetailDesc(e.target.value)}
+              />
+            </div>
+            <div className="nb-form-group">
+              <label className="nb-label">Labels (comma-separated)</label>
+              <input
+                className="nb-input"
+                value={detailLabels}
+                onChange={(e) => setDetailLabels(e.target.value)}
+              />
+            </div>
+            <div className="nb-flex" style={{ gap: "var(--space-sm)", marginBottom: "var(--space-sm)" }}>
+              <div className="nb-form-group" style={{ flex: 1 }}>
+                <label className="nb-label">Priority</label>
                 <select
-                  style={s.select}
+                  className="nb-select"
                   value={detailPriority}
                   onChange={(e) =>
                     setDetailPriority(e.target.value as Priority)
@@ -570,43 +609,50 @@ export default function KanbanPage({
                   <option value="high">High</option>
                   <option value="critical">Critical</option>
                 </select>
-              </label>
-              <label style={s.label}>
-                Due Date:
+              </div>
+              <div className="nb-form-group" style={{ flex: 1 }}>
+                <label className="nb-label">Due Date</label>
                 <input
                   type="date"
-                  style={s.input}
+                  className="nb-input"
                   value={detailDueDate}
                   onChange={(e) => setDetailDueDate(e.target.value)}
                 />
-              </label>
+              </div>
             </div>
-            <label style={s.label}>Assignee</label>
-            <input
-              style={s.input}
-              placeholder="Assignee name"
-              value={detailAssignee}
-              onChange={(e) => setDetailAssignee(e.target.value)}
-            />
-            <div style={s.modalActions}>
-              <button style={s.primaryBtn} onClick={handleSaveDetail}>
+            <div className="nb-form-group">
+              <label className="nb-label">Assignee</label>
+              <input
+                className="nb-input"
+                placeholder="Assignee name"
+                value={detailAssignee}
+                onChange={(e) => setDetailAssignee(e.target.value)}
+              />
+            </div>
+            <div className="nb-form-actions">
+              <button className="nb-btn nb-btn-primary" onClick={handleSaveDetail}>
                 Save
               </button>
               <button
-                style={s.ghostBtn}
+                className="nb-btn nb-btn-secondary"
                 onClick={() => setDetailCard(null)}
               >
                 Cancel
               </button>
               {!deleteConfirm ? (
                 <button
-                  style={s.dangerBtn}
+                  className="nb-btn"
+                  style={{ backgroundColor: "var(--nb-watermelon)", color: "var(--nb-black)", border: "var(--border-thick) solid var(--nb-black)", marginLeft: "auto" }}
                   onClick={() => setDeleteConfirm(true)}
                 >
                   Delete
                 </button>
               ) : (
-                <button style={s.dangerBtn} onClick={handleDeleteCard}>
+                <button
+                  className="nb-btn"
+                  style={{ backgroundColor: "var(--nb-watermelon)", color: "var(--nb-black)", border: "var(--border-thick) solid var(--nb-black)", marginLeft: "auto", fontWeight: 900 }}
+                  onClick={handleDeleteCard}
+                >
                   Confirm Delete
                 </button>
               )}
@@ -617,222 +663,3 @@ export default function KanbanPage({
     </div>
   );
 }
-
-/* ------------------------------------------------------------------ */
-/*  Styles                                                             */
-/* ------------------------------------------------------------------ */
-
-const s: Record<string, React.CSSProperties> = {
-  page: {
-    fontFamily: "var(--font-geist-sans), system-ui, sans-serif",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    padding: "16px 24px",
-    overflow: "hidden",
-  },
-  center: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-    fontSize: "14px",
-    color: "#888",
-  },
-  breadcrumb: { fontSize: "13px", marginBottom: "8px" },
-  breadcrumbLink: { color: "#1a73e8", textDecoration: "none" },
-  breadcrumbSep: { margin: "0 6px", color: "#999" },
-  breadcrumbCurrent: { color: "#333", fontWeight: 500 },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "12px",
-    flexShrink: 0,
-  },
-  title: { fontSize: "22px", fontWeight: 600, margin: 0 },
-  addColBar: {
-    display: "flex",
-    gap: "8px",
-    marginBottom: "12px",
-    alignItems: "center",
-  },
-  board: {
-    display: "flex",
-    gap: "12px",
-    flex: 1,
-    overflowX: "auto",
-    overflowY: "hidden",
-    paddingBottom: "8px",
-  },
-  column: {
-    minWidth: "260px",
-    maxWidth: "300px",
-    backgroundColor: "#f8f9fa",
-    borderRadius: "8px",
-    padding: "10px",
-    display: "flex",
-    flexDirection: "column" as const,
-    flexShrink: 0,
-  },
-  colHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "8px",
-    padding: "4px 2px",
-  },
-  colTitle: {
-    fontSize: "14px",
-    fontWeight: 600,
-    cursor: "default",
-  },
-  colCount: { fontWeight: 400, color: "#999", fontSize: "12px" },
-  colDeleteBtn: {
-    background: "none",
-    border: "none",
-    cursor: "pointer",
-    color: "#999",
-    fontSize: "14px",
-    padding: "2px 6px",
-  },
-  cardList: {
-    flex: 1,
-    overflowY: "auto" as const,
-    display: "flex",
-    flexDirection: "column" as const,
-    gap: "6px",
-    minHeight: "40px",
-  },
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: "6px",
-    padding: "10px 12px",
-    border: "1px solid #e0e0e0",
-    cursor: "grab",
-    fontSize: "13px",
-  },
-  cardTitle: { fontWeight: 500, marginBottom: "4px" },
-  cardMeta: { display: "flex", gap: "4px", alignItems: "center", flexWrap: "wrap" as const },
-  priorityDot: {
-    width: "8px",
-    height: "8px",
-    borderRadius: "50%",
-    display: "inline-block",
-  },
-  cardLabel: {
-    padding: "1px 6px",
-    backgroundColor: "#e8f0fe",
-    borderRadius: "3px",
-    fontSize: "10px",
-    color: "#1a73e8",
-  },
-  cardFooter: {
-    marginTop: "4px",
-    display: "flex",
-    justifyContent: "space-between",
-    fontSize: "11px",
-    color: "#888",
-  },
-  cardDue: {},
-  cardAssignee: { fontStyle: "italic" as const },
-  addCardForm: { marginTop: "4px" },
-  addCardActions: { display: "flex", gap: "4px", marginTop: "4px" },
-  addCardBtn: {
-    width: "100%",
-    padding: "6px",
-    border: "none",
-    background: "none",
-    color: "#888",
-    cursor: "pointer",
-    fontSize: "12px",
-    textAlign: "left" as const,
-    borderRadius: "4px",
-  },
-  inlineInput: {
-    border: "1px solid #1a73e8",
-    borderRadius: "4px",
-    padding: "4px 6px",
-    fontSize: "13px",
-    fontWeight: 600,
-    outline: "none",
-    width: "140px",
-  },
-  input: {
-    display: "block",
-    width: "100%",
-    padding: "8px 10px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    fontSize: "13px",
-    marginBottom: "8px",
-    boxSizing: "border-box" as const,
-  },
-  select: {
-    padding: "6px 8px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    fontSize: "13px",
-    marginLeft: "6px",
-  },
-  label: { fontSize: "12px", color: "#555", display: "block", marginBottom: "4px", fontWeight: 500 },
-  formRow: { display: "flex", gap: "12px", marginBottom: "8px" },
-  primaryBtn: {
-    padding: "8px 16px",
-    backgroundColor: "#1a73e8",
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontSize: "13px",
-    fontWeight: 500,
-  },
-  smallBtn: {
-    padding: "4px 10px",
-    backgroundColor: "#1a73e8",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    fontSize: "12px",
-  },
-  ghostBtn: {
-    padding: "4px 10px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    fontSize: "12px",
-    color: "#555",
-  },
-  dangerBtn: {
-    padding: "8px 16px",
-    backgroundColor: "#d93025",
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontSize: "13px",
-    marginLeft: "auto",
-  },
-  modalOverlay: {
-    position: "fixed" as const,
-    inset: "0",
-    backgroundColor: "rgba(0,0,0,0.4)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 1000,
-  },
-  modal: {
-    backgroundColor: "#fff",
-    borderRadius: "12px",
-    padding: "24px",
-    width: "500px",
-    maxWidth: "90vw",
-    maxHeight: "80vh",
-    overflow: "auto",
-  },
-  modalTitle: { margin: "0 0 16px", fontSize: "18px", fontWeight: 600 },
-  modalActions: { display: "flex", gap: "8px", marginTop: "12px" },
-};

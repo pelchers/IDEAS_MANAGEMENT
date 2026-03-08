@@ -86,20 +86,27 @@ function FileTreeNode({
     <div>
       <div
         style={{
-          ...treeStyles.treeItem,
+          display: "flex",
+          alignItems: "center",
+          padding: "4px 0",
           paddingLeft: `${12 + depth * 16}px`,
           cursor: node.isDir ? "pointer" : "default",
+          userSelect: "none",
+          fontFamily: "var(--font-mono)",
+          fontSize: "13px",
         }}
         onClick={() => node.isDir && setExpanded(!expanded)}
       >
-        <span style={treeStyles.icon}>
+        <span style={{ width: "16px", fontSize: "11px", color: "var(--nb-gray-mid)", flexShrink: 0 }}>
           {node.isDir ? (expanded ? "v " : "> ") : "  "}
         </span>
-        <span style={{ fontWeight: node.isDir ? 500 : 400 }}>
+        <span style={{ fontWeight: node.isDir ? 700 : 400 }}>
           {node.name}
         </span>
         {node.revision !== undefined && (
-          <span style={treeStyles.revision}>rev {node.revision}</span>
+          <span className="nb-badge nb-badge-neutral" style={{ marginLeft: "auto", marginRight: "12px", fontSize: "10px" }}>
+            rev {node.revision}
+          </span>
         )}
       </div>
       {node.isDir && expanded && (
@@ -157,16 +164,16 @@ export default function ProjectWorkspacePage({
 
   if (loading) {
     return (
-      <div style={styles.loadingContainer}>
-        <div style={styles.loadingText}>Loading project...</div>
+      <div className="nb-loading" style={{ height: "100vh" }}>
+        Loading project...
       </div>
     );
   }
 
   if (!project) {
     return (
-      <div style={styles.loadingContainer}>
-        <div style={styles.loadingText}>Project not found</div>
+      <div className="nb-empty" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        Project not found
       </div>
     );
   }
@@ -174,20 +181,33 @@ export default function ProjectWorkspacePage({
   const fileTree = buildFileTree(project.artifacts);
 
   return (
-    <div style={styles.page}>
+    <div className="nb-page" style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       {/* Header */}
-      <header style={styles.header}>
+      <header className="nb-header" style={{ borderBottom: "var(--border-thick) solid var(--nb-black)" }}>
         <div>
-          <a href="/dashboard" style={styles.backLink}>
+          <a
+            href="/dashboard"
+            className="nb-btn nb-btn-sm nb-btn-secondary"
+            style={{ textDecoration: "none", marginBottom: "var(--space-xs)" }}
+          >
             &larr; Projects
           </a>
-          <h1 style={styles.title}>{project.name}</h1>
+          <h1 style={{ fontSize: "24px", fontWeight: 900, fontFamily: "var(--font-heading)", margin: 0, textTransform: "uppercase" }}>
+            {project.name}
+          </h1>
         </div>
-        <div style={styles.headerRight}>
+        <div className="nb-flex" style={{ gap: "var(--space-sm)", alignItems: "center" }}>
           <SyncStatusIndicator state={syncState} lastSyncTime={lastSync} />
           <a
             href={`/projects/${id}/conflicts`}
-            style={styles.conflictLink}
+            className="nb-btn nb-btn-sm"
+            style={{
+              textDecoration: "none",
+              border: "var(--border-thick) solid var(--nb-black)",
+              backgroundColor: "var(--nb-watermelon)",
+              color: "var(--nb-black)",
+              fontWeight: 700,
+            }}
           >
             Conflicts
           </a>
@@ -195,11 +215,13 @@ export default function ProjectWorkspacePage({
       </header>
 
       {/* Two-Pane Layout */}
-      <div style={styles.workspace}>
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
         {/* Left: File Tree */}
-        <aside style={styles.sidebar}>
-          <h3 style={styles.sidebarTitle}>Project Files</h3>
-          <div style={styles.fileTree}>
+        <aside className="nb-card" style={{ width: "280px", flexShrink: 0, overflow: "auto", boxShadow: "none", borderRight: "var(--border-thick) solid var(--nb-black)", borderTop: "none", borderBottom: "none", borderLeft: "none" }}>
+          <h3 className="nb-label" style={{ padding: "var(--space-sm) var(--space-md)" }}>
+            Project Files
+          </h3>
+          <div>
             {fileTree.map((node) => (
               <FileTreeNode key={node.path} node={node} />
             ))}
@@ -207,52 +229,51 @@ export default function ProjectWorkspacePage({
         </aside>
 
         {/* Right: Project Overview */}
-        <main style={styles.main}>
-          <div style={styles.overview}>
-            <h2 style={styles.sectionTitle}>Project Overview</h2>
-            <div style={styles.metaGrid}>
-              <div style={styles.metaItem}>
-                <span style={styles.metaLabel}>Status</span>
-                <span
-                  style={{
-                    ...styles.statusBadge,
-                    textTransform: "capitalize" as const,
-                  }}
-                >
+        <main style={{ flex: 1, overflow: "auto", padding: "var(--space-lg)" }}>
+          <div style={{ marginBottom: "var(--space-lg)" }}>
+            <h2 style={{ fontSize: "20px", fontWeight: 900, fontFamily: "var(--font-heading)", margin: "0 0 var(--space-md)", textTransform: "uppercase" }}>
+              Project Overview
+            </h2>
+            <div className="nb-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "var(--space-sm)", marginBottom: "var(--space-md)" }}>
+              <div className="nb-card" style={{ padding: "var(--space-sm)" }}>
+                <span className="nb-label">Status</span>
+                <span className="nb-badge nb-badge-cornflower" style={{ textTransform: "capitalize" }}>
                   {project.status.toLowerCase()}
                 </span>
               </div>
-              <div style={styles.metaItem}>
-                <span style={styles.metaLabel}>Members</span>
-                <span>{project.members.length}</span>
+              <div className="nb-card" style={{ padding: "var(--space-sm)" }}>
+                <span className="nb-label">Members</span>
+                <span style={{ fontWeight: 700, fontFamily: "var(--font-mono)" }}>{project.members.length}</span>
               </div>
-              <div style={styles.metaItem}>
-                <span style={styles.metaLabel}>Your Role</span>
-                <span style={{ textTransform: "capitalize" as const }}>
+              <div className="nb-card" style={{ padding: "var(--space-sm)" }}>
+                <span className="nb-label">Your Role</span>
+                <span className="nb-badge nb-badge-amethyst" style={{ textTransform: "capitalize" }}>
                   {project.userRole.toLowerCase()}
                 </span>
               </div>
-              <div style={styles.metaItem}>
-                <span style={styles.metaLabel}>Created</span>
-                <span>
+              <div className="nb-card" style={{ padding: "var(--space-sm)" }}>
+                <span className="nb-label">Created</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "13px" }}>
                   {new Date(project.createdAt).toLocaleDateString()}
                 </span>
               </div>
             </div>
 
             {project.description && (
-              <div style={styles.descSection}>
-                <h3 style={styles.subTitle}>Description</h3>
-                <p style={styles.descText}>{project.description}</p>
+              <div className="nb-card" style={{ marginBottom: "var(--space-md)", padding: "var(--space-md)" }}>
+                <h3 className="nb-label">Description</h3>
+                <p style={{ fontSize: "14px", lineHeight: "1.6", margin: 0, fontFamily: "var(--font-body)" }}>
+                  {project.description}
+                </p>
               </div>
             )}
 
             {project.tags.length > 0 && (
-              <div style={styles.tagSection}>
-                <h3 style={styles.subTitle}>Tags</h3>
-                <div style={styles.tagRow}>
+              <div style={{ marginBottom: "var(--space-md)" }}>
+                <h3 className="nb-label">Tags</h3>
+                <div className="nb-flex-wrap" style={{ gap: "var(--space-xs)" }}>
                   {project.tags.map((tag) => (
-                    <span key={tag} style={styles.tag}>
+                    <span key={tag} className="nb-tag">
                       {tag}
                     </span>
                   ))}
@@ -261,12 +282,16 @@ export default function ProjectWorkspacePage({
             )}
 
             {/* Members */}
-            <div style={styles.memberSection}>
-              <h3 style={styles.subTitle}>Members</h3>
+            <div style={{ marginBottom: "var(--space-md)" }}>
+              <h3 className="nb-label">Members</h3>
               {project.members.map((m) => (
-                <div key={m.id} style={styles.memberRow}>
-                  <span style={styles.memberEmail}>{m.email}</span>
-                  <span style={styles.memberRole}>
+                <div
+                  key={m.id}
+                  className="nb-divider"
+                  style={{ display: "flex", justifyContent: "space-between", padding: "var(--space-xs) 0", fontSize: "14px" }}
+                >
+                  <span style={{ fontWeight: 700 }}>{m.email}</span>
+                  <span className="nb-badge nb-badge-neutral" style={{ textTransform: "capitalize" }}>
                     {m.role.toLowerCase()}
                   </span>
                 </div>
@@ -275,19 +300,34 @@ export default function ProjectWorkspacePage({
           </div>
 
           {/* Navigation to sub-views */}
-          <div style={styles.subViewSection}>
-            <h3 style={styles.subTitle}>Views</h3>
-            <div style={styles.subViewGrid}>
+          <div>
+            <h3 className="nb-label">Views</h3>
+            <div className="nb-grid" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "var(--space-sm)" }}>
               {SUB_VIEWS.map((view) => (
                 <a
                   key={view.path}
                   href={`/projects/${id}/${view.path}`}
-                  style={styles.subViewCard}
+                  className="nb-card"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "var(--space-md) var(--space-sm)",
+                    textDecoration: "none",
+                    color: "inherit",
+                    cursor: "pointer",
+                  }}
                 >
-                  <span style={styles.subViewIcon}>{view.icon}</span>
-                  <span style={styles.subViewLabel}>{view.label}</span>
+                  <span style={{ fontSize: "24px", marginBottom: "var(--space-xs)", fontFamily: "var(--font-mono)" }}>
+                    {view.icon}
+                  </span>
+                  <span style={{ fontSize: "14px", fontWeight: 900, fontFamily: "var(--font-heading)", textTransform: "uppercase" }}>
+                    {view.label}
+                  </span>
                   {"desc" in view && (
-                    <span style={styles.subViewDesc}>{view.desc}</span>
+                    <span style={{ fontSize: "11px", color: "var(--nb-gray-dark)", textAlign: "center", lineHeight: "1.3", fontFamily: "var(--font-mono)" }}>
+                      {view.desc}
+                    </span>
                   )}
                 </a>
               ))}
@@ -298,222 +338,3 @@ export default function ProjectWorkspacePage({
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  page: {
-    fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "16px 24px",
-    borderBottom: "1px solid #e0e0e0",
-    flexShrink: 0,
-  },
-  headerRight: {
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-  },
-  backLink: {
-    fontSize: "13px",
-    color: "#1a73e8",
-    textDecoration: "none",
-    display: "block",
-    marginBottom: "4px",
-  },
-  title: {
-    fontSize: "20px",
-    fontWeight: 600,
-    margin: 0,
-  },
-  conflictLink: {
-    fontSize: "13px",
-    color: "#d93025",
-    textDecoration: "none",
-    padding: "4px 8px",
-    borderRadius: "4px",
-    border: "1px solid #d93025",
-  },
-  workspace: {
-    display: "flex",
-    flex: 1,
-    overflow: "hidden",
-  },
-  sidebar: {
-    width: "280px",
-    borderRight: "1px solid #e0e0e0",
-    overflow: "auto",
-    flexShrink: 0,
-    padding: "12px 0",
-  },
-  sidebarTitle: {
-    fontSize: "13px",
-    fontWeight: 600,
-    color: "#5f6368",
-    textTransform: "uppercase" as const,
-    letterSpacing: "0.5px",
-    padding: "0 16px",
-    margin: "0 0 8px",
-  },
-  fileTree: {
-    fontSize: "13px",
-  },
-  main: {
-    flex: 1,
-    overflow: "auto",
-    padding: "24px",
-  },
-  overview: {
-    marginBottom: "24px",
-  },
-  sectionTitle: {
-    fontSize: "18px",
-    fontWeight: 600,
-    margin: "0 0 16px",
-  },
-  metaGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-    gap: "12px",
-    marginBottom: "20px",
-  },
-  metaItem: {
-    padding: "12px",
-    backgroundColor: "#f8f9fa",
-    borderRadius: "6px",
-  },
-  metaLabel: {
-    display: "block",
-    fontSize: "11px",
-    color: "#888",
-    textTransform: "uppercase" as const,
-    marginBottom: "4px",
-    letterSpacing: "0.3px",
-  },
-  statusBadge: {
-    fontSize: "14px",
-    fontWeight: 500,
-  },
-  descSection: {
-    marginBottom: "16px",
-  },
-  subTitle: {
-    fontSize: "14px",
-    fontWeight: 600,
-    margin: "0 0 8px",
-  },
-  descText: {
-    fontSize: "14px",
-    color: "#555",
-    lineHeight: "1.5",
-    margin: 0,
-  },
-  tagSection: {
-    marginBottom: "16px",
-  },
-  tagRow: {
-    display: "flex",
-    gap: "4px",
-    flexWrap: "wrap" as const,
-  },
-  tag: {
-    display: "inline-block",
-    padding: "2px 8px",
-    backgroundColor: "#f1f3f4",
-    borderRadius: "4px",
-    fontSize: "12px",
-    color: "#5f6368",
-  },
-  memberSection: {
-    marginBottom: "16px",
-  },
-  memberRow: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: "8px 0",
-    borderBottom: "1px solid #f1f3f4",
-    fontSize: "14px",
-  },
-  memberEmail: {
-    color: "#333",
-  },
-  memberRole: {
-    color: "#888",
-    textTransform: "capitalize" as const,
-    fontSize: "13px",
-  },
-  subViewSection: {
-    marginTop: "16px",
-  },
-  subViewGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
-    gap: "10px",
-  },
-  subViewCard: {
-    display: "flex",
-    flexDirection: "column" as const,
-    alignItems: "center",
-    padding: "16px 12px",
-    border: "1px solid #e0e0e0",
-    borderRadius: "8px",
-    textDecoration: "none",
-    color: "inherit",
-    transition: "background-color 0.15s",
-    backgroundColor: "#fff",
-  },
-  subViewIcon: {
-    fontSize: "20px",
-    marginBottom: "6px",
-    color: "#1a73e8",
-    fontFamily: "var(--font-geist-mono), monospace",
-  },
-  subViewLabel: {
-    fontSize: "13px",
-    fontWeight: 500,
-  },
-  subViewDesc: {
-    fontSize: "11px",
-    color: "#888",
-    textAlign: "center" as const,
-    lineHeight: "1.3",
-  },
-  loadingContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-  },
-  loadingText: {
-    fontSize: "14px",
-    color: "#888",
-  },
-};
-
-const treeStyles: Record<string, React.CSSProperties> = {
-  treeItem: {
-    display: "flex",
-    alignItems: "center",
-    padding: "4px 0",
-    gap: "2px",
-    userSelect: "none" as const,
-  },
-  icon: {
-    width: "16px",
-    fontSize: "11px",
-    color: "#999",
-    fontFamily: "monospace",
-    flexShrink: 0,
-  },
-  revision: {
-    fontSize: "10px",
-    color: "#aaa",
-    marginLeft: "auto",
-    paddingRight: "12px",
-  },
-};

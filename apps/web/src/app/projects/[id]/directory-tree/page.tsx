@@ -411,9 +411,17 @@ export default function DirectoryTreePage({
       <div key={pathKey || "root"}>
         <div
           style={{
-            ...s.treeItem,
+            display: "flex",
+            alignItems: "center",
+            padding: "4px 0",
             paddingLeft: `${12 + depth * 18}px`,
-            backgroundColor: isSelected ? "#e8f0fe" : "transparent",
+            cursor: "pointer",
+            gap: "4px",
+            userSelect: "none",
+            backgroundColor: isSelected ? "var(--nb-lemon)" : "transparent",
+            borderBottom: "2px solid var(--nb-black)",
+            fontFamily: "var(--font-mono)",
+            fontWeight: isSelected ? 700 : 500,
           }}
           onClick={(e) => {
             e.stopPropagation();
@@ -429,7 +437,16 @@ export default function DirectoryTreePage({
         >
           {node.type === "directory" ? (
             <span
-              style={s.toggleIcon}
+              style={{
+                width: "14px",
+                fontSize: "12px",
+                color: "var(--nb-black)",
+                flexShrink: 0,
+                cursor: "pointer",
+                textAlign: "center",
+                fontFamily: "monospace",
+                fontWeight: 900,
+              }}
               onClick={(e) => {
                 e.stopPropagation();
                 toggleExpand(pathKey);
@@ -438,14 +455,14 @@ export default function DirectoryTreePage({
               {isExpanded ? "\u25BE" : "\u25B8"}
             </span>
           ) : (
-            <span style={s.toggleIcon}>&nbsp;</span>
+            <span style={{ width: "14px", flexShrink: 0 }}>&nbsp;</span>
           )}
-          <span style={s.nodeIcon}>
+          <span style={{ fontSize: "13px", flexShrink: 0 }}>
             {node.type === "directory" ? "\uD83D\uDCC1" : "\uD83D\uDCC4"}
           </span>
           {isRenaming ? (
             <input
-              style={s.renameInput}
+              className="nb-input"
               autoFocus
               value={renameValue}
               onChange={(e) => setRenameValue(e.target.value)}
@@ -455,25 +472,34 @@ export default function DirectoryTreePage({
               }}
               onBlur={() => handleRename(path)}
               onClick={(e) => e.stopPropagation()}
+              style={{ width: "160px", padding: "2px 6px", fontSize: "13px", marginBottom: 0 }}
             />
           ) : (
-            <span style={s.nodeName}>{node.name}</span>
+            <span style={{ fontSize: "13px", textTransform: "none" }}>{node.name}</span>
           )}
         </div>
 
         {/* Delete confirmation */}
         {isDeleting && (
-          <div style={{ ...s.confirmBar, paddingLeft: `${30 + depth * 18}px` }}>
-            <span style={{ fontSize: "12px" }}>
+          <div style={{
+            display: "flex",
+            gap: "6px",
+            alignItems: "center",
+            padding: "4px 16px",
+            paddingLeft: `${30 + depth * 18}px`,
+            backgroundColor: "var(--nb-lemon)",
+            borderBottom: "2px solid var(--nb-black)",
+          }}>
+            <span style={{ fontSize: "12px", fontFamily: "var(--font-mono)", fontWeight: 700 }}>
               Delete {node.type === "directory" && node.children.length > 0
                 ? `folder with ${node.children.length} items`
                 : node.name}
               ?
             </span>
-            <button style={s.dangerBtn} onClick={() => handleDelete(path)}>
+            <button className="nb-btn nb-btn-primary nb-btn-sm" style={{ backgroundColor: "var(--nb-watermelon)" }} onClick={() => handleDelete(path)}>
               Delete
             </button>
-            <button style={s.ghostBtn} onClick={() => setDeletingPath(null)}>
+            <button className="nb-btn nb-btn-secondary nb-btn-sm" onClick={() => setDeletingPath(null)}>
               Cancel
             </button>
           </div>
@@ -500,16 +526,16 @@ export default function DirectoryTreePage({
 
   if (loading) {
     return (
-      <div style={s.center}>
-        <span>Loading directory tree...</span>
+      <div className="nb-loading" style={{ height: "100vh" }}>
+        Loading directory tree...
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={s.center}>
-        <span style={{ color: "#d93025" }}>{error}</span>
+      <div className="nb-loading" style={{ height: "100vh", color: "var(--nb-watermelon)" }}>
+        {error}
       </div>
     );
   }
@@ -517,27 +543,27 @@ export default function DirectoryTreePage({
   const selectedNode = selectedPath ? findNode(root, selectedPath) : null;
 
   return (
-    <div style={s.page}>
+    <div className="nb-page" style={{ height: "100vh", overflow: "hidden" }}>
       {/* Breadcrumb */}
-      <nav style={s.breadcrumb}>
-        <a href="/dashboard" style={s.breadcrumbLink}>Dashboard</a>
-        <span style={s.breadcrumbSep}>/</span>
-        <a href={`/projects/${projectId}`} style={s.breadcrumbLink}>Project</a>
-        <span style={s.breadcrumbSep}>/</span>
-        <span style={s.breadcrumbCurrent}>Directory Tree</span>
+      <nav style={{ fontFamily: "var(--font-mono)", fontSize: "13px", padding: "12px 24px 0", textTransform: "uppercase" }}>
+        <a href="/dashboard" style={{ color: "var(--nb-black)", textDecoration: "none", fontWeight: 700 }}>Dashboard</a>
+        <span style={{ margin: "0 6px", color: "var(--nb-gray-mid)" }}>/</span>
+        <a href={`/projects/${projectId}`} style={{ color: "var(--nb-black)", textDecoration: "none", fontWeight: 700 }}>Project</a>
+        <span style={{ margin: "0 6px", color: "var(--nb-gray-mid)" }}>/</span>
+        <span style={{ color: "var(--nb-gray-dark)" }}>Directory Tree</span>
       </nav>
 
       {/* Toolbar */}
-      <div style={s.toolbar}>
+      <div className="nb-flex" style={{ gap: "6px", padding: "8px 24px", borderBottom: "4px solid var(--nb-black)", alignItems: "center", flexShrink: 0, backgroundColor: "var(--nb-cream)" }}>
         <button
-          style={s.toolBtn}
+          className="nb-btn nb-btn-primary"
           onClick={() => addChild("directory")}
           disabled={selectedNode !== null && selectedNode.type !== "directory"}
         >
           + Folder
         </button>
         <button
-          style={s.toolBtn}
+          className="nb-btn nb-btn-info"
           onClick={() => addChild("file")}
           disabled={selectedNode !== null && selectedNode.type !== "directory"}
         >
@@ -545,17 +571,18 @@ export default function DirectoryTreePage({
         </button>
         {selectedPath && selectedPath.length > 0 && (
           <button
-            style={{ ...s.toolBtn, color: "#d93025" }}
+            className="nb-btn nb-btn-secondary"
+            style={{ color: "var(--nb-watermelon)" }}
             onClick={() => setDeletingPath(selectedPath)}
           >
             Delete
           </button>
         )}
         <div style={{ flex: 1 }} />
-        <label style={s.templateLabel}>
+        <label className="nb-label" style={{ display: "flex", alignItems: "center", gap: "6px", margin: 0 }}>
           Template:
           <select
-            style={s.select}
+            className="nb-select"
             value=""
             onChange={(e) => {
               if (e.target.value) applyTemplate(e.target.value);
@@ -569,7 +596,7 @@ export default function DirectoryTreePage({
           </select>
         </label>
         <button
-          style={s.primaryBtn}
+          className="nb-btn nb-btn-success"
           onClick={() =>
             update(root, {
               ...metadata,
@@ -582,26 +609,38 @@ export default function DirectoryTreePage({
       </div>
 
       {/* Two-pane layout */}
-      <div style={s.workspace}>
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
         {/* Tree editor */}
-        <div style={s.treePane}>
-          <h3 style={s.paneTitle}>Tree Editor</h3>
-          <div style={s.treeContainer} onClick={() => setSelectedPath(null)}>
+        <div style={{ flex: 1, borderRight: "4px solid var(--nb-black)", overflow: "auto", padding: "12px 0" }}>
+          <h3 className="nb-label" style={{ fontSize: "13px", margin: "0 0 8px", padding: "0 16px" }}>Tree Editor</h3>
+          <div style={{ fontSize: "13px", minHeight: "100%" }} onClick={() => setSelectedPath(null)}>
             {renderNode(root, [], 0)}
           </div>
         </div>
 
         {/* Preview */}
-        <div style={s.previewPane}>
-          <h3 style={s.paneTitle}>Preview</h3>
-          <pre style={s.previewPre}>{treeToAscii(root)}</pre>
+        <div style={{ width: "380px", overflow: "auto", padding: "12px 16px", flexShrink: 0, backgroundColor: "var(--nb-white)" }}>
+          <h3 className="nb-label" style={{ fontSize: "13px", margin: "0 0 8px" }}>Preview</h3>
+          <pre style={{
+            backgroundColor: "var(--nb-cream)",
+            padding: "12px",
+            border: "4px solid var(--nb-black)",
+            fontSize: "12px",
+            fontFamily: "var(--font-mono)",
+            overflow: "auto",
+            whiteSpace: "pre",
+            lineHeight: "1.6",
+            boxShadow: "var(--shadow-brutal)",
+          }}>
+            {treeToAscii(root)}
+          </pre>
           {metadata.template && (
-            <div style={s.metaInfo}>
+            <div style={{ fontSize: "11px", color: "var(--nb-gray-dark)", marginTop: "8px", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
               Template: {metadata.template}
             </div>
           )}
           {metadata.generatedAt && (
-            <div style={s.metaInfo}>
+            <div style={{ fontSize: "11px", color: "var(--nb-gray-dark)", marginTop: "8px", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
               Generated: {new Date(metadata.generatedAt).toLocaleString()}
             </div>
           )}
@@ -610,173 +649,3 @@ export default function DirectoryTreePage({
     </div>
   );
 }
-
-/* ------------------------------------------------------------------ */
-/*  Styles                                                             */
-/* ------------------------------------------------------------------ */
-
-const s: Record<string, React.CSSProperties> = {
-  page: {
-    fontFamily: "var(--font-geist-sans), system-ui, sans-serif",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    overflow: "hidden",
-  },
-  center: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-    fontSize: "14px",
-    color: "#888",
-  },
-  breadcrumb: { fontSize: "13px", padding: "12px 24px 0" },
-  breadcrumbLink: { color: "#1a73e8", textDecoration: "none" },
-  breadcrumbSep: { margin: "0 6px", color: "#999" },
-  breadcrumbCurrent: { color: "#333", fontWeight: 500 },
-  toolbar: {
-    display: "flex",
-    gap: "6px",
-    padding: "8px 24px",
-    borderBottom: "1px solid #e0e0e0",
-    alignItems: "center",
-    flexShrink: 0,
-    backgroundColor: "#f8f9fa",
-  },
-  toolBtn: {
-    padding: "6px 12px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    fontSize: "12px",
-    fontWeight: 500,
-  },
-  templateLabel: {
-    fontSize: "12px",
-    color: "#555",
-    display: "flex",
-    alignItems: "center",
-    gap: "6px",
-  },
-  select: {
-    padding: "6px 8px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    fontSize: "12px",
-  },
-  primaryBtn: {
-    padding: "8px 16px",
-    backgroundColor: "#1a73e8",
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontSize: "13px",
-    fontWeight: 500,
-  },
-  workspace: {
-    display: "flex",
-    flex: 1,
-    overflow: "hidden",
-  },
-  treePane: {
-    flex: 1,
-    borderRight: "1px solid #e0e0e0",
-    overflow: "auto",
-    padding: "12px 0",
-  },
-  previewPane: {
-    width: "380px",
-    overflow: "auto",
-    padding: "12px 16px",
-    flexShrink: 0,
-  },
-  paneTitle: {
-    fontSize: "13px",
-    fontWeight: 600,
-    textTransform: "uppercase" as const,
-    color: "#888",
-    letterSpacing: "0.5px",
-    margin: "0 0 8px",
-    padding: "0 16px",
-  },
-  treeContainer: {
-    fontSize: "13px",
-    minHeight: "100%",
-  },
-  treeItem: {
-    display: "flex",
-    alignItems: "center",
-    padding: "3px 0",
-    cursor: "pointer",
-    gap: "4px",
-    userSelect: "none" as const,
-    borderRadius: "2px",
-  },
-  toggleIcon: {
-    width: "14px",
-    fontSize: "11px",
-    color: "#888",
-    flexShrink: 0,
-    cursor: "pointer",
-    textAlign: "center" as const,
-    fontFamily: "monospace",
-  },
-  nodeIcon: {
-    fontSize: "13px",
-    flexShrink: 0,
-  },
-  nodeName: {
-    fontSize: "13px",
-  },
-  renameInput: {
-    border: "1px solid #1a73e8",
-    borderRadius: "3px",
-    padding: "2px 6px",
-    fontSize: "13px",
-    outline: "none",
-    width: "160px",
-  },
-  confirmBar: {
-    display: "flex",
-    gap: "6px",
-    alignItems: "center",
-    padding: "4px 16px",
-    backgroundColor: "#fff3e0",
-    margin: "2px 0",
-  },
-  dangerBtn: {
-    padding: "3px 8px",
-    backgroundColor: "#d93025",
-    color: "#fff",
-    border: "none",
-    borderRadius: "3px",
-    cursor: "pointer",
-    fontSize: "11px",
-  },
-  ghostBtn: {
-    padding: "3px 8px",
-    border: "1px solid #ddd",
-    borderRadius: "3px",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    fontSize: "11px",
-  },
-  previewPre: {
-    backgroundColor: "#f5f5f5",
-    padding: "12px",
-    borderRadius: "6px",
-    fontSize: "12px",
-    fontFamily: "var(--font-geist-mono), monospace",
-    overflow: "auto",
-    whiteSpace: "pre" as const,
-    lineHeight: "1.6",
-  },
-  metaInfo: {
-    fontSize: "11px",
-    color: "#888",
-    marginTop: "8px",
-  },
-};
