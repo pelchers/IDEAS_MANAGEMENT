@@ -13,11 +13,11 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 ---
 
 ## Phase 1: Design System Transfer
-- [ ] Extract all CSS variables, tokens, and mixins from pass-1 concept (1892 lines)
-- [ ] Build globals.css with full neo-brutalism system (colors, typography, borders, shadows, spacing)
-- [ ] Import Space Grotesk + IBM Plex Mono fonts in layout.tsx
-- [ ] Create utility classes matching pass-1 patterns (.nb-card, .nb-btn, .nb-input, .nb-badge, etc.)
-- [ ] Verify design tokens render correctly in isolation
+- [x] Extract all CSS variables, tokens, and mixins from pass-1 concept (1892 lines)
+- [x] Build globals.css with full neo-brutalism system (colors, typography, borders, shadows, spacing)
+- [x] Import Space Grotesk + IBM Plex Mono fonts in layout.tsx
+- [x] Create utility classes matching pass-1 patterns (.nb-card, .nb-btn, .nb-input, .nb-badge, etc.)
+- [x] Verify design tokens render correctly in isolation
 
 ## Phase 2: App Shell + Navigation
 - [ ] Build hamburger drawer / sidebar from pass-1 concept
