@@ -21,14 +21,14 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Seed admin bootstrap account
 
 ## Phase 2: Auth Endpoints
-- [ ] Test signup (email/password, 12+ char validation, duplicate rejection)
-- [ ] Test signin (correct credentials, wrong credentials, missing account)
-- [ ] Test signout (single device, all devices)
-- [ ] Test refresh token rotation
-- [ ] Test email verification flow
-- [ ] Test password reset (request + confirm)
-- [ ] Test admin bootstrap procedure
-- [ ] Fix any broken endpoints
+- [x] Test signup (email/password, 12+ char validation, duplicate rejection)
+- [x] Test signin (correct credentials, wrong credentials, missing account)
+- [x] Test signout (single device, all devices)
+- [x] Test refresh token rotation
+- [x] Test email verification flow
+- [x] Test password reset (request + confirm)
+- [x] Test admin bootstrap procedure
+- [x] Fix any broken endpoints (none needed — all endpoints passed)
 
 ## Phase 3: Project CRUD + Members
 - [ ] Test project create (name, description, tags)
