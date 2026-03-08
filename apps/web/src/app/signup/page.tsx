@@ -1,32 +1,39 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function SignUpPage() {
-  const router = useRouter();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string; confirm?: string }>({});
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+
+  function validate(): boolean {
+    const errors: typeof fieldErrors = {};
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.email = 'Valid email address required';
+    }
+    if (password.length < 12) {
+      errors.password = 'Password must be at least 12 characters';
+    }
+    if (password !== confirmPassword) {
+      errors.confirm = 'Passwords do not match';
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError('');
     setSuccess('');
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    if (password.length < 12) {
-      setError('Password must be at least 12 characters');
-      return;
-    }
+    if (!validate()) return;
 
     setLoading(true);
 
@@ -44,8 +51,10 @@ export default function SignUpPage() {
         return;
       }
 
-      setSuccess('Account created! Redirecting to sign in...');
-      setTimeout(() => router.push('/signin'), 1500);
+      setSuccess('Account created! Redirecting...');
+      setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 1000);
     } catch {
       setError('Network error. Please try again.');
     } finally {
@@ -54,73 +63,87 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="nb-loading" style={{ minHeight: '100vh' }}>
-      <div className="nb-form-card" style={{ width: '100%', maxWidth: 440 }}>
-        <h1 style={{ marginBottom: 4 }}>Sign Up</h1>
-        <p className="nb-label" style={{ marginBottom: 24 }}>Create Your Account</p>
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-logo">
+          <span className="auth-logo-icon">&#9670;</span>
+          <span className="auth-logo-text">Idea Management</span>
+        </div>
+
+        <h1 className="auth-title">Create Account</h1>
 
         {error && (
-          <div style={{ background: 'var(--nb-watermelon)', color: 'var(--nb-black)', padding: '10px 14px', border: 'var(--border-thick)', marginBottom: 16, fontWeight: 600 }}>
-            {error}
-          </div>
+          <div className="auth-error">{error}</div>
         )}
 
         {success && (
-          <div style={{ background: 'var(--nb-malachite)', color: 'var(--nb-black)', padding: '10px 14px', border: 'var(--border-thick)', marginBottom: 16, fontWeight: 600 }}>
-            {success}
-          </div>
+          <div className="auth-error" style={{ background: 'var(--nb-malachite)' }}>{success}</div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="nb-form-group">
-            <label className="nb-label">Email</label>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div>
             <input
               type="email"
-              className="nb-input"
+              className="auth-input"
+              placeholder="Email address"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={e => { setEmail(e.target.value); setFieldErrors(prev => ({ ...prev, email: undefined })); }}
               required
+              autoComplete="email"
+              style={fieldErrors.email ? { borderColor: 'var(--nb-watermelon)' } : undefined}
             />
+            {fieldErrors.email && (
+              <span className="auth-field-error">{fieldErrors.email}</span>
+            )}
           </div>
 
-          <div className="nb-form-group">
-            <label className="nb-label">Password</label>
+          <div>
             <input
               type="password"
-              className="nb-input"
+              className="auth-input"
+              placeholder="Password (12+ characters)"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={e => { setPassword(e.target.value); setFieldErrors(prev => ({ ...prev, password: undefined })); }}
               required
+              autoComplete="new-password"
               minLength={12}
+              style={fieldErrors.password ? { borderColor: 'var(--nb-watermelon)' } : undefined}
             />
+            {fieldErrors.password && (
+              <span className="auth-field-error">{fieldErrors.password}</span>
+            )}
           </div>
 
-          <div className="nb-form-group">
-            <label className="nb-label">Confirm Password</label>
+          <div>
             <input
               type="password"
-              className="nb-input"
+              className="auth-input"
+              placeholder="Confirm password"
               value={confirmPassword}
-              onChange={e => setConfirmPassword(e.target.value)}
+              onChange={e => { setConfirmPassword(e.target.value); setFieldErrors(prev => ({ ...prev, confirm: undefined })); }}
               required
+              autoComplete="new-password"
               minLength={12}
+              style={fieldErrors.confirm ? { borderColor: 'var(--nb-watermelon)' } : undefined}
             />
+            {fieldErrors.confirm && (
+              <span className="auth-field-error">{fieldErrors.confirm}</span>
+            )}
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="nb-btn nb-btn-primary"
-            style={{ width: '100%', justifyContent: 'center', marginTop: 8, opacity: loading ? 0.6 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
+            className="auth-submit"
           >
             {loading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: 20, fontSize: 14 }}>
+        <div className="auth-link">
           Already have an account?{' '}
-          <a href="/signin" style={{ fontWeight: 700, borderBottom: 'var(--border-thin)' }}>Sign In</a>
-        </p>
+          <a href="/signin">Sign In</a>
+        </div>
       </div>
     </div>
   );

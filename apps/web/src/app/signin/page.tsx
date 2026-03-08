@@ -1,10 +1,9 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 export default function SignInPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') || '/dashboard';
 
@@ -32,7 +31,7 @@ export default function SignInPage() {
         return;
       }
 
-      router.push(redirect);
+      window.location.href = redirect;
     } catch {
       setError('Network error. Please try again.');
     } finally {
@@ -41,54 +40,57 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="nb-loading" style={{ minHeight: '100vh' }}>
-      <div className="nb-form-card" style={{ width: '100%', maxWidth: 440 }}>
-        <h1 style={{ marginBottom: 4 }}>Sign In</h1>
-        <p className="nb-label" style={{ marginBottom: 24 }}>Idea Management</p>
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-logo">
+          <span className="auth-logo-icon">&#9670;</span>
+          <span className="auth-logo-text">Idea Management</span>
+        </div>
+
+        <h1 className="auth-title">Sign In</h1>
 
         {error && (
-          <div style={{ background: 'var(--nb-watermelon)', color: 'var(--nb-black)', padding: '10px 14px', border: 'var(--border-thick)', marginBottom: 16, fontWeight: 600 }}>
-            {error}
-          </div>
+          <div className="auth-error">{error}</div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="nb-form-group">
-            <label className="nb-label">Email</label>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div>
             <input
               type="email"
-              className="nb-input"
+              className="auth-input"
+              placeholder="Email address"
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
+              autoComplete="email"
             />
           </div>
 
-          <div className="nb-form-group">
-            <label className="nb-label">Password</label>
+          <div>
             <input
               type="password"
-              className="nb-input"
+              className="auth-input"
+              placeholder="Password (12+ characters)"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
+              autoComplete="current-password"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="nb-btn nb-btn-primary"
-            style={{ width: '100%', justifyContent: 'center', marginTop: 8, opacity: loading ? 0.6 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
+            className="auth-submit"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: 20, fontSize: 14 }}>
+        <div className="auth-link">
           Don&apos;t have an account?{' '}
-          <a href="/signup" style={{ fontWeight: 700, borderBottom: 'var(--border-thin)' }}>Sign Up</a>
-        </p>
+          <a href="/signup">Sign Up</a>
+        </div>
       </div>
     </div>
   );

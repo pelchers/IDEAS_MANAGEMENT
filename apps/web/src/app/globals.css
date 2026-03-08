@@ -2637,6 +2637,17 @@ a {
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.auth-field-error {
+  display: block;
+  color: var(--nb-watermelon);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 4px;
+  text-transform: uppercase;
 }
 
 .auth-divider {

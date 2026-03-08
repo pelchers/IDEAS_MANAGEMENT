@@ -28,11 +28,11 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Test shell renders on all breakpoints (desktop, tablet, mobile)
 
 ## Phase 3: Auth Pages
-- [ ] Rebuild signin page matching pass-1 styling exactly
-- [ ] Rebuild signup page matching pass-1 styling exactly
-- [ ] Add client-side validation (12+ char password, email format)
-- [ ] Add error/success feedback with neo-brutalism styled alerts
-- [ ] Test auth flow end-to-end (signup -> signin -> dashboard redirect)
+- [x] Rebuild signin page matching pass-1 styling exactly
+- [x] Rebuild signup page matching pass-1 styling exactly
+- [x] Add client-side validation (12+ char password, email format)
+- [x] Add error/success feedback with neo-brutalism styled alerts
+- [x] Test auth flow end-to-end (signup -> signin -> dashboard redirect)
 
 ## Phase 4: Dashboard Page
 - [ ] Rebuild dashboard matching pass-1 layout (grid, cards, stats)
