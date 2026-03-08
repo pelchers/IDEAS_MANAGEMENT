@@ -1,248 +1,108 @@
 "use client";
 
-import { useState, useEffect, use, useCallback } from "react";
+import { useState, useEffect, use, useCallback, useRef } from "react";
 
 /* ------------------------------------------------------------------ */
-/*  Types (matching @idea-management/schemas DirectoryTree)            */
+/*  Types (matching phase 5 spec data model)                           */
 /* ------------------------------------------------------------------ */
 
 interface TreeNode {
+  id: string;
   name: string;
-  type: "file" | "directory";
-  children: TreeNode[];
-  template?: string;
+  type: "folder" | "file";
+  expanded?: boolean;
+  children?: TreeNode[];
 }
 
-interface DirectoryTree {
-  root: TreeNode;
-  metadata: {
-    generatedAt?: string;
-    template?: string;
-  };
+interface DirectoryTreeData {
+  tree: TreeNode;
 }
-
-/* ------------------------------------------------------------------ */
-/*  Templates                                                          */
-/* ------------------------------------------------------------------ */
-
-const TEMPLATES: Record<string, TreeNode> = {
-  "web-app": {
-    name: "web-app",
-    type: "directory",
-    children: [
-      {
-        name: "src",
-        type: "directory",
-        children: [
-          {
-            name: "app",
-            type: "directory",
-            children: [
-              { name: "page.tsx", type: "file", children: [] },
-              { name: "layout.tsx", type: "file", children: [] },
-              { name: "globals.css", type: "file", children: [] },
-            ],
-          },
-          {
-            name: "components",
-            type: "directory",
-            children: [
-              { name: "header.tsx", type: "file", children: [] },
-              { name: "footer.tsx", type: "file", children: [] },
-            ],
-          },
-          {
-            name: "lib",
-            type: "directory",
-            children: [
-              { name: "utils.ts", type: "file", children: [] },
-            ],
-          },
-        ],
-      },
-      { name: "public", type: "directory", children: [] },
-      { name: "package.json", type: "file", children: [] },
-      { name: "tsconfig.json", type: "file", children: [] },
-      { name: "README.md", type: "file", children: [] },
-    ],
-  },
-  api: {
-    name: "api",
-    type: "directory",
-    children: [
-      {
-        name: "src",
-        type: "directory",
-        children: [
-          {
-            name: "routes",
-            type: "directory",
-            children: [
-              { name: "index.ts", type: "file", children: [] },
-              { name: "health.ts", type: "file", children: [] },
-            ],
-          },
-          {
-            name: "middleware",
-            type: "directory",
-            children: [
-              { name: "auth.ts", type: "file", children: [] },
-              { name: "logger.ts", type: "file", children: [] },
-            ],
-          },
-          {
-            name: "services",
-            type: "directory",
-            children: [],
-          },
-          { name: "index.ts", type: "file", children: [] },
-        ],
-      },
-      {
-        name: "tests",
-        type: "directory",
-        children: [],
-      },
-      { name: "package.json", type: "file", children: [] },
-      { name: "tsconfig.json", type: "file", children: [] },
-      { name: "Dockerfile", type: "file", children: [] },
-    ],
-  },
-  library: {
-    name: "library",
-    type: "directory",
-    children: [
-      {
-        name: "src",
-        type: "directory",
-        children: [
-          { name: "index.ts", type: "file", children: [] },
-        ],
-      },
-      {
-        name: "tests",
-        type: "directory",
-        children: [
-          { name: "index.test.ts", type: "file", children: [] },
-        ],
-      },
-      { name: "package.json", type: "file", children: [] },
-      { name: "tsconfig.json", type: "file", children: [] },
-      { name: "README.md", type: "file", children: [] },
-    ],
-  },
-  monorepo: {
-    name: "monorepo",
-    type: "directory",
-    children: [
-      {
-        name: "apps",
-        type: "directory",
-        children: [
-          {
-            name: "web",
-            type: "directory",
-            children: [
-              { name: "src", type: "directory", children: [] },
-              { name: "package.json", type: "file", children: [] },
-            ],
-          },
-          {
-            name: "api",
-            type: "directory",
-            children: [
-              { name: "src", type: "directory", children: [] },
-              { name: "package.json", type: "file", children: [] },
-            ],
-          },
-        ],
-      },
-      {
-        name: "packages",
-        type: "directory",
-        children: [
-          {
-            name: "shared",
-            type: "directory",
-            children: [
-              { name: "src", type: "directory", children: [] },
-              { name: "package.json", type: "file", children: [] },
-            ],
-          },
-        ],
-      },
-      { name: "package.json", type: "file", children: [] },
-      { name: "pnpm-workspace.yaml", type: "file", children: [] },
-      { name: "turbo.json", type: "file", children: [] },
-    ],
-  },
-};
-
-const DEFAULT_ROOT: TreeNode = {
-  name: "project",
-  type: "directory",
-  children: [],
-};
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-function treeToAscii(node: TreeNode, prefix: string = "", isLast: boolean = true, isRoot: boolean = true): string {
-  let result = "";
-  if (isRoot) {
-    result += `${node.name}/\n`;
-  } else {
-    const connector = isLast ? "\u2514\u2500\u2500 " : "\u251C\u2500\u2500 ";
-    const suffix = node.type === "directory" ? "/" : "";
-    result += `${prefix}${connector}${node.name}${suffix}\n`;
-  }
-
-  const childPrefix = isRoot ? "" : prefix + (isLast ? "    " : "\u2502   ");
-  const sortedChildren = [...node.children].sort((a, b) => {
-    if (a.type !== b.type) return a.type === "directory" ? -1 : 1;
-    return a.name.localeCompare(b.name);
-  });
-
-  for (let i = 0; i < sortedChildren.length; i++) {
-    const child = sortedChildren[i];
-    const childIsLast = i === sortedChildren.length - 1;
-    result += treeToAscii(child, childPrefix, childIsLast, false);
-  }
-  return result;
+function uid(): string {
+  return typeof crypto !== "undefined" && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `n-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }
 
-/** Find a node by path (array of names from root). Returns [parentChildren, index] */
-function findNode(
-  root: TreeNode,
-  path: string[]
-): TreeNode | null {
-  if (path.length === 0) return root;
-  let current = root;
-  for (const segment of path) {
-    const child = current.children.find((c) => c.name === segment);
-    if (!child) return null;
-    current = child;
+const DEFAULT_TREE: TreeNode = {
+  id: "root",
+  name: "project-root",
+  type: "folder",
+  expanded: true,
+  children: [],
+};
+
+/** Find a node by id in the tree. */
+function findById(node: TreeNode, id: string): TreeNode | null {
+  if (node.id === id) return node;
+  if (node.children) {
+    for (const child of node.children) {
+      const found = findById(child, id);
+      if (found) return found;
+    }
   }
-  return current;
+  return null;
 }
 
-function findParentAndIndex(
-  root: TreeNode,
-  path: string[]
+/** Find the parent of a node by id. Returns parent + index of child. */
+function findParentById(
+  node: TreeNode,
+  targetId: string
 ): { parent: TreeNode; index: number } | null {
-  if (path.length === 0) return null; // root has no parent
-  const parentPath = path.slice(0, -1);
-  const parent = findNode(root, parentPath);
-  if (!parent) return null;
-  const name = path[path.length - 1];
-  const idx = parent.children.findIndex((c) => c.name === name);
-  if (idx === -1) return null;
-  return { parent, index: idx };
+  if (node.children) {
+    for (let i = 0; i < node.children.length; i++) {
+      if (node.children[i].id === targetId) {
+        return { parent: node, index: i };
+      }
+      const found = findParentById(node.children[i], targetId);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
+/** Build an ASCII preview of the tree. */
+function treeToAscii(
+  node: TreeNode,
+  prefix: string = "",
+  isLast: boolean = true,
+  isRoot: boolean = true
+): string {
+  let result = "";
+  if (isRoot) {
+    result += `${node.name}/\n`;
+  } else {
+    const connector = isLast ? "\u2514\u2500\u2500 " : "\u251C\u2500\u2500 ";
+    const suffix = node.type === "folder" ? "/" : "";
+    result += `${prefix}${connector}${node.name}${suffix}\n`;
+  }
+
+  const childPrefix = isRoot
+    ? ""
+    : prefix + (isLast ? "    " : "\u2502   ");
+  const children = sortedChildren(node);
+
+  for (let i = 0; i < children.length; i++) {
+    result += treeToAscii(children[i], childPrefix, i === children.length - 1, false);
+  }
+  return result;
+}
+
+/** Sort children: folders first, then alphabetically. */
+function sortedChildren(node: TreeNode): TreeNode[] {
+  if (!node.children) return [];
+  return [...node.children].sort((a, b) => {
+    if (a.type !== b.type) return a.type === "folder" ? -1 : 1;
+    return a.name.localeCompare(b.name);
+  });
 }
 
 /* ------------------------------------------------------------------ */
@@ -256,50 +116,79 @@ export default function DirectoryTreePage({
 }) {
   const { id: projectId } = use(params);
 
-  const [root, setRoot] = useState<TreeNode>(deepClone(DEFAULT_ROOT));
-  const [metadata, setMetadata] = useState<DirectoryTree["metadata"]>({});
+  const [tree, setTree] = useState<TreeNode>(deepClone(DEFAULT_TREE));
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Selection: path from root (array of names)
-  const [selectedPath, setSelectedPath] = useState<string[] | null>(null);
+  // Selected node id
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // Rename
-  const [renamingPath, setRenamingPath] = useState<string[] | null>(null);
+  // Expanded set (by node id)
+  const [expanded, setExpanded] = useState<Set<string>>(new Set(["root"]));
+
+  // Rename state
+  const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
 
-  // Delete confirm
-  const [deletingPath, setDeletingPath] = useState<string[] | null>(null);
+  // Delete confirmation
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  // Expanded state
-  const [expanded, setExpanded] = useState<Set<string>>(new Set([""]));
+  const artifactUrl = `/api/projects/${projectId}/artifacts/directory-tree/tree.json`;
 
-  const artifactUrl = `/api/projects/${projectId}/artifacts/directory-tree/tree.plan.json`;
+  // Debounced save
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const persist = useCallback(
-    async (tree: DirectoryTree) => {
-      await fetch(artifactUrl, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(tree),
-      });
+    async (data: DirectoryTreeData) => {
+      setSaving(true);
+      try {
+        await fetch(artifactUrl, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ content: data }),
+        });
+      } catch {
+        // silently fail — user sees stale data on reload
+      } finally {
+        setSaving(false);
+      }
     },
     [artifactUrl]
   );
+
+  const debouncedPersist = useCallback(
+    (data: DirectoryTreeData) => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = setTimeout(() => persist(data), 500);
+    },
+    [persist]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     async function load() {
       try {
         const res = await fetch(artifactUrl, { credentials: "include" });
         if (res.ok) {
-          const data: DirectoryTree = await res.json();
-          setRoot(data.root ?? deepClone(DEFAULT_ROOT));
-          setMetadata(data.metadata ?? {});
-          // Auto-expand root
-          setExpanded(new Set([""]));
+          const json = await res.json();
+          // API returns { ok, artifact: { content: { tree: {...} } } }
+          const content: DirectoryTreeData = json.artifact?.content ?? json;
+          if (content.tree) {
+            setTree(content.tree);
+            // Auto-expand root
+            setExpanded(new Set(["root"]));
+          } else {
+            setTree(deepClone(DEFAULT_TREE));
+          }
         } else if (res.status === 404) {
-          setRoot(deepClone(DEFAULT_ROOT));
+          setTree(deepClone(DEFAULT_TREE));
         } else {
           setError("Failed to load directory tree");
         }
@@ -312,154 +201,185 @@ export default function DirectoryTreePage({
     load();
   }, [artifactUrl]);
 
-  function update(newRoot: TreeNode, newMeta?: DirectoryTree["metadata"]) {
-    setRoot(newRoot);
-    const m = newMeta ?? metadata;
-    setMetadata(m);
-    persist({ root: newRoot, metadata: m });
+  function updateTree(newTree: TreeNode) {
+    setTree(newTree);
+    debouncedPersist({ tree: newTree });
   }
 
   /* ---------- Operations ---------- */
 
-  function addChild(type: "file" | "directory") {
-    const newRoot = deepClone(root);
-    const parentPath = selectedPath ?? [];
-    const parent = findNode(newRoot, parentPath);
-    if (!parent || parent.type !== "directory") return;
+  function addChild(type: "folder" | "file") {
+    const newTree = deepClone(tree);
+    // Add to selected folder, or root if nothing selected or file selected
+    let parentId = selectedId ?? "root";
+    const parentNode = findById(newTree, parentId);
+    if (!parentNode || parentNode.type !== "folder") {
+      // If selected node is a file, add to its parent
+      const parentResult = findParentById(newTree, parentId);
+      if (parentResult) {
+        parentId = parentResult.parent.id;
+      } else {
+        parentId = "root";
+      }
+    }
 
-    const baseName = type === "directory" ? "new-folder" : "new-file.ts";
+    const parent = findById(newTree, parentId);
+    if (!parent) return;
+    if (!parent.children) parent.children = [];
+
+    const baseName = type === "folder" ? "new-folder" : "new-file.ts";
     let name = baseName;
     let counter = 1;
     while (parent.children.some((c) => c.name === name)) {
-      name = type === "directory"
-        ? `new-folder-${counter}`
-        : `new-file-${counter}.ts`;
+      name =
+        type === "folder"
+          ? `new-folder-${counter}`
+          : `new-file-${counter}.ts`;
       counter++;
     }
 
-    parent.children.push({ name, type, children: [] });
-    update(newRoot);
+    const newNode: TreeNode = {
+      id: uid(),
+      name,
+      type,
+      ...(type === "folder" ? { expanded: true, children: [] } : {}),
+    };
 
-    // Expand parent
-    const pathKey = parentPath.join("/");
-    setExpanded((prev) => new Set([...prev, pathKey]));
+    parent.children.push(newNode);
+    parent.expanded = true;
+
+    // Expand parent in UI
+    setExpanded((prev) => new Set([...prev, parentId]));
+    updateTree(newTree);
+
+    // Start renaming the new node immediately
+    setRenamingId(newNode.id);
+    setRenameValue(name);
   }
 
-  function handleRename(path: string[]) {
-    if (!renameValue.trim() || !path.length) return;
-    const newRoot = deepClone(root);
-    const node = findNode(newRoot, path);
+  function handleRename(id: string) {
+    if (!renameValue.trim()) {
+      setRenamingId(null);
+      return;
+    }
+    const newTree = deepClone(tree);
+    const node = findById(newTree, id);
     if (!node) return;
 
-    // Check for duplicate in parent
-    const parentPath = path.slice(0, -1);
-    const parent = findNode(newRoot, parentPath);
-    if (parent && parent.children.some((c) => c.name === renameValue.trim() && c !== node)) {
-      return; // duplicate name
+    // Check for duplicate name in parent
+    const parentResult = findParentById(newTree, id);
+    if (parentResult) {
+      const siblings = parentResult.parent.children ?? [];
+      if (siblings.some((c) => c.name === renameValue.trim() && c.id !== id)) {
+        // Duplicate name — cancel rename
+        setRenamingId(null);
+        setRenameValue("");
+        return;
+      }
     }
 
     node.name = renameValue.trim();
-    update(newRoot);
-    setRenamingPath(null);
+    updateTree(newTree);
+    setRenamingId(null);
     setRenameValue("");
   }
 
-  function handleDelete(path: string[]) {
-    const newRoot = deepClone(root);
-    const result = findParentAndIndex(newRoot, path);
+  function handleDelete(id: string) {
+    const newTree = deepClone(tree);
+    const result = findParentById(newTree, id);
     if (!result) return;
-    result.parent.children.splice(result.index, 1);
-    update(newRoot);
-    setDeletingPath(null);
-    setSelectedPath(null);
+    result.parent.children!.splice(result.index, 1);
+    updateTree(newTree);
+    setDeletingId(null);
+    if (selectedId === id) setSelectedId(null);
   }
 
-  function applyTemplate(templateKey: string) {
-    const template = TEMPLATES[templateKey];
-    if (!template) return;
-    const newRoot = deepClone(template);
-    update(newRoot, {
-      generatedAt: new Date().toISOString(),
-      template: templateKey,
-    });
-    setSelectedPath(null);
-    setExpanded(new Set([""]));
-  }
-
-  /* ---------- Tree rendering ---------- */
-
-  function toggleExpand(pathKey: string) {
+  function toggleExpand(id: string) {
     setExpanded((prev) => {
       const next = new Set(prev);
-      if (next.has(pathKey)) next.delete(pathKey);
-      else next.add(pathKey);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   }
 
-  function renderNode(node: TreeNode, path: string[], depth: number): React.ReactElement {
-    const pathKey = path.join("/");
-    const isExpanded = expanded.has(pathKey);
-    const isSelected =
-      selectedPath !== null && selectedPath.join("/") === pathKey;
-    const isRenaming =
-      renamingPath !== null && renamingPath.join("/") === pathKey;
-    const isDeleting =
-      deletingPath !== null && deletingPath.join("/") === pathKey;
+  /* ---------- Tree rendering ---------- */
+
+  function renderNode(node: TreeNode, depth: number): React.ReactElement {
+    const isExpanded = expanded.has(node.id);
+    const isSelected = selectedId === node.id;
+    const isRenaming = renamingId === node.id;
+    const isDeleting = deletingId === node.id;
+    const isFolder = node.type === "folder";
+    const children = sortedChildren(node);
 
     return (
-      <div key={pathKey || "root"}>
+      <div key={node.id}>
+        {/* Node row */}
         <div
+          className="dir-node-row"
           style={{
             display: "flex",
             alignItems: "center",
-            padding: "4px 0",
-            paddingLeft: `${12 + depth * 18}px`,
+            padding: "5px 8px",
+            paddingLeft: `${12 + depth * 20}px`,
             cursor: "pointer",
-            gap: "4px",
+            gap: "6px",
             userSelect: "none",
             backgroundColor: isSelected ? "var(--nb-lemon)" : "transparent",
             borderBottom: "2px solid var(--nb-black)",
             fontFamily: "var(--font-mono)",
+            fontSize: "13px",
             fontWeight: isSelected ? 700 : 500,
+            transition: "background 150ms ease",
           }}
           onClick={(e) => {
             e.stopPropagation();
-            setSelectedPath(path);
+            setSelectedId(node.id);
+            if (isFolder) toggleExpand(node.id);
           }}
           onDoubleClick={(e) => {
             e.stopPropagation();
-            if (path.length > 0) {
-              setRenamingPath(path);
+            if (node.id !== "root") {
+              setRenamingId(node.id);
               setRenameValue(node.name);
             }
           }}
         >
-          {node.type === "directory" ? (
+          {/* Expand/collapse toggle for folders */}
+          {isFolder ? (
             <span
               style={{
                 width: "14px",
-                fontSize: "12px",
+                fontSize: "10px",
                 color: "var(--nb-black)",
                 flexShrink: 0,
-                cursor: "pointer",
                 textAlign: "center",
                 fontFamily: "monospace",
                 fontWeight: 900,
+                lineHeight: 1,
               }}
               onClick={(e) => {
                 e.stopPropagation();
-                toggleExpand(pathKey);
+                toggleExpand(node.id);
               }}
             >
-              {isExpanded ? "\u25BE" : "\u25B8"}
+              {isExpanded ? "\u25BC" : "\u25B6"}
             </span>
           ) : (
-            <span style={{ width: "14px", flexShrink: 0 }}>&nbsp;</span>
+            <span style={{ width: "14px", flexShrink: 0 }} />
           )}
-          <span style={{ fontSize: "13px", flexShrink: 0 }}>
-            {node.type === "directory" ? "\uD83D\uDCC1" : "\uD83D\uDCC4"}
+
+          {/* Icon */}
+          <span style={{ fontSize: "14px", flexShrink: 0, lineHeight: 1 }}>
+            {isFolder
+              ? isExpanded
+                ? "\uD83D\uDCC2"
+                : "\uD83D\uDCC1"
+              : "\uD83D\uDCC4"}
           </span>
+
+          {/* Name or rename input */}
           {isRenaming ? (
             <input
               className="nb-input"
@@ -467,55 +387,150 @@ export default function DirectoryTreePage({
               value={renameValue}
               onChange={(e) => setRenameValue(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleRename(path);
-                if (e.key === "Escape") setRenamingPath(null);
+                if (e.key === "Enter") handleRename(node.id);
+                if (e.key === "Escape") {
+                  setRenamingId(null);
+                  setRenameValue("");
+                }
               }}
-              onBlur={() => handleRename(path)}
+              onBlur={() => handleRename(node.id)}
               onClick={(e) => e.stopPropagation()}
-              style={{ width: "160px", padding: "2px 6px", fontSize: "13px", marginBottom: 0 }}
+              style={{
+                width: "180px",
+                padding: "2px 6px",
+                fontSize: "13px",
+                marginBottom: 0,
+                fontFamily: "var(--font-mono)",
+                border: "2px solid var(--nb-black)",
+              }}
             />
           ) : (
-            <span style={{ fontSize: "13px", textTransform: "none" }}>{node.name}</span>
+            <span
+              style={{
+                fontSize: "13px",
+                textTransform: "none",
+                fontFamily: "var(--font-mono)",
+              }}
+            >
+              {node.name}
+              {isFolder ? "/" : ""}
+            </span>
+          )}
+
+          {/* Inline action buttons */}
+          {isSelected && node.id !== "root" && !isRenaming && (
+            <div
+              style={{ marginLeft: "auto", display: "flex", gap: "4px" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="nb-btn nb-btn-secondary"
+                style={{
+                  padding: "1px 6px",
+                  fontSize: "11px",
+                  border: "2px solid var(--nb-black)",
+                  boxShadow: "2px 2px 0 var(--nb-black)",
+                }}
+                onClick={() => {
+                  setRenamingId(node.id);
+                  setRenameValue(node.name);
+                }}
+                title="Rename"
+              >
+                Rename
+              </button>
+              <button
+                className="nb-btn"
+                style={{
+                  padding: "1px 6px",
+                  fontSize: "11px",
+                  border: "2px solid var(--nb-black)",
+                  boxShadow: "2px 2px 0 var(--nb-black)",
+                  color: "var(--nb-watermelon)",
+                  fontWeight: 700,
+                }}
+                onClick={() => setDeletingId(node.id)}
+                title="Delete"
+              >
+                Del
+              </button>
+            </div>
           )}
         </div>
 
         {/* Delete confirmation */}
         {isDeleting && (
-          <div style={{
-            display: "flex",
-            gap: "6px",
-            alignItems: "center",
-            padding: "4px 16px",
-            paddingLeft: `${30 + depth * 18}px`,
-            backgroundColor: "var(--nb-lemon)",
-            borderBottom: "2px solid var(--nb-black)",
-          }}>
-            <span style={{ fontSize: "12px", fontFamily: "var(--font-mono)", fontWeight: 700 }}>
-              Delete {node.type === "directory" && node.children.length > 0
-                ? `folder with ${node.children.length} items`
-                : node.name}
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              alignItems: "center",
+              padding: "6px 16px",
+              paddingLeft: `${30 + depth * 20}px`,
+              backgroundColor: "var(--nb-lemon)",
+              borderBottom: "2px solid var(--nb-black)",
+              fontFamily: "var(--font-mono)",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "12px",
+                fontWeight: 700,
+              }}
+            >
+              Delete{" "}
+              {isFolder && (node.children?.length ?? 0) > 0
+                ? `folder with ${node.children!.length} item${node.children!.length > 1 ? "s" : ""}`
+                : `"${node.name}"`}
               ?
             </span>
-            <button className="nb-btn nb-btn-primary nb-btn-sm" style={{ backgroundColor: "var(--nb-watermelon)" }} onClick={() => handleDelete(path)}>
+            <button
+              className="nb-btn nb-btn-primary"
+              style={{
+                padding: "2px 10px",
+                fontSize: "11px",
+                backgroundColor: "var(--nb-watermelon)",
+                border: "2px solid var(--nb-black)",
+                boxShadow: "2px 2px 0 var(--nb-black)",
+              }}
+              onClick={() => handleDelete(node.id)}
+            >
               Delete
             </button>
-            <button className="nb-btn nb-btn-secondary nb-btn-sm" onClick={() => setDeletingPath(null)}>
+            <button
+              className="nb-btn nb-btn-secondary"
+              style={{
+                padding: "2px 10px",
+                fontSize: "11px",
+                border: "2px solid var(--nb-black)",
+                boxShadow: "2px 2px 0 var(--nb-black)",
+              }}
+              onClick={() => setDeletingId(null)}
+            >
               Cancel
             </button>
           </div>
         )}
 
-        {/* Children */}
-        {node.type === "directory" && isExpanded && (
+        {/* Children (only if folder and expanded) */}
+        {isFolder && isExpanded && (
           <div>
-            {[...node.children]
-              .sort((a, b) => {
-                if (a.type !== b.type) return a.type === "directory" ? -1 : 1;
-                return a.name.localeCompare(b.name);
-              })
-              .map((child) =>
-                renderNode(child, [...path, child.name], depth + 1)
-              )}
+            {children.length === 0 && (
+              <div
+                style={{
+                  padding: "4px 8px",
+                  paddingLeft: `${30 + depth * 20}px`,
+                  fontSize: "12px",
+                  fontFamily: "var(--font-mono)",
+                  color: "var(--nb-gray-mid)",
+                  borderBottom: "1px dashed var(--nb-gray-mid)",
+                  fontStyle: "italic",
+                }}
+              >
+                (empty folder)
+              </div>
+            )}
+            {children.map((child) => renderNode(child, depth + 1))}
           </div>
         )}
       </div>
@@ -526,7 +541,19 @@ export default function DirectoryTreePage({
 
   if (loading) {
     return (
-      <div className="nb-loading" style={{ height: "100vh" }}>
+      <div
+        className="nb-loading"
+        style={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: "var(--font-mono)",
+          fontSize: "16px",
+          fontWeight: 700,
+          textTransform: "uppercase",
+        }}
+      >
         Loading directory tree...
       </div>
     );
@@ -534,118 +561,375 @@ export default function DirectoryTreePage({
 
   if (error) {
     return (
-      <div className="nb-loading" style={{ height: "100vh", color: "var(--nb-watermelon)" }}>
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: "var(--font-mono)",
+          fontSize: "16px",
+          fontWeight: 700,
+          color: "var(--nb-watermelon)",
+          textTransform: "uppercase",
+        }}
+      >
         {error}
       </div>
     );
   }
 
-  const selectedNode = selectedPath ? findNode(root, selectedPath) : null;
+  const isEmpty =
+    !tree.children || tree.children.length === 0;
 
   return (
-    <div className="nb-page" style={{ height: "100vh", overflow: "hidden" }}>
-      {/* Breadcrumb */}
-      <nav style={{ fontFamily: "var(--font-mono)", fontSize: "13px", padding: "12px 24px 0", textTransform: "uppercase" }}>
-        <a href="/dashboard" style={{ color: "var(--nb-black)", textDecoration: "none", fontWeight: 700 }}>Dashboard</a>
-        <span style={{ margin: "0 6px", color: "var(--nb-gray-mid)" }}>/</span>
-        <a href={`/projects/${projectId}`} style={{ color: "var(--nb-black)", textDecoration: "none", fontWeight: 700 }}>Project</a>
-        <span style={{ margin: "0 6px", color: "var(--nb-gray-mid)" }}>/</span>
-        <span style={{ color: "var(--nb-gray-dark)" }}>Directory Tree</span>
-      </nav>
-
-      {/* Toolbar */}
-      <div className="nb-flex" style={{ gap: "6px", padding: "8px 24px", borderBottom: "4px solid var(--nb-black)", alignItems: "center", flexShrink: 0, backgroundColor: "var(--nb-cream)" }}>
-        <button
-          className="nb-btn nb-btn-primary"
-          onClick={() => addChild("directory")}
-          disabled={selectedNode !== null && selectedNode.type !== "directory"}
+    <div
+      className="nb-page"
+      style={{
+        height: "100vh",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          padding: "16px 24px 12px",
+          borderBottom: "4px solid var(--nb-black)",
+          backgroundColor: "var(--nb-cream)",
+          flexShrink: 0,
+        }}
+      >
+        {/* Breadcrumb */}
+        <nav
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "12px",
+            textTransform: "uppercase",
+            marginBottom: "8px",
+          }}
         >
-          + Folder
-        </button>
-        <button
-          className="nb-btn nb-btn-info"
-          onClick={() => addChild("file")}
-          disabled={selectedNode !== null && selectedNode.type !== "directory"}
-        >
-          + File
-        </button>
-        {selectedPath && selectedPath.length > 0 && (
-          <button
-            className="nb-btn nb-btn-secondary"
-            style={{ color: "var(--nb-watermelon)" }}
-            onClick={() => setDeletingPath(selectedPath)}
-          >
-            Delete
-          </button>
-        )}
-        <div style={{ flex: 1 }} />
-        <label className="nb-label" style={{ display: "flex", alignItems: "center", gap: "6px", margin: 0 }}>
-          Template:
-          <select
-            className="nb-select"
-            value=""
-            onChange={(e) => {
-              if (e.target.value) applyTemplate(e.target.value);
+          <a
+            href="/dashboard"
+            style={{
+              color: "var(--nb-black)",
+              textDecoration: "none",
+              fontWeight: 700,
             }}
           >
-            <option value="">Select template...</option>
-            <option value="web-app">Web App</option>
-            <option value="api">API</option>
-            <option value="library">Library</option>
-            <option value="monorepo">Monorepo</option>
-          </select>
-        </label>
-        <button
-          className="nb-btn nb-btn-success"
-          onClick={() =>
-            update(root, {
-              ...metadata,
-              generatedAt: new Date().toISOString(),
-            })
-          }
+            Dashboard
+          </a>
+          <span style={{ margin: "0 6px", color: "var(--nb-gray-mid)" }}>
+            /
+          </span>
+          <a
+            href={`/projects/${projectId}`}
+            style={{
+              color: "var(--nb-black)",
+              textDecoration: "none",
+              fontWeight: 700,
+            }}
+          >
+            Project
+          </a>
+          <span style={{ margin: "0 6px", color: "var(--nb-gray-mid)" }}>
+            /
+          </span>
+          <span style={{ color: "var(--nb-gray-dark)" }}>Directory Tree</span>
+        </nav>
+
+        {/* Title + toolbar */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            flexWrap: "wrap",
+          }}
         >
-          Save
-        </button>
+          <h1
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "20px",
+              fontWeight: 900,
+              textTransform: "uppercase",
+              margin: 0,
+              letterSpacing: "0.05em",
+            }}
+          >
+            Directory Tree
+          </h1>
+
+          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+            <button
+              className="nb-btn nb-btn-primary"
+              style={{
+                padding: "4px 12px",
+                fontSize: "12px",
+                fontFamily: "var(--font-mono)",
+                fontWeight: 700,
+                border: "3px solid var(--nb-black)",
+                boxShadow: "var(--shadow-brutal)",
+                textTransform: "uppercase",
+              }}
+              onClick={() => addChild("folder")}
+            >
+              + Folder
+            </button>
+            <button
+              className="nb-btn nb-btn-info"
+              style={{
+                padding: "4px 12px",
+                fontSize: "12px",
+                fontFamily: "var(--font-mono)",
+                fontWeight: 700,
+                border: "3px solid var(--nb-black)",
+                boxShadow: "var(--shadow-brutal)",
+                textTransform: "uppercase",
+              }}
+              onClick={() => addChild("file")}
+            >
+              + File
+            </button>
+            {selectedId && selectedId !== "root" && (
+              <button
+                className="nb-btn"
+                style={{
+                  padding: "4px 12px",
+                  fontSize: "12px",
+                  fontFamily: "var(--font-mono)",
+                  fontWeight: 700,
+                  border: "3px solid var(--nb-black)",
+                  boxShadow: "var(--shadow-brutal)",
+                  color: "var(--nb-watermelon)",
+                  textTransform: "uppercase",
+                }}
+                onClick={() => setDeletingId(selectedId)}
+              >
+                Delete
+              </button>
+            )}
+          </div>
+
+          <div style={{ flex: 1 }} />
+
+          {saving && (
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "11px",
+                fontWeight: 700,
+                color: "var(--nb-gray-mid)",
+                textTransform: "uppercase",
+              }}
+            >
+              Saving...
+            </span>
+          )}
+        </div>
       </div>
 
-      {/* Two-pane layout */}
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-        {/* Tree editor */}
-        <div style={{ flex: 1, borderRight: "4px solid var(--nb-black)", overflow: "auto", padding: "12px 0" }}>
-          <h3 className="nb-label" style={{ fontSize: "13px", margin: "0 0 8px", padding: "0 16px" }}>Tree Editor</h3>
-          <div style={{ fontSize: "13px", minHeight: "100%" }} onClick={() => setSelectedPath(null)}>
-            {renderNode(root, [], 0)}
+      {/* Main content: two-pane layout */}
+      {isEmpty ? (
+        /* Empty state */
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "16px",
+            padding: "48px 24px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "48px",
+              lineHeight: 1,
+            }}
+          >
+            {"\uD83D\uDCC2"}
+          </div>
+          <h2
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "18px",
+              fontWeight: 900,
+              textTransform: "uppercase",
+              margin: 0,
+            }}
+          >
+            No files yet
+          </h2>
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "13px",
+              color: "var(--nb-gray-mid)",
+              margin: 0,
+              textAlign: "center",
+              maxWidth: "400px",
+            }}
+          >
+            Create your first folder or file to start building your project
+            directory structure.
+          </p>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <button
+              className="nb-btn nb-btn-primary"
+              style={{
+                padding: "8px 20px",
+                fontSize: "14px",
+                fontFamily: "var(--font-mono)",
+                fontWeight: 700,
+                border: "3px solid var(--nb-black)",
+                boxShadow: "var(--shadow-brutal)",
+                textTransform: "uppercase",
+              }}
+              onClick={() => addChild("folder")}
+            >
+              + Create Folder
+            </button>
+            <button
+              className="nb-btn nb-btn-info"
+              style={{
+                padding: "8px 20px",
+                fontSize: "14px",
+                fontFamily: "var(--font-mono)",
+                fontWeight: 700,
+                border: "3px solid var(--nb-black)",
+                boxShadow: "var(--shadow-brutal)",
+                textTransform: "uppercase",
+              }}
+              onClick={() => addChild("file")}
+            >
+              + Create File
+            </button>
           </div>
         </div>
+      ) : (
+        /* Two-pane layout: tree editor + preview */
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            overflow: "hidden",
+          }}
+        >
+          {/* Tree editor pane */}
+          <div
+            style={{
+              flex: 1,
+              borderRight: "4px solid var(--nb-black)",
+              overflow: "auto",
+              padding: "0",
+            }}
+          >
+            <div
+              style={{
+                padding: "8px 16px",
+                borderBottom: "3px solid var(--nb-black)",
+                backgroundColor: "var(--nb-cream)",
+              }}
+            >
+              <h3
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "12px",
+                  fontWeight: 900,
+                  textTransform: "uppercase",
+                  margin: 0,
+                  letterSpacing: "0.05em",
+                }}
+              >
+                Tree Editor
+              </h3>
+            </div>
+            <div
+              style={{ fontSize: "13px", minHeight: "100%" }}
+              onClick={() => setSelectedId(null)}
+            >
+              {renderNode(tree, 0)}
+            </div>
+          </div>
 
-        {/* Preview */}
-        <div style={{ width: "380px", overflow: "auto", padding: "12px 16px", flexShrink: 0, backgroundColor: "var(--nb-white)" }}>
-          <h3 className="nb-label" style={{ fontSize: "13px", margin: "0 0 8px" }}>Preview</h3>
-          <pre style={{
-            backgroundColor: "var(--nb-cream)",
-            padding: "12px",
-            border: "4px solid var(--nb-black)",
-            fontSize: "12px",
-            fontFamily: "var(--font-mono)",
-            overflow: "auto",
-            whiteSpace: "pre",
-            lineHeight: "1.6",
-            boxShadow: "var(--shadow-brutal)",
-          }}>
-            {treeToAscii(root)}
-          </pre>
-          {metadata.template && (
-            <div style={{ fontSize: "11px", color: "var(--nb-gray-dark)", marginTop: "8px", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
-              Template: {metadata.template}
+          {/* Preview pane */}
+          <div
+            style={{
+              width: "360px",
+              overflow: "auto",
+              padding: "0",
+              flexShrink: 0,
+              backgroundColor: "var(--nb-white)",
+            }}
+          >
+            <div
+              style={{
+                padding: "8px 16px",
+                borderBottom: "3px solid var(--nb-black)",
+                backgroundColor: "var(--nb-cream)",
+              }}
+            >
+              <h3
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "12px",
+                  fontWeight: 900,
+                  textTransform: "uppercase",
+                  margin: 0,
+                  letterSpacing: "0.05em",
+                }}
+              >
+                Preview
+              </h3>
             </div>
-          )}
-          {metadata.generatedAt && (
-            <div style={{ fontSize: "11px", color: "var(--nb-gray-dark)", marginTop: "8px", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
-              Generated: {new Date(metadata.generatedAt).toLocaleString()}
+            <div style={{ padding: "12px 16px" }}>
+              <pre
+                style={{
+                  backgroundColor: "var(--nb-cream)",
+                  padding: "16px",
+                  border: "4px solid var(--nb-black)",
+                  fontSize: "12px",
+                  fontFamily: "var(--font-mono)",
+                  overflow: "auto",
+                  whiteSpace: "pre",
+                  lineHeight: "1.6",
+                  boxShadow: "var(--shadow-brutal)",
+                  margin: 0,
+                }}
+              >
+                {treeToAscii(tree)}
+              </pre>
+
+              {/* Node count info */}
+              <div
+                style={{
+                  marginTop: "12px",
+                  fontSize: "11px",
+                  fontFamily: "var(--font-mono)",
+                  color: "var(--nb-gray-dark)",
+                  textTransform: "uppercase",
+                }}
+              >
+                {countNodes(tree)} items total
+              </div>
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
+}
+
+/** Count total nodes in tree (excluding root). */
+function countNodes(node: TreeNode): number {
+  let count = 0;
+  if (node.children) {
+    for (const child of node.children) {
+      count += 1 + countNodes(child);
+    }
+  }
+  return count;
 }

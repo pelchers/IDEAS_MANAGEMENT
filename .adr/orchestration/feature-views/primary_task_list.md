@@ -45,12 +45,12 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Test with empty schema and 5+ entity schema
 
 ## Phase 5: Directory Tree
-- [ ] Build directory tree view matching pass-1 concept (tree structure, file icons)
-- [ ] Wire to artifact CRUD endpoints (type=directory-tree)
-- [ ] Implement node create/rename/delete/move
-- [ ] Add file/folder type indicators
-- [ ] Add expand/collapse tree nodes
-- [ ] Test with empty tree and deep nested structure
+- [x] Build directory tree view matching pass-1 concept (tree structure, file icons)
+- [x] Wire to artifact CRUD endpoints (type=directory-tree)
+- [x] Implement node create/rename/delete/move
+- [x] Add file/folder type indicators
+- [x] Add expand/collapse tree nodes
+- [x] Test with empty tree and deep nested structure
 
 ## Phase 6: AI Chat
 - [ ] Build AI chat view matching pass-1 concept (message list, input, tool actions)
