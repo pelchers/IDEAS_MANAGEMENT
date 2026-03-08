@@ -35,9 +35,9 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Test auth flow end-to-end (signup -> signin -> dashboard redirect)
 
 ## Phase 4: Dashboard Page
-- [ ] Rebuild dashboard matching pass-1 layout (grid, cards, stats)
-- [ ] Wire project list to GET /api/projects
-- [ ] Wire project creation to POST /api/projects
-- [ ] Add search, sort, filter controls matching pass-1
-- [ ] Add grid/list view toggle
-- [ ] Test with 0, 1, and 5+ projects
+- [x] Rebuild dashboard matching pass-1 layout (grid, cards, stats)
+- [x] Wire project list to GET /api/projects
+- [x] Wire project creation to POST /api/projects
+- [x] Add search, sort, filter controls matching pass-1
+- [x] Add grid/list view toggle
+- [x] Test with 0, 1, and 5+ projects

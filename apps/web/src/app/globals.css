@@ -1534,6 +1534,119 @@ a {
 }
 
 /* ============================================ */
+/* DASHBOARD TOOLBAR                            */
+/* ============================================ */
+.dashboard-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  border: var(--border-thick);
+  background: var(--nb-white);
+}
+
+.dashboard-toolbar .nb-input {
+  flex: 1;
+  min-width: 180px;
+}
+
+.dashboard-toolbar .nb-select {
+  min-width: 140px;
+}
+
+.dashboard-view-toggle {
+  display: flex;
+  gap: 0;
+  margin-left: auto;
+}
+
+.dashboard-view-toggle .nb-btn {
+  margin-left: -3px;
+}
+
+.dashboard-view-toggle .nb-btn:first-child {
+  margin-left: 0;
+}
+
+/* Project list view (single-row) */
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.project-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-surface);
+  border: var(--border-thicker);
+  box-shadow: var(--shadow-brutal);
+  padding: 12px var(--space-md);
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  gap: var(--space-md);
+}
+
+.project-list-item:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-brutal-hover);
+}
+
+.project-list-item:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-brutal-active);
+}
+
+.project-list-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.project-list-left h3 {
+  margin: 0;
+  white-space: nowrap;
+  font-size: 1rem;
+}
+
+.project-list-desc {
+  font-size: 0.8rem;
+  color: var(--nb-gray-mid);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-list-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+/* Create project form card */
+.project-create-card {
+  background: var(--nb-white);
+  border: var(--border-thicker);
+  box-shadow: var(--shadow-brutal);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.project-create-card h3 {
+  margin: 0 0 var(--space-md) 0;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================ */
 /* PROJECTS VIEW                                */
 /* ============================================ */
 .projects-grid {
@@ -2977,6 +3090,30 @@ a {
   .kanban-board {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-lg);
+  }
+
+  .dashboard-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard-toolbar .nb-input,
+  .dashboard-toolbar .nb-select {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .dashboard-view-toggle {
+    margin-left: 0;
+    justify-content: stretch;
+  }
+
+  .dashboard-view-toggle .nb-btn {
+    flex: 1;
+  }
+
+  .project-list-desc {
+    display: none;
   }
 
   .search-input {

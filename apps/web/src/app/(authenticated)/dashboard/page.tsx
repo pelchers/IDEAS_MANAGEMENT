@@ -16,15 +16,16 @@ interface ProjectSummary {
 }
 
 const STATUS_CLASS: Record<string, string> = {
-  PLANNING: "nb-badge nb-status-planning",
-  ACTIVE: "nb-badge nb-status-active",
-  PAUSED: "nb-badge nb-status-paused",
-  ARCHIVED: "nb-badge nb-status-archived",
+  PLANNING: "project-status project-status--planning",
+  ACTIVE: "project-status project-status--active",
+  PAUSED: "project-status project-status--paused",
+  ARCHIVED: "nb-badge nb-badge-neutral",
 };
 
 export default function DashboardPage() {
   const [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("updated");
@@ -34,9 +35,11 @@ export default function DashboardPage() {
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDesc, setNewProjectDesc] = useState("");
   const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState("");
 
   const fetchProjects = useCallback(async () => {
     try {
+      setError("");
       const params = new URLSearchParams();
       if (search) params.set("search", search);
       params.set("sort", sortBy);
@@ -49,9 +52,11 @@ export default function DashboardPage() {
       if (res.ok) {
         const data = await res.json();
         setProjects(data.projects ?? []);
+      } else {
+        setError("Failed to load projects");
       }
     } catch {
-      // Network error
+      setError("Network error");
     } finally {
       setLoading(false);
     }
@@ -64,6 +69,7 @@ export default function DashboardPage() {
   const handleCreateProject = async () => {
     if (!newProjectName.trim()) return;
     setCreating(true);
+    setCreateError("");
     try {
       const res = await fetch("/api/projects", {
         method: "POST",
@@ -79,9 +85,12 @@ export default function DashboardPage() {
         setNewProjectDesc("");
         setShowCreateForm(false);
         fetchProjects();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setCreateError(data.error || "Failed to create project");
       }
     } catch {
-      // error
+      setCreateError("Network error");
     } finally {
       setCreating(false);
     }
@@ -97,43 +106,74 @@ export default function DashboardPage() {
   };
 
   if (loading) {
-    return <div className="nb-loading">Loading Projects...</div>;
+    return (
+      <div className="nb-loading nb-loading-pulse">
+        LOADING PROJECTS...
+      </div>
+    );
   }
 
   return (
     <div className="nb-page">
-      <header className="nb-header">
-        <h1>Projects</h1>
+      {/* Header */}
+      <div className="view-header">
+        <h1 className="view-title">PROJECTS</h1>
         <button
-          className="nb-btn nb-btn-primary"
+          className="brutalist-btn brutalist-btn--primary"
           onClick={() => setShowCreateForm(true)}
         >
-          + New Project
+          + NEW PROJECT
         </button>
-      </header>
+      </div>
 
+      {/* Error banner */}
+      {error && (
+        <div className="nb-form-error" style={{ marginBottom: "var(--space-md)" }}>
+          {error}
+        </div>
+      )}
+
+      {/* Create project form */}
       {showCreateForm && (
-        <div className="nb-card" style={{ marginBottom: 20 }}>
-          <h3 style={{ marginBottom: 16 }}>Create New Project</h3>
+        <div className="project-create-card">
+          <h3>CREATE NEW PROJECT</h3>
           <div className="nb-form-group">
             <input
               type="text"
               className="nb-input"
-              placeholder="Project name"
+              placeholder="PROJECT NAME"
               value={newProjectName}
               onChange={(e) => setNewProjectName(e.target.value)}
               autoFocus
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleCreateProject();
+                if (e.key === "Escape") {
+                  setShowCreateForm(false);
+                  setNewProjectName("");
+                  setNewProjectDesc("");
+                }
+              }}
             />
           </div>
           <div className="nb-form-group">
             <textarea
               className="nb-input"
-              placeholder="Description (optional)"
+              placeholder="DESCRIPTION (OPTIONAL)"
               value={newProjectDesc}
               onChange={(e) => setNewProjectDesc(e.target.value)}
-              style={{ minHeight: 60, resize: "vertical" }}
+              rows={3}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  setShowCreateForm(false);
+                  setNewProjectName("");
+                  setNewProjectDesc("");
+                }
+              }}
             />
           </div>
+          {createError && (
+            <div className="nb-form-error">{createError}</div>
+          )}
           <div className="nb-form-actions">
             <button
               className="nb-btn nb-btn-secondary"
@@ -141,135 +181,151 @@ export default function DashboardPage() {
                 setShowCreateForm(false);
                 setNewProjectName("");
                 setNewProjectDesc("");
+                setCreateError("");
               }}
             >
-              Cancel
+              CANCEL
             </button>
             <button
               className="nb-btn nb-btn-success"
               onClick={handleCreateProject}
               disabled={creating || !newProjectName.trim()}
-              style={{ opacity: creating || !newProjectName.trim() ? 0.5 : 1 }}
             >
-              {creating ? "Creating..." : "Create"}
+              {creating ? "CREATING..." : "CREATE"}
             </button>
           </div>
         </div>
       )}
 
-      <div className="nb-flex nb-flex-wrap" style={{ marginBottom: 20 }}>
+      {/* Toolbar */}
+      <div className="dashboard-toolbar">
         <input
           type="text"
           className="nb-input"
-          placeholder="Search projects..."
+          placeholder="SEARCH PROJECTS..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{ flex: 1, minWidth: 200 }}
         />
         <select
           className="nb-select"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
         >
-          <option value="updated">Last Updated</option>
-          <option value="created">Created</option>
-          <option value="name">Name</option>
+          <option value="updated">LAST UPDATED</option>
+          <option value="created">CREATED</option>
+          <option value="name">NAME</option>
         </select>
         <select
           className="nb-select"
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
         >
-          <option value="desc">Newest First</option>
-          <option value="asc">Oldest First</option>
+          <option value="desc">NEWEST FIRST</option>
+          <option value="asc">OLDEST FIRST</option>
         </select>
         <select
           className="nb-select"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
         >
-          <option value="">All Statuses</option>
-          <option value="PLANNING">Planning</option>
-          <option value="ACTIVE">Active</option>
-          <option value="PAUSED">Paused</option>
-          <option value="ARCHIVED">Archived</option>
+          <option value="">ALL STATUSES</option>
+          <option value="PLANNING">PLANNING</option>
+          <option value="ACTIVE">ACTIVE</option>
+          <option value="PAUSED">PAUSED</option>
+          <option value="ARCHIVED">ARCHIVED</option>
         </select>
-        <div className="nb-flex" style={{ gap: 0 }}>
+        <div className="dashboard-view-toggle">
           <button
             className={`nb-btn nb-btn-sm ${viewMode === "grid" ? "nb-btn-info" : "nb-btn-secondary"}`}
             onClick={() => setViewMode("grid")}
+            aria-label="Grid view"
+            aria-pressed={viewMode === "grid"}
           >
-            Grid
+            GRID
           </button>
           <button
             className={`nb-btn nb-btn-sm ${viewMode === "list" ? "nb-btn-info" : "nb-btn-secondary"}`}
             onClick={() => setViewMode("list")}
-            style={{ marginLeft: -4 }}
+            aria-label="List view"
+            aria-pressed={viewMode === "list"}
           >
-            List
+            LIST
           </button>
         </div>
       </div>
 
+      {/* Content */}
       {projects.length === 0 ? (
         <div className="nb-empty">
-          <p style={{ marginBottom: 16 }}>No projects found.</p>
+          <span className="nb-empty-icon">&#9670;</span>
+          <p className="nb-empty-text">NO PROJECTS FOUND</p>
           <button
-            className="nb-btn nb-btn-primary"
+            className="nb-btn nb-btn-primary nb-mt-md"
             onClick={() => setShowCreateForm(true)}
           >
-            Create your first project
+            CREATE YOUR FIRST PROJECT
           </button>
         </div>
       ) : viewMode === "grid" ? (
-        <div className="nb-grid nb-grid-2">
+        <div className="projects-grid">
           {projects.map((p) => (
-            <a key={p.id} href={`/projects/${p.id}`} className="nb-card" style={{ display: "block", textDecoration: "none", color: "inherit" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-                <h3 style={{ flex: 1, margin: 0 }}>{p.name}</h3>
+            <a
+              key={p.id}
+              href={`/projects/${p.id}`}
+              className="project-card"
+              style={{ display: "block", textDecoration: "none", color: "inherit" }}
+            >
+              <div className="project-card-header">
+                <h3 className="project-title">{p.name}</h3>
                 <span className={STATUS_CLASS[p.status] || "nb-badge nb-badge-neutral"}>
-                  {p.status.toLowerCase()}
+                  {p.status}
                 </span>
               </div>
               {p.description && (
-                <p style={{ fontSize: 14, color: "var(--nb-gray-mid)", marginBottom: 8, overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const }}>
+                <p className="project-desc" style={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical" as const,
+                }}>
                   {p.description}
                 </p>
               )}
               {p.tags.length > 0 && (
-                <div className="nb-flex nb-flex-wrap" style={{ marginBottom: 8 }}>
+                <div className="nb-flex nb-flex-wrap nb-mb-sm">
                   {p.tags.slice(0, 4).map((tag) => (
                     <span key={tag} className="nb-tag">{tag}</span>
                   ))}
                 </div>
               )}
-              <div style={{ display: "flex", justifyContent: "space-between", borderTop: "var(--border-thick)", paddingTop: 8, marginTop: 4 }}>
-                <span className="nb-label" style={{ marginBottom: 0 }}>
-                  {p.memberCount} member{p.memberCount !== 1 ? "s" : ""}
-                </span>
-                <span className="nb-label" style={{ marginBottom: 0 }}>
-                  {formatDate(p.updatedAt)}
-                </span>
+              <div className="project-meta">
+                <span>{p.memberCount} member{p.memberCount !== 1 ? "s" : ""}</span>
+                <span>{formatDate(p.updatedAt)}</span>
               </div>
             </a>
           ))}
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <div className="project-list">
           {projects.map((p) => (
-            <a key={p.id} href={`/projects/${p.id}`} className="nb-card" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", textDecoration: "none", color: "inherit", padding: "12px 16px", gap: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, flex: 1, overflow: "hidden" }}>
-                <h3 style={{ margin: 0, whiteSpace: "nowrap" }}>{p.name}</h3>
+            <a
+              key={p.id}
+              href={`/projects/${p.id}`}
+              className="project-list-item"
+            >
+              <div className="project-list-left">
+                <h3>{p.name}</h3>
                 <span className={STATUS_CLASS[p.status] || "nb-badge nb-badge-neutral"}>
-                  {p.status.toLowerCase()}
+                  {p.status}
                 </span>
                 {p.description && (
-                  <span style={{ fontSize: 13, color: "var(--nb-gray-mid)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  <span className="project-list-desc">
                     {p.description}
                   </span>
                 )}
               </div>
-              <div className="nb-flex" style={{ flexShrink: 0, gap: 16 }}>
+              <div className="project-list-right">
                 <span className="nb-label" style={{ marginBottom: 0 }}>
                   {p.memberCount} member{p.memberCount !== 1 ? "s" : ""}
                 </span>
