@@ -61,9 +61,9 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [ ] Test conversation flow and tool actions
 
 ## Phase 7: Settings + Conflicts
-- [ ] Build settings view matching pass-1 concept (profile, preferences, billing)
-- [ ] Build conflicts view matching pass-1 concept (diff display, resolve actions)
-- [ ] Wire settings to user profile endpoints
-- [ ] Wire conflicts to sync conflict resolution endpoints
-- [ ] Add Stripe billing portal link
-- [ ] Test settings save and conflict resolution flow
+- [x] Build settings view matching pass-1 concept (profile, preferences, billing)
+- [x] Build conflicts view matching pass-1 concept (diff display, resolve actions)
+- [x] Wire settings to user profile endpoints
+- [x] Wire conflicts to sync conflict resolution endpoints
+- [x] Add Stripe billing portal link
+- [x] Test settings save and conflict resolution flow

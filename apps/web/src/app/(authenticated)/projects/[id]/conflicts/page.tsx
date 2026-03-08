@@ -155,15 +155,32 @@ export default function ConflictResolverPage({
       </header>
 
       {conflicts.length === 0 ? (
-        <div className="nb-empty" style={{ margin: "60px auto", maxWidth: "400px" }}>
+        <div className="nb-empty" style={{ margin: "60px auto", maxWidth: "400px", textAlign: "center" }}>
+          <div style={{
+            fontSize: "48px",
+            marginBottom: "16px",
+            lineHeight: 1,
+          }}>
+            &#x2705;
+          </div>
           <p style={{
             fontSize: "16px",
             fontFamily: "var(--font-mono)",
             textTransform: "uppercase",
             fontWeight: 700,
             textAlign: "center",
+            margin: "0 0 8px",
           }}>
-            No conflicts found. All artifacts are in sync.
+            No Conflicts
+          </p>
+          <p style={{
+            fontSize: "13px",
+            fontFamily: "var(--font-mono)",
+            color: "var(--nb-gray-mid)",
+            textAlign: "center",
+            margin: 0,
+          }}>
+            All artifacts are in sync. Nothing to resolve.
           </p>
         </div>
       ) : (
