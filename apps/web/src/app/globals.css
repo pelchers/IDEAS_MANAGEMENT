@@ -2263,9 +2263,9 @@ a {
   border-bottom: var(--border-thick);
 }
 
-.idea-card-priority--high { background: var(--color-secondary); color: var(--color-surface); }
-.idea-card-priority--medium { background: var(--color-yellow); }
-.idea-card-priority--low { background: var(--color-blue); color: var(--color-surface); }
+.idea-card-priority--high { background: var(--nb-watermelon); color: var(--color-surface); }
+.idea-card-priority--medium { background: var(--nb-lemon); }
+.idea-card-priority--low { background: var(--nb-malachite); color: var(--color-surface); }
 
 .idea-card-title {
   font-size: 1.1rem;

@@ -21,12 +21,12 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Test with empty board, single column, and full board states
 
 ## Phase 2: Ideas Capture
-- [ ] Build ideas view matching pass-1 concept (idea cards, categories, quick-add)
-- [ ] Wire to artifact CRUD endpoints (type=ideas)
-- [ ] Implement idea create/edit/delete
-- [ ] Add category filtering and search
-- [ ] Add priority/status indicators
-- [ ] Test with 0, 1, and 20+ ideas
+- [x] Build ideas view matching pass-1 concept (idea cards, categories, quick-add)
+- [x] Wire to artifact CRUD endpoints (type=ideas)
+- [x] Implement idea create/edit/delete
+- [x] Add category filtering and search
+- [x] Add priority/status indicators
+- [x] Test with 0, 1, and 20+ ideas
 
 ## Phase 3: Whiteboard
 - [ ] Build whiteboard view matching pass-1 concept (canvas, toolbar, shapes)
