@@ -31,13 +31,13 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Fix any broken endpoints (none needed — all endpoints passed)
 
 ## Phase 3: Project CRUD + Members
-- [ ] Test project create (name, description, tags)
-- [ ] Test project list (search, sort, filter by status)
-- [ ] Test project get by ID
-- [ ] Test project update (name, description, status, tags)
-- [ ] Test project delete
-- [ ] Test member add/remove/role change
-- [ ] Fix any broken endpoints
+- [x] Test project create (name, description, tags)
+- [x] Test project list (search, sort, filter by status)
+- [x] Test project get by ID
+- [x] Test project update (name, description, status, tags)
+- [x] Test project delete
+- [x] Test member add/remove/role change
+- [x] Fix any broken endpoints (added missing PATCH handler for member role changes)
 
 ## Phase 4: Artifact + Sync + AI Endpoints
 - [ ] Test artifact CRUD (read/write project files: kanban, ideas, whiteboard, schema, directory-tree)
