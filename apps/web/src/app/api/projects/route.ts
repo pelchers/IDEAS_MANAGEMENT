@@ -50,27 +50,33 @@ export async function POST(req: Request) {
       : "PLANNING"
   ) as ProjectStatus;
 
-  const project = await prisma.project.create({
-    data: {
-      name,
-      slug,
-      description,
-      status,
-      tags,
-      members: {
-        create: {
-          userId: user.id,
-          role: "OWNER",
+  let project;
+  try {
+    project = await prisma.project.create({
+      data: {
+        name,
+        slug,
+        description,
+        status,
+        tags,
+        members: {
+          create: {
+            userId: user.id,
+            role: "OWNER",
+          },
         },
       },
-    },
-    include: {
-      members: { select: { id: true, userId: true, role: true } },
-    },
-  });
+      include: {
+        members: { select: { id: true, userId: true, role: true } },
+      },
+    });
 
-  // Bootstrap default artifacts
-  await bootstrapProjectArtifacts(project.id, name);
+    // Bootstrap default artifacts
+    await bootstrapProjectArtifacts(project.id, name);
+  } catch (err) {
+    console.error("[Projects] Create project failed:", err instanceof Error ? err.message : err);
+    return NextResponse.json({ ok: false, error: "internal_error" }, { status: 500 });
+  }
 
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
   const userAgent = req.headers.get("user-agent") ?? null;
@@ -162,18 +168,24 @@ export async function GET(req: Request) {
       break;
   }
 
-  const projects = await prisma.project.findMany({
-    where: where as any,
-    orderBy: orderBy as any,
-    include: {
-      _count: { select: { members: true } },
-      members: {
-        where: { userId: user.id },
-        select: { role: true },
-        take: 1,
+  let projects;
+  try {
+    projects = await prisma.project.findMany({
+      where: where as any,
+      orderBy: orderBy as any,
+      include: {
+        _count: { select: { members: true } },
+        members: {
+          where: { userId: user.id },
+          select: { role: true },
+          take: 1,
+        },
       },
-    },
-  });
+    });
+  } catch (err) {
+    console.error("[Projects] List projects failed:", err instanceof Error ? err.message : err);
+    return NextResponse.json({ ok: false, error: "internal_error" }, { status: 500 });
+  }
 
   return NextResponse.json({
     ok: true,
