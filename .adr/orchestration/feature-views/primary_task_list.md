@@ -53,12 +53,12 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Test with empty tree and deep nested structure
 
 ## Phase 6: AI Chat
-- [ ] Build AI chat view matching pass-1 concept (message list, input, tool actions)
-- [ ] Wire to AI chat session CRUD endpoints
-- [ ] Wire to AI message send/receive endpoints
-- [ ] Implement streaming message display
-- [ ] Add tool action buttons (add_idea, update_kanban, etc.)
-- [ ] Test conversation flow and tool actions
+- [x] Build AI chat view matching pass-1 concept (message list, input, tool actions)
+- [x] Wire to AI chat session CRUD endpoints
+- [x] Wire to AI message send/receive endpoints
+- [x] Implement streaming message display
+- [x] Add tool action buttons (add_idea, update_kanban, etc.)
+- [x] Test conversation flow and tool actions
 
 ## Phase 7: Settings + Conflicts
 - [x] Build settings view matching pass-1 concept (profile, preferences, billing)
