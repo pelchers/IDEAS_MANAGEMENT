@@ -161,7 +161,10 @@ export default function KanbanPage({
           // API returns { ok, artifact: { content: ... } }
           const data: KanbanBoard = json.artifact?.content ?? json;
           setBoard({
-            columns: data.columns?.length ? data.columns : DEFAULT_COLUMNS,
+            columns: (data.columns?.length ? data.columns : DEFAULT_COLUMNS).map(c => ({
+              ...c,
+              cardIds: c.cardIds ?? [],
+            })),
             cards: data.cards ?? {},
           });
         } else if (res.status === 404) {
