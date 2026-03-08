@@ -21,13 +21,13 @@ Legend: `[ ]` pending, `[x]` done, `[~]` in progress.
 - [x] Document all broken flows and fix them (30/30 tests passed, no bugs found)
 
 ## Phase 2: Security Audit
-- [ ] Verify proxy middleware blocks all private routes without auth
-- [ ] Test session token expiry and refresh rotation
-- [ ] Test CSRF protection on state-changing endpoints
-- [ ] Verify password hashing (argon2id) works correctly
-- [ ] Test rate limiting on auth endpoints
-- [ ] Check for XSS vectors in user-generated content rendering
-- [ ] Verify Stripe webhook signature validation
+- [x] Verify proxy middleware blocks all private routes without auth (all 17 route handlers + middleware confirmed)
+- [x] Test session token expiry and refresh rotation (rotation works, old tokens revoked)
+- [x] Test CSRF protection on state-changing endpoints (SameSite=lax cookies, all mutations require POST/PUT/PATCH/DELETE)
+- [x] Verify password hashing (argon2id) works correctly (server-side Zod validation, argon2id confirmed)
+- [x] Test rate limiting on auth endpoints (NOT IMPLEMENTED - documented as recommendation)
+- [x] Check for XSS vectors in user-generated content rendering (none found - React auto-escapes, no dangerouslySetInnerHTML)
+- [x] Verify Stripe webhook signature validation (missing/invalid signatures return 400)
 
 ## Phase 3: Performance + UX Polish
 - [ ] Add loading skeletons/spinners for all async views
