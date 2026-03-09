@@ -114,9 +114,32 @@ _Nothing active right now._
 (all phases listed)
 ```
 
+## ADR orchestration discovery
+
+When creating TODO.md for the first time, or when the user asks to sync the board with the ADR plan, **scan `.adr/orchestration/` and populate TODO NEXT with all session phases**.
+
+### Steps
+
+1. **List folders** in `.adr/orchestration/` — each folder is a session.
+2. **Read `primary_task_list.md`** in each session folder — extract `## Phase N — <title>` headings.
+3. **Check phase status** — count `[x]` vs `[ ]` checkboxes to determine if a phase is done, in progress, or not started.
+4. **Add one entry per phase** to the appropriate TODO column:
+   - Completed phases → COMPLETED
+   - Active phase → IN PROGRESS
+   - Future phases → TODO NEXT
+5. **Group phases under session headings** with a link to the full task list file:
+   ```
+   ### ADR Session N: <Session Title> (<count> phases)
+   _Task list: `.adr/orchestration/<folder>/primary_task_list.md`_
+   - [ ] **Phase 1 — <title>**
+     <One-line summary of key deliverables>
+   ```
+6. **Always read dynamically** — never hardcode session names, phase counts, or descriptions. Different repos will have different numbers of sessions and phases.
+
 ## Scope
 
 - File: `TODO.md` at project root
 - Audience: Human developer (not agents)
 - Depth: One line per item (details live in ADR/phase plans)
 - Updates: Incremental edits, not full rewrites
+- ADR sync: Phase-level summaries from `.adr/orchestration/`, not individual task checkboxes

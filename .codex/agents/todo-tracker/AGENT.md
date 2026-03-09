@@ -64,12 +64,43 @@ Update the file in these situations:
 - **Group completed items** under headings that match sessions or logical themes.
 - **Keep IN PROGRESS small.** If nothing is active, write `_Nothing active right now._`
 
+## ADR orchestration discovery
+
+When creating or updating TODO.md, **always scan `.adr/orchestration/` for session folders** and incorporate them into the TODO NEXT column. This is mandatory whenever:
+- TODO.md is first created
+- A planning conversation discusses upcoming build phases
+- The user asks to update the TODO board
+
+### Discovery steps
+
+1. **List all session folders** in `.adr/orchestration/` (e.g., `1_FRONTEND_DESIGN_PLANNING/`, `2_PROJECT_SETUP_AND_BACKEND/`).
+2. **For each session folder**, read its `primary_task_list.md` to extract the phase headings (lines matching `## Phase N — <title>`).
+3. **Determine session status**:
+   - If all phases in a session are checked `[x]` → session goes in COMPLETED
+   - If any phase is currently being worked → that phase goes in IN PROGRESS, remaining unchecked phases stay in TODO NEXT
+   - If no phases are started → all phases go in TODO NEXT
+4. **Write one line per phase** with the session name as a group heading:
+   ```markdown
+   ### ADR Session N: <Session Title> (<phase count> phases)
+   _Task list: `.adr/orchestration/<folder>/primary_task_list.md`_
+
+   - [ ] **Phase 1 — <title>**
+     <One-line summary of what this phase covers>
+   ```
+5. **Do NOT hardcode session names, phase counts, or content.** Always read dynamically from whatever folders and task lists exist in `.adr/orchestration/`.
+6. **Summarize each phase in one line** extracted from the task list — mention the key deliverables, not individual checkboxes.
+
+### Why this matters
+
+The ADR orchestration sessions represent the full build plan for the project. Without them in TODO.md, the developer has no quick-glance view of what the overall build pipeline looks like. The TODO board should always reflect the current state of the ADR plan.
+
 ## What NOT to put in TODO.md
 
 - Implementation details (put those in phase plans or code comments)
 - Agent instructions (those belong in AGENT.md and SKILL.md files)
 - Full validation reports (those go in `.docs/validation/`)
 - Architecture decisions (those go in ADR)
+- Individual checkboxes from ADR task lists (only phase-level summaries)
 
 ## File location
 

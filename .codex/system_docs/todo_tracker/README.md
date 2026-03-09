@@ -23,6 +23,19 @@ Maintains `TODO.md` at the project root as a human-readable kanban board for the
 - `orchestrator-session` skill — Triggers TODO updates as phases transition
 - User conversations — Captures planning decisions as TODO items
 
-## Key Design Decision
+## ADR Orchestration Discovery
 
-TODO.md is for the **human developer**, not for agents. One line per item, verb-first, no implementation details. Deep context lives in ADR docs and phase plans.
+The TODO tracker **must scan `.adr/orchestration/`** when creating or updating TODO.md. Each subfolder represents a build session with a `primary_task_list.md` containing phased tasks. The tracker:
+
+1. Lists all session folders dynamically (never hardcoded)
+2. Reads each `primary_task_list.md` to extract phase headings (`## Phase N — <title>`)
+3. Checks phase completion status from checkbox counts (`[x]` vs `[ ]`)
+4. Writes one line per phase into the appropriate TODO column, grouped under session headings
+5. Includes a reference link to the full task list file for each session
+
+This ensures the developer always has a quick-glance view of the full build pipeline alongside ad-hoc tasks.
+
+## Key Design Decisions
+
+- TODO.md is for the **human developer**, not for agents. One line per item, verb-first, no implementation details. Deep context lives in ADR docs and phase plans.
+- ADR phases are summarized at phase level, not individual checkbox level. The task list link provides drill-down access.
