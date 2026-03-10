@@ -1,1 +1,444 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap');
 @import "tailwindcss";
+
+/* ============================================ */
+/* TAILWIND CSS 4 — @theme (Design Tokens)     */
+/* All tokens from pass-1 brutalism-neobrutalism */
+/* ============================================ */
+@theme {
+  /* Colors */
+  --color-signal-black: #282828;
+  --color-creamy-milk: #F8F3EC;
+  --color-watermelon: #FF5E54;
+  --color-malachite: #2BBF5D;
+  --color-cornflower: #1283EB;
+  --color-lemon: #FFE459;
+  --color-amethyst: #7B61FF;
+  --color-white: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-gray-dark: #3a3a3a;
+  --color-gray-mid: #666666;
+  --color-watermelon-dark: #D94A42;
+
+  /* Font families */
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+  /* Shadows — brutalist hard drop shadows */
+  --shadow-nb-sm: 2px 2px 0px #282828;
+  --shadow-nb: 4px 4px 0px #282828;
+  --shadow-nb-lg: 6px 6px 0px #282828;
+  --shadow-nb-xl: 7px 7px 0px #282828;
+  --shadow-nb-kanban: 3px 3px 0px #282828;
+  --shadow-nb-kanban-hover: 5px 5px 0px #282828;
+
+  /* Spacing (pass-1 custom spacing) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  /* Layout tokens */
+  --spacing-topbar: 60px;
+  --spacing-drawer: 280px;
+
+  /* Animation timing */
+  --transition-timing-slam: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Custom keyframes */
+  --animate-view-slam: view-slam 0.3s cubic-bezier(0.2, 0, 0, 1);
+  --animate-slam-in: slam-in 0.3s cubic-bezier(0.2, 0, 0, 1);
+
+  @keyframes view-slam {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slam-in {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+}
+
+/* ============================================ */
+/* CSS CUSTOM PROPERTIES (non-Tailwind tokens)  */
+/* ============================================ */
+:root {
+  /* Shorthand border tokens (can't be in @theme) */
+  --border-thick: 3px solid #282828;
+  --border-thicker: 4px solid #282828;
+
+  /* Transition shorthands */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slam: 300ms cubic-bezier(0.2, 0, 0, 1);
+
+  /* Layout */
+  --top-bar-height: 60px;
+  --drawer-width: 280px;
+}
+
+/* ============================================ */
+/* RESET & BASE                                 */
+/* ============================================ */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #282828;
+  background-color: #F8F3EC;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================ */
+/* CUSTOM SCROLLBAR — thick, brutalist          */
+/* 14px wide, signal-black track, watermelon    */
+/* thumb on hover, black thumb default          */
+/* ============================================ */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F8F3EC;
+  border-left: 3px solid #282828;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #282828;
+  border: 2px solid #F8F3EC;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF5E54;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #282828 #F8F3EC;
+}
+
+/* ============================================ */
+/* TYPOGRAPHY BASE                              */
+/* ============================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+
+code, pre {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-weight: 600;
+}
+
+a {
+  color: #282828;
+  text-decoration: none;
+}
+
+/* ============================================ */
+/* COMPONENT: .nb-card                          */
+/* Brutalist card with thick border, white bg,  */
+/* hard shadow, hover lift                      */
+/* ============================================ */
+.nb-card {
+  background: #FFFFFF;
+  border: 4px solid #282828;
+  box-shadow: 4px 4px 0px #282828;
+  padding: 24px;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.nb-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #282828;
+}
+
+.nb-card-title {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #282828;
+}
+
+/* ============================================ */
+/* COMPONENT: .nb-btn                           */
+/* Brutalist button with thick border, hard     */
+/* shadow, hover/active transforms              */
+/* ============================================ */
+.nb-btn {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 24px;
+  border: 3px solid #282828;
+  box-shadow: 4px 4px 0px #282828;
+  cursor: pointer;
+  background: #FFFFFF;
+  color: #282828;
+  transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease;
+  min-height: 44px;
+  white-space: nowrap;
+}
+
+.nb-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #282828;
+}
+
+.nb-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #282828;
+}
+
+.nb-btn:focus-visible {
+  outline: 3px solid #2BBF5D;
+  outline-offset: 2px;
+}
+
+.nb-btn--primary {
+  background: #FF5E54;
+  color: #FFFFFF;
+}
+
+.nb-btn--primary:hover {
+  background: #D94A42;
+}
+
+.nb-btn--danger {
+  background: #FF5E54;
+  color: #FFFFFF;
+}
+
+.nb-btn--danger:hover {
+  background: #D94A42;
+}
+
+.nb-btn--small {
+  font-size: 0.75rem;
+  padding: 4px 16px;
+  min-height: 36px;
+}
+
+/* ============================================ */
+/* COMPONENT: .nb-input                         */
+/* Brutalist input with thick border, monospace */
+/* placeholder, focus shadow                    */
+/* ============================================ */
+.nb-input {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 1rem;
+  padding: 8px 16px;
+  border: 3px solid #282828;
+  background: #FFFFFF;
+  color: #282828;
+  transition: box-shadow 150ms ease;
+}
+
+.nb-input:focus {
+  outline: none;
+  box-shadow: 4px 4px 0px #282828;
+  border-color: #FF5E54;
+}
+
+.nb-input::placeholder {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.nb-input--mono {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 0.85rem;
+}
+
+.nb-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+/* ============================================ */
+/* COMPONENT: .nb-badge                         */
+/* Small text, uppercase, colored background    */
+/* ============================================ */
+.nb-badge {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border: 2px solid #282828;
+}
+
+.nb-badge--active { background: #2BBF5D; }
+.nb-badge--review { background: #1283EB; color: #FFFFFF; }
+.nb-badge--planning { background: #FFE459; }
+.nb-badge--paused { background: #666666; color: #FFFFFF; }
+.nb-badge--urgent { background: #FF5E54; color: #FFFFFF; }
+.nb-badge--feature { background: #2BBF5D; }
+.nb-badge--bug { background: #7B61FF; color: #FFFFFF; }
+.nb-badge--high { background: #FF5E54; color: #FFFFFF; }
+.nb-badge--medium { background: #FFE459; }
+.nb-badge--low { background: #1283EB; color: #FFFFFF; }
+
+/* ============================================ */
+/* COMPONENT: .nb-tab                           */
+/* Brutalist tab button                         */
+/* ============================================ */
+.nb-tab {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  padding: 8px 24px;
+  border: 3px solid #282828;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease;
+  min-height: 44px;
+}
+
+.nb-tab:hover {
+  background: #F8F3EC;
+}
+
+.nb-tab.active,
+.nb-tab[data-active="true"] {
+  background: #282828;
+  color: #FFFFFF;
+  box-shadow: 4px 4px 0px #282828;
+}
+
+.nb-tab:focus-visible {
+  outline: 3px solid #FF5E54;
+  outline-offset: 2px;
+}
+
+/* ============================================ */
+/* COMPONENT: .nb-toggle                        */
+/* Brutalist toggle switch                      */
+/* ============================================ */
+.nb-toggle {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.nb-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.nb-toggle-track {
+  position: absolute;
+  inset: 0;
+  background: #F8F3EC;
+  border: 3px solid #282828;
+  transition: background 150ms ease;
+}
+
+.nb-toggle-track::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: #282828;
+  transition: transform 150ms ease;
+}
+
+.nb-toggle input:checked + .nb-toggle-track {
+  background: #2BBF5D;
+}
+
+.nb-toggle input:checked + .nb-toggle-track::before {
+  transform: translateX(26px);
+}
+
+.nb-toggle input:focus-visible + .nb-toggle-track {
+  outline: 3px solid #FF5E54;
+  outline-offset: 2px;
+}
+
+/* ============================================ */
+/* UTILITY: View header with underline accent   */
+/* ============================================ */
+.nb-view-title {
+  font-size: 2.2rem;
+  letter-spacing: -0.03em;
+  position: relative;
+}
+
+.nb-view-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: #FF5E54;
+  margin-top: 4px;
+}
+
+.nb-view-subtitle {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================ */
+/* RESPONSIVE — MOBILE (< 480px)                */
+/* Overrides spacing tokens on small screens    */
+/* ============================================ */
+@media (max-width: 480px) {
+  :root {
+    --space-lg: 16px;
+    --space-xl: 24px;
+  }
+}

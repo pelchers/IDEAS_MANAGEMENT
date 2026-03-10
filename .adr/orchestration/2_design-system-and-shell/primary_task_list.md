@@ -7,18 +7,18 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/style.css`
 
 ---
 
-## Phase 1 — Tailwind Config + Global CSS from Pass-1
+## Phase 1 — Tailwind Config + Global CSS from Pass-1 ✅
 
-- [ ] Read pass-1 `style.css` completely (1892 lines)
-- [ ] Extract all CSS custom properties into Tailwind config (colors, spacing, shadows, borders)
-- [ ] Convert pass-1 color palette to Tailwind: signal-black (#282828), creamy-milk (#F8F3EC), watermelon (#FF5E54), malachite (#2BBF5D), cornflower (#1283EB), lemon (#FFE459), amethyst (#7B61FF)
-- [ ] Configure Space Grotesk (400/500/700) and IBM Plex Mono (400/600) in Tailwind
-- [ ] Convert pass-1 border utilities (3-4px solid black) to Tailwind components
-- [ ] Convert pass-1 shadow utilities (4px/6px/2px hard drop shadows) to Tailwind
-- [ ] Convert pass-1 scrollbar styling (14px thick, watermelon hover, black thumbs) to globals.css
-- [ ] Convert pass-1 responsive breakpoints to Tailwind screens
-- [ ] Convert pass-1 animation keyframes (slam, hover transforms) to Tailwind
-- [ ] Verify visual parity: globals.css + tailwind.config produces same visual output as pass-1 style.css
+- [x] Read pass-1 `style.css` completely (1892 lines)
+- [x] Extract all CSS custom properties into Tailwind config (colors, spacing, shadows, borders)
+- [x] Convert pass-1 color palette to Tailwind: signal-black (#282828), creamy-milk (#F8F3EC), watermelon (#FF5E54), malachite (#2BBF5D), cornflower (#1283EB), lemon (#FFE459), amethyst (#7B61FF)
+- [x] Configure Space Grotesk (400/500/700) and IBM Plex Mono (400/600) in Tailwind
+- [x] Convert pass-1 border utilities (3-4px solid black) to Tailwind components
+- [x] Convert pass-1 shadow utilities (4px/6px/2px hard drop shadows) to Tailwind
+- [x] Convert pass-1 scrollbar styling (14px thick, watermelon hover, black thumbs) to globals.css
+- [x] Convert pass-1 responsive breakpoints to Tailwind screens
+- [x] Convert pass-1 animation keyframes (slam, hover transforms) to Tailwind
+- [x] Verify visual parity: globals.css + tailwind.config produces same visual output as pass-1 style.css
 
 ## Phase 2 — App Shell (Navigation + Layout)
 
