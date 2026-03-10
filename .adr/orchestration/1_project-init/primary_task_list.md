@@ -6,13 +6,13 @@ Design Fidelity: Faithful (pass-1 brutalism-neobrutalism)
 
 ---
 
-## Phase 1 — Monorepo and Dependencies
+## Phase 1 — Monorepo and Dependencies ✓ COMPLETE
 
-- [ ] Verify pnpm monorepo structure with Turbo
-- [ ] Verify/update apps/web package.json dependencies (Next.js 16, React 19, Tailwind CSS, Prisma, Stripe, Vercel AI SDK, argon2, zod)
-- [ ] Install SortableJS, Chart.js, Rough.js (required by pass-1 concept)
-- [ ] Verify TypeScript and ESLint configuration
-- [ ] Verify Turbo build pipeline
+- [x] Verify pnpm monorepo structure with Turbo
+- [x] Verify/update apps/web package.json dependencies (Next.js 16, React 19, Tailwind CSS, Prisma, Stripe, Vercel AI SDK, argon2, zod)
+- [x] Install SortableJS, Chart.js, Rough.js (required by pass-1 concept)
+- [x] Verify TypeScript and ESLint configuration
+- [x] Verify Turbo build pipeline
 
 ## Phase 2 — Database and Environment
 
