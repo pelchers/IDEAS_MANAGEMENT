@@ -20,23 +20,23 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/style.css`
 - [x] Convert pass-1 animation keyframes (slam, hover transforms) to Tailwind
 - [x] Verify visual parity: globals.css + tailwind.config produces same visual output as pass-1 style.css
 
-## Phase 2 — App Shell (Navigation + Layout)
+## Phase 2 — App Shell (Navigation + Layout) ✅
 
-- [ ] Read pass-1 `index.html` navigation structure (hamburger, drawer, overlay, numbered nav links 01-10)
-- [ ] Build AppShell React component matching pass-1 exactly:
+- [x] Read pass-1 `index.html` navigation structure (hamburger, drawer, overlay, numbered nav links 01-10)
+- [x] Build AppShell React component matching pass-1 exactly:
   - Hamburger button (top-left, 48x48, 3px thick lines)
   - Slide-out navigation drawer (280px wide, slam animation cubic-bezier(0.2,0,0,1))
   - Semi-transparent overlay behind drawer
   - 10 numbered nav links (01 Dashboard through 10 Settings) in uppercase
   - User profile section in drawer footer (avatar circle with initials)
   - Close on overlay click, close on Escape key
-- [ ] Build TopBar component matching pass-1:
+- [x] Build TopBar component matching pass-1:
   - Fixed 60px header with view title (all caps)
   - Search input (monospace placeholder)
   - Notification bell with status indicator
   - 4px black border-bottom
-- [ ] Build (authenticated) layout wrapping children in AppShell
-- [ ] Verify: nav drawer opens/closes with slam animation, all 10 links route correctly
+- [x] Build (authenticated) layout wrapping children in AppShell
+- [x] Verify: nav drawer opens/closes with slam animation, all 10 links route correctly
 
 ## Phase 3 — Root Layout + Landing Page
 
