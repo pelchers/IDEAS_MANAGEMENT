@@ -13,6 +13,35 @@ Provide a standalone skill for initializing, modifying, and maintaining the `.ad
 - Auditing ADR folder structure for convention compliance
 - As a fallback when longrunning/orchestrator skills fail to route correctly
 
+## Session Scoping (by domain x complexity)
+
+Sessions are scoped by **area of concern**, not by build layer. Each session handles its
+domain end-to-end: frontend, backend, integration, and testing — all as phases within one session.
+
+### Complexity-based grouping
+1. Read the project's planning docs (PRD, feature list, design pass views) to identify all features.
+2. Score each feature by complexity (backend endpoints, UI states, integration points, data model).
+3. **High complexity** → own session (auth, kanban, whiteboard, schema planner, AI chat, billing).
+4. **Low/medium complexity** → group related features into shared sessions (resume+about, settings+profile, file-tree+directory-display).
+5. Grouping is dynamic — determined from the project's actual features, never hardcoded.
+
+### Frontend-first ordering
+1. **Project init** — always session 1.
+2. **Design system and shell** — always session 2.
+3. **Domain sessions** — ordered by dependency (auth before features needing auth).
+4. **Hardening** — always last. Cyclic feedback loop with the user (see below).
+
+Within each domain session, phases follow frontend-first order:
+- Phase 1: Convert design pass view(s) to React/Tailwind (with mock data)
+- Phase 2+: Build backend endpoints
+- Phase N-1: Wire frontend to real API
+- Phase N: Domain-specific testing
+
+### Hardening is cyclic
+The hardening session is a feedback loop: run full E2E validation → present results to
+user → accept feedback → apply fixes → re-validate → repeat until user confirms
+production readiness. Phases are created dynamically as feedback cycles occur.
+
 ## ADR Folder Structure
 
 ### Required Top-Level Directories
@@ -44,7 +73,7 @@ Each session (`orchestration/<N>_SESSION_NAME/`) requires exactly 4 files:
 
 | Element | Convention | Example |
 |---------|-----------|---------|
-| Session folder | UPPERCASE_SNAKE_CASE with numeric prefix | `1_FRONTEND_DESIGN_PLANNING` |
+| Session folder | `<N>_descriptive-domain-name` (lowercase-kebab with numeric prefix) | `3_auth-flow` |
 | Phase plan | lowercase with number | `phase_1.md` |
 | Phase review | lowercase with number + review | `phase_1_review.md` |
 | Orchestration files | lowercase snake_case | `primary_task_list.md` |

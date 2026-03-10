@@ -10,6 +10,42 @@ The current chat acts as the orchestrator and uses subagents to complete phases.
 - Ensure each phase ends with a "poke" back to the orchestrator to start the next phase.
 - Ensure each phase includes a review file, task list checkoff, commit, and push.
 
+## Build order convention
+
+The orchestrator enforces a **frontend-first** build pipeline when a design pass exists:
+
+```
+Project Init (deps, tooling, config, folder structure)
+  → Frontend Conversion (design pass → React/Tailwind)
+    → Domain Sessions (backend + integration + testing, scoped by concern)
+      → Hardening (security, E2E, production readiness) ← CYCLIC
+```
+
+Backend alignment and integration are NOT separate sequential stages. They fold into
+**domain sessions** scoped by area of concern x complexity. Auth's session includes
+building the endpoints AND wiring the frontend AND testing the flow — one continuous
+concern. See `system-improvements.md` in system_docs for full details.
+
+### Hardening is cyclic
+
+The hardening session is a feedback loop: run full E2E validation → present results to
+user → accept feedback → apply fixes → re-validate → repeat until user confirms
+production readiness. Phases are created dynamically as feedback cycles occur.
+
+## Design fidelity inference (MANDATORY)
+
+The orchestrator infers the design fidelity mode from the user's natural language prompt.
+No explicit flags required.
+
+| User language | Inferred mode |
+|---------------|---------------|
+| "exactly like pass-1" / "1:1" / "match the concept" | **Faithful** |
+| "use as style guide" / "reference the design" | **Reference** |
+| "adapt this site's look" / "make it look like [url]" | **External** |
+| No design mention | **From scratch** |
+
+Document the inference in the session's `notes.md` for transparency.
+
 ## Context handoff (MANDATORY)
 
 When spawning a subagent, the orchestrator MUST pass a comprehensive prompt that includes:
@@ -27,14 +63,38 @@ When spawning a subagent, the orchestrator MUST pass a comprehensive prompt that
    - `.docs/planning/technical-specification.md` (technical architecture)
    - `.adr/orchestration/<SESSION>/primary_task_list.md` (full task list)
    - The prior phase review at `.adr/history/<SESSION>/phase_<N-1>_review.md`
-5. **Design system**: If the phase involves UI work, instruct the subagent to read the
-   settled design concept and apply it (e.g., `.docs/planning/concepts/<style>/pass-<n>/`).
+5. **Design fidelity**: Thread the inferred fidelity mode to the subagent (see below).
 6. **Validation requirements**: Explicitly state that the subagent must:
    - Take Playwright PNG screenshots (NOT HTML mockups) for every UI surface
    - Write user story validation tests against the live running app
    - Create a user story report file documenting PASS/FAIL for each story
    - Place all validation artifacts in `.docs/validation/<SESSION>/<PHASE>/`
    - Run the app against the real database for validation, not just mocked unit tests
+
+### Design fidelity handoff per mode
+
+**Faithful mode** — the design pass is the PRIMARY spec:
+- Pass the exact file path to the pass HTML (e.g., `index.html` lines X-Y for this view)
+- Pass the exact CSS sections and JS functions relevant to this view
+- Instruct: "Your React component must reproduce this layout. Same elements, same hierarchy,
+  same interactions, same hover effects. Convert CSS to Tailwind. Convert vanilla JS to
+  React state/effects."
+- Require a post-build comparison checklist: every element present, same layout flow,
+  same animations, same responsive behavior.
+
+**Reference mode** — design tokens only:
+- Pass design token summary (colors, fonts, spacing, border style)
+- Pass general design direction (e.g., "neo-brutalist with thick borders")
+- PRD requirements are the primary spec
+
+**External mode** — adapt external visual language:
+- Pass screenshots or URL of reference site
+- Instruct: "Adapt this visual language to our PRD requirements. Don't clone the site —
+  apply its design sensibility to our features."
+
+**From scratch** — no design reference:
+- PRD requirements are the only spec
+- Subagent uses professional judgment for UI/UX
 
 ## Subagent spawning
 - Queue the next phase in `.claude/orchestration/queue/next_phase.json`.

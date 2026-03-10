@@ -123,3 +123,23 @@ ok i get it,. the core issue is the layout. all layouts no matter how many passe
 
 ---
 
+
+[2026-03-09T12:00:00Z] role=user
+add a convention to the claude and codex files to always stop dev servers (and only the dev server for what was being tested, not all servers) when done working unless instructed otherwise. make sure that addition is also added to the claude md and codex md files in all sync repos.
+
+USER INTENT: Add "Dev Server Cleanup" convention to CLAUDE.md and CODEX.md across all 5 sync repos (Template, MockTrial, AppDock, PortfolioV1, IDEA-MANAGEMENT).
+
+[2026-03-09T12:15:00Z] role=user
+how come our site looks nothing like the pass-1 brutalism-neobrutalism concept? I wanted our site to be exactly like that and all the visual presumed functionality would be what our actual app has. why is there such a huge gap in what our app offers and looks like versus the planning files and design pass we wanted to use?
+
+USER INTENT: Frustration that the actual Next.js app doesn't match the pass-1 HTML concept. Wants 1:1 fidelity between design pass and production app.
+
+[2026-03-09T12:30:00Z] role=user
+so would it be a better approach to build the frontend and then build a backend for the frontend if my design process is structured as planning files, then design passes, then actual build?
+
+USER INTENT: Questioning the build order. Realizes frontend-first makes more sense given the design-pass-driven workflow.
+
+[2026-03-09T12:45:00Z] role=user
+ok can you update our orchestrator agent and skill (the existing one, dont make a new one) to follow this structural convention and assure that we fix the gap of frontend pass to actual frontend variance as well as backend variance to planning file spec. we also have to fix the adr agent and skill so that it fully orchestrates subfolders with phases in the subfolders task list by area of concern or domain. ex one subfolder might be solely dedicated to the adaptation of a frontend pass to the actual tailwind ts frontend (1-1). then another subfolder for backend initialization packages etc. whatever the proper app development order is according to best practices (and im sure im missing project initialization subfolder with dependencies etc before the frontend conversion one) --- but assuming we prefer frontend pre backend for the process --- then all the backend alignment with the frontend can be a subfolder for primary objectives. like if an app has a kanban board page but also has a directory tree page, these are two separate tech concerns so would need different subfolder for each (but only if the task of completing and testing each is complex enough. persay a resume page and an about page could be in the same subfolder task list. but something complex like auth would be its own thing. we also need the orchestrator to be adaptable (as it already is) based on user prompt to either be 100% faithful to a design pass, or loosely reference it with other flags the user has in their initial request or optionally just adapt the style of an external reference site to the required planning file spec of all product requirements... can you ideate in chat the request im making so i fully know you know what I want as well as your projected fixes? well have to update the systemdocs for these when done too and we should also check the longrunning subagent as well since its closely linked to the orchestrator so we dont want there to be any gaps. we already added a requirement for the subagents to gain more context prior to work via context handoff from the orchestrator as well as individual required reading of the subagents but we should check it irregardless. we are just planning right now so read and review everything needed, then reconvene in chat as requested. make sure to document our chat history as well
+
+USER INTENT: Major architectural rethink of the orchestrator + ADR systems. Wants: (1) Frontend-first build order baked into conventions, (2) ADR sessions organized by domain/concern not arbitrary groupings, (3) Design fidelity modes (1:1 faithful, loose reference, external site adaptation), (4) Complexity-based session scoping (simple pages grouped, complex features isolated), (5) Review of longrunning subagent for gaps. Planning only — no code changes yet.

@@ -70,3 +70,8 @@ This repo also includes a visual/creative concept system for data visualization,
 ## Git Workflow
 - Commit after each generation run
 - Use HTTPS remotes only
+
+## Dev Server Cleanup
+- When done working, stop any dev servers that were started during the session (only the specific server used for testing, not all running servers)
+- Do not stop servers the user was already running before the session began
+- Exception: if the user explicitly asks to leave the server running, leave it

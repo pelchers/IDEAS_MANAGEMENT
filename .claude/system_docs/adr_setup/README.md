@@ -63,8 +63,26 @@ The adr-setup agent/skill contains the same ADR conventions that are embedded in
 | `notes_template.md` | Decisions, constraints, open questions |
 | `adr_readme_template.md` | `.adr/README.md` workspace overview |
 
+## Session Scoping (Domain x Complexity)
+
+Sessions are scoped by **area of concern**, not by build layer. Each session handles its
+domain end-to-end: frontend, backend, integration, and testing.
+
+- **High complexity** → own session (auth, kanban, whiteboard, AI chat, billing)
+- **Low/medium** → group related features (resume+about, settings+profile)
+- Grouping is dynamic from the project's PRD, never hardcoded
+
+### Frontend-first ordering
+1. Project init (session 1)
+2. Design system + shell (session 2)
+3. Domain sessions (ordered by dependency)
+4. Hardening (always last, cyclic feedback loop with user)
+
+See [System Improvements](./system-improvements.md) for full details.
+
 ## Key Conventions Summary
-- Sessions: `UPPERCASE_SNAKE_CASE` with numeric prefix
+- Sessions: `<N>_descriptive-domain-name` (lowercase-kebab with numeric prefix)
+- Session names describe the **domain**, not the build layer
 - Phase files: `phase_N.md` (plan), `phase_N_review.md` (review)
 - Orchestration files: permanent in `orchestration/<SESSION>/`
 - Phase plans: active in `current/`, archived in `history/`

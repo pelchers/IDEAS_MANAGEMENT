@@ -75,3 +75,193 @@ _Nothing active right now._
 - [ ] Notifications system
 - [ ] Dark mode toggle
 - [ ] Mobile-optimized whiteboard controls
+
+
+
+
+
+
+
+## USER NOTES / SAVED AI CHATS
+
+ Got it. Here's the refined plan with your corrections incorporated.                                                                                              
+
+  ---                                                                                                                                                                Revised Understanding — 5 Core Changes
+                                                                                                                                                                   
+  1. Frontend-First Build Order (Flexible, Not Rigid Stages)                                                                                                       
+
+  The pipeline is frontend-first, but the stages aren't rigid sequential blocks. Backend + integration + testing can collapse into the same session when they share
+   a domain concern:
+
+  Project Init (deps, tooling, config, folder structure)
+    → Frontend Conversion (design pass → React/Tailwind)
+      → Domain Sessions (backend + integration + testing, scoped by concern)
+        → Hardening (security, E2E, production readiness)
+
+  The middle layer — "domain sessions" — is where the real flexibility lives. Each session is scoped by area of concern x complexity:
+
+  ┌────────────┬───────────────────────────────────────────────────────┬───────────────────────────────────────────────────────────────────────────────────────┐   
+  │ Complexity │                        Example                        │                                   Session Structure                                   │   
+  ├────────────┼───────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┤   
+  │ High       │ Auth (signup, signin, sessions, tokens, guards,       │ Own session. Multiple phases covering backend endpoints, frontend wiring, middleware, │   
+  │            │ password reset)                                       │  testing — all in one subfolder.                                                      │   
+  ├────────────┼───────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┤   
+  │ High       │ Kanban board (drag-drop, column CRUD, card CRUD,      │ Own session. Backend artifact API + frontend wiring + E2E tests all phases within it. │   
+  │            │ persistence, real-time)                               │                                                                                       │   
+  ├────────────┼───────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┤   
+  │ Medium     │ AI Chat (streaming, session management, tool actions) │ Own session. Backend AI endpoint + frontend wiring + error states.                    │   
+  ├────────────┼───────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┤   
+  │ Low        │ Resume page + About page + Cover Letter page          │ Grouped into one session. Markdown rendering, static content, simple API. A few       │   
+  │            │                                                       │ phases cover all of them.                                                             │   
+  ├────────────┼───────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┤   
+  │ Low        │ File tree display + settings page                     │ Grouped together. Simple CRUD, straightforward UI.                                    │   
+  └────────────┴───────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘   
+
+  Key insight from your feedback: Backend alignment and integration aren't separate sequential stages — they're folded into each domain session. Auth's session    
+  includes building the endpoints AND wiring the frontend AND testing the flow. It's one continuous concern.
+
+  The only things that remain as distinct stages are:
+  - Project init (always first — nothing works without deps and config)
+  - Frontend conversion (always before domain sessions — the design pass becomes the React app)
+  - Hardening (always last — cross-cutting security/perf/E2E across everything)
+
+  Everything between frontend conversion and hardening is domain sessions in whatever order makes sense for dependency flow.
+
+  ---
+  2. Design Fidelity (Inferred From User Prompt, Not Flags)
+
+  No explicit designFidelity=faithful parameters. The orchestrator reads the user's natural language and infers the mode:
+
+  ┌───────────────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────────────────┐   
+  │                             User Says                             │                                  Orchestrator Infers                                   │   
+  ├───────────────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────┤   
+  │ "build the app exactly like pass-1" / "1:1 from the design pass"  │ Faithful — subagents read the pass HTML as primary spec, reproduce every               │   
+  │ / "match the concept"                                             │ layout/component/interaction                                                           │   
+  ├───────────────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────┤   
+  │ "use pass-1 as a style guide" / "reference the design" / "follow  │ Reference — subagents use the design tokens (colors, fonts, spacing) but build layouts │   
+  │ the design direction"                                             │  from PRD requirements                                                                 │   
+  ├───────────────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────┤   
+  │ "adapt this site's look" / "make it look like [url]" / "use this  │ External — orchestrator captures screenshots/references, subagents adapt that visual   │   
+  │ as inspiration"                                                   │ language to the PRD spec                                                               │   
+  ├───────────────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────┤   
+  │ No design mention at all                                          │ From scratch — subagents build from PRD requirements using whatever styling makes      │   
+  │                                                                   │ sense                                                                                  │   
+  └───────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────┘   
+
+  The orchestrator documents its inference in the session's notes.md so it's transparent: "Inferred design fidelity: faithful (user said 'build exactly like       
+  pass-1')."
+
+  Fix in the agent/skill: Instead of a parameter, add a "Design Fidelity Inference" section to the orchestrator's responsibilities. It parses the user's initial   
+  prompt, determines the mode, and threads it through to all subagent context handoffs. The skill documents the inference patterns so future orchestrator instances
+   make consistent decisions.
+
+  ---
+  3. ADR Sessions Organized by Domain/Concern x Complexity
+
+  This stays as I described it — you confirmed it's correct. The ADR agent/skill gets updated with these conventions:
+
+  Session scoping rules:
+  1. Read the project's planning docs (PRD, feature list, design pass views) to identify all features
+  2. Score each feature by complexity (how many backend endpoints, how many UI states, how many integration points)
+  3. High complexity → own session (auth, kanban, whiteboard, schema planner, AI chat)
+  4. Low/medium complexity → group related features into shared sessions (resume+about+cover-letter, settings+profile, file-tree+directory-display)
+  5. Frontend conversion phases come before their domain's backend phases within each session
+  6. Sessions are numbered in dependency order (init first, hardening last, everything else by what depends on what)
+
+  Session naming: Descriptive of the domain, not the build layer:
+  .adr/orchestration/
+  ├── 1_project-init/
+  ├── 2_design-system-and-shell/
+  ├── 3_auth-flow/                    ← backend + frontend + testing, all auth
+  ├── 4_dashboard-and-projects/
+  ├── 5_kanban-board/                 ← complex, own session
+  ├── 6_whiteboard/                   ← complex, own session
+  ├── 7_simple-views/                 ← ideas + directory-tree + settings grouped
+  ├── 8_schema-planner/               ← complex, own session
+  ├── 9_ai-chat/                      ← complex, own session
+  ├── 10_billing/                     ← medium complexity, own session (Stripe)
+  ├── 11_hardening/                   ← security, E2E, production
+
+  Important: These are examples, not hardcoded. The ADR agent generates sessions dynamically based on whatever features the PRD describes. A game project would    
+  have completely different sessions than a portfolio site.
+
+  ---
+  4. Orchestrator Prompt Parsing + Subagent Threading
+
+  The orchestrator skill accepts the user's natural language prompt and extracts:
+
+  - What to build — inferred from PRD/planning docs or user description
+  - Design fidelity — inferred from language (see #2)
+  - Design reference — which pass, which external URL, or none
+  - Scope — full app, specific session, specific phase
+
+  Then threads all of this into every subagent's context handoff. Each subagent receives:
+
+  Prior phase summary
+  + Current phase scope
+  + Design fidelity mode (with specific instructions per mode)
+  + Design reference file paths (for faithful: exact HTML sections to convert)
+  + Required reading list
+  + Validation requirements
+  + App state expectations for next phase
+
+  ---
+  5. Subagent Context Handoff (Strengthened Per Fidelity Mode)
+
+  The context handoff varies by inferred fidelity:
+
+  Faithful mode handoff includes:
+  - Exact file path to pass HTML (index.html lines X-Y for this view)
+  - Exact file path to pass CSS (style.css relevant sections)
+  - Exact file path to pass JS (app.js relevant functions)
+  - Instruction: "Your React component must reproduce this layout. Same elements, same hierarchy, same interactions, same hover effects. Convert CSS classes to    
+  Tailwind utilities. Convert vanilla JS to React state/effects."
+  - Post-build checklist: "Compare your output against the concept. Every element present? Same layout flow? Same animations? Same responsive behavior?"
+
+  Reference mode handoff includes:
+  - Design token summary (colors, fonts, spacing, border style)
+  - General direction ("neo-brutalist with thick borders and hard shadows")
+  - PRD requirements as the primary spec
+
+  External mode handoff includes:
+  - Screenshots or URL of reference site
+  - Instruction: "Adapt this visual language to our PRD requirements. Don't clone the site — apply its design sensibility to our features."
+
+  ---
+  Revised File Changes
+
+  ┌────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────────────────────────────┐  
+  │                          File                          │                                               Change                                               │  
+  ├────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤  
+  │ .claude/agents/longrunning-orchestrator-agent/AGENT.md │ Add design fidelity inference logic, frontend-first convention, domain-session structure,          │  
+  │                                                        │ strengthened context handoff per fidelity mode                                                     │  
+  ├────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤  
+  │ .claude/skills/orchestrator-session/SKILL.md           │ Add prompt parsing for fidelity inference, domain session threading, examples of natural language  │  
+  │                                                        │ → mode mapping                                                                                     │  
+  ├────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤  
+  │ .claude/skills/longrunning-session/SKILL.md            │ Add fidelity-aware subagent handoff templates, domain session awareness                            │  
+  ├────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤  
+  │ .claude/agents/adr-setup/AGENT.md                      │ Add domain-scoping by concern x complexity, frontend-first ordering, dynamic session generation    │  
+  │                                                        │ from PRD                                                                                           │  
+  ├────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤  
+  │ .claude/skills/adr-setup/SKILL.md                      │ Add session scoping heuristics, complexity scoring, grouping rules, naming conventions             │  
+  ├────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤  
+  │ .claude/system_docs/session_orchestration/README.md    │ Reflect new conventions                                                                            │  
+  ├────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤  
+  │ .claude/system_docs/adr_setup/README.md                │ Reflect domain-scoping                                                                             │  
+  ├────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤  
+  │ + all .codex/ mirrors                                  │ Same changes                                                                                       │  
+  ├────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤  
+  │ + longrunning-session references/templates             │ Update templates to include fidelity-aware sections                                                │  
+  └────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────┘  
+
+  What's NOT Changing
+
+  - Playwright validation system (solid)
+  - Phase lifecycle (plan → execute → review → archive)
+  - Subagent spawning mechanism (queue + hook)
+  - TODO tracker integration
+  - Existing planning docs or design passes
+
+  ---
+  Does this match your vision? If so I'll start writing the file changes.

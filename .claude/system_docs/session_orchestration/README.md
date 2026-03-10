@@ -71,12 +71,41 @@ Every session produces these files in the orchestration directory:
 - [Subagent Spawning](./subagent-spawning.md) -- Queue file format, context handoff, and hook mechanism
 - [Session Variants](./session-variants.md) -- Differences between the three session types
 
+## Build Order Convention
+
+The orchestrator enforces a **frontend-first** pipeline when a design pass exists:
+
+```
+Project Init → Frontend Conversion → Domain Sessions → Hardening (cyclic)
+```
+
+Domain sessions scope work by area of concern x complexity. Backend + integration + testing
+fold into each domain session rather than being separate sequential stages. Complex features
+get their own session; simple features are grouped. See [System Improvements](./system-improvements.md).
+
+## Design Fidelity Inference
+
+The orchestrator infers design fidelity from the user's natural language (no flags):
+- **Faithful**: 1:1 conversion of design pass → framework (subagents read pass HTML as primary spec)
+- **Reference**: design tokens as style guide, layouts from PRD
+- **External**: adapt external site's visual language to PRD spec
+- **From scratch**: PRD requirements only
+
+See [System Improvements](./system-improvements.md) for full context handoff per mode.
+
+## Hardening (Cyclic)
+
+The hardening session is a feedback loop: run E2E validation → present to user → accept
+feedback → apply fixes → re-validate → repeat until user confirms production readiness.
+Phases are created dynamically as feedback cycles occur.
+
 ## Context Handoff
 
 The orchestrator MUST pass a comprehensive context prompt to each subagent on spawn,
 including prior phase summary, current scope, app state expectations, files to read,
-design system reference (if UI work), and validation requirements. See
-[Subagent Spawning](./subagent-spawning.md) for the full checklist.
+**design fidelity mode with per-mode instructions**, and validation requirements. See
+[Subagent Spawning](./subagent-spawning.md) for the full checklist and
+[System Improvements](./system-improvements.md) for fidelity-specific handoff details.
 
 ## Mandatory Validation
 

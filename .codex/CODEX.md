@@ -45,6 +45,11 @@
 - Include multi-role coverage (user, moderator, admin, owner) where relevant.
 - Never force passing tests. Investigate failures, document causes, and fix for production readiness.
 
+### Dev server cleanup
+- When done working, stop any dev servers that were started during the session (only the specific server used for testing, not all running servers).
+- Do not stop servers the user was already running before the session began.
+- Exception: if the user explicitly asks to leave the server running, leave it.
+
 ### Subagent spawning (required)
 - Queue the next phase in `.codex/orchestration/queue/next_phase.json`.
 - Use the Stop hook or manually run `powershell -NoProfile -ExecutionPolicy Bypass -File .codex/hooks/scripts/orchestrator-poke.ps1`.
