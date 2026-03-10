@@ -22,12 +22,12 @@ Design Fidelity: Faithful (pass-1 brutalism-neobrutalism)
 - [x] Seed admin account
 - [x] Verify dev server starts cleanly on port 3000
 
-## Phase 3 — Frontend Cleanup
+## Phase 3 — Frontend Cleanup ✓ COMPLETE
 
-- [ ] Remove all current page implementations under apps/web/src/app/(authenticated)/ (they will be rebuilt from pass-1)
-- [ ] Remove current globals.css (will be regenerated as Tailwind config from pass-1)
-- [ ] Remove current app-shell.tsx (will be rebuilt to match pass-1 nav exactly)
-- [ ] Remove current signin/signup pages (will be rebuilt from pass-1)
-- [ ] Keep all API routes under apps/web/src/app/api/ (backend is correct)
-- [ ] Keep Prisma schema, package.json, and config files
-- [ ] Verify app still builds and API routes still respond after cleanup
+- [x] Remove all current page implementations under apps/web/src/app/(authenticated)/ (they will be rebuilt from pass-1)
+- [x] Remove current globals.css (will be regenerated as Tailwind config from pass-1)
+- [x] Remove current app-shell.tsx (will be rebuilt to match pass-1 nav exactly)
+- [x] Remove current signin/signup pages (will be rebuilt from pass-1)
+- [x] Keep all API routes under apps/web/src/app/api/ (backend is correct)
+- [x] Keep Prisma schema, package.json, and config files
+- [x] Verify app still builds and API routes still respond after cleanup
