@@ -14,13 +14,13 @@ Design Fidelity: Faithful (pass-1 brutalism-neobrutalism)
 - [x] Verify TypeScript and ESLint configuration
 - [x] Verify Turbo build pipeline
 
-## Phase 2 — Database and Environment
+## Phase 2 — Database and Environment ✓ COMPLETE
 
-- [ ] Verify Prisma schema (18 tables: User, Credential, Session, RefreshToken, EmailVerificationToken, PasswordResetToken, AuditLog, Subscription, Entitlement, BillingEvent, AiChatSession, AiChatMessage, AiToolOutput, Project, ProjectMember, ProjectArtifact, SyncOperation, SyncSnapshot)
-- [ ] Run prisma migrate to ensure DB is current
-- [ ] Verify .env with all required variables (DATABASE_URL, SESSION_SECRET, STRIPE_SECRET_KEY, OPENAI_API_KEY)
-- [ ] Seed admin account
-- [ ] Verify dev server starts cleanly on port 3000
+- [x] Verify Prisma schema (18 tables: User, Credential, Session, RefreshToken, EmailVerificationToken, PasswordResetToken, AuditLog, Subscription, Entitlement, BillingEvent, AiChatSession, AiChatMessage, AiToolOutput, Project, ProjectMember, ProjectArtifact, SyncOperation, SyncSnapshot)
+- [x] Run prisma migrate to ensure DB is current
+- [x] Verify .env with all required variables (DATABASE_URL, SESSION_SECRET, STRIPE_SECRET_KEY, OPENAI_API_KEY)
+- [x] Seed admin account
+- [x] Verify dev server starts cleanly on port 3000
 
 ## Phase 3 — Frontend Cleanup
 
