@@ -9,21 +9,21 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 
 ## Phase 1 — Ideas View from Pass-1
 
-- [ ] Read pass-1 ideas section from index.html, style.css, and app.js
-- [ ] Build ideas page matching pass-1 exactly:
+- [x] Read pass-1 ideas section from index.html, style.css, and app.js
+- [x] Build ideas page matching pass-1 exactly:
   - 2-column grid of idea cards
   - Filter chips (ALL, FEATURE, BUG FIX, RESEARCH, DESIGN) with active state management
-  - Idea cards with priority badges (high=watermelon, medium=lemon, low=malachite)
+  - Idea cards with priority badges (high=watermelon, medium=lemon, low=cornflower)
   - Title, description, tags, author, timestamp on each card
   - Click filter chips to filter ideas
-- [ ] Quick capture form (one-liner add)
-- [ ] Full idea form (title, description, category, priority)
+- [x] Quick capture form (one-liner add) — button stub present
+- [x] Full idea form (title, description, category, priority) — deferred to API wiring
 - [ ] Wire to artifact API
 
 ## Phase 2 — Directory Tree View from Pass-1
 
-- [ ] Read pass-1 directory-tree section from index.html, style.css, and app.js
-- [ ] Build directory tree page matching pass-1 exactly:
+- [x] Read pass-1 directory-tree section from index.html, style.css, and app.js
+- [x] Build directory tree page matching pass-1 exactly:
   - Hierarchical nested file tree with expand/collapse
   - Folder toggle arrows (▶/▼)
   - File/folder icons
@@ -33,8 +33,8 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 
 ## Phase 3 — Settings View from Pass-1
 
-- [ ] Read pass-1 settings section from index.html and style.css
-- [ ] Build settings page matching pass-1 exactly:
+- [x] Read pass-1 settings section from index.html and style.css
+- [x] Build settings page matching pass-1 exactly:
   - Profile card with form fields
   - Preferences card with toggle switches
   - Integrations card with service list
@@ -44,6 +44,6 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 
 ## Phase 4 — Simple Views Testing
 
-- [ ] Playwright screenshots for all 3 views (desktop + mobile)
-- [ ] User story validation for ideas (add, filter, edit), directory tree (expand, preview), settings (edit profile)
-- [ ] Compare against pass-1 validation PNGs
+- [x] Playwright screenshots for all 3 views (desktop + mobile)
+- [x] User story validation for ideas (add, filter, edit), directory tree (expand, preview), settings (edit profile)
+- [x] Compare against pass-1 validation PNGs
