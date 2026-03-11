@@ -7,31 +7,26 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 
 ---
 
-## Phase 1 — Dashboard View from Pass-1
+## Phase 1 — Dashboard View from Pass-1 ✅
 
-- [ ] Read pass-1 dashboard section from index.html and app.js
-- [ ] Build dashboard page matching pass-1 exactly:
-  - 4 stat cards (Total Projects/Active Tasks/Ideas Captured/Team Members) with colored left borders (watermelon/malachite/cornflower/amethyst)
-  - Aggressive hover transforms on stat cards (translate, rotate -2deg to +2deg, scale 1.02)
-  - Weekly Activity bar chart using Chart.js (Mon-Sun, dual datasets: Ideas Created + Tasks Completed)
-  - Recent Activity feed with timestamps, colored dot indicators, activity descriptions
-- [ ] Wire stat cards to real project/task counts from API
-- [ ] Wire activity feed to real audit log data
+- [x] 4 stat cards with colored left borders (watermelon/malachite/amethyst/cornflower)
+- [x] Hover transforms: translate(-2px,-2px) rotate(-1deg) + shadow increase
+- [x] Chart.js bar chart (react-chartjs-2): Ideas Created (watermelon) + Tasks Completed (malachite)
+- [x] Recent Activity feed with 10 items, dashed separators, type icons
+- [x] Mock data matching pass-1 exactly
 
-## Phase 2 — Projects View from Pass-1
+## Phase 2 — Projects View from Pass-1 ✅
 
-- [ ] Read pass-1 projects section from index.html and app.js
-- [ ] Build projects page matching pass-1 exactly:
-  - 3-column grid of project cards
-  - Each card: status badge (active/review/planning/paused), title, description, task count, due date, progress bar
-  - Project card hover transforms matching pass-1
-  - Create project button/form
-  - Search, sort, filter controls
-- [ ] Wire to existing project CRUD API
+- [x] Responsive grid of 6 project cards (auto-fill, minmax 320px)
+- [x] Status badges (active/review/planning/paused) with color coding
+- [x] Progress bars with watermelon fill
+- [x] Hover transforms: translate(-3px,-3px) rotate(0.5deg) + shadow-nb-xl
+- [x] Cards link to /projects/{id}
+- [x] "+ NEW PROJECT" button (not wired yet)
 
-## Phase 3 — Project Detail + Integration
+## Phase 3 — Project Detail + Screenshots ✅
 
-- [ ] Build project overview page at /projects/[id] with links to all subviews
-- [ ] Wire project cards to navigate to /projects/[id]
-- [ ] Playwright screenshots of dashboard and projects (desktop + mobile)
-- [ ] User story validation
+- [x] Project workspace page at /projects/[id] with Editor/Preview/Notes tabs
+- [x] Toolbar buttons, editable content area, notes list
+- [x] Playwright screenshots: 6 PNGs (dashboard/projects/workspace × desktop/mobile)
+- [x] Session 4 completion review

@@ -1,9 +1,7 @@
 import { redirect } from "next/navigation";
 
-// TODO: Session 3 will add Clerk auth check here
-// import { auth } from "@clerk/nextjs/server";
-// const { userId } = await auth();
-// if (!userId) redirect("/signin");
+// Auth redirect handled by proxy.ts — unauthenticated users get redirected to /signin
+// Authenticated users reaching / get redirected to /dashboard below
 
 export default function Home() {
   redirect("/dashboard");

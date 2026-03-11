@@ -38,9 +38,10 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/style.css`
 - [x] Build (authenticated) layout wrapping children in AppShell
 - [x] Verify: nav drawer opens/closes with slam animation, all 10 links route correctly
 
-## Phase 3 — Root Layout + Landing Page
+## Phase 3 — Root Layout + Landing Page ✅
 
-- [ ] Configure root layout.tsx with Space Grotesk + IBM Plex Mono font imports
-- [ ] Create landing page (/) with redirect to /dashboard for authenticated users
-- [ ] Ensure unauthenticated users see signin page
-- [ ] Verify responsive behavior matches pass-1 (mobile drawer, desktop sidebar if applicable)
+- [x] Configure root layout.tsx with body classes (bg-creamy-milk, text-signal-black, font-sans)
+- [x] Google Fonts loaded via CSS @import in globals.css (Space Grotesk + IBM Plex Mono)
+- [x] Landing page (/) redirects to /dashboard (auth check deferred to Session 3)
+- [x] Verified proxy.ts handles unauthenticated redirect to /signin (Next.js 16 pattern)
+- [x] Dev server verified — starts clean, HTTP 307 redirect works
