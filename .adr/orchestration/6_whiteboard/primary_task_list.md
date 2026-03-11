@@ -9,16 +9,20 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 
 ## Phase 1 — Whiteboard Frontend from Pass-1
 
-- [ ] Read pass-1 whiteboard section from index.html, style.css, and app.js
-- [ ] Build whiteboard page matching pass-1 exactly:
+- [x] Read pass-1 whiteboard section from index.html, style.css, and app.js
+- [x] Build whiteboard page matching pass-1 exactly:
   - HTML5 canvas with grid background (30px spacing)
-  - Drawing toolbar: Select, Draw, Erase, Pan tools
+  - Drawing toolbar: Select, Draw, Rect, Text, Sticky tools
   - Freehand drawing mode with crosshair cursor, 3px line width
-  - Sticky notes in 4 colors (watermelon, lemon, malachite, cornflower)
+  - Sticky notes in 4 colors (lemon, watermelon, malachite, amethyst)
   - Sticky note dragging with z-index manipulation and rotation during drag
-  - Rough.js hand-drawn decorative elements
-- [ ] Canvas resize handling (responsive to window size)
-- [ ] Tool selection state management
+- [x] Canvas resize handling (responsive to window size)
+- [x] Tool selection state management
+
+## Phase 1 — Screenshots
+
+- [x] Playwright screenshots (desktop + mobile)
+- [x] Screenshots saved to `.docs/validation/6_whiteboard/screenshots/`
 
 ## Phase 2 — Whiteboard Backend + Integration
 
@@ -29,6 +33,5 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 
 ## Phase 3 — Whiteboard Testing
 
-- [ ] Playwright screenshots (desktop + mobile)
 - [ ] User story validation: draw on canvas, add sticky note, drag sticky note, switch tools
 - [ ] Compare against pass-1 whiteboard validation PNGs
