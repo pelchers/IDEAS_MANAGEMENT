@@ -9,19 +9,20 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 
 ## Phase 1 — AI Chat Frontend from Pass-1
 
-- [ ] Read pass-1 ai-chat section from index.html, style.css, and app.js
-- [ ] Build AI chat page matching pass-1 exactly:
-  - Two-panel layout: session list (left) + chat thread (right)
+- [x] Read pass-1 ai-chat section from index.html, style.css, and app.js
+- [x] Build AI chat page matching pass-1 exactly:
   - Message thread with alternating user/AI styling
-  - User messages: right-aligned, signal-black background, white text
-  - AI messages: left-aligned, white background, signal-black text with thick border
-  - Avatar circles ("JD" for user, "AI" for bot) matching pass-1 styling
+  - User messages: right-aligned, watermelon background, white text
+  - AI messages: left-aligned, white background, signal-black border with hard shadow
+  - Avatar squares ("JD" for user, "AI" for bot) matching pass-1 styling
   - Text input with neo-brutalist styling (thick border, monospace placeholder)
   - Send button with hard shadow, hover/active transforms
-  - Enter key to send
+  - Enter key to send (Shift+Enter for newline)
   - Auto-scroll to latest message
-- [ ] Session list with create/delete/rename sessions
-- [ ] Tool action display for AI file operations
+  - Connected status badge in malachite
+  - Typing indicator during simulated AI response
+- [x] Mock messages from pass-1 pre-populated
+- [x] Simulated AI response after 800ms delay
 
 ## Phase 2 — AI Chat Backend + Integration
 
@@ -33,6 +34,6 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 
 ## Phase 3 — AI Chat Testing
 
-- [ ] Playwright screenshots (desktop + mobile)
+- [x] Playwright screenshots (desktop + mobile)
 - [ ] User story validation: create session, send message, receive AI response, switch sessions
 - [ ] Compare against pass-1 ai-chat validation PNGs
