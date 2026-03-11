@@ -433,6 +433,22 @@ a {
 }
 
 /* ============================================ */
+/* COMPONENT: Kanban SortableJS drag states     */
+/* ============================================ */
+.kanban-card--ghost {
+  opacity: 0.4;
+}
+
+.kanban-card--chosen {
+  transform: rotate(-1deg);
+  box-shadow: 5px 5px 0px #282828;
+}
+
+.kanban-card--drag {
+  opacity: 0.8;
+}
+
+/* ============================================ */
 /* RESPONSIVE — MOBILE (< 480px)                */
 /* Overrides spacing tokens on small screens    */
 /* ============================================ */
