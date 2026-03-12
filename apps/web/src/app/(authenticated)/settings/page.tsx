@@ -137,6 +137,46 @@ export default function SettingsPage() {
     window.location.href = authUrl;
   };
 
+  // Profile state
+  const [profileEmail, setProfileEmail] = useState("");
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileMessage, setProfileMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  // Load user profile on mount
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.user) {
+          setProfileEmail(data.user.email);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleProfileSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!profileEmail.trim()) return;
+    setProfileSaving(true);
+    setProfileMessage(null);
+    try {
+      const res = await fetch("/api/auth/me", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: profileEmail.trim() }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setProfileMessage({ type: "success", text: "Profile saved!" });
+      } else {
+        setProfileMessage({ type: "error", text: data.error === "email_in_use" ? "Email already in use." : "Failed to save." });
+      }
+    } catch {
+      setProfileMessage({ type: "error", text: "Network error." });
+    }
+    setProfileSaving(false);
+  };
+
   const togglePref = (key: keyof Preferences) => {
     setPreferences((prev) => ({ ...prev, [key]: !prev[key] }));
   };
@@ -161,18 +201,14 @@ export default function SettingsPage() {
         {/* ── Profile Card ── */}
         <div className="nb-card p-8">
           <h2 className="nb-card-title">PROFILE</h2>
-          <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
-            <div>
-              <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">
-                DISPLAY NAME
-              </label>
-              <input
-                type="text"
-                className="nb-input w-full"
-                defaultValue="Jane Doe"
-                placeholder="Your name"
-              />
-            </div>
+          <form className="flex flex-col gap-4" onSubmit={handleProfileSave}>
+            {profileMessage && (
+              <div className={`p-3 border-2 border-signal-black font-mono text-[0.85rem] ${
+                profileMessage.type === "success" ? "bg-malachite/20 text-malachite" : "bg-watermelon/20 text-watermelon"
+              }`}>
+                {profileMessage.text}
+              </div>
+            )}
             <div>
               <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">
                 EMAIL
@@ -180,7 +216,8 @@ export default function SettingsPage() {
               <input
                 type="email"
                 className="nb-input w-full"
-                defaultValue="jane@example.com"
+                value={profileEmail}
+                onChange={(e) => setProfileEmail(e.target.value)}
                 placeholder="Your email"
               />
             </div>
@@ -194,8 +231,8 @@ export default function SettingsPage() {
                 placeholder="Tell us about yourself"
               />
             </div>
-            <button type="submit" className="nb-btn nb-btn--primary self-start mt-2">
-              SAVE CHANGES
+            <button type="submit" className="nb-btn nb-btn--primary self-start mt-2" disabled={profileSaving}>
+              {profileSaving ? "SAVING..." : "SAVE CHANGES"}
             </button>
           </form>
         </div>

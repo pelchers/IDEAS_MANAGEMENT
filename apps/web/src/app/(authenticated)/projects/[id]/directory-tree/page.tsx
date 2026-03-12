@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useParams } from "next/navigation";
 
 /* ── Types ── */
 interface TreeNode {
@@ -237,10 +238,32 @@ function TreeItem({
 
 /* ── Component ── */
 export default function DirectoryTreePage() {
+  const params = useParams();
+  const projectId = String(params.id);
+  const [tree, setTree] = useState<TreeNode[]>(FILE_TREE);
+  const [fileContents, setFileContents] = useState<Record<string, string>>(FILE_CONTENTS);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [selectedFile, setSelectedFile] = useState<string | null>(
     "Dashboard.tsx"
   );
+
+  // Load directory tree from artifact API
+  useEffect(() => {
+    if (projectId.startsWith("mock-")) return;
+    fetch(`/api/projects/${projectId}/artifacts/directory-tree/tree.plan.json`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.content) {
+          if (Array.isArray(data.content.tree) && data.content.tree.length > 0) {
+            setTree(data.content.tree);
+          }
+          if (data.content.fileContents && typeof data.content.fileContents === "object") {
+            setFileContents((prev) => ({ ...prev, ...data.content.fileContents }));
+          }
+        }
+      })
+      .catch(() => {});
+  }, [projectId]);
 
   const handleToggle = useCallback((path: string) => {
     setExpanded((prev) => ({
@@ -253,7 +276,7 @@ export default function DirectoryTreePage() {
     setSelectedFile(name);
   }, []);
 
-  const fileContent = selectedFile ? FILE_CONTENTS[selectedFile] : null;
+  const fileContent = selectedFile ? fileContents[selectedFile] : null;
 
   return (
     <div className="animate-[view-slam_0.3s_cubic-bezier(0.2,0,0,1)]">
@@ -268,7 +291,7 @@ export default function DirectoryTreePage() {
         <div className="nb-card max-h-[calc(100vh-260px)] overflow-y-auto">
           <h2 className="nb-card-title">FILE EXPLORER</h2>
           <ul className="list-none">
-            {FILE_TREE.map((node) => (
+            {tree.map((node) => (
               <TreeItem
                 key={node.name}
                 node={node}

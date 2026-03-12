@@ -26,6 +26,9 @@ vi.mock("@/server/billing/entitlements", () => ({
 
 vi.mock("@/server/db", () => ({
   prisma: {
+    user: {
+      findUnique: vi.fn(),
+    },
     aiChatSession: {
       create: vi.fn(),
       findMany: vi.fn(),
@@ -39,6 +42,13 @@ vi.mock("@/server/db", () => ({
       create: vi.fn(),
     },
   },
+}));
+
+vi.mock("@/server/ai/get-user-model", () => ({
+  getUserModel: vi.fn(async () => ({
+    model: {},
+    provider: "mock",
+  })),
 }));
 
 vi.mock("@/server/audit", () => ({

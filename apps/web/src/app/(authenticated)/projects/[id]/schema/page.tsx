@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "next/navigation";
 import rough from "roughjs";
 
 /* ── Entity definitions (matching pass-1 schema view) ── */
@@ -85,7 +86,23 @@ function badgeLabel(badge: "pk" | "fk" | "unique"): string {
 
 /* ── Component ── */
 export default function SchemaPage() {
+  const params = useParams();
+  const projectId = String(params.id);
   const svgRef = useRef<SVGSVGElement>(null);
+  const [entities, setEntities] = useState<EntityDef[]>(ENTITIES);
+
+  // Load schema from artifact API
+  useEffect(() => {
+    if (projectId.startsWith("mock-")) return;
+    fetch(`/api/projects/${projectId}/artifacts/schema/schema.graph.json`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.content && Array.isArray(data.content.entities) && data.content.entities.length > 0) {
+          setEntities(data.content.entities);
+        }
+      })
+      .catch(() => {});
+  }, [projectId]);
 
   // Draw Rough.js relation lines
   useEffect(() => {
@@ -162,7 +179,7 @@ export default function SchemaPage() {
           gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
         }}
       >
-        {ENTITIES.map((entity) => (
+        {entities.map((entity) => (
           <div
             key={entity.name}
             className="border-4 border-signal-black shadow-nb bg-white overflow-hidden transition-transform duration-150 hover:-translate-x-[2px] hover:-translate-y-[2px]"

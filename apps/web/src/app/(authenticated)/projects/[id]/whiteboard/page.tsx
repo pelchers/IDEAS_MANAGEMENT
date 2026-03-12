@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
+import { useParams } from "next/navigation";
 
 /* ── Types ── */
 type Tool = "select" | "draw" | "rect" | "text" | "sticky";
@@ -75,6 +76,8 @@ function getCursor(tool: Tool): string {
 
 /* ── Component ── */
 export default function WhiteboardPage() {
+  const params = useParams();
+  const projectId = String(params.id);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [activeTool, setActiveTool] = useState<Tool>("select");
@@ -87,10 +90,44 @@ export default function WhiteboardPage() {
   // Store all drawing paths so we can redraw on resize
   const paths = useRef<{ x: number; y: number }[][]>([]);
   const currentPath = useRef<{ x: number; y: number }[]>([]);
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Dragging state
   const [draggingId, setDraggingId] = useState<number | null>(null);
   const dragOffset = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  // Debounced save to artifact API
+  const saveWhiteboard = useCallback((savePaths: { x: number; y: number }[][], saveStickies: StickyNote[]) => {
+    if (projectId.startsWith("mock-")) return;
+    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    saveTimeoutRef.current = setTimeout(() => {
+      fetch(`/api/projects/${projectId}/artifacts/whiteboard/board.json`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: { paths: savePaths, stickies: saveStickies },
+        }),
+      }).catch(() => {});
+    }, 500);
+  }, [projectId]);
+
+  // Load whiteboard from artifact API
+  useEffect(() => {
+    if (projectId.startsWith("mock-")) return;
+    fetch(`/api/projects/${projectId}/artifacts/whiteboard/board.json`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.content) {
+          if (Array.isArray(data.content.paths)) {
+            paths.current = data.content.paths;
+          }
+          if (Array.isArray(data.content.stickies) && data.content.stickies.length > 0) {
+            setStickies(data.content.stickies);
+          }
+        }
+      })
+      .catch(() => {});
+  }, [projectId]);
 
   /* ── Draw grid ── */
   const drawGrid = useCallback((ctx: CanvasRenderingContext2D) => {
@@ -202,6 +239,7 @@ export default function WhiteboardPage() {
     if (isDrawing.current && currentPath.current.length > 0) {
       paths.current.push([...currentPath.current]);
       currentPath.current = [];
+      saveWhiteboard(paths.current, stickies);
     }
     isDrawing.current = false;
     lastPos.current = null;
@@ -242,6 +280,11 @@ export default function WhiteboardPage() {
 
     const handleMouseUp = () => {
       setDraggingId(null);
+      // Save after sticky note drag completes
+      setStickies((current) => {
+        saveWhiteboard(paths.current, current);
+        return current;
+      });
     };
 
     window.addEventListener("mousemove", handleMouseMove);
