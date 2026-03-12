@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 
 /* ── Types ── */
 interface Idea {
@@ -40,12 +41,28 @@ function priorityClasses(p: Idea["priority"]): string {
 }
 
 export default function IdeasPage() {
+  const params = useParams();
+  const projectId = String(params.id);
+  const [ideas, setIdeas] = useState<Idea[]>(IDEAS);
   const [activeFilter, setActiveFilter] = useState<string>("ALL");
+
+  // Load ideas from artifact API
+  useEffect(() => {
+    if (projectId.startsWith("mock-")) return;
+    fetch(`/api/projects/${projectId}/artifacts/ideas/ideas.json`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.content && Array.isArray(data.content.ideas) && data.content.ideas.length > 0) {
+          setIdeas(data.content.ideas);
+        }
+      })
+      .catch(() => { /* keep mock data */ });
+  }, [projectId]);
 
   const filtered =
     activeFilter === "ALL"
-      ? IDEAS
-      : IDEAS.filter((idea) =>
+      ? ideas
+      : ideas.filter((idea) =>
           idea.tags.some(
             (t) => t.toUpperCase() === activeFilter.toUpperCase()
           )

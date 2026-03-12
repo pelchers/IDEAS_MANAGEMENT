@@ -1,10 +1,10 @@
 import { streamText, tool, stepCountIs, convertToModelMessages } from "ai";
-import { openai } from "@ai-sdk/openai";
 import { NextResponse } from "next/server";
 import { isErrorResponse } from "@/server/auth/admin";
 import { requireEntitlement } from "@/server/billing/require-entitlement";
 import { FEATURES } from "@/server/billing/entitlements";
 import { prisma } from "@/server/db";
+import { getUserModel } from "@/server/ai/get-user-model";
 import {
   addIdeaSchema,
   executeAddIdea,
@@ -94,13 +94,14 @@ export async function POST(req: Request) {
   }
   const systemPrompt = systemParts.join("\n");
 
-  // Check for API key before attempting to call OpenAI
-  if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "sk-...") {
+  // Resolve user's AI model (OpenRouter key or fallback to server OpenAI key)
+  const userModel = await getUserModel(user.id);
+  if (!userModel) {
     return NextResponse.json(
       {
         ok: false,
         error: "ai_not_configured",
-        message: "The AI chat feature requires a valid OPENAI_API_KEY to be configured.",
+        message: "No AI provider configured. Connect your OpenRouter account or add an API key in Settings.",
         sessionId: activeSessionId,
       },
       { status: 503 }
@@ -121,7 +122,7 @@ export async function POST(req: Request) {
   // Stream response with tools
   try {
     const result = streamText({
-      model: openai("gpt-4o"),
+      model: userModel.model,
       system: systemPrompt,
       messages: modelMessages,
       tools: {

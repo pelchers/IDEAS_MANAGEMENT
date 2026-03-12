@@ -12,11 +12,22 @@ enum UserRole {
   ADMIN
 }
 
+enum AiProvider {
+  NONE
+  OPENROUTER_OAUTH
+  OPENROUTER_BYOK
+}
+
 model User {
   id              String    @id @default(cuid())
   email           String    @unique
   role            UserRole  @default(USER)
   emailVerifiedAt DateTime?
+
+  // AI configuration
+  aiProvider            AiProvider @default(NONE)
+  aiApiKeyEncrypted     String?    // AES-256-GCM encrypted API key or OAuth access token
+  openrouterRefreshToken String?   // Encrypted OAuth refresh token (for token rotation)
 
   credential         Credential?
   sessions           Session[]

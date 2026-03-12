@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,8 +14,8 @@ import { Bar } from "react-chartjs-2";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-/* ── Mock Data (from pass-1) ── */
-const ACTIVITIES = [
+/* ── Fallback mock data (shown when no real data yet) ── */
+const MOCK_ACTIVITIES = [
   { text: 'Jane Doe created project "Mobile App Redesign"', time: "10 min ago", type: "create" },
   { text: 'Alex Kim moved "Setup CI/CD" to In Progress', time: "25 min ago", type: "move" },
   { text: 'Sam Rivera added idea "Export to Notion"', time: "1 hour ago", type: "idea" },
@@ -38,6 +39,11 @@ const ACTIVITY_ICONS: Record<string, string> = {
   event: "📅",
   update: "🔄",
   system: "⚙️",
+  "project.created": "➕",
+  "project.updated": "🔄",
+  "auth.signin": "🔑",
+  "auth.signup": "👤",
+  "ai.openrouter_connected": "🤖",
 };
 
 const chartData = {
@@ -76,7 +82,7 @@ const chartOptions = {
   scales: {
     x: {
       ticks: {
-        font: { family: "'IBM Plex Mono'", weight: "600" as const, size: 11 },
+        font: { family: "'IBM Plex Mono'", weight: "bold" as const, size: 11 },
         color: "#282828",
       },
       grid: { color: "rgba(0,0,0,0.1)" },
@@ -84,7 +90,7 @@ const chartOptions = {
     },
     y: {
       ticks: {
-        font: { family: "'IBM Plex Mono'", weight: "600" as const, size: 11 },
+        font: { family: "'IBM Plex Mono'", weight: "bold" as const, size: 11 },
         color: "#282828",
       },
       grid: { color: "rgba(0,0,0,0.1)" },
@@ -93,15 +99,91 @@ const chartOptions = {
   },
 };
 
-/* ── Stats data ── */
-const STATS = [
-  { number: "47", label: "TOTAL IDEAS", trend: "+12%", up: true, variant: "border-l-watermelon" },
-  { number: "6", label: "ACTIVE PROJECTS", trend: "+2", up: true, variant: "border-l-malachite" },
-  { number: "18", label: "TASKS IN PROGRESS", trend: "-3", up: false, variant: "border-l-amethyst" },
-  { number: "89%", label: "COMPLETION RATE", trend: "+5%", up: true, variant: "border-l-cornflower" },
-];
+/* ── Types ── */
+interface DashboardStats {
+  totalIdeas: number;
+  activeProjects: number;
+  tasksInProgress: number;
+  completionRate: number;
+}
+
+interface ActivityItem {
+  text: string;
+  time: string;
+  type: string;
+}
+
+function formatRelativeTime(isoDate: string): string {
+  const diff = Date.now() - new Date(isoDate).getTime();
+  const minutes = Math.floor(diff / 60000);
+  if (minutes < 1) return "just now";
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+  const days = Math.floor(hours / 24);
+  return `${days} day${days > 1 ? "s" : ""} ago`;
+}
+
+function formatAction(action: string, actorEmail: string, metadata: unknown): string {
+  const name = actorEmail.split("@")[0];
+  const meta = metadata as Record<string, string> | null;
+  switch (action) {
+    case "project.created":
+      return `${name} created project "${meta?.name || "Untitled"}"`;
+    case "project.updated":
+      return `${name} updated project "${meta?.name || "Untitled"}"`;
+    case "project.archived":
+      return `${name} archived a project`;
+    case "auth.signin":
+      return `${name} signed in`;
+    case "auth.signup":
+      return `${name} created an account`;
+    default:
+      return `${name} performed ${action.replace(/\./g, " ")}`;
+  }
+}
 
 export default function DashboardPage() {
+  const [stats, setStats] = useState<DashboardStats>({
+    totalIdeas: 47,
+    activeProjects: 6,
+    tasksInProgress: 18,
+    completionRate: 89,
+  });
+  const [activities, setActivities] = useState<ActivityItem[]>(MOCK_ACTIVITIES);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/dashboard")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok) {
+          setStats(data.stats);
+          if (data.activity && data.activity.length > 0) {
+            setActivities(
+              data.activity.map((a: { action: string; createdAt: string; actorEmail: string; metadata: unknown }) => ({
+                text: formatAction(a.action, a.actorEmail, a.metadata),
+                time: formatRelativeTime(a.createdAt),
+                type: a.action,
+              }))
+            );
+          }
+          // If no real activity, keep mock data as demo content
+        }
+      })
+      .catch(() => {
+        // Keep mock data on error
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const STATS = [
+    { number: String(stats.totalIdeas), label: "TOTAL IDEAS", trend: "+12%", up: true, variant: "border-l-watermelon" },
+    { number: String(stats.activeProjects), label: "ACTIVE PROJECTS", trend: "+2", up: true, variant: "border-l-malachite" },
+    { number: String(stats.tasksInProgress), label: "TASKS IN PROGRESS", trend: "-3", up: false, variant: "border-l-amethyst" },
+    { number: `${stats.completionRate}%`, label: "COMPLETION RATE", trend: "+5%", up: true, variant: "border-l-cornflower" },
+  ];
+
   return (
     <div className="animate-[view-slam_0.3s_cubic-bezier(0.2,0,0,1)]">
       {/* View header */}
@@ -115,7 +197,7 @@ export default function DashboardPage() {
         {STATS.map((stat) => (
           <div
             key={stat.label}
-            className={`bg-white border-4 border-signal-black shadow-nb p-6 transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:rotate-[-1deg] hover:shadow-nb-lg border-l-8 ${stat.variant}`}
+            className={`bg-white border-4 border-signal-black shadow-nb p-6 transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:rotate-[-1deg] hover:shadow-nb-lg border-l-8 ${stat.variant} ${loading ? "animate-pulse" : ""}`}
           >
             <div className="font-bold text-3xl font-mono">{stat.number}</div>
             <div className="font-mono text-xs uppercase tracking-wider text-gray-mid mt-1">
@@ -150,11 +232,11 @@ export default function DashboardPage() {
             RECENT ACTIVITY
           </h2>
           <ul>
-            {ACTIVITIES.map((activity, i) => (
+            {activities.map((activity, i) => (
               <li
                 key={i}
                 className={`flex items-start gap-4 py-4 ${
-                  i < ACTIVITIES.length - 1 ? "border-b-2 border-dashed border-signal-black" : ""
+                  i < activities.length - 1 ? "border-b-2 border-dashed border-signal-black" : ""
                 }`}
               >
                 <span className="text-lg mt-0.5">{ACTIVITY_ICONS[activity.type] || "•"}</span>

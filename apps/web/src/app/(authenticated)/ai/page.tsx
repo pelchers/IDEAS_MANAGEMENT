@@ -8,34 +8,7 @@ interface ChatMessage {
   text: string;
 }
 
-/* ── Mock Data (from pass-1) ── */
-const INITIAL_MESSAGES: ChatMessage[] = [
-  {
-    role: "user",
-    text: "Can you help me brainstorm features for the mobile app redesign?",
-  },
-  {
-    role: "ai",
-    text: "Of course! Here are some directions to consider: gesture-based navigation, offline mode with smart sync, customizable dashboard widgets, and a quick-capture floating button for ideas on the go.",
-  },
-  {
-    role: "user",
-    text: "I like the gesture navigation idea. What patterns work best for productivity apps?",
-  },
-  {
-    role: "ai",
-    text: "For productivity apps, swipe-to-action on list items (archive, delete, flag) works great. Also consider pinch-to-zoom on kanban boards, pull-to-refresh, and a bottom sheet for quick actions. Keep gesture discoverability in mind — subtle hints on first use help.",
-  },
-  {
-    role: "user",
-    text: "What about accessibility with gesture controls?",
-  },
-  {
-    role: "ai",
-    text: "Critical point! Always provide button alternatives for every gesture. Use haptic feedback for confirmation, support VoiceOver/TalkBack for all interactive elements, and ensure tap targets are at least 44px. Consider adding a gesture guide in settings that users can reference anytime.",
-  },
-];
-
+/* ── Mock fallback responses (used when AI is not configured) ── */
 const AI_CANNED_RESPONSES = [
   "That's a great question! Let me think about that for a moment. Based on current best practices, I'd suggest starting with user research to validate assumptions before committing to a specific implementation path.",
   "Interesting approach! Here are a few considerations: scalability of the solution, maintainability of the codebase, and the learning curve for new team members. Would you like me to dive deeper into any of these?",
@@ -44,11 +17,23 @@ const AI_CANNED_RESPONSES = [
 ];
 
 export default function AiPage() {
-  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [aiStatus, setAiStatus] = useState<"checking" | "connected" | "not_configured">("checking");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  /* ── Check AI configuration on mount ── */
+  useEffect(() => {
+    fetch("/api/ai/config")
+      .then((res) => res.json())
+      .then((data) => {
+        setAiStatus(data.provider !== "NONE" ? "connected" : "not_configured");
+      })
+      .catch(() => setAiStatus("not_configured"));
+  }, []);
 
   /* ── Auto-scroll to bottom ── */
   useEffect(() => {
@@ -56,24 +41,107 @@ export default function AiPage() {
   }, [messages, isTyping]);
 
   /* ── Send message handler ── */
-  const sendMessage = useCallback(() => {
+  const sendMessage = useCallback(async () => {
     const trimmed = input.trim();
-    if (!trimmed) return;
+    if (!trimmed || isTyping) return;
 
-    setMessages((prev) => [...prev, { role: "user", text: trimmed }]);
+    const userMessage: ChatMessage = { role: "user", text: trimmed };
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI response after 800ms (pass-1 behavior)
-    setTimeout(() => {
-      const response =
-        AI_CANNED_RESPONSES[
-          Math.floor(Math.random() * AI_CANNED_RESPONSES.length)
-        ];
-      setMessages((prev) => [...prev, { role: "ai", text: response }]);
+    // Build messages array for API
+    const apiMessages = [...messages, userMessage].map((m) => ({
+      role: m.role === "user" ? "user" : "assistant",
+      content: m.text,
+    }));
+
+    try {
+      const res = await fetch("/api/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: apiMessages,
+          sessionId,
+        }),
+      });
+
+      // Capture session ID from response header
+      const newSessionId = res.headers.get("X-Session-Id");
+      if (newSessionId) setSessionId(newSessionId);
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+
+        // AI not configured — fall back to mock responses
+        if (res.status === 503 && errorData?.error === "ai_not_configured") {
+          setTimeout(() => {
+            const response = AI_CANNED_RESPONSES[Math.floor(Math.random() * AI_CANNED_RESPONSES.length)];
+            setMessages((prev) => [...prev, { role: "ai", text: response }]);
+            setIsTyping(false);
+          }, 800);
+          return;
+        }
+
+        throw new Error(errorData?.message || "AI request failed");
+      }
+
+      // Stream the response
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("No response body");
+
+      const decoder = new TextDecoder();
+      let aiText = "";
+
+      // Add empty AI message that we'll update as chunks arrive
+      setMessages((prev) => [...prev, { role: "ai", text: "" }]);
       setIsTyping(false);
-    }, 800);
-  }, [input]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        // Parse SSE data lines for text content
+        const lines = chunk.split("\n");
+        for (const line of lines) {
+          if (line.startsWith("0:")) {
+            // Vercel AI SDK text stream format: 0:"text content"
+            try {
+              const text = JSON.parse(line.slice(2));
+              if (typeof text === "string") {
+                aiText += text;
+                // Update the last message in place
+                setMessages((prev) => {
+                  const updated = [...prev];
+                  updated[updated.length - 1] = { role: "ai", text: aiText };
+                  return updated;
+                });
+              }
+            } catch {
+              // Skip unparseable chunks
+            }
+          }
+        }
+      }
+
+      // If no text was streamed, show a fallback
+      if (!aiText) {
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: "ai", text: "I received your message but couldn't generate a response. Please try again." };
+          return updated;
+        });
+      }
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : "Something went wrong";
+      setMessages((prev) => [
+        ...prev,
+        { role: "ai", text: `Error: ${errMsg}` },
+      ]);
+      setIsTyping(false);
+    }
+  }, [input, isTyping, messages, sessionId]);
 
   /* ── Enter to send, Shift+Enter for newline ── */
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -88,15 +156,44 @@ export default function AiPage() {
       {/* View header */}
       <div className="mb-8 flex items-center justify-between">
         <h1 className="nb-view-title">AI CHAT</h1>
-        <span className="font-mono text-[0.8rem] text-malachite px-3 py-1 border-2 border-malachite">
-          ● CONNECTED
+        <span
+          className={`font-mono text-[0.8rem] px-3 py-1 border-2 ${
+            aiStatus === "connected"
+              ? "text-malachite border-malachite"
+              : aiStatus === "not_configured"
+              ? "text-lemon border-lemon"
+              : "text-gray-mid border-gray-mid"
+          }`}
+        >
+          {aiStatus === "connected"
+            ? "● CONNECTED"
+            : aiStatus === "not_configured"
+            ? "● MOCK MODE"
+            : "● CHECKING..."}
         </span>
       </div>
+
+      {/* Not configured banner */}
+      {aiStatus === "not_configured" && (
+        <div className="mb-4 p-3 border-2 border-lemon bg-lemon/10 font-mono text-[0.8rem]">
+          AI not configured — using mock responses. Go to{" "}
+          <a href="/settings" className="underline font-bold">Settings</a>{" "}
+          to connect your OpenRouter account or add an API key.
+        </div>
+      )}
 
       {/* Chat container */}
       <div className="border-4 border-signal-black shadow-nb bg-white flex flex-col min-h-[400px] max-h-[calc(100vh-220px)]">
         {/* Messages area */}
         <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
+          {messages.length === 0 && (
+            <div className="flex-1 flex items-center justify-center">
+              <p className="font-mono text-gray-mid text-[0.9rem]">
+                Start a conversation...
+              </p>
+            </div>
+          )}
+
           {messages.map((msg, i) => (
             <div
               key={i}

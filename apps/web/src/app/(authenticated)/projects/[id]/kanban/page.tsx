@@ -84,9 +84,63 @@ function getTagClasses(tag: string): string {
 /* ── Component ── */
 export default function KanbanPage() {
   const params = useParams();
+  const projectId = String(params.id);
   const [columns, setColumns] = useState<Record<ColumnId, KanbanCard[]>>(
     () => structuredClone(INITIAL_CARDS)
   );
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Load board from artifact API
+  useEffect(() => {
+    if (projectId.startsWith("mock-")) return;
+    fetch(`/api/projects/${projectId}/artifacts/kanban/board.json`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.content && data.content.columns) {
+          const loaded: Record<ColumnId, KanbanCard[]> = {
+            backlog: [], todo: [], progress: [], done: [],
+          };
+          const colMap: Record<string, ColumnId> = {
+            backlog: "backlog", "Backlog": "backlog",
+            todo: "todo", "Todo": "todo", "to-do": "todo",
+            "in-progress": "progress", "In Progress": "progress", inprogress: "progress",
+            done: "done", "Done": "done", completed: "done",
+          };
+          for (const col of data.content.columns) {
+            const mappedId = colMap[col.id] || colMap[col.title] || "backlog";
+            if (Array.isArray(col.cards)) {
+              loaded[mappedId] = col.cards.map((c: { id?: number; title?: string; tags?: string[] }, i: number) => ({
+                id: c.id || i + 100,
+                title: c.title || "Untitled",
+                tags: c.tags || [],
+              }));
+            }
+          }
+          setColumns(loaded);
+        }
+      })
+      .catch(() => { /* keep mock data */ });
+  }, [projectId]);
+
+  // Debounced save to artifact API
+  const saveBoard = useCallback((newColumns: Record<ColumnId, KanbanCard[]>) => {
+    if (projectId.startsWith("mock-")) return;
+    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    saveTimeoutRef.current = setTimeout(() => {
+      const payload = {
+        columns: COLUMNS.map((col) => ({
+          id: col.id,
+          title: col.label,
+          cards: newColumns[col.id],
+        })),
+      };
+      fetch(`/api/projects/${projectId}/artifacts/kanban/board.json`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: payload }),
+      }).catch(() => { /* silently fail */ });
+    }, 500);
+  }, [projectId]);
 
   // Refs for each column's card container
   const columnRefs = useRef<Record<ColumnId, HTMLDivElement | null>>({
@@ -136,7 +190,8 @@ export default function KanbanPage() {
     }
 
     setColumns(newColumns);
-  }, [columns]);
+    saveBoard(newColumns);
+  }, [columns, saveBoard]);
 
   // Attach SortableJS after mount
   useEffect(() => {

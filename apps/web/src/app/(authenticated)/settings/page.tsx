@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 
 /* ── Toggle state for preferences ── */
 interface Preferences {
@@ -8,6 +9,13 @@ interface Preferences {
   emailNotifications: boolean;
   pushNotifications: boolean;
   soundEffects: boolean;
+}
+
+/* ── AI Config state ── */
+interface AiConfig {
+  provider: "NONE" | "OPENROUTER_OAUTH" | "OPENROUTER_BYOK";
+  maskedKey: string | null;
+  loading: boolean;
 }
 
 /* ── Integration data ── */
@@ -24,12 +32,110 @@ const INTEGRATIONS: Integration[] = [
 ];
 
 export default function SettingsPage() {
+  const searchParams = useSearchParams();
   const [preferences, setPreferences] = useState<Preferences>({
     darkMode: false,
     emailNotifications: true,
     pushNotifications: true,
     soundEffects: false,
   });
+
+  const [aiConfig, setAiConfig] = useState<AiConfig>({
+    provider: "NONE",
+    maskedKey: null,
+    loading: true,
+  });
+  const [byokKey, setByokKey] = useState("");
+  const [aiSaving, setAiSaving] = useState(false);
+  const [aiMessage, setAiMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  // Fetch AI config on mount
+  const fetchAiConfig = useCallback(async () => {
+    try {
+      const res = await fetch("/api/ai/config");
+      if (res.ok) {
+        const data = await res.json();
+        setAiConfig({
+          provider: data.provider,
+          maskedKey: data.maskedKey,
+          loading: false,
+        });
+      } else {
+        setAiConfig((prev) => ({ ...prev, loading: false }));
+      }
+    } catch {
+      setAiConfig((prev) => ({ ...prev, loading: false }));
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAiConfig();
+  }, [fetchAiConfig]);
+
+  // Handle OAuth callback messages from URL params
+  useEffect(() => {
+    if (searchParams.get("ai_connected") === "true") {
+      setAiMessage({ type: "success", text: "OpenRouter connected successfully!" });
+      fetchAiConfig();
+    }
+    if (searchParams.get("ai_error")) {
+      setAiMessage({ type: "error", text: `OpenRouter error: ${searchParams.get("ai_error")}` });
+    }
+  }, [searchParams, fetchAiConfig]);
+
+  const handleByokSave = async () => {
+    if (!byokKey.trim()) return;
+    setAiSaving(true);
+    setAiMessage(null);
+    try {
+      const res = await fetch("/api/ai/config", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ apiKey: byokKey.trim() }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setAiMessage({ type: "success", text: "API key saved successfully!" });
+        setByokKey("");
+        fetchAiConfig();
+      } else {
+        setAiMessage({ type: "error", text: data.message || "Failed to save key." });
+      }
+    } catch {
+      setAiMessage({ type: "error", text: "Network error." });
+    }
+    setAiSaving(false);
+  };
+
+  const handleDisconnect = async () => {
+    setAiSaving(true);
+    try {
+      const res = await fetch("/api/ai/config", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "disconnect" }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setAiMessage({ type: "success", text: "AI provider disconnected." });
+        fetchAiConfig();
+      }
+    } catch {
+      setAiMessage({ type: "error", text: "Failed to disconnect." });
+    }
+    setAiSaving(false);
+  };
+
+  const handleOpenRouterConnect = () => {
+    const clientId = process.env.NEXT_PUBLIC_OPENROUTER_CLIENT_ID;
+    if (!clientId) {
+      setAiMessage({ type: "error", text: "OpenRouter client ID not configured." });
+      return;
+    }
+    const callbackUrl = `${window.location.origin}/api/ai/openrouter/callback`;
+    const authUrl = `https://openrouter.ai/auth?callback_url=${encodeURIComponent(callbackUrl)}`;
+    window.location.href = authUrl;
+  };
 
   const togglePref = (key: keyof Preferences) => {
     setPreferences((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -162,6 +268,108 @@ export default function SettingsPage() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* ── AI Configuration Card ── */}
+        <div className="nb-card p-8">
+          <h2 className="nb-card-title">AI CONFIGURATION</h2>
+
+          {aiMessage && (
+            <div
+              className={`p-3 mb-4 border-2 border-signal-black font-mono text-[0.85rem] ${
+                aiMessage.type === "success"
+                  ? "bg-malachite/20 text-malachite"
+                  : "bg-watermelon/20 text-watermelon"
+              }`}
+            >
+              {aiMessage.text}
+            </div>
+          )}
+
+          {aiConfig.loading ? (
+            <p className="font-mono text-[0.85rem] text-gray-mid">Loading AI configuration...</p>
+          ) : (
+            <>
+              {/* Current status */}
+              <div className="flex items-center gap-3 mb-6 p-4 border-2 border-dashed border-signal-black">
+                <div className="text-[1.5rem]">
+                  {aiConfig.provider === "NONE" ? "⚡" : "✅"}
+                </div>
+                <div className="flex-1">
+                  <div className="font-bold text-[0.9rem] uppercase">
+                    {aiConfig.provider === "NONE"
+                      ? "NO AI PROVIDER"
+                      : aiConfig.provider === "OPENROUTER_OAUTH"
+                      ? "OPENROUTER (OAUTH)"
+                      : "OPENROUTER (API KEY)"}
+                  </div>
+                  <div
+                    className={`font-mono text-[0.75rem] ${
+                      aiConfig.provider !== "NONE" ? "text-malachite" : "text-gray-mid"
+                    }`}
+                  >
+                    {aiConfig.provider !== "NONE" && aiConfig.maskedKey
+                      ? `Key: ${aiConfig.maskedKey}`
+                      : "Not connected — AI chat will use mock responses"}
+                  </div>
+                </div>
+                {aiConfig.provider !== "NONE" && (
+                  <button
+                    className="nb-btn nb-btn--small"
+                    onClick={handleDisconnect}
+                    disabled={aiSaving}
+                  >
+                    DISCONNECT
+                  </button>
+                )}
+              </div>
+
+              {/* Connect via OpenRouter OAuth */}
+              <div className="mb-6">
+                <h3 className="font-bold text-[0.85rem] uppercase tracking-wider mb-2">
+                  OPTION 1: CONNECT OPENROUTER ACCOUNT
+                </h3>
+                <p className="font-mono text-[0.75rem] text-gray-mid mb-3 leading-relaxed">
+                  Connect your OpenRouter account for access to 200+ AI models.
+                  AI usage is billed to your OpenRouter account.
+                </p>
+                <button
+                  className="nb-btn nb-btn--primary"
+                  onClick={handleOpenRouterConnect}
+                  disabled={aiConfig.provider !== "NONE" || aiSaving}
+                >
+                  CONNECT OPENROUTER
+                </button>
+              </div>
+
+              {/* BYOK: Paste API Key */}
+              <div>
+                <h3 className="font-bold text-[0.85rem] uppercase tracking-wider mb-2">
+                  OPTION 2: PASTE API KEY
+                </h3>
+                <p className="font-mono text-[0.75rem] text-gray-mid mb-3 leading-relaxed">
+                  Paste your OpenRouter API key directly. Get one at openrouter.ai/keys.
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    type="password"
+                    className="nb-input flex-1"
+                    placeholder="sk-or-v1-..."
+                    value={byokKey}
+                    onChange={(e) => setByokKey(e.target.value)}
+                    disabled={aiConfig.provider !== "NONE" || aiSaving}
+                  />
+                  <button
+                    className="nb-btn nb-btn--primary"
+                    onClick={handleByokSave}
+                    disabled={!byokKey.trim() || aiConfig.provider !== "NONE" || aiSaving}
+                  >
+                    {aiSaving ? "SAVING..." : "SAVE KEY"}
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         {/* ── Danger Zone Card ── */}

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
-/* ── Mock Data (matching pass-1 workspace) ── */
+/* ── Constants ── */
 const TABS = ["EDITOR", "PREVIEW", "NOTES"] as const;
 type Tab = (typeof TABS)[number];
 
@@ -19,44 +20,53 @@ Key decisions made so far:
 Next steps include finalizing the component library integration and scheduling the design review with the team.`;
 
 const MOCK_NOTES = [
-  {
-    id: 1,
-    text: "Reviewed initial wireframes with the team. Agreed on tab-based navigation pattern.",
-    author: "Jane Doe",
-    time: "2026-03-08 14:22",
-  },
-  {
-    id: 2,
-    text: "API endpoints for v3 migration are now documented. Need to update rate limiting config.",
-    author: "Alex Kim",
-    time: "2026-03-07 09:15",
-  },
-  {
-    id: 3,
-    text: "Design tokens exported from Figma. Ready for component library integration.",
-    author: "Sam Rivera",
-    time: "2026-03-06 16:40",
-  },
-  {
-    id: 4,
-    text: "Performance benchmarks collected. Bundle size reduced by 18% after tree-shaking.",
-    author: "Chris Miller",
-    time: "2026-03-05 11:30",
-  },
+  { id: 1, text: "Reviewed initial wireframes with the team. Agreed on tab-based navigation pattern.", author: "Jane Doe", time: "2026-03-08 14:22" },
+  { id: 2, text: "API endpoints for v3 migration are now documented. Need to update rate limiting config.", author: "Alex Kim", time: "2026-03-07 09:15" },
+  { id: 3, text: "Design tokens exported from Figma. Ready for component library integration.", author: "Sam Rivera", time: "2026-03-06 16:40" },
+  { id: 4, text: "Performance benchmarks collected. Bundle size reduced by 18% after tree-shaking.", author: "Chris Miller", time: "2026-03-05 11:30" },
 ];
+
+interface ProjectDetail {
+  name: string;
+  description: string;
+  status: string;
+}
 
 export default function ProjectWorkspacePage() {
   const params = useParams();
+  const projectId = String(params.id);
   const [activeTab, setActiveTab] = useState<Tab>("EDITOR");
+  const [project, setProject] = useState<ProjectDetail | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/projects/${projectId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.project) {
+          setProject(data.project);
+        }
+      })
+      .catch(() => { /* keep defaults */ });
+  }, [projectId]);
 
   return (
     <div className="animate-[view-slam_0.3s_cubic-bezier(0.2,0,0,1)]">
       {/* View header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="nb-view-title">WORKSPACE</h1>
-        <span className="font-mono text-xs uppercase text-gray-mid">
-          PROJECT #{String(params.id)}
-        </span>
+        <h1 className="nb-view-title">
+          {project ? project.name.toUpperCase() : "WORKSPACE"}
+        </h1>
+        <div className="flex items-center gap-4">
+          <div className="flex gap-2">
+            <Link href={`/projects/${projectId}/kanban`} className="nb-btn nb-btn--small">KANBAN</Link>
+            <Link href={`/projects/${projectId}/whiteboard`} className="nb-btn nb-btn--small">WHITEBOARD</Link>
+            <Link href={`/projects/${projectId}/schema`} className="nb-btn nb-btn--small">SCHEMA</Link>
+            <Link href={`/projects/${projectId}/ideas`} className="nb-btn nb-btn--small">IDEAS</Link>
+          </div>
+          <span className="font-mono text-xs uppercase text-gray-mid">
+            {project ? project.status : `PROJECT #${projectId}`}
+          </span>
+        </div>
       </div>
 
       {/* Tabs */}
