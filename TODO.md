@@ -7,7 +7,6 @@
 
 ## IN PROGRESS
 
-- [ ] Remaining backend wiring — whiteboard, schema, directory tree, settings persistence
 - [ ] Stripe billing UI + wiring (Session 10) — **needs Stripe test keys from user**
 
 ---
@@ -58,26 +57,27 @@
 - [x] Drag state auto-saves via debounced PUT to artifact API
 - [x] Playwright screenshots: 2 PNGs
 
-### Session 6 — Whiteboard (Frontend Only)
+### Session 6 — Whiteboard (Wired)
 - [x] HTML5 canvas with 30px grid background, freehand drawing (3px strokes)
 - [x] 5 tool buttons (select/draw/rect/text/sticky) with active state
 - [x] 4 draggable sticky notes in lemon/watermelon/malachite/amethyst
-- [ ] **NOT WIRED**: Drawing and sticky positions don't persist
+- [x] Load/save drawings + sticky positions via artifact API (debounced auto-save)
 - [x] Playwright screenshots: 2 PNGs
 
-### Session 7 — Schema Planner (Frontend Only)
+### Session 7 — Schema Planner (Wired)
 - [x] 4 entity cards (Users/Projects/Ideas/Tasks) with field lists
 - [x] PK/FK/UQ badges with color coding, IBM Plex Mono field names
 - [x] Rough.js hand-drawn relation lines with circle endpoints
-- [ ] **NOT WIRED**: Static mock entities, no persistence
+- [x] Load entities from artifact API (falls back to mock if empty)
 - [x] Playwright screenshots: 2 PNGs
 
-### Session 8 — Simple Views (Partially Wired)
+### Session 8 — Simple Views (Wired)
 - [x] Ideas: 8 mock idea cards, 5 filter chips with working filter logic, priority badges
 - [x] Ideas wired to load from artifact API (falls back to mock if empty)
 - [x] Directory Tree: expandable file tree with code preview panel
+- [x] Directory tree wired to load from artifact API
 - [x] Settings: Profile form, preference toggles, integrations list, danger zone
-- [ ] **NOT WIRED**: Directory tree, settings profile save, preference persistence
+- [x] Profile email loaded from /api/auth/me, saved via PUT /api/auth/me
 - [x] Playwright screenshots: 6 PNGs
 
 ### Session 9 — AI Chat (Wired)
