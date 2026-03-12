@@ -4,6 +4,8 @@ Session: Billing and Subscriptions
 Started: 2026-03-10
 Design Fidelity: Faithful (pass-1 brutalism-neobrutalism) for UI elements
 
+> **Note:** Stripe billing covers app subscription tiers only (Free/Pro/Team). AI costs are handled separately by OpenRouter — users pay for AI usage through their own OpenRouter account, not through the app's Stripe billing.
+
 ---
 
 ## Phase 1 — Billing UI in Settings
