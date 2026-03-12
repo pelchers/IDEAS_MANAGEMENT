@@ -7,14 +7,13 @@
 
 ## IN PROGRESS
 
-- [ ] Backend wiring — connect all frontend views to existing API routes (Sessions 4-8)
-- [ ] OpenRouter AI integration — OAuth PKCE flow + BYOK fallback (Session 9)
+- [ ] Remaining backend wiring — whiteboard, schema, directory tree, settings persistence
+- [ ] Stripe billing UI + wiring (Session 10) — **needs Stripe test keys from user**
 
 ---
 
 ## TODO NEXT
 
-- [ ] Stripe billing UI + wiring (Session 10) — **needs Stripe test keys from user**
 - [ ] Sync & conflicts UI (Session 11)
 - [ ] Hardening — cyclic E2E validation, security audit, UX polish (Session 12)
 - [ ] Visual QA pass — compare every view against pass-1 concept screenshots
@@ -42,18 +41,21 @@
 - [x] proxy.ts route protection confirmed working (307 redirect to /signin)
 - [x] Playwright screenshots: 4 PNGs (signin/signup x desktop/mobile)
 
-### Session 4 — Dashboard & Projects (Frontend Only)
+### Session 4 — Dashboard & Projects (Wired)
 - [x] Dashboard: 4 stat cards with colored borders, Chart.js bar chart, 10-item activity feed
 - [x] Projects: 6 mock project cards in responsive grid, status badges, progress bars
 - [x] Workspace: project detail with Editor/Preview/Notes tabs, toolbar buttons
-- [ ] **NOT WIRED**: Stats, activity, projects all use hardcoded mock data
+- [x] Dashboard wired to /api/dashboard (stats from Prisma, audit log activity feed)
+- [x] Projects wired to GET /api/projects, create form wired to POST /api/projects
+- [x] Workspace loads real project data by ID from GET /api/projects/[id]
 - [x] Playwright screenshots: 6 PNGs
 
-### Session 5 — Kanban Board (Frontend Only)
+### Session 5 — Kanban Board (Wired)
 - [x] 4 columns (Backlog/To Do/In Progress/Done) with pass-1 header colors
 - [x] 12 mock cards with SortableJS drag-and-drop between columns
 - [x] Tag badges (feature/bug/urgent) with color coding
-- [ ] **NOT WIRED**: Cards are hardcoded, drag state doesn't persist
+- [x] Board loads from artifact API (GET /api/projects/[id]/artifacts/kanban/board.json)
+- [x] Drag state auto-saves via debounced PUT to artifact API
 - [x] Playwright screenshots: 2 PNGs
 
 ### Session 6 — Whiteboard (Frontend Only)
@@ -70,18 +72,25 @@
 - [ ] **NOT WIRED**: Static mock entities, no persistence
 - [x] Playwright screenshots: 2 PNGs
 
-### Session 8 — Simple Views (Frontend Only)
+### Session 8 — Simple Views (Partially Wired)
 - [x] Ideas: 8 mock idea cards, 5 filter chips with working filter logic, priority badges
+- [x] Ideas wired to load from artifact API (falls back to mock if empty)
 - [x] Directory Tree: expandable file tree with code preview panel
 - [x] Settings: Profile form, preference toggles, integrations list, danger zone
-- [ ] **NOT WIRED**: All mock data, settings don't save
+- [ ] **NOT WIRED**: Directory tree, settings profile save, preference persistence
 - [x] Playwright screenshots: 6 PNGs
 
-### Session 9 — AI Chat (Frontend Only)
+### Session 9 — AI Chat (Wired)
 - [x] Message thread with user/AI message styling (watermelon/white bubbles)
 - [x] Avatar circles (JD for user, AI for bot), auto-scroll
 - [x] Text input with Enter to send, Shift+Enter for newline
-- [ ] **NOT WIRED**: Uses simulated canned responses, no real AI integration
+- [x] OpenRouter AI SDK provider installed
+- [x] AI chat wired to real streaming API (POST /api/ai/chat)
+- [x] Falls back to mock responses when no AI provider configured (503 fallback)
+- [x] AI Configuration card in Settings: OpenRouter OAuth connect + BYOK paste
+- [x] AES-256-GCM encrypted API key storage in User model
+- [x] OpenRouter OAuth PKCE callback route (/api/ai/openrouter/callback)
+- [x] BYOK save/disconnect route (/api/ai/config GET/PUT)
 - [x] Playwright screenshots: 2 PNGs
 
 ### Infrastructure
@@ -89,6 +98,8 @@
 - [x] Orchestration system with frontend-first build order, design fidelity inference
 - [x] 24 validation screenshots captured across all views
 - [x] AI integration decision: OpenRouter OAuth PKCE (primary) + BYOK (fallback)
+- [x] Prisma migration: aiProvider enum, encrypted key fields on User model
+- [x] Dashboard API route (GET /api/dashboard) for stats + activity
 
 ---
 
