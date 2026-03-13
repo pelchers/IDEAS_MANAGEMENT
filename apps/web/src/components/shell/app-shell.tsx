@@ -8,7 +8,15 @@ import { usePathname } from "next/navigation";
  * Navigation links matching pass-1 numbered nav (01-10).
  * Project-specific routes (03-08) use a placeholder project ID.
  */
-const NAV_LINKS = [
+interface NavLink {
+  num: string;
+  label: string;
+  href: string;
+  projectRoute?: boolean;
+  suffix?: string;
+}
+
+const NAV_LINKS: NavLink[] = [
   { num: "01", label: "Dashboard", href: "/dashboard" },
   { num: "02", label: "Projects", href: "/projects" },
   { num: "03", label: "Workspace", href: "/projects", projectRoute: true },
@@ -19,7 +27,15 @@ const NAV_LINKS = [
   { num: "08", label: "Ideas", href: "/projects", projectRoute: true, suffix: "/ideas" },
   { num: "09", label: "AI Chat", href: "/ai" },
   { num: "10", label: "Settings", href: "/settings" },
-] as const;
+];
+
+/**
+ * Extract the current project ID from a pathname like /projects/abc123 or /projects/abc123/kanban.
+ */
+function extractProjectId(pathname: string): string | null {
+  const match = pathname.match(/^\/projects\/([^/]+)/);
+  return match ? match[1] : null;
+}
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +43,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   const openDrawer = useCallback(() => setIsOpen(true), []);
   const closeDrawer = useCallback(() => setIsOpen(false), []);
+
+  // Resolve the current project ID so project-scoped links (03-08) navigate correctly
+  const currentProjectId = extractProjectId(pathname);
 
   // Close on Escape key
   useEffect(() => {
@@ -39,18 +58,30 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, closeDrawer]);
 
+  /**
+   * Resolve the href for a nav link.
+   * Project-scoped links (03-08) use the current project ID if available.
+   */
+  function resolveHref(link: NavLink): string {
+    if (link.projectRoute && currentProjectId) {
+      return `/projects/${currentProjectId}${link.suffix || ""}`;
+    }
+    if (link.projectRoute) {
+      // No project selected — go to projects list
+      return "/projects";
+    }
+    return link.href;
+  }
+
   // Determine if a nav link is active based on current pathname
-  function isActive(link: (typeof NAV_LINKS)[number]): boolean {
+  function isActive(link: NavLink): boolean {
     if (link.num === "02") {
-      // Projects list — exact match only
       return pathname === "/projects";
     }
     if (link.projectRoute) {
-      // Project-specific routes
       if (link.suffix) {
         return pathname.includes(link.suffix);
       }
-      // Workspace (03) — matches /projects/[id] exactly (no trailing segment)
       const projectDetailPattern = /^\/projects\/[^/]+$/;
       return projectDetailPattern.test(pathname);
     }
@@ -62,41 +93,32 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* ============================================ */}
       {/* HAMBURGER BUTTON (always visible)            */}
       {/* ============================================ */}
-      <button
-        className={`
-          fixed top-[10px] left-[12px] z-[1100]
-          w-12 h-12
-          bg-surface
-          border-[4px] border-signal-black
-          shadow-nb
-          cursor-pointer
-          flex flex-col items-center justify-center
-          gap-[5px] p-[10px]
-          transition-[box-shadow,transform] duration-150 ease-linear
-          hover:shadow-nb-lg hover:-translate-x-px hover:-translate-y-px
-          active:shadow-nb-sm active:translate-x-0.5 active:translate-y-0.5
-          focus-visible:outline-3 focus-visible:outline-watermelon focus-visible:outline-offset-2
-        `}
-        onClick={() => (isOpen ? closeDrawer() : openDrawer())}
-        aria-label="Open navigation menu"
-        aria-expanded={isOpen}
-      >
-        <span
-          className={`block w-6 h-[3px] bg-signal-black transition-[transform,opacity] duration-250 ease-linear ${
-            isOpen ? "rotate-45 translate-x-[5px] translate-y-[6px]" : ""
-          }`}
-        />
-        <span
-          className={`block w-6 h-[3px] bg-signal-black transition-[transform,opacity] duration-250 ease-linear ${
-            isOpen ? "opacity-0" : ""
-          }`}
-        />
-        <span
-          className={`block w-6 h-[3px] bg-signal-black transition-[transform,opacity] duration-250 ease-linear ${
-            isOpen ? "-rotate-45 translate-x-[5px] -translate-y-[6px]" : ""
-          }`}
-        />
-      </button>
+      {/* Hamburger — hidden when drawer is open (drawer has its own close button) */}
+      {!isOpen && (
+        <button
+          className="
+            fixed top-[10px] left-[12px] z-[1100]
+            w-12 h-12
+            bg-surface
+            border-[4px] border-signal-black
+            shadow-nb
+            cursor-pointer
+            flex flex-col items-center justify-center
+            gap-[5px] p-[10px]
+            transition-[box-shadow,transform] duration-150 ease-linear
+            hover:shadow-nb-lg hover:-translate-x-px hover:-translate-y-px
+            active:shadow-nb-sm active:translate-x-0.5 active:translate-y-0.5
+            focus-visible:outline-3 focus-visible:outline-watermelon focus-visible:outline-offset-2
+          "
+          onClick={openDrawer}
+          aria-label="Open navigation menu"
+          aria-expanded={false}
+        >
+          <span className="block w-6 h-[3px] bg-signal-black" />
+          <span className="block w-6 h-[3px] bg-signal-black" />
+          <span className="block w-6 h-[3px] bg-signal-black" />
+        </button>
+      )}
 
       {/* ============================================ */}
       {/* NAVIGATION DRAWER                            */}
@@ -149,12 +171,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <ul className="list-none flex-1 py-2">
           {NAV_LINKS.map((link) => {
             const active = isActive(link);
-            const dimmed = link.projectRoute;
+            const needsProject = link.projectRoute && !currentProjectId;
+            const href = resolveHref(link);
 
             return (
               <li key={link.num}>
                 <Link
-                  href={link.href}
+                  href={href}
                   onClick={closeDrawer}
                   className={`
                     flex items-center gap-4
@@ -167,8 +190,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     hover:bg-creamy-milk hover:translate-x-1
                     focus-visible:outline-3 focus-visible:outline-watermelon focus-visible:outline-offset-[-3px]
                     ${active ? "bg-signal-black text-malachite hover:bg-gray-dark" : ""}
-                    ${dimmed && !active ? "opacity-60" : ""}
+                    ${needsProject ? "opacity-40 pointer-events-none" : ""}
                   `}
+                  aria-disabled={needsProject}
+                  tabIndex={needsProject ? -1 : undefined}
                 >
                   <span
                     className={`
@@ -179,6 +204,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     {link.num}
                   </span>
                   {link.label}
+                  {needsProject && (
+                    <span className="font-mono text-[0.6rem] text-gray-mid ml-auto">
+                      select project
+                    </span>
+                  )}
                 </Link>
               </li>
             );

@@ -63,6 +63,7 @@ export default function ProjectsPage() {
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDesc, setNewProjectDesc] = useState("");
   const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
 
   const fetchProjects = () => {
     fetch("/api/projects")
@@ -87,6 +88,7 @@ export default function ProjectsPage() {
     e.preventDefault();
     if (!newProjectName.trim()) return;
     setCreating(true);
+    setCreateError(null);
     try {
       const res = await fetch("/api/projects", {
         method: "POST",
@@ -102,9 +104,11 @@ export default function ProjectsPage() {
         setNewProjectDesc("");
         setShowCreateForm(false);
         fetchProjects();
+      } else {
+        setCreateError(data.error || "Failed to create project");
       }
     } catch {
-      // Silently fail
+      setCreateError("Network error — could not create project");
     }
     setCreating(false);
   };
@@ -128,6 +132,11 @@ export default function ProjectsPage() {
           onSubmit={handleCreate}
           className="nb-card p-6 mb-6 flex flex-col gap-4"
         >
+          {createError && (
+            <div className="p-3 border-2 border-signal-black bg-watermelon/20 text-watermelon font-mono text-[0.85rem]">
+              {createError}
+            </div>
+          )}
           <div>
             <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">
               PROJECT NAME
