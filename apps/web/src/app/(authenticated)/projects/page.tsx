@@ -3,16 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-/* ── Fallback mock data (shown when no real projects exist) ── */
-const MOCK_PROJECTS = [
-  { id: "mock-1", title: "MOBILE APP REDESIGN", desc: "Complete overhaul of the mobile experience with new navigation patterns and gesture controls.", status: "active" as const, progress: 72, tasks: 24, dueDate: "2026-04-15" },
-  { id: "mock-2", title: "API V3 MIGRATION", desc: "Migrate all endpoints to v3 with improved rate limiting and authentication flow.", status: "active" as const, progress: 45, tasks: 18, dueDate: "2026-05-01" },
-  { id: "mock-3", title: "DESIGN SYSTEM 2.0", desc: "New component library with brutalist design tokens and accessibility-first approach.", status: "review" as const, progress: 88, tasks: 32, dueDate: "2026-03-20" },
-  { id: "mock-4", title: "AI INTEGRATION", desc: "Natural language processing pipeline for idea categorization and smart suggestions.", status: "planning" as const, progress: 15, tasks: 12, dueDate: "2026-06-01" },
-  { id: "mock-5", title: "PERFORMANCE AUDIT", desc: "Core Web Vitals optimization, bundle splitting, and lazy loading implementation.", status: "active" as const, progress: 60, tasks: 8, dueDate: "2026-03-30" },
-  { id: "mock-6", title: "ONBOARDING FLOW", desc: "Interactive tutorial system for new users with progressive disclosure of features.", status: "paused" as const, progress: 30, tasks: 14, dueDate: "2026-07-01" },
-];
-
 type ProjectStatus = "active" | "review" | "planning" | "paused";
 
 const STATUS_CLASSES: Record<ProjectStatus, string> = {
@@ -68,7 +58,7 @@ function selectProject(id: string, name: string) {
 }
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState<ProjectData[]>(MOCK_PROJECTS);
+  const [projects, setProjects] = useState<ProjectData[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
@@ -92,7 +82,7 @@ export default function ProjectsPage() {
     fetch("/api/projects")
       .then((res) => res.json())
       .then((data) => {
-        if (data.ok && data.projects && data.projects.length > 0) {
+        if (data.ok && data.projects) {
           setProjects(data.projects.map(mapApiProject));
         }
       })
@@ -206,6 +196,23 @@ export default function ProjectsPage() {
       )}
 
       {/* Projects grid */}
+      {!loading && projects.length === 0 && (
+        <div style={{
+          textAlign: "center", padding: "80px 20px",
+          fontFamily: "monospace", color: "#999",
+          border: "4px solid #1a1a1a", background: "#fff",
+          boxShadow: "4px 4px 0 #1a1a1a",
+        }}>
+          <div style={{ fontSize: "2.5rem", marginBottom: "16px" }}>[ ]</div>
+          <div style={{ fontSize: "0.9rem", textTransform: "uppercase", marginBottom: "8px" }}>
+            No projects yet
+          </div>
+          <div style={{ fontSize: "0.8rem" }}>
+            Click &quot;+ NEW PROJECT&quot; above to get started.
+          </div>
+        </div>
+      )}
+
       <div className={`grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6 ${loading ? "animate-pulse" : ""}`}>
         {projects.map((project) => (
           <div
