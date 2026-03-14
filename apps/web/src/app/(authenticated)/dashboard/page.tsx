@@ -1,108 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
-/* ── Fallback mock data (shown when no real data yet) ── */
-const MOCK_ACTIVITIES = [
-  { text: 'Jane Doe created project "Mobile App Redesign"', time: "10 min ago", type: "create" },
-  { text: 'Alex Kim moved "Setup CI/CD" to In Progress', time: "25 min ago", type: "move" },
-  { text: 'Sam Rivera added idea "Export to Notion"', time: "1 hour ago", type: "idea" },
-  { text: "Design System 2.0 marked for review", time: "2 hours ago", type: "review" },
-  { text: "Chris Miller closed 3 tasks in Performance Audit", time: "3 hours ago", type: "complete" },
-  { text: 'New comment on "AI Integration" project', time: "4 hours ago", type: "comment" },
-  { text: 'Pat Lee shared whiteboard "Auth Flow v2"', time: "5 hours ago", type: "share" },
-  { text: "Weekly sprint planning meeting scheduled", time: "6 hours ago", type: "event" },
-  { text: "Alex Kim updated schema for Tasks entity", time: "8 hours ago", type: "update" },
-  { text: "Backup completed successfully", time: "12 hours ago", type: "system" },
-];
-
-const ACTIVITY_ICONS: Record<string, string> = {
-  create: "➕",
-  move: "↔️",
-  idea: "💡",
-  review: "👁️",
-  complete: "✅",
-  comment: "💬",
-  share: "🔗",
-  event: "📅",
-  update: "🔄",
-  system: "⚙️",
-  "project.created": "➕",
-  "project.updated": "🔄",
-  "auth.signin": "🔑",
-  "auth.signup": "👤",
-  "ai.openrouter_connected": "🤖",
-};
-
-const chartData = {
-  labels: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
-  datasets: [
-    {
-      label: "Ideas Created",
-      data: [4, 7, 3, 8, 5, 2, 6],
-      backgroundColor: "#FF5E54",
-      borderColor: "#282828",
-      borderWidth: 3,
-    },
-    {
-      label: "Tasks Completed",
-      data: [6, 3, 5, 4, 9, 1, 4],
-      backgroundColor: "#2BBF5D",
-      borderColor: "#282828",
-      borderWidth: 3,
-    },
-  ],
-};
-
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      labels: {
-        font: { family: "'Space Grotesk'", weight: "bold" as const, size: 12 },
-        color: "#282828",
-        usePointStyle: true,
-        padding: 16,
-      },
-    },
-  },
-  scales: {
-    x: {
-      ticks: {
-        font: { family: "'IBM Plex Mono'", weight: "bold" as const, size: 11 },
-        color: "#282828",
-      },
-      grid: { color: "rgba(0,0,0,0.1)" },
-      border: { color: "#282828", width: 3 },
-    },
-    y: {
-      ticks: {
-        font: { family: "'IBM Plex Mono'", weight: "bold" as const, size: 11 },
-        color: "#282828",
-      },
-      grid: { color: "rgba(0,0,0,0.1)" },
-      border: { color: "#282828", width: 3 },
-    },
-  },
-};
 
 /* ── Types ── */
 interface DashboardStats {
   totalIdeas: number;
   activeProjects: number;
+  totalProjects: number;
   tasksInProgress: number;
   completionRate: number;
 }
@@ -112,6 +16,15 @@ interface ActivityItem {
   time: string;
   type: string;
 }
+
+const ACTIVITY_ICONS: Record<string, string> = {
+  "project.created": "+",
+  "project.updated": "~",
+  "project.archived": "x",
+  "auth.signin": ">",
+  "auth.signup": "*",
+  "ai.openrouter_connected": "#",
+};
 
 function formatRelativeTime(isoDate: string): string {
   const diff = Date.now() - new Date(isoDate).getTime();
@@ -144,13 +57,8 @@ function formatAction(action: string, actorEmail: string, metadata: unknown): st
 }
 
 export default function DashboardPage() {
-  const [stats, setStats] = useState<DashboardStats>({
-    totalIdeas: 47,
-    activeProjects: 6,
-    tasksInProgress: 18,
-    completionRate: 89,
-  });
-  const [activities, setActivities] = useState<ActivityItem[]>(MOCK_ACTIVITIES);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [activities, setActivities] = useState<ActivityItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -168,85 +76,274 @@ export default function DashboardPage() {
               }))
             );
           }
-          // If no real activity, keep mock data as demo content
         }
       })
-      .catch(() => {
-        // Keep mock data on error
-      })
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
-  const STATS = [
-    { number: String(stats.totalIdeas), label: "TOTAL IDEAS", trend: "+12%", up: true, variant: "border-l-watermelon" },
-    { number: String(stats.activeProjects), label: "ACTIVE PROJECTS", trend: "+2", up: true, variant: "border-l-malachite" },
-    { number: String(stats.tasksInProgress), label: "TASKS IN PROGRESS", trend: "-3", up: false, variant: "border-l-amethyst" },
-    { number: `${stats.completionRate}%`, label: "COMPLETION RATE", trend: "+5%", up: true, variant: "border-l-cornflower" },
+  const displayStats = stats || { totalIdeas: 0, activeProjects: 0, totalProjects: 0, tasksInProgress: 0, completionRate: 0 };
+
+  const STATS_CARDS = [
+    { number: String(displayStats.totalIdeas), label: "TOTAL IDEAS", variant: "watermelon" },
+    { number: String(displayStats.activeProjects), label: "ACTIVE PROJECTS", variant: "malachite" },
+    { number: String(displayStats.tasksInProgress), label: "TASKS IN PROGRESS", variant: "amethyst" },
+    { number: `${displayStats.completionRate}%`, label: "COMPLETION RATE", variant: "cornflower" },
   ];
+
+  const variantColors: Record<string, string> = {
+    watermelon: "#FF5E54",
+    malachite: "#2BBF5D",
+    amethyst: "#9B59B6",
+    cornflower: "#6495ED",
+  };
 
   return (
     <div className="animate-[view-slam_0.3s_cubic-bezier(0.2,0,0,1)]">
       {/* View header */}
-      <div className="mb-8">
+      <div style={{ marginBottom: "32px" }}>
         <h1 className="nb-view-title">DASHBOARD</h1>
-        <p className="nb-view-subtitle mt-1">System overview and recent activity</p>
+        <p style={{
+          fontFamily: "monospace", fontSize: "0.8rem", textTransform: "uppercase",
+          color: "#999", marginTop: "4px",
+        }}>
+          System overview and recent activity
+        </p>
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {STATS.map((stat) => (
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+        gap: "24px",
+        marginBottom: "32px",
+      }}>
+        {STATS_CARDS.map((stat) => (
           <div
             key={stat.label}
-            className={`bg-white border-4 border-signal-black shadow-nb p-6 transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:rotate-[-1deg] hover:shadow-nb-lg border-l-8 ${stat.variant} ${loading ? "animate-pulse" : ""}`}
+            style={{
+              background: "#fff",
+              border: "4px solid #1a1a1a",
+              borderLeft: `8px solid ${variantColors[stat.variant]}`,
+              boxShadow: "4px 4px 0 #1a1a1a",
+              padding: "24px",
+              transition: "all 0.15s ease",
+              cursor: "default",
+              opacity: loading ? 0.5 : 1,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translate(-2px, -2px) rotate(-1deg)";
+              e.currentTarget.style.boxShadow = "6px 6px 0 #1a1a1a";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "none";
+              e.currentTarget.style.boxShadow = "4px 4px 0 #1a1a1a";
+            }}
           >
-            <div className="font-bold text-3xl font-mono">{stat.number}</div>
-            <div className="font-mono text-xs uppercase tracking-wider text-gray-mid mt-1">
-              {stat.label}
+            <div style={{
+              fontWeight: 800, fontSize: "2rem", fontFamily: "monospace",
+            }}>
+              {stat.number}
             </div>
-            <div
-              className={`font-mono text-sm font-semibold mt-2 ${
-                stat.up ? "text-malachite" : "text-watermelon"
-              }`}
-            >
-              {stat.trend}
+            <div style={{
+              fontFamily: "monospace", fontSize: "0.7rem", textTransform: "uppercase",
+              letterSpacing: "0.05em", color: "#999", marginTop: "4px",
+            }}>
+              {stat.label}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Dashboard grid: chart + activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-6">
-        {/* Chart card */}
-        <div className="nb-card">
-          <h2 className="font-bold uppercase tracking-wider text-lg mb-4 pb-2 border-b-2 border-signal-black">
-            WEEKLY ACTIVITY
+      {/* Dashboard grid: summary + activity */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "1.5fr 1fr",
+        gap: "24px",
+      }}>
+        {/* Summary card */}
+        <div style={{
+          border: "4px solid #1a1a1a",
+          background: "#fff",
+          boxShadow: "4px 4px 0 #1a1a1a",
+          padding: "24px",
+        }}>
+          <h2 style={{
+            fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em",
+            fontSize: "1.1rem", marginBottom: "16px", paddingBottom: "8px",
+            borderBottom: "2px solid #1a1a1a",
+          }}>
+            PROJECT SUMMARY
           </h2>
-          <div className="h-[300px]">
-            <Bar data={chartData} options={chartOptions} />
-          </div>
+
+          {loading ? (
+            <div style={{
+              textAlign: "center", padding: "40px", fontFamily: "monospace",
+              color: "#999", textTransform: "uppercase", fontSize: "0.85rem",
+            }}>
+              Loading...
+            </div>
+          ) : displayStats.totalProjects === 0 ? (
+            <div style={{
+              textAlign: "center", padding: "60px 20px",
+              fontFamily: "monospace", color: "#999",
+            }}>
+              <div style={{ fontSize: "2rem", marginBottom: "12px" }}>[ ]</div>
+              <div style={{ fontSize: "0.85rem", textTransform: "uppercase" }}>
+                No projects yet. Create one to get started.
+              </div>
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              {/* Bar-style breakdown */}
+              <div>
+                <div style={{
+                  display: "flex", justifyContent: "space-between",
+                  fontFamily: "monospace", fontSize: "0.8rem", fontWeight: 700,
+                  textTransform: "uppercase", marginBottom: "8px",
+                }}>
+                  <span>Projects</span>
+                  <span>{displayStats.totalProjects} total / {displayStats.activeProjects} active</span>
+                </div>
+                <div style={{
+                  height: "24px", border: "3px solid #1a1a1a", background: "#f5f5f5",
+                  position: "relative", overflow: "hidden",
+                }}>
+                  <div style={{
+                    height: "100%",
+                    width: displayStats.totalProjects > 0
+                      ? `${(displayStats.activeProjects / displayStats.totalProjects) * 100}%`
+                      : "0%",
+                    background: "#2BBF5D",
+                    transition: "width 0.5s ease",
+                  }} />
+                </div>
+              </div>
+
+              <div>
+                <div style={{
+                  display: "flex", justifyContent: "space-between",
+                  fontFamily: "monospace", fontSize: "0.8rem", fontWeight: 700,
+                  textTransform: "uppercase", marginBottom: "8px",
+                }}>
+                  <span>Task Completion</span>
+                  <span>{displayStats.completionRate}%</span>
+                </div>
+                <div style={{
+                  height: "24px", border: "3px solid #1a1a1a", background: "#f5f5f5",
+                  position: "relative", overflow: "hidden",
+                }}>
+                  <div style={{
+                    height: "100%",
+                    width: `${displayStats.completionRate}%`,
+                    background: "#6495ED",
+                    transition: "width 0.5s ease",
+                  }} />
+                </div>
+              </div>
+
+              <div style={{
+                display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px",
+                marginTop: "8px",
+              }}>
+                <div style={{
+                  border: "3px solid #1a1a1a", padding: "16px", background: "#faf9f6",
+                  textAlign: "center",
+                }}>
+                  <div style={{ fontWeight: 800, fontSize: "1.5rem", fontFamily: "monospace" }}>
+                    {displayStats.totalIdeas}
+                  </div>
+                  <div style={{
+                    fontFamily: "monospace", fontSize: "0.65rem", textTransform: "uppercase",
+                    color: "#999", marginTop: "2px",
+                  }}>
+                    Ideas Captured
+                  </div>
+                </div>
+                <div style={{
+                  border: "3px solid #1a1a1a", padding: "16px", background: "#faf9f6",
+                  textAlign: "center",
+                }}>
+                  <div style={{ fontWeight: 800, fontSize: "1.5rem", fontFamily: "monospace" }}>
+                    {displayStats.tasksInProgress}
+                  </div>
+                  <div style={{
+                    fontFamily: "monospace", fontSize: "0.65rem", textTransform: "uppercase",
+                    color: "#999", marginTop: "2px",
+                  }}>
+                    Tasks Active
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Activity card */}
-        <div className="nb-card">
-          <h2 className="font-bold uppercase tracking-wider text-lg mb-4 pb-2 border-b-2 border-signal-black">
+        <div style={{
+          border: "4px solid #1a1a1a",
+          background: "#fff",
+          boxShadow: "4px 4px 0 #1a1a1a",
+          padding: "24px",
+        }}>
+          <h2 style={{
+            fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em",
+            fontSize: "1.1rem", marginBottom: "16px", paddingBottom: "8px",
+            borderBottom: "2px solid #1a1a1a",
+          }}>
             RECENT ACTIVITY
           </h2>
-          <ul>
-            {activities.map((activity, i) => (
-              <li
-                key={i}
-                className={`flex items-start gap-4 py-4 ${
-                  i < activities.length - 1 ? "border-b-2 border-dashed border-signal-black" : ""
-                }`}
-              >
-                <span className="text-lg mt-0.5">{ACTIVITY_ICONS[activity.type] || "•"}</span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium leading-snug">{activity.text}</p>
-                  <p className="font-mono text-xs text-gray-mid mt-1 uppercase">{activity.time}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
+
+          {loading ? (
+            <div style={{
+              textAlign: "center", padding: "40px", fontFamily: "monospace",
+              color: "#999", textTransform: "uppercase", fontSize: "0.85rem",
+            }}>
+              Loading...
+            </div>
+          ) : activities.length === 0 ? (
+            <div style={{
+              textAlign: "center", padding: "60px 20px",
+              fontFamily: "monospace", color: "#999",
+            }}>
+              <div style={{ fontSize: "2rem", marginBottom: "12px" }}>[ ]</div>
+              <div style={{ fontSize: "0.85rem", textTransform: "uppercase" }}>
+                No activity yet
+              </div>
+            </div>
+          ) : (
+            <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+              {activities.map((activity, i) => (
+                <li
+                  key={i}
+                  style={{
+                    display: "flex", alignItems: "flex-start", gap: "12px",
+                    padding: "12px 0",
+                    borderBottom: i < activities.length - 1 ? "2px dashed #1a1a1a" : "none",
+                  }}
+                >
+                  <span style={{
+                    fontFamily: "monospace", fontWeight: 800, fontSize: "1rem",
+                    marginTop: "2px", width: "20px", textAlign: "center",
+                    flexShrink: 0,
+                  }}>
+                    {ACTIVITY_ICONS[activity.type] || ">"}
+                  </span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: "0.9rem", fontWeight: 500, lineHeight: 1.4 }}>
+                      {activity.text}
+                    </p>
+                    <p style={{
+                      fontFamily: "monospace", fontSize: "0.7rem", color: "#999",
+                      marginTop: "4px", textTransform: "uppercase",
+                    }}>
+                      {activity.time}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>
