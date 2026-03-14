@@ -50,3 +50,5 @@ Build the whiteboard view matching pass-1 concept. Wire to artifact CRUD endpoin
 - `.adr/history/feature-views/phase_3_review.md`
 - `.docs/validation/feature-views/phase_3/user-story-report.md`
 - Updated primary task list
+
+> **ACCURACY NOTE (2026-03-12):** Tasks 3-5 were marked complete but are partially non-functional. Only freehand drawing and sticky note dragging work and save correctly. Rectangle, text box, line/connector, select, and tool property controls (color picker, border width) are non-functional. Corrected in Phase B Tier 1 remediation.

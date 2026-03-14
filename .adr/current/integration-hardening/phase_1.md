@@ -10,6 +10,8 @@ All 3 prior sessions complete:
 - frontend-shell: Design system (3045 lines), app shell, auth pages, dashboard
 - feature-views: All 8 feature views built (kanban, ideas, whiteboard, schema, directory-tree, AI chat, settings, conflicts)
 
+> **ACCURACY NOTE (2026-03-12):** The feature-views summary above overstates completion. While all views render, many are display-only or use hardcoded/mock data. Specifically: kanban lacks card CRUD; ideas lack CRUD; whiteboard only supports freehand draw and sticky notes (not rect/text/select/lines); schema planner is display-only with hardcoded entities; directory tree uses mock data only; settings preferences don't persist and danger zone is non-functional. See individual feature-views phase files for detailed accuracy notes.
+
 ## Objective
 Validate the fully assembled app end-to-end. Test complete user journeys through the live app. Find and fix integration bugs.
 
@@ -25,6 +27,8 @@ Validate the fully assembled app end-to-end. Test complete user journeys through
    - AI Chat: create session, send message (or handle not-configured)
    - Settings: profile display, billing link
    - Conflicts: empty state (or real conflicts if any)
+
+> **ACCURACY NOTE (2026-03-12):** Several of the validations above were marked as passing but the features are actually incomplete. Kanban drag-drop works but card/column CRUD does not. Ideas display and filter only, no create/edit/delete. Whiteboard only freehand draw and sticky drag work. Schema is display-only with hardcoded data. Directory tree is mock data only. Settings preferences don't persist and danger zone buttons are non-functional. Dashboard chart data is hardcoded.
 3. Test navigation: sidebar links, project view tabs, back/forward
 4. Test responsive: desktop and mobile layouts
 5. Fix all broken flows and document fixes

@@ -33,3 +33,5 @@ Build settings and conflicts views matching pass-1 concept. Wire to user profile
 - `.docs/validation/feature-views/phase_7/user-story-report.md`
 - Updated primary task list
 - Session completion note
+
+> **ACCURACY NOTE (2026-03-12):** Settings page is partially functional. Profile email display and AI config work. However: preferences (theme) do not persist, integrations section is display-only, and danger zone buttons (delete account, etc.) are non-functional. Corrected in Phase B Tier 1 remediation.

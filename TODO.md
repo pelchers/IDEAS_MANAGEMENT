@@ -7,15 +7,45 @@
 
 ## IN PROGRESS
 
-- [ ] Stripe billing UI + wiring (Session 10) — **needs Stripe test keys from user**
+### Phase A — Orchestration Accuracy Update ✅
+- [x] Audit actual app state vs orchestration claims
+- [x] Update all 12 orchestration task lists to reflect reality
+- [x] Update .adr/current/ phase files (accuracy notes added)
+- [x] Create agent ingest summary (.adr/agent_ingest/session_10a_accuracy_audit.md)
+- [x] Document NO MOCK DATA policy (DECISIONS LOG + memory)
+
+### Phase B Tier 1 — Core Interactivity (IN PROGRESS)
 
 ---
 
 ## TODO NEXT
 
+### Phase B — Complete App Functionality
+
+#### Tier 1 — Core Interactivity (USER TESTS BEFORE TIER 2)
+- [ ] Kanban: Add card creation, edit modal, delete, settings button with color picker (text auto black/white)
+- [ ] Ideas: Full CRUD (create, edit, delete ideas), category management
+- [ ] Workspace Editor: Real text editor with save to artifact API
+- [ ] Workspace Notes: Real note creation/editing with persistence
+- [ ] Dashboard: Wire all stats + chart to real DB aggregates, remove mock fallbacks
+- [ ] Remove ALL mock data site-wide — real DB values only, empty states for no data
+
+#### Tier 2 — Feature Completeness (USER TESTS BEFORE TIER 3)
+- [ ] Whiteboard: Implement all 5 tools (rect, text, connecting lines/dots, add sticky, select/move)
+- [ ] Schema Planner: Real entity/field CRUD, relationship management, Prisma schema export
+- [ ] Directory Tree: GitHub API integration (connect repo, browse real tree)
+- [ ] Settings: Persist preferences to DB, wire integrations, implement danger zone actions
+
+#### Tier 3 — Remaining Sessions
+- [ ] Stripe billing UI + wiring (Session 10) — needs Stripe test keys from user
 - [ ] Sync & conflicts UI (Session 11)
-- [ ] Hardening — cyclic E2E validation, security audit, UX polish (Session 12)
+- [ ] Hardening (Session 12) — E2E validation, security audit, UX polish
+
+### Phase C — Production Readiness
 - [ ] Visual QA pass — compare every view against pass-1 concept screenshots
+- [ ] Full E2E Playwright test suite
+- [ ] Security audit
+- [ ] Performance optimization
 
 ---
 
@@ -43,7 +73,7 @@
 ### Session 4 — Dashboard & Projects (Wired)
 - [x] Dashboard: 4 stat cards with colored borders, Chart.js bar chart, 10-item activity feed
 - [x] Projects: 6 mock project cards in responsive grid, status badges, progress bars
-- [x] Workspace: project detail with Editor/Preview/Notes tabs, toolbar buttons
+- [x] Workspace: project detail with Editor/Preview/Notes tabs, toolbar buttons (display only — editor/notes non-functional)
 - [x] Dashboard wired to /api/dashboard (stats from Prisma, audit log activity feed)
 - [x] Projects wired to GET /api/projects, create form wired to POST /api/projects
 - [x] Workspace loads real project data by ID from GET /api/projects/[id]
@@ -51,7 +81,7 @@
 
 ### Session 5 — Kanban Board (Wired)
 - [x] 4 columns (Backlog/To Do/In Progress/Done) with pass-1 header colors
-- [x] 12 mock cards with SortableJS drag-and-drop between columns
+- [x] 12 mock cards with SortableJS drag-and-drop between columns (drag-drop only — no card CRUD)
 - [x] Tag badges (feature/bug/urgent) with color coding
 - [x] Board loads from artifact API (GET /api/projects/[id]/artifacts/kanban/board.json)
 - [x] Drag state auto-saves via debounced PUT to artifact API
@@ -65,16 +95,16 @@
 - [x] Playwright screenshots: 2 PNGs
 
 ### Session 7 — Schema Planner (Wired)
-- [x] 4 entity cards (Users/Projects/Ideas/Tasks) with field lists
+- [x] 4 entity cards (Users/Projects/Ideas/Tasks) with field lists (display only — no real CRUD)
 - [x] PK/FK/UQ badges with color coding, IBM Plex Mono field names
 - [x] Rough.js hand-drawn relation lines with circle endpoints
 - [x] Load entities from artifact API (falls back to mock if empty)
 - [x] Playwright screenshots: 2 PNGs
 
 ### Session 8 — Simple Views (Wired)
-- [x] Ideas: 8 mock idea cards, 5 filter chips with working filter logic, priority badges
+- [x] Ideas: 8 mock idea cards, 5 filter chips with working filter logic, priority badges (display + filter only — no CRUD)
 - [x] Ideas wired to load from artifact API (falls back to mock if empty)
-- [x] Directory Tree: expandable file tree with code preview panel
+- [x] Directory Tree: expandable file tree with code preview panel (mock tree only — no GitHub)
 - [x] Directory tree wired to load from artifact API
 - [x] Settings: Profile form, preference toggles, integrations list, danger zone
 - [x] Profile email loaded from /api/auth/me, saved via PUT /api/auth/me
@@ -129,3 +159,4 @@
 - **Auth**: Custom auth (Prisma + argon2 + session cookies), NOT Clerk. proxy.ts handles route protection.
 - **Design Fidelity**: Faithful 1:1 reproduction of pass-1 brutalism-neobrutalism concept.
 - **Backend**: Prisma + PostgreSQL with Next.js API routes, NOT Convex.
+- **No Mock Data Policy**: All pages must use real database values. No mock/fallback data anywhere. Empty states shown when no data exists. This prevents false validation during testing.

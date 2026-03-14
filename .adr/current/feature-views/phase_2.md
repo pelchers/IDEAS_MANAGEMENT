@@ -7,6 +7,8 @@ Date: 2026-03-08
 ## Prior Phase Summary
 Phase 1 completed: Kanban board built with drag-and-drop, column/card CRUD, artifact API integration. 13/13 user stories pass. Commit: a7bf98d.
 
+> **ACCURACY NOTE (2026-03-12):** The Phase 1 summary above overstates completion. Kanban drag-and-drop and artifact save work, but card CRUD (add/edit/delete) and column operations (add/rename/reorder) are non-functional.
+
 ## Objective
 Build the ideas capture view matching pass-1 concept. Wire to artifact CRUD endpoints.
 
@@ -48,3 +50,5 @@ Build the ideas capture view matching pass-1 concept. Wire to artifact CRUD endp
 - `.adr/history/feature-views/phase_2_review.md`
 - `.docs/validation/feature-views/phase_2/user-story-report.md`
 - Updated primary task list
+
+> **ACCURACY NOTE (2026-03-12):** Tasks 4-6 (quick-add form, full create/edit modal, delete with confirmation) were marked complete but are actually non-functional. The ideas page renders display and filtering only -- there is no CRUD for creating, editing, or deleting ideas. Corrected in Phase B Tier 1 remediation.

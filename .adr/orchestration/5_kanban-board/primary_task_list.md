@@ -27,14 +27,22 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [x] Screenshots saved to `.docs/validation/5_kanban-board/screenshots/`
 - [x] Visual verification: 4-column layout, card tags, responsive stacking confirmed
 
-## Phase 3 — Kanban Backend + Integration (Deferred)
+## Phase 3 — Kanban Backend + Integration (Partially Done)
 
-- [ ] Verify existing artifact API route for kanban board data (GET/PUT /api/projects/[id]/artifacts/kanban/board)
-- [ ] Wire kanban frontend to artifact API with { content: data } envelope
-- [ ] Implement debounced auto-save on column/card changes
+- [x] Verify existing artifact API route for kanban board data (GET/PUT /api/projects/[id]/artifacts/kanban/board)
+- [x] Wire kanban frontend to artifact API with { content: data } envelope
+- [x] Implement debounced auto-save on column/card changes
 - [ ] Handle loading states and error states with neo-brutalist styling
-- [ ] Test drag-drop persistence: drag card → refresh → card stays in new column
+- [ ] Test drag-drop persistence: drag card -> refresh -> card stays in new column
 - [ ] Add column management (add/rename/delete columns)
-- [ ] Add card CRUD (add/edit/delete cards within columns)
-- [ ] Card detail modal (500px max width) with full card editing
+- [x] Add card CRUD (add/edit/delete cards within columns)
+- [x] Card detail modal (480px max width) with full card editing
+- [x] Card settings button on hover (bottom-right) with color picker
+- [x] Card text auto-adjusts black/white based on background color
+- [x] Card description field (multi-line, shown in edit modal and truncated on card)
+- [x] Card links field (array of URLs, editable in edit modal, shown as link count badge on card)
+- [x] Auto-open edit modal after creating a new card (so user can add details)
+- [x] Fix card action icons (X, settings) — stacked vertically in top-right, no overlap with content
+- [x] Track createdAt and modifiedAt timestamps on cards (display in edit modal)
+- [x] Fix SortableJS drag-and-drop (DOM revert pattern — SortableJS detects drag, React does DOM update)
 - [ ] User story validation: create card, drag between columns, edit card, delete card

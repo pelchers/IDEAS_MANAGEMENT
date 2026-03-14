@@ -13,6 +13,8 @@ Add loading states, error boundaries, and UX polish across all views. Ensure gra
 3. Verify all views handle API errors gracefully (show error message, not blank screen)
 4. Check that all forms show validation feedback
 5. Verify debounced saves work correctly (kanban, ideas, whiteboard, schema, directory-tree)
+
+> **ACCURACY NOTE (2026-03-12):** Task 5 was marked complete but several of these views lack functional save: ideas has no CRUD to save, schema planner is display-only with hardcoded data, and directory tree uses mock data. Only kanban and whiteboard (freehand/sticky only) actually save to the artifact API.
 6. Test with slow network simulation if possible
 7. Document any UX issues found and fix them
 

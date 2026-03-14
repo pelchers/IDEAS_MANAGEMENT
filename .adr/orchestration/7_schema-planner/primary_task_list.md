@@ -7,7 +7,7 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 
 ---
 
-## Phase 1 — Schema Frontend from Pass-1
+## Phase 1 — Schema Frontend from Pass-1 ✅
 
 - [x] Read pass-1 schema section from index.html, style.css, and app.js
 - [x] Build schema planner page matching pass-1 exactly:
@@ -16,19 +16,24 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
   - IBM Plex Mono for field names and types
   - Rough.js hand-drawn relation lines connecting entities
   - SVG circles at connection points
-- [x] Entity CRUD (add/edit/delete entities) — non-functional button per spec
-- [x] Field CRUD within entities (add/edit/delete fields, set type/required/unique) — display only per spec
 - [x] Relationship display between entities
+- [x] Playwright screenshots (desktop + mobile)
 
-## Phase 2 — Schema Backend + Integration
+> **Note:** Phase 1 is display-only with hardcoded entities. Entity/field CRUD buttons are stubs — no actual create/edit/delete functionality.
 
-- [x] Wire to artifact API (GET/PUT /api/projects/[id]/artifacts/schema/schema.graph) — deferred, mock data
-- [x] Serialize entity graph to JSON — deferred, static entities
-- [x] Auto-save on changes — deferred
-- [x] Handle loading/error states — deferred
+## Phase 2 — Schema Backend + Integration (NOT DONE)
+
+- [ ] Wire to artifact API (GET/PUT /api/projects/[id]/artifacts/schema/schema.graph)
+- [ ] Serialize entity graph to JSON
+- [ ] Auto-save on changes
+- [ ] Handle loading/error states
+- [ ] Real entity CRUD (create, edit, delete entities)
+- [ ] Real field CRUD (add, edit, delete fields with type/required/unique)
+- [ ] Relationship management (create/delete relations between entities)
+- [ ] Export to Prisma schema format for React projects
+- [ ] Export to SQL DDL
 
 ## Phase 3 — Schema Testing
 
-- [x] Playwright screenshots (desktop + mobile)
-- [x] User story validation: add entity, add fields, create relationship, delete entity — visual validation
-- [x] Compare against pass-1 schema validation PNGs — faithful reproduction confirmed
+- [ ] User story validation: add entity, add fields, create relationship, delete entity
+- [ ] Compare against pass-1 schema validation PNGs

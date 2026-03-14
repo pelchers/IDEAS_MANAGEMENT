@@ -40,3 +40,5 @@ Build the schema planner view for designing entity-relationship diagrams. Wire t
 - `.adr/history/feature-views/phase_4_review.md`
 - `.docs/validation/feature-views/phase_4/user-story-report.md`
 - Updated primary task list
+
+> **ACCURACY NOTE (2026-03-12):** Tasks 3-6 (add entity, edit entity, add field, delete entity/field) were marked complete but are actually non-functional. The schema planner is display-only with hardcoded entities. There is no CRUD for creating, editing, or deleting entities or fields. Corrected in Phase B Tier 1 remediation.

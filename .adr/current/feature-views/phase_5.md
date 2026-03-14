@@ -45,3 +45,5 @@ Build the directory tree view for visualizing and editing project file structure
 - `.adr/history/feature-views/phase_5_review.md`
 - `.docs/validation/feature-views/phase_5/user-story-report.md`
 - Updated primary task list
+
+> **ACCURACY NOTE (2026-03-12):** Tasks 4-7 (node operations: create, rename, delete, move; expand/collapse; inline rename; context menu) were marked complete but are actually non-functional. The directory tree renders mock data only with no real CRUD operations and no GitHub integration. Corrected in Phase B Tier 1 remediation.

@@ -18,17 +18,22 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
   - Sticky note dragging with z-index manipulation and rotation during drag
 - [x] Canvas resize handling (responsive to window size)
 - [x] Tool selection state management
+- [ ] Implement rectangle tool — cursor changes but no shape drawn
+- [ ] Implement text tool — cursor changes but no text placement
+- [ ] Implement select tool for moving shapes (freehand paths, rectangles, etc.)
+- [ ] Implement connecting lines/dots tool
+- [ ] Add new sticky note button (currently only pre-existing stickies work)
 
 ## Phase 1 — Screenshots
 
 - [x] Playwright screenshots (desktop + mobile)
 - [x] Screenshots saved to `.docs/validation/6_whiteboard/screenshots/`
 
-## Phase 2 — Whiteboard Backend + Integration
+## Phase 2 — Whiteboard Backend + Integration (Partially Done)
 
-- [ ] Wire whiteboard to artifact API (GET/PUT /api/projects/[id]/artifacts/whiteboard/board)
-- [ ] Serialize canvas state (drawings, sticky notes, positions) to JSON
-- [ ] Implement auto-save on changes
+- [x] Wire whiteboard to artifact API (GET/PUT /api/projects/[id]/artifacts/whiteboard/board)
+- [x] Serialize canvas state (drawings, sticky notes, positions) to JSON
+- [x] Implement auto-save on changes (paths and stickies)
 - [ ] Handle loading/error states
 
 ## Phase 3 — Whiteboard Testing

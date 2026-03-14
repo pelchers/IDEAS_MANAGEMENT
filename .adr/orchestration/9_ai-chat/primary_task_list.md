@@ -47,11 +47,12 @@ Primary approach: **OpenRouter OAuth PKCE flow** — users connect their own Ope
   - Model selection per conversation
   - Token/cost display from OpenRouter usage metadata
 - [ ] Handle "no AI configured" state:
-  - Show neo-brutalist prompt card directing user to Settings → AI Configuration
+  - Show neo-brutalist prompt card directing user to Settings -> AI Configuration
   - No mock/simulated responses as default behavior
 - [ ] Simulated responses ONLY as error fallback when OpenRouter API is temporarily unavailable
-- [ ] Wire session list to Convex (create, switch, delete chat sessions)
-- [ ] Persist messages to Convex per session
+- [ ] Wire session list to Prisma (create, switch, delete chat sessions) — **not Convex**
+- [ ] Persist messages to DB per session
+- [ ] Session list UI (create, switch, delete sessions in sidebar)
 
 ## Phase 3 — AI Chat Testing
 

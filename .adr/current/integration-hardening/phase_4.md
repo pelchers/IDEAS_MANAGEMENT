@@ -12,6 +12,8 @@ Write comprehensive Playwright E2E tests covering all major user flows. Capture 
 2. Write auth flow tests (signup, signin, signout)
 3. Write project CRUD tests (create, list, update, delete)
 4. Write feature view tests (kanban, ideas, whiteboard, schema, directory-tree load and basic interaction)
+
+> **ACCURACY NOTE (2026-03-12):** E2E tests for feature views could only validate rendering/display, not full interaction, because many features are non-functional (kanban card CRUD, ideas CRUD, most whiteboard tools, schema CRUD, directory tree CRUD). Tests that claim CRUD interactions pass are inaccurate.
 5. Write AI chat tests (session create, message display)
 6. Write settings tests (page loads, sections visible)
 7. Capture desktop screenshots (1536x960) for each view

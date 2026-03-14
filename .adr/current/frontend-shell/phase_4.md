@@ -47,3 +47,5 @@ Rebuild the dashboard page to match pass-1 concept exactly. Wire to live project
 - `.docs/validation/frontend-shell/phase_4/user-story-report.md`
 - Updated primary task list (all phases checked off)
 - Session completion note in notes.md
+
+> **ACCURACY NOTE (2026-03-12):** Dashboard stats from DB and activity feed from audit log work. However, the chart/graph data is hardcoded rather than wired to real DB aggregates. Corrected in Phase B Tier 1 remediation.

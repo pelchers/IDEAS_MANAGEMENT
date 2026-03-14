@@ -29,6 +29,8 @@ Build the kanban board view matching pass-1 concept. Wire to artifact CRUD endpo
 - Drag-and-drop moves cards
 - Report: `.docs/validation/feature-views/phase_1/user-story-report.md`
 
+> **ACCURACY NOTE (2026-03-12):** Tasks 6 (column operations: add, rename, reorder) and 7 (card operations: create, edit, delete) were marked complete but are actually non-functional. Drag-and-drop between columns and save to artifact API work, but there is no UI for adding, editing, or deleting individual cards or columns. Corrected in Phase B Tier 1 remediation.
+
 ## Output
 - Kanban page component
 - `.adr/history/feature-views/phase_1_review.md`
