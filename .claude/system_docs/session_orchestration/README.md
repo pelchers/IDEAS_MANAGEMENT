@@ -99,6 +99,19 @@ The hardening session is a feedback loop: run E2E validation → present to user
 feedback → apply fixes → re-validate → repeat until user confirms production readiness.
 Phases are created dynamically as feedback cycles occur.
 
+## ADR Structure Pre-flight
+
+Before entering the phase loop, the orchestrator runs a mandatory pre-flight check:
+
+1. Verify `.adr/orchestration/<SESSION>/` has all 4 files (primary_task_list.md, prd.md, technical_requirements.md, notes.md)
+2. Verify `.adr/current/<SESSION>/` and `.adr/history/<SESSION>/` directories exist
+3. Verify `primary_task_list.md` has per-phase sections with specific deliverable checkboxes
+4. Verify the phase plan file exists for the phase about to start
+
+If any check fails, the orchestrator spawns the `adr-setup` agent to scaffold or fix the
+session structure before proceeding. This prevents worker subagents from encountering
+missing or malformed ADR files during execution.
+
 ## Context Handoff
 
 The orchestrator MUST pass a comprehensive context prompt to each subagent on spawn,

@@ -7,7 +7,7 @@ The ADR Setup system provides a dedicated agent and skill for initializing, modi
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| Agent | `.claude/agents/adr-setup/agent.md` | Agent instructions for ADR operations |
+| Agent | `.claude/agents/adr-setup/AGENT.md` | Agent instructions for ADR operations (canonical — deprecated `adr-setup-agent` variant removed 2026-03-13) |
 | Skill | `.claude/skills/adr-setup/SKILL.md` | Skill definition with conventions + lifecycle |
 | Templates | `.claude/skills/adr-setup/templates/` | 7 template files for all ADR artifacts |
 | References | `.claude/skills/adr-setup/references/` | Full conventions reference document |
@@ -21,7 +21,14 @@ The ADR Setup system provides a dedicated agent and skill for initializing, modi
 3. **Phase management** — Create, complete, and archive phase files
 4. **Structure audit** — Verify ADR conventions are followed after manual edits
 
-### Fallback Use Case
+### Automatic Invocation by Orchestrator
+The `longrunning-orchestrator-agent` now runs an ADR Structure Pre-flight before every
+phase loop. If any ADR files or directories are missing or malformed, the orchestrator
+automatically spawns the `adr-setup` agent to scaffold or fix the structure before
+proceeding. This makes the adr-setup agent a first-class dependency of the orchestration
+system, not just a fallback.
+
+### Manual/Fallback Use Case
 When the longrunning-session or orchestrator-session agents/skills fail to execute ADR operations due to:
 - Agent call routing miscommunication
 - Skill invocation failure

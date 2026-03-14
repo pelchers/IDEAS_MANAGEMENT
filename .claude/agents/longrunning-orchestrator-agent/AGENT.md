@@ -46,6 +46,30 @@ No explicit flags required.
 
 Document the inference in the session's `notes.md` for transparency.
 
+## ADR Structure Pre-flight (MANDATORY — before Phase Loop)
+
+Before entering the phase loop, the orchestrator MUST validate that the ADR session
+structure exists and conforms to the `adr-setup` agent spec:
+
+1. `.adr/orchestration/<SESSION>/` exists with all 4 required files:
+   `primary_task_list.md`, `prd.md`, `technical_requirements.md`, `notes.md`
+2. `.adr/current/<SESSION>/` directory exists
+3. `.adr/history/<SESSION>/` directory exists
+4. `primary_task_list.md` has per-phase sections (`## Phase N`) with specific
+   deliverable checkboxes — not just template placeholder text
+5. A phase plan file exists at `.adr/current/<SESSION>/phase_<N>.md` for the
+   phase about to start, with required metadata (Phase, Session, Date, Owner, Status)
+
+**If ANY of the above are missing or malformed:**
+- Spawn the `adr-setup` agent with instructions to scaffold or fix the session structure
+- Pass it the session name, session number, and what is missing
+- Wait for it to complete before proceeding to the phase loop
+- Re-validate after the adr-setup agent finishes
+- If re-validation still fails, stop and report to the user
+
+This pre-flight ensures the worker subagent always has valid ADR files to read and
+update, preventing silent failures or improvised folder structures.
+
 ## Context handoff (MANDATORY)
 
 When spawning a subagent, the orchestrator MUST pass a comprehensive prompt that includes:
