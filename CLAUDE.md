@@ -68,8 +68,10 @@ This repo also includes a visual/creative concept system for data visualization,
 - Skills: `.claude/skills/`
 
 ## Git Workflow
-- Commit after each generation run
+- Commit incrementally at key milestones during work (e.g., after completing a feature, fixing a bug, or finishing a phase) — do not wait until the end to batch everything
+- At the end of each chat session, commit any uncommitted work and push if a remote exists
 - Use HTTPS remotes only
+- Create savepoint branches after major work is completed (e.g., full feature, tier of work, phase completion). Name them descriptively so they serve as rollback points (e.g., `savepoint/tier1-kanban-crud`, `savepoint/phase-a-accuracy-audit`). Include the main branch commit hash in the savepoint commit message so you know what it synced with. Savepoint branches can also be created on user request at any time
 
 ## Dev Server Cleanup
 - When done working, stop any dev servers that were started during the session (only the specific server used for testing, not all running servers)
