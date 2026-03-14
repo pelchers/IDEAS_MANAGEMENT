@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 /* ── Toggle state for preferences ── */
@@ -31,7 +31,7 @@ const INTEGRATIONS: Integration[] = [
   { name: "STRIPE", icon: "\uD83D\uDCB3", connected: true },
 ];
 
-export default function SettingsPage() {
+function SettingsContent() {
   const searchParams = useSearchParams();
   const [preferences, setPreferences] = useState<Preferences>({
     darkMode: false,
@@ -424,5 +424,13 @@ export default function SettingsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SettingsPage() {
+  return (
+    <Suspense fallback={<div className="animate-pulse p-8 font-mono text-gray-mid">Loading settings...</div>}>
+      <SettingsContent />
+    </Suspense>
   );
 }

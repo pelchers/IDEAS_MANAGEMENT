@@ -8,14 +8,14 @@ import Link from "next/link";
 const TABS = ["EDITOR", "PREVIEW", "NOTES"] as const;
 type Tab = (typeof TABS)[number];
 
-const TOOLBAR_BUTTONS = ["B", "I", "U", "H1", "H2", "≡", "🔗"];
+const TOOLBAR_BUTTONS = ["B", "I", "U", "H1", "H2", "\u2261", "\uD83D\uDD17"];
 
 const MOCK_EDITOR_CONTENT = `This is a workspace document for the project. The editor supports rich text formatting with bold, italic, and underline styles.
 
 Key decisions made so far:
-• Navigation patterns will use a tab-based approach
-• Gesture controls mapped to swipe left/right for section switching
-• Color palette follows the brutalist design system tokens
+\u2022 Navigation patterns will use a tab-based approach
+\u2022 Gesture controls mapped to swipe left/right for section switching
+\u2022 Color palette follows the brutalist design system tokens
 
 Next steps include finalizing the component library integration and scheduling the design review with the team.`;
 
@@ -32,11 +32,21 @@ interface ProjectDetail {
   status: string;
 }
 
+function selectProject(id: string, name: string) {
+  localStorage.setItem("im_selected_project", JSON.stringify({ id, name }));
+  const fn = (window as unknown as Record<string, unknown>).__imSelectProject;
+  if (typeof fn === "function") {
+    (fn as (id: string, name: string) => void)(id, name);
+  }
+  window.dispatchEvent(new Event("storage"));
+}
+
 export default function ProjectWorkspacePage() {
   const params = useParams();
   const projectId = String(params.id);
   const [activeTab, setActiveTab] = useState<Tab>("EDITOR");
   const [project, setProject] = useState<ProjectDetail | null>(null);
+  const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {
     fetch(`/api/projects/${projectId}`)
@@ -49,14 +59,45 @@ export default function ProjectWorkspacePage() {
       .catch(() => { /* keep defaults */ });
   }, [projectId]);
 
+  // Check if this project is the selected one
+  useEffect(() => {
+    const saved = localStorage.getItem("im_selected_project");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setIsSelected(parsed.id === projectId);
+      } catch { /* ignore */ }
+    }
+  }, [projectId]);
+
+  // Auto-select this project when viewing it
+  useEffect(() => {
+    if (project) {
+      selectProject(projectId, project.name.toUpperCase());
+      setIsSelected(true);
+    }
+  }, [project, projectId]);
+
+  const handleSelectProject = () => {
+    const name = project?.name?.toUpperCase() || `PROJECT ${projectId}`;
+    selectProject(projectId, name);
+    setIsSelected(true);
+  };
+
   return (
     <div className="animate-[view-slam_0.3s_cubic-bezier(0.2,0,0,1)]">
       {/* View header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
         <h1 className="nb-view-title">
           {project ? project.name.toUpperCase() : "WORKSPACE"}
         </h1>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
+          <button
+            className={`nb-btn nb-btn--small ${isSelected ? "" : "nb-btn--primary"}`}
+            onClick={handleSelectProject}
+          >
+            {isSelected ? "SELECTED" : "SELECT PROJECT"}
+          </button>
           <div className="flex gap-2">
             <Link href={`/projects/${projectId}/kanban`} className="nb-btn nb-btn--small">KANBAN</Link>
             <Link href={`/projects/${projectId}/whiteboard`} className="nb-btn nb-btn--small">WHITEBOARD</Link>
@@ -123,7 +164,6 @@ export default function ProjectWorkspacePage() {
                 document. Visual elements, diagrams, and formatted content
                 appear here as a live preview.
               </p>
-              {/* Placeholder for Rough.js SVG — will be added in whiteboard session */}
               <div className="w-full h-48 border-[3px] border-dashed border-signal-black flex items-center justify-center bg-white">
                 <span className="font-mono text-sm uppercase text-gray-mid tracking-wider">
                   [ DIAGRAM PLACEHOLDER ]

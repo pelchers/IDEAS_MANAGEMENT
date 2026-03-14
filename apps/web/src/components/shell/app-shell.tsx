@@ -4,10 +4,22 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-/**
- * Navigation links matching pass-1 numbered nav (01-10).
- * Project-specific routes (03-08) use a placeholder project ID.
- */
+/* ── Title from pathname ── */
+function getTitleFromPathname(pathname: string): string {
+  if (pathname === "/dashboard") return "DASHBOARD";
+  if (pathname === "/projects") return "PROJECTS";
+  if (pathname === "/ai") return "AI CHAT";
+  if (pathname === "/settings") return "SETTINGS";
+  if (pathname.includes("/kanban")) return "KANBAN";
+  if (pathname.includes("/whiteboard")) return "WHITEBOARD";
+  if (pathname.includes("/schema")) return "SCHEMA PLANNER";
+  if (pathname.includes("/directory-tree")) return "DIRECTORY TREE";
+  if (pathname.includes("/ideas")) return "IDEAS";
+  if (/^\/projects\/[^/]+$/.test(pathname)) return "WORKSPACE";
+  return "DASHBOARD";
+}
+
+/* ── Nav links ── */
 interface NavLink {
   num: string;
   label: string;
@@ -29,9 +41,6 @@ const NAV_LINKS: NavLink[] = [
   { num: "10", label: "Settings", href: "/settings" },
 ];
 
-/**
- * Extract the current project ID from a pathname like /projects/abc123 or /projects/abc123/kanban.
- */
 function extractProjectId(pathname: string): string | null {
   const match = pathname.match(/^\/projects\/([^/]+)/);
   return match ? match[1] : null;
@@ -39,173 +48,333 @@ function extractProjectId(pathname: string): string | null {
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [selectedProjectName, setSelectedProjectName] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<{ email: string; role: string } | null>(null);
   const pathname = usePathname();
+  const title = getTitleFromPathname(pathname);
 
   const openDrawer = useCallback(() => setIsOpen(true), []);
   const closeDrawer = useCallback(() => setIsOpen(false), []);
 
-  // Resolve the current project ID so project-scoped links (03-08) navigate correctly
-  const currentProjectId = extractProjectId(pathname);
-
-  // Close on Escape key
+  // Auto-detect project from URL
   useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape" && isOpen) {
-        closeDrawer();
-      }
+    const urlProjectId = extractProjectId(pathname);
+    if (urlProjectId && urlProjectId !== selectedProjectId) {
+      setSelectedProjectId(urlProjectId);
+      fetch(`/api/projects/${urlProjectId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.ok && data.project) {
+            setSelectedProjectName(data.project.name);
+          }
+        })
+        .catch(() => {});
     }
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, closeDrawer]);
+  }, [pathname, selectedProjectId]);
 
-  /**
-   * Resolve the href for a nav link.
-   * Project-scoped links (03-08) use the current project ID if available.
-   */
+  // Load selected project from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("im_selected_project");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.id) {
+          setSelectedProjectId(parsed.id);
+          setSelectedProjectName(parsed.name || null);
+        }
+      } catch { /* ignore */ }
+    }
+  }, []);
+
+  // Persist selected project
+  useEffect(() => {
+    if (selectedProjectId) {
+      localStorage.setItem("im_selected_project", JSON.stringify({
+        id: selectedProjectId,
+        name: selectedProjectName,
+      }));
+    }
+  }, [selectedProjectId, selectedProjectName]);
+
+  // Fetch user info
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.user) {
+          setUserInfo({ email: data.user.email, role: data.user.role });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const activeProjectId = extractProjectId(pathname) || selectedProjectId;
+
   function resolveHref(link: NavLink): string {
-    if (link.projectRoute && currentProjectId) {
-      return `/projects/${currentProjectId}${link.suffix || ""}`;
+    if (link.projectRoute && activeProjectId) {
+      return `/projects/${activeProjectId}${link.suffix || ""}`;
     }
-    if (link.projectRoute) {
-      // No project selected — go to projects list
-      return "/projects";
-    }
+    if (link.projectRoute) return "/projects";
     return link.href;
   }
 
-  // Determine if a nav link is active based on current pathname
   function isActive(link: NavLink): boolean {
-    if (link.num === "02") {
-      return pathname === "/projects";
-    }
+    if (link.num === "02") return pathname === "/projects";
     if (link.projectRoute) {
-      if (link.suffix) {
-        return pathname.includes(link.suffix);
-      }
-      const projectDetailPattern = /^\/projects\/[^/]+$/;
-      return projectDetailPattern.test(pathname);
+      if (link.suffix) return pathname.includes(link.suffix);
+      return /^\/projects\/[^/]+$/.test(pathname);
     }
     return pathname.startsWith(link.href);
   }
 
+  const userInitials = userInfo
+    ? userInfo.email.substring(0, 2).toUpperCase()
+    : "??";
+  const userDisplayName = userInfo?.email || "Loading...";
+  const userRole = userInfo?.role || "...";
+
+  // Expose selectProject for child pages
+  useEffect(() => {
+    (window as unknown as Record<string, unknown>).__imSelectProject = (id: string, name: string) => {
+      setSelectedProjectId(id);
+      setSelectedProjectName(name);
+    };
+    return () => {
+      delete (window as unknown as Record<string, unknown>).__imSelectProject;
+    };
+  }, []);
+
+  const drawerWidth = 280;
+
   return (
     <>
       {/* ============================================ */}
-      {/* HAMBURGER BUTTON (always visible)            */}
+      {/* TOP BAR — shifts with sidebar                */}
       {/* ============================================ */}
-      {/* Hamburger — hidden when drawer is open (drawer has its own close button) */}
-      {!isOpen && (
-        <button
-          className="
-            fixed top-[10px] left-[12px] z-[1100]
-            w-12 h-12
-            bg-surface
-            border-[4px] border-signal-black
-            shadow-nb
-            cursor-pointer
-            flex flex-col items-center justify-center
-            gap-[5px] p-[10px]
-            transition-[box-shadow,transform] duration-150 ease-linear
-            hover:shadow-nb-lg hover:-translate-x-px hover:-translate-y-px
-            active:shadow-nb-sm active:translate-x-0.5 active:translate-y-0.5
-            focus-visible:outline-3 focus-visible:outline-watermelon focus-visible:outline-offset-2
-          "
-          onClick={openDrawer}
-          aria-label="Open navigation menu"
-          aria-expanded={false}
-        >
-          <span className="block w-6 h-[3px] bg-signal-black" />
-          <span className="block w-6 h-[3px] bg-signal-black" />
-          <span className="block w-6 h-[3px] bg-signal-black" />
-        </button>
-      )}
+      <header
+        style={{
+          position: "fixed",
+          top: 0,
+          left: isOpen ? `${drawerWidth}px` : "0px",
+          right: 0,
+          height: "60px",
+          backgroundColor: "#FFFFFF",
+          borderBottom: "4px solid #282828",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingLeft: isOpen ? "24px" : "76px",
+          paddingRight: "24px",
+          zIndex: 900,
+          transition: "left 300ms cubic-bezier(0.2, 0, 0, 1), padding-left 300ms cubic-bezier(0.2, 0, 0, 1)",
+          boxSizing: "border-box",
+        }}
+      >
+        {/* Left — hamburger (when closed) + title + project */}
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", minWidth: 0 }}>
+          {!isOpen && (
+            <button
+              onClick={openDrawer}
+              aria-label="Open navigation menu"
+              style={{
+                width: "44px",
+                height: "44px",
+                backgroundColor: "#FFFFFF",
+                border: "3px solid #282828",
+                boxShadow: "3px 3px 0px #282828",
+                cursor: "pointer",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "4px",
+                padding: "8px",
+                flexShrink: 0,
+              }}
+            >
+              <span style={{ display: "block", width: "20px", height: "3px", backgroundColor: "#282828" }} />
+              <span style={{ display: "block", width: "20px", height: "3px", backgroundColor: "#282828" }} />
+              <span style={{ display: "block", width: "20px", height: "3px", backgroundColor: "#282828" }} />
+            </button>
+          )}
+          <span style={{ fontWeight: 700, fontSize: "1.1rem", letterSpacing: "0.05em", textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>
+            {title}
+          </span>
+          {selectedProjectName && (
+            <>
+              <span style={{ color: "#666666" }}>/</span>
+              <span style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: "0.8rem",
+                textTransform: "uppercase" as const,
+                color: "#FF5E54",
+                fontWeight: 600,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap" as const,
+                maxWidth: "200px",
+              }}>
+                {selectedProjectName}
+              </span>
+            </>
+          )}
+        </div>
+
+        {/* Right — search + notification */}
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", flexShrink: 0 }}>
+          <input
+            type="text"
+            placeholder="SEARCH..."
+            aria-label="Search"
+            className="nb-input--mono"
+            style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: "0.85rem",
+              padding: "8px 16px",
+              border: "3px solid #282828",
+              backgroundColor: "#F8F3EC",
+              color: "#282828",
+              width: "200px",
+              boxSizing: "border-box",
+              outline: "none",
+            }}
+          />
+          <button
+            aria-label="Notifications"
+            style={{
+              width: "44px",
+              height: "44px",
+              backgroundColor: "#FFFFFF",
+              border: "3px solid #282828",
+              boxShadow: "4px 4px 0px #282828",
+              cursor: "pointer",
+              fontSize: "1.2rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative" as const,
+              flexShrink: 0,
+            }}
+          >
+            <span
+              style={{
+                position: "absolute",
+                top: "6px",
+                right: "6px",
+                width: "10px",
+                height: "10px",
+                backgroundColor: "#FF5E54",
+                border: "2px solid #FFFFFF",
+              }}
+            />
+            &#9872;
+          </button>
+        </div>
+      </header>
 
       {/* ============================================ */}
       {/* NAVIGATION DRAWER                            */}
       {/* ============================================ */}
       <nav
-        className={`
-          fixed top-0 left-0
-          w-[280px] h-screen
-          bg-surface
-          border-r-[4px] border-signal-black
-          z-[1050]
-          flex flex-col
-          overflow-y-auto
-          transition-transform duration-300
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
-        style={{ transitionTimingFunction: "cubic-bezier(0.2, 0, 0, 1)" }}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: `${drawerWidth}px`,
+          height: "100vh",
+          backgroundColor: "#FFFFFF",
+          borderRight: "4px solid #282828",
+          zIndex: 1050,
+          display: "flex",
+          flexDirection: "column",
+          overflowY: "auto",
+          transform: isOpen ? "translateX(0)" : "translateX(-100%)",
+          transition: "transform 300ms cubic-bezier(0.2, 0, 0, 1)",
+        }}
         aria-label="Main navigation"
       >
         {/* Drawer header */}
-        <div className="flex items-center justify-between p-6 border-b-[4px] border-signal-black min-h-[80px]">
-          <div className="flex items-center gap-2">
-            <span className="text-[2rem] text-watermelon">&#9670;</span>
-            <span className="font-sans font-bold text-[1.1rem] leading-[1.1] tracking-[0.05em]">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "24px", borderBottom: "4px solid #282828", minHeight: "80px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span style={{ fontSize: "2rem", color: "#FF5E54" }}>&#9670;</span>
+            <span style={{ fontWeight: 700, fontSize: "1.1rem", lineHeight: 1.1, letterSpacing: "0.05em" }}>
               IDEA<br />MGMT
             </span>
           </div>
           <button
-            className="
-              w-10 h-10
-              bg-watermelon text-surface
-              border-[3px] border-signal-black
-              shadow-nb
-              cursor-pointer
-              text-[1.2rem] font-bold
-              flex items-center justify-center
-              transition-[box-shadow,transform] duration-150 ease-linear
-              hover:-translate-x-px hover:-translate-y-px hover:shadow-nb-lg
-              active:translate-x-0.5 active:translate-y-0.5 active:shadow-nb-sm
-              focus-visible:outline-3 focus-visible:outline-watermelon focus-visible:outline-offset-2
-            "
             onClick={closeDrawer}
             aria-label="Close navigation"
+            style={{
+              width: "40px",
+              height: "40px",
+              backgroundColor: "#FF5E54",
+              color: "#FFFFFF",
+              border: "3px solid #282828",
+              boxShadow: "4px 4px 0px #282828",
+              cursor: "pointer",
+              fontSize: "1.2rem",
+              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
             &#10005;
           </button>
         </div>
 
+        {/* Selected project indicator */}
+        {selectedProjectName && (
+          <div style={{ padding: "12px 24px", borderBottom: "2px dashed #282828", backgroundColor: "rgba(255,228,89,0.3)" }}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", textTransform: "uppercase" as const, color: "#666666" }}>Selected Project</div>
+            <div style={{ fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase" as const, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const }}>{selectedProjectName}</div>
+          </div>
+        )}
+
         {/* Nav links */}
-        <ul className="list-none flex-1 py-2">
+        <ul style={{ listStyle: "none", flex: 1, padding: "8px 0", margin: 0 }}>
           {NAV_LINKS.map((link) => {
             const active = isActive(link);
-            const needsProject = link.projectRoute && !currentProjectId;
+            const needsProject = link.projectRoute && !activeProjectId;
             const href = resolveHref(link);
 
             return (
               <li key={link.num}>
                 <Link
                   href={href}
-                  onClick={closeDrawer}
-                  className={`
-                    flex items-center gap-4
-                    px-6 py-4
-                    font-sans font-bold text-base
-                    uppercase tracking-[0.03em]
-                    border-b-2 border-transparent
-                    transition-[background,transform,border-color] duration-150 ease-linear
-                    relative
-                    hover:bg-creamy-milk hover:translate-x-1
-                    focus-visible:outline-3 focus-visible:outline-watermelon focus-visible:outline-offset-[-3px]
-                    ${active ? "bg-signal-black text-malachite hover:bg-gray-dark" : ""}
-                    ${needsProject ? "opacity-40 pointer-events-none" : ""}
-                  `}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "16px",
+                    padding: "16px 24px",
+                    fontWeight: 700,
+                    fontSize: "1rem",
+                    textTransform: "uppercase" as const,
+                    letterSpacing: "0.03em",
+                    textDecoration: "none",
+                    backgroundColor: active ? "#282828" : "transparent",
+                    color: active ? "#FFFFFF" : "#282828",
+                    opacity: needsProject ? 0.4 : 1,
+                    pointerEvents: needsProject ? "none" : "auto",
+                    transition: "background 150ms ease",
+                  }}
                   aria-disabled={needsProject}
                   tabIndex={needsProject ? -1 : undefined}
                 >
                   <span
-                    className={`
-                      font-mono text-xs min-w-[24px]
-                      ${active ? "text-watermelon" : "text-gray-mid"}
-                    `}
+                    style={{
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontSize: "0.75rem",
+                      minWidth: "24px",
+                      color: active ? "#FF5E54" : "#666666",
+                    }}
                   >
                     {link.num}
                   </span>
                   {link.label}
                   {needsProject && (
-                    <span className="font-mono text-[0.6rem] text-gray-mid ml-auto">
+                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", color: "#666666", marginLeft: "auto" }}>
                       select project
                     </span>
                   )}
@@ -216,24 +385,30 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </ul>
 
         {/* Drawer footer — user profile */}
-        <div className="p-6 border-t-[4px] border-signal-black">
-          <div className="flex items-center gap-4">
+        <div style={{ padding: "24px", borderTop: "4px solid #282828" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <div
-              className="
-                w-11 h-11
-                bg-watermelon text-surface
-                border-[3px] border-signal-black
-                shadow-nb
-                flex items-center justify-center
-                font-sans font-bold text-base
-              "
+              style={{
+                width: "44px",
+                height: "44px",
+                backgroundColor: "#FF5E54",
+                color: "#FFFFFF",
+                border: "3px solid #282828",
+                boxShadow: "4px 4px 0px #282828",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: 700,
+                fontSize: "1rem",
+                flexShrink: 0,
+              }}
             >
-              JD
+              {userInitials}
             </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-[0.9rem]">Jane Doe</span>
-              <span className="font-mono text-xs text-gray-mid uppercase">
-                Admin
+            <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+              <span style={{ fontWeight: 700, fontSize: "0.9rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const }}>{userDisplayName}</span>
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "#666666", textTransform: "uppercase" as const }}>
+                {userRole}
               </span>
             </div>
           </div>
@@ -241,25 +416,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </nav>
 
       {/* ============================================ */}
-      {/* OVERLAY (behind drawer)                      */}
-      {/* ============================================ */}
-      <div
-        className={`
-          fixed inset-0
-          bg-black/50
-          z-[1000]
-          transition-opacity duration-250 ease-linear
-          ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
-        `}
-        onClick={closeDrawer}
-      />
-
-      {/* ============================================ */}
-      {/* MAIN CONTENT                                 */}
+      {/* MAIN CONTENT — shrinks when drawer open      */}
       {/* ============================================ */}
       <main
-        className="mt-[60px] min-h-[calc(100vh-60px)] w-full"
-        style={{ padding: "clamp(16px, 2.5vw, 48px)" }}
+        style={{
+          marginTop: "60px",
+          marginLeft: isOpen ? `${drawerWidth}px` : "0px",
+          width: isOpen ? `calc(100% - ${drawerWidth}px)` : "100%",
+          minHeight: "calc(100vh - 60px)",
+          padding: "clamp(16px, 2.5vw, 48px)",
+          transition: "margin-left 300ms cubic-bezier(0.2, 0, 0, 1), width 300ms cubic-bezier(0.2, 0, 0, 1)",
+          boxSizing: "border-box",
+          overflowX: "hidden",
+        }}
       >
         {children}
       </main>

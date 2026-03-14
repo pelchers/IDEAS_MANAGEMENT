@@ -50,10 +50,21 @@ function mapApiProject(p: {
     title: p.name.toUpperCase(),
     desc: p.description || "No description",
     status: statusMap[p.status] || "planning",
-    progress: 0, // Will be populated from kanban artifact
+    progress: 0,
     tasks: 0,
     dueDate: new Date(p.createdAt).toISOString().split("T")[0],
   };
+}
+
+function selectProject(id: string, name: string) {
+  localStorage.setItem("im_selected_project", JSON.stringify({ id, name }));
+  // Notify app shell
+  const fn = (window as unknown as Record<string, unknown>).__imSelectProject;
+  if (typeof fn === "function") {
+    (fn as (id: string, name: string) => void)(id, name);
+  }
+  // Trigger storage event for TopBar
+  window.dispatchEvent(new Event("storage"));
 }
 
 export default function ProjectsPage() {
@@ -64,6 +75,18 @@ export default function ProjectsPage() {
   const [newProjectDesc, setNewProjectDesc] = useState("");
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  // Load selected project from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("im_selected_project");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.id) setSelectedId(parsed.id);
+      } catch { /* ignore */ }
+    }
+  }, []);
 
   const fetchProjects = () => {
     fetch("/api/projects")
@@ -72,11 +95,8 @@ export default function ProjectsPage() {
         if (data.ok && data.projects && data.projects.length > 0) {
           setProjects(data.projects.map(mapApiProject));
         }
-        // If no real projects, keep mock data
       })
-      .catch(() => {
-        // Keep mock data on error
-      })
+      .catch(() => {})
       .finally(() => setLoading(false));
   };
 
@@ -111,6 +131,11 @@ export default function ProjectsPage() {
       setCreateError("Network error — could not create project");
     }
     setCreating(false);
+  };
+
+  const handleSelect = (project: ProjectData) => {
+    setSelectedId(project.id);
+    selectProject(project.id, project.title);
   };
 
   return (
@@ -183,24 +208,32 @@ export default function ProjectsPage() {
       {/* Projects grid */}
       <div className={`grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6 ${loading ? "animate-pulse" : ""}`}>
         {projects.map((project) => (
-          <Link
+          <div
             key={project.id}
-            href={`/projects/${project.id}`}
-            className="block bg-white border-4 border-signal-black shadow-nb p-6 transition-[transform,box-shadow] duration-150 cursor-pointer hover:-translate-x-[3px] hover:-translate-y-[3px] hover:rotate-[0.5deg] hover:shadow-nb-xl"
+            className={`bg-white border-4 border-signal-black shadow-nb p-6 transition-[transform,box-shadow] duration-150 ${
+              selectedId === project.id ? "ring-4 ring-watermelon ring-offset-2" : ""
+            }`}
           >
             {/* Status badge */}
-            <div className="mb-3">
+            <div className="mb-3 flex items-center justify-between">
               <span
                 className={`font-mono text-[0.7rem] uppercase font-semibold px-3 py-1 border-2 border-signal-black ${STATUS_CLASSES[project.status]}`}
               >
                 {project.status}
               </span>
+              {selectedId === project.id && (
+                <span className="font-mono text-[0.65rem] uppercase text-watermelon font-bold">
+                  SELECTED
+                </span>
+              )}
             </div>
 
             {/* Title */}
-            <h3 className="text-[1.2rem] font-bold uppercase mb-2">
-              {project.title}
-            </h3>
+            <Link href={`/projects/${project.id}`}>
+              <h3 className="text-[1.2rem] font-bold uppercase mb-2 hover:text-watermelon transition-colors cursor-pointer">
+                {project.title}
+              </h3>
+            </Link>
 
             {/* Description */}
             <p className="text-[0.9rem] text-gray-mid mb-4 leading-relaxed">
@@ -220,7 +253,25 @@ export default function ProjectsPage() {
                 style={{ width: `${project.progress}%` }}
               />
             </div>
-          </Link>
+
+            {/* Action buttons */}
+            <div className="flex gap-2 mt-4">
+              <button
+                className={`nb-btn nb-btn--small flex-1 ${
+                  selectedId === project.id ? "" : "nb-btn--primary"
+                }`}
+                onClick={() => handleSelect(project)}
+              >
+                {selectedId === project.id ? "SELECTED" : "SELECT PROJECT"}
+              </button>
+              <Link
+                href={`/projects/${project.id}`}
+                className="nb-btn nb-btn--small text-center"
+              >
+                OPEN
+              </Link>
+            </div>
+          </div>
         ))}
       </div>
     </div>

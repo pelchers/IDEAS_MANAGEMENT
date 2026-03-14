@@ -1,34 +1,78 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 /**
  * Map pathname segments to display titles (all uppercase, matching pass-1).
  */
 function getTitleFromPathname(pathname: string): string {
-  // Check specific routes first
   if (pathname === "/dashboard") return "DASHBOARD";
   if (pathname === "/projects") return "PROJECTS";
   if (pathname === "/ai") return "AI CHAT";
   if (pathname === "/settings") return "SETTINGS";
 
-  // Project-specific routes
   if (pathname.includes("/kanban")) return "KANBAN";
   if (pathname.includes("/whiteboard")) return "WHITEBOARD";
   if (pathname.includes("/schema")) return "SCHEMA PLANNER";
   if (pathname.includes("/directory-tree")) return "DIRECTORY TREE";
   if (pathname.includes("/ideas")) return "IDEAS";
 
-  // /projects/[id] — workspace view
   const projectDetailPattern = /^\/projects\/[^/]+$/;
   if (projectDetailPattern.test(pathname)) return "WORKSPACE";
 
   return "DASHBOARD";
 }
 
+function extractProjectId(pathname: string): string | null {
+  const match = pathname.match(/^\/projects\/([^/]+)/);
+  return match ? match[1] : null;
+}
+
 export function TopBar() {
   const pathname = usePathname();
   const title = getTitleFromPathname(pathname);
+  const [selectedProjectName, setSelectedProjectName] = useState<string | null>(null);
+
+  // Read selected project from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("im_selected_project");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setSelectedProjectName(parsed.name || null);
+      } catch { /* ignore */ }
+    }
+
+    // Listen for storage changes (from other components)
+    const handler = () => {
+      const updated = localStorage.getItem("im_selected_project");
+      if (updated) {
+        try {
+          const parsed = JSON.parse(updated);
+          setSelectedProjectName(parsed.name || null);
+        } catch { /* ignore */ }
+      } else {
+        setSelectedProjectName(null);
+      }
+    };
+    window.addEventListener("storage", handler);
+    return () => window.removeEventListener("storage", handler);
+  }, []);
+
+  // Also refresh when pathname changes (might have selected a new project)
+  useEffect(() => {
+    const projectId = extractProjectId(pathname);
+    if (projectId) {
+      const saved = localStorage.getItem("im_selected_project");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setSelectedProjectName(parsed.name || null);
+        } catch { /* ignore */ }
+      }
+    }
+  }, [pathname]);
 
   return (
     <header
@@ -43,11 +87,19 @@ export function TopBar() {
       "
       style={{ paddingLeft: "76px" }}
     >
-      {/* Left — view title */}
-      <div className="flex items-center">
+      {/* Left — view title + selected project */}
+      <div className="flex items-center gap-4">
         <span className="font-sans font-bold text-[1.1rem] tracking-[0.05em] uppercase">
           {title}
         </span>
+        {selectedProjectName && (
+          <>
+            <span className="text-gray-mid">/</span>
+            <span className="font-mono text-[0.8rem] uppercase text-watermelon font-semibold truncate max-w-[200px]">
+              {selectedProjectName}
+            </span>
+          </>
+        )}
       </div>
 
       {/* Right — search + notification */}
