@@ -4,8 +4,6 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 
 /* ── Types ── */
-type ColumnId = "backlog" | "todo" | "progress" | "done";
-
 interface KanbanCard {
   id: string;
   title: string;
@@ -18,17 +16,22 @@ interface KanbanCard {
 }
 
 interface ColumnDef {
-  id: ColumnId;
+  id: string;
   label: string;
   headerBg: string;
   headerColor: string;
 }
 
-const COLUMNS: ColumnDef[] = [
+const DEFAULT_COLUMNS: ColumnDef[] = [
   { id: "backlog", label: "BACKLOG", headerBg: "#F8F3EC", headerColor: "#282828" },
   { id: "todo", label: "TO DO", headerBg: "#FF5E54", headerColor: "#FFFFFF" },
   { id: "progress", label: "IN PROGRESS", headerBg: "#2ECC71", headerColor: "#282828" },
   { id: "done", label: "DONE", headerBg: "#282828", headerColor: "#FFFFFF" },
+];
+
+const COLUMN_COLORS = [
+  "#F8F3EC", "#FF5E54", "#2ECC71", "#282828", "#9B59B6",
+  "#3498DB", "#FFE459", "#E74C3C", "#1ABC9C", "#F39C12",
 ];
 
 const PRESET_COLORS = [
@@ -58,6 +61,10 @@ function uid(): string {
   return `card-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+function colUid(): string {
+  return `col-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
 function nowISO(): string {
   return new Date().toISOString();
 }
@@ -82,25 +89,26 @@ function truncateUrl(url: string, max = 35): string {
   }
 }
 
-type ColumnsMap = Record<ColumnId, KanbanCard[]>;
-function emptyColumns(): ColumnsMap {
-  return { backlog: [], todo: [], progress: [], done: [] };
-}
+type ColumnsMap = Record<string, KanbanCard[]>;
 
 /* ── Component ── */
 export default function KanbanPage() {
   const params = useParams();
   const projectId = String(params.id);
-  const [columns, setColumns] = useState<ColumnsMap>(emptyColumns);
+  const [columnDefs, setColumnDefs] = useState<ColumnDef[]>(DEFAULT_COLUMNS);
+  const [columns, setColumns] = useState<ColumnsMap>({});
   const [loaded, setLoaded] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Add-card
-  const [addingTo, setAddingTo] = useState<ColumnId | null>(null);
+  const [addingTo, setAddingTo] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState("");
 
   // Edit modal
-  const [editCard, setEditCard] = useState<{ colId: ColumnId; card: KanbanCard } | null>(null);
+  const [editCard, setEditCard] = useState<{ colId: string; card: KanbanCard } | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [editTags, setEditTags] = useState("");
@@ -110,88 +118,177 @@ export default function KanbanPage() {
   // Settings popover
   const [settingsCardId, setSettingsCardId] = useState<string | null>(null);
 
+  // Column management
+  const [showAddColumn, setShowAddColumn] = useState(false);
+  const [newColName, setNewColName] = useState("");
+  const [newColColor, setNewColColor] = useState("#F8F3EC");
+  const [renamingCol, setRenamingCol] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState("");
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+
   // Drag state (native HTML5 DnD)
-  const [dragCard, setDragCard] = useState<{ colId: ColumnId; index: number } | null>(null);
-  const [dropTarget, setDropTarget] = useState<{ colId: ColumnId; index: number } | null>(null);
+  const [dragCard, setDragCard] = useState<{ colId: string; index: number } | null>(null);
+  const [dropTarget, setDropTarget] = useState<{ colId: string; index: number } | null>(null);
 
   // Load board
   useEffect(() => {
     fetch(`/api/projects/${projectId}/artifacts/kanban/board.json`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         if (data.ok && data.artifact?.content?.columns) {
-          const result = emptyColumns();
-          const colMap: Record<string, ColumnId> = {
-            backlog: "backlog", Backlog: "backlog",
-            todo: "todo", Todo: "todo", "to-do": "todo",
-            "in-progress": "progress", "In Progress": "progress", progress: "progress", inprogress: "progress",
-            done: "done", Done: "done", completed: "done",
-          };
+          const loadedCols: ColumnDef[] = [];
+          const loadedCards: ColumnsMap = {};
+
           for (const col of data.artifact.content.columns) {
-            const mappedId = colMap[col.id] || colMap[col.title] || "backlog";
-            if (Array.isArray(col.cards)) {
-              result[mappedId] = col.cards.map((c: Record<string, unknown>, i: number) => ({
-                id: c.id ? String(c.id) : uid() + i,
-                title: (c.title as string) || "Untitled",
-                description: (c.description as string) || "",
-                tags: Array.isArray(c.tags) ? (c.tags as string[]) : [],
-                links: Array.isArray(c.links) ? (c.links as string[]) : [],
-                bgColor: (c.bgColor as string) || undefined,
-                createdAt: (c.createdAt as string) || undefined,
-                modifiedAt: (c.modifiedAt as string) || undefined,
-              }));
-            }
+            const id = col.id || colUid();
+            loadedCols.push({
+              id,
+              label: col.title || col.label || id.toUpperCase(),
+              headerBg: col.headerBg || "#F8F3EC",
+              headerColor: col.headerColor || "#282828",
+            });
+            loadedCards[id] = Array.isArray(col.cards)
+              ? col.cards.map((c: Record<string, unknown>, i: number) => ({
+                  id: c.id ? String(c.id) : uid() + i,
+                  title: (c.title as string) || "Untitled",
+                  description: (c.description as string) || "",
+                  tags: Array.isArray(c.tags) ? (c.tags as string[]) : [],
+                  links: Array.isArray(c.links) ? (c.links as string[]) : [],
+                  bgColor: (c.bgColor as string) || undefined,
+                  createdAt: (c.createdAt as string) || undefined,
+                  modifiedAt: (c.modifiedAt as string) || undefined,
+                }))
+              : [];
           }
-          setColumns(result);
+
+          if (loadedCols.length > 0) {
+            setColumnDefs(loadedCols);
+            setColumns(loadedCards);
+          } else {
+            // No columns saved — use defaults with empty cards
+            const defaultCards: ColumnsMap = {};
+            for (const col of DEFAULT_COLUMNS) defaultCards[col.id] = [];
+            setColumns(defaultCards);
+          }
+        } else {
+          // No artifact yet — use defaults
+          const defaultCards: ColumnsMap = {};
+          for (const col of DEFAULT_COLUMNS) defaultCards[col.id] = [];
+          setColumns(defaultCards);
         }
         setLoaded(true);
       })
-      .catch(() => setLoaded(true));
+      .catch((err) => {
+        setLoadError(err.message || "Failed to load board");
+        // Still show defaults so user can work
+        const defaultCards: ColumnsMap = {};
+        for (const col of DEFAULT_COLUMNS) defaultCards[col.id] = [];
+        setColumns(defaultCards);
+        setLoaded(true);
+      });
   }, [projectId]);
 
   // Save
-  const saveBoard = useCallback((newColumns: ColumnsMap) => {
+  const saveBoard = useCallback((newColumnDefs: ColumnDef[], newColumns: ColumnsMap) => {
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    setSaving(true);
+    setSaveError(null);
     saveTimeoutRef.current = setTimeout(() => {
       const payload = {
-        columns: COLUMNS.map((col) => ({
-          id: col.id, title: col.label, cards: newColumns[col.id],
+        columns: newColumnDefs.map((col) => ({
+          id: col.id,
+          title: col.label,
+          headerBg: col.headerBg,
+          headerColor: col.headerColor,
+          cards: newColumns[col.id] || [],
         })),
       };
       fetch(`/api/projects/${projectId}/artifacts/kanban/board.json`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: payload }),
-      }).catch(() => {});
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Save failed");
+          setSaving(false);
+        })
+        .catch(() => {
+          setSaveError("Failed to save — changes may be lost");
+          setSaving(false);
+        });
     }, 500);
   }, [projectId]);
 
-  const updateAndSave = useCallback((next: ColumnsMap) => {
-    setColumns(next);
-    saveBoard(next);
+  const updateAndSave = useCallback((nextDefs: ColumnDef[], nextCards: ColumnsMap) => {
+    setColumnDefs(nextDefs);
+    setColumns(nextCards);
+    saveBoard(nextDefs, nextCards);
   }, [saveBoard]);
 
+  const updateCardsOnly = useCallback((nextCards: ColumnsMap) => {
+    setColumns(nextCards);
+    saveBoard(columnDefs, nextCards);
+  }, [saveBoard, columnDefs]);
+
+  /* ── Column Management ── */
+  const addColumn = () => {
+    const name = newColName.trim();
+    if (!name) return;
+    const newCol: ColumnDef = {
+      id: colUid(),
+      label: name.toUpperCase(),
+      headerBg: newColColor,
+      headerColor: contrastText(newColColor),
+    };
+    const nextDefs = [...columnDefs, newCol];
+    const nextCards = { ...columns, [newCol.id]: [] };
+    updateAndSave(nextDefs, nextCards);
+    setNewColName("");
+    setNewColColor("#F8F3EC");
+    setShowAddColumn(false);
+  };
+
+  const renameColumn = (colId: string) => {
+    const name = renameValue.trim();
+    if (!name) { setRenamingCol(null); return; }
+    const nextDefs = columnDefs.map((c) =>
+      c.id === colId ? { ...c, label: name.toUpperCase() } : c
+    );
+    updateAndSave(nextDefs, columns);
+    setRenamingCol(null);
+    setRenameValue("");
+  };
+
+  const deleteColumn = (colId: string) => {
+    const nextDefs = columnDefs.filter((c) => c.id !== colId);
+    const nextCards = { ...columns };
+    delete nextCards[colId];
+    updateAndSave(nextDefs, nextCards);
+    setDeleteConfirm(null);
+  };
+
   /* ── Drag & Drop (native HTML5) ── */
-  const onDragStart = (colId: ColumnId, index: number) => (e: React.DragEvent) => {
+  const onDragStart = (colId: string, index: number) => (e: React.DragEvent) => {
     setDragCard({ colId, index });
     e.dataTransfer.effectAllowed = "move";
-    // Make the drag image slightly transparent
     if (e.currentTarget instanceof HTMLElement) {
       e.dataTransfer.setDragImage(e.currentTarget, 20, 20);
     }
   };
 
-  const onDragOver = (colId: ColumnId, index: number) => (e: React.DragEvent) => {
+  const onDragOver = (colId: string, index: number) => (e: React.DragEvent) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
     setDropTarget({ colId, index });
   };
 
-  const onDragOverColumn = (colId: ColumnId) => (e: React.DragEvent) => {
+  const onDragOverColumn = (colId: string) => (e: React.DragEvent) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
-    // Drop at end of column
-    setDropTarget({ colId, index: columns[colId].length });
+    setDropTarget({ colId, index: (columns[colId] || []).length });
   };
 
   const onDrop = (e: React.DragEvent) => {
@@ -201,18 +298,18 @@ export default function KanbanPage() {
     const { colId: fromCol, index: fromIdx } = dragCard;
     const { colId: toCol, index: toIdx } = dropTarget;
 
-    const fromCards = [...columns[fromCol]];
+    const fromCards = [...(columns[fromCol] || [])];
     const [moved] = fromCards.splice(fromIdx, 1);
     if (!moved) return;
 
     if (fromCol === toCol) {
       const adjustedIdx = toIdx > fromIdx ? toIdx - 1 : toIdx;
       fromCards.splice(adjustedIdx, 0, moved);
-      updateAndSave({ ...columns, [fromCol]: fromCards });
+      updateCardsOnly({ ...columns, [fromCol]: fromCards });
     } else {
-      const toCards = [...columns[toCol]];
+      const toCards = [...(columns[toCol] || [])];
       toCards.splice(toIdx, 0, moved);
-      updateAndSave({ ...columns, [fromCol]: fromCards, [toCol]: toCards });
+      updateCardsOnly({ ...columns, [fromCol]: fromCards, [toCol]: toCards });
     }
 
     setDragCard(null);
@@ -224,8 +321,8 @@ export default function KanbanPage() {
     setDropTarget(null);
   };
 
-  /* ── CRUD ── */
-  const addCard = (colId: ColumnId) => {
+  /* ── Card CRUD ── */
+  const addCard = (colId: string) => {
     const trimmed = newTitle.trim();
     if (!trimmed) return;
     const now = nowISO();
@@ -233,28 +330,28 @@ export default function KanbanPage() {
       id: uid(), title: trimmed, description: "", tags: [], links: [],
       createdAt: now, modifiedAt: now,
     };
-    const next = { ...columns, [colId]: [...columns[colId], card] };
-    updateAndSave(next);
+    const next = { ...columns, [colId]: [...(columns[colId] || []), card] };
+    updateCardsOnly(next);
     setNewTitle("");
     setAddingTo(null);
     setTimeout(() => openEditModal(colId, card), 50);
   };
 
-  const deleteCard = (colId: ColumnId, cardId: string) => {
-    updateAndSave({ ...columns, [colId]: columns[colId].filter((c) => c.id !== cardId) });
+  const deleteCard = (colId: string, cardId: string) => {
+    updateCardsOnly({ ...columns, [colId]: (columns[colId] || []).filter((c) => c.id !== cardId) });
     if (settingsCardId === cardId) setSettingsCardId(null);
   };
 
-  const updateCardColor = (colId: ColumnId, cardId: string, color: string) => {
-    updateAndSave({
+  const updateCardColor = (colId: string, cardId: string, color: string) => {
+    updateCardsOnly({
       ...columns,
-      [colId]: columns[colId].map((c) =>
+      [colId]: (columns[colId] || []).map((c) =>
         c.id === cardId ? { ...c, bgColor: color, modifiedAt: nowISO() } : c
       ),
     });
   };
 
-  const openEditModal = (colId: ColumnId, card: KanbanCard) => {
+  const openEditModal = (colId: string, card: KanbanCard) => {
     setEditCard({ colId, card });
     setEditTitle(card.title);
     setEditDescription(card.description || "");
@@ -268,9 +365,9 @@ export default function KanbanPage() {
     const { colId, card } = editCard;
     const parsedTags = editTags.split(",").map((t) => t.trim().toLowerCase()).filter(Boolean);
     const parsedLinks = editLinks.split("\n").map((l) => l.trim()).filter(Boolean);
-    updateAndSave({
+    updateCardsOnly({
       ...columns,
-      [colId]: columns[colId].map((c) =>
+      [colId]: (columns[colId] || []).map((c) =>
         c.id === card.id
           ? { ...c, title: editTitle.trim() || c.title, description: editDescription.trim(),
               tags: parsedTags, links: parsedLinks, bgColor: editBgColor, modifiedAt: nowISO() }
@@ -282,12 +379,24 @@ export default function KanbanPage() {
 
   const totalCards = Object.values(columns).reduce((sum, col) => sum + col.length, 0);
 
+  /* ── Loading state ── */
   if (!loaded) {
     return (
-      <div style={{ padding: "48px", textAlign: "center" }}>
-        <div style={{ fontWeight: 700, fontSize: "1.1rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <div style={{
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        minHeight: "400px", gap: "16px",
+      }}>
+        <div style={{
+          width: "48px", height: "48px", border: "4px solid #282828", borderTopColor: "transparent",
+          borderRadius: "0", animation: "spin 0.8s linear infinite",
+        }} />
+        <div style={{
+          fontWeight: 700, fontSize: "1rem", textTransform: "uppercase",
+          letterSpacing: "0.05em", fontFamily: "monospace",
+        }}>
           Loading board...
         </div>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
   }
@@ -295,42 +404,199 @@ export default function KanbanPage() {
   return (
     <div>
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px", flexWrap: "wrap", gap: "12px" }}>
         <h1 style={{ fontWeight: 800, fontSize: "1.5rem", letterSpacing: "0.05em", textTransform: "uppercase", margin: 0 }}>
           KANBAN
         </h1>
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "#666666", textTransform: "uppercase" }}>
-          {totalCards} card{totalCards !== 1 ? "s" : ""}
-        </span>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {/* Save indicator */}
+          {saving && (
+            <span style={{ fontFamily: "monospace", fontSize: "0.7rem", color: "#999", textTransform: "uppercase" }}>
+              saving...
+            </span>
+          )}
+          {saveError && (
+            <span style={{ fontFamily: "monospace", fontSize: "0.7rem", color: "#FF5E54", textTransform: "uppercase" }}>
+              {saveError}
+            </span>
+          )}
+          {/* Card count */}
+          <span style={{ fontFamily: "monospace", fontSize: "0.8rem", color: "#666", textTransform: "uppercase" }}>
+            {totalCards} card{totalCards !== 1 ? "s" : ""} / {columnDefs.length} col{columnDefs.length !== 1 ? "s" : ""}
+          </span>
+          {/* Add column button */}
+          <button
+            onClick={() => setShowAddColumn(!showAddColumn)}
+            style={{
+              padding: "8px 16px", backgroundColor: "#282828", color: "#FFFFFF",
+              border: "3px solid #282828", fontWeight: 700, fontSize: "0.8rem",
+              textTransform: "uppercase", cursor: "pointer", fontFamily: "monospace",
+              transition: "transform 100ms ease, box-shadow 100ms ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = "translate(-2px, -2px)"; e.currentTarget.style.boxShadow = "4px 4px 0 #282828"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}
+          >
+            + COLUMN
+          </button>
+        </div>
       </div>
 
+      {/* Load error banner */}
+      {loadError && (
+        <div style={{
+          border: "3px solid #FF5E54", backgroundColor: "#FADBD8", padding: "12px 16px",
+          marginBottom: "16px", fontFamily: "monospace", fontSize: "0.8rem",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+        }}>
+          <span>Could not load saved board: {loadError}. Showing defaults.</span>
+          <button onClick={() => setLoadError(null)} style={{
+            background: "none", border: "none", cursor: "pointer", fontWeight: 700, fontSize: "1rem",
+          }}>&#10005;</button>
+        </div>
+      )}
+
+      {/* Add column form */}
+      {showAddColumn && (
+        <div style={{
+          border: "3px solid #282828", padding: "16px", marginBottom: "16px",
+          backgroundColor: "#FFFFFF", boxShadow: "4px 4px 0 #282828",
+          display: "flex", gap: "12px", alignItems: "flex-end", flexWrap: "wrap",
+        }}>
+          <div style={{ flex: 1, minWidth: "150px" }}>
+            <label style={{ display: "block", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", marginBottom: "4px" }}>
+              Column Name
+            </label>
+            <input
+              type="text" value={newColName} onChange={(e) => setNewColName(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") addColumn(); if (e.key === "Escape") setShowAddColumn(false); }}
+              placeholder="New column..." autoFocus
+              style={{
+                width: "100%", padding: "8px 12px", border: "3px solid #282828",
+                fontFamily: "monospace", fontSize: "0.85rem", outline: "none",
+                boxSizing: "border-box",
+              }}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", marginBottom: "4px" }}>
+              Color
+            </label>
+            <div style={{ display: "flex", gap: "4px" }}>
+              {COLUMN_COLORS.map((color) => (
+                <button key={color} onClick={() => setNewColColor(color)} style={{
+                  width: "24px", height: "24px", backgroundColor: color,
+                  border: newColColor === color ? "3px solid #FF5E54" : "2px solid #282828",
+                  cursor: "pointer", padding: 0,
+                }} />
+              ))}
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <button onClick={addColumn} style={{
+              padding: "8px 16px", backgroundColor: "#282828", color: "#FFFFFF",
+              border: "3px solid #282828", fontWeight: 700, fontSize: "0.8rem",
+              textTransform: "uppercase", cursor: "pointer",
+            }}>ADD</button>
+            <button onClick={() => { setShowAddColumn(false); setNewColName(""); }} style={{
+              padding: "8px 16px", backgroundColor: "#FFFFFF", border: "3px solid #282828",
+              fontWeight: 700, fontSize: "0.8rem", cursor: "pointer",
+            }}>&#10005;</button>
+          </div>
+        </div>
+      )}
+
       {/* Empty state */}
-      {totalCards === 0 && (
+      {totalCards === 0 && columnDefs.length > 0 && (
         <div style={{ border: "4px dashed #282828", padding: "48px", textAlign: "center", backgroundColor: "#FFFFFF", marginBottom: "24px" }}>
           <div style={{ fontWeight: 700, fontSize: "1.2rem", marginBottom: "8px" }}>No cards yet</div>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.85rem", color: "#666666" }}>
+          <div style={{ fontFamily: "monospace", fontSize: "0.85rem", color: "#666" }}>
             Click &quot;+ ADD&quot; at the bottom of any column to create your first card
           </div>
         </div>
       )}
 
+      {columnDefs.length === 0 && (
+        <div style={{ border: "4px dashed #282828", padding: "48px", textAlign: "center", backgroundColor: "#FFFFFF", marginBottom: "24px" }}>
+          <div style={{ fontWeight: 700, fontSize: "1.2rem", marginBottom: "8px" }}>No columns</div>
+          <div style={{ fontFamily: "monospace", fontSize: "0.85rem", color: "#666" }}>
+            Click &quot;+ COLUMN&quot; above to create your first column
+          </div>
+        </div>
+      )}
+
       {/* Board */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px", minHeight: "max(500px, calc(100vh - 60px - 160px))" }}>
-        {COLUMNS.map((col) => (
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${columnDefs.length}, 1fr)`,
+        gap: "16px",
+        minHeight: "max(500px, calc(100vh - 60px - 200px))",
+      }}>
+        {columnDefs.map((col) => (
           <div key={col.id} style={{ border: "4px solid #282828", backgroundColor: "#FFFFFF", display: "flex", flexDirection: "column", minWidth: 0 }}>
             {/* Column header */}
             <div style={{
-              display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px",
+              display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px",
               backgroundColor: col.headerBg, color: col.headerColor, fontWeight: 700, textTransform: "uppercase",
+              position: "relative",
             }}>
-              <h3 style={{ fontSize: "1.1rem", margin: 0 }}>{col.label}</h3>
-              <span style={{
-                fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.85rem",
-                width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center",
-                border: "2px solid currentColor",
-              }}>
-                {columns[col.id].length}
-              </span>
+              {renamingCol === col.id ? (
+                <input
+                  type="text" value={renameValue}
+                  onChange={(e) => setRenameValue(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") renameColumn(col.id); if (e.key === "Escape") setRenamingCol(null); }}
+                  onBlur={() => renameColumn(col.id)}
+                  autoFocus
+                  style={{
+                    flex: 1, padding: "4px 8px", border: "2px solid currentColor",
+                    fontWeight: 700, fontSize: "0.95rem", textTransform: "uppercase",
+                    background: "rgba(255,255,255,0.3)", color: "inherit", outline: "none",
+                    fontFamily: "inherit",
+                  }}
+                />
+              ) : (
+                <h3
+                  onDoubleClick={() => { setRenamingCol(col.id); setRenameValue(col.label); }}
+                  style={{ fontSize: "1rem", margin: 0, cursor: "pointer" }}
+                  title="Double-click to rename"
+                >
+                  {col.label}
+                </h3>
+              )}
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{
+                  fontFamily: "monospace", fontSize: "0.8rem",
+                  width: "26px", height: "26px", display: "flex", alignItems: "center", justifyContent: "center",
+                  border: "2px solid currentColor",
+                }}>
+                  {(columns[col.id] || []).length}
+                </span>
+                {/* Delete column button */}
+                {deleteConfirm === col.id ? (
+                  <div style={{ display: "flex", gap: "4px" }}>
+                    <button onClick={() => deleteColumn(col.id)} style={{
+                      width: "22px", height: "22px", backgroundColor: "#FF5E54", color: "#FFF",
+                      border: "2px solid #282828", cursor: "pointer", fontSize: "0.65rem", fontWeight: 700,
+                      display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                    }} title="Confirm delete">&#10003;</button>
+                    <button onClick={() => setDeleteConfirm(null)} style={{
+                      width: "22px", height: "22px", backgroundColor: "#FFF", color: "#282828",
+                      border: "2px solid #282828", cursor: "pointer", fontSize: "0.65rem", fontWeight: 700,
+                      display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                    }} title="Cancel">&#10005;</button>
+                  </div>
+                ) : (
+                  <button onClick={() => setDeleteConfirm(col.id)} style={{
+                    width: "22px", height: "22px", backgroundColor: "transparent", color: "currentColor",
+                    border: "2px solid currentColor", cursor: "pointer", fontSize: "0.65rem", fontWeight: 700,
+                    display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                    opacity: 0.5, transition: "opacity 150ms",
+                  }}
+                    onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.5"; }}
+                    title="Delete column"
+                  >&#10005;</button>
+                )}
+              </div>
             </div>
 
             {/* Cards */}
@@ -339,7 +605,7 @@ export default function KanbanPage() {
               onDrop={onDrop}
               style={{ flex: 1, padding: "8px", minHeight: "100px", display: "flex", flexDirection: "column", gap: "8px" }}
             >
-              {columns[col.id].map((card, cardIdx) => {
+              {(columns[col.id] || []).map((card, cardIdx) => {
                 const bg = card.bgColor || "#FFFFFF";
                 const textColor = contrastText(bg);
                 const showSettings = settingsCardId === card.id;
@@ -371,7 +637,6 @@ export default function KanbanPage() {
                     >
                       {/* Card body */}
                       <div style={{ padding: "10px 12px" }}>
-                        {/* Title */}
                         <div
                           onClick={() => openEditModal(col.id, card)}
                           style={{ fontWeight: 700, fontSize: "0.9rem", cursor: "pointer", wordBreak: "break-word", paddingRight: "56px" }}
@@ -379,23 +644,21 @@ export default function KanbanPage() {
                           {card.title}
                         </div>
 
-                        {/* Description */}
                         {hasDesc && (
                           <div style={{
-                            fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", marginTop: "4px",
+                            fontFamily: "monospace", fontSize: "0.75rem", marginTop: "4px",
                             opacity: 0.7, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                           }}>
                             {card.description}
                           </div>
                         )}
 
-                        {/* Tags */}
                         {card.tags.length > 0 && (
                           <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "8px" }}>
                             {card.tags.map((tag) => (
                               <span key={tag} className="kanban-tag" style={{
                                 ...getTagStyle(tag),
-                                fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem",
+                                fontFamily: "monospace", fontSize: "0.65rem",
                                 textTransform: "uppercase", padding: "2px 8px", border: "2px solid #282828",
                                 cursor: "default", transition: "transform 100ms ease, box-shadow 100ms ease",
                               }}>
@@ -405,7 +668,6 @@ export default function KanbanPage() {
                           </div>
                         )}
 
-                        {/* Links as clickable blue tags */}
                         {hasLinks && (
                           <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "6px" }}>
                             {card.links!.map((link, li) => (
@@ -417,7 +679,7 @@ export default function KanbanPage() {
                                 onClick={(e) => e.stopPropagation()}
                                 className="kanban-link-tag"
                                 style={{
-                                  fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem",
+                                  fontFamily: "monospace", fontSize: "0.6rem",
                                   padding: "2px 8px", border: "2px solid #282828",
                                   backgroundColor: "#3498DB", color: "#FFFFFF",
                                   textDecoration: "none", cursor: "pointer",
@@ -433,7 +695,7 @@ export default function KanbanPage() {
                         )}
                       </div>
 
-                      {/* Action buttons — top-right, stacked */}
+                      {/* Action buttons — top-right */}
                       <div className="kanban-card-actions" style={{
                         position: "absolute", top: "6px", right: "6px",
                         display: "flex", gap: "4px", opacity: 0,
@@ -482,7 +744,7 @@ export default function KanbanPage() {
               })}
 
               {/* Drop indicator at end of column */}
-              {dropTarget?.colId === col.id && dropTarget?.index === columns[col.id].length && dragCard && (
+              {dropTarget?.colId === col.id && dropTarget?.index === (columns[col.id] || []).length && dragCard && (
                 <div style={{ height: "4px", backgroundColor: "#FF5E54", borderRadius: "2px" }} />
               )}
             </div>
@@ -497,7 +759,7 @@ export default function KanbanPage() {
                     placeholder="Card title..." autoFocus
                     style={{
                       width: "100%", padding: "8px 12px", border: "3px solid #282828",
-                      fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.85rem",
+                      fontFamily: "monospace", fontSize: "0.85rem",
                       backgroundColor: "#F8F3EC", outline: "none", boxSizing: "border-box",
                     }}
                   />
@@ -516,7 +778,7 @@ export default function KanbanPage() {
                 <button onClick={() => { setAddingTo(col.id); setNewTitle(""); }} style={{
                   width: "100%", padding: "10px", backgroundColor: "transparent", border: "2px dashed #28282860",
                   cursor: "pointer", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase",
-                  color: "#666666", letterSpacing: "0.05em",
+                  color: "#666", letterSpacing: "0.05em",
                 }}>+ ADD</button>
               )}
             </div>
@@ -534,7 +796,7 @@ export default function KanbanPage() {
             backgroundColor: "#FFFFFF", border: "4px solid #282828", boxShadow: "8px 8px 0px #282828",
             padding: "32px", width: "100%", maxWidth: "520px", maxHeight: "90vh", overflowY: "auto", boxSizing: "border-box",
           }}>
-            {/* Modal header — title left, buttons right */}
+            {/* Modal header */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
               <h2 style={{ fontWeight: 800, fontSize: "1.2rem", textTransform: "uppercase", margin: 0 }}>
                 EDIT CARD
@@ -557,7 +819,7 @@ export default function KanbanPage() {
             {/* Timestamps */}
             {(editCard.card.createdAt || editCard.card.modifiedAt) && (
               <div style={{
-                fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.7rem", color: "#666666",
+                fontFamily: "monospace", fontSize: "0.7rem", color: "#666",
                 marginBottom: "16px", display: "flex", gap: "16px",
               }}>
                 {editCard.card.createdAt && <span>Created: {formatDate(editCard.card.createdAt)}</span>}
@@ -609,7 +871,7 @@ export default function KanbanPage() {
             }}>
               <div style={{ fontWeight: 700, fontSize: "0.9rem" }}>{editTitle || "Preview"}</div>
               {editDescription && (
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", marginTop: "4px", opacity: 0.7 }}>
+                <div style={{ fontFamily: "monospace", fontSize: "0.75rem", marginTop: "4px", opacity: 0.7 }}>
                   {editDescription.length > 80 ? editDescription.slice(0, 80) + "..." : editDescription}
                 </div>
               )}
@@ -617,7 +879,7 @@ export default function KanbanPage() {
                 <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "8px" }}>
                   {editTags.split(",").map((t) => t.trim()).filter(Boolean).map((tag) => (
                     <span key={tag} style={{
-                      ...getTagStyle(tag), fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem",
+                      ...getTagStyle(tag), fontFamily: "monospace", fontSize: "0.65rem",
                       textTransform: "uppercase", padding: "2px 8px", border: "2px solid #282828",
                     }}>{tag}</span>
                   ))}
@@ -627,7 +889,7 @@ export default function KanbanPage() {
                 <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "6px" }}>
                   {editLinks.split("\n").map((l) => l.trim()).filter(Boolean).map((link, i) => (
                     <span key={i} style={{
-                      fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", padding: "2px 8px",
+                      fontFamily: "monospace", fontSize: "0.6rem", padding: "2px 8px",
                       border: "2px solid #282828", backgroundColor: "#3498DB", color: "#FFFFFF",
                     }}>&#8599; {truncateUrl(link, 25)}</span>
                   ))}
@@ -663,12 +925,12 @@ export default function KanbanPage() {
           -webkit-user-drag: element;
         }
         @media (max-width: 768px) {
-          div[style*="grid-template-columns: repeat(4"] {
+          div[style*="grid-template-columns: repeat("] {
             grid-template-columns: 1fr 1fr !important;
           }
         }
         @media (max-width: 480px) {
-          div[style*="grid-template-columns: repeat(4"] {
+          div[style*="grid-template-columns: repeat("] {
             grid-template-columns: 1fr !important;
           }
         }
@@ -684,6 +946,6 @@ const labelStyle: React.CSSProperties = {
 
 const inputStyle: React.CSSProperties = {
   width: "100%", padding: "10px 14px", border: "3px solid #282828",
-  fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.9rem",
+  fontFamily: "monospace", fontSize: "0.9rem",
   backgroundColor: "#F8F3EC", outline: "none", boxSizing: "border-box", marginBottom: "16px",
 };
