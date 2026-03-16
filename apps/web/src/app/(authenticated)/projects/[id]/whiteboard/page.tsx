@@ -112,7 +112,18 @@ export default function WhiteboardPage() {
         if (data.ok && data.artifact?.content) {
           const content = data.artifact.content;
           if (Array.isArray(content.paths)) {
-            pathsRef.current = content.paths;
+            // Normalize old format (flat {x,y}[] arrays) to new {points,color,width}
+            pathsRef.current = content.paths.map((p: unknown) => {
+              if (Array.isArray(p)) {
+                return { points: p, color: "#282828", width: 3 };
+              }
+              const obj = p as Record<string, unknown>;
+              return {
+                points: Array.isArray(obj.points) ? obj.points : [],
+                color: (obj.color as string) || "#282828",
+                width: (obj.width as number) || 3,
+              };
+            });
           }
           if (Array.isArray(content.stickies)) {
             setStickies(content.stickies);
