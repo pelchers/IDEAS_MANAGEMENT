@@ -4,74 +4,57 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 
 /* ── Types ── */
-type Tool = "select" | "draw" | "rect" | "text" | "sticky";
+type Tool = "select" | "draw" | "rect" | "text" | "sticky" | "eraser";
 
 interface StickyNote {
-  id: number;
+  id: string;
   text: string;
   color: "yellow" | "orange" | "green" | "pink";
   x: number;
   y: number;
 }
 
+interface DrawPath {
+  points: { x: number; y: number }[];
+  color: string;
+  width: number;
+}
+
 /* ── Tool definitions ── */
 const TOOLS: { id: Tool; icon: string; title: string }[] = [
-  { id: "select", icon: "☚", title: "Select" },
-  { id: "draw", icon: "✎", title: "Draw" },
-  { id: "rect", icon: "□", title: "Rectangle" },
-  { id: "text", icon: "T", title: "Text" },
-  { id: "sticky", icon: "■", title: "Sticky Note" },
+  { id: "select", icon: "\u261A", title: "Select" },
+  { id: "draw", icon: "\u270E", title: "Draw" },
+  { id: "eraser", icon: "\u2421", title: "Eraser (clears all)" },
+  { id: "sticky", icon: "\u25A0", title: "Add Sticky Note" },
 ];
 
-/* ── Sticky note colors ── */
-const STICKY_COLORS: Record<
-  StickyNote["color"],
-  { bg: string; text: string }
-> = {
+const STICKY_COLORS: Record<StickyNote["color"], { bg: string; text: string }> = {
   yellow: { bg: "#FFE459", text: "#282828" },
   orange: { bg: "#FF5E54", text: "#FFFFFF" },
   green: { bg: "#2BBF5D", text: "#282828" },
   pink: { bg: "#7B61FF", text: "#FFFFFF" },
 };
 
-/* ── Initial stickies (matching pass-1) ── */
-const INITIAL_STICKIES: StickyNote[] = [
-  { id: 1, text: "User flow for onboarding", color: "yellow", x: 60, y: 40 },
-  {
-    id: 2,
-    text: "API rate limiting strategy",
-    color: "orange",
-    x: 280,
-    y: 120,
-  },
-  { id: 3, text: "Dashboard layout v2", color: "green", x: 520, y: 60 },
-  { id: 4, text: "Auth flow design", color: "pink", x: 180, y: 280 },
-];
+const STICKY_COLOR_KEYS: StickyNote["color"][] = ["yellow", "orange", "green", "pink"];
 
-/* ── Rotation helper (matching pass-1 nth-child rules) ── */
 function getStickyRotation(index: number): string {
-  // pass-1: default -2deg, 2n → 1.5deg, 3n → -3deg
   if ((index + 1) % 3 === 0) return "rotate(-3deg)";
   if ((index + 1) % 2 === 0) return "rotate(1.5deg)";
   return "rotate(-2deg)";
 }
 
-/* ── Cursor for each tool ── */
 function getCursor(tool: Tool): string {
   switch (tool) {
-    case "select":
-      return "default";
-    case "draw":
-      return "crosshair";
-    case "rect":
-      return "crosshair";
-    case "text":
-      return "text";
-    case "sticky":
-      return "cell";
-    default:
-      return "default";
+    case "select": return "default";
+    case "draw": return "crosshair";
+    case "eraser": return "crosshair";
+    case "sticky": return "cell";
+    default: return "default";
   }
+}
+
+function stickyId(): string {
+  return `sticky-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
 /* ── Component ── */
@@ -81,25 +64,33 @@ export default function WhiteboardPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [activeTool, setActiveTool] = useState<Tool>("select");
-  const [stickies, setStickies] =
-    useState<StickyNote[]>(INITIAL_STICKIES);
+  const [stickies, setStickies] = useState<StickyNote[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  // Drawing state refs (avoid re-renders during drawing)
+  // Drawing state refs
   const isDrawing = useRef(false);
   const lastPos = useRef<{ x: number; y: number } | null>(null);
-  // Store all drawing paths so we can redraw on resize
-  const paths = useRef<{ x: number; y: number }[][]>([]);
+  const pathsRef = useRef<DrawPath[]>([]);
   const currentPath = useRef<{ x: number; y: number }[]>([]);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Dragging state
-  const [draggingId, setDraggingId] = useState<number | null>(null);
+  // Sticky dragging
+  const [draggingId, setDraggingId] = useState<string | null>(null);
   const dragOffset = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  // Debounced save to artifact API
-  const saveWhiteboard = useCallback((savePaths: { x: number; y: number }[][], saveStickies: StickyNote[]) => {
-    if (projectId.startsWith("mock-")) return;
+  // Sticky editing
+  const [editingStickyId, setEditingStickyId] = useState<string | null>(null);
+  const [editStickyText, setEditStickyText] = useState("");
+  const [hoverStickyId, setHoverStickyId] = useState<string | null>(null);
+
+  // New sticky color
+  const [nextStickyColor, setNextStickyColor] = useState<StickyNote["color"]>("yellow");
+
+  // Save to artifact API
+  const saveWhiteboard = useCallback((savePaths: DrawPath[], saveStickies: StickyNote[]) => {
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    setSaving(true);
     saveTimeoutRef.current = setTimeout(() => {
       fetch(`/api/projects/${projectId}/artifacts/whiteboard/board.json`, {
         method: "PUT",
@@ -107,26 +98,29 @@ export default function WhiteboardPage() {
         body: JSON.stringify({
           content: { paths: savePaths, stickies: saveStickies },
         }),
-      }).catch(() => {});
+      })
+        .then(() => setSaving(false))
+        .catch(() => setSaving(false));
     }, 500);
   }, [projectId]);
 
-  // Load whiteboard from artifact API
+  // Load whiteboard
   useEffect(() => {
-    if (projectId.startsWith("mock-")) return;
     fetch(`/api/projects/${projectId}/artifacts/whiteboard/board.json`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.ok && data.content) {
-          if (Array.isArray(data.content.paths)) {
-            paths.current = data.content.paths;
+        if (data.ok && data.artifact?.content) {
+          const content = data.artifact.content;
+          if (Array.isArray(content.paths)) {
+            pathsRef.current = content.paths;
           }
-          if (Array.isArray(data.content.stickies) && data.content.stickies.length > 0) {
-            setStickies(data.content.stickies);
+          if (Array.isArray(content.stickies)) {
+            setStickies(content.stickies);
           }
         }
+        setLoaded(true);
       })
-      .catch(() => {});
+      .catch(() => setLoaded(true));
   }, [projectId]);
 
   /* ── Draw grid ── */
@@ -148,7 +142,7 @@ export default function WhiteboardPage() {
     }
   }, []);
 
-  /* ── Redraw everything (grid + paths) ── */
+  /* ── Redraw everything ── */
   const redraw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -158,17 +152,16 @@ export default function WhiteboardPage() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid(ctx);
 
-    // Redraw all saved paths
-    ctx.strokeStyle = "#282828";
-    ctx.lineWidth = 3;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    for (const path of paths.current) {
-      if (path.length < 2) continue;
+    for (const path of pathsRef.current) {
+      if (path.points.length < 2) continue;
+      ctx.strokeStyle = path.color || "#282828";
+      ctx.lineWidth = path.width || 3;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
       ctx.beginPath();
-      ctx.moveTo(path[0].x, path[0].y);
-      for (let i = 1; i < path.length; i++) {
-        ctx.lineTo(path[i].x, path[i].y);
+      ctx.moveTo(path.points[0].x, path.points[0].y);
+      for (let i = 1; i < path.points.length; i++) {
+        ctx.lineTo(path.points[i].x, path.points[i].y);
       }
       ctx.stroke();
     }
@@ -191,26 +184,45 @@ export default function WhiteboardPage() {
     resize();
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
-  }, [redraw]);
+  }, [redraw, loaded]);
 
   /* ── Canvas mouse events ── */
-  const getCanvasPos = (
-    e: React.MouseEvent<HTMLCanvasElement>
-  ): { x: number; y: number } => {
+  const getCanvasPos = (e: React.MouseEvent<HTMLCanvasElement>): { x: number; y: number } => {
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
-    return {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    };
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };
 
   const handleCanvasMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (activeTool !== "draw") return;
-    isDrawing.current = true;
-    const pos = getCanvasPos(e);
-    lastPos.current = pos;
-    currentPath.current = [pos];
+    if (activeTool === "draw") {
+      isDrawing.current = true;
+      const pos = getCanvasPos(e);
+      lastPos.current = pos;
+      currentPath.current = [pos];
+    } else if (activeTool === "sticky") {
+      const pos = getCanvasPos(e);
+      const newSticky: StickyNote = {
+        id: stickyId(),
+        text: "New note",
+        color: nextStickyColor,
+        x: pos.x - 80,
+        y: pos.y - 40,
+      };
+      const updated = [...stickies, newSticky];
+      setStickies(updated);
+      saveWhiteboard(pathsRef.current, updated);
+      setActiveTool("select");
+      // Auto-edit
+      setTimeout(() => {
+        setEditingStickyId(newSticky.id);
+        setEditStickyText(newSticky.text);
+      }, 50);
+    } else if (activeTool === "eraser") {
+      pathsRef.current = [];
+      redraw();
+      saveWhiteboard([], stickies);
+      setActiveTool("select");
+    }
   };
 
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -221,7 +233,6 @@ export default function WhiteboardPage() {
     if (!ctx || !lastPos.current) return;
 
     const pos = getCanvasPos(e);
-
     ctx.strokeStyle = "#282828";
     ctx.lineWidth = 3;
     ctx.lineCap = "round";
@@ -237,19 +248,21 @@ export default function WhiteboardPage() {
 
   const handleCanvasMouseUp = () => {
     if (isDrawing.current && currentPath.current.length > 0) {
-      paths.current.push([...currentPath.current]);
+      pathsRef.current.push({
+        points: [...currentPath.current],
+        color: "#282828",
+        width: 3,
+      });
       currentPath.current = [];
-      saveWhiteboard(paths.current, stickies);
+      saveWhiteboard(pathsRef.current, stickies);
     }
     isDrawing.current = false;
     lastPos.current = null;
   };
 
   /* ── Sticky note dragging ── */
-  const handleStickyMouseDown = (
-    e: React.MouseEvent<HTMLDivElement>,
-    id: number
-  ) => {
+  const handleStickyMouseDown = (e: React.MouseEvent<HTMLDivElement>, id: string) => {
+    if (editingStickyId === id) return; // don't drag while editing
     e.preventDefault();
     const sticky = stickies.find((s) => s.id === id);
     if (!sticky) return;
@@ -269,10 +282,8 @@ export default function WhiteboardPage() {
     const handleMouseMove = (e: MouseEvent) => {
       const wrapRect = wrapRef.current?.getBoundingClientRect();
       if (!wrapRect) return;
-
       const newX = e.clientX - wrapRect.left - dragOffset.current.x;
       const newY = e.clientY - wrapRect.top - dragOffset.current.y;
-
       setStickies((prev) =>
         prev.map((s) => (s.id === draggingId ? { ...s, x: newX, y: newY } : s))
       );
@@ -280,9 +291,8 @@ export default function WhiteboardPage() {
 
     const handleMouseUp = () => {
       setDraggingId(null);
-      // Save after sticky note drag completes
       setStickies((current) => {
-        saveWhiteboard(paths.current, current);
+        saveWhiteboard(pathsRef.current, current);
         return current;
       });
     };
@@ -293,40 +303,122 @@ export default function WhiteboardPage() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [draggingId]);
+  }, [draggingId, saveWhiteboard]);
+
+  /* ── Sticky CRUD ── */
+  const saveStickyEdit = (id: string) => {
+    const text = editStickyText.trim() || "Empty note";
+    const updated = stickies.map((s) => (s.id === id ? { ...s, text } : s));
+    setStickies(updated);
+    saveWhiteboard(pathsRef.current, updated);
+    setEditingStickyId(null);
+    setEditStickyText("");
+  };
+
+  const deleteSticky = (id: string) => {
+    const updated = stickies.filter((s) => s.id !== id);
+    setStickies(updated);
+    saveWhiteboard(pathsRef.current, updated);
+  };
+
+  const changeStickyColor = (id: string, color: StickyNote["color"]) => {
+    const updated = stickies.map((s) => (s.id === id ? { ...s, color } : s));
+    setStickies(updated);
+    saveWhiteboard(pathsRef.current, updated);
+  };
+
+  if (!loaded) {
+    return (
+      <div style={{
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        minHeight: "400px", gap: "16px",
+      }}>
+        <div style={{
+          width: "48px", height: "48px", border: "4px solid #282828", borderTopColor: "transparent",
+          animation: "spin 0.8s linear infinite",
+        }} />
+        <div style={{ fontWeight: 700, fontSize: "1rem", textTransform: "uppercase", fontFamily: "monospace" }}>
+          Loading whiteboard...
+        </div>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
 
   return (
     <div className="animate-[view-slam_0.3s_cubic-bezier(0.2,0,0,1)]">
       {/* View header */}
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
-        <h1 className="nb-view-title">WHITEBOARD</h1>
-        <div className="flex gap-1">
-          {TOOLS.map((tool) => (
-            <button
-              key={tool.id}
-              title={tool.title}
-              onClick={() => setActiveTool(tool.id)}
-              className={`w-11 h-11 text-xl flex items-center justify-center border-3 border-signal-black cursor-pointer font-bold transition-colors ${
-                activeTool === tool.id
-                  ? "bg-signal-black text-white"
-                  : "bg-white text-signal-black hover:bg-creamy-milk"
-              }`}
-            >
-              {tool.icon}
-            </button>
-          ))}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px", flexWrap: "wrap", gap: "12px" }}>
+        <h1 style={{ fontWeight: 800, fontSize: "1.5rem", letterSpacing: "0.05em", textTransform: "uppercase", margin: 0 }}>
+          WHITEBOARD
+        </h1>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {saving && (
+            <span style={{ fontFamily: "monospace", fontSize: "0.7rem", color: "#999", textTransform: "uppercase" }}>
+              saving...
+            </span>
+          )}
+          <span style={{ fontFamily: "monospace", fontSize: "0.8rem", color: "#666", textTransform: "uppercase" }}>
+            {stickies.length} note{stickies.length !== 1 ? "s" : ""} / {pathsRef.current.length} stroke{pathsRef.current.length !== 1 ? "s" : ""}
+          </span>
+          {/* Tool buttons */}
+          <div style={{ display: "flex", gap: "4px" }}>
+            {TOOLS.map((tool) => (
+              <button
+                key={tool.id}
+                title={tool.title}
+                onClick={() => setActiveTool(tool.id)}
+                style={{
+                  width: "40px", height: "40px", fontSize: "1.1rem",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  border: "3px solid #282828", cursor: "pointer", fontWeight: 700,
+                  backgroundColor: activeTool === tool.id ? "#282828" : "#FFFFFF",
+                  color: activeTool === tool.id ? "#FFFFFF" : "#282828",
+                  transition: "background-color 150ms, color 150ms",
+                }}
+              >
+                {tool.icon}
+              </button>
+            ))}
+          </div>
+          {/* Sticky color picker (when sticky tool active) */}
+          {activeTool === "sticky" && (
+            <div style={{ display: "flex", gap: "4px", borderLeft: "3px solid #282828", paddingLeft: "12px" }}>
+              {STICKY_COLOR_KEYS.map((color) => (
+                <button
+                  key={color}
+                  onClick={() => setNextStickyColor(color)}
+                  style={{
+                    width: "24px", height: "24px", backgroundColor: STICKY_COLORS[color].bg,
+                    border: nextStickyColor === color ? "3px solid #282828" : "2px solid #28282860",
+                    cursor: "pointer", padding: 0,
+                    transform: nextStickyColor === color ? "scale(1.2)" : "none",
+                    transition: "transform 100ms",
+                  }}
+                  title={color}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Canvas wrap */}
       <div
         ref={wrapRef}
-        className="relative border-4 border-signal-black shadow-nb bg-white min-h-[max(500px,calc(100vh-60px-200px))] max-sm:min-h-[300px]"
-        style={{ cursor: getCursor(activeTool) }}
+        style={{
+          position: "relative",
+          border: "4px solid #282828",
+          boxShadow: "4px 4px 0 #282828",
+          backgroundColor: "#FFFFFF",
+          minHeight: "max(500px, calc(100vh - 60px - 200px))",
+          cursor: getCursor(activeTool),
+          overflow: "hidden",
+        }}
       >
         <canvas
           ref={canvasRef}
-          className="block w-full h-full absolute inset-0"
+          style={{ display: "block", width: "100%", height: "100%", position: "absolute", inset: 0 }}
           onMouseDown={handleCanvasMouseDown}
           onMouseMove={handleCanvasMouseMove}
           onMouseUp={handleCanvasMouseUp}
@@ -334,35 +426,117 @@ export default function WhiteboardPage() {
         />
 
         {/* Sticky notes overlay */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
           {stickies.map((sticky, index) => {
             const colors = STICKY_COLORS[sticky.color];
             const isDragging = draggingId === sticky.id;
+            const isHover = hoverStickyId === sticky.id;
+            const isEditing = editingStickyId === sticky.id;
+
             return (
               <div
                 key={sticky.id}
                 onMouseDown={(e) => handleStickyMouseDown(e, sticky.id)}
-                className="absolute w-40 p-4 border-3 border-signal-black text-[0.85rem] font-semibold pointer-events-auto select-none transition-[transform,box-shadow] duration-150"
+                onMouseEnter={() => setHoverStickyId(sticky.id)}
+                onMouseLeave={() => setHoverStickyId(null)}
+                onDoubleClick={() => {
+                  setEditingStickyId(sticky.id);
+                  setEditStickyText(sticky.text);
+                }}
                 style={{
+                  position: "absolute",
                   left: `${sticky.x}px`,
                   top: `${sticky.y}px`,
+                  width: "160px",
+                  padding: "16px",
+                  border: "3px solid #282828",
                   backgroundColor: colors.bg,
                   color: colors.text,
-                  transform: isDragging
-                    ? "rotate(0deg) scale(1.05)"
-                    : getStickyRotation(index),
-                  boxShadow: isDragging
-                    ? "6px 6px 0px #282828"
-                    : "3px 3px 0px #282828",
+                  fontWeight: 600,
+                  fontSize: "0.85rem",
+                  pointerEvents: "auto",
+                  userSelect: "none",
+                  transform: isDragging ? "rotate(0deg) scale(1.05)" : getStickyRotation(index),
+                  boxShadow: isDragging ? "6px 6px 0px #282828" : "3px 3px 0px #282828",
                   zIndex: isDragging ? 20 : "auto",
-                  cursor: isDragging ? "grabbing" : "grab",
+                  cursor: isEditing ? "text" : isDragging ? "grabbing" : "grab",
+                  transition: isDragging ? "none" : "transform 150ms, box-shadow 150ms",
                 }}
               >
-                <p>{sticky.text}</p>
+                {isEditing ? (
+                  <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
+                    <textarea
+                      autoFocus
+                      value={editStickyText}
+                      onChange={(e) => setEditStickyText(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); saveStickyEdit(sticky.id); } if (e.key === "Escape") { setEditingStickyId(null); } }}
+                      onBlur={() => saveStickyEdit(sticky.id)}
+                      style={{
+                        width: "100%", minHeight: "60px", padding: "4px",
+                        border: "2px solid currentColor", background: "rgba(255,255,255,0.3)",
+                        color: "inherit", fontWeight: 600, fontSize: "0.85rem",
+                        fontFamily: "inherit", resize: "none", outline: "none",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <p style={{ margin: 0, wordBreak: "break-word" }}>{sticky.text}</p>
+                )}
+
+                {/* Action buttons on hover */}
+                {isHover && !isEditing && (
+                  <div style={{
+                    position: "absolute", top: "-12px", right: "-12px",
+                    display: "flex", gap: "4px",
+                  }}>
+                    {/* Color cycle */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const curIdx = STICKY_COLOR_KEYS.indexOf(sticky.color);
+                        const nextColor = STICKY_COLOR_KEYS[(curIdx + 1) % STICKY_COLOR_KEYS.length];
+                        changeStickyColor(sticky.id, nextColor);
+                      }}
+                      onMouseDown={(e) => e.stopPropagation()}
+                      style={{
+                        width: "22px", height: "22px", backgroundColor: "#FFF", color: "#282828",
+                        border: "2px solid #282828", cursor: "pointer", fontSize: "0.7rem",
+                        display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                      }}
+                      title="Change color"
+                    >&#9881;</button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); deleteSticky(sticky.id); }}
+                      onMouseDown={(e) => e.stopPropagation()}
+                      style={{
+                        width: "22px", height: "22px", backgroundColor: "#FF5E54", color: "#FFF",
+                        border: "2px solid #282828", cursor: "pointer", fontSize: "0.7rem", fontWeight: 700,
+                        display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                      }}
+                      title="Delete"
+                    >&#10005;</button>
+                  </div>
+                )}
               </div>
             );
           })}
         </div>
+
+        {/* Empty state */}
+        {stickies.length === 0 && pathsRef.current.length === 0 && (
+          <div style={{
+            position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
+            pointerEvents: "none",
+          }}>
+            <div style={{
+              fontFamily: "monospace", fontSize: "0.9rem", color: "#999",
+              textTransform: "uppercase", textAlign: "center",
+            }}>
+              <div style={{ fontSize: "2rem", marginBottom: "8px" }}>[ ]</div>
+              Select DRAW to sketch or STICKY to add notes
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

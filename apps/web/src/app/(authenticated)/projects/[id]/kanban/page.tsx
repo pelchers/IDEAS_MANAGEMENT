@@ -22,6 +22,10 @@ interface ColumnDef {
   headerColor: string;
 }
 
+interface KanbanSettings {
+  compactCards: boolean;
+}
+
 const DEFAULT_COLUMNS: ColumnDef[] = [
   { id: "backlog", label: "BACKLOG", headerBg: "#F8F3EC", headerColor: "#282828" },
   { id: "todo", label: "TO DO", headerBg: "#FF5E54", headerColor: "#FFFFFF" },
@@ -103,6 +107,10 @@ export default function KanbanPage() {
   const [saveError, setSaveError] = useState<string | null>(null);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Settings
+  const [settings, setSettings] = useState<KanbanSettings>({ compactCards: false });
+  const [showSettings, setShowSettings] = useState(false);
+
   // Add-card
   const [addingTo, setAddingTo] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState("");
@@ -115,7 +123,7 @@ export default function KanbanPage() {
   const [editLinks, setEditLinks] = useState("");
   const [editBgColor, setEditBgColor] = useState("#FFFFFF");
 
-  // Settings popover
+  // Settings popover (card color)
   const [settingsCardId, setSettingsCardId] = useState<string | null>(null);
 
   // Column management
@@ -126,9 +134,13 @@ export default function KanbanPage() {
   const [renameValue, setRenameValue] = useState("");
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-  // Drag state (native HTML5 DnD)
+  // Card drag state (native HTML5 DnD)
   const [dragCard, setDragCard] = useState<{ colId: string; index: number } | null>(null);
   const [dropTarget, setDropTarget] = useState<{ colId: string; index: number } | null>(null);
+
+  // Column drag state
+  const [dragCol, setDragCol] = useState<number | null>(null);
+  const [dropColTarget, setDropColTarget] = useState<number | null>(null);
 
   // Load board
   useEffect(() => {
@@ -168,13 +180,16 @@ export default function KanbanPage() {
             setColumnDefs(loadedCols);
             setColumns(loadedCards);
           } else {
-            // No columns saved — use defaults with empty cards
             const defaultCards: ColumnsMap = {};
             for (const col of DEFAULT_COLUMNS) defaultCards[col.id] = [];
             setColumns(defaultCards);
           }
+
+          // Load settings if present
+          if (data.artifact.content.settings) {
+            setSettings(data.artifact.content.settings);
+          }
         } else {
-          // No artifact yet — use defaults
           const defaultCards: ColumnsMap = {};
           for (const col of DEFAULT_COLUMNS) defaultCards[col.id] = [];
           setColumns(defaultCards);
@@ -183,7 +198,6 @@ export default function KanbanPage() {
       })
       .catch((err) => {
         setLoadError(err.message || "Failed to load board");
-        // Still show defaults so user can work
         const defaultCards: ColumnsMap = {};
         for (const col of DEFAULT_COLUMNS) defaultCards[col.id] = [];
         setColumns(defaultCards);
@@ -192,7 +206,7 @@ export default function KanbanPage() {
   }, [projectId]);
 
   // Save
-  const saveBoard = useCallback((newColumnDefs: ColumnDef[], newColumns: ColumnsMap) => {
+  const saveBoard = useCallback((newColumnDefs: ColumnDef[], newColumns: ColumnsMap, newSettings?: KanbanSettings) => {
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
     setSaving(true);
     setSaveError(null);
@@ -205,6 +219,7 @@ export default function KanbanPage() {
           headerColor: col.headerColor,
           cards: newColumns[col.id] || [],
         })),
+        settings: newSettings || settings,
       };
       fetch(`/api/projects/${projectId}/artifacts/kanban/board.json`, {
         method: "PUT",
@@ -220,7 +235,7 @@ export default function KanbanPage() {
           setSaving(false);
         });
     }, 500);
-  }, [projectId]);
+  }, [projectId, settings]);
 
   const updateAndSave = useCallback((nextDefs: ColumnDef[], nextCards: ColumnsMap) => {
     setColumnDefs(nextDefs);
@@ -232,6 +247,11 @@ export default function KanbanPage() {
     setColumns(nextCards);
     saveBoard(columnDefs, nextCards);
   }, [saveBoard, columnDefs]);
+
+  const updateSettings = useCallback((next: KanbanSettings) => {
+    setSettings(next);
+    saveBoard(columnDefs, columns, next);
+  }, [saveBoard, columnDefs, columns]);
 
   /* ── Column Management ── */
   const addColumn = () => {
@@ -270,22 +290,67 @@ export default function KanbanPage() {
     setDeleteConfirm(null);
   };
 
-  /* ── Drag & Drop (native HTML5) ── */
+  const updateColumnColor = (colId: string, color: string) => {
+    const nextDefs = columnDefs.map((c) =>
+      c.id === colId ? { ...c, headerBg: color, headerColor: contrastText(color) } : c
+    );
+    updateAndSave(nextDefs, columns);
+  };
+
+  const resetToDefaults = () => {
+    const defaultCards: ColumnsMap = {};
+    for (const col of DEFAULT_COLUMNS) {
+      defaultCards[col.id] = columns[col.id] || [];
+    }
+    updateAndSave([...DEFAULT_COLUMNS], defaultCards);
+  };
+
+  /* ── Column Drag & Drop ── */
+  const onColDragStart = (colIdx: number) => (e: React.DragEvent) => {
+    setDragCol(colIdx);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", "column");
+  };
+
+  const onColDragOver = (colIdx: number) => (e: React.DragEvent) => {
+    if (dragCol === null) return; // only handle column drags
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    setDropColTarget(colIdx);
+  };
+
+  const onColDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    if (dragCol === null || dropColTarget === null || dragCol === dropColTarget) {
+      setDragCol(null);
+      setDropColTarget(null);
+      return;
+    }
+    const nextDefs = [...columnDefs];
+    const [moved] = nextDefs.splice(dragCol, 1);
+    nextDefs.splice(dropColTarget, 0, moved);
+    updateAndSave(nextDefs, columns);
+    setDragCol(null);
+    setDropColTarget(null);
+  };
+
+  const onColDragEnd = () => {
+    setDragCol(null);
+    setDropColTarget(null);
+  };
+
+  /* ── Card Drag & Drop (native HTML5) ── */
   const onDragStart = (colId: string, index: number) => (e: React.DragEvent) => {
     setDragCard({ colId, index });
     e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", "card");
     if (e.currentTarget instanceof HTMLElement) {
       e.dataTransfer.setDragImage(e.currentTarget, 20, 20);
     }
   };
 
-  const onDragOver = (colId: string, index: number) => (e: React.DragEvent) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-    setDropTarget({ colId, index });
-  };
-
   const onDragOverColumn = (colId: string) => (e: React.DragEvent) => {
+    if (dragCol !== null) return; // don't handle column drags here
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
     setDropTarget({ colId, index: (columns[colId] || []).length });
@@ -293,6 +358,7 @@ export default function KanbanPage() {
 
   const onDrop = (e: React.DragEvent) => {
     e.preventDefault();
+    if (dragCol !== null) { onColDrop(e); return; }
     if (!dragCard || !dropTarget) return;
 
     const { colId: fromCol, index: fromIdx } = dragCard;
@@ -402,14 +468,13 @@ export default function KanbanPage() {
   }
 
   return (
-    <div>
+    <div style={{ position: "relative", minHeight: "calc(100vh - 120px)" }}>
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px", flexWrap: "wrap", gap: "12px" }}>
         <h1 style={{ fontWeight: 800, fontSize: "1.5rem", letterSpacing: "0.05em", textTransform: "uppercase", margin: 0 }}>
           KANBAN
         </h1>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          {/* Save indicator */}
           {saving && (
             <span style={{ fontFamily: "monospace", fontSize: "0.7rem", color: "#999", textTransform: "uppercase" }}>
               saving...
@@ -420,11 +485,9 @@ export default function KanbanPage() {
               {saveError}
             </span>
           )}
-          {/* Card count */}
           <span style={{ fontFamily: "monospace", fontSize: "0.8rem", color: "#666", textTransform: "uppercase" }}>
             {totalCards} card{totalCards !== 1 ? "s" : ""} / {columnDefs.length} col{columnDefs.length !== 1 ? "s" : ""}
           </span>
-          {/* Add column button */}
           <button
             onClick={() => setShowAddColumn(!showAddColumn)}
             style={{
@@ -472,8 +535,7 @@ export default function KanbanPage() {
               placeholder="New column..." autoFocus
               style={{
                 width: "100%", padding: "8px 12px", border: "3px solid #282828",
-                fontFamily: "monospace", fontSize: "0.85rem", outline: "none",
-                boxSizing: "border-box",
+                fontFamily: "monospace", fontSize: "0.85rem", outline: "none", boxSizing: "border-box",
               }}
             />
           </div>
@@ -494,8 +556,7 @@ export default function KanbanPage() {
           <div style={{ display: "flex", gap: "8px" }}>
             <button onClick={addColumn} style={{
               padding: "8px 16px", backgroundColor: "#282828", color: "#FFFFFF",
-              border: "3px solid #282828", fontWeight: 700, fontSize: "0.8rem",
-              textTransform: "uppercase", cursor: "pointer",
+              border: "3px solid #282828", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", cursor: "pointer",
             }}>ADD</button>
             <button onClick={() => { setShowAddColumn(false); setNewColName(""); }} style={{
               padding: "8px 16px", backgroundColor: "#FFFFFF", border: "3px solid #282828",
@@ -505,7 +566,7 @@ export default function KanbanPage() {
         </div>
       )}
 
-      {/* Empty state */}
+      {/* Empty states */}
       {totalCards === 0 && columnDefs.length > 0 && (
         <div style={{ border: "4px dashed #282828", padding: "48px", textAlign: "center", backgroundColor: "#FFFFFF", marginBottom: "24px" }}>
           <div style={{ fontWeight: 700, fontSize: "1.2rem", marginBottom: "8px" }}>No cards yet</div>
@@ -530,263 +591,419 @@ export default function KanbanPage() {
         gridTemplateColumns: `repeat(${columnDefs.length}, 1fr)`,
         gap: "16px",
         minHeight: "max(500px, calc(100vh - 60px - 200px))",
+        paddingBottom: "60px",
       }}>
-        {columnDefs.map((col) => (
-          <div key={col.id} style={{ border: "4px solid #282828", backgroundColor: "#FFFFFF", display: "flex", flexDirection: "column", minWidth: 0 }}>
-            {/* Column header */}
-            <div style={{
-              display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px",
-              backgroundColor: col.headerBg, color: col.headerColor, fontWeight: 700, textTransform: "uppercase",
-              position: "relative",
-            }}>
-              {renamingCol === col.id ? (
-                <input
-                  type="text" value={renameValue}
-                  onChange={(e) => setRenameValue(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === "Enter") renameColumn(col.id); if (e.key === "Escape") setRenamingCol(null); }}
-                  onBlur={() => renameColumn(col.id)}
-                  autoFocus
-                  style={{
-                    flex: 1, padding: "4px 8px", border: "2px solid currentColor",
-                    fontWeight: 700, fontSize: "0.95rem", textTransform: "uppercase",
-                    background: "rgba(255,255,255,0.3)", color: "inherit", outline: "none",
-                    fontFamily: "inherit",
-                  }}
-                />
-              ) : (
-                <h3
-                  onDoubleClick={() => { setRenamingCol(col.id); setRenameValue(col.label); }}
-                  style={{ fontSize: "1rem", margin: 0, cursor: "pointer" }}
-                  title="Double-click to rename"
-                >
-                  {col.label}
-                </h3>
-              )}
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <span style={{
-                  fontFamily: "monospace", fontSize: "0.8rem",
-                  width: "26px", height: "26px", display: "flex", alignItems: "center", justifyContent: "center",
-                  border: "2px solid currentColor",
-                }}>
-                  {(columns[col.id] || []).length}
-                </span>
-                {/* Delete column button */}
-                {deleteConfirm === col.id ? (
-                  <div style={{ display: "flex", gap: "4px" }}>
-                    <button onClick={() => deleteColumn(col.id)} style={{
-                      width: "22px", height: "22px", backgroundColor: "#FF5E54", color: "#FFF",
-                      border: "2px solid #282828", cursor: "pointer", fontSize: "0.65rem", fontWeight: 700,
+        {columnDefs.map((col, colIdx) => {
+          const isColDragOver = dropColTarget === colIdx && dragCol !== null && dragCol !== colIdx;
+          return (
+            <div
+              key={col.id}
+              onDragOver={onColDragOver(colIdx)}
+              onDrop={onColDrop}
+              style={{
+                border: isColDragOver ? "4px solid #FF5E54" : "4px solid #282828",
+                backgroundColor: "#FFFFFF",
+                display: "flex",
+                flexDirection: "column",
+                minWidth: 0,
+                opacity: dragCol === colIdx ? 0.4 : 1,
+                transition: "border-color 150ms, opacity 150ms",
+              }}
+            >
+              {/* Column header — draggable */}
+              <div
+                draggable
+                onDragStart={onColDragStart(colIdx)}
+                onDragEnd={onColDragEnd}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px",
+                  backgroundColor: col.headerBg, color: col.headerColor, fontWeight: 700, textTransform: "uppercase",
+                  cursor: "grab",
+                }}
+              >
+                {renamingCol === col.id ? (
+                  <input
+                    type="text" value={renameValue}
+                    onChange={(e) => setRenameValue(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") renameColumn(col.id); if (e.key === "Escape") setRenamingCol(null); }}
+                    onBlur={() => renameColumn(col.id)}
+                    autoFocus
+                    onClick={(e) => e.stopPropagation()}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    draggable={false}
+                    style={{
+                      flex: 1, padding: "4px 8px", border: "2px solid currentColor",
+                      fontWeight: 700, fontSize: "0.95rem", textTransform: "uppercase",
+                      background: "rgba(255,255,255,0.3)", color: "inherit", outline: "none",
+                      fontFamily: "inherit",
+                    }}
+                  />
+                ) : (
+                  <h3
+                    onDoubleClick={() => { setRenamingCol(col.id); setRenameValue(col.label); }}
+                    style={{ fontSize: "1rem", margin: 0, cursor: "grab" }}
+                    title="Drag to reorder / Double-click to rename"
+                  >
+                    {col.label}
+                  </h3>
+                )}
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span style={{
+                    fontFamily: "monospace", fontSize: "0.8rem",
+                    width: "26px", height: "26px", display: "flex", alignItems: "center", justifyContent: "center",
+                    border: "2px solid currentColor",
+                  }}>
+                    {(columns[col.id] || []).length}
+                  </span>
+                  {deleteConfirm === col.id ? (
+                    <div style={{ display: "flex", gap: "4px" }}>
+                      <button onClick={() => deleteColumn(col.id)} style={{
+                        width: "22px", height: "22px", backgroundColor: "#FF5E54", color: "#FFF",
+                        border: "2px solid #282828", cursor: "pointer", fontSize: "0.65rem", fontWeight: 700,
+                        display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                      }} title="Confirm delete">&#10003;</button>
+                      <button onClick={() => setDeleteConfirm(null)} style={{
+                        width: "22px", height: "22px", backgroundColor: "#FFF", color: "#282828",
+                        border: "2px solid #282828", cursor: "pointer", fontSize: "0.65rem", fontWeight: 700,
+                        display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                      }} title="Cancel">&#10005;</button>
+                    </div>
+                  ) : (
+                    <button onClick={() => setDeleteConfirm(col.id)} style={{
+                      width: "22px", height: "22px", backgroundColor: "transparent", color: "currentColor",
+                      border: "2px solid currentColor", cursor: "pointer", fontSize: "0.65rem", fontWeight: 700,
                       display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
-                    }} title="Confirm delete">&#10003;</button>
-                    <button onClick={() => setDeleteConfirm(null)} style={{
-                      width: "22px", height: "22px", backgroundColor: "#FFF", color: "#282828",
-                      border: "2px solid #282828", cursor: "pointer", fontSize: "0.65rem", fontWeight: 700,
-                      display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
-                    }} title="Cancel">&#10005;</button>
+                      opacity: 0.5, transition: "opacity 150ms",
+                    }}
+                      onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.5"; }}
+                      title="Delete column"
+                    >&#10005;</button>
+                  )}
+                </div>
+              </div>
+
+              {/* Cards */}
+              <div
+                onDragOver={(e) => { if (dragCol === null) { e.preventDefault(); e.dataTransfer.dropEffect = "move"; setDropTarget({ colId: col.id, index: (columns[col.id] || []).length }); } }}
+                onDrop={onDrop}
+                style={{ flex: 1, padding: "8px", minHeight: "100px", display: "flex", flexDirection: "column", gap: "8px" }}
+              >
+                {(columns[col.id] || []).map((card, cardIdx) => {
+                  const bg = card.bgColor || "#FFFFFF";
+                  const textColor = contrastText(bg);
+                  const showCardSettings = settingsCardId === card.id;
+                  const hasDesc = !!(card.description?.trim());
+                  const hasLinks = !!(card.links && card.links.length > 0);
+                  const isDragOver = dropTarget?.colId === col.id && dropTarget?.index === cardIdx;
+                  const compact = settings.compactCards;
+
+                  return (
+                    <div key={card.id}>
+                      {isDragOver && dragCard && !(dragCard.colId === col.id && dragCard.index === cardIdx) && (
+                        <div style={{ height: "4px", backgroundColor: "#FF5E54", marginBottom: "4px", borderRadius: "2px" }} />
+                      )}
+                      <div
+                        draggable
+                        onDragStart={onDragStart(col.id, cardIdx)}
+                        onDragOver={(e) => { if (dragCol === null) { e.preventDefault(); e.stopPropagation(); setDropTarget({ colId: col.id, index: cardIdx }); } }}
+                        onDragEnd={onDragEnd}
+                        className="kanban-card-interactive"
+                        style={{
+                          border: "3px solid #282828",
+                          backgroundColor: bg,
+                          color: textColor,
+                          boxShadow: "3px 3px 0px #282828",
+                          position: "relative",
+                          cursor: "grab",
+                          opacity: dragCard?.colId === col.id && dragCard?.index === cardIdx ? 0.4 : 1,
+                        }}
+                      >
+                        <div style={{ padding: compact ? "6px 10px" : "10px 12px" }}>
+                          <div
+                            onClick={() => openEditModal(col.id, card)}
+                            style={{ fontWeight: 700, fontSize: compact ? "0.8rem" : "0.9rem", cursor: "pointer", wordBreak: "break-word", paddingRight: "56px" }}
+                          >
+                            {card.title}
+                          </div>
+
+                          {!compact && hasDesc && (
+                            <div style={{
+                              fontFamily: "monospace", fontSize: "0.75rem", marginTop: "4px",
+                              opacity: 0.7, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                            }}>
+                              {card.description}
+                            </div>
+                          )}
+
+                          {!compact && card.tags.length > 0 && (
+                            <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "8px" }}>
+                              {card.tags.map((tag) => (
+                                <span key={tag} className="kanban-tag" style={{
+                                  ...getTagStyle(tag),
+                                  fontFamily: "monospace", fontSize: "0.65rem",
+                                  textTransform: "uppercase", padding: "2px 8px", border: "2px solid #282828",
+                                  cursor: "default", transition: "transform 100ms ease, box-shadow 100ms ease",
+                                }}>
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+
+                          {!compact && hasLinks && (
+                            <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "6px" }}>
+                              {card.links!.map((link, li) => (
+                                <a
+                                  key={li}
+                                  href={link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="kanban-link-tag"
+                                  style={{
+                                    fontFamily: "monospace", fontSize: "0.6rem",
+                                    padding: "2px 8px", border: "2px solid #282828",
+                                    backgroundColor: "#3498DB", color: "#FFFFFF",
+                                    textDecoration: "none", cursor: "pointer",
+                                    transition: "transform 100ms ease, box-shadow 100ms ease",
+                                    display: "inline-flex", alignItems: "center", gap: "4px",
+                                  }}
+                                >
+                                  <span style={{ fontSize: "0.7rem" }}>&#8599;</span>
+                                  {truncateUrl(link, 25)}
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Action buttons */}
+                        <div className="kanban-card-actions" style={{
+                          position: "absolute", top: "6px", right: "6px",
+                          display: "flex", gap: "4px", opacity: 0,
+                        }}>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setSettingsCardId(showCardSettings ? null : card.id); }}
+                            style={{
+                              width: "22px", height: "22px", backgroundColor: "#FFFFFF", color: "#282828",
+                              border: "2px solid #282828", cursor: "pointer", fontSize: "0.7rem",
+                              display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                            }}
+                            title="Card settings"
+                          >&#9881;</button>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); deleteCard(col.id, card.id); }}
+                            style={{
+                              width: "22px", height: "22px", backgroundColor: "#FF5E54", color: "#FFFFFF",
+                              border: "2px solid #282828", cursor: "pointer", fontSize: "0.7rem", fontWeight: 700,
+                              display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                            }}
+                            title="Delete card"
+                          >&#10005;</button>
+                        </div>
+
+                        {/* Color picker */}
+                        {showCardSettings && (
+                          <div onClick={(e) => e.stopPropagation()} style={{
+                            position: "absolute", top: "34px", right: "6px", backgroundColor: "#FFFFFF",
+                            border: "3px solid #282828", boxShadow: "4px 4px 0px #282828", padding: "8px",
+                            zIndex: 100, display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "4px", width: "200px",
+                          }}>
+                            {PRESET_COLORS.map((color) => (
+                              <button key={color} onClick={() => { updateCardColor(col.id, card.id, color); setSettingsCardId(null); }}
+                                style={{
+                                  width: "24px", height: "24px", backgroundColor: color,
+                                  border: bg === color ? "3px solid #FF5E54" : "2px solid #282828",
+                                  cursor: "pointer", padding: 0,
+                                }} title={color}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {dropTarget?.colId === col.id && dropTarget?.index === (columns[col.id] || []).length && dragCard && (
+                  <div style={{ height: "4px", backgroundColor: "#FF5E54", borderRadius: "2px" }} />
+                )}
+              </div>
+
+              {/* Add card */}
+              <div style={{ padding: "8px", borderTop: "2px dashed #28282840" }}>
+                {addingTo === col.id ? (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                    <input
+                      type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === "Enter") addCard(col.id); if (e.key === "Escape") { setAddingTo(null); setNewTitle(""); } }}
+                      placeholder="Card title..." autoFocus
+                      style={{
+                        width: "100%", padding: "8px 12px", border: "3px solid #282828",
+                        fontFamily: "monospace", fontSize: "0.85rem",
+                        backgroundColor: "#F8F3EC", outline: "none", boxSizing: "border-box",
+                      }}
+                    />
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <button onClick={() => addCard(col.id)} style={{
+                        flex: 1, padding: "8px", backgroundColor: "#282828", color: "#FFFFFF",
+                        border: "3px solid #282828", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", cursor: "pointer",
+                      }}>ADD</button>
+                      <button onClick={() => { setAddingTo(null); setNewTitle(""); }} style={{
+                        padding: "8px 12px", backgroundColor: "#FFFFFF", border: "3px solid #282828",
+                        fontWeight: 700, fontSize: "0.8rem", cursor: "pointer",
+                      }}>&#10005;</button>
+                    </div>
                   </div>
                 ) : (
-                  <button onClick={() => setDeleteConfirm(col.id)} style={{
-                    width: "22px", height: "22px", backgroundColor: "transparent", color: "currentColor",
-                    border: "2px solid currentColor", cursor: "pointer", fontSize: "0.65rem", fontWeight: 700,
-                    display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
-                    opacity: 0.5, transition: "opacity 150ms",
-                  }}
-                    onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.5"; }}
-                    title="Delete column"
-                  >&#10005;</button>
+                  <button onClick={() => { setAddingTo(col.id); setNewTitle(""); }} style={{
+                    width: "100%", padding: "10px", backgroundColor: "transparent", border: "2px dashed #28282860",
+                    cursor: "pointer", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase",
+                    color: "#666", letterSpacing: "0.05em",
+                  }}>+ ADD</button>
                 )}
               </div>
             </div>
-
-            {/* Cards */}
-            <div
-              onDragOver={onDragOverColumn(col.id)}
-              onDrop={onDrop}
-              style={{ flex: 1, padding: "8px", minHeight: "100px", display: "flex", flexDirection: "column", gap: "8px" }}
-            >
-              {(columns[col.id] || []).map((card, cardIdx) => {
-                const bg = card.bgColor || "#FFFFFF";
-                const textColor = contrastText(bg);
-                const showSettings = settingsCardId === card.id;
-                const hasDesc = !!(card.description?.trim());
-                const hasLinks = !!(card.links && card.links.length > 0);
-                const isDragOver = dropTarget?.colId === col.id && dropTarget?.index === cardIdx;
-
-                return (
-                  <div key={card.id}>
-                    {/* Drop indicator line */}
-                    {isDragOver && dragCard && !(dragCard.colId === col.id && dragCard.index === cardIdx) && (
-                      <div style={{ height: "4px", backgroundColor: "#FF5E54", marginBottom: "4px", borderRadius: "2px" }} />
-                    )}
-                    <div
-                      draggable
-                      onDragStart={onDragStart(col.id, cardIdx)}
-                      onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setDropTarget({ colId: col.id, index: cardIdx }); }}
-                      onDragEnd={onDragEnd}
-                      className="kanban-card-interactive"
-                      style={{
-                        border: "3px solid #282828",
-                        backgroundColor: bg,
-                        color: textColor,
-                        boxShadow: "3px 3px 0px #282828",
-                        position: "relative",
-                        cursor: "grab",
-                        opacity: dragCard?.colId === col.id && dragCard?.index === cardIdx ? 0.4 : 1,
-                      }}
-                    >
-                      {/* Card body */}
-                      <div style={{ padding: "10px 12px" }}>
-                        <div
-                          onClick={() => openEditModal(col.id, card)}
-                          style={{ fontWeight: 700, fontSize: "0.9rem", cursor: "pointer", wordBreak: "break-word", paddingRight: "56px" }}
-                        >
-                          {card.title}
-                        </div>
-
-                        {hasDesc && (
-                          <div style={{
-                            fontFamily: "monospace", fontSize: "0.75rem", marginTop: "4px",
-                            opacity: 0.7, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
-                          }}>
-                            {card.description}
-                          </div>
-                        )}
-
-                        {card.tags.length > 0 && (
-                          <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "8px" }}>
-                            {card.tags.map((tag) => (
-                              <span key={tag} className="kanban-tag" style={{
-                                ...getTagStyle(tag),
-                                fontFamily: "monospace", fontSize: "0.65rem",
-                                textTransform: "uppercase", padding: "2px 8px", border: "2px solid #282828",
-                                cursor: "default", transition: "transform 100ms ease, box-shadow 100ms ease",
-                              }}>
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-
-                        {hasLinks && (
-                          <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "6px" }}>
-                            {card.links!.map((link, li) => (
-                              <a
-                                key={li}
-                                href={link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                                className="kanban-link-tag"
-                                style={{
-                                  fontFamily: "monospace", fontSize: "0.6rem",
-                                  padding: "2px 8px", border: "2px solid #282828",
-                                  backgroundColor: "#3498DB", color: "#FFFFFF",
-                                  textDecoration: "none", cursor: "pointer",
-                                  transition: "transform 100ms ease, box-shadow 100ms ease",
-                                  display: "inline-flex", alignItems: "center", gap: "4px",
-                                }}
-                              >
-                                <span style={{ fontSize: "0.7rem" }}>&#8599;</span>
-                                {truncateUrl(link, 25)}
-                              </a>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Action buttons — top-right */}
-                      <div className="kanban-card-actions" style={{
-                        position: "absolute", top: "6px", right: "6px",
-                        display: "flex", gap: "4px", opacity: 0,
-                      }}>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); setSettingsCardId(showSettings ? null : card.id); }}
-                          style={{
-                            width: "22px", height: "22px", backgroundColor: "#FFFFFF", color: "#282828",
-                            border: "2px solid #282828", cursor: "pointer", fontSize: "0.7rem",
-                            display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
-                          }}
-                          title="Card settings"
-                        >&#9881;</button>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); deleteCard(col.id, card.id); }}
-                          style={{
-                            width: "22px", height: "22px", backgroundColor: "#FF5E54", color: "#FFFFFF",
-                            border: "2px solid #282828", cursor: "pointer", fontSize: "0.7rem", fontWeight: 700,
-                            display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
-                          }}
-                          title="Delete card"
-                        >&#10005;</button>
-                      </div>
-
-                      {/* Color picker */}
-                      {showSettings && (
-                        <div onClick={(e) => e.stopPropagation()} style={{
-                          position: "absolute", top: "34px", right: "6px", backgroundColor: "#FFFFFF",
-                          border: "3px solid #282828", boxShadow: "4px 4px 0px #282828", padding: "8px",
-                          zIndex: 100, display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "4px", width: "200px",
-                        }}>
-                          {PRESET_COLORS.map((color) => (
-                            <button key={color} onClick={() => { updateCardColor(col.id, card.id, color); setSettingsCardId(null); }}
-                              style={{
-                                width: "24px", height: "24px", backgroundColor: color,
-                                border: bg === color ? "3px solid #FF5E54" : "2px solid #282828",
-                                cursor: "pointer", padding: 0,
-                              }} title={color}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-
-              {/* Drop indicator at end of column */}
-              {dropTarget?.colId === col.id && dropTarget?.index === (columns[col.id] || []).length && dragCard && (
-                <div style={{ height: "4px", backgroundColor: "#FF5E54", borderRadius: "2px" }} />
-              )}
-            </div>
-
-            {/* Add card */}
-            <div style={{ padding: "8px", borderTop: "2px dashed #28282840" }}>
-              {addingTo === col.id ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  <input
-                    type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === "Enter") addCard(col.id); if (e.key === "Escape") { setAddingTo(null); setNewTitle(""); } }}
-                    placeholder="Card title..." autoFocus
-                    style={{
-                      width: "100%", padding: "8px 12px", border: "3px solid #282828",
-                      fontFamily: "monospace", fontSize: "0.85rem",
-                      backgroundColor: "#F8F3EC", outline: "none", boxSizing: "border-box",
-                    }}
-                  />
-                  <div style={{ display: "flex", gap: "8px" }}>
-                    <button onClick={() => addCard(col.id)} style={{
-                      flex: 1, padding: "8px", backgroundColor: "#282828", color: "#FFFFFF",
-                      border: "3px solid #282828", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", cursor: "pointer",
-                    }}>ADD</button>
-                    <button onClick={() => { setAddingTo(null); setNewTitle(""); }} style={{
-                      padding: "8px 12px", backgroundColor: "#FFFFFF", border: "3px solid #282828",
-                      fontWeight: 700, fontSize: "0.8rem", cursor: "pointer",
-                    }}>&#10005;</button>
-                  </div>
-                </div>
-              ) : (
-                <button onClick={() => { setAddingTo(col.id); setNewTitle(""); }} style={{
-                  width: "100%", padding: "10px", backgroundColor: "transparent", border: "2px dashed #28282860",
-                  cursor: "pointer", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase",
-                  color: "#666", letterSpacing: "0.05em",
-                }}>+ ADD</button>
-              )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {/* ── Edit Modal ── */}
+      {/* ── Settings Button (bottom-right) ── */}
+      <button
+        onClick={() => setShowSettings(true)}
+        style={{
+          position: "fixed", bottom: "24px", right: "24px", zIndex: 1000,
+          width: "48px", height: "48px", backgroundColor: "#282828", color: "#FFFFFF",
+          border: "3px solid #282828", boxShadow: "4px 4px 0 #282828",
+          cursor: "pointer", fontSize: "1.3rem", display: "flex",
+          alignItems: "center", justifyContent: "center",
+          transition: "transform 100ms ease, box-shadow 100ms ease",
+        }}
+        onMouseEnter={(e) => { e.currentTarget.style.transform = "translate(-2px, -2px)"; e.currentTarget.style.boxShadow = "6px 6px 0 #282828"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "4px 4px 0 #282828"; }}
+        title="Board Settings"
+      >
+        &#9881;
+      </button>
+
+      {/* ── Settings Modal ── */}
+      {showSettings && (
+        <div onClick={() => setShowSettings(false)} style={{
+          position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.4)",
+          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2000,
+        }}>
+          <div onClick={(e) => e.stopPropagation()} style={{
+            backgroundColor: "#FFFFFF", border: "4px solid #282828", boxShadow: "8px 8px 0px #282828",
+            padding: "32px", width: "100%", maxWidth: "480px", maxHeight: "90vh", overflowY: "auto", boxSizing: "border-box",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px" }}>
+              <h2 style={{ fontWeight: 800, fontSize: "1.2rem", textTransform: "uppercase", margin: 0 }}>
+                BOARD SETTINGS
+              </h2>
+              <button onClick={() => setShowSettings(false)} className="nb-modal-btn" style={{
+                padding: "8px 16px", backgroundColor: "#FFFFFF", border: "3px solid #282828",
+                fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", cursor: "pointer",
+                transition: "transform 100ms ease, box-shadow 100ms ease",
+              }}>CLOSE</button>
+            </div>
+
+            {/* Stats */}
+            <div style={{
+              display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "24px",
+            }}>
+              <div style={{ border: "3px solid #282828", padding: "16px", textAlign: "center" }}>
+                <div style={{ fontWeight: 800, fontSize: "1.5rem", fontFamily: "monospace" }}>{columnDefs.length}</div>
+                <div style={{ fontFamily: "monospace", fontSize: "0.7rem", textTransform: "uppercase", color: "#999" }}>Columns</div>
+              </div>
+              <div style={{ border: "3px solid #282828", padding: "16px", textAlign: "center" }}>
+                <div style={{ fontWeight: 800, fontSize: "1.5rem", fontFamily: "monospace" }}>{totalCards}</div>
+                <div style={{ fontFamily: "monospace", fontSize: "0.7rem", textTransform: "uppercase", color: "#999" }}>Total Cards</div>
+              </div>
+            </div>
+
+            {/* Compact cards toggle */}
+            <div style={{
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              border: "3px solid #282828", padding: "12px 16px", marginBottom: "16px",
+            }}>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase" }}>Compact Cards</div>
+                <div style={{ fontFamily: "monospace", fontSize: "0.7rem", color: "#999", marginTop: "2px" }}>
+                  Show title only, hide description/tags/links
+                </div>
+              </div>
+              <button
+                onClick={() => updateSettings({ ...settings, compactCards: !settings.compactCards })}
+                style={{
+                  width: "48px", height: "28px", border: "3px solid #282828",
+                  backgroundColor: settings.compactCards ? "#2ECC71" : "#F8F3EC",
+                  cursor: "pointer", position: "relative", padding: 0,
+                  transition: "background-color 150ms",
+                }}
+              >
+                <div style={{
+                  width: "18px", height: "18px", backgroundColor: "#282828",
+                  position: "absolute", top: "2px",
+                  left: settings.compactCards ? "24px" : "2px",
+                  transition: "left 150ms",
+                }} />
+              </button>
+            </div>
+
+            {/* Column list */}
+            <label style={{ display: "block", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", marginBottom: "8px" }}>
+              Columns ({columnDefs.length})
+            </label>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "20px" }}>
+              {columnDefs.map((col) => (
+                <div key={col.id} style={{
+                  display: "flex", alignItems: "center", gap: "8px",
+                  border: "2px solid #282828", padding: "8px 12px",
+                }}>
+                  <div style={{
+                    width: "24px", height: "24px", backgroundColor: col.headerBg,
+                    border: "2px solid #282828", flexShrink: 0,
+                  }} />
+                  <span style={{ flex: 1, fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase" }}>
+                    {col.label}
+                  </span>
+                  <span style={{ fontFamily: "monospace", fontSize: "0.7rem", color: "#999" }}>
+                    {(columns[col.id] || []).length} cards
+                  </span>
+                  {/* Color picker for column */}
+                  <div style={{ display: "flex", gap: "2px" }}>
+                    {COLUMN_COLORS.slice(0, 5).map((color) => (
+                      <button key={color} onClick={() => updateColumnColor(col.id, color)} style={{
+                        width: "16px", height: "16px", backgroundColor: color,
+                        border: col.headerBg === color ? "2px solid #FF5E54" : "1px solid #282828",
+                        cursor: "pointer", padding: 0,
+                      }} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Reset to defaults */}
+            <button
+              onClick={resetToDefaults}
+              style={{
+                width: "100%", padding: "10px", backgroundColor: "#FFFFFF",
+                border: "3px solid #282828", fontWeight: 700, fontSize: "0.8rem",
+                textTransform: "uppercase", cursor: "pointer", fontFamily: "monospace",
+                transition: "transform 100ms ease, box-shadow 100ms ease",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translate(-2px, -2px)"; e.currentTarget.style.boxShadow = "4px 4px 0 #282828"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}
+            >
+              RESET COLUMNS TO DEFAULTS
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Edit Card Modal ── */}
       {editCard && (
         <div onClick={() => setEditCard(null)} style={{
           position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.4)",
@@ -796,7 +1013,6 @@ export default function KanbanPage() {
             backgroundColor: "#FFFFFF", border: "4px solid #282828", boxShadow: "8px 8px 0px #282828",
             padding: "32px", width: "100%", maxWidth: "520px", maxHeight: "90vh", overflowY: "auto", boxSizing: "border-box",
           }}>
-            {/* Modal header */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
               <h2 style={{ fontWeight: 800, fontSize: "1.2rem", textTransform: "uppercase", margin: 0 }}>
                 EDIT CARD
@@ -816,7 +1032,6 @@ export default function KanbanPage() {
               </div>
             </div>
 
-            {/* Timestamps */}
             {(editCard.card.createdAt || editCard.card.modifiedAt) && (
               <div style={{
                 fontFamily: "monospace", fontSize: "0.7rem", color: "#666",
@@ -827,31 +1042,26 @@ export default function KanbanPage() {
               </div>
             )}
 
-            {/* Title */}
             <label style={labelStyle}>Title</label>
             <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} style={inputStyle} />
 
-            {/* Description */}
             <label style={labelStyle}>Description</label>
             <textarea value={editDescription} onChange={(e) => setEditDescription(e.target.value)}
               placeholder="Add a description..." rows={3}
               style={{ ...inputStyle, resize: "vertical" as const, minHeight: "70px" }}
             />
 
-            {/* Tags */}
             <label style={labelStyle}>Tags (comma-separated)</label>
             <input type="text" value={editTags} onChange={(e) => setEditTags(e.target.value)}
               placeholder="feature, bug, urgent" style={inputStyle}
             />
 
-            {/* Links */}
             <label style={labelStyle}>Links (one per line)</label>
             <textarea value={editLinks} onChange={(e) => setEditLinks(e.target.value)}
               placeholder={"https://example.com\nhttps://github.com/..."} rows={2}
               style={{ ...inputStyle, resize: "vertical" as const, minHeight: "50px" }}
             />
 
-            {/* Background color */}
             <label style={labelStyle}>Background Color</label>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "6px", marginBottom: "20px" }}>
               {PRESET_COLORS.map((color) => (
@@ -863,7 +1073,6 @@ export default function KanbanPage() {
               ))}
             </div>
 
-            {/* Preview */}
             <label style={labelStyle}>Preview</label>
             <div style={{
               border: "3px solid #282828", padding: "12px", backgroundColor: editBgColor,
