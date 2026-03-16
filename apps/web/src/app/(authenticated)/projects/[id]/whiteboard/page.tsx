@@ -4,38 +4,75 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 
 /* ── Types ── */
-type Tool = "select" | "draw" | "rect" | "text" | "sticky" | "eraser";
-
-interface StickyNote {
-  id: string;
-  text: string;
-  color: "yellow" | "orange" | "green" | "pink";
-  x: number;
-  y: number;
-}
+type Tool = "select" | "draw" | "line" | "eraser" | "dot" | "sticky";
 
 interface DrawPath {
+  id: string;
+  type: "freehand" | "line";
   points: { x: number; y: number }[];
   color: string;
   width: number;
 }
 
-/* ── Tool definitions ── */
+interface Dot {
+  id: string;
+  x: number;
+  y: number;
+  color: string;
+  size: number;
+}
+
+type StickyColor = "yellow" | "orange" | "green" | "pink";
+
+interface StickyNote {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  color: StickyColor;
+  bgColor: string;
+  borderColor: string;
+  x: number;
+  y: number;
+}
+
+/* ── Constants ── */
 const TOOLS: { id: Tool; icon: string; title: string }[] = [
   { id: "select", icon: "\u261A", title: "Select" },
-  { id: "draw", icon: "\u270E", title: "Draw" },
-  { id: "eraser", icon: "\u2421", title: "Eraser (clears all)" },
+  { id: "draw", icon: "\u270E", title: "Freehand Draw" },
+  { id: "line", icon: "\u2571", title: "Straight Line" },
+  { id: "dot", icon: "\u25CF", title: "Place Dot / Pin" },
+  { id: "eraser", icon: "\u232B", title: "Eraser (click a stroke to remove it)" },
   { id: "sticky", icon: "\u25A0", title: "Add Sticky Note" },
 ];
 
-const STICKY_COLORS: Record<StickyNote["color"], { bg: string; text: string }> = {
-  yellow: { bg: "#FFE459", text: "#282828" },
-  orange: { bg: "#FF5E54", text: "#FFFFFF" },
-  green: { bg: "#2BBF5D", text: "#282828" },
-  pink: { bg: "#7B61FF", text: "#FFFFFF" },
+const STICKY_PRESETS: Record<StickyColor, { bg: string; border: string }> = {
+  yellow: { bg: "#FFE459", border: "#D4B800" },
+  orange: { bg: "#FF5E54", border: "#C9302C" },
+  green: { bg: "#2BBF5D", border: "#1A8C3E" },
+  pink: { bg: "#7B61FF", border: "#5A3FD4" },
 };
 
-const STICKY_COLOR_KEYS: StickyNote["color"][] = ["yellow", "orange", "green", "pink"];
+const BG_COLORS = [
+  "#FFE459", "#FF5E54", "#2BBF5D", "#7B61FF", "#FFFFFF",
+  "#F8F3EC", "#3498DB", "#E74C3C", "#1ABC9C", "#F39C12",
+];
+
+const BORDER_COLORS = [
+  "#282828", "#D4B800", "#C9302C", "#1A8C3E", "#5A3FD4",
+  "#2980B9", "#999999", "#FF5E54", "#16A085", "#E67E22",
+];
+
+const STICKY_COLOR_KEYS: StickyColor[] = ["yellow", "orange", "green", "pink"];
+
+function contrastText(hex: string): string {
+  const c = hex.replace("#", "");
+  if (c.length < 6) return "#282828";
+  const r = parseInt(c.substring(0, 2), 16);
+  const g = parseInt(c.substring(2, 4), 16);
+  const b = parseInt(c.substring(4, 6), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.55 ? "#282828" : "#FFFFFF";
+}
 
 function getStickyRotation(index: number): string {
   if ((index + 1) % 3 === 0) return "rotate(-3deg)";
@@ -47,14 +84,41 @@ function getCursor(tool: Tool): string {
   switch (tool) {
     case "select": return "default";
     case "draw": return "crosshair";
-    case "eraser": return "crosshair";
+    case "line": return "crosshair";
+    case "eraser": return "pointer";
+    case "dot": return "crosshair";
     case "sticky": return "cell";
     default: return "default";
   }
 }
 
-function stickyId(): string {
-  return `sticky-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+function genId(prefix: string): string {
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+/* ── Hit detection: distance from point to line segment ── */
+function distToSegment(px: number, py: number, ax: number, ay: number, bx: number, by: number): number {
+  const dx = bx - ax, dy = by - ay;
+  const lenSq = dx * dx + dy * dy;
+  if (lenSq === 0) return Math.hypot(px - ax, py - ay);
+  let t = ((px - ax) * dx + (py - ay) * dy) / lenSq;
+  t = Math.max(0, Math.min(1, t));
+  return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
+}
+
+function isNearPath(px: number, py: number, path: DrawPath, threshold = 8): boolean {
+  const pts = path.points;
+  if (!pts || pts.length < 2) return false;
+  for (let i = 0; i < pts.length - 1; i++) {
+    if (distToSegment(px, py, pts[i].x, pts[i].y, pts[i + 1].x, pts[i + 1].y) < threshold) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function isNearDot(px: number, py: number, dot: Dot, threshold = 12): boolean {
+  return Math.hypot(px - dot.x, py - dot.y) < threshold;
 }
 
 /* ── Component ── */
@@ -68,27 +132,39 @@ export default function WhiteboardPage() {
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  // Drawing state refs
+  // Drawing refs
   const isDrawing = useRef(false);
   const lastPos = useRef<{ x: number; y: number } | null>(null);
   const pathsRef = useRef<DrawPath[]>([]);
+  const dotsRef = useRef<Dot[]>([]);
   const currentPath = useRef<{ x: number; y: number }[]>([]);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Line tool preview
+  const lineStart = useRef<{ x: number; y: number } | null>(null);
+  const [linePreview, setLinePreview] = useState<{ x: number; y: number } | null>(null);
 
   // Sticky dragging
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const dragOffset = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  // Sticky editing
-  const [editingStickyId, setEditingStickyId] = useState<string | null>(null);
-  const [editStickyText, setEditStickyText] = useState("");
+  // Sticky settings popup
+  const [settingsSticky, setSettingsSticky] = useState<StickyNote | null>(null);
+  const [ssTitle, setSsTitle] = useState("");
+  const [ssDesc, setSsDesc] = useState("");
+  const [ssTags, setSsTags] = useState("");
+  const [ssBgColor, setSsBgColor] = useState("#FFE459");
+  const [ssBorderColor, setSsBorderColor] = useState("#282828");
+
   const [hoverStickyId, setHoverStickyId] = useState<string | null>(null);
+  const [nextStickyColor, setNextStickyColor] = useState<StickyColor>("yellow");
 
-  // New sticky color
-  const [nextStickyColor, setNextStickyColor] = useState<StickyNote["color"]>("yellow");
+  // Force re-render for dot/stroke counts
+  const [, forceRender] = useState(0);
+  const bump = () => forceRender((n) => n + 1);
 
-  // Save to artifact API
-  const saveWhiteboard = useCallback((savePaths: DrawPath[], saveStickies: StickyNote[]) => {
+  /* ── Save ── */
+  const saveWhiteboard = useCallback((savePaths: DrawPath[], saveDots: Dot[], saveStickies: StickyNote[]) => {
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
     setSaving(true);
     saveTimeoutRef.current = setTimeout(() => {
@@ -96,7 +172,7 @@ export default function WhiteboardPage() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          content: { paths: savePaths, stickies: saveStickies },
+          content: { paths: savePaths, dots: saveDots, stickies: saveStickies },
         }),
       })
         .then(() => setSaving(false))
@@ -104,7 +180,7 @@ export default function WhiteboardPage() {
     }, 500);
   }, [projectId]);
 
-  // Load whiteboard
+  /* ── Load ── */
   useEffect(() => {
     fetch(`/api/projects/${projectId}/artifacts/whiteboard/board.json`)
       .then((res) => res.json())
@@ -112,21 +188,36 @@ export default function WhiteboardPage() {
         if (data.ok && data.artifact?.content) {
           const content = data.artifact.content;
           if (Array.isArray(content.paths)) {
-            // Normalize old format (flat {x,y}[] arrays) to new {points,color,width}
             pathsRef.current = content.paths.map((p: unknown) => {
               if (Array.isArray(p)) {
-                return { points: p, color: "#282828", width: 3 };
+                return { id: genId("path"), type: "freehand" as const, points: p, color: "#282828", width: 3 };
               }
               const obj = p as Record<string, unknown>;
               return {
+                id: (obj.id as string) || genId("path"),
+                type: (obj.type as "freehand" | "line") || "freehand",
                 points: Array.isArray(obj.points) ? obj.points : [],
                 color: (obj.color as string) || "#282828",
                 width: (obj.width as number) || 3,
               };
             });
           }
+          if (Array.isArray(content.dots)) {
+            dotsRef.current = content.dots;
+          }
           if (Array.isArray(content.stickies)) {
-            setStickies(content.stickies);
+            // Normalize old sticky format
+            setStickies(content.stickies.map((s: Record<string, unknown>) => ({
+              id: (s.id as string) || genId("sticky"),
+              title: (s.title as string) || (s.text as string) || "Note",
+              description: (s.description as string) || "",
+              tags: Array.isArray(s.tags) ? (s.tags as string[]) : [],
+              color: (s.color as StickyColor) || "yellow",
+              bgColor: (s.bgColor as string) || STICKY_PRESETS[(s.color as StickyColor) || "yellow"]?.bg || "#FFE459",
+              borderColor: (s.borderColor as string) || "#282828",
+              x: (s.x as number) || 0,
+              y: (s.y as number) || 0,
+            })));
           }
         }
         setLoaded(true);
@@ -140,20 +231,14 @@ export default function WhiteboardPage() {
     ctx.strokeStyle = "rgba(0,0,0,0.06)";
     ctx.lineWidth = 1;
     for (let x = 0; x <= width; x += 30) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
-      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
     }
     for (let y = 0; y <= height; y += 30) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
-      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
     }
   }, []);
 
-  /* ── Redraw everything ── */
+  /* ── Redraw ── */
   const redraw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -163,8 +248,9 @@ export default function WhiteboardPage() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid(ctx);
 
+    // Paths
     for (const path of pathsRef.current) {
-      if (path.points.length < 2) continue;
+      if (!path.points || path.points.length < 2) continue;
       ctx.strokeStyle = path.color || "#282828";
       ctx.lineWidth = path.width || 3;
       ctx.lineCap = "round";
@@ -174,6 +260,17 @@ export default function WhiteboardPage() {
       for (let i = 1; i < path.points.length; i++) {
         ctx.lineTo(path.points[i].x, path.points[i].y);
       }
+      ctx.stroke();
+    }
+
+    // Dots
+    for (const dot of dotsRef.current) {
+      ctx.fillStyle = dot.color || "#282828";
+      ctx.beginPath();
+      ctx.arc(dot.x, dot.y, dot.size || 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#282828";
+      ctx.lineWidth = 2;
       ctx.stroke();
     }
   }, [drawGrid]);
@@ -205,75 +302,144 @@ export default function WhiteboardPage() {
   };
 
   const handleCanvasMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const pos = getCanvasPos(e);
+
     if (activeTool === "draw") {
       isDrawing.current = true;
-      const pos = getCanvasPos(e);
       lastPos.current = pos;
       currentPath.current = [pos];
+    } else if (activeTool === "line") {
+      lineStart.current = pos;
+      setLinePreview(pos);
+    } else if (activeTool === "dot") {
+      const dot: Dot = { id: genId("dot"), x: pos.x, y: pos.y, color: "#282828", size: 6 };
+      dotsRef.current.push(dot);
+      redraw();
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies);
+      bump();
+    } else if (activeTool === "eraser") {
+      // Find nearest path or dot and remove it
+      let removedSomething = false;
+
+      // Check dots first (smaller targets)
+      const dotIdx = dotsRef.current.findIndex((d) => isNearDot(pos.x, pos.y, d));
+      if (dotIdx !== -1) {
+        dotsRef.current.splice(dotIdx, 1);
+        removedSomething = true;
+      } else {
+        // Check paths
+        const pathIdx = pathsRef.current.findIndex((p) => isNearPath(pos.x, pos.y, p));
+        if (pathIdx !== -1) {
+          pathsRef.current.splice(pathIdx, 1);
+          removedSomething = true;
+        }
+      }
+
+      if (removedSomething) {
+        redraw();
+        saveWhiteboard(pathsRef.current, dotsRef.current, stickies);
+        bump();
+      }
     } else if (activeTool === "sticky") {
-      const pos = getCanvasPos(e);
+      const preset = STICKY_PRESETS[nextStickyColor];
       const newSticky: StickyNote = {
-        id: stickyId(),
-        text: "New note",
+        id: genId("sticky"),
+        title: "New note",
+        description: "",
+        tags: [],
         color: nextStickyColor,
+        bgColor: preset.bg,
+        borderColor: preset.border,
         x: pos.x - 80,
         y: pos.y - 40,
       };
       const updated = [...stickies, newSticky];
       setStickies(updated);
-      saveWhiteboard(pathsRef.current, updated);
+      saveWhiteboard(pathsRef.current, dotsRef.current, updated);
       setActiveTool("select");
-      // Auto-edit
-      setTimeout(() => {
-        setEditingStickyId(newSticky.id);
-        setEditStickyText(newSticky.text);
-      }, 50);
-    } else if (activeTool === "eraser") {
-      pathsRef.current = [];
-      redraw();
-      saveWhiteboard([], stickies);
-      setActiveTool("select");
+      // Open settings immediately
+      setTimeout(() => openStickySettings(newSticky), 50);
     }
   };
 
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawing.current || activeTool !== "draw") return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx || !lastPos.current) return;
-
     const pos = getCanvasPos(e);
-    ctx.strokeStyle = "#282828";
-    ctx.lineWidth = 3;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.beginPath();
-    ctx.moveTo(lastPos.current.x, lastPos.current.y);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
 
-    lastPos.current = pos;
-    currentPath.current.push(pos);
+    if (activeTool === "draw" && isDrawing.current) {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx || !lastPos.current) return;
+
+      ctx.strokeStyle = "#282828";
+      ctx.lineWidth = 3;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      ctx.moveTo(lastPos.current.x, lastPos.current.y);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+
+      lastPos.current = pos;
+      currentPath.current.push(pos);
+    } else if (activeTool === "line" && lineStart.current) {
+      // Live preview: redraw everything + preview line
+      redraw();
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.strokeStyle = "#282828";
+      ctx.lineWidth = 3;
+      ctx.lineCap = "round";
+      ctx.setLineDash([8, 4]);
+      ctx.beginPath();
+      ctx.moveTo(lineStart.current.x, lineStart.current.y);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      setLinePreview(pos);
+    }
   };
 
-  const handleCanvasMouseUp = () => {
-    if (isDrawing.current && currentPath.current.length > 0) {
+  const handleCanvasMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (activeTool === "draw" && isDrawing.current && currentPath.current.length > 0) {
       pathsRef.current.push({
+        id: genId("path"),
+        type: "freehand",
         points: [...currentPath.current],
         color: "#282828",
         width: 3,
       });
       currentPath.current = [];
-      saveWhiteboard(pathsRef.current, stickies);
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies);
+      bump();
+    } else if (activeTool === "line" && lineStart.current) {
+      const pos = getCanvasPos(e);
+      const dist = Math.hypot(pos.x - lineStart.current.x, pos.y - lineStart.current.y);
+      if (dist > 5) {
+        pathsRef.current.push({
+          id: genId("line"),
+          type: "line",
+          points: [lineStart.current, pos],
+          color: "#282828",
+          width: 3,
+        });
+        saveWhiteboard(pathsRef.current, dotsRef.current, stickies);
+        bump();
+      }
+      lineStart.current = null;
+      setLinePreview(null);
+      redraw();
     }
+
     isDrawing.current = false;
     lastPos.current = null;
   };
 
   /* ── Sticky note dragging ── */
   const handleStickyMouseDown = (e: React.MouseEvent<HTMLDivElement>, id: string) => {
-    if (editingStickyId === id) return; // don't drag while editing
+    if (settingsSticky?.id === id) return;
     e.preventDefault();
     const sticky = stickies.find((s) => s.id === id);
     if (!sticky) return;
@@ -303,7 +469,7 @@ export default function WhiteboardPage() {
     const handleMouseUp = () => {
       setDraggingId(null);
       setStickies((current) => {
-        saveWhiteboard(pathsRef.current, current);
+        saveWhiteboard(pathsRef.current, dotsRef.current, current);
         return current;
       });
     };
@@ -316,28 +482,43 @@ export default function WhiteboardPage() {
     };
   }, [draggingId, saveWhiteboard]);
 
-  /* ── Sticky CRUD ── */
-  const saveStickyEdit = (id: string) => {
-    const text = editStickyText.trim() || "Empty note";
-    const updated = stickies.map((s) => (s.id === id ? { ...s, text } : s));
+  /* ── Sticky settings ── */
+  const openStickySettings = (sticky: StickyNote) => {
+    setSettingsSticky(sticky);
+    setSsTitle(sticky.title);
+    setSsDesc(sticky.description);
+    setSsTags(sticky.tags.join(", "));
+    setSsBgColor(sticky.bgColor);
+    setSsBorderColor(sticky.borderColor);
+  };
+
+  const saveStickySettings = () => {
+    if (!settingsSticky) return;
+    const updated = stickies.map((s) =>
+      s.id === settingsSticky.id
+        ? {
+            ...s,
+            title: ssTitle.trim() || "Note",
+            description: ssDesc.trim(),
+            tags: ssTags.split(",").map((t) => t.trim()).filter(Boolean),
+            bgColor: ssBgColor,
+            borderColor: ssBorderColor,
+          }
+        : s
+    );
     setStickies(updated);
-    saveWhiteboard(pathsRef.current, updated);
-    setEditingStickyId(null);
-    setEditStickyText("");
+    saveWhiteboard(pathsRef.current, dotsRef.current, updated);
+    setSettingsSticky(null);
   };
 
   const deleteSticky = (id: string) => {
     const updated = stickies.filter((s) => s.id !== id);
     setStickies(updated);
-    saveWhiteboard(pathsRef.current, updated);
+    saveWhiteboard(pathsRef.current, dotsRef.current, updated);
+    if (settingsSticky?.id === id) setSettingsSticky(null);
   };
 
-  const changeStickyColor = (id: string, color: StickyNote["color"]) => {
-    const updated = stickies.map((s) => (s.id === id ? { ...s, color } : s));
-    setStickies(updated);
-    saveWhiteboard(pathsRef.current, updated);
-  };
-
+  /* ── Loading ── */
   if (!loaded) {
     return (
       <div style={{
@@ -356,9 +537,11 @@ export default function WhiteboardPage() {
     );
   }
 
+  const strokeCount = pathsRef.current.length + dotsRef.current.length;
+
   return (
     <div className="animate-[view-slam_0.3s_cubic-bezier(0.2,0,0,1)]">
-      {/* View header */}
+      {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px", flexWrap: "wrap", gap: "12px" }}>
         <h1 style={{ fontWeight: 800, fontSize: "1.5rem", letterSpacing: "0.05em", textTransform: "uppercase", margin: 0 }}>
           WHITEBOARD
@@ -370,9 +553,9 @@ export default function WhiteboardPage() {
             </span>
           )}
           <span style={{ fontFamily: "monospace", fontSize: "0.8rem", color: "#666", textTransform: "uppercase" }}>
-            {stickies.length} note{stickies.length !== 1 ? "s" : ""} / {pathsRef.current.length} stroke{pathsRef.current.length !== 1 ? "s" : ""}
+            {stickies.length} note{stickies.length !== 1 ? "s" : ""} / {strokeCount} stroke{strokeCount !== 1 ? "s" : ""}
           </span>
-          {/* Tool buttons */}
+          {/* Tools */}
           <div style={{ display: "flex", gap: "4px" }}>
             {TOOLS.map((tool) => (
               <button
@@ -392,7 +575,7 @@ export default function WhiteboardPage() {
               </button>
             ))}
           </div>
-          {/* Sticky color picker (when sticky tool active) */}
+          {/* Sticky color picker */}
           {activeTool === "sticky" && (
             <div style={{ display: "flex", gap: "4px", borderLeft: "3px solid #282828", paddingLeft: "12px" }}>
               {STICKY_COLOR_KEYS.map((color) => (
@@ -400,7 +583,7 @@ export default function WhiteboardPage() {
                   key={color}
                   onClick={() => setNextStickyColor(color)}
                   style={{
-                    width: "24px", height: "24px", backgroundColor: STICKY_COLORS[color].bg,
+                    width: "24px", height: "24px", backgroundColor: STICKY_PRESETS[color].bg,
                     border: nextStickyColor === color ? "3px solid #282828" : "2px solid #28282860",
                     cursor: "pointer", padding: 0,
                     transform: nextStickyColor === color ? "scale(1.2)" : "none",
@@ -414,7 +597,7 @@ export default function WhiteboardPage() {
         </div>
       </div>
 
-      {/* Canvas wrap */}
+      {/* Canvas */}
       <div
         ref={wrapRef}
         style={{
@@ -433,16 +616,17 @@ export default function WhiteboardPage() {
           onMouseDown={handleCanvasMouseDown}
           onMouseMove={handleCanvasMouseMove}
           onMouseUp={handleCanvasMouseUp}
-          onMouseLeave={handleCanvasMouseUp}
+          onMouseLeave={() => {
+            if (activeTool === "draw") handleCanvasMouseUp({} as React.MouseEvent<HTMLCanvasElement>);
+          }}
         />
 
-        {/* Sticky notes overlay */}
+        {/* Sticky notes */}
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
           {stickies.map((sticky, index) => {
-            const colors = STICKY_COLORS[sticky.color];
             const isDragging = draggingId === sticky.id;
             const isHover = hoverStickyId === sticky.id;
-            const isEditing = editingStickyId === sticky.id;
+            const textColor = contrastText(sticky.bgColor);
 
             return (
               <div
@@ -450,19 +634,15 @@ export default function WhiteboardPage() {
                 onMouseDown={(e) => handleStickyMouseDown(e, sticky.id)}
                 onMouseEnter={() => setHoverStickyId(sticky.id)}
                 onMouseLeave={() => setHoverStickyId(null)}
-                onDoubleClick={() => {
-                  setEditingStickyId(sticky.id);
-                  setEditStickyText(sticky.text);
-                }}
                 style={{
                   position: "absolute",
                   left: `${sticky.x}px`,
                   top: `${sticky.y}px`,
-                  width: "160px",
-                  padding: "16px",
-                  border: "3px solid #282828",
-                  backgroundColor: colors.bg,
-                  color: colors.text,
+                  width: "170px",
+                  padding: "14px",
+                  border: `3px solid ${sticky.borderColor}`,
+                  backgroundColor: sticky.bgColor,
+                  color: textColor,
                   fontWeight: 600,
                   fontSize: "0.85rem",
                   pointerEvents: "auto",
@@ -470,51 +650,45 @@ export default function WhiteboardPage() {
                   transform: isDragging ? "rotate(0deg) scale(1.05)" : getStickyRotation(index),
                   boxShadow: isDragging ? "6px 6px 0px #282828" : "3px 3px 0px #282828",
                   zIndex: isDragging ? 20 : "auto",
-                  cursor: isEditing ? "text" : isDragging ? "grabbing" : "grab",
+                  cursor: isDragging ? "grabbing" : "grab",
                   transition: isDragging ? "none" : "transform 150ms, box-shadow 150ms",
                 }}
               >
-                {isEditing ? (
-                  <div onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
-                    <textarea
-                      autoFocus
-                      value={editStickyText}
-                      onChange={(e) => setEditStickyText(e.target.value)}
-                      onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); saveStickyEdit(sticky.id); } if (e.key === "Escape") { setEditingStickyId(null); } }}
-                      onBlur={() => saveStickyEdit(sticky.id)}
-                      style={{
-                        width: "100%", minHeight: "60px", padding: "4px",
-                        border: "2px solid currentColor", background: "rgba(255,255,255,0.3)",
-                        color: "inherit", fontWeight: 600, fontSize: "0.85rem",
-                        fontFamily: "inherit", resize: "none", outline: "none",
-                      }}
-                    />
+                <div style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: sticky.description ? "4px" : 0 }}>
+                  {sticky.title}
+                </div>
+                {sticky.description && (
+                  <div style={{ fontSize: "0.75rem", opacity: 0.8, marginBottom: "4px", wordBreak: "break-word" }}>
+                    {sticky.description.length > 60 ? sticky.description.slice(0, 60) + "..." : sticky.description}
                   </div>
-                ) : (
-                  <p style={{ margin: 0, wordBreak: "break-word" }}>{sticky.text}</p>
+                )}
+                {sticky.tags.length > 0 && (
+                  <div style={{ display: "flex", gap: "3px", flexWrap: "wrap", marginTop: "4px" }}>
+                    {sticky.tags.map((tag) => (
+                      <span key={tag} style={{
+                        fontSize: "0.6rem", padding: "1px 6px", border: `1px solid ${sticky.borderColor}`,
+                        backgroundColor: "rgba(255,255,255,0.3)", textTransform: "uppercase",
+                        fontFamily: "monospace",
+                      }}>{tag}</span>
+                    ))}
+                  </div>
                 )}
 
-                {/* Action buttons on hover */}
-                {isHover && !isEditing && (
+                {/* Hover actions */}
+                {isHover && !isDragging && (
                   <div style={{
                     position: "absolute", top: "-12px", right: "-12px",
                     display: "flex", gap: "4px",
                   }}>
-                    {/* Color cycle */}
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        const curIdx = STICKY_COLOR_KEYS.indexOf(sticky.color);
-                        const nextColor = STICKY_COLOR_KEYS[(curIdx + 1) % STICKY_COLOR_KEYS.length];
-                        changeStickyColor(sticky.id, nextColor);
-                      }}
+                      onClick={(e) => { e.stopPropagation(); openStickySettings(sticky); }}
                       onMouseDown={(e) => e.stopPropagation()}
                       style={{
                         width: "22px", height: "22px", backgroundColor: "#FFF", color: "#282828",
                         border: "2px solid #282828", cursor: "pointer", fontSize: "0.7rem",
                         display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
                       }}
-                      title="Change color"
+                      title="Settings"
                     >&#9881;</button>
                     <button
                       onClick={(e) => { e.stopPropagation(); deleteSticky(sticky.id); }}
@@ -534,7 +708,7 @@ export default function WhiteboardPage() {
         </div>
 
         {/* Empty state */}
-        {stickies.length === 0 && pathsRef.current.length === 0 && (
+        {stickies.length === 0 && strokeCount === 0 && (
           <div style={{
             position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
             pointerEvents: "none",
@@ -544,11 +718,129 @@ export default function WhiteboardPage() {
               textTransform: "uppercase", textAlign: "center",
             }}>
               <div style={{ fontSize: "2rem", marginBottom: "8px" }}>[ ]</div>
-              Select DRAW to sketch or STICKY to add notes
+              Select a tool to start: Draw, Line, Dot, or Sticky
             </div>
           </div>
         )}
       </div>
+
+      {/* ── Sticky Settings Popup ── */}
+      {settingsSticky && (
+        <div onClick={() => setSettingsSticky(null)} style={{
+          position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.4)",
+          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2000,
+        }}>
+          <div onClick={(e) => e.stopPropagation()} style={{
+            backgroundColor: ssBgColor,
+            border: `4px solid ${ssBorderColor}`,
+            boxShadow: "8px 8px 0px #282828",
+            padding: "32px", width: "100%", maxWidth: "440px",
+            maxHeight: "90vh", overflowY: "auto", boxSizing: "border-box",
+            color: contrastText(ssBgColor),
+          }}>
+            {/* Header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+              <h2 style={{ fontWeight: 800, fontSize: "1.2rem", textTransform: "uppercase", margin: 0 }}>
+                STICKY SETTINGS
+              </h2>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <button onClick={() => setSettingsSticky(null)} style={{
+                  padding: "8px 16px", backgroundColor: "rgba(255,255,255,0.3)",
+                  border: `3px solid ${ssBorderColor}`, fontWeight: 700, fontSize: "0.8rem",
+                  textTransform: "uppercase", cursor: "pointer", color: "inherit",
+                }}>CANCEL</button>
+                <button onClick={saveStickySettings} style={{
+                  padding: "8px 16px", backgroundColor: ssBorderColor,
+                  color: contrastText(ssBorderColor),
+                  border: `3px solid ${ssBorderColor}`, fontWeight: 700, fontSize: "0.8rem",
+                  textTransform: "uppercase", cursor: "pointer",
+                }}>SAVE</button>
+              </div>
+            </div>
+
+            {/* Title */}
+            <label style={popupLabelStyle(ssBorderColor)}>Title</label>
+            <input type="text" value={ssTitle} onChange={(e) => setSsTitle(e.target.value)}
+              style={popupInputStyle(ssBorderColor, ssBgColor)} />
+
+            {/* Description */}
+            <label style={popupLabelStyle(ssBorderColor)}>Description</label>
+            <textarea value={ssDesc} onChange={(e) => setSsDesc(e.target.value)}
+              placeholder="Add details..." rows={3}
+              style={{ ...popupInputStyle(ssBorderColor, ssBgColor), resize: "vertical" as const, minHeight: "70px" }}
+            />
+
+            {/* Tags */}
+            <label style={popupLabelStyle(ssBorderColor)}>Tags (comma-separated)</label>
+            <input type="text" value={ssTags} onChange={(e) => setSsTags(e.target.value)}
+              placeholder="idea, important, todo"
+              style={popupInputStyle(ssBorderColor, ssBgColor)} />
+
+            {/* Background Color */}
+            <label style={popupLabelStyle(ssBorderColor)}>Background Color</label>
+            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "16px" }}>
+              {BG_COLORS.map((color) => (
+                <button key={color} onClick={() => setSsBgColor(color)} style={{
+                  width: "28px", height: "28px", backgroundColor: color,
+                  border: ssBgColor === color ? `3px solid ${ssBorderColor}` : "2px solid #28282860",
+                  cursor: "pointer", padding: 0,
+                }} />
+              ))}
+            </div>
+
+            {/* Border Color */}
+            <label style={popupLabelStyle(ssBorderColor)}>Border Color</label>
+            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "16px" }}>
+              {BORDER_COLORS.map((color) => (
+                <button key={color} onClick={() => setSsBorderColor(color)} style={{
+                  width: "28px", height: "28px", backgroundColor: color,
+                  border: ssBorderColor === color ? "3px solid #FF5E54" : "2px solid #28282860",
+                  cursor: "pointer", padding: 0,
+                }} />
+              ))}
+            </div>
+
+            {/* Live Preview */}
+            <label style={popupLabelStyle(ssBorderColor)}>Preview</label>
+            <div style={{
+              border: `3px solid ${ssBorderColor}`, padding: "12px", backgroundColor: ssBgColor,
+              color: contrastText(ssBgColor), boxShadow: "3px 3px 0px #282828",
+              transform: "rotate(-2deg)",
+            }}>
+              <div style={{ fontWeight: 700, fontSize: "0.9rem" }}>{ssTitle || "Note"}</div>
+              {ssDesc && <div style={{ fontSize: "0.75rem", opacity: 0.8, marginTop: "4px" }}>{ssDesc.slice(0, 60)}</div>}
+              {ssTags && (
+                <div style={{ display: "flex", gap: "3px", flexWrap: "wrap", marginTop: "6px" }}>
+                  {ssTags.split(",").map((t) => t.trim()).filter(Boolean).map((tag) => (
+                    <span key={tag} style={{
+                      fontSize: "0.6rem", padding: "1px 6px", border: `1px solid ${ssBorderColor}`,
+                      backgroundColor: "rgba(255,255,255,0.3)", textTransform: "uppercase", fontFamily: "monospace",
+                    }}>{tag}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
+}
+
+/* ── Popup styles (dynamic based on sticky colors) ── */
+function popupLabelStyle(borderColor: string): React.CSSProperties {
+  return {
+    display: "block", fontWeight: 700, fontSize: "0.85rem",
+    textTransform: "uppercase", marginBottom: "6px",
+    borderBottom: `1px solid ${borderColor}40`, paddingBottom: "2px",
+  };
+}
+
+function popupInputStyle(borderColor: string, bgColor: string): React.CSSProperties {
+  return {
+    width: "100%", padding: "10px 14px", border: `3px solid ${borderColor}`,
+    fontFamily: "monospace", fontSize: "0.9rem",
+    backgroundColor: `${bgColor}80`, color: "inherit",
+    outline: "none", boxSizing: "border-box", marginBottom: "16px",
+  };
 }

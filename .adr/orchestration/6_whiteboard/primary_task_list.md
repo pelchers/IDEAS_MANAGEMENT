@@ -29,14 +29,27 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [x] Playwright screenshots (desktop + mobile)
 - [x] Screenshots saved to `.docs/validation/6_whiteboard/screenshots/`
 
-## Phase 2 — Whiteboard Backend + Integration (Partially Done)
+## Phase 2 — Whiteboard Backend + Integration ✅
 
 - [x] Wire whiteboard to artifact API (GET/PUT /api/projects/[id]/artifacts/whiteboard/board)
 - [x] Serialize canvas state (drawings, sticky notes, positions) to JSON
 - [x] Implement auto-save on changes (paths and stickies)
-- [ ] Handle loading/error states
+- [x] Handle loading/error states
+- [x] Fix path format normalization (old flat arrays vs new {points,color,width})
+- [x] Remove mock stickies, start empty
+- [x] Sticky CRUD: add by clicking canvas, double-click to edit, hover delete
+- [x] Sticky color picker in toolbar
 
-## Phase 3 — Whiteboard Testing
+## Phase 3 — Whiteboard Tools + Sticky Settings (2026-03-16)
+
+- [ ] Eraser tool: proper eraser icon, targeted stroke removal (click a drawn line to remove just that stroke, not the whole canvas). Lines tracked independently
+- [ ] Straight line tool: icon + click-drag to draw straight lines between two points
+- [ ] Dot/pin tool: button to place small dots/pins on the board at click position
+- [ ] Sticky note settings popup: clicking gear on a sticky opens a popup with editable fields (title, description, tags, background color, border color). Popup container bg/border matches the clicked sticky's colors
+- [ ] Sticky text color: auto-adaptive white/black based on background (no manual setting)
+- [ ] Remove unused rect/text tool stubs
+
+## Phase 4 — Whiteboard Testing
 
 - [ ] User story validation: draw on canvas, add sticky note, drag sticky note, switch tools
 - [ ] Compare against pass-1 whiteboard validation PNGs
