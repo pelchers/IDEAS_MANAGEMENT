@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 
 /* ── Types ── */
-type Tool = "select" | "draw" | "line" | "eraser" | "dot" | "sticky";
+type Tool = "select" | "draw" | "line" | "eraser" | "dot" | "sticky" | "media";
 
 interface DrawPath {
   id: string;
@@ -34,7 +34,31 @@ interface StickyNote {
   borderColor: string;
   x: number;
   y: number;
+  width: number;
+  height: number;
 }
+
+type MediaType = "image" | "video" | "document";
+
+interface MediaItem {
+  id: string;
+  type: MediaType;
+  dataUrl: string;
+  fileName: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+const MEDIA_EXTENSIONS: Record<string, MediaType> = {
+  png: "image", jpg: "image", jpeg: "image", gif: "image", webp: "image", svg: "image", bmp: "image",
+  mp4: "video", webm: "video", ogg: "video", mov: "video",
+  pdf: "document", doc: "document", docx: "document", xls: "document", xlsx: "document",
+  ppt: "document", pptx: "document", txt: "document", csv: "document", zip: "document",
+};
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB warning threshold
 
 /* ── Constants ── */
 const TOOLS: { id: Tool; icon: string; title: string }[] = [
@@ -44,6 +68,7 @@ const TOOLS: { id: Tool; icon: string; title: string }[] = [
   { id: "dot", icon: "\u25CF", title: "Place Dot / Pin" },
   { id: "eraser", icon: "\u232B", title: "Eraser (click a stroke to remove it)" },
   { id: "sticky", icon: "\u25A0", title: "Add Sticky Note" },
+  { id: "media", icon: "\uD83D\uDCCE", title: "Attach Media (image, video, document)" },
 ];
 
 const STICKY_PRESETS: Record<StickyColor, { bg: string; border: string }> = {
@@ -88,8 +113,24 @@ function getCursor(tool: Tool): string {
     case "eraser": return "pointer";
     case "dot": return "crosshair";
     case "sticky": return "cell";
+    case "media": return "copy";
     default: return "default";
   }
+}
+
+function getMediaType(fileName: string): MediaType {
+  const ext = fileName.split(".").pop()?.toLowerCase() || "";
+  return MEDIA_EXTENSIONS[ext] || "document";
+}
+
+function getDocIcon(fileName: string): string {
+  const ext = fileName.split(".").pop()?.toLowerCase() || "";
+  if (ext === "pdf") return "\uD83D\uDCC4";
+  if (["doc", "docx", "txt"].includes(ext)) return "\uD83D\uDDD2";
+  if (["xls", "xlsx", "csv"].includes(ext)) return "\uD83D\uDCCA";
+  if (["ppt", "pptx"].includes(ext)) return "\uD83D\uDCCA";
+  if (ext === "zip") return "\uD83D\uDCE6";
+  return "\uD83D\uDCC1";
 }
 
 function genId(prefix: string): string {
@@ -127,8 +168,10 @@ export default function WhiteboardPage() {
   const projectId = String(params.id);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [activeTool, setActiveTool] = useState<Tool>("select");
   const [stickies, setStickies] = useState<StickyNote[]>([]);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -148,6 +191,19 @@ export default function WhiteboardPage() {
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const dragOffset = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
+  // Media dragging
+  const [draggingMediaId, setDraggingMediaId] = useState<string | null>(null);
+  const mediaDragOffset = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  // Resize state (works for stickies and media)
+  const [resizing, setResizing] = useState<{ id: string; kind: "sticky" | "media"; startX: number; startY: number; startW: number; startH: number } | null>(null);
+
+  // Media viewer modal
+  const [viewerMedia, setViewerMedia] = useState<MediaItem | null>(null);
+
+  // File size warning
+  const [fileSizeWarning, setFileSizeWarning] = useState<string | null>(null);
+
   // Sticky settings popup
   const [settingsSticky, setSettingsSticky] = useState<StickyNote | null>(null);
   const [ssTitle, setSsTitle] = useState("");
@@ -157,14 +213,18 @@ export default function WhiteboardPage() {
   const [ssBorderColor, setSsBorderColor] = useState("#282828");
 
   const [hoverStickyId, setHoverStickyId] = useState<string | null>(null);
+  const [hoverMediaId, setHoverMediaId] = useState<string | null>(null);
   const [nextStickyColor, setNextStickyColor] = useState<StickyColor>("yellow");
 
   // Force re-render for dot/stroke counts
   const [, forceRender] = useState(0);
   const bump = () => forceRender((n) => n + 1);
 
+  // Pending file add position (where user clicked canvas with media tool)
+  const pendingMediaPos = useRef<{ x: number; y: number } | null>(null);
+
   /* ── Save ── */
-  const saveWhiteboard = useCallback((savePaths: DrawPath[], saveDots: Dot[], saveStickies: StickyNote[]) => {
+  const saveWhiteboard = useCallback((savePaths: DrawPath[], saveDots: Dot[], saveStickies: StickyNote[], saveMedia?: MediaItem[]) => {
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
     setSaving(true);
     saveTimeoutRef.current = setTimeout(() => {
@@ -172,7 +232,7 @@ export default function WhiteboardPage() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          content: { paths: savePaths, dots: saveDots, stickies: saveStickies },
+          content: { paths: savePaths, dots: saveDots, stickies: saveStickies, media: saveMedia },
         }),
       })
         .then(() => setSaving(false))
@@ -217,7 +277,12 @@ export default function WhiteboardPage() {
               borderColor: (s.borderColor as string) || "#282828",
               x: (s.x as number) || 0,
               y: (s.y as number) || 0,
+              width: (s.width as number) || 170,
+              height: (s.height as number) || 0, // 0 = auto
             })));
+          }
+          if (Array.isArray(content.media)) {
+            setMediaItems(content.media);
           }
         }
         setLoaded(true);
@@ -315,7 +380,7 @@ export default function WhiteboardPage() {
       const dot: Dot = { id: genId("dot"), x: pos.x, y: pos.y, color: "#282828", size: 6 };
       dotsRef.current.push(dot);
       redraw();
-      saveWhiteboard(pathsRef.current, dotsRef.current, stickies);
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
       bump();
     } else if (activeTool === "eraser") {
       // Find nearest path or dot and remove it
@@ -337,7 +402,7 @@ export default function WhiteboardPage() {
 
       if (removedSomething) {
         redraw();
-        saveWhiteboard(pathsRef.current, dotsRef.current, stickies);
+        saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
         bump();
       }
     } else if (activeTool === "sticky") {
@@ -352,13 +417,18 @@ export default function WhiteboardPage() {
         borderColor: preset.border,
         x: pos.x - 80,
         y: pos.y - 40,
+        width: 170,
+        height: 0,
       };
       const updated = [...stickies, newSticky];
       setStickies(updated);
-      saveWhiteboard(pathsRef.current, dotsRef.current, updated);
+      saveWhiteboard(pathsRef.current, dotsRef.current, updated, mediaItems);
       setActiveTool("select");
       // Open settings immediately
       setTimeout(() => openStickySettings(newSticky), 50);
+    } else if (activeTool === "media") {
+      pendingMediaPos.current = pos;
+      fileInputRef.current?.click();
     }
   };
 
@@ -412,7 +482,7 @@ export default function WhiteboardPage() {
         width: 3,
       });
       currentPath.current = [];
-      saveWhiteboard(pathsRef.current, dotsRef.current, stickies);
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
       bump();
     } else if (activeTool === "line" && lineStart.current) {
       const pos = getCanvasPos(e);
@@ -425,7 +495,7 @@ export default function WhiteboardPage() {
           color: "#282828",
           width: 3,
         });
-        saveWhiteboard(pathsRef.current, dotsRef.current, stickies);
+        saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
         bump();
       }
       lineStart.current = null;
@@ -469,7 +539,10 @@ export default function WhiteboardPage() {
     const handleMouseUp = () => {
       setDraggingId(null);
       setStickies((current) => {
-        saveWhiteboard(pathsRef.current, dotsRef.current, current);
+        setMediaItems((curMedia) => {
+          saveWhiteboard(pathsRef.current, dotsRef.current, current, curMedia);
+          return curMedia;
+        });
         return current;
       });
     };
@@ -507,16 +580,168 @@ export default function WhiteboardPage() {
         : s
     );
     setStickies(updated);
-    saveWhiteboard(pathsRef.current, dotsRef.current, updated);
+    saveWhiteboard(pathsRef.current, dotsRef.current, updated, mediaItems);
     setSettingsSticky(null);
   };
 
   const deleteSticky = (id: string) => {
     const updated = stickies.filter((s) => s.id !== id);
     setStickies(updated);
-    saveWhiteboard(pathsRef.current, dotsRef.current, updated);
+    saveWhiteboard(pathsRef.current, dotsRef.current, updated, mediaItems);
     if (settingsSticky?.id === id) setSettingsSticky(null);
   };
+
+  /* ── File input handler ── */
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > MAX_FILE_SIZE) {
+      setFileSizeWarning(`"${file.name}" is ${(file.size / 1024 / 1024).toFixed(1)}MB — files over 5MB may slow down saving.`);
+      setTimeout(() => setFileSizeWarning(null), 5000);
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      const pos = pendingMediaPos.current || { x: 100, y: 100 };
+      const mediaType = getMediaType(file.name);
+
+      const newMedia: MediaItem = {
+        id: genId("media"),
+        type: mediaType,
+        dataUrl,
+        fileName: file.name,
+        x: pos.x - 100,
+        y: pos.y - 60,
+        width: mediaType === "document" ? 200 : 300,
+        height: mediaType === "document" ? 80 : 200,
+      };
+
+      const updated = [...mediaItems, newMedia];
+      setMediaItems(updated);
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, updated);
+      setActiveTool("select");
+      pendingMediaPos.current = null;
+    };
+    reader.readAsDataURL(file);
+    // Reset input so same file can be re-added
+    e.target.value = "";
+  };
+
+  /* ── Media dragging ── */
+  const handleMediaMouseDown = (e: React.MouseEvent<HTMLDivElement>, id: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const media = mediaItems.find((m) => m.id === id);
+    if (!media) return;
+    const wrapRect = wrapRef.current?.getBoundingClientRect();
+    if (!wrapRect) return;
+    mediaDragOffset.current = {
+      x: e.clientX - (wrapRect.left + media.x),
+      y: e.clientY - (wrapRect.top + media.y),
+    };
+    setDraggingMediaId(id);
+  };
+
+  useEffect(() => {
+    if (draggingMediaId === null) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      const wrapRect = wrapRef.current?.getBoundingClientRect();
+      if (!wrapRect) return;
+      const newX = e.clientX - wrapRect.left - mediaDragOffset.current.x;
+      const newY = e.clientY - wrapRect.top - mediaDragOffset.current.y;
+      setMediaItems((prev) =>
+        prev.map((m) => (m.id === draggingMediaId ? { ...m, x: newX, y: newY } : m))
+      );
+    };
+    const handleMouseUp = () => {
+      setDraggingMediaId(null);
+      setMediaItems((cur) => {
+        setStickies((curStickies) => {
+          saveWhiteboard(pathsRef.current, dotsRef.current, curStickies, cur);
+          return curStickies;
+        });
+        return cur;
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [draggingMediaId, saveWhiteboard]);
+
+  const deleteMedia = (id: string) => {
+    const updated = mediaItems.filter((m) => m.id !== id);
+    setMediaItems(updated);
+    saveWhiteboard(pathsRef.current, dotsRef.current, stickies, updated);
+  };
+
+  /* ── Resize handling (stickies + media) ── */
+  const handleResizeStart = (e: React.MouseEvent, id: string, kind: "sticky" | "media") => {
+    e.preventDefault();
+    e.stopPropagation();
+    const item = kind === "sticky"
+      ? stickies.find((s) => s.id === id)
+      : mediaItems.find((m) => m.id === id);
+    if (!item) return;
+    setResizing({
+      id,
+      kind,
+      startX: e.clientX,
+      startY: e.clientY,
+      startW: item.width,
+      startH: kind === "sticky" ? ((item as StickyNote).height || 0) : (item as MediaItem).height,
+    });
+  };
+
+  useEffect(() => {
+    if (!resizing) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      const dx = e.clientX - resizing.startX;
+      const dy = e.clientY - resizing.startY;
+      const newW = Math.max(80, resizing.startW + dx);
+      const newH = Math.max(40, resizing.startH + dy);
+
+      if (resizing.kind === "sticky") {
+        setStickies((prev) =>
+          prev.map((s) => (s.id === resizing.id ? { ...s, width: newW, height: newH } : s))
+        );
+      } else {
+        // For images/videos, maintain aspect ratio
+        const item = mediaItems.find((m) => m.id === resizing.id);
+        if (item && (item.type === "image" || item.type === "video") && resizing.startH > 0) {
+          const ratio = resizing.startW / resizing.startH;
+          const finalH = newW / ratio;
+          setMediaItems((prev) =>
+            prev.map((m) => (m.id === resizing.id ? { ...m, width: newW, height: Math.max(40, finalH) } : m))
+          );
+        } else {
+          setMediaItems((prev) =>
+            prev.map((m) => (m.id === resizing.id ? { ...m, width: newW, height: newH } : m))
+          );
+        }
+      }
+    };
+    const handleMouseUp = () => {
+      setResizing(null);
+      setStickies((curStickies) => {
+        setMediaItems((curMedia) => {
+          saveWhiteboard(pathsRef.current, dotsRef.current, curStickies, curMedia);
+          return curMedia;
+        });
+        return curStickies;
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [resizing, mediaItems, saveWhiteboard]);
 
   /* ── Loading ── */
   if (!loaded) {
@@ -553,7 +778,7 @@ export default function WhiteboardPage() {
             </span>
           )}
           <span style={{ fontFamily: "monospace", fontSize: "0.8rem", color: "#666", textTransform: "uppercase" }}>
-            {stickies.length} note{stickies.length !== 1 ? "s" : ""} / {strokeCount} stroke{strokeCount !== 1 ? "s" : ""}
+            {stickies.length} note{stickies.length !== 1 ? "s" : ""} / {strokeCount} stroke{strokeCount !== 1 ? "s" : ""}{mediaItems.length > 0 ? ` / ${mediaItems.length} media` : ""}
           </span>
           {/* Tools */}
           <div style={{ display: "flex", gap: "4px" }}>
@@ -621,12 +846,23 @@ export default function WhiteboardPage() {
           }}
         />
 
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip"
+          style={{ display: "none" }}
+          onChange={handleFileSelect}
+        />
+
         {/* Sticky notes */}
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
           {stickies.map((sticky, index) => {
             const isDragging = draggingId === sticky.id;
             const isHover = hoverStickyId === sticky.id;
             const textColor = contrastText(sticky.bgColor);
+            const stickyW = sticky.width || 170;
+            const stickyH = sticky.height && sticky.height > 0 ? `${sticky.height}px` : "auto";
 
             return (
               <div
@@ -638,7 +874,8 @@ export default function WhiteboardPage() {
                   position: "absolute",
                   left: `${sticky.x}px`,
                   top: `${sticky.y}px`,
-                  width: "170px",
+                  width: `${stickyW}px`,
+                  height: stickyH,
                   padding: "14px",
                   border: `3px solid ${sticky.borderColor}`,
                   backgroundColor: sticky.bgColor,
@@ -652,6 +889,7 @@ export default function WhiteboardPage() {
                   zIndex: isDragging ? 20 : "auto",
                   cursor: isDragging ? "grabbing" : "grab",
                   transition: isDragging ? "none" : "transform 150ms, box-shadow 150ms",
+                  overflow: "hidden",
                 }}
               >
                 <div style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: sticky.description ? "4px" : 0 }}>
@@ -702,13 +940,150 @@ export default function WhiteboardPage() {
                     >&#10005;</button>
                   </div>
                 )}
+
+                {/* Resize handle */}
+                {isHover && !isDragging && (
+                  <div
+                    onMouseDown={(e) => handleResizeStart(e, sticky.id, "sticky")}
+                    style={{
+                      position: "absolute", bottom: "0", right: "0",
+                      width: "16px", height: "16px", cursor: "nwse-resize",
+                      background: "linear-gradient(135deg, transparent 50%, #282828 50%)",
+                      opacity: 0.6,
+                    }}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Media items */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          {mediaItems.map((media) => {
+            const isDragging = draggingMediaId === media.id;
+            const isHover = hoverMediaId === media.id;
+
+            return (
+              <div
+                key={media.id}
+                onMouseDown={(e) => handleMediaMouseDown(e, media.id)}
+                onMouseEnter={() => setHoverMediaId(media.id)}
+                onMouseLeave={() => setHoverMediaId(null)}
+                style={{
+                  position: "absolute",
+                  left: `${media.x}px`,
+                  top: `${media.y}px`,
+                  width: `${media.width}px`,
+                  height: `${media.height}px`,
+                  pointerEvents: "auto",
+                  userSelect: "none",
+                  zIndex: isDragging ? 20 : 5,
+                  cursor: isDragging ? "grabbing" : "grab",
+                  border: isHover ? "3px solid #282828" : "2px solid #28282860",
+                  boxShadow: isDragging ? "6px 6px 0px #282828" : isHover ? "3px 3px 0px #282828" : "none",
+                  backgroundColor: "#fff",
+                  overflow: "hidden",
+                  transition: isDragging ? "none" : "box-shadow 150ms",
+                }}
+              >
+                {/* Image */}
+                {media.type === "image" && (
+                  <img
+                    src={media.dataUrl}
+                    alt={media.fileName}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
+                    draggable={false}
+                  />
+                )}
+
+                {/* Video */}
+                {media.type === "video" && (
+                  <video
+                    src={media.dataUrl}
+                    controls
+                    style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                  />
+                )}
+
+                {/* Document card */}
+                {media.type === "document" && (
+                  <div
+                    onClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    style={{
+                      width: "100%", height: "100%",
+                      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                      gap: "6px", cursor: "pointer", padding: "8px",
+                      background: "#F8F3EC",
+                    }}
+                  >
+                    <span style={{ fontSize: "1.8rem" }}>{getDocIcon(media.fileName)}</span>
+                    <span style={{
+                      fontSize: "0.7rem", fontFamily: "monospace", fontWeight: 700,
+                      textTransform: "uppercase", textAlign: "center",
+                      overflow: "hidden", textOverflow: "ellipsis",
+                      width: "100%", whiteSpace: "nowrap",
+                    }}>
+                      {media.fileName}
+                    </span>
+                    <span style={{ fontSize: "0.6rem", color: "#999", fontFamily: "monospace", textTransform: "uppercase" }}>
+                      CLICK TO PREVIEW
+                    </span>
+                  </div>
+                )}
+
+                {/* Hover actions */}
+                {isHover && !isDragging && (
+                  <div style={{
+                    position: "absolute", top: "-12px", right: "-12px",
+                    display: "flex", gap: "4px",
+                  }}>
+                    {media.type !== "document" && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
+                        onMouseDown={(e) => e.stopPropagation()}
+                        style={{
+                          width: "22px", height: "22px", backgroundColor: "#FFF", color: "#282828",
+                          border: "2px solid #282828", cursor: "pointer", fontSize: "0.65rem",
+                          display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                        }}
+                        title="View full size"
+                      >&#128269;</button>
+                    )}
+                    <button
+                      onClick={(e) => { e.stopPropagation(); deleteMedia(media.id); }}
+                      onMouseDown={(e) => e.stopPropagation()}
+                      style={{
+                        width: "22px", height: "22px", backgroundColor: "#FF5E54", color: "#FFF",
+                        border: "2px solid #282828", cursor: "pointer", fontSize: "0.7rem", fontWeight: 700,
+                        display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                      }}
+                      title="Delete"
+                    >&#10005;</button>
+                  </div>
+                )}
+
+                {/* Resize handle */}
+                {isHover && !isDragging && (
+                  <div
+                    onMouseDown={(e) => handleResizeStart(e, media.id, "media")}
+                    style={{
+                      position: "absolute", bottom: "0", right: "0",
+                      width: "16px", height: "16px", cursor: "nwse-resize",
+                      background: "linear-gradient(135deg, transparent 50%, #282828 50%)",
+                      opacity: 0.6,
+                    }}
+                  />
+                )}
               </div>
             );
           })}
         </div>
 
         {/* Empty state */}
-        {stickies.length === 0 && strokeCount === 0 && (
+        {stickies.length === 0 && strokeCount === 0 && mediaItems.length === 0 && (
           <div style={{
             position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
             pointerEvents: "none",
@@ -718,8 +1093,20 @@ export default function WhiteboardPage() {
               textTransform: "uppercase", textAlign: "center",
             }}>
               <div style={{ fontSize: "2rem", marginBottom: "8px" }}>[ ]</div>
-              Select a tool to start: Draw, Line, Dot, or Sticky
+              Select a tool to start: Draw, Line, Dot, Sticky, or Media
             </div>
+          </div>
+        )}
+
+        {/* File size warning */}
+        {fileSizeWarning && (
+          <div style={{
+            position: "absolute", bottom: "16px", left: "50%", transform: "translateX(-50%)",
+            backgroundColor: "#FFE459", border: "3px solid #282828", padding: "10px 20px",
+            fontFamily: "monospace", fontSize: "0.8rem", fontWeight: 700,
+            boxShadow: "3px 3px 0px #282828", zIndex: 30, maxWidth: "400px", textAlign: "center",
+          }}>
+            {fileSizeWarning}
           </div>
         )}
       </div>
@@ -817,6 +1204,87 @@ export default function WhiteboardPage() {
                       backgroundColor: "rgba(255,255,255,0.3)", textTransform: "uppercase", fontFamily: "monospace",
                     }}>{tag}</span>
                   ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Media Viewer Modal ── */}
+      {viewerMedia && (
+        <div onClick={() => setViewerMedia(null)} style={{
+          position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.7)",
+          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2000,
+        }}>
+          <div onClick={(e) => e.stopPropagation()} style={{
+            backgroundColor: "#FFFFFF",
+            border: "4px solid #282828",
+            boxShadow: "8px 8px 0px #282828",
+            padding: "24px", width: "90%", maxWidth: "800px",
+            maxHeight: "90vh", display: "flex", flexDirection: "column",
+            overflow: "hidden",
+          }}>
+            {/* Header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+              <h2 style={{ fontWeight: 800, fontSize: "1.1rem", textTransform: "uppercase", margin: 0, fontFamily: "monospace" }}>
+                {viewerMedia.fileName}
+              </h2>
+              <button onClick={() => setViewerMedia(null)} style={{
+                padding: "8px 16px", backgroundColor: "#282828", color: "#FFF",
+                border: "3px solid #282828", fontWeight: 700, fontSize: "0.8rem",
+                textTransform: "uppercase", cursor: "pointer",
+              }}>CLOSE</button>
+            </div>
+
+            {/* Content */}
+            <div style={{ flex: 1, overflow: "auto", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              {viewerMedia.type === "image" && (
+                <img
+                  src={viewerMedia.dataUrl}
+                  alt={viewerMedia.fileName}
+                  style={{ maxWidth: "100%", maxHeight: "70vh", objectFit: "contain", border: "3px solid #282828" }}
+                />
+              )}
+              {viewerMedia.type === "video" && (
+                <video
+                  src={viewerMedia.dataUrl}
+                  controls
+                  autoPlay
+                  style={{ maxWidth: "100%", maxHeight: "70vh", border: "3px solid #282828" }}
+                />
+              )}
+              {viewerMedia.type === "document" && (
+                <div style={{ width: "100%", textAlign: "center" }}>
+                  {viewerMedia.fileName.toLowerCase().endsWith(".pdf") ? (
+                    <iframe
+                      src={viewerMedia.dataUrl}
+                      title={viewerMedia.fileName}
+                      style={{ width: "100%", height: "65vh", border: "3px solid #282828" }}
+                    />
+                  ) : (
+                    <div style={{
+                      padding: "60px 40px", border: "3px solid #282828", background: "#F8F3EC",
+                    }}>
+                      <div style={{ fontSize: "3rem", marginBottom: "16px" }}>{getDocIcon(viewerMedia.fileName)}</div>
+                      <div style={{ fontWeight: 800, fontSize: "1.1rem", textTransform: "uppercase", fontFamily: "monospace", marginBottom: "8px" }}>
+                        {viewerMedia.fileName}
+                      </div>
+                      <a
+                        href={viewerMedia.dataUrl}
+                        download={viewerMedia.fileName}
+                        style={{
+                          display: "inline-block", marginTop: "12px",
+                          padding: "10px 20px", backgroundColor: "#282828", color: "#FFF",
+                          border: "3px solid #282828", fontWeight: 700, fontSize: "0.8rem",
+                          textTransform: "uppercase", fontFamily: "monospace",
+                          textDecoration: "none", cursor: "pointer",
+                        }}
+                      >
+                        DOWNLOAD FILE
+                      </a>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
