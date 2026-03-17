@@ -1104,7 +1104,6 @@ export default function WhiteboardPage() {
                   zIndex: isDragging ? 20 : "auto",
                   cursor: isDragging ? "grabbing" : "grab",
                   transition: isDragging ? "none" : "transform 150ms, box-shadow 150ms",
-                  overflow: "hidden",
                 }}
               >
                 <div style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: sticky.description ? "4px" : 0 }}>
@@ -1198,56 +1197,58 @@ export default function WhiteboardPage() {
                   border: isHover ? "3px solid #282828" : "2px solid #28282860",
                   boxShadow: isDragging ? "6px 6px 0px #282828" : isHover ? "3px 3px 0px #282828" : "none",
                   backgroundColor: "#fff",
-                  overflow: "hidden",
                   transition: isDragging ? "none" : "box-shadow 150ms",
                 }}
               >
-                {/* Image */}
-                {media.type === "image" && (
-                  <img
-                    src={media.dataUrl}
-                    alt={media.fileName}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
-                    draggable={false}
-                  />
-                )}
+                {/* Inner wrapper with overflow hidden for content only */}
+                <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
+                  {/* Image */}
+                  {media.type === "image" && (
+                    <img
+                      src={media.dataUrl}
+                      alt={media.fileName}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
+                      draggable={false}
+                    />
+                  )}
 
-                {/* Video */}
-                {media.type === "video" && (
-                  <video
-                    src={media.dataUrl}
-                    controls
-                    style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
-                    onMouseDown={(e) => e.stopPropagation()}
-                  />
-                )}
+                  {/* Video */}
+                  {media.type === "video" && (
+                    <video
+                      src={media.dataUrl}
+                      controls
+                      style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+                      onMouseDown={(e) => e.stopPropagation()}
+                    />
+                  )}
 
-                {/* Document card */}
-                {media.type === "document" && (
-                  <div
-                    onClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
-                    onMouseDown={(e) => e.stopPropagation()}
-                    style={{
-                      width: "100%", height: "100%",
-                      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                      gap: "6px", cursor: "pointer", padding: "8px",
-                      background: "#F8F3EC",
-                    }}
-                  >
-                    <span style={{ fontSize: "1.8rem" }}>{getDocIcon(media.fileName)}</span>
-                    <span style={{
-                      fontSize: "0.7rem", fontFamily: "monospace", fontWeight: 700,
-                      textTransform: "uppercase", textAlign: "center",
-                      overflow: "hidden", textOverflow: "ellipsis",
-                      width: "100%", whiteSpace: "nowrap",
-                    }}>
-                      {media.fileName}
-                    </span>
-                    <span style={{ fontSize: "0.6rem", color: "#999", fontFamily: "monospace", textTransform: "uppercase" }}>
-                      CLICK TO PREVIEW
-                    </span>
-                  </div>
-                )}
+                  {/* Document card */}
+                  {media.type === "document" && (
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
+                      onMouseDown={(e) => e.stopPropagation()}
+                      style={{
+                        width: "100%", height: "100%",
+                        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                        gap: "6px", cursor: "pointer", padding: "8px",
+                        background: "#F8F3EC",
+                      }}
+                    >
+                      <span style={{ fontSize: "1.8rem" }}>{getDocIcon(media.fileName)}</span>
+                      <span style={{
+                        fontSize: "0.7rem", fontFamily: "monospace", fontWeight: 700,
+                        textTransform: "uppercase", textAlign: "center",
+                        overflow: "hidden", textOverflow: "ellipsis",
+                        width: "100%", whiteSpace: "nowrap",
+                      }}>
+                        {media.fileName}
+                      </span>
+                      <span style={{ fontSize: "0.6rem", color: "#999", fontFamily: "monospace", textTransform: "uppercase" }}>
+                        CLICK TO PREVIEW
+                      </span>
+                    </div>
+                  )}
+                </div>
 
                 {/* Hover actions */}
                 {isHover && !isDragging && (
