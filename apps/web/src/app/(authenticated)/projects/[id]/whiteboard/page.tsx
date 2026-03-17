@@ -12,6 +12,8 @@ interface DrawPath {
   points: { x: number; y: number }[];
   color: string;
   width: number;
+  offsetX: number;
+  offsetY: number;
 }
 
 interface Dot {
@@ -20,6 +22,8 @@ interface Dot {
   y: number;
   color: string;
   size: number;
+  offsetX: number;
+  offsetY: number;
 }
 
 type StickyColor = "yellow" | "orange" | "green" | "pink";
@@ -150,8 +154,10 @@ function distToSegment(px: number, py: number, ax: number, ay: number, bx: numbe
 function isNearPath(px: number, py: number, path: DrawPath, threshold = 8): boolean {
   const pts = path.points;
   if (!pts || pts.length < 2) return false;
+  const ox = path.offsetX || 0;
+  const oy = path.offsetY || 0;
   for (let i = 0; i < pts.length - 1; i++) {
-    if (distToSegment(px, py, pts[i].x, pts[i].y, pts[i + 1].x, pts[i + 1].y) < threshold) {
+    if (distToSegment(px, py, pts[i].x + ox, pts[i].y + oy, pts[i + 1].x + ox, pts[i + 1].y + oy) < threshold) {
       return true;
     }
   }
@@ -159,7 +165,30 @@ function isNearPath(px: number, py: number, path: DrawPath, threshold = 8): bool
 }
 
 function isNearDot(px: number, py: number, dot: Dot, threshold = 12): boolean {
-  return Math.hypot(px - dot.x, py - dot.y) < threshold;
+  return Math.hypot(px - (dot.x + (dot.offsetX || 0)), py - (dot.y + (dot.offsetY || 0))) < threshold;
+}
+
+function getPathBoundingBox(path: DrawPath): { x: number; y: number; width: number; height: number } {
+  const ox = path.offsetX || 0;
+  const oy = path.offsetY || 0;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const pt of path.points) {
+    const px = pt.x + ox;
+    const py = pt.y + oy;
+    if (px < minX) minX = px;
+    if (py < minY) minY = py;
+    if (px > maxX) maxX = px;
+    if (py > maxY) maxY = py;
+  }
+  const pad = (path.width || 3) / 2 + 4;
+  return { x: minX - pad, y: minY - pad, width: maxX - minX + pad * 2, height: maxY - minY + pad * 2 };
+}
+
+function getDotBoundingBox(dot: Dot): { x: number; y: number; width: number; height: number } {
+  const ox = dot.offsetX || 0;
+  const oy = dot.offsetY || 0;
+  const r = (dot.size || 6) + 6;
+  return { x: dot.x + ox - r, y: dot.y + oy - r, width: r * 2, height: r * 2 };
 }
 
 /* ── Component ── */
@@ -216,6 +245,13 @@ export default function WhiteboardPage() {
   const [hoverMediaId, setHoverMediaId] = useState<string | null>(null);
   const [nextStickyColor, setNextStickyColor] = useState<StickyColor>("yellow");
 
+  // Selected drawn element state (for select tool)
+  const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
+  const [selectedElementType, setSelectedElementType] = useState<"path" | "dot" | null>(null);
+  const [draggingElement, setDraggingElement] = useState(false);
+  const elementDragStart = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [resizingElement, setResizingElement] = useState<{ id: string; type: "path" | "dot"; startX: number; startY: number; startBBox: { x: number; y: number; width: number; height: number } } | null>(null);
+
   // Force re-render for dot/stroke counts
   const [, forceRender] = useState(0);
   const bump = () => forceRender((n) => n + 1);
@@ -250,7 +286,7 @@ export default function WhiteboardPage() {
           if (Array.isArray(content.paths)) {
             pathsRef.current = content.paths.map((p: unknown) => {
               if (Array.isArray(p)) {
-                return { id: genId("path"), type: "freehand" as const, points: p, color: "#282828", width: 3 };
+                return { id: genId("path"), type: "freehand" as const, points: p, color: "#282828", width: 3, offsetX: 0, offsetY: 0 };
               }
               const obj = p as Record<string, unknown>;
               return {
@@ -259,11 +295,21 @@ export default function WhiteboardPage() {
                 points: Array.isArray(obj.points) ? obj.points : [],
                 color: (obj.color as string) || "#282828",
                 width: (obj.width as number) || 3,
+                offsetX: (obj.offsetX as number) || 0,
+                offsetY: (obj.offsetY as number) || 0,
               };
             });
           }
           if (Array.isArray(content.dots)) {
-            dotsRef.current = content.dots;
+            dotsRef.current = content.dots.map((d: Record<string, unknown>) => ({
+              id: (d.id as string) || genId("dot"),
+              x: (d.x as number) || 0,
+              y: (d.y as number) || 0,
+              color: (d.color as string) || "#282828",
+              size: (d.size as number) || 6,
+              offsetX: (d.offsetX as number) || 0,
+              offsetY: (d.offsetY as number) || 0,
+            }));
           }
           if (Array.isArray(content.stickies)) {
             // Normalize old sticky format
@@ -316,29 +362,61 @@ export default function WhiteboardPage() {
     // Paths
     for (const path of pathsRef.current) {
       if (!path.points || path.points.length < 2) continue;
+      const ox = path.offsetX || 0;
+      const oy = path.offsetY || 0;
       ctx.strokeStyle = path.color || "#282828";
       ctx.lineWidth = path.width || 3;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       ctx.beginPath();
-      ctx.moveTo(path.points[0].x, path.points[0].y);
+      ctx.moveTo(path.points[0].x + ox, path.points[0].y + oy);
       for (let i = 1; i < path.points.length; i++) {
-        ctx.lineTo(path.points[i].x, path.points[i].y);
+        ctx.lineTo(path.points[i].x + ox, path.points[i].y + oy);
       }
       ctx.stroke();
     }
 
     // Dots
     for (const dot of dotsRef.current) {
+      const ox = dot.offsetX || 0;
+      const oy = dot.offsetY || 0;
       ctx.fillStyle = dot.color || "#282828";
       ctx.beginPath();
-      ctx.arc(dot.x, dot.y, dot.size || 6, 0, Math.PI * 2);
+      ctx.arc(dot.x + ox, dot.y + oy, dot.size || 6, 0, Math.PI * 2);
       ctx.fill();
       ctx.strokeStyle = "#282828";
       ctx.lineWidth = 2;
       ctx.stroke();
     }
-  }, [drawGrid]);
+
+    // Draw selection bounding box
+    if (selectedElementId) {
+      let bbox: { x: number; y: number; width: number; height: number } | null = null;
+      if (selectedElementType === "path") {
+        const path = pathsRef.current.find((p) => p.id === selectedElementId);
+        if (path) bbox = getPathBoundingBox(path);
+      } else if (selectedElementType === "dot") {
+        const dot = dotsRef.current.find((d) => d.id === selectedElementId);
+        if (dot) bbox = getDotBoundingBox(dot);
+      }
+      if (bbox) {
+        ctx.save();
+        ctx.strokeStyle = "#3498DB";
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6, 4]);
+        ctx.strokeRect(bbox.x, bbox.y, bbox.width, bbox.height);
+        ctx.setLineDash([]);
+        // Draw resize handle at bottom-right
+        const hSize = 8;
+        ctx.fillStyle = "#3498DB";
+        ctx.fillRect(bbox.x + bbox.width - hSize / 2, bbox.y + bbox.height - hSize / 2, hSize, hSize);
+        ctx.strokeStyle = "#282828";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(bbox.x + bbox.width - hSize / 2, bbox.y + bbox.height - hSize / 2, hSize, hSize);
+        ctx.restore();
+      }
+    }
+  }, [drawGrid, selectedElementId, selectedElementType]);
 
   /* ── Canvas setup + resize ── */
   useEffect(() => {
@@ -377,7 +455,7 @@ export default function WhiteboardPage() {
       lineStart.current = pos;
       setLinePreview(pos);
     } else if (activeTool === "dot") {
-      const dot: Dot = { id: genId("dot"), x: pos.x, y: pos.y, color: "#282828", size: 6 };
+      const dot: Dot = { id: genId("dot"), x: pos.x, y: pos.y, color: "#282828", size: 6, offsetX: 0, offsetY: 0 };
       dotsRef.current.push(dot);
       redraw();
       saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
@@ -429,6 +507,55 @@ export default function WhiteboardPage() {
     } else if (activeTool === "media") {
       pendingMediaPos.current = pos;
       fileInputRef.current?.click();
+    } else if (activeTool === "select") {
+      // Check if clicking on resize handle of selected element
+      if (selectedElementId) {
+        let bbox: { x: number; y: number; width: number; height: number } | null = null;
+        if (selectedElementType === "path") {
+          const path = pathsRef.current.find((p) => p.id === selectedElementId);
+          if (path) bbox = getPathBoundingBox(path);
+        } else if (selectedElementType === "dot") {
+          const dot = dotsRef.current.find((d) => d.id === selectedElementId);
+          if (dot) bbox = getDotBoundingBox(dot);
+        }
+        if (bbox) {
+          const hx = bbox.x + bbox.width;
+          const hy = bbox.y + bbox.height;
+          if (Math.abs(pos.x - hx) < 10 && Math.abs(pos.y - hy) < 10) {
+            setResizingElement({ id: selectedElementId, type: selectedElementType!, startX: pos.x, startY: pos.y, startBBox: bbox });
+            return;
+          }
+        }
+      }
+      // Check if clicking near a dot
+      const dotIdx = dotsRef.current.findIndex((d) => isNearDot(pos.x, pos.y, d));
+      if (dotIdx !== -1) {
+        const dot = dotsRef.current[dotIdx];
+        setSelectedElementId(dot.id);
+        setSelectedElementType("dot");
+        setDraggingElement(true);
+        elementDragStart.current = { x: pos.x, y: pos.y };
+        redraw();
+        bump();
+        return;
+      }
+      // Check if clicking near a path
+      const pathIdx = pathsRef.current.findIndex((p) => isNearPath(pos.x, pos.y, p));
+      if (pathIdx !== -1) {
+        const path = pathsRef.current[pathIdx];
+        setSelectedElementId(path.id);
+        setSelectedElementType("path");
+        setDraggingElement(true);
+        elementDragStart.current = { x: pos.x, y: pos.y };
+        redraw();
+        bump();
+        return;
+      }
+      // Clicked empty space — deselect
+      setSelectedElementId(null);
+      setSelectedElementType(null);
+      redraw();
+      bump();
     }
   };
 
@@ -452,6 +579,64 @@ export default function WhiteboardPage() {
 
       lastPos.current = pos;
       currentPath.current.push(pos);
+    } else if (activeTool === "select" && resizingElement) {
+      // Scale the element uniformly based on drag delta
+      const bbox = resizingElement.startBBox;
+      const cx = bbox.x + bbox.width / 2;
+      const cy = bbox.y + bbox.height / 2;
+      const origDist = Math.max(bbox.width, bbox.height) / 2;
+      const curDist = Math.hypot(pos.x - cx, pos.y - cy);
+      const scale = origDist > 0 ? curDist / origDist : 1;
+
+      if (resizingElement.type === "path") {
+        const path = pathsRef.current.find((p) => p.id === resizingElement.id);
+        if (path) {
+          // Get the original center (without offset) for scaling
+          let ominX = Infinity, ominY = Infinity, omaxX = -Infinity, omaxY = -Infinity;
+          for (const pt of path.points) {
+            if (pt.x < ominX) ominX = pt.x;
+            if (pt.y < ominY) ominY = pt.y;
+            if (pt.x > omaxX) omaxX = pt.x;
+            if (pt.y > omaxY) omaxY = pt.y;
+          }
+          const ocx = (ominX + omaxX) / 2;
+          const ocy = (ominY + omaxY) / 2;
+          path.points = path.points.map((pt) => ({
+            x: ocx + (pt.x - ocx) * scale,
+            y: ocy + (pt.y - ocy) * scale,
+          }));
+          // Update startBBox for continuous scaling
+          setResizingElement({ ...resizingElement, startBBox: getPathBoundingBox(path) });
+        }
+      } else if (resizingElement.type === "dot") {
+        const dot = dotsRef.current.find((d) => d.id === resizingElement.id);
+        if (dot) {
+          dot.size = Math.max(2, (dot.size || 6) * scale);
+          setResizingElement({ ...resizingElement, startBBox: getDotBoundingBox(dot) });
+        }
+      }
+      redraw();
+      bump();
+    } else if (activeTool === "select" && draggingElement && selectedElementId) {
+      const dx = pos.x - elementDragStart.current.x;
+      const dy = pos.y - elementDragStart.current.y;
+      elementDragStart.current = { x: pos.x, y: pos.y };
+
+      if (selectedElementType === "path") {
+        const path = pathsRef.current.find((p) => p.id === selectedElementId);
+        if (path) {
+          path.offsetX = (path.offsetX || 0) + dx;
+          path.offsetY = (path.offsetY || 0) + dy;
+        }
+      } else if (selectedElementType === "dot") {
+        const dot = dotsRef.current.find((d) => d.id === selectedElementId);
+        if (dot) {
+          dot.offsetX = (dot.offsetX || 0) + dx;
+          dot.offsetY = (dot.offsetY || 0) + dy;
+        }
+      }
+      redraw();
+      bump();
     } else if (activeTool === "line" && lineStart.current) {
       // Live preview: redraw everything + preview line
       redraw();
@@ -480,6 +665,8 @@ export default function WhiteboardPage() {
         points: [...currentPath.current],
         color: "#282828",
         width: 3,
+        offsetX: 0,
+        offsetY: 0,
       });
       currentPath.current = [];
       saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
@@ -494,6 +681,8 @@ export default function WhiteboardPage() {
           points: [lineStart.current, pos],
           color: "#282828",
           width: 3,
+          offsetX: 0,
+          offsetY: 0,
         });
         saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
         bump();
@@ -501,6 +690,15 @@ export default function WhiteboardPage() {
       lineStart.current = null;
       setLinePreview(null);
       redraw();
+    }
+
+    if (activeTool === "select" && draggingElement) {
+      setDraggingElement(false);
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
+    }
+    if (activeTool === "select" && resizingElement) {
+      setResizingElement(null);
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
     }
 
     isDrawing.current = false;
@@ -607,22 +805,49 @@ export default function WhiteboardPage() {
       const pos = pendingMediaPos.current || { x: 100, y: 100 };
       const mediaType = getMediaType(file.name);
 
-      const newMedia: MediaItem = {
-        id: genId("media"),
-        type: mediaType,
-        dataUrl,
-        fileName: file.name,
-        x: pos.x - 100,
-        y: pos.y - 60,
-        width: mediaType === "document" ? 200 : 300,
-        height: mediaType === "document" ? 80 : 200,
+      const addMedia = (w: number, h: number) => {
+        const newMedia: MediaItem = {
+          id: genId("media"),
+          type: mediaType,
+          dataUrl,
+          fileName: file.name,
+          x: pos.x - w / 2,
+          y: pos.y - h / 2,
+          width: w,
+          height: h,
+        };
+        const updated = [...mediaItems, newMedia];
+        setMediaItems(updated);
+        saveWhiteboard(pathsRef.current, dotsRef.current, stickies, updated);
+        setActiveTool("select");
+        pendingMediaPos.current = null;
       };
 
-      const updated = [...mediaItems, newMedia];
-      setMediaItems(updated);
-      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, updated);
-      setActiveTool("select");
-      pendingMediaPos.current = null;
+      if (mediaType === "image") {
+        const img = new Image();
+        img.onload = () => {
+          const nw = img.naturalWidth;
+          const nh = img.naturalHeight;
+          const maxSide = 400;
+          let w: number, h: number;
+          if (nw >= nh) {
+            w = Math.min(nw, maxSide);
+            h = (nh / nw) * w;
+          } else {
+            h = Math.min(nh, maxSide);
+            w = (nw / nh) * h;
+          }
+          addMedia(Math.round(w), Math.round(h));
+        };
+        img.onerror = () => {
+          addMedia(300, 200);
+        };
+        img.src = dataUrl;
+      } else if (mediaType === "video") {
+        addMedia(300, 200);
+      } else {
+        addMedia(200, 80);
+      }
     };
     reader.readAsDataURL(file);
     // Reset input so same file can be re-added
@@ -710,19 +935,9 @@ export default function WhiteboardPage() {
           prev.map((s) => (s.id === resizing.id ? { ...s, width: newW, height: newH } : s))
         );
       } else {
-        // For images/videos, maintain aspect ratio
-        const item = mediaItems.find((m) => m.id === resizing.id);
-        if (item && (item.type === "image" || item.type === "video") && resizing.startH > 0) {
-          const ratio = resizing.startW / resizing.startH;
-          const finalH = newW / ratio;
-          setMediaItems((prev) =>
-            prev.map((m) => (m.id === resizing.id ? { ...m, width: newW, height: Math.max(40, finalH) } : m))
-          );
-        } else {
-          setMediaItems((prev) =>
-            prev.map((m) => (m.id === resizing.id ? { ...m, width: newW, height: newH } : m))
-          );
-        }
+        setMediaItems((prev) =>
+          prev.map((m) => (m.id === resizing.id ? { ...m, width: newW, height: newH } : m))
+        );
       }
     };
     const handleMouseUp = () => {

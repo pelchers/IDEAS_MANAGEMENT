@@ -64,6 +64,16 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [x] Media viewer modal: full-size preview for images, video player for video, PDF render for documents
 - [x] Size limit warning for large files (data URL storage)
 
+## Phase 4b — Media & Select Tool Fixes (2026-03-17) ✅
+
+- [x] Fix media aspect ratio: imported images use natural width/height ratio, longest side max 400px
+- [x] Change media resize to independent width/height: removed aspect-ratio lock for images/videos
+- [x] Fix hover action buttons clipped by overflow on media items
+- [x] Select tool: click a drawn freehand stroke, straight line, or dot to select it (dashed bounding box indicator)
+- [x] Select tool: drag selected drawn elements to reposition (offsetX/offsetY tracking)
+- [x] Select tool: resize selected drawn elements via drag handle (uniform scale relative to bbox center)
+- [x] Persist moved/resized drawn element positions in artifact save (offsetX/offsetY fields)
+
 ## Phase 5 — Whiteboard Testing
 
 - [ ] User story validation: draw on canvas, add sticky note, drag sticky note, switch tools, add media, resize elements
