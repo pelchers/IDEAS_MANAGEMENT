@@ -49,20 +49,20 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [x] Sticky text color: auto-adaptive white/black based on background (no manual setting)
 - [x] Remove unused rect/text tool stubs
 
-## Phase 4 — Media Attachments + Resizable Content (2026-03-16)
+## Phase 4 — Media Attachments + Resizable Content (2026-03-16) ✅
 
-- [ ] Media tool: attachment icon (paperclip) in toolbar, opens native file picker
-- [ ] Image support: images display directly on canvas at drop position, stored as data URL in artifact
-- [ ] Video support: videos display directly on canvas with native player controls
-- [ ] Document support: PDF/DOCX/etc show as mini card with file title + icon on canvas; click opens a media viewer modal with file preview
-- [ ] All canvas content resizable from corners (Photoshop-style):
+- [x] Media tool: attachment icon (paperclip) in toolbar, opens native file picker
+- [x] Image support: images display directly on canvas at drop position, stored as data URL in artifact
+- [x] Video support: videos display directly on canvas with native player controls
+- [x] Document support: PDF/DOCX/etc show as mini card with file title + icon on canvas; click opens a media viewer modal with file preview
+- [x] All canvas content resizable from corners (Photoshop-style):
   - Sticky notes: corner drag handles to resize width/height
   - Images: corner drag handles maintaining aspect ratio
   - Videos: corner drag handles maintaining aspect ratio
   - Document cards: corner drag handles to resize
-- [ ] Width/height persisted per element in artifact API
-- [ ] Media viewer modal: full-size preview for images, video player for video, PDF render for documents
-- [ ] Size limit warning for large files (data URL storage)
+- [x] Width/height persisted per element in artifact API
+- [x] Media viewer modal: full-size preview for images, video player for video, PDF render for documents
+- [x] Size limit warning for large files (data URL storage)
 
 ## Phase 5 — Whiteboard Testing
 
