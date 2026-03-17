@@ -24,6 +24,12 @@ model User {
   role            UserRole  @default(USER)
   emailVerifiedAt DateTime?
 
+  // Profile
+  displayName String?
+  bio         String?
+  avatarUrl   String?
+  tags        String[] @default([])
+
   // AI configuration
   aiProvider            AiProvider @default(NONE)
   aiApiKeyEncrypted     String?    // AES-256-GCM encrypted API key or OAuth access token
