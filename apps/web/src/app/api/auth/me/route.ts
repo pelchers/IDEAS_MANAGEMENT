@@ -23,7 +23,11 @@ export async function GET(req: Request) {
       id: user.id,
       email: user.email,
       role: user.role,
-      emailVerified: !!user.emailVerifiedAt
+      emailVerified: !!user.emailVerifiedAt,
+      displayName: user.displayName ?? null,
+      bio: user.bio ?? null,
+      avatarUrl: user.avatarUrl ?? null,
+      tags: user.tags ?? [],
     },
     entitlements: {
       plan: entitlements.plan,
@@ -35,27 +39,28 @@ export async function GET(req: Request) {
 
 /**
  * PUT /api/auth/me
- * Update the current user's profile (email only for now).
+ * Update the current user's profile.
  */
 export async function PUT(req: Request) {
   const authResult = await requireAuth(req);
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: { email?: string };
+  let body: { email?: string; displayName?: string; bio?: string; avatarUrl?: string; tags?: string[] };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
   }
 
-  const updates: { email?: string } = {};
+  const updates: Record<string, unknown> = {};
+
+  // Email
   if (body.email && typeof body.email === "string") {
     const email = body.email.trim().toLowerCase();
     if (!email.includes("@") || email.length > 320) {
       return NextResponse.json({ ok: false, error: "invalid_email" }, { status: 400 });
     }
-    // Check for duplicate email
     if (email !== user.email) {
       const existing = await prisma.user.findUnique({ where: { email } });
       if (existing) {
@@ -63,6 +68,38 @@ export async function PUT(req: Request) {
       }
       updates.email = email;
     }
+  }
+
+  // Display name
+  if (body.displayName !== undefined) {
+    if (typeof body.displayName !== "string" || body.displayName.length > 100) {
+      return NextResponse.json({ ok: false, error: "invalid_display_name" }, { status: 400 });
+    }
+    updates.displayName = body.displayName.trim() || null;
+  }
+
+  // Bio
+  if (body.bio !== undefined) {
+    if (typeof body.bio !== "string" || body.bio.length > 500) {
+      return NextResponse.json({ ok: false, error: "invalid_bio" }, { status: 400 });
+    }
+    updates.bio = body.bio.trim() || null;
+  }
+
+  // Avatar URL
+  if (body.avatarUrl !== undefined) {
+    if (body.avatarUrl !== null && (typeof body.avatarUrl !== "string" || body.avatarUrl.length > 2048)) {
+      return NextResponse.json({ ok: false, error: "invalid_avatar_url" }, { status: 400 });
+    }
+    updates.avatarUrl = body.avatarUrl || null;
+  }
+
+  // Tags
+  if (body.tags !== undefined) {
+    if (!Array.isArray(body.tags) || body.tags.length > 10 || body.tags.some((t) => typeof t !== "string" || t.length > 50)) {
+      return NextResponse.json({ ok: false, error: "invalid_tags" }, { status: 400 });
+    }
+    updates.tags = body.tags.map((t) => t.trim()).filter(Boolean);
   }
 
   if (Object.keys(updates).length === 0) {

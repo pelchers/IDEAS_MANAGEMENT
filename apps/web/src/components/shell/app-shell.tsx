@@ -9,6 +9,7 @@ function getTitleFromPathname(pathname: string): string {
   if (pathname === "/dashboard") return "DASHBOARD";
   if (pathname === "/projects") return "PROJECTS";
   if (pathname === "/ai") return "AI CHAT";
+  if (pathname === "/profile") return "PROFILE";
   if (pathname === "/settings") return "SETTINGS";
   if (pathname.includes("/kanban")) return "KANBAN";
   if (pathname.includes("/whiteboard")) return "WHITEBOARD";
@@ -50,7 +51,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [selectedProjectName, setSelectedProjectName] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState<{ email: string; role: string } | null>(null);
+  const [userInfo, setUserInfo] = useState<{ email: string; role: string; displayName?: string } | null>(null);
   const pathname = usePathname();
   const title = getTitleFromPathname(pathname);
 
@@ -103,7 +104,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       .then((res) => res.json())
       .then((data) => {
         if (data.ok && data.user) {
-          setUserInfo({ email: data.user.email, role: data.user.role });
+          setUserInfo({ email: data.user.email, role: data.user.role, displayName: data.user.displayName ?? undefined });
         }
       })
       .catch(() => {});
@@ -129,9 +130,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   const userInitials = userInfo
-    ? userInfo.email.substring(0, 2).toUpperCase()
+    ? (userInfo.displayName || userInfo.email).split(/[\s@]/).filter(Boolean).slice(0, 2).map((s) => s[0].toUpperCase()).join("")
     : "??";
-  const userDisplayName = userInfo?.email || "Loading...";
+  const userDisplayName = userInfo?.displayName || userInfo?.email || "Loading...";
   const userRole = userInfo?.role || "...";
 
   // Expose selectProject for child pages
@@ -384,8 +385,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           })}
         </ul>
 
-        {/* Drawer footer — user profile */}
-        <div style={{ padding: "24px", borderTop: "4px solid #282828" }}>
+        {/* Drawer footer — user profile (clickable) */}
+        <Link
+          href="/profile"
+          style={{ display: "block", padding: "24px", borderTop: "4px solid #282828", cursor: "pointer", textDecoration: "none", color: "inherit", transition: "background-color 150ms" }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(40,40,40,0.05)")}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <div
               style={{
@@ -412,7 +418,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </span>
             </div>
           </div>
-        </div>
+        </Link>
       </nav>
 
       {/* ============================================ */}

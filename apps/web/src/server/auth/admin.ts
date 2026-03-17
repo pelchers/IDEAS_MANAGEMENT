@@ -8,6 +8,10 @@ export type AuthenticatedUser = {
   email: string;
   role: "USER" | "ADMIN";
   emailVerifiedAt: Date | null;
+  displayName: string | null;
+  bio: string | null;
+  avatarUrl: string | null;
+  tags: string[];
 };
 
 /**

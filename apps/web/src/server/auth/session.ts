@@ -10,7 +10,7 @@ export async function validateSession(sessionToken: string) {
   const hash = sha256Hex(sessionToken);
   const session = await prisma.session.findUnique({
     where: { sessionTokenHash: hash },
-    include: { user: { select: { id: true, email: true, role: true, emailVerifiedAt: true } } }
+    include: { user: { select: { id: true, email: true, role: true, emailVerifiedAt: true, displayName: true, bio: true, avatarUrl: true, tags: true } } }
   });
   if (!session) return null;
   if (session.revokedAt) return null;
