@@ -190,7 +190,7 @@ interface SchemaGraph {
   source?: { type: "manual" | "github" | "local"; githubRepo?: string; importedAt?: string };
 }
 
-type ModalMode = null | "addEntity" | "editEntity" | "addField" | "editField" | "addRelation" | "import" | "export" | "addEnum" | "addView" | "addSequence" | "addFunction" | "addTrigger" | "addPolicy" | "addExtension" | "addIndex" | "addDomain" | "addCompositeType" | "addRole";
+type ModalMode = null | "addEntity" | "editEntity" | "addField" | "editField" | "addRelation" | "editRelation" | "import" | "export" | "addEnum" | "editEnum" | "addView" | "editView" | "addSequence" | "editSequence" | "addFunction" | "editFunction" | "addTrigger" | "editTrigger" | "addPolicy" | "editPolicy" | "addExtension" | "addIndex" | "editIndex" | "addDomain" | "editDomain" | "addCompositeType" | "editCompositeType" | "addRole" | "editRole";
 type ImportTab = "github" | "local";
 
 const FIELD_TYPES = [
@@ -840,6 +840,7 @@ export default function SchemaPage() {
 
   // ── Generic object form (reused for view, sequence, function, trigger, policy, extension, index, domain) ──
   const [formObj, setFormObj] = useState<Record<string, string>>({});
+  const [editObjId, setEditObjId] = useState<string | null>(null);
 
   // ── Hover state for entity actions ──
   const [hoverEntityId, setHoverEntityId] = useState<string | null>(null);
@@ -1082,95 +1083,135 @@ export default function SchemaPage() {
   const [formRelFkName, setFormRelFkName] = useState("");
 
   /* ── Enum CRUD ── */
-  const addEnum = () => {
+  const saveEnum = () => {
     if (!formEnumName.trim() || !formEnumValues.trim()) return;
     const values = formEnumValues.split(",").map((v) => v.trim()).filter(Boolean);
     if (values.length === 0) return;
-    updateGraph((g) => ({
-      ...g,
-      enumTypes: [...(g.enumTypes || []), { id: uid(), name: formEnumName.trim(), values }],
-    }));
-    setFormEnumName("");
-    setFormEnumValues("");
-    setModal(null);
+    updateGraph((g) => {
+      if (editObjId) {
+        return { ...g, enumTypes: (g.enumTypes || []).map((en) => en.id === editObjId ? { ...en, name: formEnumName.trim(), values } : en) };
+      }
+      return { ...g, enumTypes: [...(g.enumTypes || []), { id: uid(), name: formEnumName.trim(), values }] };
+    });
+    setFormEnumName(""); setFormEnumValues(""); setEditObjId(null); setModal(null);
   };
+  const openEditEnum = (en: EnumType) => { setFormEnumName(en.name); setFormEnumValues(en.values.join(", ")); setEditObjId(en.id); setModal("editEnum"); };
+  const deleteEnum = (enumId: string) => { updateGraph((g) => ({ ...g, enumTypes: (g.enumTypes || []).filter((en) => en.id !== enumId) })); };
 
-  const deleteEnum = (enumId: string) => {
-    updateGraph((g) => ({ ...g, enumTypes: (g.enumTypes || []).filter((en) => en.id !== enumId) }));
+  /* ── Generic upsert helper ── */
+  const upsertList = <T extends { id: string }>(list: T[] | undefined, item: T): T[] => {
+    const arr = list || [];
+    if (editObjId) return arr.map((x) => x.id === editObjId ? item : x);
+    return [...arr, item];
   };
+  const clearObjForm = () => { setFormObj({}); setEditObjId(null); setModal(null); };
 
   /* ── Generic object CRUD ── */
-  const addView = () => {
+  const saveView = () => {
     if (!formObj.name?.trim() || !formObj.query?.trim()) return;
-    updateGraph((g) => ({ ...g, views: [...(g.views || []), { id: uid(), name: formObj.name.trim(), query: formObj.query.trim(), isMaterialized: formObj.materialized === "true", schema: formObj.schema || undefined, x: 40, y: 40 }] }));
-    setFormObj({}); setModal(null);
+    updateGraph((g) => ({ ...g, views: upsertList(g.views, { id: editObjId || uid(), name: formObj.name.trim(), query: formObj.query.trim(), isMaterialized: formObj.materialized === "true", schema: formObj.schema || undefined, x: 40, y: 40 }) }));
+    clearObjForm();
   };
+  const openEditView = (v: SchemaView) => { setFormObj({ name: v.name, query: v.query, materialized: v.isMaterialized ? "true" : "", schema: v.schema || "" }); setEditObjId(v.id); setModal("editView"); };
   const deleteView = (id: string) => { updateGraph((g) => ({ ...g, views: (g.views || []).filter((v) => v.id !== id) })); };
 
-  const addSequence = () => {
+  const saveSequence = () => {
     if (!formObj.name?.trim()) return;
-    updateGraph((g) => ({ ...g, sequences: [...(g.sequences || []), { id: uid(), name: formObj.name.trim(), dataType: formObj.dataType || undefined, start: formObj.start ? Number(formObj.start) : undefined, increment: formObj.increment ? Number(formObj.increment) : undefined, minValue: formObj.minValue ? Number(formObj.minValue) : undefined, maxValue: formObj.maxValue ? Number(formObj.maxValue) : undefined, cycle: formObj.cycle === "true", ownedBy: formObj.ownedBy || undefined }] }));
-    setFormObj({}); setModal(null);
+    updateGraph((g) => ({ ...g, sequences: upsertList(g.sequences, { id: editObjId || uid(), name: formObj.name.trim(), dataType: formObj.dataType || undefined, start: formObj.start ? Number(formObj.start) : undefined, increment: formObj.increment ? Number(formObj.increment) : undefined, minValue: formObj.minValue ? Number(formObj.minValue) : undefined, maxValue: formObj.maxValue ? Number(formObj.maxValue) : undefined, cycle: formObj.cycle === "true", ownedBy: formObj.ownedBy || undefined }) }));
+    clearObjForm();
   };
+  const openEditSequence = (s: SchemaSequence) => { setFormObj({ name: s.name, dataType: s.dataType || "", start: s.start?.toString() || "", increment: s.increment?.toString() || "", minValue: s.minValue?.toString() || "", maxValue: s.maxValue?.toString() || "", cycle: s.cycle ? "true" : "", ownedBy: s.ownedBy || "" }); setEditObjId(s.id); setModal("editSequence"); };
   const deleteSequence = (id: string) => { updateGraph((g) => ({ ...g, sequences: (g.sequences || []).filter((s) => s.id !== id) })); };
 
-  const addFunction = () => {
+  const saveFunction = () => {
     if (!formObj.name?.trim()) return;
-    updateGraph((g) => ({ ...g, functions: [...(g.functions || []), { id: uid(), name: formObj.name.trim(), params: formObj.params || "", returnType: formObj.returnType || "void", language: formObj.language || "plpgsql", body: formObj.body || "", volatility: (formObj.volatility as "IMMUTABLE" | "STABLE" | "VOLATILE") || undefined, security: (formObj.security as "DEFINER" | "INVOKER") || undefined }] }));
-    setFormObj({}); setModal(null);
+    updateGraph((g) => ({ ...g, functions: upsertList(g.functions, { id: editObjId || uid(), name: formObj.name.trim(), params: formObj.params || "", returnType: formObj.returnType || "void", language: formObj.language || "plpgsql", body: formObj.body || "", volatility: (formObj.volatility as "IMMUTABLE" | "STABLE" | "VOLATILE") || undefined, security: (formObj.security as "DEFINER" | "INVOKER") || undefined }) }));
+    clearObjForm();
   };
+  const openEditFunction = (fn: SchemaFunction) => { setFormObj({ name: fn.name, params: fn.params, returnType: fn.returnType, language: fn.language, body: fn.body, volatility: fn.volatility || "", security: fn.security || "" }); setEditObjId(fn.id); setModal("editFunction"); };
   const deleteFunction = (id: string) => { updateGraph((g) => ({ ...g, functions: (g.functions || []).filter((f) => f.id !== id) })); };
 
-  const addTrigger = () => {
+  const saveTrigger = () => {
     if (!formObj.name?.trim() || !formObj.tableName?.trim() || !formObj.functionName?.trim()) return;
-    updateGraph((g) => ({ ...g, triggers: [...(g.triggers || []), { id: uid(), name: formObj.name.trim(), timing: (formObj.timing as "BEFORE" | "AFTER" | "INSTEAD OF") || "BEFORE", events: (formObj.events || "INSERT").split(",").map((e) => e.trim()), tableName: formObj.tableName.trim(), forEach: (formObj.forEach as "ROW" | "STATEMENT") || "ROW", functionName: formObj.functionName.trim(), whenExpr: formObj.whenExpr || undefined }] }));
-    setFormObj({}); setModal(null);
+    updateGraph((g) => ({ ...g, triggers: upsertList(g.triggers, { id: editObjId || uid(), name: formObj.name.trim(), timing: (formObj.timing as "BEFORE" | "AFTER" | "INSTEAD OF") || "BEFORE", events: (formObj.events || "INSERT").split(",").map((e) => e.trim()), tableName: formObj.tableName.trim(), forEach: (formObj.forEach as "ROW" | "STATEMENT") || "ROW", functionName: formObj.functionName.trim(), whenExpr: formObj.whenExpr || undefined }) }));
+    clearObjForm();
   };
+  const openEditTrigger = (tr: SchemaTrigger) => { setFormObj({ name: tr.name, timing: tr.timing, events: tr.events.join(", "), tableName: tr.tableName, forEach: tr.forEach, functionName: tr.functionName, whenExpr: tr.whenExpr || "" }); setEditObjId(tr.id); setModal("editTrigger"); };
   const deleteTrigger = (id: string) => { updateGraph((g) => ({ ...g, triggers: (g.triggers || []).filter((t) => t.id !== id) })); };
 
-  const addPolicy = () => {
+  const savePolicy = () => {
     if (!formObj.name?.trim() || !formObj.tableName?.trim()) return;
-    updateGraph((g) => ({ ...g, policies: [...(g.policies || []), { id: uid(), name: formObj.name.trim(), tableName: formObj.tableName.trim(), command: (formObj.command as "ALL" | "SELECT" | "INSERT" | "UPDATE" | "DELETE") || "ALL", usingExpr: formObj.usingExpr || undefined, checkExpr: formObj.checkExpr || undefined, roles: formObj.roles ? formObj.roles.split(",").map((r) => r.trim()) : undefined }] }));
-    setFormObj({}); setModal(null);
+    updateGraph((g) => ({ ...g, policies: upsertList(g.policies, { id: editObjId || uid(), name: formObj.name.trim(), tableName: formObj.tableName.trim(), command: (formObj.command as "ALL" | "SELECT" | "INSERT" | "UPDATE" | "DELETE") || "ALL", usingExpr: formObj.usingExpr || undefined, checkExpr: formObj.checkExpr || undefined, roles: formObj.roles ? formObj.roles.split(",").map((r) => r.trim()) : undefined }) }));
+    clearObjForm();
   };
+  const openEditPolicy = (p: SchemaPolicy) => { setFormObj({ name: p.name, tableName: p.tableName, command: p.command, usingExpr: p.usingExpr || "", checkExpr: p.checkExpr || "", roles: p.roles?.join(", ") || "" }); setEditObjId(p.id); setModal("editPolicy"); };
   const deletePolicy = (id: string) => { updateGraph((g) => ({ ...g, policies: (g.policies || []).filter((p) => p.id !== id) })); };
 
-  const addExtension = () => {
+  const saveExtension = () => {
     if (!formObj.name?.trim()) return;
-    updateGraph((g) => ({ ...g, extensions: [...(g.extensions || []), { id: uid(), name: formObj.name.trim(), schema: formObj.schema || undefined }] }));
-    setFormObj({}); setModal(null);
+    updateGraph((g) => ({ ...g, extensions: upsertList(g.extensions, { id: editObjId || uid(), name: formObj.name.trim(), schema: formObj.schema || undefined }) }));
+    clearObjForm();
   };
   const deleteExtension = (id: string) => { updateGraph((g) => ({ ...g, extensions: (g.extensions || []).filter((e) => e.id !== id) })); };
 
-  const addAdvancedIndex = () => {
+  const saveAdvancedIndex = () => {
     if (!formObj.name?.trim() || !formObj.tableName?.trim() || (!formObj.columns?.trim() && !formObj.expression?.trim())) return;
-    updateGraph((g) => ({ ...g, indexes: [...(g.indexes || []), { id: uid(), name: formObj.name.trim(), tableName: formObj.tableName.trim(), columns: formObj.columns ? formObj.columns.split(",").map((c) => c.trim()) : [], type: (formObj.type as SchemaIndex["type"]) || undefined, isUnique: formObj.isUnique === "true", whereClause: formObj.whereClause || undefined, includeColumns: formObj.includeColumns ? formObj.includeColumns.split(",").map((c) => c.trim()) : undefined, expression: formObj.expression || undefined }] }));
-    setFormObj({}); setModal(null);
+    updateGraph((g) => ({ ...g, indexes: upsertList(g.indexes, { id: editObjId || uid(), name: formObj.name.trim(), tableName: formObj.tableName.trim(), columns: formObj.columns ? formObj.columns.split(",").map((c) => c.trim()) : [], type: (formObj.type as SchemaIndex["type"]) || undefined, isUnique: formObj.isUnique === "true", whereClause: formObj.whereClause || undefined, includeColumns: formObj.includeColumns ? formObj.includeColumns.split(",").map((c) => c.trim()) : undefined, expression: formObj.expression || undefined }) }));
+    clearObjForm();
   };
+  const openEditIndex = (idx: SchemaIndex) => { setFormObj({ name: idx.name, tableName: idx.tableName, columns: idx.columns.join(", "), type: idx.type || "", isUnique: idx.isUnique ? "true" : "", whereClause: idx.whereClause || "", includeColumns: idx.includeColumns?.join(", ") || "", expression: idx.expression || "" }); setEditObjId(idx.id); setModal("editIndex"); };
   const deleteIndex = (id: string) => { updateGraph((g) => ({ ...g, indexes: (g.indexes || []).filter((i) => i.id !== id) })); };
 
-  const addDomain = () => {
+  const saveDomain = () => {
     if (!formObj.name?.trim() || !formObj.baseType?.trim()) return;
-    updateGraph((g) => ({ ...g, domainTypes: [...(g.domainTypes || []), { id: uid(), name: formObj.name.trim(), baseType: formObj.baseType.trim(), notNull: formObj.notNull === "true", defaultValue: formObj.defaultValue || undefined, checkExpr: formObj.checkExpr || undefined }] }));
-    setFormObj({}); setModal(null);
+    updateGraph((g) => ({ ...g, domainTypes: upsertList(g.domainTypes, { id: editObjId || uid(), name: formObj.name.trim(), baseType: formObj.baseType.trim(), notNull: formObj.notNull === "true", defaultValue: formObj.defaultValue || undefined, checkExpr: formObj.checkExpr || undefined }) }));
+    clearObjForm();
   };
+  const openEditDomain = (d: DomainType) => { setFormObj({ name: d.name, baseType: d.baseType, notNull: d.notNull ? "true" : "", defaultValue: d.defaultValue || "", checkExpr: d.checkExpr || "" }); setEditObjId(d.id); setModal("editDomain"); };
   const deleteDomain = (id: string) => { updateGraph((g) => ({ ...g, domainTypes: (g.domainTypes || []).filter((d) => d.id !== id) })); };
 
-  const addCompositeType = () => {
+  const saveCompositeType = () => {
     if (!formObj.name?.trim() || !formObj.fields?.trim()) return;
-    const fields = formObj.fields.split(",").map((f) => { const [name, type] = f.trim().split(/\s+/); return { name: name || "", type: type || "TEXT" }; }).filter((f) => f.name);
-    updateGraph((g) => ({ ...g, compositeTypes: [...(g.compositeTypes || []), { id: uid(), name: formObj.name.trim(), fields }] }));
-    setFormObj({}); setModal(null);
+    const fields = formObj.fields.split(",").map((f) => { const parts = f.trim().split(/\s+/); return { name: parts[0] || "", type: parts[1] || "TEXT" }; }).filter((f) => f.name);
+    updateGraph((g) => ({ ...g, compositeTypes: upsertList(g.compositeTypes, { id: editObjId || uid(), name: formObj.name.trim(), fields }) }));
+    clearObjForm();
   };
+  const openEditCompositeType = (ct: CompositeType) => { setFormObj({ name: ct.name, fields: ct.fields.map((f) => `${f.name} ${f.type}`).join(", ") }); setEditObjId(ct.id); setModal("editCompositeType"); };
   const deleteCompositeType = (id: string) => { updateGraph((g) => ({ ...g, compositeTypes: (g.compositeTypes || []).filter((c) => c.id !== id) })); };
 
-  const addRole = () => {
+  const saveRole = () => {
     if (!formObj.name?.trim()) return;
-    const grants = formObj.grants ? formObj.grants.split(";").map((g) => { const [target, ...privs] = g.trim().split(/\s+/); return { target, privileges: privs }; }).filter((g) => g.target) : [];
-    updateGraph((g) => ({ ...g, roles: [...(g.roles || []), { id: uid(), name: formObj.name.trim(), login: formObj.login === "true", superuser: formObj.superuser === "true", createdb: formObj.createdb === "true", createrole: formObj.createrole === "true", inherit: formObj.inherit !== "false", grants: grants.length > 0 ? grants : undefined }] }));
-    setFormObj({}); setModal(null);
+    const grants = formObj.grants ? formObj.grants.split(";").map((g) => { const parts = g.trim().split(/\s+/); return { target: parts[0] || "", privileges: parts.slice(1) }; }).filter((g) => g.target) : [];
+    updateGraph((g) => ({ ...g, roles: upsertList(g.roles, { id: editObjId || uid(), name: formObj.name.trim(), login: formObj.login === "true", superuser: formObj.superuser === "true", createdb: formObj.createdb === "true", createrole: formObj.createrole === "true", inherit: formObj.inherit !== "false", grants: grants.length > 0 ? grants : undefined }) }));
+    clearObjForm();
   };
+  const openEditRole = (r: SchemaRole) => { setFormObj({ name: r.name, login: r.login ? "true" : "", superuser: r.superuser ? "true" : "", createdb: r.createdb ? "true" : "", createrole: r.createrole ? "true" : "", grants: r.grants?.map((g) => `${g.target} ${g.privileges.join(" ")}`).join("; ") || "" }); setEditObjId(r.id); setModal("editRole"); };
   const deleteRole = (id: string) => { updateGraph((g) => ({ ...g, roles: (g.roles || []).filter((r) => r.id !== id) })); };
+
+  // ── Relation edit state ──
+  const [editRelId, setEditRelId] = useState<string | null>(null);
+
+  const openEditRelation = (rel: SchemaRelation) => {
+    setFormRelFrom(rel.fromEntityId); setFormRelTo(rel.toEntityId); setFormRelType(rel.type);
+    setFormRelOnDelete(rel.onDelete || "CASCADE"); setFormRelOnUpdate(rel.onUpdate || "NO ACTION");
+    setFormRelFkName(rel.fkFieldName || ""); setEditRelId(rel.id); setModal("editRelation");
+  };
+
+  const saveRelation = () => {
+    if (!formRelFrom || !formRelTo || formRelFrom === formRelTo) return;
+    if (editRelId) {
+      updateGraph((g) => ({
+        ...g,
+        relations: g.relations.map((r) => r.id === editRelId ? {
+          ...r, fromEntityId: formRelFrom, toEntityId: formRelTo, type: formRelType,
+          fkFieldName: formRelFkName.trim() || undefined, onDelete: formRelOnDelete, onUpdate: formRelOnUpdate,
+        } : r),
+      }));
+      setEditRelId(null); setFormRelFrom(""); setFormRelTo(""); setFormRelFkName(""); setModal(null);
+      return;
+    }
+    addRelation();
+  };
 
   /* ── Relation CRUD ── */
   const addRelation = () => {
@@ -1541,10 +1582,8 @@ export default function SchemaPage() {
                     <span className="font-bold">{to?.name || "?"}</span>
                     {rel.onDelete && rel.onDelete !== "CASCADE" && <span className="text-[0.6rem] text-[#999]">ON DEL: {rel.onDelete}</span>}
                     {rel.fkFieldName && <span className="text-[0.6rem] text-malachite">FK: {rel.fkFieldName}</span>}
-                    <button
-                      onClick={() => deleteRelation(rel.id)}
-                      className="ml-1 text-watermelon font-bold cursor-pointer hover:opacity-70"
-                    >X</button>
+                    <button onClick={() => openEditRelation(rel)} className="ml-1 text-signal-black font-bold cursor-pointer hover:opacity-70 text-[0.6rem]">E</button>
+                    <button onClick={() => deleteRelation(rel.id)} className="text-watermelon font-bold cursor-pointer hover:opacity-70">X</button>
                   </div>
                 );
               })}
@@ -1561,7 +1600,8 @@ export default function SchemaPage() {
               <div key={en.id} className="inline-flex items-center gap-2 px-3 py-1.5 border-2 border-signal-black bg-white font-mono text-[0.75rem] uppercase">
                 <span className="font-bold text-amethyst">{en.name}</span>
                 <span className="text-[0.6rem] text-[#999]">({en.values.join(", ")})</span>
-                <button onClick={() => deleteEnum(en.id)} className="ml-1 text-watermelon font-bold cursor-pointer hover:opacity-70">X</button>
+                <button onClick={() => openEditEnum(en)} className="ml-1 text-signal-black font-bold cursor-pointer hover:opacity-70 text-[0.6rem]">E</button>
+                <button onClick={() => deleteEnum(en.id)} className="text-watermelon font-bold cursor-pointer hover:opacity-70">X</button>
               </div>
             ))}
           </div>
@@ -1578,7 +1618,7 @@ export default function SchemaPage() {
               {(graph.views || []).map((v) => (
                 <div key={v.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
                   <span>{v.isMaterialized ? "MAT " : ""}{v.name}</span>
-                  <button onClick={() => deleteView(v.id)} className="text-watermelon font-bold">X</button>
+                  <div className="flex gap-1"><button onClick={() => openEditView(v)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteView(v.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
             </div>
@@ -1590,7 +1630,7 @@ export default function SchemaPage() {
               {(graph.sequences || []).map((s) => (
                 <div key={s.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
                   <span>{s.name} {s.start !== undefined ? `(START ${s.start})` : ""}</span>
-                  <button onClick={() => deleteSequence(s.id)} className="text-watermelon font-bold">X</button>
+                  <div className="flex gap-1"><button onClick={() => openEditSequence(s)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteSequence(s.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
             </div>
@@ -1602,7 +1642,7 @@ export default function SchemaPage() {
               {(graph.functions || []).map((fn) => (
                 <div key={fn.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
                   <span>{fn.name}({fn.params}) → {fn.returnType}</span>
-                  <button onClick={() => deleteFunction(fn.id)} className="text-watermelon font-bold">X</button>
+                  <div className="flex gap-1"><button onClick={() => openEditFunction(fn)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteFunction(fn.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
             </div>
@@ -1614,7 +1654,7 @@ export default function SchemaPage() {
               {(graph.triggers || []).map((tr) => (
                 <div key={tr.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
                   <span>{tr.name} {tr.timing} {tr.events.join("/")} ON {tr.tableName}</span>
-                  <button onClick={() => deleteTrigger(tr.id)} className="text-watermelon font-bold">X</button>
+                  <div className="flex gap-1"><button onClick={() => openEditTrigger(tr)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteTrigger(tr.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
             </div>
@@ -1626,7 +1666,7 @@ export default function SchemaPage() {
               {(graph.policies || []).map((p) => (
                 <div key={p.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
                   <span>{p.name} ({p.command}) ON {p.tableName}</span>
-                  <button onClick={() => deletePolicy(p.id)} className="text-watermelon font-bold">X</button>
+                  <div className="flex gap-1"><button onClick={() => openEditPolicy(p)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deletePolicy(p.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
             </div>
@@ -1650,7 +1690,7 @@ export default function SchemaPage() {
               {(graph.indexes || []).map((idx) => (
                 <div key={idx.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
                   <span>{idx.isUnique ? "UQ " : ""}{idx.name} ON {idx.tableName} ({idx.expression || idx.columns.join(",")}){idx.type && idx.type !== "BTREE" ? ` ${idx.type}` : ""}</span>
-                  <button onClick={() => deleteIndex(idx.id)} className="text-watermelon font-bold">X</button>
+                  <div className="flex gap-1"><button onClick={() => openEditIndex(idx)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteIndex(idx.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
             </div>
@@ -1662,7 +1702,7 @@ export default function SchemaPage() {
               {(graph.domainTypes || []).map((d) => (
                 <div key={d.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
                   <span>{d.name} AS {d.baseType}{d.checkExpr ? ` CHECK(${d.checkExpr})` : ""}</span>
-                  <button onClick={() => deleteDomain(d.id)} className="text-watermelon font-bold">X</button>
+                  <div className="flex gap-1"><button onClick={() => openEditDomain(d)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteDomain(d.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
             </div>
@@ -1674,7 +1714,7 @@ export default function SchemaPage() {
               {(graph.compositeTypes || []).map((ct) => (
                 <div key={ct.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
                   <span>{ct.name} ({ct.fields.map((f) => `${f.name} ${f.type}`).join(", ")})</span>
-                  <button onClick={() => deleteCompositeType(ct.id)} className="text-watermelon font-bold">X</button>
+                  <div className="flex gap-1"><button onClick={() => openEditCompositeType(ct)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteCompositeType(ct.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
             </div>
@@ -1686,7 +1726,7 @@ export default function SchemaPage() {
               {(graph.roles || []).map((r) => (
                 <div key={r.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
                   <span>{r.name} {r.login ? "LOGIN" : ""} {r.superuser ? "SUPER" : ""}{r.grants?.length ? ` (${r.grants.length} grants)` : ""}</span>
-                  <button onClick={() => deleteRole(r.id)} className="text-watermelon font-bold">X</button>
+                  <div className="flex gap-1"><button onClick={() => openEditRole(r)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteRole(r.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
             </div>
@@ -1784,11 +1824,11 @@ export default function SchemaPage() {
               </>
             )}
 
-            {/* ── Add Relation ── */}
-            {modal === "addRelation" && (
+            {/* ── Add/Edit Relation ── */}
+            {(modal === "addRelation" || modal === "editRelation") && (
               <>
-                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD RELATION</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addRelation(); }} className="flex flex-col gap-4">
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">{editRelId ? "EDIT" : "ADD"} RELATION</h2>
+                <form onSubmit={(e) => { e.preventDefault(); saveRelation(); }} className="flex flex-col gap-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">FROM</label>
@@ -1943,11 +1983,11 @@ export default function SchemaPage() {
               </>
             )}
 
-            {/* ── Add Enum ── */}
-            {modal === "addEnum" && (
+            {/* ── Add/Edit Enum ── */}
+            {(modal === "addEnum" || modal === "editEnum") && (
               <>
-                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD ENUM TYPE</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addEnum(); }} className="flex flex-col gap-4">
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">{editObjId ? "EDIT" : "ADD"} ENUM TYPE</h2>
+                <form onSubmit={(e) => { e.preventDefault(); saveEnum(); }} className="flex flex-col gap-4">
                   <div>
                     <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">ENUM NAME</label>
                     <input className="nb-input w-full" value={formEnumName} onChange={(e) => setFormEnumName(e.target.value)} placeholder="e.g. OrderStatus" autoFocus />
@@ -1965,10 +2005,10 @@ export default function SchemaPage() {
             )}
 
             {/* ── Generic Object Modals ── */}
-            {modal === "addView" && (
+            {(modal === "addView" || modal === "editView") && (
               <>
-                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD VIEW</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addView(); }} className="flex flex-col gap-4">
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">{editObjId ? "EDIT" : "ADD"} VIEW</h2>
+                <form onSubmit={(e) => { e.preventDefault(); saveView(); }} className="flex flex-col gap-4">
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">VIEW NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">SQL QUERY</label><textarea className="nb-input nb-textarea w-full font-mono text-[0.8rem]" rows={6} value={formObj.query || ""} onChange={(e) => setFormObj((p) => ({ ...p, query: e.target.value }))} placeholder="SELECT * FROM ..." /></div>
                   <label className="flex items-center gap-2 font-mono text-[0.8rem] uppercase cursor-pointer"><input type="checkbox" checked={formObj.materialized === "true"} onChange={(e) => setFormObj((p) => ({ ...p, materialized: e.target.checked ? "true" : "" }))} className="w-4 h-4" />MATERIALIZED</label>
@@ -1976,10 +2016,10 @@ export default function SchemaPage() {
                 </form>
               </>
             )}
-            {modal === "addSequence" && (
+            {(modal === "addSequence" || modal === "editSequence") && (
               <>
-                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD SEQUENCE</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addSequence(); }} className="flex flex-col gap-4">
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">{editObjId ? "EDIT" : "ADD"} SEQUENCE</h2>
+                <form onSubmit={(e) => { e.preventDefault(); saveSequence(); }} className="flex flex-col gap-4">
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">SEQUENCE NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
                   <div className="grid grid-cols-3 gap-3">
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">START</label><input className="nb-input w-full" type="number" value={formObj.start || ""} onChange={(e) => setFormObj((p) => ({ ...p, start: e.target.value }))} /></div>
@@ -1991,10 +2031,10 @@ export default function SchemaPage() {
                 </form>
               </>
             )}
-            {modal === "addFunction" && (
+            {(modal === "addFunction" || modal === "editFunction") && (
               <>
-                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD FUNCTION</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addFunction(); }} className="flex flex-col gap-4">
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">{editObjId ? "EDIT" : "ADD"} FUNCTION</h2>
+                <form onSubmit={(e) => { e.preventDefault(); saveFunction(); }} className="flex flex-col gap-4">
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">FUNCTION NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
                   <div className="grid grid-cols-2 gap-3">
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">PARAMETERS</label><input className="nb-input w-full" value={formObj.params || ""} onChange={(e) => setFormObj((p) => ({ ...p, params: e.target.value }))} placeholder="p_id INT, p_name TEXT" /></div>
@@ -2010,10 +2050,10 @@ export default function SchemaPage() {
                 </form>
               </>
             )}
-            {modal === "addTrigger" && (
+            {(modal === "addTrigger" || modal === "editTrigger") && (
               <>
-                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD TRIGGER</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addTrigger(); }} className="flex flex-col gap-4">
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">{editObjId ? "EDIT" : "ADD"} TRIGGER</h2>
+                <form onSubmit={(e) => { e.preventDefault(); saveTrigger(); }} className="flex flex-col gap-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">TRIGGER NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">TABLE</label><select className="nb-input w-full" value={formObj.tableName || ""} onChange={(e) => setFormObj((p) => ({ ...p, tableName: e.target.value }))}><option value="">Select...</option>{graph.entities.map((en) => <option key={en.id} value={en.name.toLowerCase()}>{en.name}</option>)}</select></div>
@@ -2029,10 +2069,10 @@ export default function SchemaPage() {
                 </form>
               </>
             )}
-            {modal === "addPolicy" && (
+            {(modal === "addPolicy" || modal === "editPolicy") && (
               <>
-                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD RLS POLICY</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addPolicy(); }} className="flex flex-col gap-4">
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">{editObjId ? "EDIT" : "ADD"} RLS POLICY</h2>
+                <form onSubmit={(e) => { e.preventDefault(); savePolicy(); }} className="flex flex-col gap-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">POLICY NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">TABLE</label><select className="nb-input w-full" value={formObj.tableName || ""} onChange={(e) => setFormObj((p) => ({ ...p, tableName: e.target.value }))}><option value="">Select...</option>{graph.entities.map((en) => <option key={en.id} value={en.name.toLowerCase()}>{en.name}</option>)}</select></div>
@@ -2047,10 +2087,10 @@ export default function SchemaPage() {
                 </form>
               </>
             )}
-            {modal === "addExtension" && (
+            {(modal === "addExtension") && (
               <>
                 <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD EXTENSION</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addExtension(); }} className="flex flex-col gap-4">
+                <form onSubmit={(e) => { e.preventDefault(); saveExtension(); }} className="flex flex-col gap-4">
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">EXTENSION NAME</label><select className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))}><option value="">Select...</option>
                     {["uuid-ossp", "pgcrypto", "postgis", "citext", "pg_trgm", "pgvector", "hstore", "ltree", "btree_gist", "btree_gin", "tablefunc", "pg_stat_statements", "timescaledb", "postgis_topology"].map((ext) => <option key={ext} value={ext}>{ext}</option>)}
                   </select></div>
@@ -2058,10 +2098,10 @@ export default function SchemaPage() {
                 </form>
               </>
             )}
-            {modal === "addIndex" && (
+            {(modal === "addIndex" || modal === "editIndex") && (
               <>
-                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD INDEX</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addAdvancedIndex(); }} className="flex flex-col gap-4">
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">{editObjId ? "EDIT" : "ADD"} INDEX</h2>
+                <form onSubmit={(e) => { e.preventDefault(); saveAdvancedIndex(); }} className="flex flex-col gap-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">INDEX NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">TABLE</label><select className="nb-input w-full" value={formObj.tableName || ""} onChange={(e) => setFormObj((p) => ({ ...p, tableName: e.target.value }))}><option value="">Select...</option>{graph.entities.map((en) => <option key={en.id} value={en.name.toLowerCase()}>{en.name}</option>)}</select></div>
@@ -2080,10 +2120,10 @@ export default function SchemaPage() {
                 </form>
               </>
             )}
-            {modal === "addDomain" && (
+            {(modal === "addDomain" || modal === "editDomain") && (
               <>
-                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD DOMAIN TYPE</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addDomain(); }} className="flex flex-col gap-4">
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">{editObjId ? "EDIT" : "ADD"} DOMAIN TYPE</h2>
+                <form onSubmit={(e) => { e.preventDefault(); saveDomain(); }} className="flex flex-col gap-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">DOMAIN NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus placeholder="e.g. email_address" /></div>
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">BASE TYPE</label><input className="nb-input w-full" value={formObj.baseType || ""} onChange={(e) => setFormObj((p) => ({ ...p, baseType: e.target.value }))} placeholder="TEXT, INTEGER, etc." /></div>
@@ -2097,10 +2137,10 @@ export default function SchemaPage() {
             )}
 
             {/* ── Composite Type ── */}
-            {modal === "addCompositeType" && (
+            {(modal === "addCompositeType" || modal === "editCompositeType") && (
               <>
-                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD COMPOSITE TYPE</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addCompositeType(); }} className="flex flex-col gap-4">
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">{editObjId ? "EDIT" : "ADD"} COMPOSITE TYPE</h2>
+                <form onSubmit={(e) => { e.preventDefault(); saveCompositeType(); }} className="flex flex-col gap-4">
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">TYPE NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus placeholder="e.g. address" /></div>
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">FIELDS (name type, comma-separated)</label><input className="nb-input w-full" value={formObj.fields || ""} onChange={(e) => setFormObj((p) => ({ ...p, fields: e.target.value }))} placeholder="street TEXT, city TEXT, zip VARCHAR(10)" /></div>
                   <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
@@ -2108,10 +2148,10 @@ export default function SchemaPage() {
               </>
             )}
             {/* ── Role ── */}
-            {modal === "addRole" && (
+            {(modal === "addRole" || modal === "editRole") && (
               <>
-                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD ROLE</h2>
-                <form onSubmit={(e) => { e.preventDefault(); addRole(); }} className="flex flex-col gap-4">
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">{editObjId ? "EDIT" : "ADD"} ROLE</h2>
+                <form onSubmit={(e) => { e.preventDefault(); saveRole(); }} className="flex flex-col gap-4">
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">ROLE NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus placeholder="e.g. app_user" /></div>
                   <div className="flex flex-wrap gap-4">
                     {[
