@@ -105,9 +105,68 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [x] Relation form: add onDelete dropdown, FK field name input, helper text
 - [x] Expanded type dropdown: 19 types including bigint, decimal, uuid, bytes, smallint, serial, bigserial, date, time, timestamptz
 
+## Phase 5c — Whiteboard Canvas + Comprehensive PostgreSQL Features (2026-03-18)
+
+### Canvas Layout ✅
+- [x] Replace CSS grid with absolute-positioned cards on a canvas
+- [x] Drag-and-drop entity cards to reposition (positions persisted)
+- [x] Canvas auto-sizes based on entity positions
+- [x] Relation SVG overlays canvas, relation list below
+
+### PostgreSQL Schema Namespaces ✅
+- [x] Add `schema` field to SchemaEntity (default: "public")
+- [x] SQL export: CREATE SCHEMA + schema-qualified table names
+- [x] Prisma export: @@schema() attribute
+
+### Custom Types ✅
+- [x] ENUM types: CREATE TYPE modal, define name + values list
+- [x] Store enums in SchemaGraph as `enumTypes: { id, name, values[], schema? }[]`
+- [x] Field type dropdown includes user-defined enums (shown below built-in types)
+- [x] SQL export: CREATE TYPE ... AS ENUM before tables
+- [x] Prisma export: enum blocks before models
+- [x] Enum list UI below canvas with delete buttons
+- [ ] Domain types (CREATE DOMAIN — name, base type, constraints) — deferred
+
+### Column Features ✅
+- [x] CHECK constraints: optional expression string per field (SQL: CHECK(...))
+- [x] GENERATED columns: expression + STORED (isGenerated + generatedExpr fields)
+- [x] IDENTITY columns: GENERATED ALWAYS/BY DEFAULT AS IDENTITY (isIdentity + identityType)
+- [x] COLLATION per column (collation field, rendered as COLLATE in SQL)
+- [x] Array element type: arrayElementType field (e.g. TEXT[], INTEGER[])
+- [x] Column COMMENT (COMMENT ON COLUMN in SQL, /// comment in Prisma)
+
+### Constraint Features ✅
+- [x] Composite primary keys on entity (compositePK field — @@id in Prisma, CONSTRAINT PK in SQL)
+- [x] Composite unique constraints on entity (compositeUniques field — @@unique in Prisma, CONSTRAINT UQ in SQL)
+- [x] ON UPDATE action on FK relations (CASCADE, SET NULL, RESTRICT, NO ACTION, SET DEFAULT)
+- [ ] DEFERRABLE / INITIALLY DEFERRED toggle per constraint — deferred
+- [ ] Exclusion constraints (EXCLUDE USING) — deferred
+
+### Index Features (data model ready, UI deferred)
+- [x] Index type selector on field: BTREE, GIN, GiST, BRIN, HASH (indexType field)
+- [x] SQL export uses USING clause for non-BTREE index types
+- [ ] Partial indexes: optional WHERE clause expression — deferred
+- [ ] Expression indexes — deferred
+- [ ] Covering indexes: INCLUDE columns — deferred
+- [ ] Multi-column indexes — deferred
+
+### Table-Level Features ✅
+- [x] COMMENT ON TABLE (entity.comment — SQL + Prisma export)
+- [x] UNLOGGED toggle (entity.isUnlogged — SQL export)
+- [ ] Table INHERITS — deferred
+- [ ] Partitioning — deferred
+
+### Views, Sequences, Functions, Triggers, Permissions — deferred to Phase 7
+- [ ] CREATE VIEW / MATERIALIZED VIEW
+- [ ] CREATE SEQUENCE
+- [ ] CREATE FUNCTION / CREATE TRIGGER
+- [ ] Row Level Security / POLICY
+- [ ] CREATE EXTENSION
+- [ ] GRANT / REVOKE
+
 ## Phase 6 — Schema Testing
 
-- [ ] User story validation: add entity, add fields, create relationship, verify FK auto-created, delete entity
-- [ ] Export: Prisma output includes @relation, SQL output includes FOREIGN KEY + INDEX
+- [ ] User story validation: add entity, drag to reposition, add fields, create relationship, verify FK auto-created, delete entity
+- [ ] Export: Prisma output includes @relation + enums, SQL output includes FOREIGN KEY + INDEX + ENUM + SCHEMA
 - [ ] GitHub import: import from a known public repo, verify entities created
 - [ ] Compare against pass-1 schema validation PNGs

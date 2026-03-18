@@ -20,6 +20,15 @@ interface SchemaField {
   defaultValue?: string;
   autoIncrement?: boolean;
   indexed?: boolean;
+  checkExpr?: string;
+  comment?: string;
+  isGenerated?: boolean;
+  generatedExpr?: string;
+  isIdentity?: boolean;
+  identityType?: "ALWAYS" | "BY DEFAULT";
+  collation?: string;
+  arrayElementType?: string;
+  indexType?: "BTREE" | "GIN" | "GIST" | "BRIN" | "HASH";
 }
 
 interface SchemaEntity {
@@ -28,6 +37,18 @@ interface SchemaEntity {
   fields: SchemaField[];
   x: number;
   y: number;
+  schema?: string;
+  comment?: string;
+  isUnlogged?: boolean;
+  compositePK?: string[];
+  compositeUniques?: string[][];
+}
+
+interface EnumType {
+  id: string;
+  name: string;
+  values: string[];
+  schema?: string;
 }
 
 type OnDeleteAction = "CASCADE" | "SET NULL" | "RESTRICT" | "NO ACTION" | "SET DEFAULT";
@@ -39,15 +60,17 @@ interface SchemaRelation {
   type: "1:1" | "1:N" | "N:N";
   fkFieldName?: string;
   onDelete?: OnDeleteAction;
+  onUpdate?: OnDeleteAction;
 }
 
 interface SchemaGraph {
   entities: SchemaEntity[];
   relations: SchemaRelation[];
+  enumTypes?: EnumType[];
   source?: { type: "manual" | "github" | "local"; githubRepo?: string; importedAt?: string };
 }
 
-type ModalMode = null | "addEntity" | "editEntity" | "addField" | "editField" | "addRelation" | "import" | "export";
+type ModalMode = null | "addEntity" | "editEntity" | "addField" | "editField" | "addRelation" | "import" | "export" | "addEnum";
 type ImportTab = "github" | "local";
 
 const FIELD_TYPES = ["string", "int", "bigint", "smallint", "serial", "bigserial", "float", "decimal", "boolean", "datetime", "date", "time", "timestamptz", "text", "uuid", "enum", "array", "json", "bytes"];
@@ -203,20 +226,40 @@ function parseFile(fileName: string, content: string): SchemaEntity[] {
 
 function exportPrisma(graph: SchemaGraph): string {
   const lines: string[] = [];
+
+  // Enum types
+  if (graph.enumTypes && graph.enumTypes.length > 0) {
+    for (const en of graph.enumTypes) {
+      lines.push(`enum ${en.name} {`);
+      for (const v of en.values) lines.push(`  ${v}`);
+      lines.push("}");
+      lines.push("");
+    }
+  }
+
   for (const entity of graph.entities) {
     lines.push(`model ${entity.name} {`);
     for (const f of entity.fields) {
-      const typeMap: Record<string, string> = { string: "String", int: "Int", bigint: "BigInt", smallint: "Int", serial: "Int", bigserial: "BigInt", float: "Float", decimal: "Decimal", boolean: "Boolean", datetime: "DateTime", date: "DateTime", time: "DateTime", timestamptz: "DateTime", text: "String", uuid: "String", json: "Json", bytes: "Bytes", array: "String[]", enum: "String" };
-      const pType = typeMap[f.type] || "String";
+      // Check if type is a user-defined enum
+      const enumType = graph.enumTypes?.find((en) => en.name.toLowerCase() === f.type.toLowerCase());
+      let pType: string;
+      if (enumType) {
+        pType = enumType.name;
+      } else {
+        const typeMap: Record<string, string> = { string: "String", int: "Int", bigint: "BigInt", smallint: "Int", serial: "Int", bigserial: "BigInt", float: "Float", decimal: "Decimal", boolean: "Boolean", datetime: "DateTime", date: "DateTime", time: "DateTime", timestamptz: "DateTime", text: "String", uuid: "String", json: "Json", bytes: "Bytes", array: "String[]", enum: "String" };
+        pType = typeMap[f.type] || "String";
+      }
       const mods: string[] = [];
       if (f.isPK && f.autoIncrement) mods.push("@id @default(autoincrement())");
       else if (f.isPK && f.type === "uuid") mods.push("@id @default(uuid())");
       else if (f.isPK) mods.push("@id @default(cuid())");
       if (f.unique && !f.isPK) mods.push("@unique");
-      if (f.defaultValue) mods.push(`@default(${f.defaultValue})`);
+      if (f.defaultValue && !f.isGenerated) mods.push(`@default(${f.defaultValue})`);
       if (f.autoIncrement && !f.isPK) mods.push("@default(autoincrement())");
+      if (f.isGenerated) continue; // Prisma doesn't support generated columns directly
       const optional = !f.required && !f.isPK ? "?" : "";
-      lines.push(`  ${f.name}  ${pType}${optional}${mods.length ? "  " + mods.join(" ") : ""}`);
+      const commentStr = f.comment ? ` /// ${f.comment}` : "";
+      lines.push(`  ${f.name}  ${pType}${optional}${mods.length ? "  " + mods.join(" ") : ""}${commentStr}`);
     }
     // Add relation fields from graph.relations
     const rels = graph.relations.filter((r) => r.fromEntityId === entity.id || r.toEntityId === entity.id);
@@ -244,7 +287,22 @@ function exportPrisma(graph: SchemaGraph): string {
         }
       }
     }
+    // Composite PK
+    if (entity.compositePK && entity.compositePK.length > 0) {
+      lines.push(`  @@id([${entity.compositePK.join(", ")}])`);
+    }
+    // Composite uniques
+    if (entity.compositeUniques) {
+      for (const cols of entity.compositeUniques) {
+        lines.push(`  @@unique([${cols.join(", ")}])`);
+      }
+    }
+    // Schema
+    if (entity.schema && entity.schema !== "public") {
+      lines.push(`  @@schema("${entity.schema}")`);
+    }
     lines.push("}");
+    if (entity.comment) lines.push(`/// ${entity.comment}`);
     lines.push("");
   }
   return lines.join("\n");
@@ -253,47 +311,105 @@ function exportPrisma(graph: SchemaGraph): string {
 function exportSql(graph: SchemaGraph): string {
   const lines: string[] = [];
   const indexLines: string[] = [];
+  const commentLines: string[] = [];
+
+  // Enum types
+  if (graph.enumTypes && graph.enumTypes.length > 0) {
+    lines.push("-- Enum Types");
+    for (const en of graph.enumTypes) {
+      const schema = en.schema && en.schema !== "public" ? `${en.schema}.` : "";
+      lines.push(`CREATE TYPE ${schema}${en.name.toLowerCase()} AS ENUM (${en.values.map((v) => `'${v}'`).join(", ")});`);
+    }
+    lines.push("");
+  }
+
+  // Schemas
+  const schemas = new Set(graph.entities.map((e) => e.schema).filter((s) => s && s !== "public"));
+  if (schemas.size > 0) {
+    lines.push("-- Schemas");
+    for (const s of schemas) lines.push(`CREATE SCHEMA IF NOT EXISTS ${s};`);
+    lines.push("");
+  }
 
   for (const entity of graph.entities) {
+    const schemaPrefix = entity.schema && entity.schema !== "public" ? `${entity.schema}.` : "";
     const tableName = entity.name.toLowerCase().replace(/\s+/g, "_");
-    lines.push(`CREATE TABLE ${tableName} (`);
+    const qualifiedName = `${schemaPrefix}${tableName}`;
+    const unlogged = entity.isUnlogged ? "UNLOGGED " : "";
+    lines.push(`CREATE ${unlogged}TABLE ${qualifiedName} (`);
     const colLines: string[] = [];
 
     for (const f of entity.fields) {
-      const typeMap: Record<string, string> = { string: "VARCHAR(255)", int: "INTEGER", bigint: "BIGINT", smallint: "SMALLINT", serial: "SERIAL", bigserial: "BIGSERIAL", float: "REAL", decimal: "DECIMAL(10,2)", boolean: "BOOLEAN", datetime: "TIMESTAMP", date: "DATE", time: "TIME", timestamptz: "TIMESTAMPTZ", text: "TEXT", uuid: "UUID", json: "JSONB", bytes: "BYTEA", array: "TEXT[]", enum: "VARCHAR(50)" };
-      const sType = typeMap[f.type] || "TEXT";
+      // Resolve type — check if it's a user-defined enum
+      const enumType = graph.enumTypes?.find((en) => en.name.toLowerCase() === f.type.toLowerCase());
+      let sType: string;
+      if (enumType) {
+        sType = enumType.name.toLowerCase();
+      } else if (f.isIdentity) {
+        sType = f.type === "bigint" ? "BIGINT" : "INTEGER";
+      } else if (f.type === "array" && f.arrayElementType) {
+        const baseMap: Record<string, string> = { string: "VARCHAR(255)", int: "INTEGER", text: "TEXT", boolean: "BOOLEAN", uuid: "UUID", json: "JSONB" };
+        sType = `${baseMap[f.arrayElementType] || f.arrayElementType.toUpperCase()}[]`;
+      } else {
+        const typeMap: Record<string, string> = { string: "VARCHAR(255)", int: "INTEGER", bigint: "BIGINT", smallint: "SMALLINT", serial: "SERIAL", bigserial: "BIGSERIAL", float: "REAL", decimal: "DECIMAL(10,2)", boolean: "BOOLEAN", datetime: "TIMESTAMP", date: "DATE", time: "TIME", timestamptz: "TIMESTAMPTZ", text: "TEXT", uuid: "UUID", json: "JSONB", bytes: "BYTEA", array: "TEXT[]", enum: "VARCHAR(50)" };
+        sType = typeMap[f.type] || "TEXT";
+      }
+
       const parts = [`  ${f.name} ${sType}`];
-      if (f.isPK) parts.push("PRIMARY KEY");
+      if (f.isIdentity) parts.push(`GENERATED ${f.identityType || "ALWAYS"} AS IDENTITY`);
+      if (f.isGenerated && f.generatedExpr) parts.push(`GENERATED ALWAYS AS (${f.generatedExpr}) STORED`);
+      if (f.collation) parts.push(`COLLATE "${f.collation}"`);
+      if (f.isPK && !entity.compositePK?.length) parts.push("PRIMARY KEY");
       if (f.unique && !f.isPK) parts.push("UNIQUE");
-      if (f.required && !f.isPK) parts.push("NOT NULL");
-      if (f.defaultValue) parts.push(`DEFAULT ${f.defaultValue}`);
+      if (f.required && !f.isPK && !f.isGenerated) parts.push("NOT NULL");
+      if (f.defaultValue && !f.isIdentity && !f.isGenerated) parts.push(`DEFAULT ${f.defaultValue}`);
+      if (f.checkExpr) parts.push(`CHECK (${f.checkExpr})`);
       colLines.push(parts.join(" "));
 
       // Track indexes
       if (f.indexed && !f.isPK && !f.unique) {
-        indexLines.push(`CREATE INDEX idx_${tableName}_${f.name} ON ${tableName} (${f.name});`);
+        const idxType = f.indexType && f.indexType !== "BTREE" ? ` USING ${f.indexType}` : "";
+        indexLines.push(`CREATE INDEX idx_${tableName}_${f.name} ON ${qualifiedName}${idxType} (${f.name});`);
       }
+
+      // Column comments
+      if (f.comment) commentLines.push(`COMMENT ON COLUMN ${qualifiedName}.${f.name} IS '${f.comment.replace(/'/g, "''")}';`);
     }
 
-    // Foreign key constraints from relations where this entity is the "to" side
+    // Composite primary key
+    if (entity.compositePK && entity.compositePK.length > 0) {
+      colLines.push(`  CONSTRAINT pk_${tableName} PRIMARY KEY (${entity.compositePK.join(", ")})`);
+    }
+
+    // Composite unique constraints
+    if (entity.compositeUniques) {
+      entity.compositeUniques.forEach((cols, i) => {
+        colLines.push(`  CONSTRAINT uq_${tableName}_${i} UNIQUE (${cols.join(", ")})`);
+      });
+    }
+
+    // Foreign key constraints from relations
     const fkRels = graph.relations.filter((r) => r.toEntityId === entity.id);
     for (const rel of fkRels) {
       const fromEntity = graph.entities.find((e) => e.id === rel.fromEntityId);
       if (!fromEntity) continue;
       const fkName = rel.fkFieldName || `${fromEntity.name.toLowerCase()}_id`;
-      const refTable = fromEntity.name.toLowerCase().replace(/\s+/g, "_");
+      const refSchema = fromEntity.schema && fromEntity.schema !== "public" ? `${fromEntity.schema}.` : "";
+      const refTable = `${refSchema}${fromEntity.name.toLowerCase().replace(/\s+/g, "_")}`;
       const onDel = rel.onDelete || "CASCADE";
-      // Add FK column if not already in fields
+      const onUpd = rel.onUpdate ? ` ON UPDATE ${rel.onUpdate}` : "";
       const hasFk = entity.fields.some((f) => f.name === fkName || f.name === fkName.replace(/_/g, ""));
       if (!hasFk) {
         colLines.push(`  ${fkName} VARCHAR(255) NOT NULL`);
       }
-      colLines.push(`  CONSTRAINT fk_${tableName}_${fkName} FOREIGN KEY (${fkName}) REFERENCES ${refTable}(id) ON DELETE ${onDel}`);
-      indexLines.push(`CREATE INDEX idx_${tableName}_${fkName} ON ${tableName} (${fkName});`);
+      colLines.push(`  CONSTRAINT fk_${tableName}_${fkName} FOREIGN KEY (${fkName}) REFERENCES ${refTable}(id) ON DELETE ${onDel}${onUpd}`);
+      indexLines.push(`CREATE INDEX idx_${tableName}_${fkName} ON ${qualifiedName} (${fkName});`);
     }
 
     lines.push(colLines.join(",\n"));
     lines.push(");");
+    // Table comment
+    if (entity.comment) commentLines.push(`COMMENT ON TABLE ${qualifiedName} IS '${entity.comment.replace(/'/g, "''")}';`);
     lines.push("");
   }
 
@@ -301,6 +417,13 @@ function exportSql(graph: SchemaGraph): string {
   if (indexLines.length > 0) {
     lines.push("-- Indexes");
     lines.push(...indexLines);
+    lines.push("");
+  }
+
+  // Append comments
+  if (commentLines.length > 0) {
+    lines.push("-- Comments");
+    lines.push(...commentLines);
     lines.push("");
   }
 
@@ -387,6 +510,10 @@ export default function SchemaPage() {
   // ── Export state ──
   const [exportFormat, setExportFormat] = useState<"prisma" | "sql" | "json">("prisma");
   const [exportContent, setExportContent] = useState("");
+
+  // ── Enum state ──
+  const [formEnumName, setFormEnumName] = useState("");
+  const [formEnumValues, setFormEnumValues] = useState("");
 
   // ── Hover state for entity actions ──
   const [hoverEntityId, setHoverEntityId] = useState<string | null>(null);
@@ -586,7 +713,29 @@ export default function SchemaPage() {
 
   // ── Relation form extras ──
   const [formRelOnDelete, setFormRelOnDelete] = useState<OnDeleteAction>("CASCADE");
+  const [formRelOnUpdate, setFormRelOnUpdate] = useState<OnDeleteAction>("NO ACTION");
   const [formRelFkName, setFormRelFkName] = useState("");
+
+  /* ── Enum CRUD ── */
+  const addEnum = () => {
+    if (!formEnumName.trim() || !formEnumValues.trim()) return;
+    const values = formEnumValues.split(",").map((v) => v.trim()).filter(Boolean);
+    if (values.length === 0) return;
+    updateGraph((g) => ({
+      ...g,
+      enumTypes: [...(g.enumTypes || []), { id: uid(), name: formEnumName.trim(), values }],
+    }));
+    setFormEnumName("");
+    setFormEnumValues("");
+    setModal(null);
+  };
+
+  const deleteEnum = (enumId: string) => {
+    updateGraph((g) => ({
+      ...g,
+      enumTypes: (g.enumTypes || []).filter((en) => en.id !== enumId),
+    }));
+  };
 
   /* ── Relation CRUD ── */
   const addRelation = () => {
@@ -599,7 +748,7 @@ export default function SchemaPage() {
       const fkFieldName = formRelFkName.trim() || `${fromEntity.name.toLowerCase()}Id`;
       const newRelation: SchemaRelation = {
         id: uid(), fromEntityId: formRelFrom, toEntityId: formRelTo,
-        type: formRelType, fkFieldName, onDelete: formRelOnDelete,
+        type: formRelType, fkFieldName, onDelete: formRelOnDelete, onUpdate: formRelOnUpdate,
       };
 
       // Auto-create FK field on the "to" entity if it doesn't exist
@@ -789,10 +938,11 @@ export default function SchemaPage() {
             <button className="nb-btn" onClick={() => openExport("sql")}>SQL</button>
             <button className="nb-btn" onClick={() => openExport("json")}>JSON</button>
           </div>
-          <button className="nb-btn nb-btn--primary" onClick={() => { setFormEntityName(""); setModal("addEntity"); }}>+ ADD ENTITY</button>
+          <button className="nb-btn nb-btn--primary" onClick={() => { setFormEntityName(""); setModal("addEntity"); }}>+ TABLE</button>
           {graph.entities.length >= 2 && (
-            <button className="nb-btn" onClick={() => { setFormRelFrom(graph.entities[0]?.id || ""); setFormRelTo(graph.entities[1]?.id || ""); setFormRelType("1:N"); setModal("addRelation"); }}>+ ADD RELATION</button>
+            <button className="nb-btn" onClick={() => { setFormRelFrom(graph.entities[0]?.id || ""); setFormRelTo(graph.entities[1]?.id || ""); setFormRelType("1:N"); setFormRelOnDelete("CASCADE"); setFormRelOnUpdate("NO ACTION"); setModal("addRelation"); }}>+ RELATION</button>
           )}
+          <button className="nb-btn" onClick={() => { setFormEnumName(""); setFormEnumValues(""); setModal("addEnum"); }}>+ ENUM</button>
         </div>
       </div>
 
@@ -952,6 +1102,22 @@ export default function SchemaPage() {
           </div>
         )}
 
+      {/* Enum types list */}
+      {(graph.enumTypes || []).length > 0 && (
+        <div className="mt-4 mb-4">
+          <h3 className="font-bold text-[0.8rem] uppercase tracking-wider mb-2">ENUM TYPES</h3>
+          <div className="flex flex-wrap gap-2">
+            {(graph.enumTypes || []).map((en) => (
+              <div key={en.id} className="inline-flex items-center gap-2 px-3 py-1.5 border-2 border-signal-black bg-white font-mono text-[0.75rem] uppercase">
+                <span className="font-bold text-amethyst">{en.name}</span>
+                <span className="text-[0.6rem] text-[#999]">({en.values.join(", ")})</span>
+                <button onClick={() => deleteEnum(en.id)} className="ml-1 text-watermelon font-bold cursor-pointer hover:opacity-70">X</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ══════════════════════════════════════════════════
           MODALS
           ══════════════════════════════════════════════════ */}
@@ -1011,6 +1177,8 @@ export default function SchemaPage() {
                     <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">TYPE</label>
                     <select className="nb-input w-full" value={formFieldType} onChange={(e) => setFormFieldType(e.target.value)}>
                       {FIELD_TYPES.map((t) => <option key={t} value={t}>{t.toUpperCase()}</option>)}
+                      {(graph.enumTypes || []).length > 0 && <option disabled>── ENUMS ──</option>}
+                      {(graph.enumTypes || []).map((en) => <option key={en.id} value={en.name.toLowerCase()}>{en.name} (ENUM)</option>)}
                     </select>
                   </div>
                   <div className="flex flex-wrap gap-4">
@@ -1067,15 +1235,27 @@ export default function SchemaPage() {
                       <option value="N:N">N:N (Many to Many)</option>
                     </select>
                   </div>
-                  <div>
-                    <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">ON DELETE</label>
-                    <select className="nb-input w-full" value={formRelOnDelete} onChange={(e) => setFormRelOnDelete(e.target.value as OnDeleteAction)}>
-                      <option value="CASCADE">CASCADE</option>
-                      <option value="SET NULL">SET NULL</option>
-                      <option value="RESTRICT">RESTRICT</option>
-                      <option value="NO ACTION">NO ACTION</option>
-                      <option value="SET DEFAULT">SET DEFAULT</option>
-                    </select>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">ON DELETE</label>
+                      <select className="nb-input w-full" value={formRelOnDelete} onChange={(e) => setFormRelOnDelete(e.target.value as OnDeleteAction)}>
+                        <option value="CASCADE">CASCADE</option>
+                        <option value="SET NULL">SET NULL</option>
+                        <option value="RESTRICT">RESTRICT</option>
+                        <option value="NO ACTION">NO ACTION</option>
+                        <option value="SET DEFAULT">SET DEFAULT</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">ON UPDATE</label>
+                      <select className="nb-input w-full" value={formRelOnUpdate} onChange={(e) => setFormRelOnUpdate(e.target.value as OnDeleteAction)}>
+                        <option value="NO ACTION">NO ACTION</option>
+                        <option value="CASCADE">CASCADE</option>
+                        <option value="SET NULL">SET NULL</option>
+                        <option value="RESTRICT">RESTRICT</option>
+                        <option value="SET DEFAULT">SET DEFAULT</option>
+                      </select>
+                    </div>
                   </div>
                   <div>
                     <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">FK FIELD NAME (auto-generated if blank)</label>
@@ -1184,6 +1364,27 @@ export default function SchemaPage() {
                 <div className="flex gap-3 mt-6">
                   <button className="nb-btn" onClick={() => setModal(null)}>CLOSE</button>
                 </div>
+              </>
+            )}
+
+            {/* ── Add Enum ── */}
+            {modal === "addEnum" && (
+              <>
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD ENUM TYPE</h2>
+                <form onSubmit={(e) => { e.preventDefault(); addEnum(); }} className="flex flex-col gap-4">
+                  <div>
+                    <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">ENUM NAME</label>
+                    <input className="nb-input w-full" value={formEnumName} onChange={(e) => setFormEnumName(e.target.value)} placeholder="e.g. OrderStatus" autoFocus />
+                  </div>
+                  <div>
+                    <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">VALUES (comma-separated)</label>
+                    <input className="nb-input w-full" value={formEnumValues} onChange={(e) => setFormEnumValues(e.target.value)} placeholder="e.g. PENDING, ACTIVE, COMPLETED, CANCELLED" />
+                  </div>
+                  <div className="flex gap-3">
+                    <button type="submit" className="nb-btn nb-btn--primary">CREATE</button>
+                    <button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button>
+                  </div>
+                </form>
               </>
             )}
 
