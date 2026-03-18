@@ -392,6 +392,11 @@ export default function SchemaPage() {
   const [hoverEntityId, setHoverEntityId] = useState<string | null>(null);
   const [hoverFieldKey, setHoverFieldKey] = useState<string | null>(null);
 
+  // ── Drag state ──
+  const [draggingEntityId, setDraggingEntityId] = useState<string | null>(null);
+  const dragOffsetRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const canvasRef = useRef<HTMLDivElement>(null);
+
   /* ── Load schema from artifact API ── */
   useEffect(() => {
     fetch(`/api/projects/${projectId}/artifacts/schema/schema.graph.json`)
@@ -720,6 +725,45 @@ export default function SchemaPage() {
     a.click(); URL.revokeObjectURL(url);
   };
 
+  /* ── Drag handlers ── */
+  const handleEntityMouseDown = (e: React.MouseEvent, entityId: string) => {
+    // Only drag from the header area
+    const target = e.target as HTMLElement;
+    if (target.tagName === "BUTTON" || target.tagName === "INPUT" || target.tagName === "SELECT" || target.closest("button") || target.closest("input")) return;
+    e.preventDefault();
+    const entity = graph.entities.find((en) => en.id === entityId);
+    if (!entity || !canvasRef.current) return;
+    const canvasRect = canvasRef.current.getBoundingClientRect();
+    dragOffsetRef.current = { x: e.clientX - canvasRect.left - entity.x, y: e.clientY - canvasRect.top - entity.y };
+    setDraggingEntityId(entityId);
+  };
+
+  useEffect(() => {
+    if (!draggingEntityId) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!canvasRef.current) return;
+      const canvasRect = canvasRef.current.getBoundingClientRect();
+      const newX = Math.max(0, e.clientX - canvasRect.left - dragOffsetRef.current.x);
+      const newY = Math.max(0, e.clientY - canvasRect.top - dragOffsetRef.current.y);
+      setGraph((prev) => ({
+        ...prev,
+        entities: prev.entities.map((en) => en.id === draggingEntityId ? { ...en, x: newX, y: newY } : en),
+      }));
+    };
+    const handleMouseUp = () => {
+      setDraggingEntityId(null);
+      // Save position after drag
+      saveGraph(graph);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => { window.removeEventListener("mousemove", handleMouseMove); window.removeEventListener("mouseup", handleMouseUp); };
+  }, [draggingEntityId, graph, saveGraph]);
+
+  // Calculate canvas size from entity positions
+  const canvasWidth = Math.max(900, ...graph.entities.map((e) => e.x + 320));
+  const canvasHeight = Math.max(600, ...graph.entities.map((e) => e.y + 300));
+
   /* ── Render ── */
   if (loading) {
     return (
@@ -764,19 +808,33 @@ export default function SchemaPage() {
         </div>
       )}
 
-      {/* Entity cards grid */}
-      <div className="relative">
-        <div
-          className="grid gap-6 mb-6"
-          style={{ gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))" }}
-        >
-          {graph.entities.map((entity) => (
+      {/* Entity cards canvas (whiteboard-style) */}
+      <div
+        ref={canvasRef}
+        className="relative border-2 border-dashed border-signal-black/20 bg-[#faf8f4] overflow-auto"
+        style={{ minHeight: `${canvasHeight}px`, minWidth: "100%" }}
+      >
+        {graph.entities.map((entity) => {
+          const isDragging = draggingEntityId === entity.id;
+          return (
             <div
               key={entity.id}
               ref={(el) => { cardRefs.current[entity.id] = el; }}
-              className="border-4 border-signal-black shadow-nb bg-white overflow-hidden transition-transform duration-150 hover:-translate-x-[2px] hover:-translate-y-[2px]"
+              onMouseDown={(e) => handleEntityMouseDown(e, entity.id)}
               onMouseEnter={() => setHoverEntityId(entity.id)}
               onMouseLeave={() => { setHoverEntityId(null); setHoverFieldKey(null); }}
+              className="border-4 border-signal-black shadow-nb bg-white overflow-hidden"
+              style={{
+                position: "absolute",
+                left: `${entity.x}px`,
+                top: `${entity.y}px`,
+                width: "280px",
+                zIndex: isDragging ? 50 : 1,
+                cursor: isDragging ? "grabbing" : "grab",
+                boxShadow: isDragging ? "8px 8px 0px #282828" : "4px 4px 0px #282828",
+                transition: isDragging ? "none" : "box-shadow 150ms",
+                userSelect: "none",
+              }}
             >
               {/* Entity header */}
               <div className="bg-signal-black text-creamy-milk px-4 py-3 font-bold text-base uppercase tracking-[0.1em] flex items-center justify-between">
@@ -859,13 +917,19 @@ export default function SchemaPage() {
                 </button>
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
 
-        {/* Relations list */}
+        {/* Rough.js relation SVG — overlays cards */}
         {graph.relations.length > 0 && (
-          <div className="mb-4">
-            <h3 className="font-bold text-[0.8rem] uppercase tracking-wider mb-2">RELATIONS</h3>
+          <svg ref={svgRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 10 }} data-testid="schema-relations-svg" />
+        )}
+      </div>
+
+      {/* Relations list (below canvas) */}
+      {graph.relations.length > 0 && (
+        <div className="mt-4 mb-4">
+          <h3 className="font-bold text-[0.8rem] uppercase tracking-wider mb-2">RELATIONS</h3>
             <div className="flex flex-wrap gap-2">
               {graph.relations.map((rel) => {
                 const from = graph.entities.find((e) => e.id === rel.fromEntityId);
@@ -887,12 +951,6 @@ export default function SchemaPage() {
             </div>
           </div>
         )}
-
-        {/* Rough.js relation SVG — overlays cards */}
-        {graph.relations.length > 0 && (
-          <svg ref={svgRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 10 }} data-testid="schema-relations-svg" />
-        )}
-      </div>
 
       {/* ══════════════════════════════════════════════════
           MODALS
