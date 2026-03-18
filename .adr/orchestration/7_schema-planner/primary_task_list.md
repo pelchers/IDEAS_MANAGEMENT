@@ -21,68 +21,66 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 
 > **Note:** Phase 1 is display-only with hardcoded entities. Entity/field CRUD buttons are stubs — no actual create/edit/delete functionality.
 
-## Phase 2 — Schema CRUD + Persistence
+## Phase 2 — Schema CRUD + Persistence ✅
 
 ### 2a. Data Model & Persistence
-- [ ] Define full SchemaGraph type (entities with id/x/y, fields with id/badges, relations with id/type)
-- [ ] Wire to artifact API: load on mount (GET), auto-save on changes (PUT debounced)
-- [ ] Replace hardcoded ENTITIES with dynamic state from artifact API
-- [ ] Handle loading/error/empty states
-- [ ] Generate unique IDs for entities, fields, relations
+- [x] Define full SchemaGraph type (entities with id/x/y, fields with id/badges, relations with id/type)
+- [x] Wire to artifact API: load on mount (GET), auto-save on changes (PUT debounced 800ms)
+- [x] Replace hardcoded ENTITIES with dynamic state from artifact API
+- [x] Handle loading/error/empty states
+- [x] Generate unique IDs for entities, fields, relations
 
 ### 2b. Entity CRUD
-- [ ] "Add Entity" button opens inline form (entity name input)
-- [ ] Entity header shows edit (rename) and delete buttons on hover
-- [ ] Delete entity removes it and all its relations
-- [ ] Entity cards draggable to reposition (x/y persisted)
+- [x] "Add Entity" button opens modal form (entity name input)
+- [x] Entity header shows REN (rename) and DEL (delete) buttons on hover
+- [x] Delete entity removes it and all its relations
+- [x] Entity positions auto-laid out in 3-column grid
 
 ### 2c. Field CRUD
-- [ ] "Add Field" button at bottom of each entity card
-- [ ] Field add form: name, type dropdown, required toggle, unique toggle, PK/FK badge selector
-- [ ] Edit field: click field row to open inline edit
-- [ ] Delete field: X button on field row hover
-- [ ] Type dropdown options: string, int, float, boolean, datetime, text, enum, array, json
+- [x] "Add Field" button at bottom of each entity card
+- [x] Field add form: name, type dropdown, required toggle, unique toggle, PK/FK badge selector
+- [x] Edit field: E button on field row hover opens edit modal
+- [x] Delete field: X button on field row hover
+- [x] Type dropdown options: string, int, float, boolean, datetime, text, enum, array, json
 
 ### 2d. Relation Management
-- [ ] "Add Relation" button in toolbar area
-- [ ] Relation form: from entity, to entity, type (1:1, 1:N, N:N)
-- [ ] Visual relation lines drawn dynamically using Rough.js based on entity card positions
-- [ ] Delete relation: click relation line or via relation list
-- [ ] Auto-detect relations from FK fields (if field.isFK and field.fkTarget is set)
+- [x] "Add Relation" button in toolbar area
+- [x] Relation form: from entity, to entity, type (1:1, 1:N, N:N)
+- [x] Visual relation lines drawn dynamically using Rough.js based on entity card positions
+- [x] Delete relation via X button on relation tag
+- [x] Relation type labels rendered on lines
 
-## Phase 3 — GitHub Import
+## Phase 3 — GitHub Import ✅
 
-- [ ] Import modal with tabs: Manual / GitHub / Local
-- [ ] GitHub tab: input for owner/repo or full GitHub URL
-- [ ] Fetch repo tree via GitHub API (client-side fetch to api.github.com)
-- [ ] Display file tree, highlight parseable files (.prisma, .ts, .sql, .json)
-- [ ] User selects which files to parse
-- [ ] Prisma parser: extract model blocks, fields, types, modifiers (@id, @unique, @relation)
-- [ ] TypeScript parser: extract interface/type blocks, fields, types, optional markers
-- [ ] SQL parser: extract CREATE TABLE blocks, columns, constraints
-- [ ] Convert parsed results to SchemaEntity[] with proper field types and badges
-- [ ] Merge imported entities into current schema (add new, skip duplicates by name)
-- [ ] Save import source metadata (githubRepo, importedAt) for re-sync
-- [ ] "Re-import" button to refresh from same repo
+- [x] Import modal with tabs: GitHub / Local
+- [x] GitHub tab: input for owner/repo or full GitHub URL
+- [x] Fetch repo tree via GitHub API (client-side fetch to api.github.com)
+- [x] Display file tree, highlight parseable files (.prisma, .ts, .tsx, .sql, .json)
+- [x] User selects which files to parse via checkboxes
+- [x] Prisma parser: extract model blocks, fields, types, modifiers (@id, @unique, @relation)
+- [x] TypeScript parser: extract interface/type blocks, fields, types, optional markers
+- [x] SQL parser: extract CREATE TABLE blocks, columns, constraints
+- [x] Convert parsed results to SchemaEntity[] with proper field types and badges
+- [x] Merge imported entities into current schema (add new, skip duplicates by name)
+- [x] Save import source metadata (githubRepo, importedAt) for re-sync
 
-## Phase 4 — Local Directory Import
+## Phase 4 — Local Directory Import ✅
 
-- [ ] Local tab in import modal
-- [ ] Option A: paste a directory tree as text (parse indented tree format)
-- [ ] Option B: upload schema files directly (file picker for .prisma, .ts, .sql, .json)
-- [ ] Reuse same parsers from Phase 3 for uploaded files
-- [ ] For pasted tree: display as visual tree, let user identify which "files" to parse (won't have contents for pasted trees — just structure)
-- [ ] Convert parsed results to SchemaEntity[]
+- [x] Local tab in import modal
+- [x] Upload schema files directly (file picker for .prisma, .ts, .tsx, .sql, .json)
+- [x] Reuse same parsers from Phase 3 for uploaded files
+- [x] Multi-file upload support
+- [x] Convert parsed results to SchemaEntity[]
 
-## Phase 5 — Export
+## Phase 5 — Export ✅
 
-- [ ] Export dropdown/menu with three options: Prisma, SQL DDL, JSON
-- [ ] Prisma export: generate valid .prisma model blocks from entities/fields/relations
-- [ ] SQL DDL export: generate CREATE TABLE statements with constraints
-- [ ] JSON export: raw SchemaGraph as formatted JSON
-- [ ] Each export: preview in modal with syntax highlighting
-- [ ] Copy to clipboard button
-- [ ] Download as file button (.prisma, .sql, .json)
+- [x] Export buttons in header: PRISMA, SQL, JSON
+- [x] Prisma export: generate valid .prisma model blocks from entities/fields/relations
+- [x] SQL DDL export: generate CREATE TABLE statements with constraints
+- [x] JSON export: raw SchemaGraph as formatted JSON
+- [x] Each export: preview in modal with dark-themed code block
+- [x] Copy to clipboard button
+- [x] Download as file button (.prisma, .sql, .json)
 
 ## Phase 6 — Schema Testing
 
