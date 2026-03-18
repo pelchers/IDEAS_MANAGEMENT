@@ -12,6 +12,9 @@ interface SchemaField {
   id: string;
   name: string;
   type: string;
+  length?: number;          // varchar(n), char(n), bit(n)
+  precision?: number;       // numeric(p,s)
+  scale?: number;
   required: boolean;
   unique: boolean;
   isPK: boolean;
@@ -42,6 +45,7 @@ interface SchemaEntity {
   isUnlogged?: boolean;
   compositePK?: string[];
   compositeUniques?: string[][];
+  enableRLS?: boolean;
 }
 
 interface EnumType {
@@ -49,6 +53,87 @@ interface EnumType {
   name: string;
   values: string[];
   schema?: string;
+}
+
+interface DomainType {
+  id: string;
+  name: string;
+  baseType: string;
+  notNull?: boolean;
+  defaultValue?: string;
+  checkExpr?: string;
+}
+
+interface SchemaView {
+  id: string;
+  name: string;
+  query: string;
+  isMaterialized?: boolean;
+  schema?: string;
+  x: number;
+  y: number;
+}
+
+interface SchemaSequence {
+  id: string;
+  name: string;
+  dataType?: string;
+  start?: number;
+  increment?: number;
+  minValue?: number;
+  maxValue?: number;
+  cycle?: boolean;
+  ownedBy?: string;
+}
+
+interface SchemaFunction {
+  id: string;
+  name: string;
+  params: string;
+  returnType: string;
+  language: string;
+  body: string;
+  volatility?: "IMMUTABLE" | "STABLE" | "VOLATILE";
+  security?: "DEFINER" | "INVOKER";
+}
+
+interface SchemaTrigger {
+  id: string;
+  name: string;
+  timing: "BEFORE" | "AFTER" | "INSTEAD OF";
+  events: string[];
+  tableName: string;
+  forEach: "ROW" | "STATEMENT";
+  functionName: string;
+  whenExpr?: string;
+}
+
+interface SchemaPolicy {
+  id: string;
+  name: string;
+  tableName: string;
+  command: "ALL" | "SELECT" | "INSERT" | "UPDATE" | "DELETE";
+  usingExpr?: string;
+  checkExpr?: string;
+  roles?: string[];
+}
+
+interface SchemaExtension {
+  id: string;
+  name: string;
+  schema?: string;
+}
+
+interface SchemaIndex {
+  id: string;
+  name: string;
+  tableName: string;
+  columns: string[];
+  type?: "BTREE" | "GIN" | "GIST" | "BRIN" | "HASH" | "SPGIST";
+  isUnique?: boolean;
+  whereClause?: string;
+  includeColumns?: string[];
+  expression?: string;
 }
 
 type OnDeleteAction = "CASCADE" | "SET NULL" | "RESTRICT" | "NO ACTION" | "SET DEFAULT";
@@ -67,13 +152,44 @@ interface SchemaGraph {
   entities: SchemaEntity[];
   relations: SchemaRelation[];
   enumTypes?: EnumType[];
+  domainTypes?: DomainType[];
+  views?: SchemaView[];
+  sequences?: SchemaSequence[];
+  functions?: SchemaFunction[];
+  triggers?: SchemaTrigger[];
+  policies?: SchemaPolicy[];
+  extensions?: SchemaExtension[];
+  indexes?: SchemaIndex[];
   source?: { type: "manual" | "github" | "local"; githubRepo?: string; importedAt?: string };
 }
 
-type ModalMode = null | "addEntity" | "editEntity" | "addField" | "editField" | "addRelation" | "import" | "export" | "addEnum";
+type ModalMode = null | "addEntity" | "editEntity" | "addField" | "editField" | "addRelation" | "import" | "export" | "addEnum" | "addView" | "addSequence" | "addFunction" | "addTrigger" | "addPolicy" | "addExtension" | "addIndex" | "addDomain";
 type ImportTab = "github" | "local";
 
-const FIELD_TYPES = ["string", "int", "bigint", "smallint", "serial", "bigserial", "float", "decimal", "boolean", "datetime", "date", "time", "timestamptz", "text", "uuid", "enum", "array", "json", "bytes"];
+const FIELD_TYPES = [
+  // Numeric
+  "int", "bigint", "smallint", "serial", "bigserial", "float", "decimal", "numeric", "real", "double", "money",
+  // Character
+  "string", "varchar", "char", "text", "citext",
+  // Boolean
+  "boolean",
+  // Date/Time
+  "datetime", "timestamp", "timestamptz", "date", "time", "timetz", "interval",
+  // Binary
+  "bytes", "bytea",
+  // UUID
+  "uuid",
+  // JSON
+  "json", "jsonb",
+  // Network
+  "inet", "cidr", "macaddr",
+  // Full-text
+  "tsvector", "tsquery",
+  // Range
+  "int4range", "int8range", "numrange", "tsrange", "tstzrange", "daterange",
+  // Other
+  "array", "enum", "xml", "point", "line", "box", "polygon", "circle", "vector",
+];
 
 /* ══════════════════════════════════════════════════════════════════════
    Utilities
@@ -351,8 +467,25 @@ function exportSql(graph: SchemaGraph): string {
         const baseMap: Record<string, string> = { string: "VARCHAR(255)", int: "INTEGER", text: "TEXT", boolean: "BOOLEAN", uuid: "UUID", json: "JSONB" };
         sType = `${baseMap[f.arrayElementType] || f.arrayElementType.toUpperCase()}[]`;
       } else {
-        const typeMap: Record<string, string> = { string: "VARCHAR(255)", int: "INTEGER", bigint: "BIGINT", smallint: "SMALLINT", serial: "SERIAL", bigserial: "BIGSERIAL", float: "REAL", decimal: "DECIMAL(10,2)", boolean: "BOOLEAN", datetime: "TIMESTAMP", date: "DATE", time: "TIME", timestamptz: "TIMESTAMPTZ", text: "TEXT", uuid: "UUID", json: "JSONB", bytes: "BYTEA", array: "TEXT[]", enum: "VARCHAR(50)" };
+        const typeMap: Record<string, string> = {
+          string: "VARCHAR(255)", varchar: "VARCHAR", char: "CHAR", text: "TEXT", citext: "CITEXT",
+          int: "INTEGER", bigint: "BIGINT", smallint: "SMALLINT", serial: "SERIAL", bigserial: "BIGSERIAL",
+          float: "REAL", real: "REAL", double: "DOUBLE PRECISION", decimal: "DECIMAL", numeric: "NUMERIC", money: "MONEY",
+          boolean: "BOOLEAN", datetime: "TIMESTAMP", timestamp: "TIMESTAMP", timestamptz: "TIMESTAMPTZ",
+          date: "DATE", time: "TIME", timetz: "TIMETZ", interval: "INTERVAL",
+          uuid: "UUID", json: "JSON", jsonb: "JSONB", bytes: "BYTEA", bytea: "BYTEA", xml: "XML",
+          inet: "INET", cidr: "CIDR", macaddr: "MACADDR",
+          tsvector: "TSVECTOR", tsquery: "TSQUERY",
+          int4range: "INT4RANGE", int8range: "INT8RANGE", numrange: "NUMRANGE",
+          tsrange: "TSRANGE", tstzrange: "TSTZRANGE", daterange: "DATERANGE",
+          point: "POINT", line: "LINE", box: "BOX", polygon: "POLYGON", circle: "CIRCLE",
+          vector: "VECTOR", array: "TEXT[]", enum: "VARCHAR(50)",
+        };
         sType = typeMap[f.type] || "TEXT";
+        // Apply type modifiers
+        if (f.length && ["varchar", "char", "string"].includes(f.type)) sType = `VARCHAR(${f.length})`;
+        if (f.precision && ["decimal", "numeric"].includes(f.type)) sType = `NUMERIC(${f.precision}${f.scale ? `,${f.scale}` : ""})`;
+        if (f.length && f.type === "vector") sType = `VECTOR(${f.length})`;
       }
 
       const parts = [`  ${f.name} ${sType}`];
@@ -427,6 +560,123 @@ function exportSql(graph: SchemaGraph): string {
     lines.push("");
   }
 
+  // Extensions
+  if (graph.extensions && graph.extensions.length > 0) {
+    lines.unshift(""); // insert at top
+    for (let i = graph.extensions.length - 1; i >= 0; i--) {
+      const ext = graph.extensions[i];
+      const schema = ext.schema ? ` SCHEMA ${ext.schema}` : "";
+      lines.unshift(`CREATE EXTENSION IF NOT EXISTS "${ext.name}"${schema};`);
+    }
+    lines.unshift("-- Extensions");
+  }
+
+  // Domain types
+  if (graph.domainTypes && graph.domainTypes.length > 0) {
+    lines.push("-- Domain Types");
+    for (const d of graph.domainTypes) {
+      let def = `CREATE DOMAIN ${d.name} AS ${d.baseType}`;
+      if (d.notNull) def += " NOT NULL";
+      if (d.defaultValue) def += ` DEFAULT ${d.defaultValue}`;
+      if (d.checkExpr) def += ` CHECK (${d.checkExpr})`;
+      lines.push(def + ";");
+    }
+    lines.push("");
+  }
+
+  // Advanced indexes
+  if (graph.indexes && graph.indexes.length > 0) {
+    lines.push("-- Advanced Indexes");
+    for (const idx of graph.indexes) {
+      const unique = idx.isUnique ? "UNIQUE " : "";
+      const using = idx.type && idx.type !== "BTREE" ? ` USING ${idx.type}` : "";
+      const cols = idx.expression || idx.columns.join(", ");
+      const include = idx.includeColumns?.length ? ` INCLUDE (${idx.includeColumns.join(", ")})` : "";
+      const where = idx.whereClause ? ` WHERE ${idx.whereClause}` : "";
+      lines.push(`CREATE ${unique}INDEX ${idx.name} ON ${idx.tableName}${using} (${cols})${include}${where};`);
+    }
+    lines.push("");
+  }
+
+  // Sequences
+  if (graph.sequences && graph.sequences.length > 0) {
+    lines.push("-- Sequences");
+    for (const seq of graph.sequences) {
+      const parts = [`CREATE SEQUENCE ${seq.name}`];
+      if (seq.dataType) parts.push(`AS ${seq.dataType}`);
+      if (seq.start !== undefined) parts.push(`START WITH ${seq.start}`);
+      if (seq.increment !== undefined) parts.push(`INCREMENT BY ${seq.increment}`);
+      if (seq.minValue !== undefined) parts.push(`MINVALUE ${seq.minValue}`);
+      if (seq.maxValue !== undefined) parts.push(`MAXVALUE ${seq.maxValue}`);
+      if (seq.cycle) parts.push("CYCLE");
+      lines.push(parts.join(" ") + ";");
+      if (seq.ownedBy) lines.push(`ALTER SEQUENCE ${seq.name} OWNED BY ${seq.ownedBy};`);
+    }
+    lines.push("");
+  }
+
+  // Views
+  if (graph.views && graph.views.length > 0) {
+    lines.push("-- Views");
+    for (const v of graph.views) {
+      const mat = v.isMaterialized ? "MATERIALIZED " : "";
+      const schema = v.schema && v.schema !== "public" ? `${v.schema}.` : "";
+      lines.push(`CREATE ${mat}VIEW ${schema}${v.name} AS`);
+      lines.push(`${v.query};`);
+      lines.push("");
+    }
+  }
+
+  // Functions
+  if (graph.functions && graph.functions.length > 0) {
+    lines.push("-- Functions");
+    for (const fn of graph.functions) {
+      lines.push(`CREATE OR REPLACE FUNCTION ${fn.name}(${fn.params})`);
+      lines.push(`RETURNS ${fn.returnType}`);
+      lines.push(`LANGUAGE ${fn.language}`);
+      if (fn.volatility) lines.push(fn.volatility);
+      if (fn.security === "DEFINER") lines.push("SECURITY DEFINER");
+      lines.push(`AS $$`);
+      lines.push(fn.body);
+      lines.push(`$$;`);
+      lines.push("");
+    }
+  }
+
+  // Triggers
+  if (graph.triggers && graph.triggers.length > 0) {
+    lines.push("-- Triggers");
+    for (const tr of graph.triggers) {
+      const events = tr.events.join(" OR ");
+      const when = tr.whenExpr ? `\n  WHEN (${tr.whenExpr})` : "";
+      lines.push(`CREATE TRIGGER ${tr.name}`);
+      lines.push(`  ${tr.timing} ${events} ON ${tr.tableName}`);
+      lines.push(`  FOR EACH ${tr.forEach}${when}`);
+      lines.push(`  EXECUTE FUNCTION ${tr.functionName}();`);
+      lines.push("");
+    }
+  }
+
+  // RLS Policies
+  const rlsTables = graph.entities.filter((e) => e.enableRLS);
+  if (rlsTables.length > 0 || (graph.policies && graph.policies.length > 0)) {
+    lines.push("-- Row-Level Security");
+    for (const t of rlsTables) {
+      const schema = t.schema && t.schema !== "public" ? `${t.schema}.` : "";
+      lines.push(`ALTER TABLE ${schema}${t.name.toLowerCase()} ENABLE ROW LEVEL SECURITY;`);
+    }
+    if (graph.policies) {
+      for (const p of graph.policies) {
+        const roles = p.roles?.length ? ` TO ${p.roles.join(", ")}` : "";
+        const using = p.usingExpr ? `\n  USING (${p.usingExpr})` : "";
+        const check = p.checkExpr ? `\n  WITH CHECK (${p.checkExpr})` : "";
+        lines.push(`CREATE POLICY ${p.name} ON ${p.tableName}`);
+        lines.push(`  FOR ${p.command}${roles}${using}${check};`);
+      }
+    }
+    lines.push("");
+  }
+
   return lines.join("\n");
 }
 
@@ -494,6 +744,9 @@ export default function SchemaPage() {
   const [formFieldDefault, setFormFieldDefault] = useState("");
   const [formFieldAutoInc, setFormFieldAutoInc] = useState(false);
   const [formFieldIndexed, setFormFieldIndexed] = useState(false);
+  const [formFieldLength, setFormFieldLength] = useState("");
+  const [formFieldPrecision, setFormFieldPrecision] = useState("");
+  const [formFieldScale, setFormFieldScale] = useState("");
   const [formRelFrom, setFormRelFrom] = useState("");
   const [formRelTo, setFormRelTo] = useState("");
   const [formRelType, setFormRelType] = useState<"1:1" | "1:N" | "N:N">("1:N");
@@ -514,6 +767,9 @@ export default function SchemaPage() {
   // ── Enum state ──
   const [formEnumName, setFormEnumName] = useState("");
   const [formEnumValues, setFormEnumValues] = useState("");
+
+  // ── Generic object form (reused for view, sequence, function, trigger, policy, extension, index, domain) ──
+  const [formObj, setFormObj] = useState<Record<string, string>>({});
 
   // ── Hover state for entity actions ──
   const [hoverEntityId, setHoverEntityId] = useState<string | null>(null);
@@ -667,6 +923,7 @@ export default function SchemaPage() {
     setFormFieldName(""); setFormFieldType("string"); setFormFieldRequired(true);
     setFormFieldUnique(false); setFormFieldPK(false); setFormFieldFK(false);
     setFormFieldDefault(""); setFormFieldAutoInc(false); setFormFieldIndexed(false);
+    setFormFieldLength(""); setFormFieldPrecision(""); setFormFieldScale("");
   };
 
   const addField = () => {
@@ -675,6 +932,9 @@ export default function SchemaPage() {
       id: uid(), name: formFieldName.trim(), type: formFieldType,
       required: formFieldRequired, unique: formFieldUnique || formFieldPK, isPK: formFieldPK, isFK: formFieldFK,
       defaultValue: formFieldDefault.trim() || undefined, autoIncrement: formFieldAutoInc || undefined, indexed: formFieldIndexed || undefined,
+      length: formFieldLength ? Number(formFieldLength) : undefined,
+      precision: formFieldPrecision ? Number(formFieldPrecision) : undefined,
+      scale: formFieldScale ? Number(formFieldScale) : undefined,
     };
     updateGraph((g) => ({
       ...g,
@@ -731,11 +991,65 @@ export default function SchemaPage() {
   };
 
   const deleteEnum = (enumId: string) => {
-    updateGraph((g) => ({
-      ...g,
-      enumTypes: (g.enumTypes || []).filter((en) => en.id !== enumId),
-    }));
+    updateGraph((g) => ({ ...g, enumTypes: (g.enumTypes || []).filter((en) => en.id !== enumId) }));
   };
+
+  /* ── Generic object CRUD ── */
+  const addView = () => {
+    if (!formObj.name?.trim() || !formObj.query?.trim()) return;
+    updateGraph((g) => ({ ...g, views: [...(g.views || []), { id: uid(), name: formObj.name.trim(), query: formObj.query.trim(), isMaterialized: formObj.materialized === "true", schema: formObj.schema || undefined, x: 40, y: 40 }] }));
+    setFormObj({}); setModal(null);
+  };
+  const deleteView = (id: string) => { updateGraph((g) => ({ ...g, views: (g.views || []).filter((v) => v.id !== id) })); };
+
+  const addSequence = () => {
+    if (!formObj.name?.trim()) return;
+    updateGraph((g) => ({ ...g, sequences: [...(g.sequences || []), { id: uid(), name: formObj.name.trim(), dataType: formObj.dataType || undefined, start: formObj.start ? Number(formObj.start) : undefined, increment: formObj.increment ? Number(formObj.increment) : undefined, minValue: formObj.minValue ? Number(formObj.minValue) : undefined, maxValue: formObj.maxValue ? Number(formObj.maxValue) : undefined, cycle: formObj.cycle === "true", ownedBy: formObj.ownedBy || undefined }] }));
+    setFormObj({}); setModal(null);
+  };
+  const deleteSequence = (id: string) => { updateGraph((g) => ({ ...g, sequences: (g.sequences || []).filter((s) => s.id !== id) })); };
+
+  const addFunction = () => {
+    if (!formObj.name?.trim()) return;
+    updateGraph((g) => ({ ...g, functions: [...(g.functions || []), { id: uid(), name: formObj.name.trim(), params: formObj.params || "", returnType: formObj.returnType || "void", language: formObj.language || "plpgsql", body: formObj.body || "", volatility: (formObj.volatility as "IMMUTABLE" | "STABLE" | "VOLATILE") || undefined, security: (formObj.security as "DEFINER" | "INVOKER") || undefined }] }));
+    setFormObj({}); setModal(null);
+  };
+  const deleteFunction = (id: string) => { updateGraph((g) => ({ ...g, functions: (g.functions || []).filter((f) => f.id !== id) })); };
+
+  const addTrigger = () => {
+    if (!formObj.name?.trim() || !formObj.tableName?.trim() || !formObj.functionName?.trim()) return;
+    updateGraph((g) => ({ ...g, triggers: [...(g.triggers || []), { id: uid(), name: formObj.name.trim(), timing: (formObj.timing as "BEFORE" | "AFTER" | "INSTEAD OF") || "BEFORE", events: (formObj.events || "INSERT").split(",").map((e) => e.trim()), tableName: formObj.tableName.trim(), forEach: (formObj.forEach as "ROW" | "STATEMENT") || "ROW", functionName: formObj.functionName.trim(), whenExpr: formObj.whenExpr || undefined }] }));
+    setFormObj({}); setModal(null);
+  };
+  const deleteTrigger = (id: string) => { updateGraph((g) => ({ ...g, triggers: (g.triggers || []).filter((t) => t.id !== id) })); };
+
+  const addPolicy = () => {
+    if (!formObj.name?.trim() || !formObj.tableName?.trim()) return;
+    updateGraph((g) => ({ ...g, policies: [...(g.policies || []), { id: uid(), name: formObj.name.trim(), tableName: formObj.tableName.trim(), command: (formObj.command as "ALL" | "SELECT" | "INSERT" | "UPDATE" | "DELETE") || "ALL", usingExpr: formObj.usingExpr || undefined, checkExpr: formObj.checkExpr || undefined, roles: formObj.roles ? formObj.roles.split(",").map((r) => r.trim()) : undefined }] }));
+    setFormObj({}); setModal(null);
+  };
+  const deletePolicy = (id: string) => { updateGraph((g) => ({ ...g, policies: (g.policies || []).filter((p) => p.id !== id) })); };
+
+  const addExtension = () => {
+    if (!formObj.name?.trim()) return;
+    updateGraph((g) => ({ ...g, extensions: [...(g.extensions || []), { id: uid(), name: formObj.name.trim(), schema: formObj.schema || undefined }] }));
+    setFormObj({}); setModal(null);
+  };
+  const deleteExtension = (id: string) => { updateGraph((g) => ({ ...g, extensions: (g.extensions || []).filter((e) => e.id !== id) })); };
+
+  const addAdvancedIndex = () => {
+    if (!formObj.name?.trim() || !formObj.tableName?.trim() || (!formObj.columns?.trim() && !formObj.expression?.trim())) return;
+    updateGraph((g) => ({ ...g, indexes: [...(g.indexes || []), { id: uid(), name: formObj.name.trim(), tableName: formObj.tableName.trim(), columns: formObj.columns ? formObj.columns.split(",").map((c) => c.trim()) : [], type: (formObj.type as SchemaIndex["type"]) || undefined, isUnique: formObj.isUnique === "true", whereClause: formObj.whereClause || undefined, includeColumns: formObj.includeColumns ? formObj.includeColumns.split(",").map((c) => c.trim()) : undefined, expression: formObj.expression || undefined }] }));
+    setFormObj({}); setModal(null);
+  };
+  const deleteIndex = (id: string) => { updateGraph((g) => ({ ...g, indexes: (g.indexes || []).filter((i) => i.id !== id) })); };
+
+  const addDomain = () => {
+    if (!formObj.name?.trim() || !formObj.baseType?.trim()) return;
+    updateGraph((g) => ({ ...g, domainTypes: [...(g.domainTypes || []), { id: uid(), name: formObj.name.trim(), baseType: formObj.baseType.trim(), notNull: formObj.notNull === "true", defaultValue: formObj.defaultValue || undefined, checkExpr: formObj.checkExpr || undefined }] }));
+    setFormObj({}); setModal(null);
+  };
+  const deleteDomain = (id: string) => { updateGraph((g) => ({ ...g, domainTypes: (g.domainTypes || []).filter((d) => d.id !== id) })); };
 
   /* ── Relation CRUD ── */
   const addRelation = () => {
@@ -943,6 +1257,19 @@ export default function SchemaPage() {
             <button className="nb-btn" onClick={() => { setFormRelFrom(graph.entities[0]?.id || ""); setFormRelTo(graph.entities[1]?.id || ""); setFormRelType("1:N"); setFormRelOnDelete("CASCADE"); setFormRelOnUpdate("NO ACTION"); setModal("addRelation"); }}>+ RELATION</button>
           )}
           <button className="nb-btn" onClick={() => { setFormEnumName(""); setFormEnumValues(""); setModal("addEnum"); }}>+ ENUM</button>
+          <button className="nb-btn" onClick={() => { setFormObj({}); setModal("addView"); }}>+ VIEW</button>
+          <button className="nb-btn" onClick={() => { setFormObj({}); setModal("addFunction"); }}>+ FN</button>
+          <button className="nb-btn" onClick={() => { setFormObj({}); setModal("addIndex"); }}>+ IDX</button>
+          <details className="relative inline-block">
+            <summary className="nb-btn cursor-pointer list-none">MORE +</summary>
+            <div className="absolute right-0 top-full mt-1 bg-white border-2 border-signal-black shadow-nb z-50 flex flex-col min-w-[140px]">
+              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addSequence"); }}>SEQUENCE</button>
+              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addTrigger"); }}>TRIGGER</button>
+              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addPolicy"); }}>RLS POLICY</button>
+              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addExtension"); }}>EXTENSION</button>
+              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk" onClick={() => { setFormObj({}); setModal("addDomain"); }}>DOMAIN</button>
+            </div>
+          </details>
         </div>
       </div>
 
@@ -1115,6 +1442,108 @@ export default function SchemaPage() {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Database objects summary */}
+      {((graph.views || []).length > 0 || (graph.sequences || []).length > 0 || (graph.functions || []).length > 0 || (graph.triggers || []).length > 0 || (graph.policies || []).length > 0 || (graph.extensions || []).length > 0 || (graph.indexes || []).length > 0 || (graph.domainTypes || []).length > 0) && (
+        <div className="mt-4 mb-4 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4">
+          {/* Views */}
+          {(graph.views || []).length > 0 && (
+            <div className="border-2 border-signal-black p-3 bg-white">
+              <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">VIEWS</h4>
+              {(graph.views || []).map((v) => (
+                <div key={v.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
+                  <span>{v.isMaterialized ? "MAT " : ""}{v.name}</span>
+                  <button onClick={() => deleteView(v.id)} className="text-watermelon font-bold">X</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Sequences */}
+          {(graph.sequences || []).length > 0 && (
+            <div className="border-2 border-signal-black p-3 bg-white">
+              <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">SEQUENCES</h4>
+              {(graph.sequences || []).map((s) => (
+                <div key={s.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
+                  <span>{s.name} {s.start !== undefined ? `(START ${s.start})` : ""}</span>
+                  <button onClick={() => deleteSequence(s.id)} className="text-watermelon font-bold">X</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Functions */}
+          {(graph.functions || []).length > 0 && (
+            <div className="border-2 border-signal-black p-3 bg-white">
+              <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">FUNCTIONS</h4>
+              {(graph.functions || []).map((fn) => (
+                <div key={fn.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
+                  <span>{fn.name}({fn.params}) → {fn.returnType}</span>
+                  <button onClick={() => deleteFunction(fn.id)} className="text-watermelon font-bold">X</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Triggers */}
+          {(graph.triggers || []).length > 0 && (
+            <div className="border-2 border-signal-black p-3 bg-white">
+              <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">TRIGGERS</h4>
+              {(graph.triggers || []).map((tr) => (
+                <div key={tr.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
+                  <span>{tr.name} {tr.timing} {tr.events.join("/")} ON {tr.tableName}</span>
+                  <button onClick={() => deleteTrigger(tr.id)} className="text-watermelon font-bold">X</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Policies */}
+          {(graph.policies || []).length > 0 && (
+            <div className="border-2 border-signal-black p-3 bg-white">
+              <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">RLS POLICIES</h4>
+              {(graph.policies || []).map((p) => (
+                <div key={p.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
+                  <span>{p.name} ({p.command}) ON {p.tableName}</span>
+                  <button onClick={() => deletePolicy(p.id)} className="text-watermelon font-bold">X</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Extensions */}
+          {(graph.extensions || []).length > 0 && (
+            <div className="border-2 border-signal-black p-3 bg-white">
+              <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">EXTENSIONS</h4>
+              {(graph.extensions || []).map((ext) => (
+                <div key={ext.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
+                  <span>{ext.name}</span>
+                  <button onClick={() => deleteExtension(ext.id)} className="text-watermelon font-bold">X</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Indexes */}
+          {(graph.indexes || []).length > 0 && (
+            <div className="border-2 border-signal-black p-3 bg-white">
+              <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">INDEXES</h4>
+              {(graph.indexes || []).map((idx) => (
+                <div key={idx.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
+                  <span>{idx.isUnique ? "UQ " : ""}{idx.name} ON {idx.tableName} ({idx.expression || idx.columns.join(",")}){idx.type && idx.type !== "BTREE" ? ` ${idx.type}` : ""}</span>
+                  <button onClick={() => deleteIndex(idx.id)} className="text-watermelon font-bold">X</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Domains */}
+          {(graph.domainTypes || []).length > 0 && (
+            <div className="border-2 border-signal-black p-3 bg-white">
+              <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">DOMAIN TYPES</h4>
+              {(graph.domainTypes || []).map((d) => (
+                <div key={d.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
+                  <span>{d.name} AS {d.baseType}{d.checkExpr ? ` CHECK(${d.checkExpr})` : ""}</span>
+                  <button onClick={() => deleteDomain(d.id)} className="text-watermelon font-bold">X</button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -1384,6 +1813,138 @@ export default function SchemaPage() {
                     <button type="submit" className="nb-btn nb-btn--primary">CREATE</button>
                     <button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button>
                   </div>
+                </form>
+              </>
+            )}
+
+            {/* ── Generic Object Modals ── */}
+            {modal === "addView" && (
+              <>
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD VIEW</h2>
+                <form onSubmit={(e) => { e.preventDefault(); addView(); }} className="flex flex-col gap-4">
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">VIEW NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">SQL QUERY</label><textarea className="nb-input nb-textarea w-full font-mono text-[0.8rem]" rows={6} value={formObj.query || ""} onChange={(e) => setFormObj((p) => ({ ...p, query: e.target.value }))} placeholder="SELECT * FROM ..." /></div>
+                  <label className="flex items-center gap-2 font-mono text-[0.8rem] uppercase cursor-pointer"><input type="checkbox" checked={formObj.materialized === "true"} onChange={(e) => setFormObj((p) => ({ ...p, materialized: e.target.checked ? "true" : "" }))} className="w-4 h-4" />MATERIALIZED</label>
+                  <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
+                </form>
+              </>
+            )}
+            {modal === "addSequence" && (
+              <>
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD SEQUENCE</h2>
+                <form onSubmit={(e) => { e.preventDefault(); addSequence(); }} className="flex flex-col gap-4">
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">SEQUENCE NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">START</label><input className="nb-input w-full" type="number" value={formObj.start || ""} onChange={(e) => setFormObj((p) => ({ ...p, start: e.target.value }))} /></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">INCREMENT</label><input className="nb-input w-full" type="number" value={formObj.increment || ""} onChange={(e) => setFormObj((p) => ({ ...p, increment: e.target.value }))} /></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">OWNED BY</label><input className="nb-input w-full" value={formObj.ownedBy || ""} onChange={(e) => setFormObj((p) => ({ ...p, ownedBy: e.target.value }))} placeholder="table.column" /></div>
+                  </div>
+                  <label className="flex items-center gap-2 font-mono text-[0.8rem] uppercase cursor-pointer"><input type="checkbox" checked={formObj.cycle === "true"} onChange={(e) => setFormObj((p) => ({ ...p, cycle: e.target.checked ? "true" : "" }))} className="w-4 h-4" />CYCLE</label>
+                  <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
+                </form>
+              </>
+            )}
+            {modal === "addFunction" && (
+              <>
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD FUNCTION</h2>
+                <form onSubmit={(e) => { e.preventDefault(); addFunction(); }} className="flex flex-col gap-4">
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">FUNCTION NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">PARAMETERS</label><input className="nb-input w-full" value={formObj.params || ""} onChange={(e) => setFormObj((p) => ({ ...p, params: e.target.value }))} placeholder="p_id INT, p_name TEXT" /></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">RETURNS</label><input className="nb-input w-full" value={formObj.returnType || ""} onChange={(e) => setFormObj((p) => ({ ...p, returnType: e.target.value }))} placeholder="void, INTEGER, TABLE(...)" /></div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">LANGUAGE</label><select className="nb-input w-full" value={formObj.language || "plpgsql"} onChange={(e) => setFormObj((p) => ({ ...p, language: e.target.value }))}><option value="plpgsql">PLPGSQL</option><option value="sql">SQL</option><option value="plpython3u">PLPYTHON3U</option></select></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">VOLATILITY</label><select className="nb-input w-full" value={formObj.volatility || ""} onChange={(e) => setFormObj((p) => ({ ...p, volatility: e.target.value }))}><option value="">DEFAULT</option><option value="IMMUTABLE">IMMUTABLE</option><option value="STABLE">STABLE</option><option value="VOLATILE">VOLATILE</option></select></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">SECURITY</label><select className="nb-input w-full" value={formObj.security || ""} onChange={(e) => setFormObj((p) => ({ ...p, security: e.target.value }))}><option value="">INVOKER</option><option value="DEFINER">DEFINER</option></select></div>
+                  </div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">FUNCTION BODY</label><textarea className="nb-input nb-textarea w-full font-mono text-[0.8rem]" rows={8} value={formObj.body || ""} onChange={(e) => setFormObj((p) => ({ ...p, body: e.target.value }))} placeholder="BEGIN&#10;  -- logic here&#10;  RETURN result;&#10;END;" /></div>
+                  <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
+                </form>
+              </>
+            )}
+            {modal === "addTrigger" && (
+              <>
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD TRIGGER</h2>
+                <form onSubmit={(e) => { e.preventDefault(); addTrigger(); }} className="flex flex-col gap-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">TRIGGER NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">TABLE</label><select className="nb-input w-full" value={formObj.tableName || ""} onChange={(e) => setFormObj((p) => ({ ...p, tableName: e.target.value }))}><option value="">Select...</option>{graph.entities.map((en) => <option key={en.id} value={en.name.toLowerCase()}>{en.name}</option>)}</select></div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">TIMING</label><select className="nb-input w-full" value={formObj.timing || "BEFORE"} onChange={(e) => setFormObj((p) => ({ ...p, timing: e.target.value }))}><option value="BEFORE">BEFORE</option><option value="AFTER">AFTER</option><option value="INSTEAD OF">INSTEAD OF</option></select></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">EVENTS</label><input className="nb-input w-full" value={formObj.events || "INSERT"} onChange={(e) => setFormObj((p) => ({ ...p, events: e.target.value }))} placeholder="INSERT,UPDATE,DELETE" /></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">FOR EACH</label><select className="nb-input w-full" value={formObj.forEach || "ROW"} onChange={(e) => setFormObj((p) => ({ ...p, forEach: e.target.value }))}><option value="ROW">ROW</option><option value="STATEMENT">STATEMENT</option></select></div>
+                  </div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">EXECUTE FUNCTION</label><input className="nb-input w-full" value={formObj.functionName || ""} onChange={(e) => setFormObj((p) => ({ ...p, functionName: e.target.value }))} placeholder="function_name" /></div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">WHEN (optional)</label><input className="nb-input w-full" value={formObj.whenExpr || ""} onChange={(e) => setFormObj((p) => ({ ...p, whenExpr: e.target.value }))} placeholder="OLD.status IS DISTINCT FROM NEW.status" /></div>
+                  <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
+                </form>
+              </>
+            )}
+            {modal === "addPolicy" && (
+              <>
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD RLS POLICY</h2>
+                <form onSubmit={(e) => { e.preventDefault(); addPolicy(); }} className="flex flex-col gap-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">POLICY NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">TABLE</label><select className="nb-input w-full" value={formObj.tableName || ""} onChange={(e) => setFormObj((p) => ({ ...p, tableName: e.target.value }))}><option value="">Select...</option>{graph.entities.map((en) => <option key={en.id} value={en.name.toLowerCase()}>{en.name}</option>)}</select></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">COMMAND</label><select className="nb-input w-full" value={formObj.command || "ALL"} onChange={(e) => setFormObj((p) => ({ ...p, command: e.target.value }))}><option value="ALL">ALL</option><option value="SELECT">SELECT</option><option value="INSERT">INSERT</option><option value="UPDATE">UPDATE</option><option value="DELETE">DELETE</option></select></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">ROLES (comma-sep)</label><input className="nb-input w-full" value={formObj.roles || ""} onChange={(e) => setFormObj((p) => ({ ...p, roles: e.target.value }))} placeholder="app_user, admin" /></div>
+                  </div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">USING (read filter)</label><input className="nb-input w-full" value={formObj.usingExpr || ""} onChange={(e) => setFormObj((p) => ({ ...p, usingExpr: e.target.value }))} placeholder="user_id = current_user_id()" /></div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">WITH CHECK (write filter)</label><input className="nb-input w-full" value={formObj.checkExpr || ""} onChange={(e) => setFormObj((p) => ({ ...p, checkExpr: e.target.value }))} placeholder="user_id = current_user_id()" /></div>
+                  <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
+                </form>
+              </>
+            )}
+            {modal === "addExtension" && (
+              <>
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD EXTENSION</h2>
+                <form onSubmit={(e) => { e.preventDefault(); addExtension(); }} className="flex flex-col gap-4">
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">EXTENSION NAME</label><select className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))}><option value="">Select...</option>
+                    {["uuid-ossp", "pgcrypto", "postgis", "citext", "pg_trgm", "pgvector", "hstore", "ltree", "btree_gist", "btree_gin", "tablefunc", "pg_stat_statements", "timescaledb", "postgis_topology"].map((ext) => <option key={ext} value={ext}>{ext}</option>)}
+                  </select></div>
+                  <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">ADD</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
+                </form>
+              </>
+            )}
+            {modal === "addIndex" && (
+              <>
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD INDEX</h2>
+                <form onSubmit={(e) => { e.preventDefault(); addAdvancedIndex(); }} className="flex flex-col gap-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">INDEX NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus /></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">TABLE</label><select className="nb-input w-full" value={formObj.tableName || ""} onChange={(e) => setFormObj((p) => ({ ...p, tableName: e.target.value }))}><option value="">Select...</option>{graph.entities.map((en) => <option key={en.id} value={en.name.toLowerCase()}>{en.name}</option>)}</select></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">COLUMNS (comma-sep)</label><input className="nb-input w-full" value={formObj.columns || ""} onChange={(e) => setFormObj((p) => ({ ...p, columns: e.target.value }))} placeholder="col1, col2" /></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">OR EXPRESSION</label><input className="nb-input w-full" value={formObj.expression || ""} onChange={(e) => setFormObj((p) => ({ ...p, expression: e.target.value }))} placeholder="lower(email)" /></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">TYPE</label><select className="nb-input w-full" value={formObj.type || ""} onChange={(e) => setFormObj((p) => ({ ...p, type: e.target.value }))}><option value="">BTREE (default)</option><option value="GIN">GIN</option><option value="GIST">GiST</option><option value="BRIN">BRIN</option><option value="HASH">HASH</option><option value="SPGIST">SP-GiST</option></select></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">INCLUDE (covering)</label><input className="nb-input w-full" value={formObj.includeColumns || ""} onChange={(e) => setFormObj((p) => ({ ...p, includeColumns: e.target.value }))} placeholder="col3, col4" /></div>
+                  </div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">WHERE (partial index)</label><input className="nb-input w-full" value={formObj.whereClause || ""} onChange={(e) => setFormObj((p) => ({ ...p, whereClause: e.target.value }))} placeholder="status = 'active'" /></div>
+                  <label className="flex items-center gap-2 font-mono text-[0.8rem] uppercase cursor-pointer"><input type="checkbox" checked={formObj.isUnique === "true"} onChange={(e) => setFormObj((p) => ({ ...p, isUnique: e.target.checked ? "true" : "" }))} className="w-4 h-4" />UNIQUE</label>
+                  <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
+                </form>
+              </>
+            )}
+            {modal === "addDomain" && (
+              <>
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD DOMAIN TYPE</h2>
+                <form onSubmit={(e) => { e.preventDefault(); addDomain(); }} className="flex flex-col gap-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">DOMAIN NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus placeholder="e.g. email_address" /></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">BASE TYPE</label><input className="nb-input w-full" value={formObj.baseType || ""} onChange={(e) => setFormObj((p) => ({ ...p, baseType: e.target.value }))} placeholder="TEXT, INTEGER, etc." /></div>
+                  </div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">CHECK CONSTRAINT</label><input className="nb-input w-full" value={formObj.checkExpr || ""} onChange={(e) => setFormObj((p) => ({ ...p, checkExpr: e.target.value }))} placeholder="VALUE ~ '^.+@.+$'" /></div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">DEFAULT VALUE</label><input className="nb-input w-full" value={formObj.defaultValue || ""} onChange={(e) => setFormObj((p) => ({ ...p, defaultValue: e.target.value }))} /></div>
+                  <label className="flex items-center gap-2 font-mono text-[0.8rem] uppercase cursor-pointer"><input type="checkbox" checked={formObj.notNull === "true"} onChange={(e) => setFormObj((p) => ({ ...p, notNull: e.target.checked ? "true" : "" }))} className="w-4 h-4" />NOT NULL</label>
+                  <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
                 </form>
               </>
             )}

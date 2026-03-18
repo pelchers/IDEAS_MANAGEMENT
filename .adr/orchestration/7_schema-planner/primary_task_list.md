@@ -156,91 +156,88 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [ ] Table INHERITS — deferred
 - [ ] Partitioning — deferred
 
-## Phase 7 — Advanced PostgreSQL Objects (deferred)
+## Phase 7 — Advanced PostgreSQL Objects (2026-03-18)
 
-### Additional Types
-- [ ] Type modifiers: varchar(n), numeric(p,s), char(n), bit(n) — add length/precision/scale fields
-- [ ] Network types: inet, cidr, macaddr
-- [ ] Full-text search types: tsvector, tsquery
-- [ ] Range types: int4range, int8range, numrange, tsrange, tstzrange, daterange
-- [ ] Interval type
-- [ ] Money type
-- [ ] Geometric types: point, line, box, polygon, circle
-- [ ] citext (case-insensitive text — via extension)
-- [ ] pgvector (vector type — via extension)
-- [ ] Distinguish json vs jsonb explicitly
-- [ ] Composite types: CREATE TYPE ... AS (field definitions)
-- [ ] Domain types: CREATE DOMAIN (base type + constraints + default)
+### Additional Types ✅
+- [x] Type modifiers: varchar(n), numeric(p,s) — length/precision/scale fields on SchemaField
+- [x] Network types: inet, cidr, macaddr
+- [x] Full-text search types: tsvector, tsquery
+- [x] Range types: int4range, int8range, numrange, tsrange, tstzrange, daterange
+- [x] Interval, timetz types
+- [x] Money type
+- [x] Geometric types: point, line, box, polygon, circle
+- [x] citext (case-insensitive text)
+- [x] pgvector (vector type with length modifier)
+- [x] json vs jsonb as separate types
+- [x] real, double precision, numeric, char, varchar as distinct types
+- [x] xml type
+- [x] Domain types: CREATE DOMAIN CRUD UI (name, base type, NOT NULL, default, CHECK)
 
-### Advanced Constraints
-- [ ] EXCLUDE constraints (EXCLUDE USING gist/btree — range overlap prevention)
-- [ ] Named constraints (CONSTRAINT name prefix for all constraint types)
-- [ ] DEFERRABLE / INITIALLY DEFERRED toggle
-- [ ] NULLS NOT DISTINCT on UNIQUE (PG 15+)
-- [ ] FK MATCH type (FULL, PARTIAL, SIMPLE)
+### Advanced Indexes ✅
+- [x] CREATE INDEX CRUD UI: name, table, columns, expression, type, INCLUDE, WHERE, UNIQUE
+- [x] Partial indexes: WHERE clause expression
+- [x] Expression indexes: index on expression
+- [x] Covering indexes: INCLUDE columns
+- [x] Multi-column indexes
+- [x] UNIQUE index toggle
+- [x] SP-GiST index type
+- [x] SQL export: full CREATE INDEX with all options
+- [ ] Index sort order: ASC/DESC, NULLS FIRST/LAST — deferred
+
+### Views ✅
+- [x] CREATE VIEW: name + SQL query definition
+- [x] CREATE MATERIALIZED VIEW: toggle
+- [x] SQL export: CREATE [MATERIALIZED] VIEW ... AS
+- [x] View list UI with delete
+- [ ] View cards on canvas — deferred
+- [ ] WITH CHECK OPTION — deferred
+
+### Sequences ✅
+- [x] CREATE SEQUENCE: name, data type, START, INCREMENT, MIN, MAX, CYCLE, OWNED BY
+- [x] SQL export: CREATE SEQUENCE + ALTER SEQUENCE OWNED BY
+- [x] Sequence list UI with delete
+
+### Functions ✅
+- [x] CREATE FUNCTION: name, params, return type, language (plpgsql/sql/plpython3u), body
+- [x] IMMUTABLE / STABLE / VOLATILE markers
+- [x] SECURITY DEFINER / INVOKER
+- [x] SQL export: CREATE OR REPLACE FUNCTION with $$ body
+- [x] Function list UI with delete
+- [ ] CREATE PROCEDURE — deferred
+
+### Triggers ✅
+- [x] CREATE TRIGGER: name, timing (BEFORE/AFTER/INSTEAD OF), events, table, FOR EACH ROW/STATEMENT
+- [x] WHEN clause for conditional triggers
+- [x] EXECUTE FUNCTION reference
+- [x] SQL export: CREATE TRIGGER
+- [x] Trigger list UI with delete
+
+### Row-Level Security ✅
+- [x] ENABLE ROW LEVEL SECURITY on table (enableRLS toggle on entity)
+- [x] CREATE POLICY: name, table, command, roles, USING, WITH CHECK
+- [x] SQL export: ALTER TABLE ENABLE RLS + CREATE POLICY
+- [x] Policy list UI with delete
+- [ ] FORCE ROW LEVEL SECURITY — deferred
+- [ ] PERMISSIVE / RESTRICTIVE — deferred
+
+### Extensions ✅
+- [x] Extension selector with 14 popular presets (uuid-ossp, pgcrypto, PostGIS, citext, pg_trgm, pgvector, hstore, ltree, btree_gist, btree_gin, tablefunc, pg_stat_statements, timescaledb, postgis_topology)
+- [x] SQL export: CREATE EXTENSION IF NOT EXISTS (placed at top of output)
+- [x] Extension list UI with delete
+
+### Database Objects Summary Panel ✅
+- [x] Grid layout showing all object types (views, sequences, functions, triggers, policies, extensions, indexes, domains) with counts and delete buttons
+
+### Remaining (deferred to Phase 8)
+- [ ] Roles & Permissions (CREATE ROLE, GRANT/REVOKE)
 - [ ] Composite FOREIGN KEY (multi-column FK)
-
-### Advanced Indexes
-- [ ] Partial indexes: WHERE clause expression
-- [ ] Expression indexes: index on function(column) instead of column
-- [ ] Covering indexes: INCLUDE columns
-- [ ] Multi-column indexes (select multiple fields per index)
-- [ ] UNIQUE index (distinct from UNIQUE constraint)
-- [ ] SP-GiST index type
-- [ ] Index sort order: ASC/DESC, NULLS FIRST/LAST
-
-### Views
-- [ ] CREATE VIEW: name + SQL query definition
-- [ ] CREATE MATERIALIZED VIEW: same + WITH DATA toggle
-- [ ] View cards on canvas (different visual style from tables)
-- [ ] Indexes on materialized views
-- [ ] WITH CHECK OPTION on views
-
-### Sequences
-- [ ] CREATE SEQUENCE: name, type (smallint/int/bigint), START, INCREMENT, MIN, MAX, CYCLE
-- [ ] OWNED BY table.column
-- [ ] Sequence cards on canvas
-
-### Functions & Procedures
-- [ ] CREATE FUNCTION: name, params (IN/OUT/INOUT), return type, language, body
-- [ ] IMMUTABLE / STABLE / VOLATILE markers
-- [ ] SECURITY DEFINER / INVOKER
-- [ ] CREATE PROCEDURE (PG 11+)
-- [ ] Function cards on canvas
-
-### Triggers
-- [ ] CREATE TRIGGER: name, timing (BEFORE/AFTER/INSTEAD OF), events, FOR EACH ROW/STATEMENT
-- [ ] WHEN clause for conditional triggers
-- [ ] UPDATE OF column_list
-- [ ] Constraint triggers (DEFERRABLE)
-- [ ] Trigger list on entity cards
-
-### Row-Level Security
-- [ ] ENABLE ROW LEVEL SECURITY on table (toggle)
-- [ ] FORCE ROW LEVEL SECURITY (apply to owner)
-- [ ] CREATE POLICY: name, command (ALL/SELECT/INSERT/UPDATE/DELETE), role
-- [ ] USING expression (read filter)
-- [ ] WITH CHECK expression (write filter)
-- [ ] PERMISSIVE / RESTRICTIVE policy mode
-
-### Extensions
-- [ ] Extension list with popular presets: uuid-ossp, pgcrypto, PostGIS, citext, pg_trgm, pgvector, hstore, ltree, btree_gist, btree_gin
-- [ ] SQL export: CREATE EXTENSION IF NOT EXISTS blocks
-
-### Roles & Permissions
-- [ ] CREATE ROLE with attributes (LOGIN, SUPERUSER, CREATEDB, etc.)
-- [ ] GRANT on TABLE (SELECT, INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER)
-- [ ] GRANT on SCHEMA (USAGE, CREATE)
-- [ ] GRANT on SEQUENCE (USAGE, SELECT, UPDATE)
-- [ ] Column-level GRANT
-- [ ] ALTER DEFAULT PRIVILEGES
-
-### Table-Level Advanced
-- [ ] Table inheritance (INHERITS parent_table)
-- [ ] Partitioning: PARTITION BY RANGE/LIST/HASH with partition key
-- [ ] Partition children (PARTITION OF with bounds)
-- [ ] LIKE clause (copy structure from another table)
-- [ ] Foreign tables (FDW — CREATE FOREIGN TABLE)
+- [ ] EXCLUDE constraints
+- [ ] Named constraints (CONSTRAINT name prefix)
+- [ ] DEFERRABLE / INITIALLY DEFERRED
+- [ ] Table inheritance (INHERITS)
+- [ ] Partitioning (PARTITION BY)
+- [ ] Composite types (CREATE TYPE AS)
+- [ ] Foreign tables (FDW)
 
 ## Phase 6 — Schema Testing
 
