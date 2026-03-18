@@ -30,6 +30,9 @@ model User {
   avatarUrl   String?
   tags        String[] @default([])
 
+  // Preferences (JSON blob)
+  preferences Json?
+
   // AI configuration
   aiProvider            AiProvider @default(NONE)
   aiApiKeyEncrypted     String?    // AES-256-GCM encrypted API key or OAuth access token

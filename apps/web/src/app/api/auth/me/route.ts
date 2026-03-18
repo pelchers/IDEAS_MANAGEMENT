@@ -28,6 +28,7 @@ export async function GET(req: Request) {
       bio: user.bio ?? null,
       avatarUrl: user.avatarUrl ?? null,
       tags: user.tags ?? [],
+      preferences: user.preferences ?? {},
     },
     entitlements: {
       plan: entitlements.plan,
@@ -46,7 +47,7 @@ export async function PUT(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: { email?: string; displayName?: string; bio?: string; avatarUrl?: string; tags?: string[] };
+  let body: { email?: string; displayName?: string; bio?: string; avatarUrl?: string; tags?: string[]; preferences?: Record<string, unknown> };
   try {
     body = await req.json();
   } catch {
@@ -102,6 +103,14 @@ export async function PUT(req: Request) {
     updates.tags = body.tags.map((t) => t.trim()).filter(Boolean);
   }
 
+  // Preferences
+  if (body.preferences !== undefined) {
+    if (typeof body.preferences !== "object" || body.preferences === null || Array.isArray(body.preferences)) {
+      return NextResponse.json({ ok: false, error: "invalid_preferences" }, { status: 400 });
+    }
+    updates.preferences = body.preferences;
+  }
+
   if (Object.keys(updates).length === 0) {
     return NextResponse.json({ ok: true, message: "no_changes" });
   }
@@ -112,4 +121,23 @@ export async function PUT(req: Request) {
   });
 
   return NextResponse.json({ ok: true });
+}
+
+/**
+ * DELETE /api/auth/me
+ * Delete the current user's account and all associated data.
+ */
+export async function DELETE(req: Request) {
+  const authResult = await requireAuth(req);
+  if (isErrorResponse(authResult)) return authResult;
+  const user = authResult;
+
+  // Prisma cascade deletes handle all related records
+  await prisma.user.delete({ where: { id: user.id } });
+
+  // Clear auth cookies
+  const response = NextResponse.json({ ok: true });
+  response.cookies.delete("session_token");
+  response.cookies.delete("refresh_token");
+  return response;
 }

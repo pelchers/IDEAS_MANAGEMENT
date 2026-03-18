@@ -12,6 +12,7 @@ export type AuthenticatedUser = {
   bio: string | null;
   avatarUrl: string | null;
   tags: string[];
+  preferences: Record<string, unknown> | null;
 };
 
 /**

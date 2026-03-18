@@ -16,11 +16,11 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
   - Idea cards with priority badges (high=watermelon, medium=lemon, low=cornflower)
   - Title, description, tags, author, timestamp on each card
   - Click filter chips to filter ideas
-- [ ] Quick capture form (one-liner add) — button stub present but non-functional
-- [ ] Full idea form (title, description, category, priority) — not implemented
-- [ ] Idea CRUD (create, edit, delete)
-- [ ] Category management
-- [ ] Wire to artifact API
+- [x] Quick capture form (inline input bar at top — type + Enter for fast idea capture)
+- [x] Full idea form (title, description, category, priority, tags) — modal with all fields
+- [x] Idea CRUD (create via modal, edit by clicking card, delete via button)
+- [x] Category filtering via chips (ALL, FEATURE, BUG FIX, RESEARCH, DESIGN, IMPROVEMENT)
+- [x] Wire to artifact API (GET/PUT /api/projects/[id]/artifacts/ideas/ideas.json with auto-save)
 
 ## Phase 2 — Directory Tree: Trinary Source + Export ✅
 
@@ -61,7 +61,7 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [x] Markdown export: nested bullet list (folders bold, files plain)
 - [x] Preview in modal, copy to clipboard, download as file
 
-## Phase 3 — Settings View from Pass-1 ✅ (partial)
+## Phase 3 — Settings View from Pass-1 ✅
 
 - [x] Read pass-1 settings section from index.html and style.css
 - [x] Build settings page matching pass-1 exactly:
@@ -71,15 +71,15 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
   - Danger Zone card with destructive actions (red bordered)
 - [x] Profile email save works
 - [x] AI configuration works
-- [ ] Persist preferences to DB
-- [ ] Wire integrations (GitHub, Slack, Stripe)
-- [ ] Implement export data
-- [ ] Implement delete account
+- [x] Persist preferences to DB (JSON field on User model, auto-save on toggle)
+- [ ] Wire integrations (GitHub, Slack, Stripe) — deferred to V2
+- [x] Implement export data (GET /api/auth/me/export → download JSON)
+- [x] Implement delete account (DELETE /api/auth/me → cascade delete + clear cookies)
 
 ## Phase 4 — Simple Views Testing
 
 - [x] Playwright screenshots for all 3 views (desktop + mobile)
 - [x] Compare against pass-1 validation PNGs
-- [ ] User story validation for ideas (add, filter, edit) — filter works, add/edit do not
-- [ ] User story validation for directory tree (expand, preview, import, export)
-- [ ] User story validation for settings (edit profile, save preferences) — profile works, preferences do not persist
+- [ ] User story validation for ideas (add via quick capture + modal, filter, edit, delete)
+- [ ] User story validation for directory tree (expand, preview, import from GitHub, export)
+- [ ] User story validation for settings (edit profile, toggle preferences, export data, delete account)

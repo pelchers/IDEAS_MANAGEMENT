@@ -207,6 +207,36 @@ export default function IdeasPage() {
         </button>
       </div>
 
+      {/* Quick capture */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const input = (e.target as HTMLFormElement).elements.namedItem("quickTitle") as HTMLInputElement;
+          const title = input.value.trim();
+          if (!title) return;
+          const now = nowISO();
+          updateAndSave([{ id: uid(), title, body: "", tags: [], category: "FEATURE", priority: "medium", createdAt: now, modifiedAt: now }, ...ideas]);
+          input.value = "";
+        }}
+        style={{ display: "flex", gap: "8px", marginBottom: "16px" }}
+      >
+        <input
+          name="quickTitle"
+          type="text"
+          placeholder="Quick capture — type an idea and press Enter..."
+          style={{
+            flex: 1, padding: "12px 16px", border: "3px solid #282828",
+            fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.9rem",
+            backgroundColor: "#F8F3EC", outline: "none", boxSizing: "border-box",
+          }}
+        />
+        <button type="submit" style={{
+          padding: "12px 20px", backgroundColor: "#282828", color: "#FFFFFF",
+          border: "3px solid #282828", fontWeight: 700, fontSize: "0.85rem",
+          textTransform: "uppercase", cursor: "pointer",
+        }}>CAPTURE</button>
+      </form>
+
       {/* Filter chips */}
       <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px" }}>
         {CATEGORIES.map((cat) => (

@@ -149,6 +149,9 @@ function SettingsContent() {
       .then((data) => {
         if (data.ok && data.user) {
           setProfileEmail(data.user.email);
+          if (data.user.preferences && typeof data.user.preferences === "object") {
+            setPreferences((prev) => ({ ...prev, ...data.user.preferences }));
+          }
         }
       })
       .catch(() => {});
@@ -178,7 +181,16 @@ function SettingsContent() {
   };
 
   const togglePref = (key: keyof Preferences) => {
-    setPreferences((prev) => ({ ...prev, [key]: !prev[key] }));
+    setPreferences((prev) => {
+      const next = { ...prev, [key]: !prev[key] };
+      // Persist to DB
+      fetch("/api/auth/me", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ preferences: next }),
+      }).catch(() => {});
+      return next;
+    });
   };
 
   const prefItems: { key: keyof Preferences; label: string }[] = [
@@ -418,8 +430,28 @@ function SettingsContent() {
             These actions are irreversible. Please proceed with caution.
           </p>
           <div className="flex gap-4 flex-wrap">
-            <button className="nb-btn">EXPORT ALL DATA</button>
-            <button className="nb-btn nb-btn--danger">DELETE ACCOUNT</button>
+            <button className="nb-btn" onClick={async () => {
+              try {
+                const res = await fetch("/api/auth/me/export");
+                const data = await res.json();
+                if (data.ok) {
+                  const blob = new Blob([JSON.stringify(data.data, null, 2)], { type: "application/json" });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a"); a.href = url; a.download = "idea-management-export.json"; a.click();
+                  URL.revokeObjectURL(url);
+                }
+              } catch { /* silent */ }
+            }}>EXPORT ALL DATA</button>
+            <button className="nb-btn nb-btn--danger" onClick={async () => {
+              const email = prompt("Type your email to confirm account deletion:");
+              if (!email || email.toLowerCase() !== profileEmail.toLowerCase()) { alert("Email does not match. Deletion cancelled."); return; }
+              try {
+                const res = await fetch("/api/auth/me", { method: "DELETE" });
+                const data = await res.json();
+                if (data.ok) { window.location.href = "/signin"; }
+                else { alert("Failed to delete account."); }
+              } catch { alert("Network error."); }
+            }}>DELETE ACCOUNT</button>
           </div>
         </div>
       </div>
