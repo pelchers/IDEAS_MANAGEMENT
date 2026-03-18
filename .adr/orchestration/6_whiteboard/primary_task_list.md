@@ -74,6 +74,14 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [x] Select tool: resize selected drawn elements via drag handle (uniform scale relative to bbox center)
 - [x] Persist moved/resized drawn element positions in artifact save (offsetX/offsetY fields)
 
+## Phase 4c — Content Overflow, Document Cards & Markdown Preview (2026-03-17)
+
+- [x] Sticky notes: graceful text overflow on small resize — hide content that doesn't fit, show "..." for title when width < ~80px, hide description/tags entirely when height < ~60px
+- [x] Document media items: show page emoji + file name on the card (instead of generic "click to preview"), matching the document card layout for all document types
+- [x] Add `.md` to MEDIA_EXTENSIONS and file input accept list so markdown files can be attached
+- [x] Add `getDocIcon` mapping for `.md` files (memo icon)
+- [x] Markdown viewer in media preview modal: render `.md` file content as formatted HTML (basic inline renderer)
+
 ## Phase 5 — Whiteboard Testing
 
 - [ ] User story validation: draw on canvas, add sticky note, drag sticky note, switch tools, add media, resize elements

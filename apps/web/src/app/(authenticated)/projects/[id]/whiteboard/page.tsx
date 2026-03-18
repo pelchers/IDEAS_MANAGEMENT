@@ -59,7 +59,7 @@ const MEDIA_EXTENSIONS: Record<string, MediaType> = {
   png: "image", jpg: "image", jpeg: "image", gif: "image", webp: "image", svg: "image", bmp: "image",
   mp4: "video", webm: "video", ogg: "video", mov: "video",
   pdf: "document", doc: "document", docx: "document", xls: "document", xlsx: "document",
-  ppt: "document", pptx: "document", txt: "document", csv: "document", zip: "document",
+  ppt: "document", pptx: "document", txt: "document", csv: "document", zip: "document", md: "document",
 };
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB warning threshold
@@ -131,10 +131,40 @@ function getDocIcon(fileName: string): string {
   const ext = fileName.split(".").pop()?.toLowerCase() || "";
   if (ext === "pdf") return "\uD83D\uDCC4";
   if (["doc", "docx", "txt"].includes(ext)) return "\uD83D\uDDD2";
+  if (ext === "md") return "\uD83D\uDCDD";
   if (["xls", "xlsx", "csv"].includes(ext)) return "\uD83D\uDCCA";
   if (["ppt", "pptx"].includes(ext)) return "\uD83D\uDCCA";
   if (ext === "zip") return "\uD83D\uDCE6";
   return "\uD83D\uDCC1";
+}
+
+function renderMarkdownToHtml(md: string): string {
+  let html = md
+    // Escape HTML entities
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    // Headings (### before ## before #)
+    .replace(/^### (.+)$/gm, "<h3>$1</h3>")
+    .replace(/^## (.+)$/gm, "<h2>$1</h2>")
+    .replace(/^# (.+)$/gm, "<h1>$1</h1>")
+    // Bold and italic
+    .replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>")
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g, "<em>$1</em>")
+    // Inline code
+    .replace(/`([^`]+)`/g, '<code style="background:#e8e0d5;padding:2px 5px;font-size:0.85em;border:1px solid #ccc">$1</code>')
+    // Links
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:#0066cc;text-decoration:underline">$1</a>')
+    // Horizontal rules
+    .replace(/^---$/gm, '<hr style="border:none;border-top:2px solid #282828;margin:16px 0">')
+    // Unordered list items
+    .replace(/^[*-] (.+)$/gm, '<li style="margin-left:20px;list-style:disc">$1</li>')
+    // Ordered list items
+    .replace(/^\d+\. (.+)$/gm, '<li style="margin-left:20px;list-style:decimal">$1</li>')
+    // Line breaks → paragraphs (double newline)
+    .replace(/\n\n/g, "</p><p>")
+    // Single newlines → <br>
+    .replace(/\n/g, "<br>");
+  return `<div style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;line-height:1.7;color:#282828"><p>${html}</p></div>`;
 }
 
 function genId(prefix: string): string {
@@ -1065,7 +1095,7 @@ export default function WhiteboardPage() {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip"
+          accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.md"
           style={{ display: "none" }}
           onChange={handleFileSelect}
         />
@@ -1106,25 +1136,31 @@ export default function WhiteboardPage() {
                   transition: isDragging ? "none" : "transform 150ms, box-shadow 150ms",
                 }}
               >
-                <div style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: sticky.description ? "4px" : 0 }}>
-                  {sticky.title}
+                {/* Content wrapper — hides overflow when sticky is resized small */}
+                <div style={{ overflow: "hidden", width: "100%", height: sticky.height && sticky.height > 0 ? `${Math.max(0, sticky.height - 28)}px` : "auto" }}>
+                  <div style={{
+                    fontWeight: 700, fontSize: "0.9rem", marginBottom: sticky.description ? "4px" : 0,
+                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                  }}>
+                    {sticky.title}
+                  </div>
+                  {sticky.description && (!sticky.height || sticky.height >= 60) && (
+                    <div style={{ fontSize: "0.75rem", opacity: 0.8, marginBottom: "4px", wordBreak: "break-word", overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: sticky.height && sticky.height < 100 ? 1 : 3, WebkitBoxOrient: "vertical" as const }}>
+                      {sticky.description.length > 60 ? sticky.description.slice(0, 60) + "..." : sticky.description}
+                    </div>
+                  )}
+                  {sticky.tags.length > 0 && (!sticky.height || sticky.height >= 80) && (
+                    <div style={{ display: "flex", gap: "3px", flexWrap: "wrap", marginTop: "4px", overflow: "hidden", maxHeight: sticky.height && sticky.height < 120 ? "18px" : "none" }}>
+                      {sticky.tags.map((tag) => (
+                        <span key={tag} style={{
+                          fontSize: "0.6rem", padding: "1px 6px", border: `1px solid ${sticky.borderColor}`,
+                          backgroundColor: "rgba(255,255,255,0.3)", textTransform: "uppercase",
+                          fontFamily: "monospace",
+                        }}>{tag}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                {sticky.description && (
-                  <div style={{ fontSize: "0.75rem", opacity: 0.8, marginBottom: "4px", wordBreak: "break-word" }}>
-                    {sticky.description.length > 60 ? sticky.description.slice(0, 60) + "..." : sticky.description}
-                  </div>
-                )}
-                {sticky.tags.length > 0 && (
-                  <div style={{ display: "flex", gap: "3px", flexWrap: "wrap", marginTop: "4px" }}>
-                    {sticky.tags.map((tag) => (
-                      <span key={tag} style={{
-                        fontSize: "0.6rem", padding: "1px 6px", border: `1px solid ${sticky.borderColor}`,
-                        backgroundColor: "rgba(255,255,255,0.3)", textTransform: "uppercase",
-                        fontFamily: "monospace",
-                      }}>{tag}</span>
-                    ))}
-                  </div>
-                )}
 
                 {/* Hover actions */}
                 {isHover && !isDragging && (
@@ -1222,7 +1258,7 @@ export default function WhiteboardPage() {
                     />
                   )}
 
-                  {/* Document card */}
+                  {/* Document card — page emoji + file name */}
                   {media.type === "document" && (
                     <div
                       onClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
@@ -1230,21 +1266,18 @@ export default function WhiteboardPage() {
                       style={{
                         width: "100%", height: "100%",
                         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                        gap: "6px", cursor: "pointer", padding: "8px",
+                        gap: "4px", cursor: "pointer", padding: "8px",
                         background: "#F8F3EC",
                       }}
                     >
-                      <span style={{ fontSize: "1.8rem" }}>{getDocIcon(media.fileName)}</span>
+                      <span style={{ fontSize: media.height < 80 ? "1.4rem" : "2.5rem", lineHeight: 1 }}>{getDocIcon(media.fileName)}</span>
                       <span style={{
-                        fontSize: "0.7rem", fontFamily: "monospace", fontWeight: 700,
+                        fontSize: media.width < 120 ? "0.55rem" : "0.7rem", fontFamily: "monospace", fontWeight: 700,
                         textTransform: "uppercase", textAlign: "center",
                         overflow: "hidden", textOverflow: "ellipsis",
                         width: "100%", whiteSpace: "nowrap",
                       }}>
                         {media.fileName}
-                      </span>
-                      <span style={{ fontSize: "0.6rem", color: "#999", fontFamily: "monospace", textTransform: "uppercase" }}>
-                        CLICK TO PREVIEW
                       </span>
                     </div>
                   )}
@@ -1478,6 +1511,36 @@ export default function WhiteboardPage() {
                       title={viewerMedia.fileName}
                       style={{ width: "100%", height: "65vh", border: "3px solid #282828" }}
                     />
+                  ) : viewerMedia.fileName.toLowerCase().endsWith(".md") ? (
+                    <div style={{
+                      padding: "32px 40px", border: "3px solid #282828", background: "#FFFDF8",
+                      textAlign: "left", maxHeight: "65vh", overflowY: "auto",
+                    }}>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: renderMarkdownToHtml(
+                            viewerMedia.dataUrl.startsWith("data:")
+                              ? decodeURIComponent(escape(atob(viewerMedia.dataUrl.split(",")[1] || "")))
+                              : ""
+                          ),
+                        }}
+                      />
+                      <div style={{ marginTop: "20px", borderTop: "2px solid #282828", paddingTop: "12px", textAlign: "center" }}>
+                        <a
+                          href={viewerMedia.dataUrl}
+                          download={viewerMedia.fileName}
+                          style={{
+                            display: "inline-block",
+                            padding: "10px 20px", backgroundColor: "#282828", color: "#FFF",
+                            border: "3px solid #282828", fontWeight: 700, fontSize: "0.8rem",
+                            textTransform: "uppercase", fontFamily: "monospace",
+                            textDecoration: "none", cursor: "pointer",
+                          }}
+                        >
+                          DOWNLOAD FILE
+                        </a>
+                      </div>
+                    </div>
                   ) : (
                     <div style={{
                       padding: "60px 40px", border: "3px solid #282828", background: "#F8F3EC",
