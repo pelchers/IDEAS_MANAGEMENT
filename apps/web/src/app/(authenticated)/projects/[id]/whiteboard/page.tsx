@@ -1230,9 +1230,15 @@ export default function WhiteboardPage() {
                   userSelect: "none",
                   zIndex: isDragging ? 20 : 5,
                   cursor: isDragging ? "grabbing" : "grab",
-                  border: isHover ? "3px solid #282828" : "2px solid #28282860",
-                  boxShadow: isDragging ? "6px 6px 0px #282828" : isHover ? "3px 3px 0px #282828" : "none",
-                  backgroundColor: "#fff",
+                  ...(media.type === "document" ? {
+                    // Documents render as bare emoji — no card chrome
+                    border: isHover ? "2px dashed #28282860" : "2px solid transparent",
+                    backgroundColor: "transparent",
+                  } : {
+                    border: isHover ? "3px solid #282828" : "2px solid #28282860",
+                    boxShadow: isDragging ? "6px 6px 0px #282828" : isHover ? "3px 3px 0px #282828" : "none",
+                    backgroundColor: "#fff",
+                  }),
                   transition: isDragging ? "none" : "box-shadow 150ms",
                 }}
               >
@@ -1258,7 +1264,7 @@ export default function WhiteboardPage() {
                     />
                   )}
 
-                  {/* Document card — page emoji + file name */}
+                  {/* Document — emoji IS the item, scales with container */}
                   {media.type === "document" && (
                     <div
                       onClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
@@ -1266,16 +1272,21 @@ export default function WhiteboardPage() {
                       style={{
                         width: "100%", height: "100%",
                         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                        gap: "4px", cursor: "pointer", padding: "8px",
-                        background: "#F8F3EC",
+                        cursor: "pointer",
                       }}
                     >
-                      <span style={{ fontSize: media.height < 80 ? "1.4rem" : "2.5rem", lineHeight: 1 }}>{getDocIcon(media.fileName)}</span>
                       <span style={{
-                        fontSize: media.width < 120 ? "0.55rem" : "0.7rem", fontFamily: "monospace", fontWeight: 700,
+                        fontSize: `${Math.min(media.width, media.height) * 0.7}px`,
+                        lineHeight: 1,
+                        filter: "drop-shadow(2px 2px 2px rgba(0,0,0,0.15))",
+                      }}>{getDocIcon(media.fileName)}</span>
+                      <span style={{
+                        fontSize: Math.max(9, Math.min(media.width * 0.08, 13)) + "px",
+                        fontFamily: "monospace", fontWeight: 700,
                         textTransform: "uppercase", textAlign: "center",
                         overflow: "hidden", textOverflow: "ellipsis",
                         width: "100%", whiteSpace: "nowrap",
+                        color: "#282828", marginTop: "2px",
                       }}>
                         {media.fileName}
                       </span>
@@ -1289,18 +1300,16 @@ export default function WhiteboardPage() {
                     position: "absolute", top: "-12px", right: "-12px",
                     display: "flex", gap: "4px",
                   }}>
-                    {media.type !== "document" && (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
-                        onMouseDown={(e) => e.stopPropagation()}
-                        style={{
-                          width: "22px", height: "22px", backgroundColor: "#FFF", color: "#282828",
-                          border: "2px solid #282828", cursor: "pointer", fontSize: "0.65rem",
-                          display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
-                        }}
-                        title="View full size"
-                      >&#128269;</button>
-                    )}
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
+                      onMouseDown={(e) => e.stopPropagation()}
+                      style={{
+                        width: "22px", height: "22px", backgroundColor: "#FFF", color: "#282828",
+                        border: "2px solid #282828", cursor: "pointer", fontSize: "0.65rem",
+                        display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                      }}
+                      title={media.type === "document" ? "Preview" : "View full size"}
+                    >&#128269;</button>
                     <button
                       onClick={(e) => { e.stopPropagation(); deleteMedia(media.id); }}
                       onMouseDown={(e) => e.stopPropagation()}
