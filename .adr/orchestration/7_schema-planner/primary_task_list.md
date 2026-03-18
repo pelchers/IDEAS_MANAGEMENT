@@ -82,9 +82,32 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [x] Copy to clipboard button
 - [x] Download as file button (.prisma, .sql, .json)
 
+## Phase 5b — Relation Linkage + Full SQL Feature Set (2026-03-18) ✅
+
+### Relation Visual + Data Fixes
+- [x] Fix Rough.js SVG: overlay on top of entity cards (absolute positioned, pointer-events none) so lines draw between cards correctly
+- [x] Adding a relation auto-creates FK field on the "to" entity (e.g. Products 1:N Orders → Orders gets `productId` FK field with fkTarget)
+- [x] Relation form: add optional FK field name input (default: `{fromEntityLower}Id`)
+- [x] Entity cards: visually indicate FK fields with target entity name, plus AUTO and IDX badges
+
+### Export: Relation-Aware Output
+- [x] Prisma export: generate `@relation` fields and reverse relation model references for each relation
+- [x] SQL export: generate FOREIGN KEY constraints from relations with CONSTRAINT names
+- [x] SQL export: generate CREATE INDEX statements for FK columns and indexed fields
+- [x] SQL export: ON DELETE actions (CASCADE, SET NULL, RESTRICT, NO ACTION, SET DEFAULT)
+
+### Full SQL Field Features
+- [x] Add `defaultValue` to SchemaField (string, rendered as DEFAULT in SQL, @default in Prisma)
+- [x] Add `autoIncrement` to SchemaField (SERIAL/BIGSERIAL in SQL, @default(autoincrement()) in Prisma)
+- [x] Add `onDelete` to SchemaRelation (CASCADE, SET NULL, RESTRICT, NO ACTION, SET DEFAULT)
+- [x] Add INDEX support: mark fields as indexed (non-unique index)
+- [x] Field form: add defaultValue input, autoIncrement toggle, indexed toggle
+- [x] Relation form: add onDelete dropdown, FK field name input, helper text
+- [x] Expanded type dropdown: 19 types including bigint, decimal, uuid, bytes, smallint, serial, bigserial, date, time, timestamptz
+
 ## Phase 6 — Schema Testing
 
-- [ ] User story validation: add entity, add fields, create relationship, delete entity
+- [ ] User story validation: add entity, add fields, create relationship, verify FK auto-created, delete entity
+- [ ] Export: Prisma output includes @relation, SQL output includes FOREIGN KEY + INDEX
 - [ ] GitHub import: import from a known public repo, verify entities created
-- [ ] Export: export as Prisma and SQL, verify output validity
 - [ ] Compare against pass-1 schema validation PNGs

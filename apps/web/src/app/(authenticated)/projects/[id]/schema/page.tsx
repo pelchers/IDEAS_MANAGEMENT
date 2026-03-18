@@ -17,6 +17,9 @@ interface SchemaField {
   isPK: boolean;
   isFK: boolean;
   fkTarget?: string;
+  defaultValue?: string;
+  autoIncrement?: boolean;
+  indexed?: boolean;
 }
 
 interface SchemaEntity {
@@ -27,11 +30,15 @@ interface SchemaEntity {
   y: number;
 }
 
+type OnDeleteAction = "CASCADE" | "SET NULL" | "RESTRICT" | "NO ACTION" | "SET DEFAULT";
+
 interface SchemaRelation {
   id: string;
   fromEntityId: string;
   toEntityId: string;
   type: "1:1" | "1:N" | "N:N";
+  fkFieldName?: string;
+  onDelete?: OnDeleteAction;
 }
 
 interface SchemaGraph {
@@ -43,7 +50,7 @@ interface SchemaGraph {
 type ModalMode = null | "addEntity" | "editEntity" | "addField" | "editField" | "addRelation" | "import" | "export";
 type ImportTab = "github" | "local";
 
-const FIELD_TYPES = ["string", "int", "float", "boolean", "datetime", "text", "enum", "array", "json"];
+const FIELD_TYPES = ["string", "int", "bigint", "smallint", "serial", "bigserial", "float", "decimal", "boolean", "datetime", "date", "time", "timestamptz", "text", "uuid", "enum", "array", "json", "bytes"];
 
 /* ══════════════════════════════════════════════════════════════════════
    Utilities
@@ -199,15 +206,42 @@ function exportPrisma(graph: SchemaGraph): string {
   for (const entity of graph.entities) {
     lines.push(`model ${entity.name} {`);
     for (const f of entity.fields) {
-      const typeMap: Record<string, string> = { string: "String", int: "Int", float: "Float", boolean: "Boolean", datetime: "DateTime", text: "String", json: "Json", array: "String[]", enum: "String" };
+      const typeMap: Record<string, string> = { string: "String", int: "Int", bigint: "BigInt", smallint: "Int", serial: "Int", bigserial: "BigInt", float: "Float", decimal: "Decimal", boolean: "Boolean", datetime: "DateTime", date: "DateTime", time: "DateTime", timestamptz: "DateTime", text: "String", uuid: "String", json: "Json", bytes: "Bytes", array: "String[]", enum: "String" };
       const pType = typeMap[f.type] || "String";
       const mods: string[] = [];
-      if (f.isPK) mods.push("@id @default(cuid())");
+      if (f.isPK && f.autoIncrement) mods.push("@id @default(autoincrement())");
+      else if (f.isPK && f.type === "uuid") mods.push("@id @default(uuid())");
+      else if (f.isPK) mods.push("@id @default(cuid())");
       if (f.unique && !f.isPK) mods.push("@unique");
-      if (!f.required && !f.isPK) {
-        lines.push(`  ${f.name}  ${pType}?${mods.length ? "  " + mods.join(" ") : ""}`);
-      } else {
-        lines.push(`  ${f.name}  ${pType}${mods.length ? "  " + mods.join(" ") : ""}`);
+      if (f.defaultValue) mods.push(`@default(${f.defaultValue})`);
+      if (f.autoIncrement && !f.isPK) mods.push("@default(autoincrement())");
+      const optional = !f.required && !f.isPK ? "?" : "";
+      lines.push(`  ${f.name}  ${pType}${optional}${mods.length ? "  " + mods.join(" ") : ""}`);
+    }
+    // Add relation fields from graph.relations
+    const rels = graph.relations.filter((r) => r.fromEntityId === entity.id || r.toEntityId === entity.id);
+    for (const rel of rels) {
+      const fromEntity = graph.entities.find((e) => e.id === rel.fromEntityId);
+      const toEntity = graph.entities.find((e) => e.id === rel.toEntityId);
+      if (!fromEntity || !toEntity) continue;
+      if (rel.toEntityId === entity.id) {
+        // This entity is the "to" side — add the relation model field
+        const fkName = rel.fkFieldName || `${fromEntity.name.toLowerCase()}Id`;
+        const onDel = rel.onDelete ? `, onDelete: ${rel.onDelete}` : "";
+        // Check if fkName already exists as a field (auto-created)
+        const hasFk = entity.fields.some((f) => f.name === fkName);
+        if (!hasFk) {
+          lines.push(`  ${fkName}  String`);
+        }
+        lines.push(`  ${fromEntity.name.toLowerCase()}  ${fromEntity.name}  @relation(fields: [${fkName}], references: [id]${onDel})`);
+      } else if (rel.fromEntityId === entity.id) {
+        // This entity is the "from" side — add the reverse relation
+        const isMany = rel.type === "1:N" || rel.type === "N:N";
+        if (isMany) {
+          lines.push(`  ${toEntity.name.toLowerCase()}s  ${toEntity.name}[]`);
+        } else {
+          lines.push(`  ${toEntity.name.toLowerCase()}  ${toEntity.name}?`);
+        }
       }
     }
     lines.push("}");
@@ -218,23 +252,58 @@ function exportPrisma(graph: SchemaGraph): string {
 
 function exportSql(graph: SchemaGraph): string {
   const lines: string[] = [];
+  const indexLines: string[] = [];
+
   for (const entity of graph.entities) {
     const tableName = entity.name.toLowerCase().replace(/\s+/g, "_");
     lines.push(`CREATE TABLE ${tableName} (`);
     const colLines: string[] = [];
+
     for (const f of entity.fields) {
-      const typeMap: Record<string, string> = { string: "VARCHAR(255)", int: "INTEGER", float: "DECIMAL", boolean: "BOOLEAN", datetime: "TIMESTAMP", text: "TEXT", json: "JSONB", array: "TEXT[]", enum: "VARCHAR(50)" };
+      const typeMap: Record<string, string> = { string: "VARCHAR(255)", int: "INTEGER", bigint: "BIGINT", smallint: "SMALLINT", serial: "SERIAL", bigserial: "BIGSERIAL", float: "REAL", decimal: "DECIMAL(10,2)", boolean: "BOOLEAN", datetime: "TIMESTAMP", date: "DATE", time: "TIME", timestamptz: "TIMESTAMPTZ", text: "TEXT", uuid: "UUID", json: "JSONB", bytes: "BYTEA", array: "TEXT[]", enum: "VARCHAR(50)" };
       const sType = typeMap[f.type] || "TEXT";
       const parts = [`  ${f.name} ${sType}`];
       if (f.isPK) parts.push("PRIMARY KEY");
       if (f.unique && !f.isPK) parts.push("UNIQUE");
       if (f.required && !f.isPK) parts.push("NOT NULL");
+      if (f.defaultValue) parts.push(`DEFAULT ${f.defaultValue}`);
       colLines.push(parts.join(" "));
+
+      // Track indexes
+      if (f.indexed && !f.isPK && !f.unique) {
+        indexLines.push(`CREATE INDEX idx_${tableName}_${f.name} ON ${tableName} (${f.name});`);
+      }
     }
+
+    // Foreign key constraints from relations where this entity is the "to" side
+    const fkRels = graph.relations.filter((r) => r.toEntityId === entity.id);
+    for (const rel of fkRels) {
+      const fromEntity = graph.entities.find((e) => e.id === rel.fromEntityId);
+      if (!fromEntity) continue;
+      const fkName = rel.fkFieldName || `${fromEntity.name.toLowerCase()}_id`;
+      const refTable = fromEntity.name.toLowerCase().replace(/\s+/g, "_");
+      const onDel = rel.onDelete || "CASCADE";
+      // Add FK column if not already in fields
+      const hasFk = entity.fields.some((f) => f.name === fkName || f.name === fkName.replace(/_/g, ""));
+      if (!hasFk) {
+        colLines.push(`  ${fkName} VARCHAR(255) NOT NULL`);
+      }
+      colLines.push(`  CONSTRAINT fk_${tableName}_${fkName} FOREIGN KEY (${fkName}) REFERENCES ${refTable}(id) ON DELETE ${onDel}`);
+      indexLines.push(`CREATE INDEX idx_${tableName}_${fkName} ON ${tableName} (${fkName});`);
+    }
+
     lines.push(colLines.join(",\n"));
     lines.push(");");
     lines.push("");
   }
+
+  // Append indexes
+  if (indexLines.length > 0) {
+    lines.push("-- Indexes");
+    lines.push(...indexLines);
+    lines.push("");
+  }
+
   return lines.join("\n");
 }
 
@@ -299,6 +368,9 @@ export default function SchemaPage() {
   const [formFieldUnique, setFormFieldUnique] = useState(false);
   const [formFieldPK, setFormFieldPK] = useState(false);
   const [formFieldFK, setFormFieldFK] = useState(false);
+  const [formFieldDefault, setFormFieldDefault] = useState("");
+  const [formFieldAutoInc, setFormFieldAutoInc] = useState(false);
+  const [formFieldIndexed, setFormFieldIndexed] = useState(false);
   const [formRelFrom, setFormRelFrom] = useState("");
   const [formRelTo, setFormRelTo] = useState("");
   const [formRelType, setFormRelType] = useState<"1:1" | "1:N" | "N:N">("1:N");
@@ -386,16 +458,19 @@ export default function SchemaPage() {
       const rel = graph.relations[i];
       const fromCard = cardRefs.current[rel.fromEntityId];
       const toCard = cardRefs.current[rel.toEntityId];
-      if (!fromCard || !toCard || !svg.parentElement) continue;
+      // The SVG's offset parent is the .relative div
+      const container = svg.closest(".relative");
+      if (!fromCard || !toCard || !container) continue;
 
-      const container = svg.parentElement.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
       const fromRect = fromCard.getBoundingClientRect();
       const toRect = toCard.getBoundingClientRect();
 
-      const fx = fromRect.left + fromRect.width / 2 - container.left;
-      const fy = fromRect.top + fromRect.height - container.top;
-      const tx = toRect.left + toRect.width / 2 - container.left;
-      const ty = toRect.top - container.top;
+      // Draw from right edge of "from" card to left edge of "to" card (or bottom→top if stacked)
+      const fx = fromRect.right - containerRect.left;
+      const fy = fromRect.top + fromRect.height / 2 - containerRect.top;
+      const tx = toRect.left - containerRect.left;
+      const ty = toRect.top + toRect.height / 2 - containerRect.top;
 
       const color = colors[i % colors.length];
 
@@ -459,6 +534,7 @@ export default function SchemaPage() {
   const resetFieldForm = () => {
     setFormFieldName(""); setFormFieldType("string"); setFormFieldRequired(true);
     setFormFieldUnique(false); setFormFieldPK(false); setFormFieldFK(false);
+    setFormFieldDefault(""); setFormFieldAutoInc(false); setFormFieldIndexed(false);
   };
 
   const addField = () => {
@@ -466,6 +542,7 @@ export default function SchemaPage() {
     const newField: SchemaField = {
       id: uid(), name: formFieldName.trim(), type: formFieldType,
       required: formFieldRequired, unique: formFieldUnique || formFieldPK, isPK: formFieldPK, isFK: formFieldFK,
+      defaultValue: formFieldDefault.trim() || undefined, autoIncrement: formFieldAutoInc || undefined, indexed: formFieldIndexed || undefined,
     };
     updateGraph((g) => ({
       ...g,
@@ -485,6 +562,7 @@ export default function SchemaPage() {
         fields: e.fields.map((f) => f.id === editFieldId ? {
           ...f, name: formFieldName.trim(), type: formFieldType,
           required: formFieldRequired, unique: formFieldUnique || formFieldPK, isPK: formFieldPK, isFK: formFieldFK,
+          defaultValue: formFieldDefault.trim() || undefined, autoIncrement: formFieldAutoInc || undefined, indexed: formFieldIndexed || undefined,
         } : f),
       } : e),
     }));
@@ -501,15 +579,43 @@ export default function SchemaPage() {
     }));
   };
 
+  // ── Relation form extras ──
+  const [formRelOnDelete, setFormRelOnDelete] = useState<OnDeleteAction>("CASCADE");
+  const [formRelFkName, setFormRelFkName] = useState("");
+
   /* ── Relation CRUD ── */
   const addRelation = () => {
     if (!formRelFrom || !formRelTo || formRelFrom === formRelTo) return;
-    updateGraph((g) => ({
-      ...g,
-      relations: [...g.relations, { id: uid(), fromEntityId: formRelFrom, toEntityId: formRelTo, type: formRelType }],
-    }));
+    updateGraph((g) => {
+      const fromEntity = g.entities.find((e) => e.id === formRelFrom);
+      const toEntity = g.entities.find((e) => e.id === formRelTo);
+      if (!fromEntity || !toEntity) return g;
+
+      const fkFieldName = formRelFkName.trim() || `${fromEntity.name.toLowerCase()}Id`;
+      const newRelation: SchemaRelation = {
+        id: uid(), fromEntityId: formRelFrom, toEntityId: formRelTo,
+        type: formRelType, fkFieldName, onDelete: formRelOnDelete,
+      };
+
+      // Auto-create FK field on the "to" entity if it doesn't exist
+      const hasFk = toEntity.fields.some((f) => f.name === fkFieldName);
+      let updatedEntities = g.entities;
+      if (!hasFk) {
+        const fkField: SchemaField = {
+          id: uid(), name: fkFieldName, type: "string",
+          required: true, unique: false, isPK: false, isFK: true,
+          fkTarget: `${fromEntity.name}.id`, indexed: true,
+        };
+        updatedEntities = g.entities.map((e) =>
+          e.id === formRelTo ? { ...e, fields: [...e.fields, fkField] } : e
+        );
+      }
+
+      return { ...g, entities: updatedEntities, relations: [...g.relations, newRelation] };
+    });
     setFormRelFrom("");
     setFormRelTo("");
+    setFormRelFkName("");
     setModal(null);
   };
 
@@ -707,10 +813,15 @@ export default function SchemaPage() {
                     >
                       <code className="font-semibold">{field.name}</code>
                       <span className="text-[0.7rem] text-gray-mid uppercase ml-auto">{field.type}</span>
+                      {field.autoIncrement && <span className="text-[0.55rem] font-bold px-1 py-0 border border-signal-black uppercase bg-lemon/30">AUTO</span>}
+                      {field.indexed && !field.isPK && !field.unique && <span className="text-[0.55rem] font-bold px-1 py-0 border border-signal-black uppercase bg-cornflower/20">IDX</span>}
                       {badge && (
                         <span className={`text-[0.6rem] font-bold px-[5px] py-[1px] border-2 border-signal-black uppercase ${badgeClasses(badge)}`}>
                           {badgeLabel(badge)}
                         </span>
+                      )}
+                      {field.isFK && field.fkTarget && (
+                        <span className="text-[0.55rem] text-malachite font-bold">{field.fkTarget}</span>
                       )}
                       {hoverFieldKey === fieldKey && (
                         <div className="flex gap-1 ml-1">
@@ -720,6 +831,7 @@ export default function SchemaPage() {
                               setFormFieldName(field.name); setFormFieldType(field.type);
                               setFormFieldRequired(field.required); setFormFieldUnique(field.unique);
                               setFormFieldPK(field.isPK); setFormFieldFK(field.isFK);
+                              setFormFieldDefault(field.defaultValue || ""); setFormFieldAutoInc(!!field.autoIncrement); setFormFieldIndexed(!!field.indexed);
                               setModal("editField");
                             }}
                             className="text-[0.6rem] px-1 bg-creamy-milk border border-signal-black cursor-pointer font-bold"
@@ -763,6 +875,8 @@ export default function SchemaPage() {
                     <span className="font-bold">{from?.name || "?"}</span>
                     <span className="text-watermelon font-bold">{rel.type}</span>
                     <span className="font-bold">{to?.name || "?"}</span>
+                    {rel.onDelete && rel.onDelete !== "CASCADE" && <span className="text-[0.6rem] text-[#999]">ON DEL: {rel.onDelete}</span>}
+                    {rel.fkFieldName && <span className="text-[0.6rem] text-malachite">FK: {rel.fkFieldName}</span>}
                     <button
                       onClick={() => deleteRelation(rel.id)}
                       className="ml-1 text-watermelon font-bold cursor-pointer hover:opacity-70"
@@ -774,11 +888,9 @@ export default function SchemaPage() {
           </div>
         )}
 
-        {/* Rough.js relation SVG */}
+        {/* Rough.js relation SVG — overlays cards */}
         {graph.relations.length > 0 && (
-          <div className="min-h-[80px] relative">
-            <svg ref={svgRef} className="w-full" style={{ height: "120px" }} data-testid="schema-relations-svg" />
-          </div>
+          <svg ref={svgRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 10 }} data-testid="schema-relations-svg" />
         )}
       </div>
 
@@ -849,12 +961,18 @@ export default function SchemaPage() {
                       { label: "UNIQUE", checked: formFieldUnique, set: setFormFieldUnique },
                       { label: "PRIMARY KEY", checked: formFieldPK, set: setFormFieldPK },
                       { label: "FOREIGN KEY", checked: formFieldFK, set: setFormFieldFK },
+                      { label: "AUTO INCREMENT", checked: formFieldAutoInc, set: setFormFieldAutoInc },
+                      { label: "INDEXED", checked: formFieldIndexed, set: setFormFieldIndexed },
                     ].map((opt) => (
                       <label key={opt.label} className="flex items-center gap-2 font-mono text-[0.8rem] uppercase cursor-pointer">
                         <input type="checkbox" checked={opt.checked} onChange={(e) => opt.set(e.target.checked)} className="w-4 h-4" />
                         {opt.label}
                       </label>
                     ))}
+                  </div>
+                  <div>
+                    <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">DEFAULT VALUE (optional)</label>
+                    <input className="nb-input w-full" value={formFieldDefault} onChange={(e) => setFormFieldDefault(e.target.value)} placeholder="e.g. 0, 'active', true, now()" />
                   </div>
                   <div className="flex gap-3">
                     <button type="submit" className="nb-btn nb-btn--primary">{modal === "addField" ? "ADD" : "SAVE"}</button>
@@ -891,6 +1009,21 @@ export default function SchemaPage() {
                       <option value="N:N">N:N (Many to Many)</option>
                     </select>
                   </div>
+                  <div>
+                    <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">ON DELETE</label>
+                    <select className="nb-input w-full" value={formRelOnDelete} onChange={(e) => setFormRelOnDelete(e.target.value as OnDeleteAction)}>
+                      <option value="CASCADE">CASCADE</option>
+                      <option value="SET NULL">SET NULL</option>
+                      <option value="RESTRICT">RESTRICT</option>
+                      <option value="NO ACTION">NO ACTION</option>
+                      <option value="SET DEFAULT">SET DEFAULT</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">FK FIELD NAME (auto-generated if blank)</label>
+                    <input className="nb-input w-full" value={formRelFkName} onChange={(e) => setFormRelFkName(e.target.value)} placeholder={`e.g. ${graph.entities.find((e) => e.id === formRelFrom)?.name.toLowerCase() || "entity"}Id`} />
+                  </div>
+                  <p className="font-mono text-[0.7rem] text-[#999]">A FK field will be auto-created on the TO entity when you create this relation.</p>
                   <div className="flex gap-3">
                     <button type="submit" className="nb-btn nb-btn--primary">CREATE</button>
                     <button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button>
