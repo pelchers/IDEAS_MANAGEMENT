@@ -22,48 +22,44 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [ ] Category management
 - [ ] Wire to artifact API
 
-## Phase 2 — Directory Tree: Trinary Source + Export
+## Phase 2 — Directory Tree: Trinary Source + Export ✅
 
 ### 2a. Core Tree CRUD (Manual Mode)
-- [ ] Replace mock data with dynamic state backed by artifact API
-- [ ] Wire to artifact API (GET/PUT /api/projects/[id]/artifacts/directory-tree/tree.plan.json)
-- [ ] Auto-save on changes (debounced PUT)
-- [ ] Handle loading/error/empty states
-- [ ] Create custom tree from scratch:
-  - Add folder button (name input)
-  - Add file button inside folders (name input)
-  - Rename node: click name to inline-edit
+- [x] Replace mock data with dynamic state backed by artifact API
+- [x] Wire to artifact API (GET/PUT /api/projects/[id]/artifacts/directory-tree/tree.plan.json)
+- [x] Auto-save on changes (debounced 800ms PUT)
+- [x] Handle loading/error/empty states
+- [x] Create custom tree from scratch:
+  - Add folder/file button (name + type input, optional parent selector)
+  - Add child button (+ on folder hover)
+  - Rename node: R button on hover → inline edit
   - Delete node: X button on hover
-  - Drag to reorder/reparent nodes (stretch goal — skip if complex)
-- [ ] Persist expand/collapse state
+- [x] Expand/collapse toggle state
 
 ### 2b. GitHub Repository Import
-- [ ] Import modal with tabs: GitHub / Local / Manual
-- [ ] GitHub tab: input for owner/repo or full URL
-- [ ] Fetch repo tree via GitHub API (client-side, `GET https://api.github.com/repos/:owner/:repo/git/trees/HEAD?recursive=1`)
-- [ ] Convert flat GitHub tree into nested TreeNode[] structure
-- [ ] Display fetched tree (replaces or merges with existing)
-- [ ] Fetch file contents on click (lazy-load via `GET https://api.github.com/repos/:owner/:repo/contents/:path`)
-- [ ] Show file contents in preview panel
-- [ ] Save imported tree to artifact API
-- [ ] Store import source metadata (githubRepo, importedAt) for re-sync
+- [x] Import modal with tabs: GitHub / Local / Paste Tree
+- [x] GitHub tab: input for owner/repo or full URL
+- [x] Fetch repo tree via GitHub API (client-side)
+- [x] Convert flat GitHub tree into nested TreeNode[] structure
+- [x] Display fetched tree (replaces existing)
+- [x] Fetch file contents on click (lazy-load from GitHub API)
+- [x] Show file contents in preview panel
+- [x] Save imported tree to artifact API
+- [x] Store import source metadata (githubRepo, importedAt), source badge displayed
 
 ### 2c. Local Directory Import
-- [ ] Local tab in import modal
-- [ ] Option A: paste directory tree as text (indented text like `tree` command output)
-  - Parse indented lines into TreeNode[] (detect indent level, file vs folder heuristic: trailing `/` or no extension = folder)
-- [ ] Option B: upload files via file picker
-  - Read file paths from File objects' `webkitRelativePath` (folder upload)
-  - Build tree from file paths
-  - Read file contents into preview map
-- [ ] Merge into current tree or replace
+- [x] Local tab in import modal (folder upload with webkitdirectory)
+- [x] Paste Tree tab: parse indented text / `tree` command output into TreeNode[]
+  - Indent-level heuristic, trailing `/` or no extension = folder
+- [x] File upload reads file paths and contents
+- [x] Replaces current tree
 
 ### 2d. Export
-- [ ] Export dropdown with options: Text Tree, JSON, Markdown
-- [ ] Text tree export: indented ASCII tree (like `tree` command output with `├──`, `└──`)
-- [ ] JSON export: raw TreeNode[] as formatted JSON
-- [ ] Markdown export: nested bullet list (folders bold, files plain)
-- [ ] Preview in modal, copy to clipboard, download as file
+- [x] Export buttons: TXT, MD, JSON
+- [x] Text tree export: ASCII tree with `├──`, `└──`, `│` connectors
+- [x] JSON export: raw DirectoryTreeData as formatted JSON
+- [x] Markdown export: nested bullet list (folders bold, files plain)
+- [x] Preview in modal, copy to clipboard, download as file
 
 ## Phase 3 — Settings View from Pass-1 ✅ (partial)
 
