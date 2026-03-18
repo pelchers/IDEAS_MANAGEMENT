@@ -46,6 +46,26 @@ interface SchemaEntity {
   compositePK?: string[];
   compositeUniques?: string[][];
   enableRLS?: boolean;
+  inherits?: string;
+  partitionBy?: string;
+  partitionKey?: string;
+}
+
+interface CompositeType {
+  id: string;
+  name: string;
+  fields: { name: string; type: string }[];
+}
+
+interface SchemaRole {
+  id: string;
+  name: string;
+  login?: boolean;
+  superuser?: boolean;
+  createdb?: boolean;
+  createrole?: boolean;
+  inherit?: boolean;
+  grants?: { target: string; privileges: string[] }[];
 }
 
 interface EnumType {
@@ -144,8 +164,13 @@ interface SchemaRelation {
   toEntityId: string;
   type: "1:1" | "1:N" | "N:N";
   fkFieldName?: string;
+  fkColumns?: string[];    // composite FK: multiple columns
+  refColumns?: string[];   // composite FK: referenced columns
   onDelete?: OnDeleteAction;
   onUpdate?: OnDeleteAction;
+  constraintName?: string;
+  isDeferrable?: boolean;
+  isDeferred?: boolean;
 }
 
 interface SchemaGraph {
@@ -153,6 +178,7 @@ interface SchemaGraph {
   relations: SchemaRelation[];
   enumTypes?: EnumType[];
   domainTypes?: DomainType[];
+  compositeTypes?: CompositeType[];
   views?: SchemaView[];
   sequences?: SchemaSequence[];
   functions?: SchemaFunction[];
@@ -160,10 +186,11 @@ interface SchemaGraph {
   policies?: SchemaPolicy[];
   extensions?: SchemaExtension[];
   indexes?: SchemaIndex[];
+  roles?: SchemaRole[];
   source?: { type: "manual" | "github" | "local"; githubRepo?: string; importedAt?: string };
 }
 
-type ModalMode = null | "addEntity" | "editEntity" | "addField" | "editField" | "addRelation" | "import" | "export" | "addEnum" | "addView" | "addSequence" | "addFunction" | "addTrigger" | "addPolicy" | "addExtension" | "addIndex" | "addDomain";
+type ModalMode = null | "addEntity" | "editEntity" | "addField" | "editField" | "addRelation" | "import" | "export" | "addEnum" | "addView" | "addSequence" | "addFunction" | "addTrigger" | "addPolicy" | "addExtension" | "addIndex" | "addDomain" | "addCompositeType" | "addRole";
 type ImportTab = "github" | "local";
 
 const FIELD_TYPES = [
@@ -526,21 +553,34 @@ function exportSql(graph: SchemaGraph): string {
     for (const rel of fkRels) {
       const fromEntity = graph.entities.find((e) => e.id === rel.fromEntityId);
       if (!fromEntity) continue;
-      const fkName = rel.fkFieldName || `${fromEntity.name.toLowerCase()}_id`;
-      const refSchema = fromEntity.schema && fromEntity.schema !== "public" ? `${fromEntity.schema}.` : "";
-      const refTable = `${refSchema}${fromEntity.name.toLowerCase().replace(/\s+/g, "_")}`;
+      const constraintName = rel.constraintName || `fk_${tableName}_${rel.fkFieldName || fromEntity.name.toLowerCase()}`;
       const onDel = rel.onDelete || "CASCADE";
       const onUpd = rel.onUpdate ? ` ON UPDATE ${rel.onUpdate}` : "";
-      const hasFk = entity.fields.some((f) => f.name === fkName || f.name === fkName.replace(/_/g, ""));
-      if (!hasFk) {
-        colLines.push(`  ${fkName} VARCHAR(255) NOT NULL`);
+      const deferrable = rel.isDeferrable ? ` DEFERRABLE${rel.isDeferred ? " INITIALLY DEFERRED" : " INITIALLY IMMEDIATE"}` : "";
+      const refSchema = fromEntity.schema && fromEntity.schema !== "public" ? `${fromEntity.schema}.` : "";
+      const refTable = `${refSchema}${fromEntity.name.toLowerCase().replace(/\s+/g, "_")}`;
+
+      if (rel.fkColumns && rel.fkColumns.length > 1 && rel.refColumns) {
+        // Composite FK
+        colLines.push(`  CONSTRAINT ${constraintName} FOREIGN KEY (${rel.fkColumns.join(", ")}) REFERENCES ${refTable}(${rel.refColumns.join(", ")}) ON DELETE ${onDel}${onUpd}${deferrable}`);
+        indexLines.push(`CREATE INDEX idx_${tableName}_${rel.fkColumns.join("_")} ON ${qualifiedName} (${rel.fkColumns.join(", ")});`);
+      } else {
+        // Single-column FK
+        const fkName = rel.fkFieldName || `${fromEntity.name.toLowerCase()}_id`;
+        const hasFk = entity.fields.some((f) => f.name === fkName || f.name === fkName.replace(/_/g, ""));
+        if (!hasFk) {
+          colLines.push(`  ${fkName} VARCHAR(255) NOT NULL`);
+        }
+        colLines.push(`  CONSTRAINT ${constraintName} FOREIGN KEY (${fkName}) REFERENCES ${refTable}(id) ON DELETE ${onDel}${onUpd}${deferrable}`);
+        indexLines.push(`CREATE INDEX idx_${tableName}_${fkName} ON ${qualifiedName} (${fkName});`);
       }
-      colLines.push(`  CONSTRAINT fk_${tableName}_${fkName} FOREIGN KEY (${fkName}) REFERENCES ${refTable}(id) ON DELETE ${onDel}${onUpd}`);
-      indexLines.push(`CREATE INDEX idx_${tableName}_${fkName} ON ${qualifiedName} (${fkName});`);
     }
 
     lines.push(colLines.join(",\n"));
-    lines.push(");");
+    let closeTable = ")";
+    if (entity.inherits) closeTable += ` INHERITS (${entity.inherits.toLowerCase()})`;
+    if (entity.partitionBy && entity.partitionKey) closeTable += ` PARTITION BY ${entity.partitionBy} (${entity.partitionKey})`;
+    lines.push(closeTable + ";");
     // Table comment
     if (entity.comment) commentLines.push(`COMMENT ON TABLE ${qualifiedName} IS '${entity.comment.replace(/'/g, "''")}';`);
     lines.push("");
@@ -672,6 +712,36 @@ function exportSql(graph: SchemaGraph): string {
         const check = p.checkExpr ? `\n  WITH CHECK (${p.checkExpr})` : "";
         lines.push(`CREATE POLICY ${p.name} ON ${p.tableName}`);
         lines.push(`  FOR ${p.command}${roles}${using}${check};`);
+      }
+    }
+    lines.push("");
+  }
+
+  // Composite types
+  if (graph.compositeTypes && graph.compositeTypes.length > 0) {
+    lines.push("-- Composite Types");
+    for (const ct of graph.compositeTypes) {
+      const fields = ct.fields.map((f) => `  ${f.name} ${f.type}`).join(",\n");
+      lines.push(`CREATE TYPE ${ct.name} AS (\n${fields}\n);`);
+    }
+    lines.push("");
+  }
+
+  // Roles & Grants
+  if (graph.roles && graph.roles.length > 0) {
+    lines.push("-- Roles & Permissions");
+    for (const r of graph.roles) {
+      const opts: string[] = [];
+      if (r.login) opts.push("LOGIN");
+      if (r.superuser) opts.push("SUPERUSER");
+      if (r.createdb) opts.push("CREATEDB");
+      if (r.createrole) opts.push("CREATEROLE");
+      if (r.inherit !== false) opts.push("INHERIT");
+      lines.push(`CREATE ROLE ${r.name}${opts.length ? " " + opts.join(" ") : ""};`);
+      if (r.grants) {
+        for (const g of r.grants) {
+          lines.push(`GRANT ${g.privileges.join(", ")} ON ${g.target} TO ${r.name};`);
+        }
       }
     }
     lines.push("");
@@ -854,11 +924,46 @@ export default function SchemaPage() {
       const fromRect = fromCard.getBoundingClientRect();
       const toRect = toCard.getBoundingClientRect();
 
-      // Draw from right edge of "from" card to left edge of "to" card (or bottom→top if stacked)
-      const fx = fromRect.right - containerRect.left;
-      const fy = fromRect.top + fromRect.height / 2 - containerRect.top;
-      const tx = toRect.left - containerRect.left;
-      const ty = toRect.top + toRect.height / 2 - containerRect.top;
+      // Adaptive connection points based on relative card positions
+      const fromCx = fromRect.left + fromRect.width / 2 - containerRect.left;
+      const fromCy = fromRect.top + fromRect.height / 2 - containerRect.top;
+      const toCx = toRect.left + toRect.width / 2 - containerRect.left;
+      const toCy = toRect.top + toRect.height / 2 - containerRect.top;
+
+      const dx = toCx - fromCx;
+      const dy = toCy - fromCy;
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+
+      let fx: number, fy: number, tx: number, ty: number;
+
+      if (absDx > absDy) {
+        // Cards are more side-by-side → connect right→left or left→right
+        if (dx > 0) {
+          fx = fromRect.right - containerRect.left;
+          fy = fromCy;
+          tx = toRect.left - containerRect.left;
+          ty = toCy;
+        } else {
+          fx = fromRect.left - containerRect.left;
+          fy = fromCy;
+          tx = toRect.right - containerRect.left;
+          ty = toCy;
+        }
+      } else {
+        // Cards are more stacked → connect bottom→top or top→bottom
+        if (dy > 0) {
+          fx = fromCx;
+          fy = fromRect.bottom - containerRect.top;
+          tx = toCx;
+          ty = toRect.top - containerRect.top;
+        } else {
+          fx = fromCx;
+          fy = fromRect.top - containerRect.top;
+          tx = toCx;
+          ty = toRect.bottom - containerRect.top;
+        }
+      }
 
       const color = colors[i % colors.length];
 
@@ -1050,6 +1155,22 @@ export default function SchemaPage() {
     setFormObj({}); setModal(null);
   };
   const deleteDomain = (id: string) => { updateGraph((g) => ({ ...g, domainTypes: (g.domainTypes || []).filter((d) => d.id !== id) })); };
+
+  const addCompositeType = () => {
+    if (!formObj.name?.trim() || !formObj.fields?.trim()) return;
+    const fields = formObj.fields.split(",").map((f) => { const [name, type] = f.trim().split(/\s+/); return { name: name || "", type: type || "TEXT" }; }).filter((f) => f.name);
+    updateGraph((g) => ({ ...g, compositeTypes: [...(g.compositeTypes || []), { id: uid(), name: formObj.name.trim(), fields }] }));
+    setFormObj({}); setModal(null);
+  };
+  const deleteCompositeType = (id: string) => { updateGraph((g) => ({ ...g, compositeTypes: (g.compositeTypes || []).filter((c) => c.id !== id) })); };
+
+  const addRole = () => {
+    if (!formObj.name?.trim()) return;
+    const grants = formObj.grants ? formObj.grants.split(";").map((g) => { const [target, ...privs] = g.trim().split(/\s+/); return { target, privileges: privs }; }).filter((g) => g.target) : [];
+    updateGraph((g) => ({ ...g, roles: [...(g.roles || []), { id: uid(), name: formObj.name.trim(), login: formObj.login === "true", superuser: formObj.superuser === "true", createdb: formObj.createdb === "true", createrole: formObj.createrole === "true", inherit: formObj.inherit !== "false", grants: grants.length > 0 ? grants : undefined }] }));
+    setFormObj({}); setModal(null);
+  };
+  const deleteRole = (id: string) => { updateGraph((g) => ({ ...g, roles: (g.roles || []).filter((r) => r.id !== id) })); };
 
   /* ── Relation CRUD ── */
   const addRelation = () => {
@@ -1267,7 +1388,9 @@ export default function SchemaPage() {
               <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addTrigger"); }}>TRIGGER</button>
               <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addPolicy"); }}>RLS POLICY</button>
               <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addExtension"); }}>EXTENSION</button>
-              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk" onClick={() => { setFormObj({}); setModal("addDomain"); }}>DOMAIN</button>
+              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addDomain"); }}>DOMAIN</button>
+              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addCompositeType"); }}>COMPOSITE TYPE</button>
+              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk" onClick={() => { setFormObj({}); setModal("addRole"); }}>ROLE</button>
             </div>
           </details>
         </div>
@@ -1446,7 +1569,7 @@ export default function SchemaPage() {
       )}
 
       {/* Database objects summary */}
-      {((graph.views || []).length > 0 || (graph.sequences || []).length > 0 || (graph.functions || []).length > 0 || (graph.triggers || []).length > 0 || (graph.policies || []).length > 0 || (graph.extensions || []).length > 0 || (graph.indexes || []).length > 0 || (graph.domainTypes || []).length > 0) && (
+      {((graph.views || []).length > 0 || (graph.sequences || []).length > 0 || (graph.functions || []).length > 0 || (graph.triggers || []).length > 0 || (graph.policies || []).length > 0 || (graph.extensions || []).length > 0 || (graph.indexes || []).length > 0 || (graph.domainTypes || []).length > 0 || (graph.compositeTypes || []).length > 0 || (graph.roles || []).length > 0) && (
         <div className="mt-4 mb-4 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4">
           {/* Views */}
           {(graph.views || []).length > 0 && (
@@ -1540,6 +1663,30 @@ export default function SchemaPage() {
                 <div key={d.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
                   <span>{d.name} AS {d.baseType}{d.checkExpr ? ` CHECK(${d.checkExpr})` : ""}</span>
                   <button onClick={() => deleteDomain(d.id)} className="text-watermelon font-bold">X</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Composite Types */}
+          {(graph.compositeTypes || []).length > 0 && (
+            <div className="border-2 border-signal-black p-3 bg-white">
+              <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">COMPOSITE TYPES</h4>
+              {(graph.compositeTypes || []).map((ct) => (
+                <div key={ct.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
+                  <span>{ct.name} ({ct.fields.map((f) => `${f.name} ${f.type}`).join(", ")})</span>
+                  <button onClick={() => deleteCompositeType(ct.id)} className="text-watermelon font-bold">X</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Roles */}
+          {(graph.roles || []).length > 0 && (
+            <div className="border-2 border-signal-black p-3 bg-white">
+              <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">ROLES & PERMISSIONS</h4>
+              {(graph.roles || []).map((r) => (
+                <div key={r.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
+                  <span>{r.name} {r.login ? "LOGIN" : ""} {r.superuser ? "SUPER" : ""}{r.grants?.length ? ` (${r.grants.length} grants)` : ""}</span>
+                  <button onClick={() => deleteRole(r.id)} className="text-watermelon font-bold">X</button>
                 </div>
               ))}
             </div>
@@ -1944,6 +2091,42 @@ export default function SchemaPage() {
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">CHECK CONSTRAINT</label><input className="nb-input w-full" value={formObj.checkExpr || ""} onChange={(e) => setFormObj((p) => ({ ...p, checkExpr: e.target.value }))} placeholder="VALUE ~ '^.+@.+$'" /></div>
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">DEFAULT VALUE</label><input className="nb-input w-full" value={formObj.defaultValue || ""} onChange={(e) => setFormObj((p) => ({ ...p, defaultValue: e.target.value }))} /></div>
                   <label className="flex items-center gap-2 font-mono text-[0.8rem] uppercase cursor-pointer"><input type="checkbox" checked={formObj.notNull === "true"} onChange={(e) => setFormObj((p) => ({ ...p, notNull: e.target.checked ? "true" : "" }))} className="w-4 h-4" />NOT NULL</label>
+                  <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
+                </form>
+              </>
+            )}
+
+            {/* ── Composite Type ── */}
+            {modal === "addCompositeType" && (
+              <>
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD COMPOSITE TYPE</h2>
+                <form onSubmit={(e) => { e.preventDefault(); addCompositeType(); }} className="flex flex-col gap-4">
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">TYPE NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus placeholder="e.g. address" /></div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">FIELDS (name type, comma-separated)</label><input className="nb-input w-full" value={formObj.fields || ""} onChange={(e) => setFormObj((p) => ({ ...p, fields: e.target.value }))} placeholder="street TEXT, city TEXT, zip VARCHAR(10)" /></div>
+                  <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
+                </form>
+              </>
+            )}
+            {/* ── Role ── */}
+            {modal === "addRole" && (
+              <>
+                <h2 className="font-bold text-[1.1rem] uppercase tracking-wider mb-4">ADD ROLE</h2>
+                <form onSubmit={(e) => { e.preventDefault(); addRole(); }} className="flex flex-col gap-4">
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">ROLE NAME</label><input className="nb-input w-full" value={formObj.name || ""} onChange={(e) => setFormObj((p) => ({ ...p, name: e.target.value }))} autoFocus placeholder="e.g. app_user" /></div>
+                  <div className="flex flex-wrap gap-4">
+                    {[
+                      { label: "LOGIN", key: "login" },
+                      { label: "SUPERUSER", key: "superuser" },
+                      { label: "CREATEDB", key: "createdb" },
+                      { label: "CREATEROLE", key: "createrole" },
+                    ].map((opt) => (
+                      <label key={opt.key} className="flex items-center gap-2 font-mono text-[0.8rem] uppercase cursor-pointer">
+                        <input type="checkbox" checked={formObj[opt.key] === "true"} onChange={(e) => setFormObj((p) => ({ ...p, [opt.key]: e.target.checked ? "true" : "" }))} className="w-4 h-4" />
+                        {opt.label}
+                      </label>
+                    ))}
+                  </div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">GRANTS (target privileges; per line)</label><input className="nb-input w-full" value={formObj.grants || ""} onChange={(e) => setFormObj((p) => ({ ...p, grants: e.target.value }))} placeholder="users SELECT INSERT; projects ALL" /></div>
                   <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
                 </form>
               </>
