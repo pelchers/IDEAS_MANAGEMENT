@@ -226,6 +226,91 @@ function uid(): string {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+/* ── Cross-object linkage helpers ── */
+
+function getEnumUsage(graph: SchemaGraph, enumName: string): string[] {
+  const uses: string[] = [];
+  for (const e of graph.entities) {
+    for (const f of e.fields) {
+      if (f.type.toLowerCase() === enumName.toLowerCase()) uses.push(`${e.name}.${f.name}`);
+    }
+  }
+  return uses;
+}
+
+function getDomainUsage(graph: SchemaGraph, domainName: string): string[] {
+  const uses: string[] = [];
+  for (const e of graph.entities) {
+    for (const f of e.fields) {
+      if (f.type.toLowerCase() === domainName.toLowerCase()) uses.push(`${e.name}.${f.name}`);
+    }
+  }
+  return uses;
+}
+
+function getCompositeTypeUsage(graph: SchemaGraph, typeName: string): string[] {
+  const uses: string[] = [];
+  for (const e of graph.entities) {
+    for (const f of e.fields) {
+      if (f.type.toLowerCase() === typeName.toLowerCase()) uses.push(`${e.name}.${f.name}`);
+    }
+  }
+  return uses;
+}
+
+function getTableTriggerCount(graph: SchemaGraph, tableName: string): number {
+  return (graph.triggers || []).filter((t) => t.tableName.toLowerCase() === tableName.toLowerCase()).length;
+}
+
+function getTableIndexCount(graph: SchemaGraph, tableName: string): number {
+  return (graph.indexes || []).filter((i) => i.tableName.toLowerCase() === tableName.toLowerCase()).length;
+}
+
+function getTablePolicyCount(graph: SchemaGraph, tableName: string): number {
+  return (graph.policies || []).filter((p) => p.tableName.toLowerCase() === tableName.toLowerCase()).length;
+}
+
+function getTableGrantCount(graph: SchemaGraph, tableName: string): number {
+  return (graph.roles || []).reduce((count, r) => count + (r.grants || []).filter((g) => g.target.toLowerCase() === tableName.toLowerCase()).length, 0);
+}
+
+function getViewDependencies(query: string, entities: SchemaEntity[]): string[] {
+  const tableNames = entities.map((e) => e.name.toLowerCase());
+  const deps: string[] = [];
+  const words = query.toLowerCase().replace(/[(),;]/g, " ").split(/\s+/);
+  for (let i = 0; i < words.length; i++) {
+    if ((words[i] === "from" || words[i] === "join") && i + 1 < words.length) {
+      const ref = words[i + 1];
+      if (tableNames.includes(ref)) deps.push(ref.toUpperCase());
+    }
+  }
+  return [...new Set(deps)];
+}
+
+function getTableDependents(graph: SchemaGraph, tableName: string): { type: string; name: string }[] {
+  const tl = tableName.toLowerCase();
+  const deps: { type: string; name: string }[] = [];
+  for (const r of graph.relations) {
+    const from = graph.entities.find((e) => e.id === r.fromEntityId);
+    const to = graph.entities.find((e) => e.id === r.toEntityId);
+    if (from?.name.toLowerCase() === tl || to?.name.toLowerCase() === tl) deps.push({ type: "relation", name: `${from?.name}→${to?.name}` });
+  }
+  for (const t of graph.triggers || []) { if (t.tableName.toLowerCase() === tl) deps.push({ type: "trigger", name: t.name }); }
+  for (const p of graph.policies || []) { if (p.tableName.toLowerCase() === tl) deps.push({ type: "policy", name: p.name }); }
+  for (const i of graph.indexes || []) { if (i.tableName.toLowerCase() === tl) deps.push({ type: "index", name: i.name }); }
+  for (const v of graph.views || []) { if (getViewDependencies(v.query, graph.entities).includes(tableName.toUpperCase())) deps.push({ type: "view", name: v.name }); }
+  for (const s of graph.sequences || []) { if (s.ownedBy?.toLowerCase().startsWith(tl + ".")) deps.push({ type: "sequence", name: s.name }); }
+  return deps;
+}
+
+function getFunctionDependents(graph: SchemaGraph, fnName: string): string[] {
+  return (graph.triggers || []).filter((t) => t.functionName.toLowerCase() === fnName.toLowerCase()).map((t) => t.name);
+}
+
+function getRoleDependents(graph: SchemaGraph, roleName: string): string[] {
+  return (graph.policies || []).filter((p) => p.roles?.some((r) => r.toLowerCase() === roleName.toLowerCase())).map((p) => p.name);
+}
+
 function badgeFor(f: SchemaField): "pk" | "fk" | "unique" | null {
   if (f.isPK) return "pk";
   if (f.isFK) return "fk";
@@ -1479,7 +1564,25 @@ export default function SchemaPage() {
             >
               {/* Entity header */}
               <div className="bg-signal-black text-creamy-milk px-4 py-3 font-bold text-base uppercase tracking-[0.1em] flex items-center justify-between">
-                <span>{entity.name}</span>
+                <div className="flex items-center gap-2">
+                  <span>{entity.name}</span>
+                  {/* Linked object badges */}
+                  {(() => {
+                    const tn = entity.name.toLowerCase();
+                    const trgC = getTableTriggerCount(graph, tn);
+                    const idxC = getTableIndexCount(graph, tn);
+                    const plcC = getTablePolicyCount(graph, tn);
+                    const grtC = getTableGrantCount(graph, tn);
+                    return (
+                      <>
+                        {trgC > 0 && <span className="text-[0.55rem] px-1 py-0 bg-lemon/40 text-signal-black border border-lemon font-bold" title={`${trgC} trigger(s)`}>TRG {trgC}</span>}
+                        {idxC > 0 && <span className="text-[0.55rem] px-1 py-0 bg-cornflower/30 text-white border border-cornflower font-bold" title={`${idxC} index(es)`}>IDX {idxC}</span>}
+                        {entity.enableRLS && <span className="text-[0.55rem] px-1 py-0 bg-amethyst/40 text-white border border-amethyst font-bold" title={`RLS enabled, ${plcC} policy(ies)`}>RLS {plcC}</span>}
+                        {grtC > 0 && <span className="text-[0.55rem] px-1 py-0 bg-malachite/30 text-white border border-malachite font-bold" title={`${grtC} grant(s)`}>GRT {grtC}</span>}
+                      </>
+                    );
+                  })()}
+                </div>
                 {hoverEntityId === entity.id && (
                   <div className="flex gap-2">
                     <button
@@ -1488,7 +1591,7 @@ export default function SchemaPage() {
                       title="Rename"
                     >REN</button>
                     <button
-                      onClick={() => deleteEntity(entity.id)}
+                      onClick={(e) => { e.stopPropagation(); const deps = getTableDependents(graph, entity.name); if (deps.length > 0 && !window.confirm(`Delete ${entity.name}? This will affect:\n${deps.map((d) => `- ${d.type}: ${d.name}`).join("\n")}`)) return; deleteEntity(entity.id); }}
                       className="text-[0.7rem] px-2 py-0.5 bg-watermelon text-white border-2 border-watermelon font-bold uppercase cursor-pointer hover:opacity-80"
                       title="Delete"
                     >DEL</button>
@@ -1600,8 +1703,9 @@ export default function SchemaPage() {
               <div key={en.id} className="inline-flex items-center gap-2 px-3 py-1.5 border-2 border-signal-black bg-white font-mono text-[0.75rem] uppercase">
                 <span className="font-bold text-amethyst">{en.name}</span>
                 <span className="text-[0.6rem] text-[#999]">({en.values.join(", ")})</span>
+                {(() => { const usage = getEnumUsage(graph, en.name); return usage.length > 0 ? <span className="text-[0.55rem] text-malachite font-bold">used by: {usage.join(", ")}</span> : null; })()}
                 <button onClick={() => openEditEnum(en)} className="ml-1 text-signal-black font-bold cursor-pointer hover:opacity-70 text-[0.6rem]">E</button>
-                <button onClick={() => deleteEnum(en.id)} className="text-watermelon font-bold cursor-pointer hover:opacity-70">X</button>
+                <button onClick={() => { const usage = getEnumUsage(graph, en.name); if (usage.length > 0 && !window.confirm(`Delete enum "${en.name}"? Used by: ${usage.join(", ")}`)) return; deleteEnum(en.id); }} className="text-watermelon font-bold cursor-pointer hover:opacity-70">X</button>
               </div>
             ))}
           </div>
@@ -1617,7 +1721,7 @@ export default function SchemaPage() {
               <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">VIEWS</h4>
               {(graph.views || []).map((v) => (
                 <div key={v.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
-                  <span>{v.isMaterialized ? "MAT " : ""}{v.name}</span>
+                  <span>{v.isMaterialized ? "MAT " : ""}{v.name}{(() => { const deps = getViewDependencies(v.query, graph.entities); return deps.length > 0 ? ` (→ ${deps.join(", ")})` : ""; })()}</span>
                   <div className="flex gap-1"><button onClick={() => openEditView(v)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteView(v.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
@@ -1629,7 +1733,7 @@ export default function SchemaPage() {
               <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">SEQUENCES</h4>
               {(graph.sequences || []).map((s) => (
                 <div key={s.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
-                  <span>{s.name} {s.start !== undefined ? `(START ${s.start})` : ""}</span>
+                  <span>{s.name}{s.ownedBy ? ` → ${s.ownedBy}` : ""}{s.start !== undefined ? ` (START ${s.start})` : ""}</span>
                   <div className="flex gap-1"><button onClick={() => openEditSequence(s)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteSequence(s.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
@@ -1642,7 +1746,7 @@ export default function SchemaPage() {
               {(graph.functions || []).map((fn) => (
                 <div key={fn.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
                   <span>{fn.name}({fn.params}) → {fn.returnType}</span>
-                  <div className="flex gap-1"><button onClick={() => openEditFunction(fn)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteFunction(fn.id)} className="text-watermelon font-bold">X</button></div>
+                  <div className="flex gap-1"><button onClick={() => openEditFunction(fn)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => { const deps = getFunctionDependents(graph, fn.name); if (deps.length > 0 && !window.confirm(`Delete function "${fn.name}"? Used by triggers: ${deps.join(", ")}`)) return; deleteFunction(fn.id); }} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
             </div>
@@ -1701,7 +1805,7 @@ export default function SchemaPage() {
               <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">DOMAIN TYPES</h4>
               {(graph.domainTypes || []).map((d) => (
                 <div key={d.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
-                  <span>{d.name} AS {d.baseType}{d.checkExpr ? ` CHECK(${d.checkExpr})` : ""}</span>
+                  <span>{d.name} AS {d.baseType}{d.checkExpr ? ` CHECK(${d.checkExpr})` : ""}{(() => { const u = getDomainUsage(graph, d.name); return u.length > 0 ? ` (${u.length} uses)` : ""; })()}</span>
                   <div className="flex gap-1"><button onClick={() => openEditDomain(d)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteDomain(d.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
@@ -1713,7 +1817,7 @@ export default function SchemaPage() {
               <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">COMPOSITE TYPES</h4>
               {(graph.compositeTypes || []).map((ct) => (
                 <div key={ct.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
-                  <span>{ct.name} ({ct.fields.map((f) => `${f.name} ${f.type}`).join(", ")})</span>
+                  <span>{ct.name} ({ct.fields.map((f) => `${f.name} ${f.type}`).join(", ")}){(() => { const u = getCompositeTypeUsage(graph, ct.name); return u.length > 0 ? ` — ${u.length} uses` : ""; })()}</span>
                   <div className="flex gap-1"><button onClick={() => openEditCompositeType(ct)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteCompositeType(ct.id)} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
@@ -1725,8 +1829,8 @@ export default function SchemaPage() {
               <h4 className="font-bold text-[0.75rem] uppercase tracking-wider mb-2">ROLES & PERMISSIONS</h4>
               {(graph.roles || []).map((r) => (
                 <div key={r.id} className="flex items-center justify-between font-mono text-[0.75rem] py-1 border-b border-dashed border-black/10">
-                  <span>{r.name} {r.login ? "LOGIN" : ""} {r.superuser ? "SUPER" : ""}{r.grants?.length ? ` (${r.grants.length} grants)` : ""}</span>
-                  <div className="flex gap-1"><button onClick={() => openEditRole(r)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => deleteRole(r.id)} className="text-watermelon font-bold">X</button></div>
+                  <span>{r.name} {r.login ? "LOGIN" : ""} {r.superuser ? "SUPER" : ""}{r.grants?.length ? ` (${r.grants.length} grants)` : ""}{(() => { const pc = getRoleDependents(graph, r.name).length; return pc > 0 ? ` ${pc} policies` : ""; })()}</span>
+                  <div className="flex gap-1"><button onClick={() => openEditRole(r)} className="text-signal-black font-bold text-[0.6rem]">E</button><button onClick={() => { const deps = getRoleDependents(graph, r.name); if (deps.length > 0 && !window.confirm(`Delete role "${r.name}"? Referenced by policies: ${deps.join(", ")}`)) return; deleteRole(r.id); }} className="text-watermelon font-bold">X</button></div>
                 </div>
               ))}
             </div>
@@ -1793,8 +1897,10 @@ export default function SchemaPage() {
                     <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">TYPE</label>
                     <select className="nb-input w-full" value={formFieldType} onChange={(e) => setFormFieldType(e.target.value)}>
                       {FIELD_TYPES.map((t) => <option key={t} value={t}>{t.toUpperCase()}</option>)}
-                      {(graph.enumTypes || []).length > 0 && <option disabled>── ENUMS ──</option>}
+                      {((graph.enumTypes || []).length > 0 || (graph.domainTypes || []).length > 0 || (graph.compositeTypes || []).length > 0) && <option disabled>── CUSTOM TYPES ──</option>}
                       {(graph.enumTypes || []).map((en) => <option key={en.id} value={en.name.toLowerCase()}>{en.name} (ENUM)</option>)}
+                      {(graph.domainTypes || []).map((d) => <option key={d.id} value={d.name.toLowerCase()}>{d.name} (DOMAIN)</option>)}
+                      {(graph.compositeTypes || []).map((ct) => <option key={ct.id} value={ct.name.toLowerCase()}>{ct.name} (TYPE)</option>)}
                     </select>
                   </div>
                   <div className="flex flex-wrap gap-4">
@@ -2024,7 +2130,7 @@ export default function SchemaPage() {
                   <div className="grid grid-cols-3 gap-3">
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">START</label><input className="nb-input w-full" type="number" value={formObj.start || ""} onChange={(e) => setFormObj((p) => ({ ...p, start: e.target.value }))} /></div>
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">INCREMENT</label><input className="nb-input w-full" type="number" value={formObj.increment || ""} onChange={(e) => setFormObj((p) => ({ ...p, increment: e.target.value }))} /></div>
-                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">OWNED BY</label><input className="nb-input w-full" value={formObj.ownedBy || ""} onChange={(e) => setFormObj((p) => ({ ...p, ownedBy: e.target.value }))} placeholder="table.column" /></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">OWNED BY</label><select className="nb-input w-full" value={formObj.ownedBy || ""} onChange={(e) => setFormObj((p) => ({ ...p, ownedBy: e.target.value }))}><option value="">None</option>{graph.entities.flatMap((en) => en.fields.map((f) => ({ label: `${en.name.toLowerCase()}.${f.name}`, value: `${en.name.toLowerCase()}.${f.name}` }))).map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}</select></div>
                   </div>
                   <label className="flex items-center gap-2 font-mono text-[0.8rem] uppercase cursor-pointer"><input type="checkbox" checked={formObj.cycle === "true"} onChange={(e) => setFormObj((p) => ({ ...p, cycle: e.target.checked ? "true" : "" }))} className="w-4 h-4" />CYCLE</label>
                   <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
@@ -2063,7 +2169,7 @@ export default function SchemaPage() {
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">EVENTS</label><input className="nb-input w-full" value={formObj.events || "INSERT"} onChange={(e) => setFormObj((p) => ({ ...p, events: e.target.value }))} placeholder="INSERT,UPDATE,DELETE" /></div>
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">FOR EACH</label><select className="nb-input w-full" value={formObj.forEach || "ROW"} onChange={(e) => setFormObj((p) => ({ ...p, forEach: e.target.value }))}><option value="ROW">ROW</option><option value="STATEMENT">STATEMENT</option></select></div>
                   </div>
-                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">EXECUTE FUNCTION</label><input className="nb-input w-full" value={formObj.functionName || ""} onChange={(e) => setFormObj((p) => ({ ...p, functionName: e.target.value }))} placeholder="function_name" /></div>
+                  <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">EXECUTE FUNCTION</label><select className="nb-input w-full" value={formObj.functionName || ""} onChange={(e) => setFormObj((p) => ({ ...p, functionName: e.target.value }))}><option value="">Select or type...</option>{(graph.functions || []).map((fn) => <option key={fn.id} value={fn.name}>{fn.name}</option>)}</select></div>
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">WHEN (optional)</label><input className="nb-input w-full" value={formObj.whenExpr || ""} onChange={(e) => setFormObj((p) => ({ ...p, whenExpr: e.target.value }))} placeholder="OLD.status IS DISTINCT FROM NEW.status" /></div>
                   <div className="flex gap-3"><button type="submit" className="nb-btn nb-btn--primary">CREATE</button><button type="button" className="nb-btn" onClick={() => setModal(null)}>CANCEL</button></div>
                 </form>
@@ -2079,7 +2185,7 @@ export default function SchemaPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">COMMAND</label><select className="nb-input w-full" value={formObj.command || "ALL"} onChange={(e) => setFormObj((p) => ({ ...p, command: e.target.value }))}><option value="ALL">ALL</option><option value="SELECT">SELECT</option><option value="INSERT">INSERT</option><option value="UPDATE">UPDATE</option><option value="DELETE">DELETE</option></select></div>
-                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">ROLES (comma-sep)</label><input className="nb-input w-full" value={formObj.roles || ""} onChange={(e) => setFormObj((p) => ({ ...p, roles: e.target.value }))} placeholder="app_user, admin" /></div>
+                    <div><label className="font-bold text-[0.75rem] uppercase mb-1 block">ROLES</label><input className="nb-input w-full" value={formObj.roles || ""} onChange={(e) => setFormObj((p) => ({ ...p, roles: e.target.value }))} placeholder={(graph.roles || []).map((r) => r.name).join(", ") || "app_user, admin"} list="role-hints" />{(graph.roles || []).length > 0 && <datalist id="role-hints">{(graph.roles || []).map((r) => <option key={r.id} value={r.name} />)}</datalist>}</div>
                   </div>
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">USING (read filter)</label><input className="nb-input w-full" value={formObj.usingExpr || ""} onChange={(e) => setFormObj((p) => ({ ...p, usingExpr: e.target.value }))} placeholder="user_id = current_user_id()" /></div>
                   <div><label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">WITH CHECK (write filter)</label><input className="nb-input w-full" value={formObj.checkExpr || ""} onChange={(e) => setFormObj((p) => ({ ...p, checkExpr: e.target.value }))} placeholder="user_id = current_user_id()" /></div>

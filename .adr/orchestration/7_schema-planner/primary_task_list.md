@@ -239,6 +239,62 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [ ] Composite types (CREATE TYPE AS)
 - [ ] Foreign tables (FDW)
 
+## Phase 9 — Cross-Object Linkages (2026-03-18)
+
+All PostgreSQL objects are interconnected. This phase adds the missing linkages between objects so the schema planner reflects real PostgreSQL relationships.
+
+### Enum → Table Field Linkage
+- [ ] Field type dropdown already shows enums — verify enum type name renders in field row
+- [x] Enum tags show usage: which tables/fields reference the enum
+- [x] Deleting an enum warns if fields reference it
+- [x] SQL export uses enum type name as column type (already handled)
+
+### Domain/CompositeType → Table Field Linkage ✅
+- [x] Domains and composite types appear in field type dropdown under "CUSTOM TYPES" separator
+- [x] Show usage counts on domain/composite type list items
+- [x] SQL export references domain/composite type names as column types
+
+### Sequence → Table Column Linkage ✅
+- [x] Sequence "owned by" uses dropdown of table.column combinations
+- [x] Show linkage on sequence list items (→ table.column)
+
+### Trigger → Table + Function Linkage ✅
+- [x] Trigger function field uses dropdown of defined functions
+- [x] Show trigger count on entity card headers (TRG badge)
+- [x] Deleting a table warns about associated triggers (via getTableDependents)
+- [x] Deleting a function warns about triggers that reference it
+
+### Policy → Table + Role Linkage ✅
+- [x] Policy role field uses datalist of defined roles
+- [x] Show RLS badge + policy count on entity cards with enableRLS
+- [x] Role list items show policy count referencing that role
+
+### Index → Table Linkage ✅
+- [x] Show index count on entity card headers (IDX badge)
+- [x] Deleting a table warns about associated indexes (via getTableDependents)
+
+### View → Table Dependency Linkage ✅
+- [x] Parse view SQL query for FROM/JOIN table references
+- [x] Show dependencies on view list items (→ TABLE1, TABLE2)
+- [x] Deleting a table warns if views reference it (via getTableDependents)
+
+### Role → Table Grant Linkage ✅
+- [x] Show grant count badge on entity cards (GRT badge)
+- [x] Role list items show policy count
+
+### Entity Card Badges ✅
+- [x] TRG badge: trigger count for this table
+- [x] IDX badge: index count for this table
+- [x] RLS badge: shown when enableRLS + policy count
+- [x] GRT badge: grant count for this table
+
+### Delete Cascade Warnings ✅
+- [x] Deleting a table: warns about relations, triggers, policies, indexes, views, sequences, grants (getTableDependents)
+- [x] Deleting an enum: warns about fields using it (getEnumUsage)
+- [x] Deleting a function: warns about triggers referencing it (getFunctionDependents)
+- [x] Deleting a role: warns about policies referencing it (getRoleDependents)
+- [x] User can confirm or cancel deletion (window.confirm)
+
 ## Phase 6 — Schema Testing
 
 - [ ] User story validation: add entity, drag to reposition, add fields, create relationship, verify FK auto-created, delete entity
