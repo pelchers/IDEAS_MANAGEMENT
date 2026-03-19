@@ -72,7 +72,7 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [x] Profile email save works
 - [x] AI configuration works
 - [x] Persist preferences to DB (JSON field on User model, auto-save on toggle)
-- [ ] Wire integrations (GitHub, Slack, Stripe) — deferred to V2
+- [x] Wire integrations (GitHub PAT prompt, Slack webhook prompt, Stripe portal redirect; status persisted to preferences)
 - [x] Implement export data (GET /api/auth/me/export → download JSON)
 - [x] Implement delete account (DELETE /api/auth/me → cascade delete + clear cookies)
 

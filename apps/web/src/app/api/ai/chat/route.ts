@@ -32,6 +32,7 @@ export async function POST(req: Request) {
     messages: Array<{ role: string; content: string; parts?: unknown[] }>;
     sessionId?: string;
     projectId?: string;
+    pageContext?: string;
   };
   try {
     body = await req.json();
@@ -39,7 +40,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
   }
 
-  const { messages, sessionId, projectId } = body;
+  const { messages, sessionId, projectId, pageContext } = body;
 
   if (!messages || !Array.isArray(messages) || messages.length === 0) {
     return NextResponse.json({ ok: false, error: "messages_required" }, { status: 400 });
@@ -91,6 +92,18 @@ export async function POST(req: Request) {
   if (projectId) {
     systemParts.push(`The user is currently working in project: ${projectId}.`);
     systemParts.push("Use this projectId when calling tools unless the user specifies a different project.");
+  }
+  if (pageContext) {
+    const pageHints: Record<string, string> = {
+      "Schema Planner": "The user is on the Schema Planner page. Help them design database schemas, suggest entities and fields, normalize tables, explain relationships. You can suggest SQL patterns, index strategies, and data modeling best practices.",
+      "Ideas": "The user is on the Ideas page. Help them brainstorm, prioritize, and expand on ideas. Use the add_idea tool to create ideas when asked.",
+      "Kanban Board": "The user is on the Kanban Board. Help them manage tasks, suggest cards, categorize work, and plan sprints. Use the update_kanban tool to modify the board.",
+      "Whiteboard": "The user is on the Whiteboard. Help them brainstorm visually, suggest sticky note content, and organize thinking.",
+      "Directory Tree": "The user is on the Directory Tree page. Help them plan project structure, suggest file organization, and explain conventions. Use the generate_tree tool when asked.",
+      "Dashboard": "The user is on the Dashboard. Help them understand project status, summarize activity, and suggest next actions.",
+    };
+    systemParts.push(`Current page: ${pageContext}.`);
+    if (pageHints[pageContext]) systemParts.push(pageHints[pageContext]);
   }
   const systemPrompt = systemParts.join("\n");
 

@@ -54,6 +54,44 @@ Primary approach: **OpenRouter OAuth PKCE flow** — users connect their own Ope
 - [ ] Persist messages to DB per session
 - [ ] Session list UI (create, switch, delete sessions in sidebar)
 
+## Phase 2b — Session List UI ✅
+
+- [x] Session list sidebar on AI chat page
+- [x] Load sessions from GET /api/ai/sessions
+- [x] Show session title, message count
+- [x] Click to switch sessions (load messages from DB)
+- [x] New chat button creates fresh session
+- [x] Delete session button
+
+## Phase 4 — Contextual AI Helper (All Pages) ✅
+
+### Floating AI Widget
+- [x] Reusable AiHelper component (bottom-right floating bubble, 56px)
+- [x] Click to expand into mini chat panel (380x520px)
+- [x] Integrate into AppShell (appears on all authenticated pages except /ai)
+- [x] Collapsible/dismissible
+- [x] Brutalist styling matching app design
+- [x] Pass current page context (pageName, projectId) to API
+
+### Page-Specific AI Context
+- [x] System prompt enhanced with page-specific hints per page
+- [x] Schema page: schema design, normalization, relationships
+- [x] Ideas page: brainstorming, prioritization, expansion (uses add_idea tool)
+- [x] Kanban page: task management, categorization (uses update_kanban tool)
+- [x] Whiteboard page: visual brainstorming, sticky note suggestions
+- [x] Directory tree: project structure, conventions (uses generate_tree tool)
+- [x] Dashboard: project status, next actions
+
+### Quick Action Buttons
+- [x] Each page shows context-aware quick action buttons in the AI helper header
+- [x] Schema: "Suggest entities", "Normalize schema", "Explain relations"
+- [x] Ideas: "Brainstorm ideas", "Prioritize", "Expand idea"
+- [x] Kanban: "Suggest tasks", "Categorize", "Summarize board"
+- [x] Whiteboard: "Suggest stickies", "Organize layout"
+- [x] Directory tree: "Suggest structure", "Explain conventions"
+- [x] Dashboard: "Summarize", "Next actions"
+- [x] Clicking quick action sends the pre-filled prompt immediately
+
 ## Phase 3 — AI Chat Testing
 
 - [x] Playwright screenshots (desktop + mobile)

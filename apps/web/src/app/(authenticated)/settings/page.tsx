@@ -25,10 +25,10 @@ interface Integration {
   connected: boolean;
 }
 
-const INTEGRATIONS: Integration[] = [
-  { name: "GITHUB", icon: "\uD83D\uDC19", connected: true },
+const DEFAULT_INTEGRATIONS: Integration[] = [
+  { name: "GITHUB", icon: "\uD83D\uDC19", connected: false },
   { name: "SLACK", icon: "\uD83D\uDCAC", connected: false },
-  { name: "STRIPE", icon: "\uD83D\uDCB3", connected: true },
+  { name: "STRIPE", icon: "\uD83D\uDCB3", connected: false },
 ];
 
 function SettingsContent() {
@@ -47,6 +47,7 @@ function SettingsContent() {
   });
   const [byokKey, setByokKey] = useState("");
   const [aiSaving, setAiSaving] = useState(false);
+  const [integrations, setIntegrations] = useState<Integration[]>(DEFAULT_INTEGRATIONS);
   const [aiMessage, setAiMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   // Fetch AI config on mount
@@ -150,7 +151,13 @@ function SettingsContent() {
         if (data.ok && data.user) {
           setProfileEmail(data.user.email);
           if (data.user.preferences && typeof data.user.preferences === "object") {
-            setPreferences((prev) => ({ ...prev, ...data.user.preferences }));
+            const prefs = data.user.preferences as Record<string, unknown>;
+            setPreferences((prev) => ({ ...prev, ...prefs }));
+            // Load integration status
+            if (prefs.integrations && typeof prefs.integrations === "object") {
+              const intPrefs = prefs.integrations as Record<string, boolean>;
+              setIntegrations((prev) => prev.map((i) => ({ ...i, connected: !!intPrefs[i.name.toLowerCase()] })));
+            }
           }
         }
       })
@@ -282,7 +289,7 @@ function SettingsContent() {
         <div className="nb-card p-8">
           <h2 className="nb-card-title">INTEGRATIONS</h2>
           <div className="flex flex-col gap-4">
-            {INTEGRATIONS.map((integration) => (
+            {integrations.map((integration) => (
               <div
                 key={integration.name}
                 className="flex items-center gap-4 p-4 border-2 border-dashed border-signal-black"
@@ -311,6 +318,37 @@ function SettingsContent() {
                   className={`nb-btn nb-btn--small ${
                     integration.connected ? "" : "nb-btn--primary"
                   }`}
+                  onClick={async () => {
+                    const name = integration.name.toLowerCase();
+                    const newConnected = !integration.connected;
+                    if (name === "github" && !integration.connected) {
+                      // For GitHub, prompt for personal access token
+                      const token = prompt("Enter your GitHub Personal Access Token (PAT):");
+                      if (!token) return;
+                    }
+                    if (name === "slack" && !integration.connected) {
+                      const webhook = prompt("Enter your Slack webhook URL:");
+                      if (!webhook) return;
+                    }
+                    if (name === "stripe" && !integration.connected) {
+                      // Stripe connect via billing portal
+                      try {
+                        const res = await fetch("/api/billing/portal", { method: "POST" });
+                        const data = await res.json();
+                        if (data.url) { window.open(data.url, "_blank"); }
+                      } catch { /* silent */ }
+                    }
+                    // Update local state
+                    setIntegrations((prev) => prev.map((i) => i.name === integration.name ? { ...i, connected: newConnected } : i));
+                    // Persist to preferences
+                    const intState: Record<string, boolean> = {};
+                    integrations.forEach((i) => { intState[i.name.toLowerCase()] = i.name === integration.name ? newConnected : i.connected; });
+                    fetch("/api/auth/me", {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ preferences: { ...preferences, integrations: intState } }),
+                    }).catch(() => {});
+                  }}
                 >
                   {integration.connected ? "DISCONNECT" : "CONNECT"}
                 </button>

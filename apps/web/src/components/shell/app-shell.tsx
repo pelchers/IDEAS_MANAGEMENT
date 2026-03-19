@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AiHelper } from "@/components/ai/ai-helper";
 
 /* ── Title from pathname ── */
 function getTitleFromPathname(pathname: string): string {
@@ -438,6 +439,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       >
         {children}
       </main>
+
+      {/* Floating AI Helper — available on all pages */}
+      <AiHelper />
     </>
   );
 }

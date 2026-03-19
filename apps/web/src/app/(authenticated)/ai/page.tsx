@@ -21,6 +21,7 @@ export default function AiPage() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [sessions, setSessions] = useState<{ id: string; title: string; messageCount: number; updatedAt: string }[]>([]);
   const [aiStatus, setAiStatus] = useState<"checking" | "connected" | "not_configured">("checking");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -34,6 +35,38 @@ export default function AiPage() {
       })
       .catch(() => setAiStatus("not_configured"));
   }, []);
+
+  /* ── Load sessions ── */
+  const loadSessions = useCallback(() => {
+    fetch("/api/ai/sessions").then((r) => r.json()).then((d) => {
+      if (d.ok && d.sessions) setSessions(d.sessions);
+    }).catch(() => {});
+  }, []);
+  useEffect(() => { loadSessions(); }, [loadSessions]);
+
+  const switchSession = useCallback(async (sid: string) => {
+    setSessionId(sid);
+    try {
+      const res = await fetch(`/api/ai/sessions/${sid}`);
+      const data = await res.json();
+      if (data.ok && data.session?.messages) {
+        setMessages(data.session.messages.map((m: { role: string; content: string }) => ({
+          role: m.role === "USER" ? "user" as const : "ai" as const,
+          text: m.content,
+        })));
+      }
+    } catch { setMessages([]); }
+  }, []);
+
+  const newChat = useCallback(() => {
+    setSessionId(null); setMessages([]); setInput("");
+  }, []);
+
+  const deleteSession = useCallback(async (sid: string) => {
+    await fetch(`/api/ai/sessions/${sid}`, { method: "DELETE" }).catch(() => {});
+    if (sessionId === sid) { setSessionId(null); setMessages([]); }
+    loadSessions();
+  }, [sessionId, loadSessions]);
 
   /* ── Auto-scroll to bottom ── */
   useEffect(() => {
@@ -68,7 +101,7 @@ export default function AiPage() {
 
       // Capture session ID from response header
       const newSessionId = res.headers.get("X-Session-Id");
-      if (newSessionId) setSessionId(newSessionId);
+      if (newSessionId) { setSessionId(newSessionId); loadSessions(); }
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => null);
@@ -182,8 +215,33 @@ export default function AiPage() {
         </div>
       )}
 
+      {/* Chat layout: sidebar + main */}
+      <div className="flex gap-4" style={{ maxHeight: "calc(100vh - 220px)" }}>
+        {/* Session sidebar */}
+        <div className="w-[220px] min-w-[220px] border-4 border-signal-black bg-white flex flex-col overflow-hidden" style={{ display: sessions.length > 0 || sessionId ? "flex" : "none" }}>
+          <div className="px-3 py-2 border-b-2 border-signal-black bg-signal-black text-creamy-milk font-bold text-[0.75rem] uppercase tracking-wider flex items-center justify-between">
+            <span>SESSIONS</span>
+            <button onClick={newChat} className="text-[0.65rem] px-2 py-0.5 bg-creamy-milk text-signal-black border border-creamy-milk font-bold cursor-pointer hover:bg-white">NEW</button>
+          </div>
+          <div className="flex-1 overflow-y-auto">
+            {sessions.map((s) => (
+              <div
+                key={s.id}
+                onClick={() => switchSession(s.id)}
+                className={`px-3 py-2 cursor-pointer border-b border-dashed border-black/10 font-mono text-[0.75rem] hover:bg-creamy-milk transition-colors ${sessionId === s.id ? "bg-creamy-milk font-bold" : ""}`}
+              >
+                <div className="truncate">{s.title}</div>
+                <div className="text-[0.6rem] text-[#999] flex justify-between mt-0.5">
+                  <span>{s.messageCount} msgs</span>
+                  <button onClick={(e) => { e.stopPropagation(); deleteSession(s.id); }} className="text-watermelon font-bold hover:opacity-70">X</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
       {/* Chat container */}
-      <div className="border-4 border-signal-black shadow-nb bg-white flex flex-col min-h-[400px] max-h-[calc(100vh-220px)]">
+      <div className="flex-1 border-4 border-signal-black shadow-nb bg-white flex flex-col min-h-[400px]">
         {/* Messages area */}
         <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
           {messages.length === 0 && (
@@ -264,6 +322,7 @@ export default function AiPage() {
           </button>
         </div>
       </div>
+      </div>{/* close flex layout */}
     </div>
   );
 }
