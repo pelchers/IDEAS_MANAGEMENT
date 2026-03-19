@@ -14,6 +14,22 @@ import {
   executeGenerateTree,
   createProjectStructureSchema,
   executeCreateProjectStructure,
+  readArtifactSchema,
+  executeReadArtifact,
+  listProjectsSchema,
+  executeListProjects,
+  manageProjectSchema,
+  executeManageProject,
+  updateIdeasSchema,
+  executeUpdateIdeas,
+  updateKanbanArtifactSchema,
+  executeUpdateKanbanArtifact,
+  updateSchemaSchema,
+  executeUpdateSchema,
+  updateWhiteboardSchema,
+  executeUpdateWhiteboard,
+  updateDirectoryTreeSchema,
+  executeUpdateDirectoryTree,
 } from "@/server/ai/tools";
 
 /**
@@ -166,6 +182,47 @@ export async function POST(req: Request) {
           execute: async (params) => {
             return executeCreateProjectStructure(params, user.id, activeSessionId);
           },
+        }),
+        // ── Cross-page artifact tools ──
+        read_artifact: tool({
+          description: "Read any project artifact to see its current data. Use this to inspect current ideas, kanban board, schema, whiteboard, or directory tree before making changes. Artifact paths: ideas/ideas.json, kanban/board.json, schema/schema.graph.json, whiteboard/board.json, directory-tree/tree.plan.json",
+          inputSchema: readArtifactSchema,
+          execute: async (params) => executeReadArtifact(params),
+        }),
+        list_projects: tool({
+          description: "List all projects the user has access to. Use this when the user asks about their projects or you need to find a project ID.",
+          inputSchema: listProjectsSchema,
+          execute: async () => executeListProjects({}, user.id),
+        }),
+        manage_project: tool({
+          description: "Create a new project or update an existing project's name, description, status, or tags.",
+          inputSchema: manageProjectSchema,
+          execute: async (params) => executeManageProject(params, user.id),
+        }),
+        update_ideas_artifact: tool({
+          description: "Add, edit, or delete ideas in a project. This writes directly to the project's ideas artifact. Use when the user wants to capture, modify, or remove ideas — works from ANY page.",
+          inputSchema: updateIdeasSchema,
+          execute: async (params) => executeUpdateIdeas(params, user.id),
+        }),
+        update_kanban_artifact: tool({
+          description: "Add cards, move cards between columns, delete cards, or add columns to a project's kanban board. Writes directly to the kanban artifact. Works from ANY page.",
+          inputSchema: updateKanbanArtifactSchema,
+          execute: async (params) => executeUpdateKanbanArtifact(params, user.id),
+        }),
+        update_schema_artifact: tool({
+          description: "Add entities, fields, relations, or enum types to a project's database schema. Writes directly to the schema artifact. Works from ANY page.",
+          inputSchema: updateSchemaSchema,
+          execute: async (params) => executeUpdateSchema(params, user.id),
+        }),
+        update_whiteboard_artifact: tool({
+          description: "Add sticky notes to a project's whiteboard. Writes directly to the whiteboard artifact. Works from ANY page.",
+          inputSchema: updateWhiteboardSchema,
+          execute: async (params) => executeUpdateWhiteboard(params),
+        }),
+        update_directory_tree_artifact: tool({
+          description: "Add or remove files/folders in a project's directory tree. Writes directly to the directory tree artifact. Works from ANY page.",
+          inputSchema: updateDirectoryTreeSchema,
+          execute: async (params) => executeUpdateDirectoryTree(params),
         }),
       },
       stopWhen: stepCountIs(5),

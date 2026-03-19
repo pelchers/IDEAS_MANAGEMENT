@@ -92,6 +92,42 @@ Primary approach: **OpenRouter OAuth PKCE flow** — users connect their own Ope
 - [x] Dashboard: "Summarize", "Next actions"
 - [x] Clicking quick action sends the pre-filled prompt immediately
 
+## Phase 5 — Comprehensive Cross-Page AI Tools
+
+Current tools only write to AiToolOutput (a log table). This phase rewrites all tools to read/write real project artifacts so the AI can actually modify project data — same as a user doing it manually.
+
+### Tool Inventory
+| Tool | Description | Reads | Writes |
+|------|-------------|-------|--------|
+| read_artifact | Read any project artifact by path | ProjectArtifact | — |
+| list_projects | List user's projects | ProjectMember + Project | — |
+| manage_project | Create, update, or delete a project | Project | Project |
+| update_ideas | Add, edit, or delete ideas in a project | ideas artifact | ideas artifact |
+| update_kanban | Add, move, update, or delete kanban cards | kanban artifact | kanban artifact |
+| update_schema | Add entities, fields, relations, enums to schema | schema artifact | schema artifact |
+| update_whiteboard | Add sticky notes, media to whiteboard | whiteboard artifact | whiteboard artifact |
+| update_directory_tree | Add, rename, delete nodes in directory tree | tree artifact | tree artifact |
+
+### Key Design Decisions
+- All tools available on every page (cross-page by design)
+- Tools read current artifact state before modifying (merge, not overwrite)
+- Tools use Prisma upsert on ProjectArtifact (same pattern as UI auto-save)
+- Each tool logs to AiToolOutput for audit trail (in addition to real writes)
+- Tool descriptions are detailed so the AI model knows exactly when to use each
+
+### Implementation ✅
+- [x] read_artifact tool: read any artifact by projectId + path
+- [x] list_projects tool: list user's projects with basic info
+- [x] manage_project tool: create/update project (with auto-slug, auto-OWNER membership)
+- [x] update_ideas_artifact: read/merge/write ideas.json (add, edit, delete ideas)
+- [x] update_kanban_artifact: read/merge/write kanban/board.json (add/move/update/delete cards, add columns)
+- [x] update_schema_artifact: read/merge/write schema.graph.json (add entities, fields, relations, enums)
+- [x] update_whiteboard_artifact: add stickies to whiteboard/board.json (with color, position)
+- [x] update_directory_tree_artifact: read/merge/write tree.plan.json (add/remove nodes with parent path)
+- [x] All 12 tools registered in /api/ai/chat (available regardless of pageContext)
+- [x] Detailed tool descriptions so AI model knows when to use each
+- [x] artifact-helpers.ts: shared readArtifact/writeArtifact (Prisma upsert with revision increment)
+
 ## Phase 3 — AI Chat Testing
 
 - [x] Playwright screenshots (desktop + mobile)
