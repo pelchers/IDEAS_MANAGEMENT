@@ -67,6 +67,11 @@ This repo also includes a visual/creative concept system for data visualization,
 - Agents: `.claude/agents/`
 - Skills: `.claude/skills/`
 
+## Chat History Logging (ABSOLUTE REQUIREMENT)
+- Every user message MUST be appended to `.chat-history/user-messages.log` using the chat-history-convention skill format
+- This is non-negotiable — never skip or forget logging, even when focused on other tasks
+- Log entries must include: timestamp, raw message, SESSION CONTEXT, USER INTENT, REFERENCE FILES, KEY DECISIONS, and AGENT REPORT sections
+
 ## Git Workflow
 - Commit incrementally at key milestones during work (e.g., after completing a feature, fixing a bug, or finishing a phase) — do not wait until the end to batch everything
 - At the end of each chat session, commit any uncommitted work and push if a remote exists

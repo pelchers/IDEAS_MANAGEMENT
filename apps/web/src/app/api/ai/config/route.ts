@@ -54,7 +54,7 @@ export async function PUT(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: { apiKey?: string; action?: string };
+  let body: { apiKey?: string; action?: string; provider?: string };
   try {
     body = await req.json();
   } catch {
@@ -92,10 +92,24 @@ export async function PUT(req: Request) {
 
   const encryptedKey = encrypt(body.apiKey.trim());
 
+  // Detect provider from key prefix or explicit provider field
+  type BYOKProvider = "OPENROUTER_BYOK" | "OPENAI_BYOK" | "ANTHROPIC_BYOK" | "GOOGLE_BYOK";
+  const validProviders: BYOKProvider[] = ["OPENROUTER_BYOK", "OPENAI_BYOK", "ANTHROPIC_BYOK", "GOOGLE_BYOK"];
+  let detectedProvider: BYOKProvider = "OPENROUTER_BYOK";
+  if (body.provider && validProviders.includes(body.provider as BYOKProvider)) {
+    detectedProvider = body.provider as BYOKProvider;
+  } else {
+    const key = body.apiKey!.trim();
+    if (key.startsWith("sk-ant-") || key.startsWith("sk-ant")) detectedProvider = "ANTHROPIC_BYOK";
+    else if (key.startsWith("sk-") && !key.startsWith("sk-or-")) detectedProvider = "OPENAI_BYOK";
+    else if (key.startsWith("AIza")) detectedProvider = "GOOGLE_BYOK";
+    else if (key.startsWith("sk-or-")) detectedProvider = "OPENROUTER_BYOK";
+  }
+
   await prisma.user.update({
     where: { id: user.id },
     data: {
-      aiProvider: "OPENROUTER_BYOK",
+      aiProvider: detectedProvider,
       aiApiKeyEncrypted: encryptedKey,
       openrouterRefreshToken: null,
     },
@@ -106,7 +120,8 @@ export async function PUT(req: Request) {
     action: "ai.byok_configured",
     targetType: "User",
     targetId: user.id,
+    metadata: { provider: detectedProvider },
   });
 
-  return NextResponse.json({ ok: true, provider: "OPENROUTER_BYOK" });
+  return NextResponse.json({ ok: true, provider: detectedProvider });
 }

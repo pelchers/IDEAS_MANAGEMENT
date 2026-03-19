@@ -16,6 +16,9 @@ enum AiProvider {
   NONE
   OPENROUTER_OAUTH
   OPENROUTER_BYOK
+  OPENAI_BYOK
+  ANTHROPIC_BYOK
+  GOOGLE_BYOK
 }
 
 model User {

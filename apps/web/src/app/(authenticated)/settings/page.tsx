@@ -388,7 +388,15 @@ function SettingsContent() {
                       ? "NO AI PROVIDER"
                       : aiConfig.provider === "OPENROUTER_OAUTH"
                       ? "OPENROUTER (OAUTH)"
-                      : "OPENROUTER (API KEY)"}
+                      : aiConfig.provider === "OPENROUTER_BYOK"
+                      ? "OPENROUTER (API KEY)"
+                      : aiConfig.provider === "OPENAI_BYOK"
+                      ? "OPENAI (API KEY)"
+                      : aiConfig.provider === "ANTHROPIC_BYOK"
+                      ? "ANTHROPIC / CLAUDE (API KEY)"
+                      : aiConfig.provider === "GOOGLE_BYOK"
+                      ? "GOOGLE / GEMINI (API KEY)"
+                      : aiConfig.provider}
                   </div>
                   <div
                     className={`font-mono text-[0.75rem] ${
@@ -435,13 +443,19 @@ function SettingsContent() {
                   OPTION 2: PASTE API KEY
                 </h3>
                 <p className="font-mono text-[0.75rem] text-gray-mid mb-3 leading-relaxed">
-                  Paste your OpenRouter API key directly. Get one at openrouter.ai/keys.
+                  Paste an API key from any supported provider. Key prefix auto-detects the provider.
                 </p>
+                <div className="font-mono text-[0.65rem] text-gray-mid mb-3 leading-relaxed flex flex-col gap-1">
+                  <span><strong>OpenRouter:</strong> sk-or-v1-... (openrouter.ai/keys — 200+ models)</span>
+                  <span><strong>OpenAI:</strong> sk-... (platform.openai.com — GPT-4o, o1)</span>
+                  <span><strong>Anthropic:</strong> sk-ant-... (console.anthropic.com — Claude)</span>
+                  <span><strong>Google:</strong> AIza... (aistudio.google.com — Gemini)</span>
+                </div>
                 <div className="flex gap-2">
                   <input
                     type="password"
                     className="nb-input flex-1"
-                    placeholder="sk-or-v1-..."
+                    placeholder="sk-or-..., sk-..., sk-ant-..., or AIza..."
                     value={byokKey}
                     onChange={(e) => setByokKey(e.target.value)}
                     disabled={aiConfig.provider !== "NONE" || aiSaving}

@@ -128,6 +128,28 @@ Current tools only write to AiToolOutput (a log table). This phase rewrites all 
 - [x] Detailed tool descriptions so AI model knows when to use each
 - [x] artifact-helpers.ts: shared readArtifact/writeArtifact (Prisma upsert with revision increment)
 
+## Phase 6 — Multi-Provider Support (2026-03-19) ✅
+
+- [x] Install @ai-sdk/anthropic and @ai-sdk/google providers
+- [x] Add OPENAI_BYOK, ANTHROPIC_BYOK, GOOGLE_BYOK to AiProvider enum + migration
+- [x] Update getUserModel to resolve all 5 providers with correct SDK:
+  - OpenRouter (OAuth/BYOK) → createOpenRouter → default: claude-sonnet-4
+  - OpenAI (BYOK) → openai.withApiKey → default: gpt-4o
+  - Anthropic (BYOK) → anthropic.withApiKey → default: claude-sonnet-4
+  - Google (BYOK) → google.withApiKey → default: gemini-2.0-flash
+  - Fallback: server OPENAI_API_KEY env var
+- [x] Auto-detect provider from key prefix (sk-ant → Anthropic, sk- → OpenAI, AIza → Google, sk-or → OpenRouter)
+- [x] Update Settings UI to show all supported providers with key format hints
+- [x] Display detected provider name in connected status
+
+### Tool Calling Compatibility
+All default models support tool/function calling:
+- GPT-4o, GPT-4-turbo ✅
+- Claude 3+, Claude 4 ✅
+- Gemini 1.5+, Gemini 2.0 ✅
+- OpenRouter: depends on model (all defaults support tools)
+- Vercel AI SDK handles gracefully if model doesn't support tools
+
 ## Phase 3 — AI Chat Testing
 
 - [x] Playwright screenshots (desktop + mobile)
