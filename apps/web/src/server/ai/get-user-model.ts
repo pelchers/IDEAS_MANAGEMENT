@@ -2,6 +2,7 @@ import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
+// Ollama via OpenAI-compatible API (better SDK compatibility than native provider)
 import { decrypt } from "./crypto";
 import { prisma } from "@/server/db";
 import type { LanguageModel } from "ai";
@@ -14,22 +15,36 @@ const DEFAULT_MODELS: Record<string, string> = {
   openai: "gpt-4o",
   anthropic: "claude-sonnet-4-20250514",
   google: "gemini-2.0-flash",
+  ollama: "ministral:3b",
 };
+
+/**
+ * Check if Ollama is running on localhost.
+ */
+async function isOllamaRunning(): Promise<boolean> {
+  try {
+    const res = await fetch("http://localhost:11434/api/tags", { signal: AbortSignal.timeout(2000) });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Resolve the AI model for a given user.
  *
  * Priority:
  * 1. User's configured provider key → appropriate SDK
- * 2. Server OPENAI_API_KEY env var → direct OpenAI (fallback)
- * 3. null → AI not available
+ * 2. Ollama local (if configured and running) → localhost:11434
+ * 3. Server OPENAI_API_KEY env var → direct OpenAI (fallback)
+ * 4. null → AI not available
  *
  * Tool calling support:
  * - OpenAI (GPT-4o, GPT-4-turbo): full tool support
  * - Anthropic (Claude 3+): full tool support
  * - Google (Gemini 1.5+, 2.0): full tool support
  * - OpenRouter: depends on underlying model (Claude, GPT-4o, Gemini all work)
- * - Older/smaller models may not support tools — AI SDK handles gracefully
+ * - Ollama (Ministral 3B, Qwen3-4B): full tool support via llama.cpp
  */
 export async function getUserModel(
   userId: string,
@@ -45,7 +60,8 @@ export async function getUserModel(
 
   if (!user) return null;
 
-  if (user.aiProvider !== "NONE" && user.aiApiKeyEncrypted) {
+  // Cloud providers (require API key)
+  if (user.aiProvider !== "NONE" && user.aiProvider !== "OLLAMA_LOCAL" && user.aiApiKeyEncrypted) {
     const apiKey = decrypt(user.aiApiKeyEncrypted);
 
     switch (user.aiProvider) {
@@ -69,6 +85,15 @@ export async function getUserModel(
     }
   }
 
+  // Ollama local (no API key needed) — use OpenAI-compatible endpoint
+  if (user.aiProvider === "OLLAMA_LOCAL") {
+    const running = await isOllamaRunning();
+    if (running) {
+      const ollamaOai = createOpenAI({ baseURL: "http://localhost:11434/v1", apiKey: "ollama" });
+      return { model: ollamaOai(modelId || DEFAULT_MODELS.ollama), provider: "ollama" };
+    }
+  }
+
   // Fallback: server-side OpenAI key
   if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== "sk-...") {
     const fallbackOa = createOpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -76,6 +101,13 @@ export async function getUserModel(
       model: fallbackOa(modelId || "gpt-4o"),
       provider: "openai-fallback",
     };
+  }
+
+  // Last resort: try Ollama even if not explicitly configured
+  const ollamaAvailable = await isOllamaRunning();
+  if (ollamaAvailable) {
+    const ollamaOai = createOpenAI({ baseURL: "http://localhost:11434/v1", apiKey: "ollama" });
+    return { model: ollamaOai(modelId || DEFAULT_MODELS.ollama), provider: "ollama-auto" };
   }
 
   return null;

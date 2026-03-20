@@ -396,6 +396,8 @@ function SettingsContent() {
                       ? "ANTHROPIC / CLAUDE (API KEY)"
                       : aiConfig.provider === "GOOGLE_BYOK"
                       ? "GOOGLE / GEMINI (API KEY)"
+                      : aiConfig.provider === "OLLAMA_LOCAL"
+                      ? "OLLAMA (LOCAL)"
                       : aiConfig.provider}
                   </div>
                   <div
@@ -417,6 +419,41 @@ function SettingsContent() {
                     DISCONNECT
                   </button>
                 )}
+              </div>
+
+              {/* Use Built-In AI (Ollama) */}
+              <div className="mb-6 p-4 border-2 border-dashed border-malachite">
+                <h3 className="font-bold text-[0.85rem] uppercase tracking-wider mb-2 text-malachite">
+                  BUILT-IN AI (NO API KEY NEEDED)
+                </h3>
+                <p className="font-mono text-[0.75rem] text-gray-mid mb-3 leading-relaxed">
+                  Use a local AI model via Ollama. Free, private, runs on your machine.
+                  Requires <a href="https://ollama.com" target="_blank" rel="noopener" className="underline font-bold">Ollama</a> installed with a model like <code className="bg-creamy-milk px-1">ministral:3b</code>.
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    className="nb-btn nb-btn--primary"
+                    onClick={async () => {
+                      setAiSaving(true); setAiMessage(null);
+                      try {
+                        // Check if Ollama is running
+                        const check = await fetch("http://localhost:11434/api/tags").catch(() => null);
+                        if (!check?.ok) {
+                          setAiMessage({ type: "error", text: "Ollama not detected on localhost:11434. Install Ollama and run: ollama pull ministral:3b" });
+                          setAiSaving(false); return;
+                        }
+                        const res = await fetch("/api/ai/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "connect_ollama" }) });
+                        const data = await res.json();
+                        if (data.ok) { setAiMessage({ type: "success", text: "Connected to local Ollama!" }); fetchAiConfig(); }
+                        else { setAiMessage({ type: "error", text: "Failed to connect." }); }
+                      } catch { setAiMessage({ type: "error", text: "Network error." }); }
+                      setAiSaving(false);
+                    }}
+                    disabled={aiConfig.provider !== "NONE" || aiSaving}
+                  >
+                    CONNECT OLLAMA
+                  </button>
+                </div>
               </div>
 
               {/* Connect via OpenRouter OAuth */}

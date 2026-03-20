@@ -82,6 +82,16 @@ export async function PUT(req: Request) {
     return NextResponse.json({ ok: true, provider: "NONE" });
   }
 
+  // Handle Ollama local connect
+  if (body.action === "connect_ollama" || body.provider === "OLLAMA_LOCAL") {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { aiProvider: "OLLAMA_LOCAL", aiApiKeyEncrypted: null },
+    });
+    await auditLog({ actorUserId: user.id, action: "ai.ollama_connected", targetType: "User", targetId: user.id });
+    return NextResponse.json({ ok: true, provider: "OLLAMA_LOCAL" });
+  }
+
   // Save BYOK key
   if (!body.apiKey || typeof body.apiKey !== "string" || body.apiKey.trim().length < 10) {
     return NextResponse.json(

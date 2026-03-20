@@ -19,6 +19,7 @@ enum AiProvider {
   OPENAI_BYOK
   ANTHROPIC_BYOK
   GOOGLE_BYOK
+  OLLAMA_LOCAL
 }
 
 model User {

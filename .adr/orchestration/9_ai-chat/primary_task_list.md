@@ -150,6 +150,34 @@ All default models support tool/function calling:
 - OpenRouter: depends on model (all defaults support tools)
 - Vercel AI SDK handles gracefully if model doesn't support tools
 
+## Phase 7 — Built-In Local AI via Ollama (2026-03-20)
+
+Bundle a local AI model so users can use the AI features without any API key. Chargeable as a "built-in AI" tier.
+
+### Model: Ministral 3B (via Ollama)
+- ~2GB download (Q4 GGUF quantized)
+- Apache 2.0 license (can bundle and charge)
+- Tool calling: native support (works with all 12 tools)
+- Vision: YES (0.4B vision encoder — can see page screenshots)
+- Runs locally via Ollama at localhost:11434
+
+### Implementation
+- [ ] Install `ollama-ai-provider` for Vercel AI SDK
+- [ ] Add OLLAMA_LOCAL to AiProvider enum + migration
+- [ ] Update getUserModel to resolve Ollama provider (localhost:11434)
+- [ ] Add "Use Built-In AI" option in Settings (no API key needed)
+- [ ] Auto-detect if Ollama is running on localhost
+- [ ] Show Ollama setup instructions if not running
+- [ ] Settings UI: Ollama status indicator + model name display
+- [ ] Test all 12 tools with Ministral 3B via Ollama
+- [ ] Validate tool calling accuracy with local model
+- [ ] Document setup in appdocs
+
+### Architecture
+- Web app: user installs Ollama separately, app connects to localhost:11434
+- Desktop app (future): bundle Ollama via electron-ollama, auto-download model on first launch
+- Fallback chain: User's API key → Ollama local → server fallback → mock responses
+
 ## Phase 3 — AI Chat Testing
 
 - [x] Playwright screenshots (desktop + mobile)
