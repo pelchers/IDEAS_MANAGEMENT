@@ -1,80 +1,77 @@
 # Remaining Backend Work
 
-> **Context:** Sessions 1–9 completed frontend-only builds. All views render with mock/hardcoded data. Only auth (signin/signup/signout) is wired to real API routes. The backend uses Prisma + PostgreSQL with Next.js API routes (NOT Convex). This document tracks what still needs to be wired for each session.
+> **Updated 2026-03-20.** Most sessions are now fully wired to real backend APIs.
 
 ---
 
-## Session 4 — Dashboard & Projects
+## Session 4 — Dashboard & Projects ✅
 
-- [ ] Dashboard stats (project count, idea count, task count) from Prisma queries via API route
-- [ ] Activity feed from audit log table (GET /api/audit or new endpoint)
-- [ ] Projects list wired to GET /api/projects (already exists and works)
-- [ ] Create project form wired to POST /api/projects (already exists)
-- [ ] Project detail page loads real project data by ID (GET /api/projects/[id])
+- [x] Dashboard stats from real Prisma queries (GET /api/dashboard)
+- [x] Activity feed from audit log table
+- [x] Projects list wired to GET /api/projects
+- [x] Create project form wired to POST /api/projects
+- [x] Project detail page loads real project data by ID
 
-## Session 5 — Kanban
+## Session 5 — Kanban ✅
 
-- [ ] Kanban board persistence via artifact API (GET/PUT /api/projects/[id]/artifacts/kanban/board)
-- [ ] Drag-and-drop state changes saved via debounced PUT
-- [ ] Card CRUD (create, edit, delete, move) wired to artifact API
-- [ ] Auto-save on column/card changes
+- [x] Kanban board persistence via artifact API
+- [x] Card CRUD wired to artifact API
+- [x] Auto-save on changes
 
-## Session 6 — Whiteboard
+## Session 6 — Whiteboard ✅
 
-- [ ] Whiteboard persistence via artifact API (GET/PUT /api/projects/[id]/artifacts/whiteboard/board)
-- [ ] Save/load canvas state (drawings array, sticky note positions) as JSON
-- [ ] Auto-save on drawing/sticky changes
+- [x] Whiteboard persistence via artifact API
+- [x] Save/load canvas state as JSON
+- [x] Auto-save on drawing/sticky changes
 
-## Session 7 — Schema Planner
+## Session 7 — Schema Planner ✅
 
-- [ ] Schema persistence via artifact API (GET/PUT /api/projects/[id]/artifacts/schema/schema.graph)
-- [ ] Save/load entity graph as JSON
-- [ ] Auto-save on entity/field changes
+- [x] Schema persistence via artifact API
+- [x] Full entity/field/relation CRUD + comprehensive PG features
+- [x] Auto-save on changes
 
-## Session 8 — Ideas & Directory Tree & Settings
+## Session 8 — Ideas & Directory Tree & Settings ✅
 
-- [ ] Ideas CRUD via API routes (GET/POST/PUT/DELETE /api/projects/[id]/ideas)
-- [ ] Idea capture form saves to DB
-- [ ] Directory tree from artifact API (GET/PUT /api/projects/[id]/artifacts/directory/tree)
-- [ ] Settings save to user profile (PUT /api/auth/me)
-- [ ] Theme/preference persistence in user record
+- [x] Ideas CRUD via artifact API with auto-save
+- [x] Quick capture form
+- [x] Directory tree CRUD via artifact API (GitHub import, local import, paste tree)
+- [x] Settings preferences persisted to DB (JSON field)
+- [x] Export all data, delete account functional
+- [x] Integrations wired (GitHub, Slack, Stripe)
 
-## Session 9 — AI Chat
+## Session 9 — AI Chat ✅
 
-- [ ] OpenRouter OAuth PKCE flow (redirect to OpenRouter, handle callback, store user-scoped API key)
-- [ ] BYOK fallback (user pastes OpenAI/Anthropic key, encrypted storage in user record)
-- [ ] AI Configuration section in Settings (connect button + BYOK input)
-- [ ] Chat sessions CRUD via API routes (GET/POST/DELETE /api/ai/sessions)
-- [ ] Message persistence to Prisma per session
-- [ ] Streaming responses via Vercel AI SDK + OpenRouter provider using user's key
-- [ ] Model selection dropdown (fetched from OpenRouter API)
-- [ ] Error state when no AI configured — prompt to connect account
+- [x] Multi-provider: OpenRouter, OpenAI, Anthropic, Google, Ollama local
+- [x] BYOK with auto-detect from key prefix
+- [x] AI Configuration in Settings with all 6 provider options
+- [x] Chat sessions CRUD via Prisma
+- [x] Message persistence per session
+- [x] Streaming responses via Vercel AI SDK
+- [x] 12 cross-page tools that write to real artifacts
+- [x] Contextual AI helper on all pages
+- [x] Built-in local AI via Ollama (Ministral 3B)
 
-## Session 10 — Stripe Billing
+## Session 10 — Stripe Billing — NOT STARTED
 
-- [ ] Stripe checkout session creation (POST /api/billing/checkout — already exists)
-- [ ] Stripe customer portal (POST /api/billing/portal — already exists)
-- [ ] Webhook handling for subscription lifecycle events (POST /api/billing/webhook — already exists)
 - [ ] Billing UI: plan cards, manage subscription button, billing history
-- [ ] Entitlement model (Free/Pro/Team tier gates)
-- [ ] Note: AI costs are separate — handled by OpenRouter (user's own account), not Stripe
+- [ ] Wire plan selection to POST /api/billing/checkout
+- [ ] Wire manage button to POST /api/billing/portal
+- [ ] Test webhook handling for subscription lifecycle
+- [ ] Entitlement gates on features
 
-## Session 11 — Sync & Conflicts
+## Session 11 — Sync & Conflicts — NOT STARTED
 
 - [ ] Sync status indicator in app shell
 - [ ] Conflict detection on artifact save (version mismatch)
 - [ ] Conflict resolution UI at /projects/[id]/conflicts
 - [ ] Accept local / accept remote / manual merge actions
-- [ ] Optimistic updates for mutations
 
-## Session 12 — Hardening (Cyclic)
+## Session 12 — Hardening — NOT STARTED
 
-- [ ] Error boundaries and graceful degradation for all views
-- [ ] Loading states and skeletons for all async operations
+- [ ] Error boundaries and graceful degradation
+- [ ] Loading states and skeletons
 - [ ] Rate limiting on API routes
-- [ ] Input sanitization and validation (Zod schemas end-to-end)
-- [ ] Accessibility audit and fixes
-- [ ] Performance profiling and optimization
-- [ ] Security review (auth gates, data isolation per user)
-- [ ] Full E2E Playwright validation across all views
-- [ ] Visual comparison against pass-1 screenshots
+- [ ] Input sanitization and validation (Zod end-to-end)
+- [ ] Accessibility audit
+- [ ] Security review
+- [ ] Full E2E Playwright validation

@@ -54,15 +54,16 @@ export async function GET(req: Request) {
   let totalTasks = 0;
   let completedTasks = 0;
   for (const artifact of kanbanArtifacts) {
-    const content = artifact.content as { columns?: Array<{ id: string; cards?: unknown[] }> } | null;
+    const content = artifact.content as { columns?: Array<{ id?: string; name?: string; cards?: unknown[] }> } | null;
     if (content && Array.isArray(content.columns)) {
       for (const col of content.columns) {
         const cardCount = Array.isArray(col.cards) ? col.cards.length : 0;
         totalTasks += cardCount;
-        if (col.id === "in-progress" || col.id === "inprogress") {
+        const colName = (col.name || col.id || "").toUpperCase();
+        if (colName.includes("PROGRESS") || colName.includes("DOING") || colName.includes("WORKING")) {
           tasksInProgress += cardCount;
         }
-        if (col.id === "done" || col.id === "completed") {
+        if (colName.includes("DONE") || colName.includes("COMPLETE") || colName.includes("FINISHED")) {
           completedTasks += cardCount;
         }
       }
