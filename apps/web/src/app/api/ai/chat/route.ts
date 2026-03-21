@@ -1,6 +1,7 @@
 import { streamText, tool, stepCountIs, convertToModelMessages } from "ai";
 import { NextResponse } from "next/server";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
+import { checkEntitlement, FEATURES } from "@/server/billing/entitlements";
 import { prisma } from "@/server/db";
 import type { Prisma } from "@prisma/client";
 import { getUserModel } from "@/server/ai/get-user-model";
@@ -37,10 +38,26 @@ import {
  * Requires authentication and AI_CHAT entitlement (admin bypasses).
  */
 export async function POST(req: Request) {
-  // Auth (entitlement gate deferred to session 10 billing implementation)
+  // Auth + AI access check
   const authResult = await requireAuth(req);
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
+
+  // AI access: admin bypass, BYOK bypass (user pays their own provider), or entitlement required
+  if (user.role !== "ADMIN") {
+    // Check if user has their own API key (BYOK = they pay their provider, no billing needed from us)
+    const userAiConfig = await prisma.user.findUnique({ where: { id: user.id }, select: { aiProvider: true } });
+    const isBYOK = userAiConfig?.aiProvider && !["NONE", "OLLAMA_LOCAL"].includes(userAiConfig.aiProvider);
+    if (!isBYOK) {
+      const hasEntitlement = await checkEntitlement(user.id, FEATURES.AI_CHAT, user.role);
+      if (!hasEntitlement) {
+        return NextResponse.json(
+          { ok: false, error: "ai_subscription_required", message: "Built-in AI requires an active subscription. Go to Settings to subscribe, or add your own API key to use AI for free." },
+          { status: 403 }
+        );
+      }
+    }
+  }
 
   // Parse request body
   let body: {

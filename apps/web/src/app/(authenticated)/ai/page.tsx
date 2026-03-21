@@ -169,7 +169,7 @@ export default function AiPage() {
           return;
         }
         if (res.status === 403) {
-          setMessages((prev) => [...prev, { role: "ai", text: "AI access requires a subscription. Check Settings > AI Configuration to connect a provider." }]);
+          setMessages((prev) => [...prev, { role: "ai", text: "Built-in AI requires a subscription. You can:\n1. Subscribe to a Pro or Team plan for built-in AI access\n2. Add your own API key (OpenAI, Anthropic, Google) in Settings — no subscription needed\n3. If you're an admin, enable AI access in Settings > AI Configuration" }]);
           setIsTyping(false);
           return;
         }

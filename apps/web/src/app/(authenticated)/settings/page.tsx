@@ -48,6 +48,8 @@ function SettingsContent() {
   const [byokKey, setByokKey] = useState("");
   const [aiSaving, setAiSaving] = useState(false);
   const [integrations, setIntegrations] = useState<Integration[]>(DEFAULT_INTEGRATIONS);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [hasAiEntitlement, setHasAiEntitlement] = useState(false);
   const [aiMessage, setAiMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   // Fetch AI config on mount
@@ -150,6 +152,8 @@ function SettingsContent() {
       .then((data) => {
         if (data.ok && data.user) {
           setProfileEmail(data.user.email);
+          if (data.user.role === "ADMIN") setIsAdmin(true);
+          if (data.entitlements?.features?.includes("ai_chat")) setHasAiEntitlement(true);
           if (data.user.preferences && typeof data.user.preferences === "object") {
             const prefs = data.user.preferences as Record<string, unknown>;
             setPreferences((prev) => ({ ...prev, ...prefs }));
@@ -420,6 +424,40 @@ function SettingsContent() {
                   </button>
                 )}
               </div>
+
+              {/* Admin: Grant AI access */}
+              {isAdmin && !hasAiEntitlement && (
+                <div className="mb-6 p-4 border-2 border-dashed border-amethyst">
+                  <h3 className="font-bold text-[0.85rem] uppercase tracking-wider mb-2 text-amethyst">
+                    ADMIN: ENABLE AI ACCESS
+                  </h3>
+                  <p className="font-mono text-[0.75rem] text-gray-mid mb-3 leading-relaxed">
+                    As an admin, you can enable AI features for your account without billing.
+                  </p>
+                  <button
+                    className="nb-btn nb-btn--primary"
+                    onClick={async () => {
+                      setAiSaving(true);
+                      try {
+                        const res = await fetch("/api/admin/grant-entitlement", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ feature: "ai_chat" }) });
+                        const data = await res.json();
+                        if (data.ok) { setHasAiEntitlement(true); setAiMessage({ type: "success", text: "AI access enabled! You can now use the built-in AI." }); }
+                        else { setAiMessage({ type: "error", text: "Failed to grant access." }); }
+                      } catch { setAiMessage({ type: "error", text: "Network error." }); }
+                      setAiSaving(false);
+                    }}
+                    disabled={aiSaving}
+                  >
+                    ENABLE AI (ADMIN)
+                  </button>
+                </div>
+              )}
+
+              {isAdmin && hasAiEntitlement && (
+                <div className="mb-6 p-3 border-2 border-malachite bg-malachite/10 font-mono text-[0.8rem] text-malachite">
+                  ● AI access enabled (admin grant). You can use built-in AI and all providers.
+                </div>
+              )}
 
               {/* Use Built-In AI (Ollama) */}
               <div className="mb-6 p-4 border-2 border-dashed border-malachite">
