@@ -1,8 +1,6 @@
 import { streamText, tool, stepCountIs, convertToModelMessages } from "ai";
 import { NextResponse } from "next/server";
-import { isErrorResponse } from "@/server/auth/admin";
-import { requireEntitlement } from "@/server/billing/require-entitlement";
-import { FEATURES } from "@/server/billing/entitlements";
+import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import type { Prisma } from "@prisma/client";
 import { getUserModel } from "@/server/ai/get-user-model";
@@ -39,10 +37,10 @@ import {
  * Requires authentication and AI_CHAT entitlement (admin bypasses).
  */
 export async function POST(req: Request) {
-  // Auth + entitlement gate
-  const entitlementResult = await requireEntitlement(req, FEATURES.AI_CHAT);
-  if (isErrorResponse(entitlementResult)) return entitlementResult;
-  const user = entitlementResult;
+  // Auth (entitlement gate deferred to session 10 billing implementation)
+  const authResult = await requireAuth(req);
+  if (isErrorResponse(authResult)) return authResult;
+  const user = authResult;
 
   // Parse request body
   let body: {

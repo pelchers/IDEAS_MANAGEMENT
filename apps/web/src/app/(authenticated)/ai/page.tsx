@@ -159,12 +159,22 @@ export default function AiPage() {
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => null);
+        if (res.status === 401) {
+          window.location.href = "/signin";
+          return;
+        }
         if (res.status === 503) {
-          setMessages((prev) => [...prev, { role: "ai", text: "AI not configured. Go to **Settings** to connect Ollama or add an API key." }]);
+          setMessages((prev) => [...prev, { role: "ai", text: "AI not available. Install [Ollama](https://ollama.com) for free local AI, or go to Settings to add an API key." }]);
           setIsTyping(false);
           return;
         }
-        throw new Error(errorData?.message || "AI request failed");
+        if (res.status === 403) {
+          setMessages((prev) => [...prev, { role: "ai", text: "AI access requires a subscription. Check Settings > AI Configuration to connect a provider." }]);
+          setIsTyping(false);
+          return;
+        }
+        const errMsg = errorData?.message || errorData?.error || `Server error (${res.status})`;
+        throw new Error(errMsg);
       }
 
       // Stream the response — parse text + tool calls

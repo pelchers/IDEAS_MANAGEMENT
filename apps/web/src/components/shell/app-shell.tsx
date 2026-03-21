@@ -99,16 +99,26 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     }
   }, [selectedProjectId, selectedProjectName]);
 
-  // Fetch user info
+  // Fetch user info — redirect to signin if session expired
   useEffect(() => {
     fetch("/api/auth/me")
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 401) {
+          window.location.href = "/signin";
+          return null;
+        }
+        return res.json();
+      })
       .then((data) => {
-        if (data.ok && data.user) {
+        if (data?.ok && data.user) {
           setUserInfo({ email: data.user.email, role: data.user.role, displayName: data.user.displayName ?? undefined });
+        } else if (data && !data.ok) {
+          window.location.href = "/signin";
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        window.location.href = "/signin";
+      });
   }, []);
 
   const activeProjectId = extractProjectId(pathname) || selectedProjectId;
