@@ -72,7 +72,25 @@ export function AiHelper() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [helperSessionId, setHelperSessionId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Persist/load helper session per page
+  const sessionKey = `ai_helper_session_${pathname}`;
+  useEffect(() => {
+    const savedId = typeof window !== "undefined" ? localStorage.getItem(sessionKey) : null;
+    if (savedId && isOpen) {
+      setHelperSessionId(savedId);
+      fetch(`/api/ai/sessions/${savedId}`).then((r) => r.json()).then((d) => {
+        if (d.ok && d.session?.messages) {
+          setMessages(d.session.messages.filter((m: { role: string }) => m.role !== "TOOL").map((m: { role: string; content: string }) => ({
+            role: m.role === "USER" ? "user" as const : "ai" as const,
+            text: m.content,
+          })));
+        }
+      }).catch(() => {});
+    }
+  }, [sessionKey, isOpen]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -96,13 +114,20 @@ export function AiHelper() {
       const res = await fetch("/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: apiMessages, projectId, pageContext: pageName }),
+        body: JSON.stringify({ messages: apiMessages, projectId, pageContext: pageName, sessionId: helperSessionId }),
       });
+
+      // Save session ID from response
+      const newSessionId = res.headers.get("X-Session-Id");
+      if (newSessionId) {
+        setHelperSessionId(newSessionId);
+        if (typeof window !== "undefined") localStorage.setItem(sessionKey, newSessionId);
+      }
 
       if (!res.ok) {
         const errData = await res.json().catch(() => null);
         if (res.status === 503) {
-          setMessages((prev) => [...prev, { role: "ai", text: "AI not configured. Go to Settings to connect your OpenRouter account." }]);
+          setMessages((prev) => [...prev, { role: "ai", text: "AI not available. Install Ollama for free local AI, or add an API key in Settings." }]);
           setIsTyping(false);
           return;
         }
@@ -183,12 +208,24 @@ export function AiHelper() {
             display: "flex", alignItems: "center", justifyContent: "space-between",
           }}>
             <span style={{ fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              AI HELPER — {pageName.toUpperCase()}
+              AI — {pageName.toUpperCase()}
             </span>
-            <button
-              onClick={() => setIsOpen(false)}
-              style={{ backgroundColor: "transparent", border: "none", color: "#F8F3EC", fontSize: "1.2rem", cursor: "pointer", fontWeight: 700 }}
-            >X</button>
+            <div style={{ display: "flex", gap: "4px" }}>
+              <button
+                onClick={() => { window.location.href = helperSessionId ? `/ai?session=${helperSessionId}` : "/ai"; }}
+                style={{ backgroundColor: "transparent", border: "1px solid #F8F3EC", color: "#F8F3EC", fontSize: "0.6rem", cursor: "pointer", fontWeight: 700, padding: "2px 6px", textTransform: "uppercase" }}
+                title="Expand to full chat"
+              >EXPAND</button>
+              <button
+                onClick={() => { setMessages([]); setHelperSessionId(null); if (typeof window !== "undefined") localStorage.removeItem(sessionKey); }}
+                style={{ backgroundColor: "transparent", border: "1px solid #F8F3EC", color: "#F8F3EC", fontSize: "0.6rem", cursor: "pointer", fontWeight: 700, padding: "2px 6px", textTransform: "uppercase" }}
+                title="New conversation"
+              >NEW</button>
+              <button
+                onClick={() => setIsOpen(false)}
+                style={{ backgroundColor: "transparent", border: "none", color: "#F8F3EC", fontSize: "1.2rem", cursor: "pointer", fontWeight: 700 }}
+              >X</button>
+            </div>
           </div>
 
           {/* Quick actions */}

@@ -4,6 +4,7 @@ import { isErrorResponse } from "@/server/auth/admin";
 import { requireEntitlement } from "@/server/billing/require-entitlement";
 import { FEATURES } from "@/server/billing/entitlements";
 import { prisma } from "@/server/db";
+import type { Prisma } from "@prisma/client";
 import { getUserModel } from "@/server/ai/get-user-model";
 import {
   addIdeaSchema,
@@ -98,27 +99,55 @@ export async function POST(req: Request) {
     });
   }
 
-  // Build system prompt
+  // Build system prompt with context injection
   const systemParts = [
     "You are an AI assistant for the IDEA-MANAGEMENT application.",
-    "You help users manage their projects, ideas, kanban boards, and project structures.",
-    "When users ask you to perform actions, use the available tools.",
-    "Always confirm what you did after using a tool.",
+    "You help users manage their projects, ideas, kanban boards, schemas, whiteboards, and directory trees.",
+    "When users ask you to perform actions, use the available tools. You can use tools from ANY page — cross-page actions are supported.",
+    "Always confirm what you did after using a tool with a brief summary.",
+    "Be concise and direct. Use tools proactively when the user's intent is clear.",
   ];
   if (projectId) {
-    systemParts.push(`The user is currently working in project: ${projectId}.`);
-    systemParts.push("Use this projectId when calling tools unless the user specifies a different project.");
+    systemParts.push(`\nCurrent project ID: ${projectId}. Use this projectId when calling tools unless the user specifies a different project.`);
+
+    // Auto-inject project artifact state for context
+    try {
+      const artifacts = await prisma.projectArtifact.findMany({
+        where: { projectId, artifactPath: { in: ["ideas/ideas.json", "kanban/board.json", "schema/schema.graph.json"] } },
+        select: { artifactPath: true, content: true },
+      });
+      const contextParts: string[] = [];
+      for (const a of artifacts) {
+        const c = a.content as Record<string, unknown> | null;
+        if (!c) continue;
+        if (a.artifactPath === "ideas/ideas.json" && Array.isArray(c.ideas)) {
+          const ideas = c.ideas as Array<{ title?: string }>;
+          contextParts.push(`Ideas (${ideas.length}): ${ideas.slice(0, 5).map((i) => i.title || "Untitled").join(", ")}${ideas.length > 5 ? "..." : ""}`);
+        }
+        if (a.artifactPath === "kanban/board.json" && Array.isArray(c.columns)) {
+          const cols = c.columns as Array<{ name?: string; cards?: unknown[] }>;
+          contextParts.push(`Kanban: ${cols.map((col) => `${col.name || "?"} (${(col.cards || []).length} cards)`).join(", ")}`);
+        }
+        if (a.artifactPath === "schema/schema.graph.json" && Array.isArray(c.entities)) {
+          const ents = c.entities as Array<{ name?: string; fields?: unknown[] }>;
+          contextParts.push(`Schema: ${ents.map((e) => `${e.name || "?"} (${(e.fields || []).length} fields)`).join(", ")}`);
+        }
+      }
+      if (contextParts.length > 0) {
+        systemParts.push(`\nCurrent project state:\n${contextParts.join("\n")}`);
+      }
+    } catch { /* silent — don't block chat on context read failure */ }
   }
   if (pageContext) {
     const pageHints: Record<string, string> = {
-      "Schema Planner": "The user is on the Schema Planner page. Help them design database schemas, suggest entities and fields, normalize tables, explain relationships. You can suggest SQL patterns, index strategies, and data modeling best practices.",
-      "Ideas": "The user is on the Ideas page. Help them brainstorm, prioritize, and expand on ideas. Use the add_idea tool to create ideas when asked.",
-      "Kanban Board": "The user is on the Kanban Board. Help them manage tasks, suggest cards, categorize work, and plan sprints. Use the update_kanban tool to modify the board.",
-      "Whiteboard": "The user is on the Whiteboard. Help them brainstorm visually, suggest sticky note content, and organize thinking.",
-      "Directory Tree": "The user is on the Directory Tree page. Help them plan project structure, suggest file organization, and explain conventions. Use the generate_tree tool when asked.",
-      "Dashboard": "The user is on the Dashboard. Help them understand project status, summarize activity, and suggest next actions.",
+      "Schema Planner": "The user is on the Schema Planner page. Help them design database schemas, suggest entities and fields, normalize tables, explain relationships.",
+      "Ideas": "The user is on the Ideas page. Help them brainstorm, prioritize, and expand on ideas. Use the update_ideas_artifact tool to create ideas.",
+      "Kanban Board": "The user is on the Kanban Board. Help them manage tasks, suggest cards, categorize work. Use the update_kanban_artifact tool.",
+      "Whiteboard": "The user is on the Whiteboard. Help them brainstorm visually, suggest sticky note content.",
+      "Directory Tree": "The user is on the Directory Tree page. Help them plan project structure, suggest file organization.",
+      "Dashboard": "The user is on the Dashboard. Help them understand project status, summarize activity, suggest next actions.",
     };
-    systemParts.push(`Current page: ${pageContext}.`);
+    systemParts.push(`\nCurrent page: ${pageContext}.`);
     if (pageHints[pageContext]) systemParts.push(pageHints[pageContext]);
   }
   const systemPrompt = systemParts.join("\n");
@@ -226,9 +255,28 @@ export async function POST(req: Request) {
         }),
       },
       stopWhen: stepCountIs(5),
-      onFinish: async ({ text }) => {
-        // Persist assistant response
-        if (text && activeSessionId) {
+      onFinish: async ({ text, toolCalls, toolResults }) => {
+        if (!activeSessionId) return;
+
+        // Persist tool calls as TOOL messages
+        if (toolCalls && toolCalls.length > 0) {
+          for (let i = 0; i < toolCalls.length; i++) {
+            const tc = toolCalls[i];
+            const tr = toolResults?.[i];
+            await prisma.aiChatMessage.create({
+              data: {
+                sessionId: activeSessionId,
+                role: "TOOL",
+                content: `Tool: ${tc.toolName}`,
+                toolCalls: tc as unknown as Prisma.InputJsonValue,
+                toolResults: tr as unknown as Prisma.InputJsonValue ?? null,
+              },
+            });
+          }
+        }
+
+        // Persist assistant text response
+        if (text) {
           await prisma.aiChatMessage.create({
             data: {
               sessionId: activeSessionId,

@@ -3,18 +3,22 @@
 import { useState, useRef, useEffect, useCallback, KeyboardEvent } from "react";
 
 /* ── Types ── */
-interface ChatMessage {
-  role: "user" | "ai";
-  text: string;
+interface ToolCall {
+  name: string;
+  args: Record<string, unknown>;
+  result?: unknown;
 }
 
-/* ── Mock fallback responses (used when AI is not configured) ── */
-const AI_CANNED_RESPONSES = [
-  "That's a great question! Let me think about that for a moment. Based on current best practices, I'd suggest starting with user research to validate assumptions before committing to a specific implementation path.",
-  "Interesting approach! Here are a few considerations: scalability of the solution, maintainability of the codebase, and the learning curve for new team members. Would you like me to dive deeper into any of these?",
-  "I'd recommend breaking this down into smaller, testable hypotheses. Start with the core user flow, measure engagement, then iterate. This aligns well with lean methodology principles.",
-  "Good thinking! From a technical perspective, you might want to consider using a modular architecture here. It would allow the team to work on features independently while maintaining consistency across the platform.",
-];
+interface ChatMessage {
+  role: "user" | "ai" | "tool";
+  text: string;
+  toolCalls?: ToolCall[];
+}
+
+/* ── Slash command handler ── */
+function isSlashCommand(text: string): boolean {
+  return /^\/(new|clear|rename|export|help|project)\b/.test(text.trim());
+}
 
 export default function AiPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -22,16 +26,27 @@ export default function AiPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [sessions, setSessions] = useState<{ id: string; title: string; messageCount: number; updatedAt: string }[]>([]);
-  const [aiStatus, setAiStatus] = useState<"checking" | "connected" | "not_configured">("checking");
+  const [aiStatus, setAiStatus] = useState<"checking" | "connected" | "local" | "not_configured">("checking");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [showSlashMenu, setShowSlashMenu] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  /* ── Check AI configuration on mount ── */
+  /* ── Check AI config on mount ── */
   useEffect(() => {
     fetch("/api/ai/config")
       .then((res) => res.json())
       .then((data) => {
-        setAiStatus(data.provider !== "NONE" ? "connected" : "not_configured");
+        if (data.provider === "OLLAMA_LOCAL") setAiStatus("local");
+        else if (data.provider !== "NONE") setAiStatus("connected");
+        else {
+          // Auto-detect Ollama
+          fetch("http://localhost:11434/api/tags", { signal: AbortSignal.timeout(2000) })
+            .then((r) => { if (r.ok) setAiStatus("local"); else setAiStatus("not_configured"); })
+            .catch(() => setAiStatus("not_configured"));
+        }
       })
       .catch(() => setAiStatus("not_configured"));
   }, []);
@@ -50,17 +65,24 @@ export default function AiPage() {
       const res = await fetch(`/api/ai/sessions/${sid}`);
       const data = await res.json();
       if (data.ok && data.session?.messages) {
-        setMessages(data.session.messages.map((m: { role: string; content: string }) => ({
-          role: m.role === "USER" ? "user" as const : "ai" as const,
-          text: m.content,
-        })));
+        setMessages(data.session.messages.map((m: { role: string; content: string; toolCalls?: unknown; toolResults?: unknown }) => {
+          if (m.role === "TOOL") {
+            return {
+              role: "tool" as const,
+              text: m.content,
+              toolCalls: m.toolCalls ? [{ name: (m.toolCalls as Record<string, unknown>).toolName as string || m.content, args: (m.toolCalls as Record<string, unknown>).args as Record<string, unknown> || {}, result: m.toolResults }] : undefined,
+            };
+          }
+          return {
+            role: m.role === "USER" ? "user" as const : "ai" as const,
+            text: m.content,
+          };
+        }));
       }
     } catch { setMessages([]); }
   }, []);
 
-  const newChat = useCallback(() => {
-    setSessionId(null); setMessages([]); setInput("");
-  }, []);
+  const newChat = useCallback(() => { setSessionId(null); setMessages([]); setInput(""); }, []);
 
   const deleteSession = useCallback(async (sid: string) => {
     await fetch(`/api/ai/sessions/${sid}`, { method: "DELETE" }).catch(() => {});
@@ -68,65 +90,91 @@ export default function AiPage() {
     loadSessions();
   }, [sessionId, loadSessions]);
 
-  /* ── Auto-scroll to bottom ── */
+  const renameSession = useCallback(async (sid: string, title: string) => {
+    await fetch(`/api/ai/sessions/${sid}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title }) }).catch(() => {});
+    setEditingSessionId(null);
+    loadSessions();
+  }, [loadSessions]);
+
+  const exportSession = useCallback(() => {
+    let md = `# AI Chat Session\n\n`;
+    messages.forEach((m) => {
+      if (m.role === "user") md += `**You:** ${m.text}\n\n`;
+      else if (m.role === "tool") md += `> **Tool:** ${m.text}\n\n`;
+      else md += `**AI:** ${m.text}\n\n`;
+    });
+    const blob = new Blob([md], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = "chat-session.md"; a.click();
+    URL.revokeObjectURL(url);
+  }, [messages]);
+
+  /* ── Auto-scroll ── */
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  /* ── Send message handler ── */
+  /* ── Slash commands ── */
+  const handleSlashCommand = useCallback((cmd: string) => {
+    const parts = cmd.trim().split(/\s+/);
+    const command = parts[0];
+    switch (command) {
+      case "/new": newChat(); setMessages((prev) => [...prev, { role: "ai", text: "Started a new session." }]); break;
+      case "/clear": setMessages([]); break;
+      case "/rename": if (sessionId && parts[1]) renameSession(sessionId, parts.slice(1).join(" ")); break;
+      case "/export": exportSession(); setMessages((prev) => [...prev, { role: "ai", text: "Session exported as markdown." }]); break;
+      case "/help":
+        setMessages((prev) => [...prev, { role: "ai", text: "**Available commands:**\n- `/new` — Start new session\n- `/clear` — Clear messages\n- `/rename <title>` — Rename session\n- `/export` — Download as markdown\n- `/help` — Show this help" }]);
+        break;
+      default: setMessages((prev) => [...prev, { role: "ai", text: `Unknown command: ${command}. Type /help for available commands.` }]);
+    }
+  }, [newChat, sessionId, renameSession, exportSession]);
+
+  /* ── Send message ── */
   const sendMessage = useCallback(async () => {
     const trimmed = input.trim();
     if (!trimmed || isTyping) return;
+    setInput("");
+
+    // Handle slash commands
+    if (isSlashCommand(trimmed)) { handleSlashCommand(trimmed); return; }
 
     const userMessage: ChatMessage = { role: "user", text: trimmed };
     setMessages((prev) => [...prev, userMessage]);
-    setInput("");
     setIsTyping(true);
 
-    // Build messages array for API
-    const apiMessages = [...messages, userMessage].map((m) => ({
-      role: m.role === "user" ? "user" : "assistant",
-      content: m.text,
-    }));
+    const apiMessages = [...messages, userMessage]
+      .filter((m) => m.role !== "tool")
+      .map((m) => ({ role: m.role === "user" ? "user" : "assistant", content: m.text }));
 
     try {
       const res = await fetch("/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: apiMessages,
-          sessionId,
-        }),
+        body: JSON.stringify({ messages: apiMessages, sessionId }),
       });
 
-      // Capture session ID from response header
       const newSessionId = res.headers.get("X-Session-Id");
       if (newSessionId) { setSessionId(newSessionId); loadSessions(); }
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => null);
-
-        // AI not configured — fall back to mock responses
-        if (res.status === 503 && errorData?.error === "ai_not_configured") {
-          setTimeout(() => {
-            const response = AI_CANNED_RESPONSES[Math.floor(Math.random() * AI_CANNED_RESPONSES.length)];
-            setMessages((prev) => [...prev, { role: "ai", text: response }]);
-            setIsTyping(false);
-          }, 800);
+        if (res.status === 503) {
+          setMessages((prev) => [...prev, { role: "ai", text: "AI not configured. Go to **Settings** to connect Ollama or add an API key." }]);
+          setIsTyping(false);
           return;
         }
-
         throw new Error(errorData?.message || "AI request failed");
       }
 
-      // Stream the response
+      // Stream the response — parse text + tool calls
       const reader = res.body?.getReader();
       if (!reader) throw new Error("No response body");
 
       const decoder = new TextDecoder();
       let aiText = "";
+      const pendingToolCalls: ToolCall[] = [];
 
-      // Add empty AI message that we'll update as chunks arrive
       setMessages((prev) => [...prev, { role: "ai", text: "" }]);
       setIsTyping(false);
 
@@ -135,31 +183,55 @@ export default function AiPage() {
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
-        // Parse SSE data lines for text content
-        const lines = chunk.split("\n");
-        for (const line of lines) {
+        for (const line of chunk.split("\n")) {
+          // Text content
           if (line.startsWith("0:")) {
-            // Vercel AI SDK text stream format: 0:"text content"
             try {
               const text = JSON.parse(line.slice(2));
               if (typeof text === "string") {
                 aiText += text;
-                // Update the last message in place
                 setMessages((prev) => {
                   const updated = [...prev];
-                  updated[updated.length - 1] = { role: "ai", text: aiText };
+                  updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: pendingToolCalls.length > 0 ? [...pendingToolCalls] : undefined };
                   return updated;
                 });
               }
-            } catch {
-              // Skip unparseable chunks
-            }
+            } catch { /* skip */ }
+          }
+          // Tool call (9: prefix in Vercel AI SDK)
+          if (line.startsWith("9:")) {
+            try {
+              const tc = JSON.parse(line.slice(2));
+              if (tc && tc.toolName) {
+                pendingToolCalls.push({ name: tc.toolName, args: tc.args || {} });
+                // Show tool call immediately
+                setMessages((prev) => {
+                  const updated = [...prev];
+                  updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
+                  return updated;
+                });
+              }
+            } catch { /* skip */ }
+          }
+          // Tool result (a: prefix)
+          if (line.startsWith("a:")) {
+            try {
+              const tr = JSON.parse(line.slice(2));
+              if (tr && pendingToolCalls.length > 0) {
+                const lastTc = pendingToolCalls[pendingToolCalls.length - 1];
+                lastTc.result = tr.result || tr;
+                setMessages((prev) => {
+                  const updated = [...prev];
+                  updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
+                  return updated;
+                });
+              }
+            } catch { /* skip */ }
           }
         }
       }
 
-      // If no text was streamed, show a fallback
-      if (!aiText) {
+      if (!aiText && pendingToolCalls.length === 0) {
         setMessages((prev) => {
           const updated = [...prev];
           updated[updated.length - 1] = { role: "ai", text: "I received your message but couldn't generate a response. Please try again." };
@@ -168,161 +240,196 @@ export default function AiPage() {
       }
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : "Something went wrong";
-      setMessages((prev) => [
-        ...prev,
-        { role: "ai", text: `Error: ${errMsg}` },
-      ]);
+      setMessages((prev) => [...prev, { role: "ai", text: `Error: ${errMsg}` }]);
       setIsTyping(false);
     }
-  }, [input, isTyping, messages, sessionId]);
+  }, [input, isTyping, messages, sessionId, handleSlashCommand, loadSessions]);
 
-  /* ── Enter to send, Shift+Enter for newline ── */
+  /* ── Keyboard ── */
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    // Show slash menu
+    setShowSlashMenu(input.startsWith("/") && !input.includes(" "));
   };
+
+  const filteredSessions = searchQuery
+    ? sessions.filter((s) => s.title.toLowerCase().includes(searchQuery.toLowerCase()))
+    : sessions;
+
+  const statusLabel = aiStatus === "connected" ? "CONNECTED" : aiStatus === "local" ? "LOCAL AI" : aiStatus === "not_configured" ? "NOT CONFIGURED" : "CHECKING...";
+  const statusColor = aiStatus === "connected" ? "text-malachite border-malachite" : aiStatus === "local" ? "text-cornflower border-cornflower" : aiStatus === "not_configured" ? "text-watermelon border-watermelon" : "text-gray-mid border-gray-mid";
 
   return (
     <div className="animate-[view-slam_0.3s_cubic-bezier(0.2,0,0,1)]">
       {/* View header */}
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between flex-wrap gap-2">
         <h1 className="nb-view-title">AI CHAT</h1>
-        <span
-          className={`font-mono text-[0.8rem] px-3 py-1 border-2 ${
-            aiStatus === "connected"
-              ? "text-malachite border-malachite"
-              : aiStatus === "not_configured"
-              ? "text-lemon border-lemon"
-              : "text-gray-mid border-gray-mid"
-          }`}
-        >
-          {aiStatus === "connected"
-            ? "● CONNECTED"
-            : aiStatus === "not_configured"
-            ? "● MOCK MODE"
-            : "● CHECKING..."}
-        </span>
+        <div className="flex items-center gap-2">
+          {messages.length > 0 && (
+            <button onClick={exportSession} className="nb-btn nb-btn--small font-mono text-[0.7rem]">EXPORT</button>
+          )}
+          <span className={`font-mono text-[0.8rem] px-3 py-1 border-2 ${statusColor}`}>
+            ● {statusLabel}
+          </span>
+        </div>
       </div>
 
       {/* Not configured banner */}
       {aiStatus === "not_configured" && (
-        <div className="mb-4 p-3 border-2 border-lemon bg-lemon/10 font-mono text-[0.8rem]">
-          AI not configured — using mock responses. Go to{" "}
-          <a href="/settings" className="underline font-bold">Settings</a>{" "}
-          to connect your OpenRouter account or add an API key.
+        <div className="mb-4 p-3 border-2 border-watermelon bg-watermelon/10 font-mono text-[0.8rem]">
+          AI not available. Install <a href="https://ollama.com" target="_blank" rel="noopener" className="underline font-bold">Ollama</a> for free local AI, or go to{" "}
+          <a href="/settings" className="underline font-bold">Settings</a> to add an API key.
         </div>
       )}
 
       {/* Chat layout: sidebar + main */}
-      <div className="flex gap-4" style={{ maxHeight: "calc(100vh - 220px)" }}>
+      <div className="flex gap-4" style={{ maxHeight: "calc(100vh - 200px)" }}>
         {/* Session sidebar */}
-        <div className="w-[220px] min-w-[220px] border-4 border-signal-black bg-white flex flex-col overflow-hidden" style={{ display: sessions.length > 0 || sessionId ? "flex" : "none" }}>
+        <div className="w-[240px] min-w-[240px] border-4 border-signal-black bg-white flex flex-col overflow-hidden">
           <div className="px-3 py-2 border-b-2 border-signal-black bg-signal-black text-creamy-milk font-bold text-[0.75rem] uppercase tracking-wider flex items-center justify-between">
             <span>SESSIONS</span>
-            <button onClick={newChat} className="text-[0.65rem] px-2 py-0.5 bg-creamy-milk text-signal-black border border-creamy-milk font-bold cursor-pointer hover:bg-white">NEW</button>
+            <button onClick={newChat} className="text-[0.65rem] px-2 py-0.5 bg-malachite text-white border border-malachite font-bold cursor-pointer hover:opacity-80">+ NEW</button>
+          </div>
+          {/* Search */}
+          <div className="px-2 py-1 border-b border-signal-black/20">
+            <input
+              type="text"
+              className="w-full font-mono text-[0.7rem] px-2 py-1 border border-signal-black/30 outline-none bg-transparent"
+              placeholder="Search sessions..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
           <div className="flex-1 overflow-y-auto">
-            {sessions.map((s) => (
+            {filteredSessions.map((s) => (
               <div
                 key={s.id}
                 onClick={() => switchSession(s.id)}
                 className={`px-3 py-2 cursor-pointer border-b border-dashed border-black/10 font-mono text-[0.75rem] hover:bg-creamy-milk transition-colors ${sessionId === s.id ? "bg-creamy-milk font-bold" : ""}`}
               >
-                <div className="truncate">{s.title}</div>
+                {editingSessionId === s.id ? (
+                  <input
+                    className="w-full font-mono text-[0.75rem] px-1 border border-signal-black bg-white"
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") renameSession(s.id, editTitle); if (e.key === "Escape") setEditingSessionId(null); }}
+                    onBlur={() => renameSession(s.id, editTitle)}
+                    onClick={(e) => e.stopPropagation()}
+                    autoFocus
+                  />
+                ) : (
+                  <div className="truncate">{s.title}</div>
+                )}
                 <div className="text-[0.6rem] text-[#999] flex justify-between mt-0.5">
                   <span>{s.messageCount} msgs</span>
-                  <button onClick={(e) => { e.stopPropagation(); deleteSession(s.id); }} className="text-watermelon font-bold hover:opacity-70">X</button>
+                  <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
+                    <button onClick={() => { setEditingSessionId(s.id); setEditTitle(s.title); }} className="text-signal-black font-bold hover:opacity-70">R</button>
+                    <button onClick={() => deleteSession(s.id)} className="text-watermelon font-bold hover:opacity-70">X</button>
+                  </div>
                 </div>
               </div>
             ))}
+            {filteredSessions.length === 0 && (
+              <div className="px-3 py-4 font-mono text-[0.7rem] text-[#999] text-center">
+                {searchQuery ? "No matches" : "No sessions yet"}
+              </div>
+            )}
           </div>
         </div>
 
-      {/* Chat container */}
-      <div className="flex-1 border-4 border-signal-black shadow-nb bg-white flex flex-col min-h-[400px]">
-        {/* Messages area */}
-        <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
-          {messages.length === 0 && (
-            <div className="flex-1 flex items-center justify-center">
-              <p className="font-mono text-gray-mid text-[0.9rem]">
-                Start a conversation...
-              </p>
+        {/* Chat container */}
+        <div className="flex-1 border-4 border-signal-black shadow-nb bg-white flex flex-col min-h-[400px]">
+          {/* Messages area */}
+          <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
+            {messages.length === 0 && (
+              <div className="flex-1 flex items-center justify-center flex-col gap-3">
+                <p className="font-mono text-gray-mid text-[0.9rem]">Start a conversation...</p>
+                <p className="font-mono text-[0.7rem] text-[#bbb]">Type /help for available commands</p>
+              </div>
+            )}
+
+            {messages.map((msg, i) => (
+              <div key={i}>
+                {/* Regular message */}
+                {msg.role !== "tool" && (
+                  <div className={`flex gap-3 max-w-[85%] ${msg.role === "user" ? "self-end flex-row-reverse" : "self-start"}`}>
+                    <div className={`w-9 h-9 min-w-[36px] border-2 border-signal-black flex items-center justify-center font-mono font-semibold text-[0.8rem] ${msg.role === "user" ? "bg-watermelon text-white" : "bg-signal-black text-malachite"}`}>
+                      {msg.role === "user" ? "U" : "AI"}
+                    </div>
+                    <div className={`border-3 border-signal-black p-4 text-[0.9rem] leading-relaxed ${msg.role === "user" ? "bg-watermelon text-white shadow-nb" : "bg-white shadow-nb"}`}>
+                      <div style={{ whiteSpace: "pre-wrap" }}>{msg.text}</div>
+
+                      {/* Tool call cards */}
+                      {msg.toolCalls && msg.toolCalls.length > 0 && (
+                        <div className="mt-3 flex flex-col gap-2">
+                          {msg.toolCalls.map((tc, j) => (
+                            <details key={j} className="border-2 border-signal-black bg-creamy-milk">
+                              <summary className="px-3 py-1.5 cursor-pointer font-mono text-[0.75rem] uppercase font-bold flex items-center gap-2">
+                                <span className={`w-2 h-2 ${tc.result ? "bg-malachite" : "bg-lemon"}`} />
+                                {tc.name.replace(/_/g, " ")}
+                              </summary>
+                              <div className="px-3 py-2 border-t border-signal-black/20 font-mono text-[0.7rem]">
+                                <div className="mb-1"><strong>Args:</strong> {JSON.stringify(tc.args, null, 1)}</div>
+                                {tc.result != null && <div><strong>Result:</strong> {String(typeof tc.result === "object" ? JSON.stringify(tc.result) : tc.result)}</div>}
+                              </div>
+                            </details>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* Typing indicator */}
+            {isTyping && (
+              <div className="flex gap-3 max-w-[80%] self-start">
+                <div className="w-9 h-9 min-w-[36px] border-2 border-signal-black flex items-center justify-center font-mono font-semibold text-[0.8rem] bg-signal-black text-malachite">AI</div>
+                <div className="border-3 border-signal-black p-4 text-[0.9rem] bg-white shadow-nb">
+                  <span className="font-mono text-gray-mid animate-pulse">THINKING...</span>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Slash command menu */}
+          {showSlashMenu && (
+            <div className="mx-4 mb-1 border-2 border-signal-black bg-white shadow-nb">
+              {["/new — Start new session", "/clear — Clear messages", "/rename — Rename session", "/export — Download as markdown", "/help — Show commands"].map((cmd) => (
+                <div
+                  key={cmd.split(" ")[0]}
+                  className="px-3 py-1.5 font-mono text-[0.75rem] cursor-pointer hover:bg-creamy-milk border-b border-signal-black/10"
+                  onClick={() => { setInput(cmd.split(" ")[0] + " "); setShowSlashMenu(false); textareaRef.current?.focus(); }}
+                >
+                  {cmd}
+                </div>
+              ))}
             </div>
           )}
 
-          {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`flex gap-3 max-w-[80%] ${
-                msg.role === "user"
-                  ? "self-end flex-row-reverse"
-                  : "self-start"
-              }`}
+          {/* Input area */}
+          <div className="flex gap-2 p-4 border-t-4 border-signal-black bg-creamy-milk">
+            <textarea
+              ref={textareaRef}
+              className="flex-1 font-mono text-[0.9rem] border-3 border-signal-black py-2 px-4 resize-none outline-none focus:shadow-nb bg-white"
+              placeholder="Type a message or /help for commands..."
+              rows={2}
+              value={input}
+              onChange={(e) => { setInput(e.target.value); setShowSlashMenu(e.target.value.startsWith("/") && !e.target.value.includes(" ")); }}
+              onKeyDown={handleKeyDown}
+            />
+            <button
+              className="nb-btn nb-btn--primary self-end whitespace-nowrap"
+              onClick={sendMessage}
+              disabled={!input.trim() || isTyping}
             >
-              {/* Avatar */}
-              <div
-                className={`w-9 h-9 min-w-[36px] border-2 border-signal-black flex items-center justify-center font-mono font-semibold text-[0.8rem] ${
-                  msg.role === "user"
-                    ? "bg-watermelon text-white"
-                    : "bg-signal-black text-malachite"
-                }`}
-              >
-                {msg.role === "user" ? "JD" : "AI"}
-              </div>
-
-              {/* Bubble */}
-              <div
-                className={`border-3 border-signal-black p-4 text-[0.9rem] leading-relaxed ${
-                  msg.role === "user"
-                    ? "bg-watermelon text-white shadow-nb"
-                    : "bg-white shadow-nb"
-                }`}
-              >
-                {msg.text}
-              </div>
-            </div>
-          ))}
-
-          {/* Typing indicator */}
-          {isTyping && (
-            <div className="flex gap-3 max-w-[80%] self-start">
-              <div className="w-9 h-9 min-w-[36px] border-2 border-signal-black flex items-center justify-center font-mono font-semibold text-[0.8rem] bg-signal-black text-malachite">
-                AI
-              </div>
-              <div className="border-3 border-signal-black p-4 text-[0.9rem] leading-relaxed bg-white shadow-nb">
-                <span className="font-mono text-gray-mid animate-pulse">
-                  TYPING...
-                </span>
-              </div>
-            </div>
-          )}
-
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Input area */}
-        <div className="flex gap-2 p-4 border-t-4 border-signal-black bg-creamy-milk">
-          <textarea
-            ref={textareaRef}
-            className="flex-1 font-mono text-[0.9rem] border-3 border-signal-black py-2 px-4 resize-none outline-none focus:shadow-nb bg-white"
-            placeholder="TYPE YOUR MESSAGE..."
-            rows={2}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <button
-            className="nb-btn nb-btn--primary self-end whitespace-nowrap"
-            onClick={sendMessage}
-            disabled={!input.trim() || isTyping}
-          >
-            SEND ▶
-          </button>
+              SEND ▶
+            </button>
+          </div>
         </div>
       </div>
-      </div>{/* close flex layout */}
     </div>
   );
 }

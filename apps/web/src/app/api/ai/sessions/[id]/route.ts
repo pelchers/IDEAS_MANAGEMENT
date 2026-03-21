@@ -51,6 +51,34 @@ export async function GET(
 }
 
 /**
+ * PUT /api/ai/sessions/[id]
+ * Update session (rename, pin, archive).
+ */
+export async function PUT(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const authResult = await requireAuth(req);
+  if (isErrorResponse(authResult)) return authResult;
+  const user = authResult;
+  const { id } = await params;
+
+  const session = await prisma.aiChatSession.findFirst({ where: { id, userId: user.id } });
+  if (!session) return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
+
+  let body: { title?: string };
+  try { body = await req.json(); } catch { body = {}; }
+
+  const data: Record<string, unknown> = {};
+  if (body.title && typeof body.title === "string") data.title = body.title.trim().slice(0, 200);
+
+  if (Object.keys(data).length === 0) return NextResponse.json({ ok: true, message: "no_changes" });
+
+  await prisma.aiChatSession.update({ where: { id }, data });
+  return NextResponse.json({ ok: true });
+}
+
+/**
  * DELETE /api/ai/sessions/[id]
  * Delete a chat session and all its messages.
  */
