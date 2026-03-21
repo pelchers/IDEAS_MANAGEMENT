@@ -425,37 +425,10 @@ function SettingsContent() {
                 )}
               </div>
 
-              {/* Admin: Grant AI access */}
-              {isAdmin && !hasAiEntitlement && (
-                <div className="mb-6 p-4 border-2 border-dashed border-amethyst">
-                  <h3 className="font-bold text-[0.85rem] uppercase tracking-wider mb-2 text-amethyst">
-                    ADMIN: ENABLE AI ACCESS
-                  </h3>
-                  <p className="font-mono text-[0.75rem] text-gray-mid mb-3 leading-relaxed">
-                    As an admin, you can enable AI features for your account without billing.
-                  </p>
-                  <button
-                    className="nb-btn nb-btn--primary"
-                    onClick={async () => {
-                      setAiSaving(true);
-                      try {
-                        const res = await fetch("/api/admin/grant-entitlement", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ feature: "ai_chat" }) });
-                        const data = await res.json();
-                        if (data.ok) { setHasAiEntitlement(true); setAiMessage({ type: "success", text: "AI access enabled! You can now use the built-in AI." }); }
-                        else { setAiMessage({ type: "error", text: "Failed to grant access." }); }
-                      } catch { setAiMessage({ type: "error", text: "Network error." }); }
-                      setAiSaving(false);
-                    }}
-                    disabled={aiSaving}
-                  >
-                    ENABLE AI (ADMIN)
-                  </button>
-                </div>
-              )}
-
-              {isAdmin && hasAiEntitlement && (
+              {/* Admin: AI access status */}
+              {isAdmin && (
                 <div className="mb-6 p-3 border-2 border-malachite bg-malachite/10 font-mono text-[0.8rem] text-malachite">
-                  ● AI access enabled (admin grant). You can use built-in AI and all providers.
+                  ● AI access active (admin). You have full access to built-in AI and all providers.
                 </div>
               )}
 
