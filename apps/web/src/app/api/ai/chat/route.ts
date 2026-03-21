@@ -1,4 +1,4 @@
-import { streamText, tool, stepCountIs, convertToModelMessages } from "ai";
+import { streamText, tool, stepCountIs } from "ai";
 import { NextResponse } from "next/server";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { checkEntitlement, FEATURES } from "@/server/billing/entitlements";
@@ -181,16 +181,11 @@ export async function POST(req: Request) {
     );
   }
 
-  // Convert UI messages to model messages for streamText
-  let modelMessages;
-  try {
-    modelMessages = await convertToModelMessages(messages as Parameters<typeof convertToModelMessages>[0]);
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "invalid_message_format", message: "Could not convert messages to model format." },
-      { status: 400 }
-    );
-  }
+  // Convert messages to the format streamText expects
+  const modelMessages = messages.map((m) => ({
+    role: m.role as "user" | "assistant" | "system",
+    content: typeof m.content === "string" ? m.content : JSON.stringify(m.content),
+  }));
 
   // Stream response with tools
   try {
