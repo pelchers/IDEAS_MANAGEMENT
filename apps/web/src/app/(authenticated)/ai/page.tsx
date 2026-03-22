@@ -209,22 +209,48 @@ export default function AiPage() {
                   return updated;
                 });
               }
-              // Tool call start
-              if (evt.type === "tool-call" && evt.toolName) {
-                pendingToolCalls.push({ name: evt.toolName, args: evt.args || {} });
+              // Tool call start (tool-call or tool-input-start)
+              if ((evt.type === "tool-call" || evt.type === "tool-input-start") && evt.toolName) {
+                pendingToolCalls.push({ name: evt.toolName, args: {} });
                 setMessages((prev) => {
                   const updated = [...prev];
                   updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
                   return updated;
                 });
               }
-              // Tool result
-              if (evt.type === "tool-result" && pendingToolCalls.length > 0) {
+              // Tool input available (full args)
+              if (evt.type === "tool-input-available" && pendingToolCalls.length > 0) {
                 const lastTc = pendingToolCalls[pendingToolCalls.length - 1];
-                lastTc.result = evt.result || evt;
+                lastTc.args = evt.input || {};
                 setMessages((prev) => {
                   const updated = [...prev];
                   updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
+                  return updated;
+                });
+              }
+              // Tool result (tool-result or tool-output-available)
+              if ((evt.type === "tool-result" || evt.type === "tool-output-available") && pendingToolCalls.length > 0) {
+                const lastTc = pendingToolCalls[pendingToolCalls.length - 1];
+                lastTc.result = evt.output || evt.result || evt;
+                // If tool succeeded but AI didn't generate text, show tool summary as text
+                if (!aiText) {
+                  const resultMsg = typeof lastTc.result === "object" && lastTc.result !== null && "message" in (lastTc.result as Record<string,unknown>)
+                    ? String((lastTc.result as Record<string,unknown>).message)
+                    : `Tool ${lastTc.name} executed successfully.`;
+                  aiText = resultMsg;
+                }
+                setMessages((prev) => {
+                  const updated = [...prev];
+                  updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
+                  return updated;
+                });
+              }
+              // Error
+              if (evt.type === "error") {
+                aiText = aiText || `Error: ${evt.errorText || "Unknown error"}`;
+                setMessages((prev) => {
+                  const updated = [...prev];
+                  updated[updated.length - 1] = { role: "ai", text: aiText };
                   return updated;
                 });
               }

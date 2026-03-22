@@ -1,4 +1,4 @@
-import { streamText, tool, stepCountIs } from "ai";
+import { streamText, tool } from "ai";
 import { NextResponse } from "next/server";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { checkEntitlement, FEATURES } from "@/server/billing/entitlements";
@@ -6,14 +6,6 @@ import { prisma } from "@/server/db";
 import type { Prisma } from "@prisma/client";
 import { getUserModel } from "@/server/ai/get-user-model";
 import {
-  addIdeaSchema,
-  executeAddIdea,
-  updateKanbanSchema,
-  executeUpdateKanban,
-  generateTreeSchema,
-  executeGenerateTree,
-  createProjectStructureSchema,
-  executeCreateProjectStructure,
   readArtifactSchema,
   executeReadArtifact,
   listProjectsSchema,
@@ -193,36 +185,9 @@ export async function POST(req: Request) {
       model: userModel.model,
       system: systemPrompt,
       messages: modelMessages,
+      // Single step only — Ollama doesn't support multi-step item_reference format
       tools: {
-        add_idea: tool({
-          description: "Add a new idea to a project. Use this when the user wants to create or capture a new idea.",
-          inputSchema: addIdeaSchema,
-          execute: async (params) => {
-            return executeAddIdea(params, user.id, activeSessionId);
-          },
-        }),
-        update_kanban: tool({
-          description: "Update a kanban board. Use this to add, move, update, or delete cards on the kanban board.",
-          inputSchema: updateKanbanSchema,
-          execute: async (params) => {
-            return executeUpdateKanban(params, user.id, activeSessionId);
-          },
-        }),
-        generate_tree: tool({
-          description: "Generate a directory tree structure for a project. Use this when the user wants to plan or scaffold a file/folder structure.",
-          inputSchema: generateTreeSchema,
-          execute: async (params) => {
-            return executeGenerateTree(params, user.id, activeSessionId);
-          },
-        }),
-        create_project_structure: tool({
-          description: "Create a project structure from a template. Use this to scaffold a new project with default folders and files.",
-          inputSchema: createProjectStructureSchema,
-          execute: async (params) => {
-            return executeCreateProjectStructure(params, user.id, activeSessionId);
-          },
-        }),
-        // ── Cross-page artifact tools ──
+        // ── Cross-page artifact tools (write to REAL artifacts) ──
         read_artifact: tool({
           description: "Read any project artifact to see its current data. Use this to inspect current ideas, kanban board, schema, whiteboard, or directory tree before making changes. Artifact paths: ideas/ideas.json, kanban/board.json, schema/schema.graph.json, whiteboard/board.json, directory-tree/tree.plan.json",
           inputSchema: readArtifactSchema,
@@ -239,7 +204,7 @@ export async function POST(req: Request) {
           execute: async (params) => executeManageProject(params, user.id),
         }),
         update_ideas_artifact: tool({
-          description: "Add, edit, or delete ideas in a project. This writes directly to the project's ideas artifact. Use when the user wants to capture, modify, or remove ideas — works from ANY page.",
+          description: "Add, edit, or delete ideas in a project. ALWAYS use this tool when the user asks to add/create/capture an idea. Writes directly to the project's ideas list so it appears immediately on the Ideas page.",
           inputSchema: updateIdeasSchema,
           execute: async (params) => executeUpdateIdeas(params, user.id),
         }),
@@ -264,7 +229,7 @@ export async function POST(req: Request) {
           execute: async (params) => executeUpdateDirectoryTree(params),
         }),
       },
-      stopWhen: stepCountIs(5),
+      // maxSteps: 1 handles step limiting (Ollama compat)
       onFinish: async ({ text, toolCalls, toolResults }) => {
         if (!activeSessionId) return;
 
