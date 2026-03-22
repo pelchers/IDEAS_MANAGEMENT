@@ -194,45 +194,52 @@ export default function AiPage() {
 
         const chunk = decoder.decode(value, { stream: true });
         for (const line of chunk.split("\n")) {
-          // Text content
-          if (line.startsWith("0:")) {
+          const trimmed = line.trim();
+
+          // Vercel AI SDK v6 SSE format: "data: {...}"
+          if (trimmed.startsWith("data: ")) {
             try {
-              const text = JSON.parse(line.slice(2));
-              if (typeof text === "string") {
-                aiText += text;
+              const evt = JSON.parse(trimmed.slice(6));
+              // Text delta
+              if (evt.type === "text-delta" && typeof evt.delta === "string") {
+                aiText += evt.delta;
                 setMessages((prev) => {
                   const updated = [...prev];
                   updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: pendingToolCalls.length > 0 ? [...pendingToolCalls] : undefined };
                   return updated;
                 });
               }
-            } catch { /* skip */ }
-          }
-          // Tool call (9: prefix in Vercel AI SDK)
-          if (line.startsWith("9:")) {
-            try {
-              const tc = JSON.parse(line.slice(2));
-              if (tc && tc.toolName) {
-                pendingToolCalls.push({ name: tc.toolName, args: tc.args || {} });
-                // Show tool call immediately
+              // Tool call start
+              if (evt.type === "tool-call" && evt.toolName) {
+                pendingToolCalls.push({ name: evt.toolName, args: evt.args || {} });
                 setMessages((prev) => {
                   const updated = [...prev];
                   updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
                   return updated;
                 });
               }
-            } catch { /* skip */ }
-          }
-          // Tool result (a: prefix)
-          if (line.startsWith("a:")) {
-            try {
-              const tr = JSON.parse(line.slice(2));
-              if (tr && pendingToolCalls.length > 0) {
+              // Tool result
+              if (evt.type === "tool-result" && pendingToolCalls.length > 0) {
                 const lastTc = pendingToolCalls[pendingToolCalls.length - 1];
-                lastTc.result = tr.result || tr;
+                lastTc.result = evt.result || evt;
                 setMessages((prev) => {
                   const updated = [...prev];
                   updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
+                  return updated;
+                });
+              }
+            } catch { /* skip unparseable */ }
+          }
+
+          // Legacy format fallback (0:, 9:, a: prefixes)
+          if (trimmed.startsWith("0:")) {
+            try {
+              const text = JSON.parse(trimmed.slice(2));
+              if (typeof text === "string") {
+                aiText += text;
+                setMessages((prev) => {
+                  const updated = [...prev];
+                  updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: pendingToolCalls.length > 0 ? [...pendingToolCalls] : undefined };
                   return updated;
                 });
               }

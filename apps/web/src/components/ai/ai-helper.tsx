@@ -147,16 +147,24 @@ export function AiHelper() {
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
         for (const line of chunk.split("\n")) {
-          if (line.startsWith("0:")) {
+          const trimmed = line.trim();
+          // Vercel AI SDK v6 SSE format
+          if (trimmed.startsWith("data: ")) {
             try {
-              const t = JSON.parse(line.slice(2));
+              const evt = JSON.parse(trimmed.slice(6));
+              if (evt.type === "text-delta" && typeof evt.delta === "string") {
+                aiText += evt.delta;
+                setMessages((prev) => { const u = [...prev]; u[u.length - 1] = { role: "ai", text: aiText }; return u; });
+              }
+            } catch { /* skip */ }
+          }
+          // Legacy format fallback
+          if (trimmed.startsWith("0:")) {
+            try {
+              const t = JSON.parse(trimmed.slice(2));
               if (typeof t === "string") {
                 aiText += t;
-                setMessages((prev) => {
-                  const updated = [...prev];
-                  updated[updated.length - 1] = { role: "ai", text: aiText };
-                  return updated;
-                });
+                setMessages((prev) => { const u = [...prev]; u[u.length - 1] = { role: "ai", text: aiText }; return u; });
               }
             } catch { /* skip */ }
           }
