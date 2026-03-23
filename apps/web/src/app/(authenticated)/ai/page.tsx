@@ -31,6 +31,8 @@ export default function AiPage() {
   const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [showSlashMenu, setShowSlashMenu] = useState(false);
+  const [projects, setProjects] = useState<{ id: string; name: string }[]>([]);
+  const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -50,6 +52,16 @@ export default function AiPage() {
       })
       .catch(() => setAiStatus("not_configured"));
   }, []);
+
+  /* ── Load projects ── */
+  useEffect(() => {
+    fetch("/api/projects").then((r) => r.json()).then((d) => {
+      if (d.ok && d.projects) {
+        setProjects(d.projects.map((p: { id: string; name: string }) => ({ id: p.id, name: p.name })));
+        if (d.projects.length > 0 && !activeProjectId) setActiveProjectId(d.projects[0].id);
+      }
+    }).catch(() => {});
+  }, [activeProjectId]);
 
   /* ── Load sessions ── */
   const loadSessions = useCallback(() => {
@@ -151,7 +163,7 @@ export default function AiPage() {
       const res = await fetch("/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: apiMessages, sessionId }),
+        body: JSON.stringify({ messages: apiMessages, sessionId, projectId: activeProjectId }),
       });
 
       const newSessionId = res.headers.get("X-Session-Id");
@@ -294,6 +306,7 @@ export default function AiPage() {
                 { role: "user", content: "Please confirm what you just did in a brief, friendly message." },
               ],
               sessionId: newSessionId || sessionId,
+              projectId: activeProjectId,
             }),
           });
           if (followUp.ok) {
@@ -367,6 +380,17 @@ export default function AiPage() {
       <div className="mb-4 flex items-center justify-between flex-wrap gap-2">
         <h1 className="nb-view-title">AI CHAT</h1>
         <div className="flex items-center gap-2">
+          {/* Project selector */}
+          {projects.length > 0 && (
+            <select
+              className="nb-input text-[0.75rem] py-1 px-2 font-mono"
+              value={activeProjectId || ""}
+              onChange={(e) => setActiveProjectId(e.target.value || null)}
+            >
+              <option value="">No project</option>
+              {projects.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+            </select>
+          )}
           {messages.length > 0 && (
             <button onClick={exportSession} className="nb-btn nb-btn--small font-mono text-[0.7rem]">EXPORT</button>
           )}
