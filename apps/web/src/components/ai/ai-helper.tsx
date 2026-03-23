@@ -156,6 +156,12 @@ export function AiHelper() {
                 aiText += evt.delta;
                 setMessages((prev) => { const u = [...prev]; u[u.length - 1] = { role: "ai", text: aiText }; return u; });
               }
+              // Tool output — dispatch for live reactivity
+              if (evt.type === "tool-output-available") {
+                const resultMsg = evt.output?.message || "Action completed.";
+                if (!aiText) { aiText = String(resultMsg); setMessages((prev) => { const u = [...prev]; u[u.length - 1] = { role: "ai", text: aiText }; return u; }); }
+                window.dispatchEvent(new CustomEvent("artifact-updated", { detail: { tool: evt.toolName || "unknown", result: evt.output } }));
+              }
             } catch { /* skip */ }
           }
           // Legacy format fallback

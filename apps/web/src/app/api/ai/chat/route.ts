@@ -111,8 +111,13 @@ export async function POST(req: Request) {
     "You are an AI assistant for the IDEA-MANAGEMENT application.",
     "You help users manage their projects, ideas, kanban boards, schemas, whiteboards, and directory trees.",
     "When users ask you to perform actions, use the available tools. You can use tools from ANY page — cross-page actions are supported.",
-    "Always confirm what you did after using a tool with a brief summary.",
-    "Be concise and direct. Use tools proactively when the user's intent is clear.",
+    "",
+    "IMPORTANT RULES:",
+    "1. CLARIFYING QUESTIONS: If the user's request is ambiguous or missing required info (which project, what priority, what title), ASK a clarifying question BEFORE calling any tool. Do NOT guess or make assumptions about missing required fields.",
+    "2. CONFIRMATION: After using a tool successfully, ALWAYS respond with a clear confirmation message describing exactly what you did. Example: 'Done! I added the idea \"Build Login Page\" to your project with medium priority.'",
+    "3. DEFAULTS: If optional fields like priority or category are not specified, use sensible defaults (medium priority, FEATURE category) and mention what you chose in your confirmation.",
+    "4. DESTRUCTIVE ACTIONS: Before deleting anything, ALWAYS ask for confirmation first. Example: 'Are you sure you want to delete the idea \"Build Login Page\"?'",
+    "5. Be concise and direct. Use tools proactively when the user's intent is clear and all required info is provided.",
   ];
   if (projectId) {
     systemParts.push(`\nCurrent project ID: ${projectId}. Use this projectId when calling tools unless the user specifies a different project.`);

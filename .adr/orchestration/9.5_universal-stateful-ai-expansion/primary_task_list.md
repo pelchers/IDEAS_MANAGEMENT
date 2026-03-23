@@ -80,6 +80,27 @@ Started: 2026-03-20
 - [x] "Expand to full chat" button → navigate to /ai with session ID
 - [x] "New conversation" button in helper to reset
 
+## Phase 7 — Post-Tool Response + Live Reactivity + Clarifying Questions
+
+### 7a. AI responds after tool execution
+- [ ] After tool completes, feed result back to model for a second call to generate a confirmation response
+- [ ] Use two-step flow: step 1 = model decides tool call, step 2 = model generates text with tool result in context
+- [ ] Fallback: if second call fails (Ollama compat), show tool result message as the response
+- [ ] System prompt instructs AI: "After using a tool, always tell the user what you did and confirm the result"
+
+### 7b. Live reactive content (no page refresh needed)
+- [ ] After AI tool writes to an artifact, trigger a client-side refetch of that artifact's data
+- [ ] Use a custom event or callback: when tool-output-available arrives in stream, dispatch a window event like `artifact-updated` with the artifact path
+- [ ] Each page (Ideas, Kanban, Schema, etc.) listens for `artifact-updated` and refetches its data
+- [ ] Alternative: use a polling interval (every 5s) on pages to check for updates — simpler but less immediate
+- [ ] The AI helper widget should also show "Content updated — data refreshed" after tool execution
+
+### 7c. AI asks clarifying questions
+- [ ] System prompt instructs: "When the user's request is ambiguous or missing required info, ask a clarifying question before acting. Examples: which project? what priority? what category?"
+- [ ] When projectId is not provided and user says 'add an idea', AI should ask which project
+- [ ] When creating ideas without priority/category specified, AI should ask or use sensible defaults and mention what it chose
+- [ ] For destructive actions (delete), AI should confirm before executing
+
 ## Phase 6 — Testing & Validation
 
 ### 6a. Tool visibility tests

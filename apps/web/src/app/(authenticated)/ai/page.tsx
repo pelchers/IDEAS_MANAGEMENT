@@ -274,6 +274,65 @@ export default function AiPage() {
         }
       }
 
+      // If tools were called but AI didn't generate text, make a follow-up call
+      // to get a natural language confirmation
+      if (pendingToolCalls.length > 0 && !aiText.includes("Error")) {
+        try {
+          const toolSummary = pendingToolCalls.map((tc) => {
+            const resultMsg = tc.result && typeof tc.result === "object" && "message" in (tc.result as Record<string,unknown>)
+              ? String((tc.result as Record<string,unknown>).message) : "completed";
+            return `Tool ${tc.name}: ${resultMsg}`;
+          }).join(". ");
+
+          const followUp = await fetch("/api/ai/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              messages: [
+                ...apiMessages,
+                { role: "assistant", content: `I used tools to help you. Results: ${toolSummary}` },
+                { role: "user", content: "Please confirm what you just did in a brief, friendly message." },
+              ],
+              sessionId: newSessionId || sessionId,
+            }),
+          });
+          if (followUp.ok) {
+            const reader2 = followUp.body?.getReader();
+            if (reader2) {
+              const decoder2 = new TextDecoder();
+              let confirmText = "";
+              while (true) {
+                const { done, value } = await reader2.read();
+                if (done) break;
+                const chunk = decoder2.decode(value, { stream: true });
+                for (const line of chunk.split("\n")) {
+                  const t = line.trim();
+                  if (t.startsWith("data: ")) {
+                    try {
+                      const evt = JSON.parse(t.slice(6));
+                      if (evt.type === "text-delta" && typeof evt.delta === "string") confirmText += evt.delta;
+                    } catch { /* skip */ }
+                  }
+                }
+              }
+              if (confirmText) {
+                aiText = confirmText;
+                setMessages((prev) => {
+                  const updated = [...prev];
+                  updated[updated.length - 1] = { role: "ai", text: confirmText, toolCalls: [...pendingToolCalls] };
+                  return updated;
+                });
+              }
+            }
+          }
+        } catch { /* follow-up failed, tool result message already shown */ }
+
+        // Dispatch artifact-updated event for live reactivity
+        pendingToolCalls.forEach((tc) => {
+          window.dispatchEvent(new CustomEvent("artifact-updated", { detail: { tool: tc.name, result: tc.result } }));
+        });
+      }
+
       if (!aiText && pendingToolCalls.length === 0) {
         setMessages((prev) => {
           const updated = [...prev];

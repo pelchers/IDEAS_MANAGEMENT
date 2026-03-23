@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams } from "next/navigation";
+import { useArtifactRefresh } from "@/hooks/use-artifact-refresh";
 
 /* ── Types ── */
 interface Idea {
@@ -78,7 +79,7 @@ export default function IdeasPage() {
   const [editPriority, setEditPriority] = useState<Idea["priority"]>("medium");
 
   // Load from artifact API
-  useEffect(() => {
+  const loadIdeas = useCallback(() => {
     fetch(`/api/projects/${projectId}/artifacts/ideas/ideas.json`)
       .then((res) => res.json())
       .then((data) => {
@@ -98,6 +99,11 @@ export default function IdeasPage() {
       })
       .catch(() => setLoaded(true));
   }, [projectId]);
+
+  useEffect(() => { loadIdeas(); }, [loadIdeas]);
+
+  // Live reactivity: refetch when AI modifies ideas via tool
+  useArtifactRefresh("update_ideas_artifact", loadIdeas);
 
   // Save
   const saveIdeas = useCallback((newIdeas: IdeasData) => {
