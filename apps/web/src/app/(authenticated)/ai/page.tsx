@@ -53,12 +53,26 @@ export default function AiPage() {
       .catch(() => setAiStatus("not_configured"));
   }, []);
 
-  /* ── Load projects ── */
+  /* ── Load projects + auto-select from localStorage ── */
   useEffect(() => {
     fetch("/api/projects").then((r) => r.json()).then((d) => {
       if (d.ok && d.projects) {
         setProjects(d.projects.map((p: { id: string; name: string }) => ({ id: p.id, name: p.name })));
-        if (d.projects.length > 0 && !activeProjectId) setActiveProjectId(d.projects[0].id);
+        if (!activeProjectId) {
+          // Try to restore last used project from localStorage
+          const saved = typeof window !== "undefined" ? localStorage.getItem("im_selected_project") : null;
+          if (saved) {
+            try {
+              const parsed = JSON.parse(saved);
+              if (parsed.id && d.projects.some((p: { id: string }) => p.id === parsed.id)) {
+                setActiveProjectId(parsed.id);
+                return;
+              }
+            } catch { /* ignore */ }
+          }
+          // Default to first project
+          if (d.projects.length > 0) setActiveProjectId(d.projects[0].id);
+        }
       }
     }).catch(() => {});
   }, [activeProjectId]);

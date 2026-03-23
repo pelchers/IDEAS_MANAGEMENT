@@ -120,7 +120,10 @@ export async function POST(req: Request) {
     "5. Be concise and helpful.",
   ];
   if (projectId) {
-    systemParts.push(`\nCurrent project ID: ${projectId}. Use this projectId when calling tools unless the user specifies a different project.`);
+    // Get project name for natural reference
+    const projectInfo = await prisma.project.findUnique({ where: { id: projectId }, select: { name: true } }).catch(() => null);
+    const projectName = projectInfo?.name || projectId;
+    systemParts.push(`\nCurrent project: "${projectName}" (ID: ${projectId}). ALWAYS use this projectId when calling tools — the user is working in this project. If they want to switch projects or create a new one, use the manage_project or list_projects tools.`);
 
     // Auto-inject project artifact state for context
     try {
