@@ -2,6 +2,10 @@
 
 All prices are for running a single GPU server 24/7 suitable for hosting Ollama with a 14B model. Prices as of early-mid 2025.
 
+> **Important context:** Self-hosting a GPU server only makes financial sense when your monthly AI API bill exceeds the server cost (~$300-400/mo), which typically means 1000+ daily active users. For most apps at launch and early growth, a managed API (Groq, Together AI) is cheaper, more reliable, and requires zero infrastructure management. See [architecture-and-recommendations.md](architecture-and-recommendations.md) for the full analysis.
+
+> **Tool calling quality warning:** Self-hosted models are typically 7B-14B parameters. These are significantly less reliable at tool calling than the 70B+ models that API providers run. If your app depends on the AI correctly calling tools (ours does — 8 artifact tools), the API approach gives better results.
+
 ## Quick Comparison
 
 | Provider | Best GPU for 14B | VRAM | Hourly | Monthly (24/7) | Docker/Ollama | Reliability |
