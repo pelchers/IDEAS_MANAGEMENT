@@ -4,6 +4,42 @@
 
 When hosting a web application with AI features, you're dealing with three fundamentally different workloads that need different types of servers.
 
+```mermaid
+graph TB
+    subgraph FE["🖥️ Frontend Server (CPU)"]
+        direction TB
+        FE1["Serves HTML/CSS/JS"]
+        FE2["Server-side rendering"]
+        FE3["Static asset CDN"]
+        FE4["$0-20/mo"]
+    end
+
+    subgraph BE["⚙️ Backend Server (CPU)"]
+        direction TB
+        BE1["API routes"]
+        BE2["Authentication"]
+        BE3["Database queries"]
+        BE4["$15-50/mo"]
+    end
+
+    subgraph AI["🧠 AI Inference (GPU or API)"]
+        direction TB
+        AI1["Loads AI model"]
+        AI2["Processes messages"]
+        AI3["Tool calling"]
+        AI4["$0.18/1M tokens (API)<br/>or $300+/mo (GPU)"]
+    end
+
+    FE -.->|"Light<br/>1-2 vCPU"| CPU1["No GPU needed"]
+    BE -.->|"Medium<br/>2-8 vCPU"| CPU2["No GPU needed"]
+    AI -.->|"Heavy<br/>Needs GPU or API"| GPU["GPU with 16-24GB VRAM<br/>OR managed API"]
+
+    style FE fill:#fce4ec,stroke:#c62828
+    style BE fill:#e3f2fd,stroke:#1565c0
+    style AI fill:#e8f5e9,stroke:#2e7d32
+    style GPU fill:#fff9c4,stroke:#f9a825
+```
+
 ### 1. Frontend Server (CPU-only)
 
 Serves your Next.js/React pages to users' browsers. This is lightweight — just HTML, CSS, JS, and API routing.

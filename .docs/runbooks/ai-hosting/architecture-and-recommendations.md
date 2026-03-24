@@ -184,6 +184,55 @@ This is the table that actually matters:
 
 **Start with Groq API. Stay with Groq API until you have a concrete reason to switch.**
 
+### Recommended System Architecture
+
+```mermaid
+graph TB
+    subgraph Internet
+        User[/"👤 User's Browser"/]
+    end
+
+    subgraph Vercel["☁️ Vercel (Frontend) — $0-20/mo"]
+        FE["Next.js SSR + CDN<br/>Static assets, routing"]
+    end
+
+    subgraph Railway["🚂 Railway (Backend) — $15-50/mo"]
+        API["Next.js API Routes<br/>Auth, business logic"]
+        DB[("PostgreSQL<br/>Users, projects,<br/>artifacts, sessions")]
+    end
+
+    subgraph Groq["⚡ Groq API — $0.18/1M tokens"]
+        LLM["Llama 3.1 70B+<br/>99.9% SLA<br/>300+ tok/s<br/>Tool calling ✅"]
+    end
+
+    subgraph BYOK["🔑 User's Own Key (BYOK)"]
+        OAI["OpenAI GPT-4o"]
+        ANT["Anthropic Claude"]
+        GOO["Google Gemini"]
+    end
+
+    subgraph LocalDev["💻 Local Dev Only"]
+        OLL["Ollama<br/>qwen2.5:14b<br/>Your RTX 4090"]
+    end
+
+    User -->|HTTPS| FE
+    FE -->|API calls| API
+    API --> DB
+    API -->|"Built-in AI<br/>(all users)"| LLM
+    API -->|"BYOK users<br/>(they pay)"| OAI
+    API -->|"BYOK users"| ANT
+    API -->|"BYOK users"| GOO
+    API -.->|"Dev only<br/>localhost:11434"| OLL
+
+    style Groq fill:#e8f5e9,stroke:#2e7d32,stroke-width:3px
+    style BYOK fill:#fff3e0,stroke:#ef6c00
+    style LocalDev fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray: 5 5
+    style Railway fill:#e3f2fd,stroke:#1565c0
+    style Vercel fill:#fce4ec,stroke:#c62828
+```
+
+### Cost at Each Stage
+
 | Component | Provider | Cost | Why |
 |-----------|----------|------|-----|
 | Frontend | Vercel (free or Pro) | $0-20/mo | Best Next.js hosting, global CDN |
@@ -195,20 +244,72 @@ This is the table that actually matters:
 | **Total at 500 users** | | **$80-120/mo** | |
 | **Total at 2000 users** | | **$400-500/mo** | Consider self-hosting GPU at this point |
 
-**When to reconsider:** When your monthly Groq bill consistently exceeds $400/mo for 3+ months, evaluate adding a RunPod Secure GPU ($400-1,200/mo). Until then, the API approach is cheaper, more reliable, and requires zero GPU infrastructure management.
+### How the AI Provider Resolution Works
 
-**One migration, not four:** The only hosting change you'd ever make is adding a self-hosted GPU as a second AI provider alongside Groq. Your code already supports multiple providers — it's a config change, not a migration. Groq stays as fallback, self-hosted becomes primary for cost savings.
+```mermaid
+flowchart TD
+    A["User sends message"] --> B{"User has their<br/>own API key?"}
+    B -->|"Yes (BYOK)"| C["Use user's provider<br/>OpenAI / Anthropic / Google<br/>User pays, $0 to us"]
+    B -->|"No"| D{"User is Admin?"}
+    D -->|"Yes"| E["Use Groq API<br/>Free for admins"]
+    D -->|"No"| F{"Has subscription<br/>or entitlement?"}
+    F -->|"Yes"| G["Use Groq API<br/>Built-in AI tier"]
+    F -->|"No"| H["403: Subscription required<br/>Suggest: add own key or subscribe"]
+
+    style C fill:#fff3e0,stroke:#ef6c00
+    style E fill:#e8f5e9,stroke:#2e7d32
+    style G fill:#e8f5e9,stroke:#2e7d32
+    style H fill:#ffebee,stroke:#c62828
+```
+
+### When to Add Self-Hosted GPU (The One Migration)
+
+When your monthly Groq bill consistently exceeds $400/mo for 3+ months, add a RunPod Secure GPU **alongside** Groq — don't replace it.
+
+```mermaid
+graph LR
+    subgraph Before["Before (0-1000 DAU)"]
+        B_API["Groq API<br/>Primary + only"]
+    end
+
+    subgraph After["After (1000+ DAU)"]
+        A_GPU["RunPod GPU<br/>Primary (cost savings)"]
+        A_API["Groq API<br/>Fallback (reliability)"]
+    end
+
+    Before -->|"Groq bill > $400/mo<br/>for 3+ months"| After
+
+    style B_API fill:#e8f5e9,stroke:#2e7d32
+    style A_GPU fill:#e3f2fd,stroke:#1565c0
+    style A_API fill:#e8f5e9,stroke:#2e7d32
+```
+
+**One migration, not four.** Your code already supports multiple providers — adding a GPU is a config change, not a re-architecture. Groq stays as fallback, self-hosted becomes primary for cost savings.
+
+### Monthly Cost Trajectory
+
+```mermaid
+xychart-beta
+    title "Monthly Cost: Groq API vs Self-Hosted GPU"
+    x-axis ["50", "100", "200", "500", "800", "1000", "2000", "5000"]
+    y-axis "Monthly Cost ($)" 0 --> 2500
+    line "Groq API" [2, 5, 12, 68, 172, 432, 864, 2160]
+    line "Self-Hosted GPU" [317, 317, 317, 317, 317, 317, 317, 317]
+```
+
+The crossover is at ~800-1000 DAU. Below that, API wins. Above that, GPU wins on cost (but API still wins on tool calling quality with 70B models vs self-hosted 14B).
 
 ## Decision Framework
 
-```
-Do you have 1000+ daily active users?
-├─ NO → Use Groq API. Stop overthinking it.
-│
-└─ YES → Is your monthly Groq bill > $400?
-    ├─ NO → Keep using Groq API.
-    │
-    └─ YES → Add RunPod Secure GPU as primary.
-             Keep Groq as fallback.
-             One code change: add provider, set priority.
+```mermaid
+flowchart TD
+    START["🚀 Starting out"] --> Q1{"Do you have<br/>1000+ daily<br/>active users?"}
+    Q1 -->|"No"| GROQ["✅ Use Groq API<br/>$0.18/1M tokens<br/>Stop overthinking it"]
+    Q1 -->|"Yes"| Q2{"Is your monthly<br/>Groq bill > $400?"}
+    Q2 -->|"No"| GROQ
+    Q2 -->|"Yes"| GPU["Add RunPod Secure GPU<br/>as primary provider.<br/>Keep Groq as fallback.<br/>One code change."]
+
+    style GROQ fill:#e8f5e9,stroke:#2e7d32,stroke-width:3px
+    style GPU fill:#e3f2fd,stroke:#1565c0
+    style START fill:#fff9c4,stroke:#f9a825
 ```
