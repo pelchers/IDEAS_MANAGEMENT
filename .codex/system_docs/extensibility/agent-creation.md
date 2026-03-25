@@ -8,7 +8,7 @@ subagent delegation patterns, and reusable configurations across projects.
 
 ## File Format
 
-Agent files are Markdown files with YAML frontmatter, stored in `.codex/agents/`.
+Agent files are Markdown files with YAML frontmatter, stored in `.claude/agents/`.
 
 ```yaml
 ---

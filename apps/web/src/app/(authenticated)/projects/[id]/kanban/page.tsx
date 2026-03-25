@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useAnyArtifactRefresh } from "@/hooks/use-artifact-refresh";
 import { useParams } from "next/navigation";
 
 /* ── Types ── */
@@ -141,6 +142,9 @@ export default function KanbanPage() {
   // Column drag state
   const [dragCol, setDragCol] = useState<number | null>(null);
   const [dropColTarget, setDropColTarget] = useState<number | null>(null);
+
+  // Live reactivity: reload when AI modifies board via tool
+  useAnyArtifactRefresh(useCallback(() => window.location.reload(), []));
 
   // Load board
   useEffect(() => {

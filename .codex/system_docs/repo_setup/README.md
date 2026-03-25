@@ -31,8 +31,8 @@ User describes project
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| Agent | `.codex/agents/repo-setup-agent/` | Conversational bootstrapper with 8-step workflow |
-| Skill | `.codex/skills/repo-setup-session/SKILL.md` | Detailed templates and writing phase procedures |
+| Agent | `.claude/agents/repo-setup-agent/` | Conversational bootstrapper with 8-step workflow |
+| Skill | `.claude/skills/repo-setup-session/SKILL.md` | Detailed templates and writing phase procedures |
 
 ## Conversational Discovery Phase
 

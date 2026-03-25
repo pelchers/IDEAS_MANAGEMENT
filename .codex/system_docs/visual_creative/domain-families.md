@@ -169,7 +169,7 @@ Regardless of domain, every showcase page has these regions:
 ## Library Catalog
 
 All CDN URLs come from the library catalog at:
-`.codex/skills/visual-creative-subagent/references/library-catalog.json`
+`.claude/skills/visual-creative-subagent/references/library-catalog.json`
 
 The subagent must use exact URLs from this catalog. URLs are pre-validated and include
 version-specific notes (e.g., UMD vs ESM build requirements). The subagent also

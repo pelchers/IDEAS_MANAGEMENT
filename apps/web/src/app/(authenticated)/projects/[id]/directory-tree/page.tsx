@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
+import { useAnyArtifactRefresh } from "@/hooks/use-artifact-refresh";
 import { useParams } from "next/navigation";
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -339,6 +340,9 @@ export default function DirectoryTreePage() {
 
   // ── GitHub lazy-load tracking ──
   const [ghRepo, setGhRepo] = useState<string | null>(null);
+
+  // Live reactivity: reload when AI modifies directory tree via tool
+  useAnyArtifactRefresh(useCallback(() => window.location.reload(), []));
 
   /* ── Load from artifact API ── */
   useEffect(() => {

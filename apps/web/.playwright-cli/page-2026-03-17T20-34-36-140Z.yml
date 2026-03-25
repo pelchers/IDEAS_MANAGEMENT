@@ -1,0 +1,29 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: ◆
+      - generic [ref=e6]:
+        - text: IDEA
+        - text: MGMT
+    - heading "Sign Up" [level=1] [ref=e7]
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: Email
+        - textbox "Email" [ref=e11]:
+          - /placeholder: you@example.com
+      - generic [ref=e12]:
+        - generic [ref=e13]: Password
+        - textbox "Password" [ref=e14]:
+          - /placeholder: Min 12 characters
+      - generic [ref=e15]:
+        - generic [ref=e16]: Confirm Password
+        - textbox "Confirm Password" [ref=e17]:
+          - /placeholder: Re-enter password
+      - button "Sign Up" [ref=e18] [cursor=pointer]
+    - paragraph [ref=e19]:
+      - text: Already have an account?
+      - link "Sign in" [ref=e20] [cursor=pointer]:
+        - /url: /signin
+  - button "Open Next.js Dev Tools" [ref=e26] [cursor=pointer]:
+    - img [ref=e27]
+  - alert [ref=e30]

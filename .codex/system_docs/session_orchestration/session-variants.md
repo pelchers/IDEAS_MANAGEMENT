@@ -35,8 +35,8 @@ Use this variant for **general ADR orchestration** where work is primarily code-
 - Can run phases in the current chat or delegate to subagents
 - The most general-purpose variant
 
-**Skill path:** `.codex/skills/longrunning-session/SKILL.md`
-**Agent path:** `.codex/agents/longrunning-agent/AGENT.md`
+**Skill path:** `.claude/skills/longrunning-session/SKILL.md`
+**Agent path:** `.claude/agents/longrunning-worker-subagent/AGENT.md`
 
 ### orchestrator-session
 
@@ -54,8 +54,8 @@ subagent and the current chat acts purely as an orchestrator.
 - Requires a structured poke-back with 5 mandatory sections
 - Uses the poke template for consistency
 
-**Skill path:** `.codex/skills/orchestrator-session/SKILL.md`
-**Agent path:** `.codex/agents/orchestrator-agent/AGENT.md`
+**Skill path:** `.claude/skills/orchestrator-session/SKILL.md`
+**Agent path:** `.claude/agents/longrunning-orchestrator-agent/AGENT.md`
 
 ### research-docs-session
 
@@ -72,8 +72,8 @@ Use this variant for sessions focused on **research and documentation** rather t
 - Ties documentation updates to the project sitemap
 - Tracks media references and local copies
 
-**Skill path:** `.codex/skills/research-docs-session/SKILL.md`
-**Agent path:** `.codex/agents/research-docs-agent/AGENT.md`
+**Skill path:** `.claude/skills/research-docs-session/SKILL.md`
+**Agent path:** `.claude/agents/research-docs-agent/AGENT.md`
 
 ## Shared Foundations
 
@@ -89,7 +89,7 @@ All three variants share:
 
 ## Template Inventory
 
-Each variant has its own template set under `.codex/skills/<variant>/templates/`:
+Each variant has its own template set under `.claude/skills/<variant>/templates/`:
 
 ### longrunning-session Templates
 

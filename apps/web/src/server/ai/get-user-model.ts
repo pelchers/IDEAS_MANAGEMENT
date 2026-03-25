@@ -2,7 +2,6 @@ import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-// Ollama via OpenAI-compatible API (better SDK compatibility than native provider)
 import { decrypt } from "./crypto";
 import { prisma } from "@/server/db";
 import type { LanguageModel } from "ai";
@@ -11,11 +10,12 @@ import type { LanguageModel } from "ai";
  * Default models per provider (must support tool calling).
  */
 const DEFAULT_MODELS: Record<string, string> = {
+  groq: "llama-3.1-70b-versatile",
   openrouter: "anthropic/claude-sonnet-4",
   openai: "gpt-4o",
   anthropic: "claude-sonnet-4-20250514",
   google: "gemini-2.0-flash",
-  ollama: "qwen2.5:3b",
+  ollama: "qwen2.5:14b",
 };
 
 /**
@@ -34,17 +34,12 @@ async function isOllamaRunning(): Promise<boolean> {
  * Resolve the AI model for a given user.
  *
  * Priority:
- * 1. User's configured provider key → appropriate SDK
- * 2. Ollama local (if configured and running) → localhost:11434
- * 3. Server OPENAI_API_KEY env var → direct OpenAI (fallback)
- * 4. null → AI not available
- *
- * Tool calling support:
- * - OpenAI (GPT-4o, GPT-4-turbo): full tool support
- * - Anthropic (Claude 3+): full tool support
- * - Google (Gemini 1.5+, 2.0): full tool support
- * - OpenRouter: depends on underlying model (Claude, GPT-4o, Gemini all work)
- * - Ollama (Ministral 3B, Qwen3-4B): full tool support via llama.cpp
+ * 1. User's configured BYOK provider key → appropriate SDK
+ * 2. Groq built-in (server GROQ_API_KEY) → for subscribers
+ * 3. Ollama local (if configured and running) → localhost:11434
+ * 4. Server OPENAI_API_KEY env var → direct OpenAI (fallback)
+ * 5. Auto-detect Ollama → last resort for local dev
+ * 6. null → AI not available
  */
 export async function getUserModel(
   userId: string,
@@ -60,8 +55,8 @@ export async function getUserModel(
 
   if (!user) return null;
 
-  // Cloud providers (require API key)
-  if (user.aiProvider !== "NONE" && user.aiProvider !== "OLLAMA_LOCAL" && user.aiApiKeyEncrypted) {
+  // ── BYOK providers (user has their own API key) ──
+  if (user.aiApiKeyEncrypted && !["NONE", "OLLAMA_LOCAL", "GROQ_BUILTIN"].includes(user.aiProvider)) {
     const apiKey = decrypt(user.aiApiKeyEncrypted);
 
     switch (user.aiProvider) {
@@ -85,7 +80,15 @@ export async function getUserModel(
     }
   }
 
-  // Ollama local (no API key needed) — use OpenAI-compatible endpoint
+  // ── Groq built-in (server-side key, for subscribers/admins) ──
+  if (user.aiProvider === "GROQ_BUILTIN" || user.aiProvider === "NONE") {
+    if (process.env.GROQ_API_KEY) {
+      const groq = createOpenAI({ baseURL: "https://api.groq.com/openai/v1", apiKey: process.env.GROQ_API_KEY });
+      return { model: groq(modelId || DEFAULT_MODELS.groq), provider: "groq" };
+    }
+  }
+
+  // ── Ollama local (no API key needed) ──
   if (user.aiProvider === "OLLAMA_LOCAL") {
     const running = await isOllamaRunning();
     if (running) {
@@ -94,16 +97,13 @@ export async function getUserModel(
     }
   }
 
-  // Fallback: server-side OpenAI key
+  // ── Fallback: server-side OpenAI key ──
   if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== "sk-...") {
     const fallbackOa = createOpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    return {
-      model: fallbackOa(modelId || "gpt-4o"),
-      provider: "openai-fallback",
-    };
+    return { model: fallbackOa(modelId || "gpt-4o"), provider: "openai-fallback" };
   }
 
-  // Last resort: try Ollama even if not explicitly configured
+  // ── Last resort: auto-detect Ollama (local dev) ──
   const ollamaAvailable = await isOllamaRunning();
   if (ollamaAvailable) {
     const ollamaOai = createOpenAI({ baseURL: "http://localhost:11434/v1", apiKey: "ollama" });

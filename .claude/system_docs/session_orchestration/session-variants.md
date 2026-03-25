@@ -36,7 +36,7 @@ Use this variant for **general ADR orchestration** where work is primarily code-
 - The most general-purpose variant
 
 **Skill path:** `.claude/skills/longrunning-session/SKILL.md`
-**Agent path:** `.claude/agents/longrunning-agent/AGENT.md`
+**Agent path:** `.claude/agents/longrunning-worker-subagent/AGENT.md`
 
 ### orchestrator-session
 

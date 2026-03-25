@@ -300,72 +300,44 @@ export default function AiPage() {
         }
       }
 
-      // If tools were called but AI didn't generate text, make a follow-up call
-      // to get a natural language confirmation
-      if (pendingToolCalls.length > 0 && !aiText.includes("Error")) {
-        try {
-          const toolSummary = pendingToolCalls.map((tc) => {
-            const resultMsg = tc.result && typeof tc.result === "object" && "message" in (tc.result as Record<string,unknown>)
-              ? String((tc.result as Record<string,unknown>).message) : "completed";
-            return `Tool ${tc.name}: ${resultMsg}`;
-          }).join(". ");
-
-          const followUp = await fetch("/api/ai/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              messages: [
-                ...apiMessages,
-                { role: "assistant", content: `I used tools to help you. Results: ${toolSummary}` },
-                { role: "user", content: "Please confirm what you just did in a brief, friendly message." },
-              ],
-              sessionId: newSessionId || sessionId,
-              projectId: activeProjectId,
-            }),
-          });
-          if (followUp.ok) {
-            const reader2 = followUp.body?.getReader();
-            if (reader2) {
-              const decoder2 = new TextDecoder();
-              let confirmText = "";
-              while (true) {
-                const { done, value } = await reader2.read();
-                if (done) break;
-                const chunk = decoder2.decode(value, { stream: true });
-                for (const line of chunk.split("\n")) {
-                  const t = line.trim();
-                  if (t.startsWith("data: ")) {
-                    try {
-                      const evt = JSON.parse(t.slice(6));
-                      if (evt.type === "text-delta" && typeof evt.delta === "string") confirmText += evt.delta;
-                    } catch { /* skip */ }
-                  }
-                }
-              }
-              if (confirmText) {
-                aiText = confirmText;
-                setMessages((prev) => {
-                  const updated = [...prev];
-                  updated[updated.length - 1] = { role: "ai", text: confirmText, toolCalls: [...pendingToolCalls] };
-                  return updated;
-                });
-              }
+      // Tool result handling — show direct confirmation, no follow-up call
+      if (pendingToolCalls.length > 0) {
+        // Build confirmation from tool results
+        if (!aiText) {
+          const confirmParts = pendingToolCalls.map((tc) => {
+            if (tc.result && typeof tc.result === "object" && "message" in (tc.result as Record<string, unknown>)) {
+              return String((tc.result as Record<string, unknown>).message);
             }
-          }
-        } catch { /* follow-up failed, tool result message already shown */ }
+            return `${tc.name.replace(/_/g, " ")} completed.`;
+          });
+          aiText = confirmParts.join("\n");
+          setMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
+            return updated;
+          });
+        }
 
-        // Dispatch artifact-updated event for live reactivity
+        // Dispatch artifact-updated events for live reactivity
         pendingToolCalls.forEach((tc) => {
           window.dispatchEvent(new CustomEvent("artifact-updated", { detail: { tool: tc.name, result: tc.result } }));
         });
-      }
-
-      if (!aiText && pendingToolCalls.length === 0) {
-        setMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = { role: "ai", text: "I received your message but couldn't generate a response. Please try again." };
-          return updated;
-        });
+      } else if (!aiText) {
+        // No tools called and no text — check if user asked for an action
+        const actionWords = /\b(add|create|make|build|delete|remove|update|move|change)\b/i;
+        if (actionWords.test(trimmed)) {
+          setMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { role: "ai", text: "I wasn't able to perform that action. Please try being more specific, or check that a project is selected." };
+            return updated;
+          });
+        } else {
+          setMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { role: "ai", text: "I received your message but couldn't generate a response. Please try again." };
+            return updated;
+          });
+        }
       }
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : "Something went wrong";

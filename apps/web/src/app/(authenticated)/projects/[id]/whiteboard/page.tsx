@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
+import { useAnyArtifactRefresh } from "@/hooks/use-artifact-refresh";
 import { useParams } from "next/navigation";
 
 /* ── Types ── */
@@ -305,6 +306,9 @@ export default function WhiteboardPage() {
         .catch(() => setSaving(false));
     }, 500);
   }, [projectId]);
+
+  // Live reactivity: reload when AI modifies whiteboard via tool
+  useAnyArtifactRefresh(useCallback(() => window.location.reload(), []));
 
   /* ── Load ── */
   useEffect(() => {

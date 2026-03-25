@@ -20,6 +20,7 @@ enum AiProvider {
   ANTHROPIC_BYOK
   GOOGLE_BYOK
   OLLAMA_LOCAL
+  GROQ_BUILTIN
 }
 
 model User {

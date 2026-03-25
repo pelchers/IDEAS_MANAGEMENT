@@ -13,7 +13,7 @@ and clean-reference directories so all three locations stay consistent.
   +-------------------------------+
   |         Main App              |
   |   (Active Development)        |
-  |   .codex/                    |
+  |   .claude/                    |
   |     skills/                   |     Source of truth.
   |     agents/                   |     New work happens here.
   |     subagents/                |     Changes tested first.
@@ -26,7 +26,7 @@ and clean-reference directories so all three locations stay consistent.
   | App Builder    |   | Do-Over Files    |
   | Template       |   | (Clean Reference)|
   | (PRIMARY)      |   |                  |
-  | .codex/       |   | .codex/         |
+  | .claude/       |   | .claude/         |
   |   skills/      |   |   skills/        |
   |   agents/      |   |   agents/        |
   |   subagents/   |   |   subagents/     |
@@ -55,7 +55,7 @@ and clean-reference directories so all three locations stay consistent.
 | Attribute  | Value                                            |
 |------------|--------------------------------------------------|
 | **Role**   | Primary template for bootstrapping new projects  |
-| **Usage**  | All new projects copy their `.codex/` from here |
+| **Usage**  | All new projects copy their `.claude/` from here |
 | **Status** | Must always have the latest stable versions      |
 
 ### Do-Over Files
@@ -83,7 +83,7 @@ and clean-reference directories so all three locations stay consistent.
 
 ### sync-all.js
 
-Synchronizes the entire `.codex/` directory from main to both targets.
+Synchronizes the entire `.claude/` directory from main to both targets.
 
 ```bash
 node scripts/sync-all.js [--dry-run] [--verbose] [--force]
@@ -169,7 +169,7 @@ updated    updated
     +----+----+
          |
          v
-git add .codex/ app-builder-template/.codex/ do-over-files/.codex/
+git add .claude/ app-builder-template/.claude/ do-over-files/.claude/
 git commit -m "Add new skill: <skill-name>"
 ```
 
@@ -196,7 +196,7 @@ Automatically verify sync status before each commit:
 # .git/hooks/pre-commit
 
 echo "Checking Claude Code sync status..."
-node .codex/skills/maintaining-trinary-sync/scripts/check-sync.js
+node .claude/skills/maintaining-trinary-sync/scripts/check-sync.js
 
 if [ $? -ne 0 ]; then
   echo "Directories out of sync. Run: node scripts/sync-all.js"
@@ -271,6 +271,6 @@ When both main and do-over have been modified independently:
 
 | Component              | Path                                                  |
 |------------------------|-------------------------------------------------------|
-| Trinary sync skill     | `.codex/skills/maintaining-trinary-sync/SKILL.md`    |
-| Directory structure ref| `.codex/skills/maintaining-trinary-sync/resources/directory-structure.md` |
+| Trinary sync skill     | `.claude/skills/maintaining-trinary-sync/SKILL.md`    |
+| Directory structure ref| `.claude/skills/maintaining-trinary-sync/resources/directory-structure.md` |
 | Sync scripts           | `scripts/sync-all.js`, `sync-skill.js`, `sync-agent.js`, `check-sync.js` |

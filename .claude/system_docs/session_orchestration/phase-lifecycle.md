@@ -75,8 +75,8 @@ a testable deliverable.
 Run validation against every item listed in the phase file:
 
 **Playwright PNG screenshots (mandatory for UI work):**
-- Desktop viewport: 1536×960
-- Mobile viewport: 390×844 @2x
+- Desktop viewport: 1536x960
+- Mobile viewport: 390x844 @2x
 - PNG format only — HTML mockups are NOT acceptable
 - Output path: `.docs/validation/<SESSION>/<PHASE>/`
 
@@ -149,8 +149,8 @@ ensures the session always has a forward-looking plan ready.
 
 ```
 .docs/validation/<SESSION>/<PHASE>/
-  ├── <feature>-desktop.png          <-- Playwright screenshot (1536×960)
-  ├── <feature>-mobile.png           <-- Playwright screenshot (390×844 @2x)
+  ├── <feature>-desktop.png          <-- Playwright screenshot (1536x960)
+  ├── <feature>-mobile.png           <-- Playwright screenshot (390x844 @2x)
   ├── user-story-report.md           <-- PASS/FAIL for every user story
   └── ...
 ```

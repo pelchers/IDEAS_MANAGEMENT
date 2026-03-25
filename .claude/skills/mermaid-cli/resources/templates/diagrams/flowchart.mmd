@@ -1,0 +1,6 @@
+flowchart TD
+    Start([Start]) --> Decide{Ready?}
+    Decide -->|Yes| Work[Do work]
+    Decide -->|No| Wait[Wait]
+    Work --> End([End])
+    Wait --> Decide

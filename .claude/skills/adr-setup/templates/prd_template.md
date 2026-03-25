@@ -27,6 +27,15 @@ Date: <YYYY-MM-DD>
 ## UX requirements
 [User experience and interface requirements]
 
+## User Flow (optional diagram)
+<!-- Add a Mermaid flowchart if the session has a clear user journey -->
+<!--
+```mermaid
+flowchart LR
+    A[Entry Point] --> B[Step 1] --> C[Step 2] --> D[Outcome]
+```
+-->
+
 ## Technical requirements
 [Tech stack, architecture, patterns]
 

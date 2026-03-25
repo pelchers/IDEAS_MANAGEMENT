@@ -73,7 +73,7 @@ Write all output files using only verified CDN URLs:
 Run the Playwright validation script:
 
 ```bash
-node .codex/skills/visual-creative-subagent/scripts/validate-visuals-playwright.mjs \
+node .claude/skills/visual-creative-subagent/scripts/validate-visuals-playwright.mjs \
   --pass-dir <outputDir>
 ```
 

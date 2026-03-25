@@ -14,6 +14,16 @@ This skill should be invoked whenever:
 2. A new skill is created in `.claude/skills/` or `.codex/skills/`
 3. An existing system's agents/skills are modified, renamed, or deprecated
 4. The master index needs updating after structural changes
+5. The user requests an audit: "audit system docs", "check which systems have docs", "update system docs", "are there systems without docs?"
+6. Via slash command: `/system-docs-audit` or `/system-docs-audit --fix`
+
+### Trigger Phrases (natural language)
+- "audit the system docs" / "audit systemdocs"
+- "check system docs" / "review system docs"
+- "which systems have docs?" / "which systems are missing docs?"
+- "update system docs" / "create docs for [system name]"
+- "are there any systems without documentation?"
+- "run system docs audit"
 
 ## System Docs Convention
 
@@ -23,13 +33,53 @@ This skill should be invoked whenever:
 .codex/system_docs/
 ├── README.md                    ← Master index (MUST be updated for every change)
 ├── <system_name>/               ← One folder per "system"
-│   ├── README.md                ← Required: purpose, architecture, component map
-│   ├── architecture.md          ← Optional: detailed architecture docs
-│   └── <topic>.md               ← Optional: additional detail docs
+│   ├── README.md                ← REQUIRED: purpose, component map, integration points
+│   ├── USAGE_GUIDE.md           ← REQUIRED: how to use, quick start, examples, troubleshooting
+│   ├── ARCHITECTURE.md          ← STANDARD: technical diagrams, flows, state machines (2+ components)
+│   ├── SYSTEM_OVERVIEW.md       ← STANDARD: complete reference for back-referencing design decisions
+│   ├── <subsystem>/             ← OPTIONAL: subfolder for coalescing sub-systems
+│   │   └── README.md
+│   └── <topic>.md               ← OPTIONAL: domain-specific deep dives
 └── deprecated/                  ← Superseded systems
     ├── DEPRECATED.md
     └── <old_system>/
 ```
+
+### Minimum File Requirements
+
+| Level | Files Required | When |
+|---|---|---|
+| **Minimum** | `README.md` + `USAGE_GUIDE.md` | Every system |
+| **Standard** | + `ARCHITECTURE.md` + `SYSTEM_OVERVIEW.md` | Systems with 2+ components |
+| **Extended** | + subfolders + additional `.md` files | Complex multi-component systems |
+
+### Diagram Requirements
+
+Use a combination of **ASCII art** and **Mermaid diagrams** where appropriate:
+
+**Use Mermaid (` ```mermaid `) for:**
+- Flow diagrams (component flows, resolution cascades)
+- State machines (status transitions)
+- Sequence diagrams (agent↔subagent interactions)
+- Architecture diagrams (component relationships)
+
+**Use ASCII art for:**
+- Simple directory trees
+- Inline decision trees (` → Folder` / `→ Table entry`)
+- Small 2-3 step flows
+
+**Rules:**
+- Include diagrams where they help different learner types (visual + textual)
+- Don't duplicate — if a table explains it clearly, don't also make a diagram
+- Complex flows (5+ steps) should ALWAYS have a diagram
+- Simple concepts should NOT have forced diagrams
+
+### Reference Examples
+
+See `.claude/skills/system-docs-agent/references/` for templates:
+- `example-readme.md` — README structure with component map
+- `example-usage-guide.md` — usage guide with quick start and troubleshooting
+- `example-architecture.md` — architecture doc with Mermaid diagrams
 
 ### What Constitutes a "System"
 
@@ -72,8 +122,9 @@ System documentation for the <description> agents and skills.
 
 ## Architecture
 
-<ASCII diagram showing component relationships.
-Use box-drawing characters: ┌ ─ ┐ │ ├ ┤ └ ┘ ▼ ▲>
+<Diagram showing component relationships.
+Use Mermaid for complex flows (```mermaid flowchart/sequence/state).
+Use ASCII box-drawing (┌ ─ ┐ │ ├ ┤ └ ┘ ▼ ▲) for simple trees.>
 
 ## Key Concepts
 

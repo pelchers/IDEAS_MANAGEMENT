@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useAnyArtifactRefresh } from "@/hooks/use-artifact-refresh";
 import { useParams } from "next/navigation";
 import rough from "roughjs";
 
@@ -935,6 +936,9 @@ export default function SchemaPage() {
   const [draggingEntityId, setDraggingEntityId] = useState<string | null>(null);
   const dragOffsetRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLDivElement>(null);
+
+  // Live reactivity: reload when AI modifies schema via tool
+  useAnyArtifactRefresh(useCallback(() => window.location.reload(), []));
 
   /* ── Load schema from artifact API ── */
   useEffect(() => {

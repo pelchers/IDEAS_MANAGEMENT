@@ -30,16 +30,16 @@ architecture and subagent delegation pattern.
 
 | Component               | Path                                                          |
 |--------------------------|---------------------------------------------------------------|
-| Longrunning session      | `.codex/skills/longrunning-session/SKILL.md`                 |
-| Orchestrator session     | `.codex/skills/orchestrator-session/SKILL.md`                |
-| Research-docs session    | `.codex/skills/research-docs-session/SKILL.md`               |
-| Longrunning agent        | `.codex/agents/longrunning-agent/AGENT.md`                   |
-| Orchestrator agent       | `.codex/agents/orchestrator-agent/AGENT.md`                  |
-| Research-docs agent      | `.codex/agents/research-docs-agent/AGENT.md`                 |
-| Orchestration queue      | `.codex/orchestration/queue/next_phase.json`                 |
-| Orchestrator poke hook   | `.codex/hooks/scripts/orchestrator-poke.ps1`                 |
-| Templates                | `.codex/skills/<variant>/templates/`                         |
-| References               | `.codex/skills/<variant>/references/`                        |
+| Longrunning session      | `.claude/skills/longrunning-session/SKILL.md`                 |
+| Orchestrator session     | `.claude/skills/orchestrator-session/SKILL.md`                |
+| Research-docs session    | `.claude/skills/research-docs-session/SKILL.md`               |
+| Longrunning agent        | `.claude/agents/longrunning-worker-subagent/AGENT.md`         |
+| Orchestrator agent       | `.claude/agents/longrunning-orchestrator-agent/AGENT.md`      |
+| Research-docs agent      | `.claude/agents/research-docs-agent/AGENT.md`                 |
+| Orchestration queue      | `.claude/orchestration/queue/next_phase.json`                 |
+| Orchestrator poke hook   | `.claude/hooks/scripts/orchestrator-poke.ps1`                 |
+| Templates                | `.claude/skills/<variant>/templates/`                         |
+| References               | `.claude/skills/<variant>/references/`                        |
 
 ## Key Concepts
 
@@ -71,54 +71,12 @@ Every session produces these files in the orchestration directory:
 - [Subagent Spawning](./subagent-spawning.md) -- Queue file format, context handoff, and hook mechanism
 - [Session Variants](./session-variants.md) -- Differences between the three session types
 
-## Build Order Convention
-
-The orchestrator enforces a **frontend-first** pipeline when a design pass exists:
-
-```
-Project Init → Frontend Conversion → Domain Sessions → Hardening (cyclic)
-```
-
-Domain sessions scope work by area of concern x complexity. Backend + integration + testing
-fold into each domain session rather than being separate sequential stages. Complex features
-get their own session; simple features are grouped. See [System Improvements](./system-improvements.md).
-
-## Design Fidelity Inference
-
-The orchestrator infers design fidelity from the user's natural language (no flags):
-- **Faithful**: 1:1 conversion of design pass → framework (subagents read pass HTML as primary spec)
-- **Reference**: design tokens as style guide, layouts from PRD
-- **External**: adapt external site's visual language to PRD spec
-- **From scratch**: PRD requirements only
-
-See [System Improvements](./system-improvements.md) for full context handoff per mode.
-
-## Hardening (Cyclic)
-
-The hardening session is a feedback loop: run E2E validation → present to user → accept
-feedback → apply fixes → re-validate → repeat until user confirms production readiness.
-Phases are created dynamically as feedback cycles occur.
-
-## ADR Structure Pre-flight
-
-Before entering the phase loop, the orchestrator runs a mandatory pre-flight check:
-
-1. Verify `.adr/orchestration/<SESSION>/` has all 4 files (primary_task_list.md, prd.md, technical_requirements.md, notes.md)
-2. Verify `.adr/current/<SESSION>/` and `.adr/history/<SESSION>/` directories exist
-3. Verify `primary_task_list.md` has per-phase sections with specific deliverable checkboxes
-4. Verify the phase plan file exists for the phase about to start
-
-If any check fails, the orchestrator spawns the `adr-setup` agent to scaffold or fix the
-session structure before proceeding. This prevents worker subagents from encountering
-missing or malformed ADR files during execution.
-
 ## Context Handoff
 
 The orchestrator MUST pass a comprehensive context prompt to each subagent on spawn,
 including prior phase summary, current scope, app state expectations, files to read,
-**design fidelity mode with per-mode instructions**, and validation requirements. See
-[Subagent Spawning](./subagent-spawning.md) for the full checklist and
-[System Improvements](./system-improvements.md) for fidelity-specific handoff details.
+design system reference (if UI work), and validation requirements. See
+[Subagent Spawning](./subagent-spawning.md) for the full checklist.
 
 ## Mandatory Validation
 

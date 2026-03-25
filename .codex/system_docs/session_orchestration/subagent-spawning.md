@@ -35,7 +35,7 @@ When spawning a subagent, the orchestrator MUST include a comprehensive prompt w
        | 1. Builds context handoff prompt
        | 2. Writes next_phase.json
        v
-  .codex/orchestration/queue/next_phase.json
+  .claude/orchestration/queue/next_phase.json
        |
        | 3. Hook script reads queue
        v
@@ -58,7 +58,7 @@ When spawning a subagent, the orchestrator MUST include a comprehensive prompt w
 
 ## Queue File Format
 
-The queue file is written to `.codex/orchestration/queue/next_phase.json`:
+The queue file is written to `.claude/orchestration/queue/next_phase.json`:
 
 ```json
 {
@@ -101,8 +101,8 @@ agent file path to the `claude exec` invocation.
 
 | Queue `agent` value              | Resolved agent path                                          |
 |----------------------------------|--------------------------------------------------------------|
-| `longrunning-worker-subagent`    | `.codex/agents/longrunning-worker-subagent/AGENT.md`        |
-| `longrunning-orchestrator-agent` | `.codex/agents/longrunning-orchestrator-agent/AGENT.md`     |
+| `longrunning-worker-subagent`    | `.claude/agents/longrunning-worker-subagent/AGENT.md`        |
+| `longrunning-orchestrator-agent` | `.claude/agents/longrunning-orchestrator-agent/AGENT.md`     |
 
 ## Error Handling
 
@@ -115,4 +115,4 @@ agent file path to the `claude exec` invocation.
 
 - Queue files should not contain secrets or credentials.
 - The hook runs with the caller's permissions; no privilege escalation occurs.
-- Agent paths are validated against the `.codex/agents/` directory.
+- Agent paths are validated against the `.claude/agents/` directory.

@@ -47,7 +47,7 @@ Every report contains these sections in order:
 | 2 | Files Modified | Table of file paths, actions (created/modified/moved/deleted), reasoning |
 | 3 | Agents Invoked | List of agents dispatched, their purpose, output, and success/failure |
 | 4 | Key Decisions | Decisions made with rationale and alternatives considered |
-| 5 | Systems Affected | Which `.codex/` subsystems, workflows, or root configs were touched |
+| 5 | Systems Affected | Which `.claude/` subsystems, workflows, or root configs were touched |
 | 6 | Sync Status | `.codex` mirror state, remote push state, external system updates |
 | 7 | Pending Items | Actionable follow-up items with enough context to resume |
 | 8 | Metrics | File counts, commit hashes, branch name, approximate duration |
@@ -71,9 +71,9 @@ Every report contains these sections in order:
 
 | Component | Path |
 |-----------|------|
-| Agent | `.codex/agents/chat-report-agent/agent.md` |
-| Skill | `.codex/skills/generating-chat-reports/SKILL.md` |
-| System Docs | `.codex/system_docs/chat_reports/README.md` |
+| Agent | `.claude/agents/chat-report-agent/agent.md` |
+| Skill | `.claude/skills/generating-chat-reports/SKILL.md` |
+| System Docs | `.claude/system_docs/chat_reports/README.md` |
 
 ## Example Report Structure
 
@@ -94,9 +94,9 @@ and verified. No subagents were dispatched.
 ## 2. Files Modified
 | File Path | Action | Reasoning |
 |-----------|--------|-----------|
-| `.codex/agents/chat-report-agent/agent.md` | created | New agent definition |
-| `.codex/skills/generating-chat-reports/SKILL.md` | created | New skill definition |
-| `.codex/system_docs/chat_reports/README.md` | created | System documentation |
+| `.claude/agents/chat-report-agent/agent.md` | created | New agent definition |
+| `.claude/skills/generating-chat-reports/SKILL.md` | created | New skill definition |
+| `.claude/system_docs/chat_reports/README.md` | created | System documentation |
 
 **Totals:** 3 created, 0 modified, 0 deleted
 
@@ -110,9 +110,9 @@ No agents were dispatched during this session.
   sync and metrics).
 
 ## 5. Systems Affected
-- `.codex/agents/` — new agent added
-- `.codex/skills/` — new skill added
-- `.codex/system_docs/` — new system doc added
+- `.claude/agents/` — new agent added
+- `.claude/skills/` — new skill added
+- `.claude/system_docs/` — new system doc added
 
 ## 6. Sync Status
 No sync operations performed.

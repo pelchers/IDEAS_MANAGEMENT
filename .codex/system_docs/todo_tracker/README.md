@@ -7,8 +7,8 @@ Maintains `TODO.md` at the project root as a human-readable kanban board for the
 
 | Component | Path |
 |-----------|------|
-| Agent | `.codex/agents/todo-tracker/AGENT.md` |
-| Skill | `.codex/skills/todo-tracker/SKILL.md` |
+| Agent | `.claude/agents/todo-tracker/AGENT.md` |
+| Skill | `.claude/skills/todo-tracker/SKILL.md` |
 | Output | `TODO.md` (project root) |
 
 ## Architecture

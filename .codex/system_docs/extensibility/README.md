@@ -38,20 +38,20 @@ hooks define when automation runs.
 
 | Component              | Path                                           |
 |------------------------|------------------------------------------------|
-| Agent creation skill   | `.codex/skills/creating-claude-agents/SKILL.md` |
-| Skill creation skill   | `.codex/skills/creating-claude-skills/SKILL.md` |
-| Hooks skill            | `.codex/skills/using-claude-hooks/SKILL.md`     |
-| Agent template         | `.codex/skills/creating-claude-agents/scripts/agent-template.md` |
-| Skill template         | `.codex/skills/creating-claude-skills/scripts/skill-template.md` |
-| Agent architecture ref | `.codex/skills/creating-claude-agents/resources/agent-architecture.md` |
-| Subagent patterns ref  | `.codex/skills/creating-claude-agents/resources/subagent-patterns.md` |
-| Progressive disclosure | `.codex/skills/creating-claude-skills/resources/progressive-disclosure.md` |
-| All agents             | `.codex/agents/`                                |
-| All skills             | `.codex/skills/`                                |
-| Hook scripts           | `.codex/hooks/scripts/`                         |
-| Project settings       | `.codex/settings.json`                          |
-| User settings          | `~/.codex/settings.json`                        |
-| Local overrides        | `.codex/settings.local.json`                    |
+| Agent creation skill   | `.claude/skills/creating-claude-agents/SKILL.md` |
+| Skill creation skill   | `.claude/skills/creating-claude-skills/SKILL.md` |
+| Hooks skill            | `.claude/skills/using-claude-hooks/SKILL.md`     |
+| Agent template         | `.claude/skills/creating-claude-agents/scripts/agent-template.md` |
+| Skill template         | `.claude/skills/creating-claude-skills/scripts/skill-template.md` |
+| Agent architecture ref | `.claude/skills/creating-claude-agents/resources/agent-architecture.md` |
+| Subagent patterns ref  | `.claude/skills/creating-claude-agents/resources/subagent-patterns.md` |
+| Progressive disclosure | `.claude/skills/creating-claude-skills/resources/progressive-disclosure.md` |
+| All agents             | `.claude/agents/`                                |
+| All skills             | `.claude/skills/`                                |
+| Hook scripts           | `.claude/hooks/scripts/`                         |
+| Project settings       | `.claude/settings.json`                          |
+| User settings          | `~/.claude/settings.json`                        |
+| Local overrides        | `.claude/settings.local.json`                    |
 
 ## How They Work Together
 

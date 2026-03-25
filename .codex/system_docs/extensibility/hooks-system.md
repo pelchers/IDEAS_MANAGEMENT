@@ -88,9 +88,9 @@ FILE_PATH=$(jq -r '.tool_input.file_path')
 
 | Level         | Path                         | Scope                    | Committed |
 |---------------|------------------------------|--------------------------|-----------|
-| Project       | `.codex/settings.json`      | All users of this repo   | Yes       |
-| User          | `~/.codex/settings.json`    | All projects for user    | N/A       |
-| Local override| `.codex/settings.local.json`| This repo, this user only| No        |
+| Project       | `.claude/settings.json`      | All users of this repo   | Yes       |
+| User          | `~/.claude/settings.json`    | All projects for user    | N/A       |
+| Local override| `.claude/settings.local.json`| This repo, this user only| No        |
 
 ### Structure
 
@@ -114,7 +114,7 @@ FILE_PATH=$(jq -r '.tool_input.file_path')
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/scripts/validator.sh"
+            "command": ".claude/hooks/scripts/validator.sh"
           }
         ]
       }
@@ -125,7 +125,7 @@ FILE_PATH=$(jq -r '.tool_input.file_path')
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/scripts/format.sh"
+            "command": ".claude/hooks/scripts/format.sh"
           }
         ]
       }
@@ -236,8 +236,8 @@ exit 0
 | Use descriptive messages    | Clear error messages help users understand blocks  |
 | Test manually first         | Pipe test JSON into the script to verify behavior  |
 | Document hook scripts       | Add a header comment explaining purpose + exit codes|
-| Commit project hooks        | `.codex/settings.json` goes in version control   |
-| Ignore personal hooks       | `.codex/settings.local.json` stays out of git    |
+| Commit project hooks        | `.claude/settings.json` goes in version control   |
+| Ignore personal hooks       | `.claude/settings.local.json` stays out of git    |
 | Layer hooks sequentially    | Multiple hooks on same event run in order          |
 
 ## Hook Chaining
@@ -289,8 +289,8 @@ Call external services instead of running local scripts:
 ### Permission Denied
 
 ```bash
-chmod +x .codex/hooks/scripts/*.sh
-ls -la .codex/hooks/scripts/
+chmod +x .claude/hooks/scripts/*.sh
+ls -la .claude/hooks/scripts/
 ```
 
 ## Integration Points

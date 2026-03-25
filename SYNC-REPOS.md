@@ -9,6 +9,7 @@ When adding new agents, skills, or system docs to `.claude/` and `.codex/`, also
 | AppDock | `C:\App\AppDock` | App project |
 | PortfolioV1 | `C:\App\PortfolioV1` | Portfolio project |
 | IDEA-MANAGEMENT | `C:\Ideas\IDEA-MANAGEMENT` | Idea management app  |
+| Campus | `C:\coding\apps\campus` | Campus app |
 
 ## What to sync
 

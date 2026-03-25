@@ -20,15 +20,15 @@ validation screenshots.
 
 | Component                    | Path                                                                    |
 |------------------------------|-------------------------------------------------------------------------|
-| Orchestrator skill           | `.codex/skills/planning-visual-creative-orchestrator/SKILL.md`         |
-| Orchestrator agent           | `.codex/agents/planning-visual-creative-orchestrator/AGENT.md`         |
-| Orchestrator behavior ref    | `.codex/skills/planning-visual-creative-orchestrator/references/agent-behavior.md` |
-| Style config                 | `.codex/skills/planning-visual-creative-orchestrator/references/style-config.json` |
-| Subagent skill               | `.codex/skills/visual-creative-subagent/SKILL.md`                      |
-| Subagent agent               | `.codex/agents/visual-creative-subagent/AGENT.md`                      |
-| Subagent behavior ref        | `.codex/skills/visual-creative-subagent/references/agent-behavior.md`  |
-| Library catalog              | `.codex/skills/visual-creative-subagent/references/library-catalog.json` |
-| Playwright validation script | `.codex/skills/visual-creative-subagent/scripts/validate-visuals-playwright.mjs` |
+| Orchestrator skill           | `.claude/skills/planning-visual-creative-orchestrator/SKILL.md`         |
+| Orchestrator agent           | `.claude/agents/planning-visual-creative-orchestrator/AGENT.md`         |
+| Orchestrator behavior ref    | `.claude/skills/planning-visual-creative-orchestrator/references/agent-behavior.md` |
+| Style config                 | `.claude/skills/planning-visual-creative-orchestrator/references/style-config.json` |
+| Subagent skill               | `.claude/skills/visual-creative-subagent/SKILL.md`                      |
+| Subagent agent               | `.claude/agents/visual-creative-subagent/AGENT.md`                      |
+| Subagent behavior ref        | `.claude/skills/visual-creative-subagent/references/agent-behavior.md`  |
+| Library catalog              | `.claude/skills/visual-creative-subagent/references/library-catalog.json` |
+| Playwright validation script | `.claude/skills/visual-creative-subagent/scripts/validate-visuals-playwright.mjs` |
 
 ## Output Structure
 

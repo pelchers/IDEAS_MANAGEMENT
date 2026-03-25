@@ -8,6 +8,18 @@ Date: <YYYY-MM-DD>
 ## Stack / runtime
 [Technology choices and runtime environment]
 
+## Architecture Diagram (optional)
+<!-- Add a Mermaid diagram if the session has complex component relationships -->
+<!--
+```mermaid
+flowchart TD
+    CLI[CLI Scripts] --> Adapters[Adapters]
+    Adapters --> DB[(Database)]
+    DB --> API[API Server]
+    API --> Frontend[Frontend]
+```
+-->
+
 ## Content pipeline
 [Data flow from inputs to outputs]
 

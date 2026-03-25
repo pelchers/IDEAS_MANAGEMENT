@@ -11,10 +11,10 @@ for creating milestone snapshots.
 
 | Component              | Path                                               |
 |------------------------|----------------------------------------------------|
-| Git workflows skill    | `.codex/skills/managing-git-workflows/SKILL.md`   |
-| Savepoint skill        | `.codex/skills/savepoint-branching/SKILL.md`       |
-| Git workflow agent     | `.codex/agents/git-workflow-agent/AGENT.md`        |
-| Savepoint agent        | `.codex/agents/savepoint-agent/AGENT.md`           |
+| Git workflows skill    | `.claude/skills/managing-git-workflows/SKILL.md`   |
+| Savepoint skill        | `.claude/skills/savepoint-branching/SKILL.md`       |
+| Git workflow agent     | `.claude/agents/git-workflow-agent/AGENT.md`        |
+| Savepoint agent        | `.claude/agents/savepoint-agent/AGENT.md`           |
 
 ## Core Principles
 

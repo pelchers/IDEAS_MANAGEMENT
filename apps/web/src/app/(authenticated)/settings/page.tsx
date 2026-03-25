@@ -402,6 +402,8 @@ function SettingsContent() {
                       ? "GOOGLE / GEMINI (API KEY)"
                       : aiConfig.provider === "OLLAMA_LOCAL"
                       ? "OLLAMA (LOCAL)"
+                      : aiConfig.provider === "GROQ_BUILTIN"
+                      ? "GROQ (BUILT-IN)"
                       : aiConfig.provider}
                   </div>
                   <div
