@@ -88,6 +88,20 @@ A 200-token response at 1 tok/s = **3+ minutes**. Not viable for production.
 
 ## Which Provider for What?
 
+### Recommended: Railway for Everything + Groq API
+
+Since our Next.js app is a single codebase (frontend + API + DB), keeping it on one platform eliminates complexity.
+
+| Component | Recommended | Monthly Cost |
+|-----------|------------|-------------|
+| **Everything (app + DB)** | **Railway** | **$15-50** |
+| **AI (built-in)** | **Groq API** | **$0.18/1M tokens** |
+| AI (BYOK) | User's own key | $0 to us |
+| **Total at launch** | | **$15-50/mo** |
+| **Total at 500 users** | | **$65-120/mo** |
+
+### Alternative Setups (not recommended but documented)
+
 | Component | Recommended | Monthly Cost |
 |-----------|------------|-------------|
 | Frontend (SSR/static) | Vercel Free or Railway | $0-20 |

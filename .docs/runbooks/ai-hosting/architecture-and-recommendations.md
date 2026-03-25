@@ -180,9 +180,24 @@ This is the table that actually matters:
 
 **Crossover point: ~800-1000 daily active users.** Below that, Groq API is cheaper. Above that, self-hosting wins on cost — but you sacrifice tool calling quality unless you run a 70B+ model (which needs an A100 at $1,181/mo).
 
+## Frontend Hosting Options
+
+Since our app is a single Next.js codebase (frontend SSR + API routes), we can either split hosting or keep everything together.
+
+| Frontend Host | Cost | Next.js SSR | Separate from Backend? | Tradeoffs |
+|---|---|---|---|---|
+| **Railway (same as backend)** | **$0 extra** | ✅ Full | **No — one deploy** | Simplest. One platform, one bill, one deploy. No CORS. |
+| Vercel | $0-20/mo | ✅ Best | Yes — two deploys | Best DX + edge CDN, but CORS config needed, two bills |
+| Render | $7-25/mo | ✅ Full | Yes | Slower deploys, decent |
+| Fly.io | $5-30/mo | ✅ Full | Yes | Good edge, more ops work |
+| Cloudflare Pages | $0-20/mo | ⚠️ Partial | Yes | Fast CDN but Next.js SSR compat issues |
+| Coolify (self-hosted) | $0 + VPS | ✅ Full | Depends | Total control, you manage it |
+
+**Why splitting frontend is unnecessary for us:** Our Next.js app is one codebase — `apps/web` contains both the frontend pages AND the API routes. Splitting to Vercel + Railway means two deploys, CORS configuration, env var sync between platforms, and more debugging complexity. Railway hosts the entire Next.js app as one service.
+
 ## Actual Recommendation
 
-**Start with Groq API. Stay with Groq API until you have a concrete reason to switch.**
+**Railway for everything. Groq API for AI. That's it.**
 
 ### Recommended System Architecture
 
@@ -192,13 +207,10 @@ graph TB
         User[/"👤 User's Browser"/]
     end
 
-    subgraph Vercel["☁️ Vercel (Frontend) — $0-20/mo"]
-        FE["Next.js SSR + CDN<br/>Static assets, routing"]
-    end
-
-    subgraph Railway["🚂 Railway (Backend) — $15-50/mo"]
-        API["Next.js API Routes<br/>Auth, business logic"]
+    subgraph Railway["🚂 Railway — $15-50/mo (everything)"]
+        APP["Next.js App<br/>Frontend SSR + API Routes<br/>Auth, business logic"]
         DB[("PostgreSQL<br/>Users, projects,<br/>artifacts, sessions")]
+        APP --> DB
     end
 
     subgraph Groq["⚡ Groq API — $0.18/1M tokens"]
@@ -215,34 +227,42 @@ graph TB
         OLL["Ollama<br/>qwen2.5:14b<br/>Your RTX 4090"]
     end
 
-    User -->|HTTPS| FE
-    FE -->|API calls| API
-    API --> DB
-    API -->|"Built-in AI<br/>(all users)"| LLM
-    API -->|"BYOK users<br/>(they pay)"| OAI
-    API -->|"BYOK users"| ANT
-    API -->|"BYOK users"| GOO
-    API -.->|"Dev only<br/>localhost:11434"| OLL
+    User -->|HTTPS| APP
+    APP -->|"Built-in AI<br/>(subscribers)"| LLM
+    APP -->|"BYOK users<br/>(they pay)"| OAI
+    APP -->|"BYOK users"| ANT
+    APP -->|"BYOK users"| GOO
+    APP -.->|"Dev only<br/>localhost:11434"| OLL
 
     style Groq fill:#e8f5e9,stroke:#2e7d32,stroke-width:3px
     style BYOK fill:#fff3e0,stroke:#ef6c00
     style LocalDev fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray: 5 5
-    style Railway fill:#e3f2fd,stroke:#1565c0
-    style Vercel fill:#fce4ec,stroke:#c62828
+    style Railway fill:#e3f2fd,stroke:#1565c0,stroke-width:3px
 ```
+
+### Why This is the Simplest Setup
+
+| Concern | Split Hosting (Vercel + Railway) | All-in-One (Railway only) |
+|---------|--------------------------------|--------------------------|
+| Deploys | 2 separate deploys | **1 deploy** |
+| Bills | 2 bills | **1 bill** |
+| Env vars | Sync between 2 platforms | **1 set** |
+| CORS | Must configure | **Not needed** |
+| CI/CD | 2 pipelines | **1 pipeline** |
+| Debugging | Check 2 platforms | **1 platform** |
+| Total cost | $15-70/mo | **$15-50/mo** |
 
 ### Cost at Each Stage
 
 | Component | Provider | Cost | Why |
 |-----------|----------|------|-----|
-| Frontend | Vercel (free or Pro) | $0-20/mo | Best Next.js hosting, global CDN |
-| Backend + DB | Railway | $15-50/mo | Simple, scales, managed Postgres |
+| App + DB | **Railway** | $15-50/mo | Next.js SSR + API + Postgres, one deploy |
 | AI (built-in) | **Groq API** | $0.18/1M tokens | Fastest, most reliable, best tool calling |
 | AI (BYOK) | User's own key | $0 to us | OpenAI/Anthropic/Google — user pays |
 | AI (local dev) | Ollama on your PC | $0 | For development/testing only |
-| **Total at launch** | | **$15-70/mo** | |
-| **Total at 500 users** | | **$80-120/mo** | |
-| **Total at 2000 users** | | **$400-500/mo** | Consider self-hosting GPU at this point |
+| **Total at launch** | | **$15-50/mo** | |
+| **Total at 500 users** | | **$65-120/mo** | |
+| **Total at 2000 users** | | **$350-500/mo** | Consider self-hosting GPU at this point |
 
 ### How the AI Provider Resolution Works
 

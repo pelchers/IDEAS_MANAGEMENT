@@ -101,6 +101,44 @@ Started: 2026-03-20
 - [ ] When creating ideas without priority/category specified, AI should ask or use sensible defaults and mention what it chose
 - [ ] For destructive actions (delete), AI should confirm before executing
 
+## Phase 8 — Groq Provider + Tool Calling Reliability + Hardening
+
+### 8a. Add Groq as built-in provider
+- [ ] Add GROQ_BUILTIN to AiProvider enum + Prisma migration
+- [ ] Add Groq case to getUserModel (createOpenAI with baseURL: https://api.groq.com/openai/v1)
+- [ ] Set Groq as default built-in provider (replaces Ollama for production)
+- [ ] Add GROQ_API_KEY server env var
+- [ ] Update Settings UI: show "Built-in AI (Groq)" for subscribers
+- [ ] Keep Ollama as local dev option (auto-detect fallback)
+
+### 8b. Fix tool calling behavior
+- [ ] Remove follow-up API call that masks tool failures with fake confirmation text
+- [ ] Add tool-call validation: if user asked for action but no tool-output-available in stream, show warning
+- [ ] Show tool result message directly when tool succeeds (no second model call needed)
+- [ ] Detect text-only responses for action requests and warn user
+- [ ] Show tool cards even when model generates no text alongside
+
+### 8c. Live reactivity on all pages
+- [ ] Add useArtifactRefresh to Kanban page (update_kanban_artifact)
+- [ ] Add useArtifactRefresh to Schema page (update_schema_artifact)
+- [ ] Add useArtifactRefresh to Whiteboard page (update_whiteboard_artifact)
+- [ ] Add useArtifactRefresh to Directory Tree page (update_directory_tree_artifact)
+- [ ] Dispatch artifact-updated from both chat page and helper after every tool execution
+
+### 8d. Hardening
+- [ ] Timeout: 30 second max for AI response, show error if exceeded
+- [ ] Rate limiting: max 60 messages/min per user in chat API
+- [ ] Token budget: cap system prompt + history context injection at ~4000 tokens
+- [ ] Error boundaries: clean error display if stream errors mid-way
+- [ ] Validate tool result: after tool writes artifact, quick read-back to confirm
+
+### 8e. Testing
+- [ ] Test Groq tool calling with all 8 artifact tools
+- [ ] Playwright: send action request → verify tool card → verify artifact written
+- [ ] Test BYOK flow: paste key → send message → verify response
+- [ ] Test fallback chain: Groq → BYOK → Ollama → error
+- [ ] Test live reactivity: AI adds idea → Ideas page updates without refresh
+
 ## Phase 6 — Testing & Validation
 
 ### 6a. Tool visibility tests
