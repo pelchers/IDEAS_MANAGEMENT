@@ -1,153 +1,148 @@
 # Server Types Explained
 
-## What's the Difference?
+## The Two Ways to Run AI
 
-When hosting a web application with AI features, you're dealing with three fundamentally different workloads that need different types of servers.
+There are exactly two ways to make AI work in your app. You pick one.
+
+### Option 1: Call Someone Else's AI (API Provider)
+
+You send text to a company that owns GPUs (like Groq, OpenAI, Anthropic). They run the AI model on their hardware and send back the response. You pay per use.
+
+```mermaid
+sequenceDiagram
+    participant User as User's Browser
+    participant App as Your App (Railway)
+    participant API as Groq / OpenAI (Their GPUs)
+
+    User->>App: "Add an idea about login"
+    App->>API: POST /chat { messages, tools }
+    Note over API: Runs Llama 70B on<br/>their GPU farm
+    API-->>App: Tool call: update_ideas_artifact
+    App-->>User: "Done! Idea added."
+
+    Note over App: Your server has NO GPU.<br/>Railway = CPU only.<br/>That's fine — the GPU is at Groq.
+```
+
+**You don't need a GPU.** Railway ($20/mo) hosts your app. Groq ($0.18/1M tokens) runs the AI. Two separate bills but total cost is low.
+
+**This is like:** Using Stripe for payments. You don't run a payment processor — you call their API. Same concept for AI.
+
+### Option 2: Run Your Own AI (Self-Hosted GPU)
+
+You rent a server that has a GPU, install Ollama + the AI model on it, and your app calls it directly. No external API.
+
+```mermaid
+sequenceDiagram
+    participant User as User's Browser
+    participant Server as GPU Server (RunPod/Vast.ai)
+
+    User->>Server: "Add an idea about login"
+    Note over Server: Next.js App +<br/>PostgreSQL +<br/>Ollama + Model<br/>ALL on one machine
+    Server->>Server: Ollama processes on GPU<br/>(localhost:11434)
+    Server-->>User: "Done! Idea added."
+
+    Note over Server: YOU rent the GPU.<br/>$200-400/mo flat rate.<br/>$0 per token.
+```
+
+**You DO need a GPU.** You can't use Railway for this — Railway has no GPUs. You rent a GPU server from RunPod ($317/mo) or Vast.ai ($150-288/mo) and run everything on it.
+
+**This is like:** Buying your own payment processing hardware instead of using Stripe. More control, but you manage it.
+
+## Why Can't Railway Run the AI Model?
+
+```mermaid
+graph LR
+    subgraph Railway["Railway Server (CPU only)"]
+        CPU["Intel/AMD CPU<br/>No GPU"]
+    end
+
+    subgraph GPU_Server["GPU Server (RunPod etc.)"]
+        GPU["NVIDIA A100/4090<br/>24-80GB VRAM"]
+    end
+
+    CPU -->|"14B model: 1-3 tok/s<br/>60-200 sec per response<br/>❌ NOT VIABLE"| SLOW["Too Slow"]
+    GPU -->|"14B model: 25-35 tok/s<br/>2-5 sec per response<br/>✅ Production ready"| FAST["Fast"]
+
+    style SLOW fill:#ffebee,stroke:#c62828
+    style FAST fill:#e8f5e9,stroke:#2e7d32
+```
+
+AI models need GPUs for the parallel math that neural networks require. Railway/Render/Vercel are CPU-only hosting platforms. Running a 14B model on CPU takes minutes per response — unusable for a real app.
+
+## The Three Environments
 
 ```mermaid
 graph TB
-    subgraph FE["🖥️ Frontend Server (CPU)"]
-        direction TB
-        FE1["Serves HTML/CSS/JS"]
-        FE2["Server-side rendering"]
-        FE3["Static asset CDN"]
-        FE4["$0-20/mo"]
+    subgraph DEV["🖥️ Development (Your PC)"]
+        DEV_APP["Next.js App<br/>(npm run dev)"]
+        DEV_DB[("PostgreSQL<br/>(local)")]
+        DEV_AI["Ollama<br/>qwen2.5:14b<br/>Your RTX 4090"]
+        DEV_APP --> DEV_DB
+        DEV_APP -->|"localhost:11434<br/>FREE"| DEV_AI
     end
 
-    subgraph BE["⚙️ Backend Server (CPU)"]
-        direction TB
-        BE1["API routes"]
-        BE2["Authentication"]
-        BE3["Database queries"]
-        BE4["$15-50/mo"]
+    subgraph PROD_API["☁️ Production — API Approach (RECOMMENDED)"]
+        PROD_APP["Next.js App<br/>(Railway)"]
+        PROD_DB[("PostgreSQL<br/>(Railway)")]
+        PROD_GROQ["Groq API<br/>Llama 70B<br/>Their GPUs"]
+        PROD_APP --> PROD_DB
+        PROD_APP -->|"HTTPS<br/>$0.18/1M tokens"| PROD_GROQ
     end
 
-    subgraph AI["🧠 AI Inference (GPU or API)"]
-        direction TB
-        AI1["Loads AI model"]
-        AI2["Processes messages"]
-        AI3["Tool calling"]
-        AI4["$0.18/1M tokens (API)<br/>or $300+/mo (GPU)"]
+    subgraph PROD_GPU["🖥️ Production — Self-Hosted GPU"]
+        GPU_APP["Next.js App"]
+        GPU_DB[("PostgreSQL")]
+        GPU_AI["Ollama<br/>qwen2.5:14b<br/>Rented GPU"]
+        GPU_APP --> GPU_DB
+        GPU_APP -->|"localhost:11434<br/>$0/token"| GPU_AI
     end
 
-    FE -.->|"Light<br/>1-2 vCPU"| CPU1["No GPU needed"]
-    BE -.->|"Medium<br/>2-8 vCPU"| CPU2["No GPU needed"]
-    AI -.->|"Heavy<br/>Needs GPU or API"| GPU["GPU with 16-24GB VRAM<br/>OR managed API"]
-
-    style FE fill:#fce4ec,stroke:#c62828
-    style BE fill:#e3f2fd,stroke:#1565c0
-    style AI fill:#e8f5e9,stroke:#2e7d32
-    style GPU fill:#fff9c4,stroke:#f9a825
+    style DEV fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray: 5 5
+    style PROD_API fill:#e8f5e9,stroke:#2e7d32,stroke-width:3px
+    style PROD_GPU fill:#e3f2fd,stroke:#1565c0
 ```
 
-### 1. Frontend Server (CPU-only)
+**Development:** Ollama runs on your RTX 4090. Free. Fast. Works great for testing.
 
-Serves your Next.js/React pages to users' browsers. This is lightweight — just HTML, CSS, JS, and API routing.
+**Production (recommended):** App on Railway, AI via Groq API. No GPU server needed. Pay per token.
 
-**What it does:** Renders pages, serves static assets, handles SSR
-**Hardware needed:** 1-2 vCPU, 512MB-2GB RAM, no GPU
-**Cost:** $0-20/month
-**Providers:** Vercel, Netlify, Cloudflare Pages, Railway
-
-### 2. Backend + Database Server (CPU-only)
-
-Runs your API routes, handles authentication, queries the database, manages business logic.
-
-**What it does:** API endpoints, Prisma queries, auth, file uploads
-**Hardware needed:** 2-8 vCPU, 4-16GB RAM, SSD storage, no GPU
-**Cost:** $5-50/month
-**Providers:** Railway, Render, Fly.io, DigitalOcean, Hetzner
-
-### 3. GPU Server (AI Inference)
-
-Runs the AI model (Ollama + qwen2.5:14b). This is the only component that needs a GPU. GPUs are specialized processors designed for the massive parallel math that neural networks require.
-
-**What it does:** Loads the AI model into GPU memory, processes user messages, generates responses, executes tool calls
-**Hardware needed:** 1 GPU with 16-24GB VRAM, 16-32GB system RAM
-**Cost:** $100-500/month (dedicated) or $0.10-0.30/1M tokens (API)
-**Providers:** RunPod, Vast.ai, Lambda, GCP, AWS
-
-## Why Can't Regular Servers Run AI Models?
-
-A 14B parameter model requires:
-- **GPU (fast):** ~8-10GB VRAM, generates 25-35 tokens/second
-- **CPU (slow):** ~16GB RAM, generates 1-3 tokens/second
-
-That's a 10-15x speed difference. A response that takes 2 seconds on GPU takes 20-30 seconds on CPU. For a production app, CPU inference is not viable.
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    GPU vs CPU Inference                   │
-├─────────────────────────────────────────────────────────┤
-│                                                           │
-│  GPU (RTX 4090):  ████████████████████████████ 35 tok/s  │
-│  GPU (A10):       ██████████████████████ 25 tok/s        │
-│  CPU (i9-14900K): ███ 3 tok/s                            │
-│  CPU (4 vCPU):    █ 1 tok/s                              │
-│                                                           │
-│  For a 200-token response:                                │
-│  GPU: ~6 seconds                                          │
-│  CPU: ~60-200 seconds                                     │
-└─────────────────────────────────────────────────────────┘
-```
+**Production (alternative):** Everything on one GPU server. Pay flat monthly rate. Only makes sense when token costs exceed server rent (~1000+ daily active users).
 
 ## What is a GPU Server?
 
-A GPU server is a computer with one or more dedicated graphics cards (GPUs) optimized for AI workloads. These are typically:
+A GPU server is a computer with specialized graphics cards (GPUs) designed for AI computation. You rent one from a cloud provider:
 
-| GPU | VRAM | Use Case | Relative Speed |
-|-----|------|----------|---------------|
-| RTX 3090 | 24 GB | Budget inference | Fast |
-| RTX 4090 | 24 GB | Best consumer GPU | Very fast |
-| A10 / A10G | 24 GB | Cloud inference standard | Fast |
-| L4 | 24 GB | Google's inference GPU | Fast |
-| A40 | 48 GB | Larger models | Fast |
-| A6000 | 48 GB | Professional workstation | Very fast |
-| A100 | 40/80 GB | Enterprise standard | Fastest |
-| H100 | 80 GB | Cutting edge | Ultra fast |
+| GPU | VRAM | Best For | Speed (14B model) | Rental Cost |
+|-----|------|----------|-------------------|-------------|
+| RTX 3090 | 24 GB | Budget AI | ~25 tok/s | $108-216/mo |
+| RTX 4090 | 24 GB | Best consumer | ~35 tok/s | $144-317/mo |
+| A10 / A10G | 24 GB | Cloud standard | ~25 tok/s | $432-724/mo |
+| A100 | 40-80 GB | Enterprise | ~50 tok/s | $792-2,642/mo |
 
-For our 14B model (qwen2.5:14b at Q4 = ~8.5GB), any GPU with 16GB+ VRAM works. The sweet spot is **RTX 4090 or A10** (24GB, affordable, fast enough).
+**For our 14B model**, any GPU with 24GB+ VRAM works. The cheapest option is an RTX 3090 on Vast.ai (~$150/mo).
 
-## How the Pieces Connect
+## What is an API Provider?
 
-```
-User's Browser
-      │
-      ▼
-┌──────────────┐         ┌──────────────┐
-│   Frontend   │────────▶│   Backend    │
-│   (Vercel)   │◀────────│  (Railway)   │
-│              │         │  + Postgres  │
-└──────────────┘         └──────┬───────┘
-                                │
-                     localhost or network
-                                │
-                         ┌──────▼───────┐
-                         │  GPU Server  │
-                         │   (RunPod)   │
-                         │   Ollama +   │
-                         │  qwen2.5:14b │
-                         └──────────────┘
-```
+An API provider runs AI models on their own GPU farms and lets you call them via HTTP. You never touch a GPU.
 
-**Option A: Split hosting** — Frontend on Vercel, backend on Railway, AI on a GPU provider. Three bills, but each component is optimized.
+| Provider | How It Works | Cost | Model Quality |
+|----------|-------------|------|---------------|
+| **Groq** | Send HTTP request → get AI response | $0.18/1M tokens | Excellent (70B+) |
+| Together AI | Same | $0.20/1M tokens | Good |
+| OpenAI | Same | $2.50/1M tokens | Excellent |
+| Anthropic | Same | $3.00/1M tokens | Excellent |
 
-**Option B: All-in-one GPU server** — Everything runs on one rented GPU machine. Simpler, and the backend calls Ollama at `localhost:11434` with zero network latency.
+**Groq is recommended** because it's the cheapest API provider with 99.9% uptime and the fastest inference (300+ tokens/second).
+
+## Summary: What We're Using
 
 ```
-User's Browser
-      │
-      ▼
-┌──────────────────────────────┐
-│     Single GPU Server        │
-│  ┌──────────┐ ┌───────────┐ │
-│  │ Next.js  │ │ PostgreSQL│ │
-│  │ Backend  │ │  Database │ │
-│  └────┬─────┘ └───────────┘ │
-│       │ localhost:11434      │
-│  ┌────▼─────────────────┐   │
-│  │   Ollama + Model     │   │
-│  │   (GPU accelerated)  │   │
-│  └──────────────────────┘   │
-└──────────────────────────────┘
+DEVELOPMENT                          PRODUCTION
+┌─────────────────────┐              ┌─────────────────────┐
+│ Your PC              │              │ Railway              │
+│ ├─ Next.js (dev)     │              │ ├─ Next.js App       │
+│ ├─ PostgreSQL        │              │ ├─ PostgreSQL        │
+│ └─ Ollama (RTX 4090) │              │ └─ Calls Groq API ──┼──▶ Groq (their GPUs)
+│    FREE               │              │    $15-50/mo         │     $0.18/1M tokens
+└─────────────────────┘              └─────────────────────┘
 ```

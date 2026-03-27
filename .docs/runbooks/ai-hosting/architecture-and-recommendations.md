@@ -1,5 +1,27 @@
 # Architecture & Recommendations
 
+## How Groq Fits In
+
+**Groq is our AI provider — they own the GPUs, we call their API.**
+
+Our app runs on Railway (no GPU). When a user sends an AI message, our backend calls Groq's API over HTTPS. Groq runs the message through their Llama 70B model on their GPU farm and streams the response back. We pay $0.18 per million tokens — no GPU rental, no server management, no Ollama in production.
+
+This is the same pattern as using Stripe for payments or Twilio for SMS — you don't run the infrastructure, you call an API.
+
+```mermaid
+graph LR
+    A["Your App<br/>(Railway, no GPU)"] -->|"HTTPS request<br/>+ tool schemas"| B["Groq API<br/>(their GPU farm)"]
+    B -->|"Streaming response<br/>+ tool calls"| A
+    A -->|"$15-50/mo"| R["Railway bill"]
+    A -->|"$0.18/1M tokens"| G["Groq bill"]
+
+    style B fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style R fill:#e3f2fd,stroke:#1565c0
+    style G fill:#e8f5e9,stroke:#2e7d32
+```
+
+**For local development**, you use Ollama on your RTX 4090 instead of Groq — same code, different endpoint (`localhost:11434` vs `api.groq.com`). The app automatically switches based on environment.
+
 ## The Reality Check
 
 **Don't plan for 4 hosting migrations.** If your app goes viral overnight, you don't want to be scrambling to migrate from Vast.ai community to RunPod dedicated while users are complaining about downtime. Pick an architecture that works from day one to 10,000 users with minimal changes.
