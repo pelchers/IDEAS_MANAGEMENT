@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mermaid CLI"
+  short_description: "Help with Mermaid diagrams and Mermaid CLI workflows"
+  default_prompt: "Use $mermaid-cli to create, render, or troubleshoot Mermaid diagrams and Markdown outputs."

@@ -1,0 +1,7 @@
+C4Context
+    title System Context
+    Person(user, "Learner", "Uses the application")
+    System(app, "SchoolHelper", "Helps organize coursework")
+    System_Ext(mail, "Email Service", "Sends notifications")
+    Rel(user, app, "Uses")
+    Rel(app, mail, "Sends updates through")

@@ -1,0 +1,8 @@
+sequenceDiagram
+    participant User
+    participant App
+    participant API
+    User->>App: Open dashboard
+    App->>API: Request data
+    API-->>App: Response payload
+    App-->>User: Render view

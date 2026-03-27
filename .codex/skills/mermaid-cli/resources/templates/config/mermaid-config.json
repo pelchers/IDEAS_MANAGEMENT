@@ -1,0 +1,18 @@
+{
+  "theme": "default",
+  "themeVariables": {
+    "primaryColor": "#e2f0ff",
+    "primaryTextColor": "#16324f",
+    "primaryBorderColor": "#2f5d8a",
+    "lineColor": "#40698f",
+    "fontFamily": "Segoe UI, Helvetica, Arial, sans-serif"
+  },
+  "themeCSS": ".node rect, .node circle, .node ellipse { rx: 8px; }",
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "showSequenceNumbers": true
+  }
+}

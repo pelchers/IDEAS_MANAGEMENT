@@ -1,0 +1,14 @@
+classDiagram
+    class Course {
+        +String code
+        +String title
+        +addAssignment()
+    }
+
+    class Assignment {
+        +String name
+        +Date dueDate
+        +submit()
+    }
+
+    Course "1" --> "*" Assignment : contains

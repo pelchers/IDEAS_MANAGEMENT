@@ -1,0 +1,13 @@
+requirementDiagram
+    requirement auth_required {
+        id: REQ1
+        text: Requests must be authenticated
+        risk: medium
+        verifymethod: test
+    }
+
+    element api_gateway {
+        type: gateway
+    }
+
+    api_gateway - satisfies -> auth_required

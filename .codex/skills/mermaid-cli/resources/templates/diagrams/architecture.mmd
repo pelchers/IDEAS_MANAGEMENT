@@ -1,0 +1,7 @@
+architecture-beta
+    group platform(cloud)[Platform]
+    service web(server)[Web App] in platform
+    service db(database)[Database] in platform
+    service queue(internet)[Queue] in platform
+    web:R --> L:queue
+    web:B --> T:db

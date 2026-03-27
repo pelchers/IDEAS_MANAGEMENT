@@ -1,0 +1,7 @@
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Running: start
+    Running --> Waiting: pause
+    Waiting --> Running: resume
+    Running --> Done: finish
+    Done --> [*]
