@@ -61,6 +61,8 @@ Use a hosted AI API as primary. No GPU server. Scales from 1 to 10,000+ users wi
                        │  300+ tok/s  │
                        └──────────────┘
 
+**How this works:** Railway runs our entire app — frontend, backend API, and database — all as one service. Groq takes the place of a GPU server that we would otherwise have to rent, configure, install Ollama on, download a model to, and maintain ourselves. Instead, Groq has already done all of that — they own the GPUs, they installed the models, they manage the infrastructure. We just call their API endpoint and get AI responses back. Railway handles the app, Groq handles the AI. Two services, zero server management.
+
      50 users: ~$25/mo
      500 users: ~$90/mo
      5000 users: ~$2,200/mo
