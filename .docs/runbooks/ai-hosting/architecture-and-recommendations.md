@@ -61,8 +61,6 @@ Use a hosted AI API as primary. No GPU server. Scales from 1 to 10,000+ users wi
                        │  300+ tok/s  │
                        └──────────────┘
 
-**How this works:** Railway runs our entire app — frontend, backend API, and database — all as one service. Groq takes the place of a GPU server that we would otherwise have to rent, configure, install Ollama on, download a model to, and maintain ourselves. Instead, Groq has already done all of that — they own the GPUs, they installed the models, they manage the infrastructure. We just call their API endpoint and get AI responses back. Railway handles the app, Groq handles the AI. Two services, zero server management.
-
      50 users: ~$25/mo
      500 users: ~$90/mo
      5000 users: ~$2,200/mo
@@ -251,7 +249,7 @@ graph TB
         OLL["Ollama<br/>qwen2.5:14b<br/>Your RTX 4090"]
     end
 
-    User -->|HTTPS| APP
+    User -->|HTTPS| A
     APP -->|"Built-in AI<br/>(subscribers)"| LLM
     APP -->|"BYOK users<br/>(they pay)"| OAI
     APP -->|"BYOK users"| ANT
@@ -263,6 +261,8 @@ graph TB
     style LocalDev fill:#f5f5f5,stroke:#9e9e9e,stroke-dasharray: 5 5
     style Railway fill:#e3f2fd,stroke:#1565c0,stroke-width:3px
 ```
+
+**How this works:** Railway runs our entire app — frontend, backend API, and database — all as one service. Groq takes the place of a GPU server that we would otherwise have to rent, configure, install Ollama on, download a model to, and maintain ourselves. Instead, Groq has already done all of that — they own the GPUs, they installed the models, they manage the infrastructure. We just call their API endpoint and get AI responses back. Railway handles the app, Groq handles the AI. Two services, zero server management.
 
 ### Why This is the Simplest Setup
 
