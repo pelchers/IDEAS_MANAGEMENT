@@ -24,6 +24,22 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [x] Cards link to /projects/{id}
 - [x] "+ NEW PROJECT" button — functional (creates project)
 
+## Phase 2b — Project Management UX (2026-03-27)
+
+### Project Settings Modal
+- [ ] Settings gear icon on each project card (top-right corner)
+- [ ] Click opens modal with all project fields (same as creation): name, description, status, tags
+- [ ] Save updates via PATCH /api/projects/[id]
+- [ ] Delete project button (red, with confirmation prompt)
+- [ ] Delete calls DELETE /api/projects/[id], removes card from grid
+
+### Project Search, Sort & Filter
+- [ ] Search bar above project grid (filters by name, description, tags)
+- [ ] Sort dropdown: Name (A-Z), Name (Z-A), Newest, Oldest, Status
+- [ ] Filter chips for status: ALL, PLANNING, ACTIVE, PAUSED, ARCHIVED
+- [ ] Active filter + sort persist while searching
+- [ ] Empty state when no projects match search/filter
+
 ## Phase 3 — Project Detail + Screenshots
 
 - [x] Project workspace page at /projects/[id] with Editor/Preview/Notes tabs
