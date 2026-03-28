@@ -10,7 +10,7 @@ import type { LanguageModel } from "ai";
  * Default models per provider (must support tool calling).
  */
 const DEFAULT_MODELS: Record<string, string> = {
-  groq: "llama-3.1-70b-versatile",
+  groq: "openai/gpt-oss-120b",
   openrouter: "anthropic/claude-sonnet-4",
   openai: "gpt-4o",
   anthropic: "claude-sonnet-4-20250514",
