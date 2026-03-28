@@ -1,376 +1,144 @@
 # AI Model Choice — Built-In Model Selection
 
 **Last updated:** 2026-03-27
-**Purpose:** Choose the best AI model for our built-in AI feature that works with Claude API keys, OpenAI/Codex API keys, and our own hosted inference.
+**Purpose:** Choose the best AI model for our built-in AI that's compatible with Claude/Codex API key users and our hosted Groq inference.
 
 ---
 
 ## Why Claude & Codex API Compatibility is the #1 Factor
 
-Our app lets users plug in their own API keys from **any provider** — OpenAI, Anthropic (Claude), Google, or OpenRouter. When they do, our app sends tool/function calls to that provider's API. This means:
+Our app lets users plug in their own API keys — OpenAI, Anthropic (Claude), Google, or OpenRouter. Our built-in AI uses the same code path. Here's what that means:
 
-1. **Our code uses the Vercel AI SDK** which abstracts all providers behind one interface
-2. **For Groq and Ollama** (our built-in models), we use `createOpenAI({ baseURL })` — which sends the **OpenAI function calling format**
-3. **Any model we host ourselves must understand OpenAI's tool calling format** — because that's what our SDK sends to it
-4. **When users use their own Claude key**, the SDK automatically converts to Anthropic's format — so that works regardless
-5. **When users use their own OpenAI key**, the SDK sends native OpenAI format — same format our built-in model receives
+**How our SDK works:**
+- We use the **Vercel AI SDK** with `tool()` helpers and Zod schemas
+- For **Groq and Ollama**, we call `createOpenAI({ baseURL })` — this sends the **OpenAI function calling format**
+- For **Anthropic BYOK**, the SDK auto-converts to Claude's `input_schema` format
+- For **OpenAI BYOK**, it sends native OpenAI format
 
-**Bottom line:** Our built-in model must handle OpenAI-format tool calls reliably. Models trained on Hermes/OpenAI function calling datasets are best. Models that use proprietary format and need special templates are risky.
+**What this means for model choice:**
+- Our built-in model receives the **OpenAI tool calling format** (JSON schema with `type: "function"`)
+- The model must return `tool_calls` array in the response (not XML text, not markdown)
+- Models that don't properly support OpenAI-compat tool calling through Ollama's `/v1/` endpoint are **disqualified**
 
-**Real example from our app:** qwen3-coder:30b generates `<function=update_ideas_artifact>` as text instead of making a real tool call through Ollama's `/v1/` endpoint. The native `/api/chat` works, but our SDK uses `/v1/`. This disqualifies models that don't properly map to OpenAI format through the compatibility layer.
-
-### What This Means for Model Choice
+**Real failure we hit:** `qwen3-coder:30b` generates `<function=update_ideas_artifact>` as XML text instead of making actual tool calls through Ollama's `/v1/chat/completions`. The native `/api/chat` works, but our SDK uses `/v1/`. This model is disqualified.
 
 | Requirement | Why |
 |-------------|-----|
-| Must work via Ollama's `/v1/chat/completions` | Our SDK calls this endpoint |
-| Must produce `tool_calls` array (not XML text) | SDK expects OpenAI response format |
-| Must handle multi-step (tool result → text) | We use `stopWhen: stepCountIs(3)` |
-| Must be available on Groq | Our production built-in provider |
-| Apache 2.0 or similar license | We charge for access |
-| 7B-70B range | Must fit on consumer GPU (local) and be fast on Groq |
+| Must produce `tool_calls` JSON array via `/v1/` | Our SDK expects OpenAI response format |
+| Must handle multi-step (tool result → text response) | We use `stopWhen: stepCountIs(3)` |
+| Must be available on Groq (production) | Our hosted AI provider |
+| Permissive license | We charge for built-in AI access |
+| Good general + coding knowledge | Users ask about app development, schemas, project planning |
 
 ---
 
-## Table of Contents
+## Table 1: Top Open-Source Models (Leaderboard)
 
-1. [API Format Comparison](#1-api-format-comparison)
-2. [Vercel AI SDK Abstraction](#2-vercel-ai-sdk-abstraction)
-3. [Open-Source Models Trained on OpenAI Format](#3-open-source-models-trained-on-openai-format)
-4. [Model Comparison Matrix](#4-model-comparison-matrix)
-5. [Provider Availability Matrix](#5-provider-availability-matrix)
-6. [Recommendations](#6-recommendations)
+Source: [artificialanalysis.ai/leaderboards/models](https://artificialanalysis.ai/leaderboards/models?is_open_weights=open_source)
 
----
-
-## 1. API Format Comparison
-
-### OpenAI Function Calling Format
-
-The OpenAI API uses a `tools` array in the request body. Each tool is defined with `type: "function"` and a nested `function` object containing the JSON Schema for parameters.
-
-```json
-{
-  "model": "gpt-4o",
-  "messages": [{"role": "user", "content": "What's the weather?"}],
-  "tools": [
-    {
-      "type": "function",
-      "function": {
-        "name": "get_weather",
-        "description": "Get weather for a location",
-        "parameters": {
-          "type": "object",
-          "properties": {
-            "location": { "type": "string", "description": "City name" }
-          },
-          "required": ["location"],
-          "additionalProperties": false
-        },
-        "strict": true
-      }
-    }
-  ]
-}
-```
-
-**Response** returns `tool_calls` array with `id`, `function.name`, and `function.arguments` (JSON string). The `id` is used when submitting tool results back as a `tool` role message.
-
-**Key features:**
-- `strict: true` enables Structured Outputs (model guaranteed to match schema exactly)
-- Supports parallel tool calls (multiple tools in one response)
-- Parameters use standard JSON Schema with types, enums, nested objects, arrays
-
-### Anthropic Claude Tool Use Format
-
-Claude uses a `tools` array with `name`, `description`, and `input_schema` (not nested under `function`).
-
-```json
-{
-  "model": "claude-sonnet-4-20250514",
-  "messages": [{"role": "user", "content": "What's the weather?"}],
-  "tools": [
-    {
-      "name": "get_weather",
-      "description": "Get weather for a location",
-      "input_schema": {
-        "type": "object",
-        "properties": {
-          "location": { "type": "string", "description": "City name" }
-        },
-        "required": ["location"]
-      }
-    }
-  ]
-}
-```
-
-**Key differences from OpenAI:**
-- Uses `input_schema` instead of `parameters` nested under `function`
-- No `type: "function"` wrapper -- tools are flat objects
-- Response uses `content` blocks with `type: "tool_use"` containing `id`, `name`, `input`
-- Tool results sent as `type: "tool_result"` content blocks
-- Supports `strict: true` for exact schema adherence
-- Supports `input_examples` for few-shot tool calling demonstrations
-- Server-side tools (web_search, code_execution) run on Anthropic infrastructure
-
-### Format Translation Table
-
-| Feature              | OpenAI                        | Anthropic                      |
-|----------------------|-------------------------------|--------------------------------|
-| Tool definition key  | `tools[].function.parameters` | `tools[].input_schema`         |
-| Tool type wrapper    | `type: "function"`            | None (flat)                    |
-| Tool call in response| `tool_calls[].function`       | `content[].type: "tool_use"`   |
-| Tool result role     | `role: "tool"`                | `role: "user"` with `tool_result` block |
-| Parallel calls       | Yes                           | Yes                            |
-| Strict mode          | `strict: true`                | `strict: true`                 |
+| Rank | Model | Creator | Intelligence Index | Context | $/1M Tokens | Speed (tok/s) | Latency (s) |
+|------|-------|---------|-------------------|---------|-------------|---------------|-------------|
+| 1 | GLM-5 (Reasoning) | Z AI | 50 | 200K | $1.55 | 69 | 1.60 |
+| 2 | Kimi K2.5 (Reasoning) | Kimi | 47 | 256K | $1.20 | 43 | 2.87 |
+| 3 | Qwen3.5 397B A17B | Alibaba | 45 | 262K | $1.35 | 96 | 2.61 |
+| 4 | Qwen3.5 27B | Alibaba | 42 | 262K | $0.82 | 85 | 5.61 |
+| 5 | DeepSeek V3.2 | DeepSeek | 42 | 128K | $0.32 | 33 | 1.79 |
+| 6 | Qwen3.5 122B A10B | Alibaba | 42 | 262K | $1.10 | 121 | 2.33 |
+| 7 | MiMo-V2-Flash | Xiaomi | 41 | 256K | $0.15 | 132 | 2.17 |
+| 8 | Step 3.5 Flash | StepFun | 38 | 256K | $0.15 | 96 | 3.53 |
+| 9 | Qwen3.5 35B A3B | Alibaba | 37 | 262K | $0.69 | 165 | 2.08 |
+| 10 | NVIDIA Nemotron 3 Super | NVIDIA | 36 | 1M | $0.41 | 399 | 0.72 |
+| 11 | gpt-oss-120B (high) | OpenAI | 33 | 131K | $0.26 | 263 | 0.83 |
+| 12 | Qwen3.5 9B | Alibaba | 32 | 262K | $0.11 | 54 | 0.62 |
+| 13 | Qwen3 Coder Next | Alibaba | 28 | 256K | $0.60 | 147 | 1.29 |
+| 14 | Mistral Small 4 (reasoning) | Mistral | 27 | 256K | $0.26 | — | — |
+| 15 | gpt-oss-20B (high) | OpenAI | 24 | 131K | $0.09 | 295 | 0.69 |
+| 16 | NVIDIA Nemotron 3 Nano | NVIDIA | 24 | 1M | $0.10 | 121 | 1.82 |
+| 17 | Mistral Large 3 | Mistral | 23 | 256K | $0.75 | 49 | 1.09 |
+| 18 | gpt-oss-20B (low) | OpenAI | 21 | 131K | $0.09 | 291 | 0.69 |
+| 19 | Mistral Small 4 (non-reasoning) | Mistral | 19 | 256K | $0.26 | 134 | 0.62 |
+| 20 | Llama Nemotron Super 49B | NVIDIA | 19 | 128K | $0.17 | 50 | 1.00 |
+| 21 | Llama 4 Maverick | Meta | 18 | 1M | $0.49 | 122 | 0.99 |
+| 22 | Llama 3.1 405B | Meta | 17 | 128K | $3.69 | 29 | 2.15 |
+| 23 | Hermes 4 70B | Nous Research | 16 | 128K | $0.20 | 70 | 1.39 |
+| 24 | Llama 3.3 70B | Meta | 14 | 128K | $0.64 | 87 | 1.38 |
+| 25 | Llama 4 Scout 17B | Meta | 14 | 10M | $0.29 | 128 | 0.77 |
+| 26 | Gemma 3 27B | Google | 10 | 128K | — | 29 | 2.20 |
+| 27 | Gemma 3 12B | Google | 9 | 128K | — | 28 | 18.62 |
 
 ---
 
-## 2. Vercel AI SDK Abstraction
+## Table 2: Models Available on Groq (Production + Preview)
 
-The Vercel AI SDK (v5/v6) provides a **unified tool interface** that abstracts away provider differences entirely. Our codebase uses this.
+Source: [console.groq.com/docs/models](https://console.groq.com/docs/models)
 
-### How it works
-
-Tools are defined using Zod schemas via the `tool()` helper:
-
-```typescript
-import { tool } from "ai";
-import { z } from "zod";
-
-const myTool = tool({
-  description: "Get weather for a location",
-  inputSchema: z.object({
-    location: z.string().describe("City name"),
-  }),
-  execute: async ({ location }) => {
-    return { temperature: 72 };
-  },
-});
-```
-
-**Under the hood:**
-1. The SDK converts Zod schemas to JSON Schema via `zodSchema()`
-2. When calling OpenAI-compatible providers (including Ollama via `/v1/chat/completions`), it sends the **OpenAI function calling format** (tools array with `type: "function"`)
-3. When calling Anthropic, it translates to `input_schema` format
-4. When calling Google, it uses their native format
-5. Tool call responses are normalized back into a unified format
-
-### Provider packages used in our codebase
-
-| Provider    | Package                   | Format sent to API         |
-|-------------|---------------------------|----------------------------|
-| OpenAI      | `@ai-sdk/openai`         | OpenAI native              |
-| Anthropic   | `@ai-sdk/anthropic`      | Anthropic native           |
-| Google      | `@ai-sdk/google`         | Google native              |
-| Groq        | `@ai-sdk/openai` (custom baseURL) | OpenAI-compatible |
-| Ollama      | `@ai-sdk/openai` (custom baseURL) | OpenAI-compatible |
-| OpenRouter  | `@openrouter/ai-sdk-provider`     | OpenAI-compatible |
-
-**Critical insight:** For Groq and Ollama, we use `createOpenAI()` with a custom `baseURL`. This means the SDK sends the **exact OpenAI function calling format**. Therefore, **any model we use through Ollama or Groq must understand the OpenAI tool calling format**.
+| Model ID | Creator | Context | Speed (tok/s) | Input $/1M | Output $/1M | Status | Tool Calling |
+|----------|---------|---------|---------------|-----------|------------|--------|-------------|
+| `llama-3.3-70b-versatile` | Meta | 128K | 280 | $0.59 | $0.79 | Production ✅ | ✅ Yes |
+| `llama-3.1-8b-instant` | Meta | 128K | 560 | $0.05 | $0.08 | Production ✅ | ✅ Yes |
+| `openai/gpt-oss-120b` | OpenAI | 128K | 500 | $0.15 | $0.60 | Production ✅ | ✅ Yes |
+| `openai/gpt-oss-20b` | OpenAI | 128K | 1000 | $0.075 | $0.30 | Production ✅ | ✅ Yes |
+| `qwen/qwen3-32b` | Alibaba | 128K | 400 | $0.29 | $0.59 | Preview ⚠️ | ✅ Yes |
+| `meta-llama/llama-4-scout-17b` | Meta | 128K | 750 | $0.11 | $0.34 | Preview ⚠️ | ✅ Yes |
 
 ---
 
-## 3. Open-Source Models Trained on OpenAI Format
+## Table 3: Cross-Reference — Leaderboard × Groq Availability
 
-These models have been specifically fine-tuned on or natively support the OpenAI function calling format:
-
-### Natively Trained (by the model developer)
-
-| Model Family     | Tool Call Format                        | Notes                                  |
-|------------------|-----------------------------------------|----------------------------------------|
-| **Llama 3.1/3.3** | Native Llama tool format (OpenAI-compatible via template) | Meta trained with tool-use data; Ollama maps to OpenAI format via chat template |
-| **Qwen 2.5/3**   | Hermes-style + native Qwen format       | Qwen uses Hermes-compatible tool format; works with OpenAI-compat endpoints |
-| **Mistral/Mixtral** | Native Mistral tool format             | Mistral models have native function calling; mapped by Ollama |
-| **Command R/R+** | Native Cohere tool format               | Designed for tool use; Ollama provides OpenAI-compat mapping |
-| **DeepSeek V3.x** | Native DeepSeek format                 | V3.1+ improved tool use; V3.2 has reasoning-in-tool-use |
-| **Gemma 2/3**    | Community tool templates                | Not natively trained; community Ollama templates add support |
-
-### Fine-Tuned Variants (third-party)
-
-| Model                          | Base         | Notes                                      |
-|--------------------------------|--------------|--------------------------------------------|
-| **Hermes 3 (NousResearch)**    | Llama 3.1 8B | Fine-tuned on Hermes Function Calling V1 dataset; OpenAI-compatible format |
-| **Llama-3-Groq-Tool-Use 8B/70B** | Llama 3    | Groq's fine-tune specifically for tool calling; top BFCL scores |
-| **Functionary**                | Various      | meetkai's models fine-tuned for OpenAI function calling |
-| **FunctionGemma**              | Gemma        | Google's lightweight model specifically for function calling |
-| **Firefunction v2**            | Llama 3      | Fireworks AI fine-tune for function calling |
+| Model | Leaderboard Score | Groq Status | Groq Speed | Groq Cost (blended) | Tool Calling | License | Fits 24GB VRAM? |
+|-------|------------------|-------------|-----------|---------------------|-------------|---------|-----------------|
+| **gpt-oss-120B** | **33** | Production ✅ | 500 tok/s | **$0.26/1M** | ✅ | Open | ❌ Too large |
+| **gpt-oss-20B** | **24** | Production ✅ | **1000 tok/s** | **$0.09/1M** | ✅ | Open | ✅ ~12 GB Q4 |
+| **Llama 3.3 70B** | 14 | Production ✅ | 280 tok/s | $0.64/1M | ✅ | Llama Community | ❌ ~38 GB |
+| **Llama 3.1 8B** | <10 | Production ✅ | **560 tok/s** | **$0.05/1M** | ✅ | Llama Community | ✅ ~4.9 GB |
+| **Qwen3 32B** | ~37 (3.5 variant) | Preview ⚠️ | 400 tok/s | $0.36/1M | ✅ | Apache 2.0 | ✅ ~19.8 GB (tight) |
+| **Llama 4 Scout 17B** | 14 | Preview ⚠️ | **750 tok/s** | $0.18/1M | ✅ | Llama 4 Community | ✅ ~10 GB |
 
 ---
 
-## 4. Model Comparison Matrix
+## Key Observations
 
-### Tier 1: Best Tool Calling (Recommended for Production)
+### The Leaderboard vs Our Needs
 
-| Model | Params | Q4_K_M Size | Context | BFCL Score | License | Known Issues |
-|-------|--------|-------------|---------|------------|---------|--------------|
-| **Qwen3-32B** | 32B dense | ~19.8 GB | 32K (128K via YaRN) | 68.2 (BFCL v3) | Apache 2.0 | Excellent stability; rarely hallucinates tool calls |
-| **Llama 3.3 70B** | 70B dense | ~38 GB | 128K | 77.3 (BFCL v2, 0-shot) | Llama 3.3 Community | Large VRAM requirement; otherwise very reliable |
-| **Qwen3-Coder 30B-A3B** | 30.5B total / 3.3B active (MoE) | ~18 GB | 262K native | Strong (designed for agentic) | Apache 2.0 | MoE = fast inference; excels at tool calling; **current default in our app** |
-| **Llama 3.1 70B** | 70B dense | ~38 GB | 128K | 77.5 (BFCL v2, 0-shot) | Llama 3.1 Community | Proven; slightly better than 3.3 on BFCL |
+The leaderboard measures general intelligence (reasoning, math, coding benchmarks). Our primary need is **tool calling reliability** — which is not directly measured by this score. A model scoring 14 (Llama 3.3 70B) can have excellent tool calling while a model scoring 42 (DeepSeek V3.2) might not be available on our provider.
 
-### Tier 2: Good Tool Calling (Viable Alternatives)
+### What's Actually Available on Groq Production
 
-| Model | Params | Q4_K_M Size | Context | BFCL Score | License | Known Issues |
-|-------|--------|-------------|---------|------------|---------|--------------|
-| **Qwen 2.5 72B** | 72B dense | ~43 GB | 128K | N/A (pre-BFCL v3) | Apache 2.0 | Very capable but superseded by Qwen3 |
-| **Qwen 2.5 32B** | 32B dense | ~19 GB | 128K | N/A | Apache 2.0 | Good balance of size and capability |
-| **Qwen 2.5 14B** | 14B dense | ~8.5 GB | 128K | N/A | Apache 2.0 | Outperforms Gemma2-27B on many tasks |
-| **Mistral Nemo 12B** | 12B dense | ~7.5 GB | 128K | N/A | Apache 2.0 | Trained on function calling; good multilingual |
-| **Mistral Small 22B** | 22B dense | ~13 GB | 32K | N/A | Apache 2.0 | Improved function calling over Nemo |
-| **DeepSeek V3.2** | 671B MoE / ~37B active | Very large | 128K+ | ~81.5% (custom eval) | DeepSeek License | First model with reasoning-in-tool-use; too large for local |
-| **Command R+ 104B** | 104B dense | ~60 GB | 128K | N/A | CC-BY-NC | Excellent tool use but non-commercial license |
+Only **4 models** are in Groq production. Of those:
+- **gpt-oss-120B** has the highest leaderboard score (33) and good speed (500 tok/s)
+- **gpt-oss-20B** is the cheapest ($0.09/1M) and fastest (1000 tok/s) but lower intelligence (24)
+- **Llama 3.3 70B** is battle-tested for tool calling but scores lower (14) and costs more ($0.64/1M)
+- **Llama 3.1 8B** is ultra-cheap but too small for reliable complex tool calling
 
-### Tier 3: Lightweight / Edge (Resource-Constrained)
+### Token Efficiency Matters
 
-| Model | Params | Q4_K_M Size | Context | License | Known Issues |
-|-------|--------|-------------|---------|---------|--------------|
-| **Llama 3.1 8B** | 8B dense | ~4.9 GB | 128K | Llama 3.1 Community | Good for basic tool calls; struggles with complex multi-tool |
-| **Qwen 2.5 7B** | 7B dense | ~4.4 GB | 128K | Apache 2.0 | Decent tool calling; Together AI uses for FC examples |
-| **Mistral 7B** | 7B dense | ~4.4 GB | 32K | Apache 2.0 | Basic tool support; resource-efficient |
-| **Gemma 2 9B** | 9B dense | ~5.5 GB | 8K | Gemma License | Requires community tool template on Ollama; short context |
-| **Phi-3.5 Medium 14B** | 14B dense | ~8 GB | 128K | MIT | Limited BFCL data; Microsoft model |
-
-### Newer Models (Emerging, Q1-Q2 2026)
-
-| Model | Params | Q4_K_M Size | Context | BFCL Score | License | Notes |
-|-------|--------|-------------|---------|------------|---------|-------|
-| **Qwen3.5 122B-A10B** | 122B MoE / 10B active | ~70 GB | 262K+ | 72.2 (BFCL v4) | Apache 2.0 | Highest open-source BFCL v4 score; outperforms GPT-5 mini (55.5) by 30% |
-| **Qwen3.5 35B-A3B** | 35B MoE / 3B active | ~20 GB | 262K (1M extensible) | N/A | Apache 2.0 | Very efficient; long context |
-| **DeepSeek V3.1** | 671B MoE | Very large | 128K+ | N/A | DeepSeek License | Improved tool use post-training |
-| **Llama 4 Scout 17B** | 17B MoE | ~10 GB | 10M (claimed) | N/A | Llama 4 Community | New; limited tool calling data |
+Even cheap models are expensive if they generate unnecessary tokens. A verbose model at $0.09/1M that generates 3x more tokens per response costs the same as a concise model at $0.27/1M. The `gpt-oss` models are trained to be efficient.
 
 ---
 
-## 5. Provider Availability Matrix
+## Suggestions
 
-| Model | Ollama | Groq | Together AI | OpenRouter |
-|-------|--------|------|-------------|------------|
-| Llama 3.1 8B | Yes | Yes (`llama-3.1-8b-instant`) | Yes | Yes |
-| Llama 3.1 70B | Yes | Yes (deprecated, use 3.3) | Yes | Yes |
-| **Llama 3.3 70B** | Yes | **Yes** (`llama-3.3-70b-versatile`) | Yes | Yes |
-| Llama 4 Scout 17B | Yes | Yes | Yes | Yes |
-| **Qwen3 32B** | Yes | **Yes** (`qwen-3-32b`) | Yes | Yes |
-| Qwen 2.5 7B | Yes | No (deprecated) | Yes (Turbo) | Yes |
-| Qwen 2.5 32B | Yes | Yes | Yes | Yes |
-| Qwen 2.5 72B | Yes | No | Yes | Yes |
-| **Qwen3-Coder 30B-A3B** | **Yes** | No | TBD | Yes |
-| Qwen3.5 35B-A3B | Yes | TBD | TBD | Yes |
-| Mistral Nemo 12B | Yes | No (deprecated) | Yes | Yes |
-| Mistral Small 22B | Yes | No (deprecated) | Yes | Yes |
-| Mixtral 8x7B | Yes | No (deprecated) | Yes | Yes |
-| Mixtral 8x22B | Yes | No | Yes | Yes |
-| DeepSeek V3.x | Yes (huge) | No | Yes | Yes |
-| DeepSeek R1 Distill 70B | Yes | Yes | Yes | Yes |
-| Command R 35B | Yes | No | No | Yes |
-| Command R+ 104B | Yes | No | No | Yes |
-| Gemma 2 9B | Yes (community template) | No (deprecated) | Yes | Yes |
-| Gemma 2 27B | Yes (community template) | No | Yes | Yes |
-| Phi-3.5 Medium 14B | Yes | No | Yes | Yes |
+### For Groq (Production)
 
-**Legend:** Bold = recommended configurations in our app
+| Choice | Model | Why | Cost | Risk |
+|--------|-------|-----|------|------|
+| **Recommended** | `openai/gpt-oss-120b` | Highest IQ on Groq (33), fast (500/s), proven tools | $0.26/1M | New model, less battle-tested than Llama |
+| **Safe fallback** | `llama-3.3-70b-versatile` | Most battle-tested for function calling, proven | $0.64/1M | Lower leaderboard score (14), costs 2.5x more |
+| **Budget** | `openai/gpt-oss-20b` | Cheapest ($0.09), fastest (1000/s) | $0.09/1M | Lower IQ (24), may struggle with complex multi-step |
 
----
+### For Ollama (Local Development)
 
-## 6. Recommendations
+| Choice | Model | Size | Why |
+|--------|-------|------|-----|
+| **Recommended** | `qwen2.5:14b` | 8.5 GB | Verified `/v1/` tool calling works, good balance |
+| **Lightweight** | `qwen2.5:7b` | 4.4 GB | Faster, but less reliable on complex tools |
+| **Avoid** | `qwen3-coder:30b` | 18 GB | Broken — generates XML text instead of tool_calls via `/v1/` |
+| **Untested** | `qwen3:32b` | 19.8 GB | Same family as broken qwen3-coder — needs verification before use |
 
-### For Our App Architecture
+### What You Should Choose
 
-Our app uses `createOpenAI({ baseURL })` for both Groq and Ollama, which sends the **OpenAI function calling format**. This constrains us to models that handle this format well.
+Pick one from each:
+1. **Groq model** — `gpt-oss-120b` (recommended) or `llama-3.3-70b-versatile` (safe)
+2. **Local model** — `qwen2.5:14b` (recommended)
 
-### Primary Recommendations
-
-#### Groq (Built-in for Subscribers) -- Current: `llama-3.1-70b-versatile`
-
-**Recommended change:** `llama-3.3-70b-versatile` or `qwen-3-32b`
-
-- Llama 3.3 70B is the natural successor (same family, newer, 128K context)
-- Qwen3 32B is the alternative with Apache 2.0 license and strong BFCL scores
-- Both have proven tool calling on Groq
-
-#### Ollama (Local) -- Current: `qwen3-coder:30b`
-
-**Keep current choice.** Qwen3-Coder 30B-A3B is excellent because:
-- MoE architecture: only 3.3B params active = fast inference on consumer GPU
-- 262K native context window
-- Designed for agentic/tool calling workloads
-- Apache 2.0 license
-- ~18 GB Q4 fits in 24GB VRAM
-
-**Fallback for low-VRAM:** `qwen2.5:14b` or `llama3.1:8b`
-
-#### OpenRouter / BYOK
-
-No changes needed -- users choose their own model through the provider.
-
-### Model Selection Decision Tree
-
-```
-Need tool calling?
-  |
-  +-- Hosted API (Groq/Together)?
-  |     +-- Budget-friendly → Qwen3 32B (Groq) or Qwen 2.5 7B Turbo (Together)
-  |     +-- Best quality → Llama 3.3 70B (Groq) or DeepSeek V3.2 (Together/OpenRouter)
-  |
-  +-- Local (Ollama)?
-        +-- 24GB+ VRAM → Qwen3-Coder 30B-A3B (current default, recommended)
-        +-- 16GB VRAM → Qwen 2.5 14B or Mistral Nemo 12B
-        +-- 8GB VRAM → Llama 3.1 8B or Qwen 2.5 7B
-        +-- 48GB+ VRAM → Llama 3.3 70B or Qwen3 32B
-```
-
-### Known Gotchas
-
-1. **Mixtral 8x7B:** Ollama lists "TOOLS" as capability but users report errors; unreliable
-2. **DeepSeek R1:** Official Ollama registry returns "does not support tools" errors despite official support; use community `MFDoom/deepseek-r1-tool-calling` variant
-3. **Gemma 2:** No native tool template in Ollama; requires community-maintained templates (`cow/gemma2_tools`)
-4. **DeepSeek V3:** Tool calling only works in non-thinking mode for V3.1; V3.2 integrates reasoning into tool calls
-5. **Qwen models:** Use Hermes-style tool format internally; OpenAI-compat endpoint works but complex nested schemas may need testing
-6. **Command R+:** CC-BY-NC license prohibits commercial use
-7. **Context window vs tool calling:** Models with 128K context can hold more tool definitions but tool calling quality doesn't necessarily scale with context length
-
-### BFCL Score Summary (Where Available)
-
-| Model | BFCL Version | Score | Rank Context |
-|-------|-------------|-------|--------------|
-| Qwen3.5 122B-A10B | V4 | 72.2% | #1 open-source |
-| Claude Opus 4.1 | V4 | 70.36% | #2 overall |
-| Claude Sonnet 4 | V4 | 70.29% | #3 overall |
-| Qwen3-235B | V3 | 70.8% | Top-tier |
-| Qwen3-32B | V3 | 68.2% | Best open-source at 32B |
-| DeepSeek V3 | Custom | 81.5% | (non-standard eval) |
-| Llama 3.1 70B | V2 | 77.5% | Strong |
-| Llama 3.3 70B | V2 | 77.3% | Comparable to 3.1 |
-| Llama 3.1 405B | V2 | 81.1% | (too large for local) |
-
----
-
-## Sources
-
-- [OpenAI Function Calling Guide](https://developers.openai.com/api/docs/guides/function-calling)
-- [Anthropic Tool Use Overview](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
-- [Anthropic Tool Use Implementation](https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use)
-- [Vercel AI SDK Tools & Tool Calling](https://ai-sdk.dev/docs/ai-sdk-core/tools-and-tool-calling)
-- [Vercel AI SDK Foundations: Tools](https://ai-sdk.dev/docs/foundations/tools)
-- [Vercel AI SDK zodSchema](https://ai-sdk.dev/docs/reference/ai-sdk-core/zod-schema)
-- [Vercel AI SDK Providers](https://ai-sdk.dev/docs/foundations/providers-and-models)
-- [Berkeley Function Calling Leaderboard V4](https://gorilla.cs.berkeley.edu/leaderboard.html)
-- [BFCL Leaderboard (llm-stats.com)](https://llm-stats.com/benchmarks/bfcl)
-- [Ollama Tool Calling Docs](https://docs.ollama.com/capabilities/tool-calling)
-- [Best Ollama Models for Function Calling (2025)](https://collabnix.com/best-ollama-models-for-function-calling-tools-complete-guide-2025/)
-- [Groq Supported Models](https://console.groq.com/docs/models)
-- [Groq Tool Use Overview](https://console.groq.com/docs/tool-use)
-- [Together AI Function Calling Docs](https://docs.together.ai/docs/function-calling)
-- [Together AI Models](https://www.together.ai/models)
-- [Qwen3 GitHub](https://github.com/QwenLM/Qwen3)
-- [Qwen3-32B GGUF (Hugging Face)](https://huggingface.co/Qwen/Qwen3-32B-GGUF)
-- [Llama 3.3 70B GGUF (Hugging Face)](https://huggingface.co/bartowski/Llama-3.3-70B-Instruct-GGUF)
-- [NousResearch Hermes Function Calling](https://github.com/NousResearch/Hermes-Function-Calling)
-- [Groq Llama-3-Tool-Use Models](https://groq.com/blog/introducing-llama-3-groq-tool-use-models)
-- [llama.cpp Function Calling Docs](https://github.com/ggml-org/llama.cpp/blob/master/docs/function-calling.md)
-- [Qwen3-Coder 30B-A3B (Ollama)](https://ollama.com/library/qwen3-coder:30b)
-- [Qwen3-Coder Local Setup (Unsloth)](https://unsloth.ai/docs/models/qwen3-coder-how-to-run-locally)
-- [Function Calling and Agentic AI 2025 Benchmarks](https://www.klavis.ai/blog/function-calling-and-agentic-ai-in-2025-what-the-latest-benchmarks-tell-us-about-model-performance)
-- [Qwen3.5 Guide & Benchmarks](https://techie007.substack.com/p/qwen-35-the-complete-guide-benchmarks)
-- [DeepSeek V3 Function Calling Evaluation](https://github.com/deepseek-ai/DeepSeek-V3/issues/1108)
+Then give me your Groq API key (`gsk_...` from https://console.groq.com/keys) and I'll wire it up.
