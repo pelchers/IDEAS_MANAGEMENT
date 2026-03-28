@@ -133,12 +133,16 @@ Even cheap models are expensive if they generate unnecessary tokens. A verbose m
 | **Recommended** | `qwen2.5:14b` | 8.5 GB | Verified `/v1/` tool calling works, good balance |
 | **Lightweight** | `qwen2.5:7b` | 4.4 GB | Faster, but less reliable on complex tools |
 | **Avoid** | `qwen3-coder:30b` | 18 GB | Broken — generates XML text instead of tool_calls via `/v1/` |
-| **Untested** | `qwen3:32b` | 19.8 GB | Same family as broken qwen3-coder — needs verification before use |
+| **Tested** | `qwen3:32b` | 19.8 GB | Tool calling works ✅ but empty content (thinking mode) — no text responses |
+| **Tested** | `qwen3:4b` | 2.5 GB | Tool calling works ✅ but empty content (thinking mode) — same issue |
 
-### What You Should Choose
+**Why not qwen3:32b?** We tested qwen3:4b (same family/template). Tool calling via `/v1/` works correctly — it produces proper `tool_calls` JSON. But the "thinking mode" puts all reasoning in a separate field and returns empty `content`. This means the AI calls tools but never generates visible text responses or confirmations. For a chat interface, this is unusable — users see blank replies.
 
-Pick one from each:
-1. **Groq model** — `gpt-oss-120b` (recommended) or `llama-3.3-70b-versatile` (safe)
-2. **Local model** — `qwen2.5:14b` (recommended)
+### Locked-In Choices
 
-Then give me your Groq API key (`gsk_...` from https://console.groq.com/keys) and I'll wire it up.
+| Environment | Model | Why |
+|-------------|-------|-----|
+| **Groq (production)** | `openai/gpt-oss-120b` | Highest intelligence on Groq (33), fast (500/s), tools ✅, text ✅ |
+| **Ollama (local dev)** | `qwen2.5:14b` | Verified tools + text via `/v1/`, 8.5GB, fast on RTX 4090 |
+
+**Next step:** Get Groq API key (`gsk_...` from https://console.groq.com/keys) → add to `.env` → production AI works.
