@@ -278,3 +278,116 @@ AGENT REPORT:
   - Chat history entries appended for all 3 messages
 
 ---
+
+---
+[2026-03-27T00:00:00Z] role=user
+
+RAW MESSAGE: list the projects wehave that have ideas in them / we have more than one project with ideas / still not chaining chats... can you fix the ai chat system and tool calling system
+
+SESSION CONTEXT: AI chat failing to chain tool calls, model hallucinating actions
+USER INTENT: Fix AI tool calling — model claims to do things but doesn't actually call tools
+KEY DECISIONS: Identified qwen2.5:3b too small for reliable tool calling
+
+---
+[2026-03-27T01:00:00Z] role=user
+
+RAW MESSAGE: how bigs the model we would need / is it powerful enough still / how does qwen3 coder 30b stack up since i already have that installed
+
+SESSION CONTEXT: Evaluating local model options for tool calling
+USER INTENT: Find a local model that reliably calls tools
+KEY DECISIONS: Tested qwen3-coder:30b — tool calling works via native API but fails via /v1/ (XML text instead of tool_calls)
+
+---
+[2026-03-27T02:00:00Z] role=user
+
+RAW MESSAGE: on the projects page there should be a settings gear / we also want sorting and filtering and project search
+
+SESSION CONTEXT: Projects page UX improvements
+USER INTENT: Add settings modal, search, sort, filter to projects page
+KEY DECISIONS: Built settings modal with edit/delete, search bar, sort dropdown, status filter chips
+
+---
+[2026-03-27T03:00:00Z] role=user
+
+RAW MESSAGE: find a model on artificialanalysis.ai leaderboard / thats cheap and effective / the kit and dev practices for app dev that use claude and codex api keys is the key decider
+
+SESSION CONTEXT: Choosing production AI model
+USER INTENT: Research and compare models from the leaderboard that work with our SDK
+KEY DECISIONS: Created comprehensive model-choice.md document
+
+---
+[2026-03-28T00:00:00Z] role=user
+
+RAW MESSAGE: why wouldnt we run qwen3 32B with ollama too / I approve your choice of llama for groq
+
+SESSION CONTEXT: Finalizing model choices
+USER INTENT: Test qwen3:32b locally, approve Groq model
+KEY DECISIONS: Tested qwen3:4b — tool calling works via /v1/ but empty content (thinking mode). Locked in gpt-oss-120b for Groq.
+
+---
+[2026-03-28T01:00:00Z] role=user
+
+RAW MESSAGE: is llama 3.3 open source / we probably wanna stick open source / update docs
+
+SESSION CONTEXT: License concerns for Groq model
+USER INTENT: Verify open-source licensing for production model
+KEY DECISIONS: Llama 3.3 is Llama Community License (permissive but not Apache 2.0). Reviewed Groq production models — only 4 available. gpt-oss-120b chosen.
+
+---
+[2026-03-28T02:00:00Z] role=user
+
+RAW MESSAGE: wait isnt 32b less powerful than the one you just tested / so why would it be proven to work when 32b fails / isnt it more likely an issue with our harness
+
+SESSION CONTEXT: Questioning why qwen3:32b was dismissed
+USER INTENT: Challenge the assumption that qwen3:32b doesn't work
+KEY DECISIONS: User correctly identified the issue is display, not model capability. Reasoning field exists but wasn't being shown.
+
+---
+[2026-03-28T03:00:00Z] role=user
+
+RAW MESSAGE: we can show its live reasoning chain in that under text gray section / WITH an optional log reasoning button / we should have the ai reply BEFORE and AFTER tool uses
+
+SESSION CONTEXT: Designing reasoning display UX
+USER INTENT: Show AI reasoning live, tool calls as they happen, responses before and after tools
+KEY DECISIONS: Approved architecture: text → gray reasoning/tool area → confirmation. Plan #1 created.
+
+---
+[2026-03-28T04:00:00Z] role=user
+
+RAW MESSAGE: why did the one test of the nine go that way / is there a way for it to be fixed
+
+SESSION CONTEXT: Test showed AI asking clarification instead of acting
+USER INTENT: Fix AI to act immediately instead of asking about optional fields
+KEY DECISIONS: Updated system prompt — AI should interpretively fill details, only ask when genuinely ambiguous
+
+---
+[2026-03-28T05:00:00Z] role=user
+
+RAW MESSAGE: we dont want it to be added with defined defaults... it should interpretively add the details pertinent to the idea
+
+SESSION CONTEXT: AI should generate smart content, not use blank defaults
+USER INTENT: AI fills in body, tags, category, priority based on context
+KEY DECISIONS: Updated tool schema descriptions + system prompt. Tested: "Build Auth System" → body "Implement user login...", tags ["auth","security","backend"], priority high
+
+---
+[2026-03-29T00:00:00Z] role=user
+
+RAW MESSAGE: in our db can you clean out all the projects that you made as tests (aside from project "1")
+
+SESSION CONTEXT: Database cleanup
+USER INTENT: Remove 92 test projects, keep only project "1"
+KEY DECISIONS: Deleted 92 projects, 1 remaining
+
+---
+[2026-03-29T00:05:00Z] role=user
+
+RAW MESSAGE: also you keep failing to log our chat history... make sure you do that
+
+SESSION CONTEXT: Chat history convention not being followed
+USER INTENT: Ensure all messages are logged per chat-history-convention skill
+KEY DECISIONS: Appending full session log now
+
+AGENT REPORT:
+Session covered: model choice research, qwen3:32b reasoning display, interpretive tool filling, project settings modal, database cleanup. Plan #1 completed. All committed and pushed.
+
+---
