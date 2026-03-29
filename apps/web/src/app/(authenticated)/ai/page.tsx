@@ -12,7 +12,9 @@ interface ToolCall {
 interface ChatMessage {
   role: "user" | "ai" | "tool";
   text: string;
+  reasoning?: string;
   toolCalls?: ToolCall[];
+  isStreaming?: boolean;
 }
 
 /* ── Slash command handler ── */
@@ -33,6 +35,7 @@ export default function AiPage() {
   const [showSlashMenu, setShowSlashMenu] = useState(false);
   const [projects, setProjects] = useState<{ id: string; name: string }[]>([]);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
+  const [logReasoning, setLogReasoning] = useState(() => typeof window !== "undefined" && localStorage.getItem("ai_log_reasoning") === "true");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -203,15 +206,29 @@ export default function AiPage() {
         throw new Error(errMsg);
       }
 
-      // Stream the response — parse text + tool calls
+      // Stream the response — parse text + tool calls + reasoning
       const reader = res.body?.getReader();
       if (!reader) throw new Error("No response body");
 
       const decoder = new TextDecoder();
       let aiText = "";
+      let aiReasoning = "";
       const pendingToolCalls: ToolCall[] = [];
 
-      setMessages((prev) => [...prev, { role: "ai", text: "" }]);
+      const updateMsg = () => {
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = {
+            role: "ai", text: aiText,
+            reasoning: aiReasoning || undefined,
+            toolCalls: pendingToolCalls.length > 0 ? [...pendingToolCalls] : undefined,
+            isStreaming: true,
+          };
+          return updated;
+        });
+      };
+
+      setMessages((prev) => [...prev, { role: "ai", text: "", isStreaming: true }]);
       setIsTyping(false);
 
       while (true) {
@@ -222,122 +239,98 @@ export default function AiPage() {
         for (const line of chunk.split("\n")) {
           const trimmed = line.trim();
 
-          // Vercel AI SDK v6 SSE format: "data: {...}"
           if (trimmed.startsWith("data: ")) {
             try {
               const evt = JSON.parse(trimmed.slice(6));
+
               // Text delta
               if (evt.type === "text-delta" && typeof evt.delta === "string") {
                 aiText += evt.delta;
-                setMessages((prev) => {
-                  const updated = [...prev];
-                  updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: pendingToolCalls.length > 0 ? [...pendingToolCalls] : undefined };
-                  return updated;
-                });
+                updateMsg();
               }
-              // Tool call start (tool-call or tool-input-start)
+
+              // Reasoning delta (qwen3 thinking mode)
+              if (evt.type === "reasoning" || evt.type === "reasoning-delta") {
+                aiReasoning += (evt.delta || evt.text || "");
+                updateMsg();
+              }
+
+              // Some models send reasoning as a metadata field on text-start
+              if (evt.type === "text-start" && evt.providerMetadata?.openai?.reasoning) {
+                aiReasoning += evt.providerMetadata.openai.reasoning;
+                updateMsg();
+              }
+
+              // Tool call start
               if ((evt.type === "tool-call" || evt.type === "tool-input-start") && evt.toolName) {
                 pendingToolCalls.push({ name: evt.toolName, args: {} });
-                setMessages((prev) => {
-                  const updated = [...prev];
-                  updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
-                  return updated;
-                });
+                aiReasoning += `\n▶ Calling: ${evt.toolName.replace(/_/g, " ")}...`;
+                updateMsg();
               }
+
               // Tool input available (full args)
               if (evt.type === "tool-input-available" && pendingToolCalls.length > 0) {
-                const lastTc = pendingToolCalls[pendingToolCalls.length - 1];
-                lastTc.args = evt.input || {};
-                setMessages((prev) => {
-                  const updated = [...prev];
-                  updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
-                  return updated;
-                });
+                pendingToolCalls[pendingToolCalls.length - 1].args = evt.input || {};
+                updateMsg();
               }
-              // Tool result (tool-result or tool-output-available)
+
+              // Tool result
               if ((evt.type === "tool-result" || evt.type === "tool-output-available") && pendingToolCalls.length > 0) {
                 const lastTc = pendingToolCalls[pendingToolCalls.length - 1];
                 lastTc.result = evt.output || evt.result || evt;
-                // If tool succeeded but AI didn't generate text, show tool summary as text
-                if (!aiText) {
-                  const resultMsg = typeof lastTc.result === "object" && lastTc.result !== null && "message" in (lastTc.result as Record<string,unknown>)
-                    ? String((lastTc.result as Record<string,unknown>).message)
-                    : `Tool ${lastTc.name} executed successfully.`;
-                  aiText = resultMsg;
-                }
-                setMessages((prev) => {
-                  const updated = [...prev];
-                  updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
-                  return updated;
-                });
+                const resultMsg = typeof lastTc.result === "object" && lastTc.result !== null && "message" in (lastTc.result as Record<string,unknown>)
+                  ? String((lastTc.result as Record<string,unknown>).message) : "completed";
+                aiReasoning += `\n✅ ${resultMsg}`;
+                // If no text yet, show tool result as the text
+                if (!aiText) aiText = resultMsg;
+                updateMsg();
+                // Dispatch for live reactivity
+                window.dispatchEvent(new CustomEvent("artifact-updated", { detail: { tool: lastTc.name, result: lastTc.result } }));
               }
+
               // Error
               if (evt.type === "error") {
-                aiText = aiText || `Error: ${evt.errorText || "Unknown error"}`;
-                setMessages((prev) => {
-                  const updated = [...prev];
-                  updated[updated.length - 1] = { role: "ai", text: aiText };
-                  return updated;
-                });
+                aiReasoning += `\n❌ Error: ${evt.errorText || "Unknown"}`;
+                if (!aiText) aiText = `Error: ${evt.errorText || "Unknown error"}`;
+                updateMsg();
               }
-            } catch { /* skip unparseable */ }
+
+              // Step finish (marks end of a step in multi-step)
+              if (evt.type === "finish-step") {
+                aiReasoning += "\n—";
+                updateMsg();
+              }
+            } catch { /* skip */ }
           }
 
-          // Legacy format fallback (0:, 9:, a: prefixes)
+          // Legacy format fallback
           if (trimmed.startsWith("0:")) {
             try {
               const text = JSON.parse(trimmed.slice(2));
-              if (typeof text === "string") {
-                aiText += text;
-                setMessages((prev) => {
-                  const updated = [...prev];
-                  updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: pendingToolCalls.length > 0 ? [...pendingToolCalls] : undefined };
-                  return updated;
-                });
-              }
+              if (typeof text === "string") { aiText += text; updateMsg(); }
             } catch { /* skip */ }
           }
         }
       }
 
-      // Tool result handling — show direct confirmation, no follow-up call
-      if (pendingToolCalls.length > 0) {
-        // Build confirmation from tool results
-        if (!aiText) {
-          const confirmParts = pendingToolCalls.map((tc) => {
-            if (tc.result && typeof tc.result === "object" && "message" in (tc.result as Record<string, unknown>)) {
-              return String((tc.result as Record<string, unknown>).message);
-            }
-            return `${tc.name.replace(/_/g, " ")} completed.`;
-          });
-          aiText = confirmParts.join("\n");
-          setMessages((prev) => {
-            const updated = [...prev];
-            updated[updated.length - 1] = { role: "ai", text: aiText, toolCalls: [...pendingToolCalls] };
-            return updated;
-          });
-        }
+      // Mark streaming complete
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1] = { ...updated[updated.length - 1], isStreaming: false };
+        return updated;
+      });
 
-        // Dispatch artifact-updated events for live reactivity
-        pendingToolCalls.forEach((tc) => {
-          window.dispatchEvent(new CustomEvent("artifact-updated", { detail: { tool: tc.name, result: tc.result } }));
-        });
-      } else if (!aiText) {
-        // No tools called and no text — check if user asked for an action
+      // If nothing was generated at all
+      if (!aiText && !aiReasoning && pendingToolCalls.length === 0) {
         const actionWords = /\b(add|create|make|build|delete|remove|update|move|change)\b/i;
-        if (actionWords.test(trimmed)) {
-          setMessages((prev) => {
-            const updated = [...prev];
-            updated[updated.length - 1] = { role: "ai", text: "I wasn't able to perform that action. Please try being more specific, or check that a project is selected." };
-            return updated;
-          });
-        } else {
-          setMessages((prev) => {
-            const updated = [...prev];
-            updated[updated.length - 1] = { role: "ai", text: "I received your message but couldn't generate a response. Please try again." };
-            return updated;
-          });
-        }
+        const fallbackText = actionWords.test(trimmed)
+          ? "I wasn't able to perform that action. Please try being more specific, or check that a project is selected."
+          : "I received your message but couldn't generate a response. Please try again.";
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: "ai", text: fallbackText, isStreaming: false };
+          return updated;
+        });
       }
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : "Something went wrong";
@@ -380,6 +373,15 @@ export default function AiPage() {
           {messages.length > 0 && (
             <button onClick={exportSession} className="nb-btn nb-btn--small font-mono text-[0.7rem]">EXPORT</button>
           )}
+          <label className="flex items-center gap-1 font-mono text-[0.65rem] uppercase cursor-pointer select-none" title="Show full AI reasoning in chat messages">
+            <input
+              type="checkbox"
+              checked={logReasoning}
+              onChange={(e) => { setLogReasoning(e.target.checked); localStorage.setItem("ai_log_reasoning", String(e.target.checked)); }}
+              className="w-3 h-3"
+            />
+            LOG REASONING
+          </label>
           <span className={`font-mono text-[0.8rem] px-3 py-1 border-2 ${statusColor}`}>
             ● {statusLabel}
           </span>
@@ -462,31 +464,49 @@ export default function AiPage() {
 
             {messages.map((msg, i) => (
               <div key={i}>
-                {/* Regular message */}
                 {msg.role !== "tool" && (
                   <div className={`flex gap-3 max-w-[85%] ${msg.role === "user" ? "self-end flex-row-reverse" : "self-start"}`}>
                     <div className={`w-9 h-9 min-w-[36px] border-2 border-signal-black flex items-center justify-center font-mono font-semibold text-[0.8rem] ${msg.role === "user" ? "bg-watermelon text-white" : "bg-signal-black text-malachite"}`}>
                       {msg.role === "user" ? "U" : "AI"}
                     </div>
-                    <div className={`border-3 border-signal-black p-4 text-[0.9rem] leading-relaxed ${msg.role === "user" ? "bg-watermelon text-white shadow-nb" : "bg-white shadow-nb"}`}>
-                      <div style={{ whiteSpace: "pre-wrap" }}>{msg.text}</div>
+                    <div className="flex flex-col gap-0 flex-1">
+                      {/* Main message bubble */}
+                      <div className={`border-3 border-signal-black p-4 text-[0.9rem] leading-relaxed ${msg.role === "user" ? "bg-watermelon text-white shadow-nb" : "bg-white shadow-nb"}`}>
+                        <div style={{ whiteSpace: "pre-wrap" }}>{msg.text || (msg.isStreaming ? "" : "")}</div>
+                      </div>
 
-                      {/* Tool call cards */}
-                      {msg.toolCalls && msg.toolCalls.length > 0 && (
-                        <div className="mt-3 flex flex-col gap-2">
-                          {msg.toolCalls.map((tc, j) => (
-                            <details key={j} className="border-2 border-signal-black bg-creamy-milk">
-                              <summary className="px-3 py-1.5 cursor-pointer font-mono text-[0.75rem] uppercase font-bold flex items-center gap-2">
-                                <span className={`w-2 h-2 ${tc.result ? "bg-malachite" : "bg-lemon"}`} />
-                                {tc.name.replace(/_/g, " ")}
-                              </summary>
-                              <div className="px-3 py-2 border-t border-signal-black/20 font-mono text-[0.7rem]">
-                                <div className="mb-1"><strong>Args:</strong> {JSON.stringify(tc.args, null, 1)}</div>
-                                {tc.result != null && <div><strong>Result:</strong> {String(typeof tc.result === "object" ? JSON.stringify(tc.result) : tc.result)}</div>}
+                      {/* Reasoning + Tool area (gray, below message) */}
+                      {msg.role === "ai" && (msg.reasoning || (msg.toolCalls && msg.toolCalls.length > 0)) && (
+                        <details open={msg.isStreaming || logReasoning} className="border-2 border-dashed border-signal-black/30 bg-creamy-milk/50 mt-[-2px]">
+                          <summary className="px-3 py-1 cursor-pointer font-mono text-[0.65rem] uppercase text-[#999] tracking-wider select-none">
+                            {msg.isStreaming ? "⚙ Working..." : `${msg.toolCalls?.length || 0} tool(s) · reasoning`}
+                          </summary>
+                          <div className="px-3 py-2 font-mono text-[0.7rem] text-[#777] leading-relaxed" style={{ whiteSpace: "pre-wrap" }}>
+                            {/* Reasoning text */}
+                            {msg.reasoning && (
+                              <div className="italic mb-2">{msg.reasoning}</div>
+                            )}
+                            {/* Tool call details */}
+                            {msg.toolCalls && msg.toolCalls.map((tc, j) => (
+                              <div key={j} className="border-l-2 border-signal-black/20 pl-2 mb-1">
+                                <div className="flex items-center gap-1">
+                                  <span className={`w-1.5 h-1.5 rounded-full ${tc.result ? "bg-malachite" : "bg-lemon"}`} />
+                                  <span className="font-bold uppercase text-[0.65rem]">{tc.name.replace(/_/g, " ")}</span>
+                                </div>
+                                {tc.args && Object.keys(tc.args).length > 0 && (
+                                  <div className="text-[0.6rem] text-[#aaa] ml-3">{JSON.stringify(tc.args)}</div>
+                                )}
+                                {tc.result != null && (
+                                  <div className="text-[0.65rem] text-malachite ml-3">
+                                    {typeof tc.result === "object" && tc.result !== null && "message" in (tc.result as Record<string,unknown>)
+                                      ? String((tc.result as Record<string,unknown>).message)
+                                      : String(typeof tc.result === "object" ? JSON.stringify(tc.result) : tc.result)}
+                                  </div>
+                                )}
                               </div>
-                            </details>
-                          ))}
-                        </div>
+                            ))}
+                          </div>
+                        </details>
                       )}
                     </div>
                   </div>

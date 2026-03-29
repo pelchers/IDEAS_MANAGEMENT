@@ -15,7 +15,7 @@ const DEFAULT_MODELS: Record<string, string> = {
   openai: "gpt-4o",
   anthropic: "claude-sonnet-4-20250514",
   google: "gemini-2.0-flash",
-  ollama: "qwen3-coder:30b",
+  ollama: "qwen3:32b",
 };
 
 /**
