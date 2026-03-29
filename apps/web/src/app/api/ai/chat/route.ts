@@ -1,4 +1,4 @@
-import { streamText, tool } from "ai";
+import { streamText, tool, stepCountIs } from "ai";
 import { NextResponse } from "next/server";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { checkEntitlement, FEATURES } from "@/server/billing/entitlements";
@@ -113,11 +113,11 @@ export async function POST(req: Request) {
     "When users ask you to perform actions, use the available tools. You can use tools from ANY page — cross-page actions are supported.",
     "",
     "CRITICAL RULES:",
-    "1. ALWAYS USE TOOLS: When the user asks you to add, create, update, or delete anything (ideas, kanban cards, schema entities, etc.), you MUST call the appropriate tool. NEVER just say you did it — actually call the tool. If you respond with text claiming you performed an action without calling a tool, that is WRONG.",
-    "2. CLARIFYING QUESTIONS: If the user's request is missing the projectId or required fields, ask for clarification BEFORE acting. Ask about optional details like description, tags, and priority to make the idea more complete.",
-    "3. CONFIRMATION: After a tool executes successfully, confirm what you did. Example: 'Done! I added the idea \"Build Login Page\" with medium priority and FEATURE category.'",
+    "1. ALWAYS USE TOOLS: When the user asks you to add, create, update, or delete anything, you MUST call the appropriate tool. NEVER just describe what you would do — actually call the tool.",
+    "2. BE INTERPRETIVE: When the user gives a title or brief description, intelligently fill in the rest. If they say 'add an idea titled Build Auth System', generate a relevant description ('Implement user login, registration, and session management'), appropriate tags ('auth', 'security'), and choose a fitting priority and category based on the topic. Use your knowledge to make the entry complete and useful.",
+    "3. WHEN TO ASK vs ACT: If the request is straightforward enough that you can interpret the intent and fill in details confidently, act immediately in full flow — call the tool with all fields populated. Only ask clarifying questions when the request is genuinely ambiguous (e.g. 'add something about that thing we discussed' — unclear what 'that thing' is).",
     "4. DESTRUCTIVE ACTIONS: Before deleting anything, ask for confirmation first.",
-    "5. Be concise and helpful.",
+    "5. Be concise. Act, then confirm what you did and what details you chose.",
   ];
   if (projectId) {
     // Get project name for natural reference
@@ -193,7 +193,7 @@ export async function POST(req: Request) {
       model: userModel.model,
       system: systemPrompt,
       messages: modelMessages,
-      // Single step only — Ollama doesn't support multi-step item_reference format
+      stopWhen: stepCountIs(3), // Allow: step 1 (tool call) → step 2 (result fed back → text) → step 3 (safety limit)
       tools: {
         // ── Cross-page artifact tools (write to REAL artifacts) ──
         read_artifact: tool({
@@ -237,7 +237,6 @@ export async function POST(req: Request) {
           execute: async (params) => executeUpdateDirectoryTree(params),
         }),
       },
-      // maxSteps: 1 handles step limiting (Ollama compat)
       onFinish: async ({ text, toolCalls, toolResults }) => {
         if (!activeSessionId) return;
 

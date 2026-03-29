@@ -75,11 +75,11 @@ export const updateIdeasSchema = z.object({
   projectId: z.string().min(1),
   action: z.enum(["add", "edit", "delete"]),
   ideaId: z.string().optional().describe("Required for edit/delete"),
-  title: z.string().max(200).optional(),
-  body: z.string().max(2000).optional(),
-  category: z.string().optional(),
-  priority: z.enum(["low", "medium", "high"]).optional(),
-  tags: z.array(z.string()).optional(),
+  title: z.string().max(200).optional().describe("The idea title"),
+  body: z.string().max(2000).optional().describe("A detailed description of the idea. ALWAYS generate a relevant description based on the title — never leave empty."),
+  category: z.string().optional().describe("Category like FEATURE, BUG FIX, RESEARCH, DESIGN, IMPROVEMENT. Interpret from context."),
+  priority: z.enum(["low", "medium", "high"]).optional().describe("Priority level. Interpret from context — security/auth items are usually high."),
+  tags: z.array(z.string()).optional().describe("Relevant tags. Always generate 2-4 tags based on the idea topic."),
 });
 
 export async function executeUpdateIdeas(input: z.infer<typeof updateIdeasSchema>, userId: string) {
