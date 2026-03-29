@@ -101,6 +101,35 @@ Started: 2026-03-20
 - [ ] When creating ideas without priority/category specified, AI should ask or use sensible defaults and mention what it chose
 - [ ] For destructive actions (delete), AI should confirm before executing
 
+## Phase 8.5 — AI Reasoning Display + Multi-Step Tool Flow (2026-03-28)
+
+See Plan #1: `.docs/planning/plans/1-ai-chat-reasoning-display.md`
+
+### Model Switch
+- [ ] Switch local default to qwen3:32b (tool calling verified, 32B = much smarter)
+- [ ] Capture reasoning field from stream events
+
+### Chat UI: Live Reasoning + Tool Display
+- [ ] Gray reasoning area below AI messages (streams live, italic, smaller font)
+- [ ] Tool calls shown inline: "▶ Calling: update_ideas_artifact..." → "✅ Result: Idea added"
+- [ ] Area auto-collapses after response completes (show/hide toggle)
+
+### Multi-Step Flow (Text → Tool → Text)
+- [ ] Step 1: AI generates initial text ("Let me do that...") + calls tool
+- [ ] Step 2: Tool executes, result fed back to model
+- [ ] Step 3: AI generates confirmation ("Done! Added your idea...")
+- [ ] Use stopWhen: stepCountIs(3) for the chain
+
+### "Log Reasoning" Toggle
+- [ ] Checkbox in top-right of /ai page header (default OFF)
+- [ ] When ON: full reasoning in message bubbles permanently
+- [ ] Persist in localStorage
+
+### Testing
+- [ ] qwen3:32b: reasoning display + tool call + text response
+- [ ] Playwright screenshots: reasoning area, toggle on/off
+- [ ] Live reactivity: artifact-updated events still fire
+
 ## Phase 8 — Groq Provider + Tool Calling Reliability + Hardening
 
 ### 8a. Add Groq as built-in provider
