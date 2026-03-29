@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-out_dir="${1:-.codex/hooks/output}"
+out_dir="${1:-.claude/hooks/output}"
 mkdir -p "$out_dir"
 
 timestamp="$(date +%Y%m%d-%H%M%S)"

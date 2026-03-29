@@ -296,3 +296,4 @@ echo '{"tool_input":{"file_path":"src/index.ts"}}' | .claude/hooks/scripts/post-
 - [Claude Code Hooks Documentation](https://code.claude.com/docs/en/hooks)
 - [Hook Examples on GitHub](https://github.com/anthropics/claude-code/tree/main/examples/hooks)
 - Root-level `CLAUDE-HOOKS-GUIDE.md` for comprehensive guide
+

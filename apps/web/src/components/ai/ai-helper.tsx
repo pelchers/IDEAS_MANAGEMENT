@@ -73,13 +73,17 @@ export function AiHelper() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [helperSessionId, setHelperSessionId] = useState<string | null>(null);
+  const [showSessions, setShowSessions] = useState(false);
+  const [recentSessions, setRecentSessions] = useState<{ id: string; title: string; messageCount: number }[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Persist/load helper session per page
+  // Persist/load helper session per page + load recent sessions
   const sessionKey = `ai_helper_session_${pathname}`;
   useEffect(() => {
+    if (!isOpen) return;
+    // Load saved session for this page
     const savedId = typeof window !== "undefined" ? localStorage.getItem(sessionKey) : null;
-    if (savedId && isOpen) {
+    if (savedId) {
       setHelperSessionId(savedId);
       fetch(`/api/ai/sessions/${savedId}`).then((r) => r.json()).then((d) => {
         if (d.ok && d.session?.messages) {
@@ -90,7 +94,33 @@ export function AiHelper() {
         }
       }).catch(() => {});
     }
+    // Load recent sessions
+    fetch("/api/ai/sessions").then((r) => r.json()).then((d) => {
+      if (d.ok && d.sessions) setRecentSessions(d.sessions.slice(0, 5));
+    }).catch(() => {});
   }, [sessionKey, isOpen]);
+
+  const switchHelperSession = useCallback(async (sid: string) => {
+    setHelperSessionId(sid);
+    if (typeof window !== "undefined") localStorage.setItem(sessionKey, sid);
+    setShowSessions(false);
+    try {
+      const res = await fetch(`/api/ai/sessions/${sid}`);
+      const d = await res.json();
+      if (d.ok && d.session?.messages) {
+        setMessages(d.session.messages.filter((m: { role: string }) => m.role !== "TOOL").map((m: { role: string; content: string }) => ({
+          role: m.role === "USER" ? "user" as const : "ai" as const,
+          text: m.content,
+        })));
+      }
+    } catch { setMessages([]); }
+  }, [sessionKey]);
+
+  const deleteHelperSession = useCallback(async (sid: string) => {
+    await fetch(`/api/ai/sessions/${sid}`, { method: "DELETE" }).catch(() => {});
+    if (helperSessionId === sid) { setHelperSessionId(null); setMessages([]); if (typeof window !== "undefined") localStorage.removeItem(sessionKey); }
+    setRecentSessions((prev) => prev.filter((s) => s.id !== sid));
+  }, [helperSessionId, sessionKey]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -226,12 +256,17 @@ export function AiHelper() {
             </span>
             <div style={{ display: "flex", gap: "4px" }}>
               <button
+                onClick={() => setShowSessions(!showSessions)}
+                style={{ backgroundColor: showSessions ? "#F8F3EC" : "transparent", border: "1px solid #F8F3EC", color: showSessions ? "#282828" : "#F8F3EC", fontSize: "0.6rem", cursor: "pointer", fontWeight: 700, padding: "2px 6px", textTransform: "uppercase" }}
+                title="View sessions"
+              >{recentSessions.length > 0 ? `${recentSessions.length}` : "0"}</button>
+              <button
                 onClick={() => { window.location.href = helperSessionId ? `/ai?session=${helperSessionId}` : "/ai"; }}
                 style={{ backgroundColor: "transparent", border: "1px solid #F8F3EC", color: "#F8F3EC", fontSize: "0.6rem", cursor: "pointer", fontWeight: 700, padding: "2px 6px", textTransform: "uppercase" }}
                 title="Expand to full chat"
               >EXPAND</button>
               <button
-                onClick={() => { setMessages([]); setHelperSessionId(null); if (typeof window !== "undefined") localStorage.removeItem(sessionKey); }}
+                onClick={() => { setMessages([]); setHelperSessionId(null); if (typeof window !== "undefined") localStorage.removeItem(sessionKey); setShowSessions(false); }}
                 style={{ backgroundColor: "transparent", border: "1px solid #F8F3EC", color: "#F8F3EC", fontSize: "0.6rem", cursor: "pointer", fontWeight: 700, padding: "2px 6px", textTransform: "uppercase" }}
                 title="New conversation"
               >NEW</button>
@@ -242,8 +277,33 @@ export function AiHelper() {
             </div>
           </div>
 
+          {/* Session list (collapsible) */}
+          {showSessions && recentSessions.length > 0 && (
+            <div style={{ borderBottom: "2px solid #28282820", maxHeight: "150px", overflowY: "auto" }}>
+              {recentSessions.map((s) => (
+                <div
+                  key={s.id}
+                  style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "4px 12px", cursor: "pointer", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.7rem", borderBottom: "1px dashed #28282815" }}
+                  onClick={() => switchHelperSession(s.id)}
+                >
+                  <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1, fontWeight: helperSessionId === s.id ? 700 : 400 }}>{s.title}</span>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); deleteHelperSession(s.id); }}
+                    style={{ background: "none", border: "none", color: "#FF5E54", cursor: "pointer", fontWeight: 700, fontSize: "0.65rem", padding: "0 4px" }}
+                  >X</button>
+                </div>
+              ))}
+              <div
+                style={{ padding: "4px 12px", cursor: "pointer", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", color: "#999", textTransform: "uppercase", textAlign: "center" }}
+                onClick={() => { window.location.href = "/ai"; }}
+              >
+                VIEW ALL →
+              </div>
+            </div>
+          )}
+
           {/* Quick actions */}
-          {quickActions.length > 0 && messages.length === 0 && (
+          {quickActions.length > 0 && messages.length === 0 && !showSessions && (
             <div style={{ padding: "8px 12px", borderBottom: "2px solid #28282820", display: "flex", gap: "4px", flexWrap: "wrap" }}>
               {quickActions.map((qa) => (
                 <button

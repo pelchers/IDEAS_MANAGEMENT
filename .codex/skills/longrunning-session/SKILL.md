@@ -90,8 +90,8 @@ Phases are created dynamically as feedback cycles occur.
 - If a story FAILS: fix the code, retest, document the fix.
 
 ## Subagent handoff
-- After completing a phase, queue the next phase in `.codex/orchestration/queue/next_phase.json`.
-- Use the orchestrator poke hook to spawn the next Codex exec session.
+- After completing a phase, queue the next phase in `.claude/orchestration/queue/next_phase.json`.
+- Use the orchestrator poke hook to spawn the next Claude exec session.
 - If an agent name is provided, the orchestrator prefixes the prompt with the agent file path.
 
 ## Output requirements

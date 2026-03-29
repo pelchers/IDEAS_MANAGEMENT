@@ -1,7 +1,7 @@
 ---
 name: general-frontend-design-orchestrator
 description: Orchestrate adaptive frontend concept generation across user-defined styles and passes, dispatching isolated Claude Code Task agents per pass with comprehensive README specs.
-agent: .codex/agents/general-frontend-design-orchestrator/AGENT.md
+agent: .claude/agents/general-frontend-design-orchestrator/agent.md
 ---
 
 # General-Purpose Frontend Design Orchestrator
@@ -10,8 +10,8 @@ agent: .codex/agents/general-frontend-design-orchestrator/AGENT.md
 - **User prompt**: Styles, passes per style, page structure, references, asset inclusions
 - **Project docs**: `.docs/` — PRD, tech requirements, user stories, IA, wireframes
 - **Existing concepts**: `.docs/design/concepts/` — prior generation output (globes, data-vis, etc.)
-- **Library catalog**: `.codex/skills/general-frontend-design-subagent/references/library-catalog.json`
-- **README template**: `.codex/skills/general-frontend-design-orchestrator/references/readme-template.md`
+- **Library catalog**: `.claude/skills/general-frontend-design-subagent/references/library-catalog.json`
+- **README template**: `.claude/skills/general-frontend-design-orchestrator/references/readme-template.md`
 
 ## Workflow
 
@@ -78,7 +78,7 @@ For each pass within a style group, assign structurally divergent core flags:
 For each `(style, pass)` combination, write a README spec to the output directory:
 `<outputRoot>/<style>/pass-<n>/README.md`
 
-Follow the template at `.codex/skills/general-frontend-design-orchestrator/references/readme-template.md`.
+Follow the template at `.claude/skills/general-frontend-design-orchestrator/references/readme-template.md`.
 
 ### Step 4: Dispatch Subagents
 For each pass, dispatch a Claude Code Task agent:
@@ -155,7 +155,7 @@ The orchestrator ensures variety through these mechanisms:
 5. **Technology variance**: Different passes can use different animation libraries
 
 ## Scripts
-- Playwright validation: `.codex/skills/general-frontend-design-subagent/scripts/validate-visuals-playwright.mjs`
+- Playwright validation: `.claude/skills/general-frontend-design-subagent/scripts/validate-visuals-playwright.mjs`
   (Reuses the visual-creative-subagent's validation script if it exists, or create a new one)
 
 ## Notes

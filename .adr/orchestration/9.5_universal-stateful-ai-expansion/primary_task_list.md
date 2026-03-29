@@ -130,6 +130,20 @@ See Plan #1: `.docs/planning/plans/1-ai-chat-reasoning-display.md`
 - [ ] Playwright screenshots: reasoning area, toggle on/off
 - [ ] Live reactivity: artifact-updated events still fire
 
+## Phase 8.6 — Session Management Enhancements (2026-03-29)
+
+See Plan #2: `.docs/planning/plans/2-ai-session-management.md`
+
+### Full Page
+- [ ] "Delete All Sessions" button in sidebar header (with confirmation)
+- [ ] API: DELETE /api/ai/sessions/[id]/messages (clear messages, keep session)
+- [ ] Clear button in session header area
+
+### Popup Session List
+- [ ] Collapsible session list in popup (last 5 sessions)
+- [ ] Click to switch, X to delete, "View All" → /ai
+- [ ] Only shows when past sessions exist
+
 ## Phase 8 — Groq Provider + Tool Calling Reliability + Hardening
 
 ### 8a. Add Groq as built-in provider

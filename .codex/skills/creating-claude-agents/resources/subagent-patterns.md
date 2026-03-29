@@ -551,7 +551,7 @@ children: permissionMode: full
 
 **Parent uses Opus for orchestration:**
 ```yaml
-# orchestrator-agent.md
+# longrunning-orchestrator-agent.md
 model: claude-opus-4-5  # Complex decision-making
 ```
 

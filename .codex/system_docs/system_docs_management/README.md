@@ -38,46 +38,30 @@ Maintains the `.codex/system_docs/` directory as the central reference mapping e
 
 ## Key Concepts
 
-### Auto-Invocation Chain
+### Auto-Invocation
 
-```
-creating-claude-agents skill    creating-claude-skills skill
-        │                               │
-        └───── "Post-Creation" step ────┘
-                       │
-                       ▼
-              system-docs-agent
-                       │
-                       ▼
-              .codex/system_docs/ updated
-```
+Both `creating-claude-agents` and `creating-claude-skills` skills include a mandatory final step that invokes the system-docs-agent.
 
-Both the `creating-claude-agents` and `creating-claude-skills` skills include a mandatory final step that invokes the system-docs-agent.
+### Classification
 
-### Classification Decision Tree
-
-The agent determines whether a new component gets a dedicated folder or a table entry:
-- **Folder**: Multi-component systems, orchestrator/subagent pairs, skills with substantial resources
-- **Table entry**: Single standalone utility skills, simple tools without dedicated agents
+- **Folder** (`system_docs/<name>/README.md`): Multi-component systems, orchestrator/subagent pairs, skills with resources
+- **Table entry** (in master index): Single standalone utility skills
 
 ### Master Index Sections
 
-The master index (`system_docs/README.md`) has three sections that must all be updated:
-1. **File Tree** — visual map of every system folder with agent/skill/config/output paths
+1. **File Tree** — visual map of every system folder
 2. **Skills Not Mapped** — table for standalone skills
-3. **System Overview** — summary table with agent/skill counts and totals
+3. **System Overview** — summary table with counts
 
-## Agent & Skill Locations
+## Locations
 
-| Component | Claude Path | Codex Path |
-|-----------|-------------|------------|
-| Agent | `.claude/agents/system-docs-agent/AGENT.md` | `.codex/agents/system-docs-agent.md` |
-| Skill | `.claude/skills/system-docs-agent/SKILL.md` | `.codex/skills/system-docs-agent/SKILL.md` |
-| System Docs Root | — | `.codex/system_docs/README.md` |
-| This Documentation | — | `.codex/system_docs/system_docs_management/README.md` |
+| Component | Path |
+|-----------|------|
+| Agent | `.claude/agents/system-docs-agent/AGENT.md` |
+| Skill | `.claude/skills/system-docs-agent/SKILL.md` |
+| Index | `.codex/system_docs/README.md` |
 
-## Integration with Other Systems
+## Integration Points
 
-- **extensibility**: The system-docs-agent is the downstream consumer of the agent/skill creation guides. It reads what the extensibility system produces.
-- **claude_codex_sync**: System docs changes may need to be mirrored via the sync agent.
-- **All other systems**: Every system in system_docs/ was either created by or should be maintained by this agent.
+- **extensibility** — system-docs-agent consumes what the agent/skill creation guides produce
+- **claude_codex_sync** — System docs changes may need mirroring via the sync agent

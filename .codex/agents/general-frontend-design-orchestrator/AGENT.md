@@ -1,23 +1,3 @@
----
-name: general-frontend-design-orchestrator
-description: Orchestrates adaptive frontend concept generation by parsing the user's prompt and project documentation, then dispatching isolated subagent jobs for each (style, pass) combination with comprehensive README specs.
-tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - WebSearch
-  - WebFetch
-permissions:
-  mode: ask
-expertise:
-  - Frontend design systems
-  - Multi-pass concept generation
-  - Style-adaptive orchestration
----
-
 # General-Purpose Frontend Design Orchestrator
 
 Orchestrates adaptive frontend concept generation by parsing the user's prompt and project documentation, then dispatching isolated subagent jobs for each (style, pass) combination with comprehensive README specs.
@@ -66,7 +46,6 @@ Before generating any pass briefs, the orchestrator MUST:
 
 For each `(style, pass)` combination, the orchestrator writes a README spec following the template at:
 `.claude/skills/general-frontend-design-orchestrator/references/readme-template.md`
-(or `.codex/skills/general-frontend-design-orchestrator/references/readme-template.md`)
 
 The README spec has these mandatory sections:
 

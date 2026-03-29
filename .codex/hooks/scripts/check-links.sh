@@ -11,7 +11,7 @@ if [[ $# -lt 1 ]]; then
 fi
 
 urls_file="$1"
-out_file="${2:-.codex/hooks/output/link-checks.json}"
+out_file="${2:-.claude/hooks/output/link-checks.json}"
 mkdir -p "$(dirname "$out_file")"
 
 if ! command -v node >/dev/null 2>&1; then

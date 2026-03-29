@@ -5,8 +5,54 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/scripts/session-start-setup.sh",
+            "command": ".claude/hooks/scripts/session-start-setup.sh",
             "description": "Project context and environment checks"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/chain-session-init.sh",
+            "description": "Load agent chain context if a chain is running"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/adr-structure-check.sh",
+            "description": "Validate ADR folder structure on session start"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/fea-detect.sh",
+            "description": "Detect FEA workflow keywords and inject process instructions"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/chat-history-reminder.sh",
+            "description": "Enforce mandatory chat history logging"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/savepoint-detect.sh",
+            "description": "Detect savepoint keyword in user messages"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/repo-setup-detect.sh",
+            "description": "Detect repo setup/bootstrap requests"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/operations-guide-detect.sh",
+            "description": "Detect questions about .claude/.codex operations"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/planning-detect.sh",
+            "description": "Detect planning requests and invoke pre-planning agent"
           }
         ]
       }
@@ -17,7 +63,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/scripts/pre-bash-validator.sh",
+            "command": ".claude/hooks/scripts/pre-bash-validator.sh",
             "description": "Validate bash commands before execution"
           }
         ]
@@ -27,8 +73,13 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/scripts/block-sensitive-files.sh",
+            "command": ".claude/hooks/scripts/block-sensitive-files.sh",
             "description": "Block edits to sensitive files"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/require-frontend-spec.sh",
+            "description": "Auto-create frontend_spec.md if missing before frontend file writes"
           }
         ]
       }
@@ -39,18 +90,38 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/scripts/post-format-code.sh",
+            "command": ".claude/hooks/scripts/post-format-code.sh",
             "description": "Auto-format supported files after edits"
           },
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | { read file_path; if [ -n \"$file_path\" ]; then .codex/hooks/scripts/scan-secrets.sh \"$file_path\"; fi; }",
+            "command": "jq -r '.tool_input.file_path' | { read file_path; if [ -n \"$file_path\" ]; then .claude/hooks/scripts/scan-secrets.sh \"$file_path\"; fi; }",
             "description": "Scan edited files for secrets"
           },
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | { read file_path; if [ -n \"$file_path\" ] && [ -f \"$file_path\" ]; then .codex/hooks/scripts/large-file-guard.sh \"$file_path\" 512; fi; }",
+            "command": "jq -r '.tool_input.file_path' | { read file_path; if [ -n \"$file_path\" ] && [ -f \"$file_path\" ]; then .claude/hooks/scripts/large-file-guard.sh \"$file_path\" 512; fi; }",
             "description": "Block overly large files"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/systemdocs-reminder.sh",
+            "description": "Remind to create system docs when agents/skills are created or modified"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/todo-sync-reminder.sh",
+            "description": "Remind to update TODO.md when task lists change"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/auto-sync-check.sh",
+            "description": "Check .claude/.codex mirror parity after writes"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/mermaid-doc-assist.sh",
+            "description": "Suggest Mermaid diagrams for complex docs and validate existing blocks"
           }
         ]
       }
@@ -60,13 +131,23 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".codex/hooks/scripts/git-context-report.sh",
+            "command": ".claude/hooks/scripts/git-context-report.sh",
             "description": "Capture a git context report"
           },
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .codex/hooks/scripts/orchestrator-poke.ps1",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .claude/hooks/scripts/orchestrator-poke.ps1",
             "description": "Spawn next phase subagent if queued"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/chain-continue.sh",
+            "description": "Continue agent chain if signal file exists"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/session-report-prompt.sh",
+            "description": "Remind to generate session report (opt-in via config)"
           }
         ]
       }

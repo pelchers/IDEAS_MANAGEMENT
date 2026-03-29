@@ -31,9 +31,9 @@ Keeps Claude Code artifacts synchronized across three critical directories:
 node scripts/sync-all.js
 
 # Output:
-# Synced 28 skills
-# Synced 19 agents
-# Synced MCP config
+# ✅ Synced 28 skills
+# ✅ Synced 19 agents
+# ✅ Synced MCP config
 ```
 
 ### Sync Specific Skill
@@ -43,7 +43,7 @@ node scripts/sync-all.js
 node scripts/sync-skill.js designing-convex-schemas
 
 # Output:
-# Synced designing-convex-schemas to:
+# ✅ Synced designing-convex-schemas to:
 #    - app-builder-template/.claude/skills/
 #    - do-over-files/.claude/skills/
 ```
@@ -55,7 +55,7 @@ node scripts/sync-skill.js designing-convex-schemas
 node scripts/check-sync.js
 
 # Output:
-# Out of sync:
+# ⚠️  Out of sync:
 #    - app-builder-template missing: explaining-complex-concepts
 #    - do-over-files outdated: processing-stripe-payments
 ```
@@ -212,16 +212,16 @@ node scripts/check-sync.js [--fix]
 Sync Status Report
 ==================
 
-In Sync:
+✅ In Sync:
    - 25 skills
    - 18 agents
    - mcp.json
 
-Out of Sync:
+⚠️  Out of Sync:
    - app-builder-template missing: skill-a, skill-b
    - do-over-files outdated: agent-x (main: 2024-01-05, do-over: 2024-01-03)
 
-Conflicts:
+❌ Conflicts:
    - designing-convex-schemas: do-over newer than main (manual review needed)
 ```
 
@@ -276,7 +276,7 @@ cd "<PROJECT_ROOT>"
 node .claude/skills/maintaining-trinary-sync/scripts/check-sync.js
 
 if [ $? -ne 0 ]; then
-  echo "Directories out of sync. Run: node scripts/sync-all.js"
+  echo "⚠️  Directories out of sync. Run: node scripts/sync-all.js"
   exit 1
 fi
 ```
@@ -318,15 +318,15 @@ Add to `package.json`:
 ### When to Sync
 
 **Always Sync**:
-- After creating new skill
-- After creating new agent
-- After modifying MCP config
-- Before committing to git
-- Before creating new project from template
+- ✅ After creating new skill
+- ✅ After creating new agent
+- ✅ After modifying MCP config
+- ✅ Before committing to git
+- ✅ Before creating new project from template
 
 **Optional Sync**:
-- During active development (wait until feature complete)
-- Experimental changes (may want to keep isolated)
+- ⚠️ During active development (wait until feature complete)
+- ⚠️ Experimental changes (may want to keep isolated)
 
 ### Conflict Resolution
 
@@ -420,25 +420,25 @@ node .claude/skills/maintaining-trinary-sync/scripts/check-sync.js --fix
 
 ```
 .claude/
-├── skills/           # Synced
+├── skills/           # ✅ Synced
 │   └── skill-name/
 │       ├── SKILL.md
 │       ├── scripts/
 │       └── resources/
-├── agents/           # Synced
+├── agents/           # ✅ Synced
 │   └── agent-name.md
-├── subagents/        # Synced
+├── subagents/        # ✅ Synced
 │   └── subagent-name.md
-└── mcp.json          # Synced
+└── mcp.json          # ✅ Synced
 ```
 
 ### What Doesn't Get Synced
 
 ```
 .claude/
-├── .cache/          # Local only
-├── logs/            # Local only
-└── temp/            # Local only
+├── .cache/          # ❌ Local only
+├── logs/            # ❌ Local only
+└── temp/            # ❌ Local only
 ```
 
 ---
@@ -507,3 +507,4 @@ node scripts/sync-all.js --report > sync-report-$(date +%Y%m%d).txt
 - Sync script implementation: `scripts/sync-all.js`
 - Conflict resolution guide: `resources/conflict-resolution.md`
 - Directory structure reference: `resources/directory-structure.md`
+

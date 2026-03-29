@@ -113,6 +113,22 @@ export default function AiPage() {
 
   const newChat = useCallback(() => { setSessionId(null); setMessages([]); setInput(""); }, []);
 
+  const clearSession = useCallback(async () => {
+    if (!sessionId) return;
+    if (!window.confirm("Clear all messages in this session?")) return;
+    await fetch(`/api/ai/sessions/${sessionId}/messages`, { method: "DELETE" }).catch(() => {});
+    setMessages([]);
+    loadSessions();
+  }, [sessionId, loadSessions]);
+
+  const deleteAllSessions = useCallback(async () => {
+    if (!window.confirm("Delete ALL chat sessions? This cannot be undone.")) return;
+    await fetch("/api/ai/sessions", { method: "DELETE" }).catch(() => {});
+    setSessionId(null);
+    setMessages([]);
+    setSessions([]);
+  }, []);
+
   const deleteSession = useCallback(async (sid: string) => {
     await fetch(`/api/ai/sessions/${sid}`, { method: "DELETE" }).catch(() => {});
     if (sessionId === sid) { setSessionId(null); setMessages([]); }
@@ -149,7 +165,7 @@ export default function AiPage() {
     const command = parts[0];
     switch (command) {
       case "/new": newChat(); setMessages((prev) => [...prev, { role: "ai", text: "Started a new session." }]); break;
-      case "/clear": setMessages([]); break;
+      case "/clear": clearSession(); break;
       case "/rename": if (sessionId && parts[1]) renameSession(sessionId, parts.slice(1).join(" ")); break;
       case "/export": exportSession(); setMessages((prev) => [...prev, { role: "ai", text: "Session exported as markdown." }]); break;
       case "/help":
@@ -402,7 +418,10 @@ export default function AiPage() {
         <div className="w-[240px] min-w-[240px] border-4 border-signal-black bg-white flex flex-col overflow-hidden">
           <div className="px-3 py-2 border-b-2 border-signal-black bg-signal-black text-creamy-milk font-bold text-[0.75rem] uppercase tracking-wider flex items-center justify-between">
             <span>SESSIONS</span>
-            <button onClick={newChat} className="text-[0.65rem] px-2 py-0.5 bg-malachite text-white border border-malachite font-bold cursor-pointer hover:opacity-80">+ NEW</button>
+            <div className="flex gap-1">
+              <button onClick={newChat} className="text-[0.65rem] px-2 py-0.5 bg-malachite text-white border border-malachite font-bold cursor-pointer hover:opacity-80" title="New session">+</button>
+              {sessions.length > 0 && <button onClick={deleteAllSessions} className="text-[0.65rem] px-2 py-0.5 bg-watermelon text-white border border-watermelon font-bold cursor-pointer hover:opacity-80" title="Delete all sessions">CLR</button>}
+            </div>
           </div>
           {/* Search */}
           <div className="px-2 py-1 border-b border-signal-black/20">

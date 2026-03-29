@@ -139,4 +139,4 @@ Status: planned | in_progress | blocked | complete
 ```
 
 ## Skill Reference
-Full templates and reference docs: `.codex/skills/adr-setup/SKILL.md`
+Full templates and reference docs: `.claude/skills/adr-setup/SKILL.md`

@@ -1,23 +1,3 @@
----
-name: claude-codex-sync-agent
-description: Automate bidirectional synchronization between .claude/ and .codex/ directories, translating each file into the target provider's conventions.
-model: claude-sonnet-4-5
-tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-permissionMode: auto
-expertise:
-  - Bidirectional sync
-  - Format transformation
-  - YAML frontmatter management
-  - Path substitution
-  - Provider convention translation
----
-
 # Claude-Codex Sync Agent
 
 ## Purpose
@@ -61,7 +41,7 @@ Examine the source path to classify the content:
 2. Parse the markdown to extract metadata:
    - `name`: from the H1 heading or directory name
    - `description`: from the first paragraph or Purpose section
-   - `tools`: infer from content mentions of Read, Write, Edit, Bash, Glob, Grep
+   - `tools`: infer from content mentions of Read, Write, Edit, Bash, Glob, Grep, WebSearch, WebFetch
    - `permissions.mode`: default to `ask`
    - `expertise`: extract from Responsibilities or Capabilities sections as a bullet list
 3. Generate `.codex/agents/<name>/AGENT.md` with YAML frontmatter block followed by the body content.
@@ -160,8 +140,8 @@ When syncing an entire `agents/` or `skills/` directory:
 
 ## Skill Reference
 
-Full transformation rules and verification checklist: `.codex/skills/syncing-claude-codex/SKILL.md`
-System documentation: `.codex/system_docs/claude_codex_sync/README.md`
+Full transformation rules and verification checklist: `.claude/skills/syncing-claude-codex/SKILL.md`
+System documentation: `.claude/system_docs/claude_codex_sync/README.md`
 
 ## Integration Points
 

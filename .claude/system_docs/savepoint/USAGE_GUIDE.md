@@ -2,13 +2,12 @@
 
 ## Quick Start
 
-After completing a significant milestone:
-
+After completing a milestone:
 ```
 /agent savepoint-agent "savepoint 3 - backend API complete"
 ```
 
-Result: branch `savepoint-3-backend-api-complete` created and pushed.
+Result: branch `savepoint-3-backend-api-complete` created, pushed, original branch restored.
 
 ## Detailed Usage
 
@@ -18,50 +17,41 @@ Result: branch `savepoint-3-backend-api-complete` created and pushed.
 /agent savepoint-agent "Create savepoint after login feature is done"
 ```
 
-The agent normalizes the name, creates the branch from current HEAD, pushes it, then returns to your working branch.
+Agent normalizes the name, creates branch from HEAD, pushes to remote, returns to original branch.
 
 ### With Uncommitted Changes
 
-If you have uncommitted work, the agent commits it first on the current branch before creating the savepoint:
+Agent commits outstanding changes first, then creates the savepoint branch.
 
-```
-/agent savepoint-agent "savepoint 2 - midway through auth, save progress"
-```
-
-Agent will commit outstanding changes, then branch.
-
-### Savepoint Without Agent (Manual)
+### Manual (Without Agent)
 
 ```bash
-# Get current branch
-git branch --show-current  # e.g., main
-
-# Create and push savepoint
 git branch savepoint-1-my-milestone
 git push origin savepoint-1-my-milestone --set-upstream
-
-# Stay on current branch (don't checkout savepoint)
+# Stay on current branch
 ```
 
 ### Restoring from a Savepoint
 
 ```bash
+# Inspect
 git checkout savepoint-1-my-milestone
+
+# New branch from savepoint
+git checkout -b recovery savepoint-1-my-milestone
 ```
 
-Or create a new working branch from it:
+### Naming Convention
 
-```bash
-git checkout -b recovery-from-savepoint-1 savepoint-1-my-milestone
-```
+| User input | Branch name |
+|-----------|-------------|
+| `savepoint 1 - auth complete` | `savepoint-1-auth-complete` |
+| `milestone after phase 3` | `savepoint-milestone-after-phase-3` |
 
 ## Troubleshooting
 
-**Push fails with authentication error**
-Ensure the remote is set to HTTPS (not SSH): `git remote get-url origin`. Update if needed: `git remote set-url origin https://...`.
+**Push fails with auth error** — Verify remote is HTTPS: `git remote get-url origin`. Update with `git remote set-url origin https://...`.
 
-**Agent commits wrong files**
-The agent stages all changes before committing. To control what gets committed, manually stage files before requesting a savepoint.
+**Agent commits wrong files** — Manually stage specific files before requesting savepoint.
 
-**Branch name already exists**
-Use a unique descriptor or number: `savepoint-1b-auth-hotfix` instead of `savepoint-1-auth`.
+**Branch name conflict** — Use a unique suffix: `savepoint-1b-auth-hotfix`.

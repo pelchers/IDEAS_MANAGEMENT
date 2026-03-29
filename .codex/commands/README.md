@@ -90,9 +90,9 @@ Queue and spawn the next phase subagent for long-running sessions.
 ```
 
 **What it does:**
-1. Reads `.codex/orchestration/queue/next_phase.json`
+1. Reads `.claude/orchestration/queue/next_phase.json`
 2. Invokes the orchestrator poke hook
-3. Spawns a new Codex exec process (if `autoSpawn: true`)
+3. Spawns a new Claude exec process (if `autoSpawn: true`)
 
 **Best for:** Kicking off the next phase in a multi-phase workflow
 
@@ -264,3 +264,4 @@ Commands can reference environment variables and project context:
 - Root-level `CLAUDE-HOOKS-GUIDE.md` for hooks integration
 - `.claude/skills/` for reusable agent skills
 - `.claude/agents/` for specialized agents
+

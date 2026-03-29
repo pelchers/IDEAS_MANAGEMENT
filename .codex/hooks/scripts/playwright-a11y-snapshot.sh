@@ -11,7 +11,7 @@ if [[ $# -lt 1 ]]; then
 fi
 
 urls_file="$1"
-out_dir="${2:-.codex/hooks/output/a11y-snapshots}"
+out_dir="${2:-.claude/hooks/output/a11y-snapshots}"
 mkdir -p "$out_dir"
 
 if ! command -v node >/dev/null 2>&1; then

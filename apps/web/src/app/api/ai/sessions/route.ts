@@ -72,3 +72,17 @@ export async function POST(req: Request) {
     },
   }, { status: 201 });
 }
+
+/**
+ * DELETE /api/ai/sessions
+ * Delete ALL chat sessions for the authenticated user.
+ */
+export async function DELETE(req: Request) {
+  const authResult = await requireAuth(req);
+  if (isErrorResponse(authResult)) return authResult;
+  const user = authResult;
+
+  await prisma.aiChatSession.deleteMany({ where: { userId: user.id } });
+
+  return NextResponse.json({ ok: true });
+}

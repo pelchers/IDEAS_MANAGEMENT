@@ -1,0 +1,4635 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - link "Stay connected with us on X, Discord, and LinkedIn to stay up to date with future analysis" [ref=e4] [cursor=pointer]:
+        - /url: https://x.com/ArtificialAnlys
+      - link [ref=e5] [cursor=pointer]:
+        - /url: https://x.com/ArtificialAnlys
+        - img [ref=e6]
+      - link [ref=e8] [cursor=pointer]:
+        - /url: https://discord.gg/aAvvUqxGjM
+        - img [ref=e9]
+      - link [ref=e11] [cursor=pointer]:
+        - /url: https://www.linkedin.com/company/artificial-analysis/
+        - img [ref=e12]
+    - navigation "Main" [ref=e18]:
+      - list [ref=e20]:
+        - listitem [ref=e21]:
+          - link "Artificial Analysis Artificial Analysis" [ref=e22] [cursor=pointer]:
+            - /url: /
+            - img "Artificial Analysis" [ref=e23]
+            - generic [ref=e24]: Artificial Analysis
+        - listitem [ref=e25]:
+          - button "Models" [ref=e26] [cursor=pointer]:
+            - text: Models
+            - img [ref=e27]
+        - listitem [ref=e29]:
+          - button "Speech, Image, Video" [ref=e30] [cursor=pointer]:
+            - text: Speech, Image, Video
+            - img [ref=e31]
+        - listitem [ref=e33]:
+          - link "Hardware" [ref=e34] [cursor=pointer]:
+            - /url: /benchmarks/hardware
+        - listitem [ref=e35]:
+          - button "Leaderboards" [ref=e36] [cursor=pointer]:
+            - text: Leaderboards
+            - img [ref=e37]
+        - listitem [ref=e39]:
+          - button "Arenas" [ref=e40] [cursor=pointer]:
+            - img [ref=e41]
+            - text: Arenas
+            - img [ref=e43]
+        - listitem [ref=e45]:
+          - link "AI Trends" [ref=e46] [cursor=pointer]:
+            - /url: /trends
+        - listitem [ref=e47]:
+          - button "About" [ref=e48] [cursor=pointer]:
+            - text: About
+            - img [ref=e49]
+      - generic [ref=e51]:
+        - link "Log in" [ref=e52] [cursor=pointer]:
+          - /url: /orgs
+          - generic [ref=e53]: Log in
+        - button "Search... ⌘K" [ref=e54] [cursor=pointer]:
+          - img [ref=e55]
+          - generic [ref=e58]: Search...
+          - generic [ref=e59]: ⌘K
+    - generic [ref=e60]:
+      - generic [ref=e62]:
+        - heading "LLM Leaderboard - Comparison of over 100 AI models from OpenAI, Google, DeepSeek & others" [level=1] [ref=e63]
+        - paragraph [ref=e64]:
+          - text: Comparison and ranking the performance of over 100 AI models (LLMs) across key metrics including intelligence, price, performance and speed (output speed - tokens per second & latency - TTFT), context window & others. For more details including relating to our methodology, see our
+          - link "FAQs." [ref=e65] [cursor=pointer]:
+            - /url: /faq
+        - generic [ref=e66]:
+          - text: For comparison of API Providers hosting the models see
+          - link "LLM API Providers Leaderboard" [ref=e67] [cursor=pointer]:
+            - /url: /leaderboards/providers
+            - button "LLM API Providers Leaderboard" [ref=e68]:
+              - img [ref=e69]
+              - generic [ref=e73]: LLM API Providers Leaderboard
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - paragraph [ref=e76]: HIGHLIGHTS
+            - generic [ref=e77]:
+              - generic [ref=e78]: "Intelligence:"
+              - generic [ref=e79]:
+                - generic [ref=e80]:
+                  - img "Gemini 3.1 Pro Preview logo" [ref=e81]
+                  - text: Gemini 3.1 Pro Preview
+                - text: and
+                - generic [ref=e82]:
+                  - img "GPT-5.4 (xhigh) logo" [ref=e83]
+                  - text: GPT-5.4 (xhigh)
+                - text: are the highest intelligence models, followed by
+                - generic [ref=e84]:
+                  - img "GPT-5.3 Codex (xhigh) logo" [ref=e85]
+                  - text: GPT-5.3 Codex (xhigh)
+                - generic [ref=e86]:
+                  - text: "&"
+                  - img "Claude Opus 4.6 (max) logo" [ref=e87]
+                  - text: Claude Opus 4.6 (max)
+                - text: .
+              - generic [ref=e88]: "Output Speed (tokens/s):"
+              - generic [ref=e89]:
+                - generic [ref=e90]:
+                  - img "Mercury 2 logo" [ref=e91]
+                  - text: Mercury 2 (764 t/s)
+                - text: and
+                - generic [ref=e92]:
+                  - img "NVIDIA Nemotron 3 Super logo" [ref=e93]
+                  - text: NVIDIA Nemotron 3 Super (399 t/s)
+                - text: are the fastest models, followed by
+                - generic [ref=e94]:
+                  - img "Granite 3.3 8B logo" [ref=e95]
+                  - text: Granite 3.3 8B
+                - generic [ref=e96]:
+                  - text: "&"
+                  - img "Granite 4.0 H Small logo" [ref=e97]
+                  - text: Granite 4.0 H Small
+                - text: .
+              - generic [ref=e98]: "Latency (seconds):"
+              - generic [ref=e99]:
+                - generic [ref=e100]:
+                  - img "Gemini 2.5 Flash-Lite (Sep) logo" [ref=e101]
+                  - text: Gemini 2.5 Flash-Lite (Sep) (0.39s)
+                - text: and
+                - generic [ref=e102]:
+                  - img "Apriel-v1.5-15B-Thinker logo" [ref=e103]
+                  - text: Apriel-v1.5-15B-Thinker (0.39s)
+                - text: are the lowest latency models, followed by
+                - generic [ref=e104]:
+                  - img "Ministral 3 3B logo" [ref=e105]
+                  - text: Ministral 3 3B
+                - generic [ref=e106]:
+                  - text: "&"
+                  - img "LFM2 24B A2B logo" [ref=e107]
+                  - text: LFM2 24B A2B
+                - text: .
+              - generic [ref=e108]: "Price ($ per M tokens):"
+              - generic [ref=e109]:
+                - generic [ref=e110]:
+                  - img "Gemma 3n E4B logo" [ref=e111]
+                  - text: Gemma 3n E4B ($0.03)
+                - text: and
+                - generic [ref=e112]:
+                  - img "LFM2 24B A2B logo" [ref=e113]
+                  - text: LFM2 24B A2B ($0.05)
+                - text: are the cheapest models, followed by
+                - generic [ref=e114]:
+                  - img "Nova Micro logo" [ref=e115]
+                  - text: Nova Micro
+                - generic [ref=e116]:
+                  - text: "&"
+                  - img "NVIDIA Nemotron Nano 9B V2 logo" [ref=e117]
+                  - text: NVIDIA Nemotron Nano 9B V2
+                - text: .
+              - generic [ref=e118]: "Context Window:"
+              - generic [ref=e119]:
+                - generic [ref=e120]:
+                  - img "Llama 4 Scout logo" [ref=e121]
+                  - text: Llama 4 Scout (10m)
+                - text: and
+                - generic [ref=e122]:
+                  - img "Grok 4.20 Beta 0309 logo" [ref=e123]
+                  - text: Grok 4.20 Beta 0309 (2m)
+                - text: are the largest context window models, followed by
+                - generic [ref=e124]:
+                  - img "Grok 4.20 Beta 0309 logo" [ref=e125]
+                  - text: Grok 4.20 Beta 0309
+                - generic [ref=e126]:
+                  - text: "&"
+                  - img "Gemini 2.0 Pro Experimental logo" [ref=e127]
+                  - text: Gemini 2.0 Pro Experimental
+                - text: .
+          - generic [ref=e131]:
+            - button "Prompt options" [ref=e132] [cursor=pointer]
+            - img [ref=e134] [cursor=pointer]
+      - generic [ref=e136]:
+        - generic [ref=e138]:
+          - generic [ref=e141]:
+            - generic [ref=e142]:
+              - img [ref=e143]
+              - generic [ref=e145]: Filters
+            - generic [ref=e146]:
+              - generic [ref=e147]:
+                - heading "Frontier Models:" [level=3] [ref=e149]
+                - group [ref=e151]:
+                  - button "All" [pressed] [ref=e153] [cursor=pointer]
+                  - button "Frontier Models" [ref=e155] [cursor=pointer]:
+                    - generic [ref=e156]:
+                      - img
+                      - text: Frontier Models
+              - generic [ref=e157]:
+                - generic [ref=e158]:
+                  - heading "Open Weights:" [level=3] [ref=e159]
+                  - button "Clear" [ref=e160] [cursor=pointer]:
+                    - img
+                    - text: Clear
+                - group [ref=e162]:
+                  - button "All" [ref=e164] [cursor=pointer]
+                  - button "Open Source" [pressed] [ref=e166] [cursor=pointer]:
+                    - generic [ref=e167]:
+                      - img
+                      - text: Open Source
+                  - button "Proprietary" [ref=e169] [cursor=pointer]:
+                    - generic [ref=e170]:
+                      - img
+                      - text: Proprietary
+              - generic [ref=e171]:
+                - heading "Size Class:" [level=3] [ref=e173]
+                - group [ref=e175]:
+                  - button "All" [pressed] [ref=e177] [cursor=pointer]
+                  - button "Tiny" [ref=e179] [cursor=pointer]:
+                    - generic [ref=e180]:
+                      - img
+                      - text: Tiny
+                  - button "Small" [ref=e182] [cursor=pointer]:
+                    - generic [ref=e183]:
+                      - img
+                      - text: Small
+                  - button "Medium" [ref=e185] [cursor=pointer]:
+                    - generic [ref=e186]:
+                      - img
+                      - text: Medium
+                  - button "Large" [ref=e188] [cursor=pointer]:
+                    - generic [ref=e189]:
+                      - img
+                      - text: Large
+              - generic [ref=e190]:
+                - heading "Reasoning:" [level=3] [ref=e192]
+                - group [ref=e194]:
+                  - button "All" [pressed] [ref=e196] [cursor=pointer]
+                  - button "Reasoning" [ref=e198] [cursor=pointer]
+                  - button "Non Reasoning" [ref=e200] [cursor=pointer]
+              - generic [ref=e201]:
+                - generic [ref=e202]:
+                  - heading "Model Status:" [level=3] [ref=e203]
+                  - button "Clear" [ref=e204] [cursor=pointer]:
+                    - img
+                    - text: Clear
+                - group [ref=e206]:
+                  - button "All" [ref=e208] [cursor=pointer]
+                  - button "Current Models" [pressed] [ref=e210] [cursor=pointer]
+          - generic [ref=e211]:
+            - textbox "Filter, e.g. GPT, Meta" [ref=e212]
+            - generic [ref=e214]:
+              - img [ref=e215]
+              - text: Reasoning model
+            - button "Expand Columns" [ref=e217] [cursor=pointer]:
+              - text: Expand Columns
+              - generic [ref=e218]:
+                - img
+          - table [ref=e221]:
+            - rowgroup [ref=e222]:
+              - row "Features Intelligence Price Speed Latency" [ref=e223]:
+                - columnheader [ref=e224]
+                - columnheader "Features" [ref=e225]:
+                  - generic [ref=e226]:
+                    - generic [ref=e227]: Features
+                    - button [ref=e228] [cursor=pointer]:
+                      - img [ref=e229]
+                - columnheader "Intelligence" [ref=e232]:
+                  - generic [ref=e233]:
+                    - generic [ref=e234]: Intelligence
+                    - button [ref=e235] [cursor=pointer]:
+                      - img [ref=e236]
+                - columnheader "Price" [ref=e239]:
+                  - generic [ref=e240]:
+                    - generic [ref=e241]: Price
+                    - button [ref=e242] [cursor=pointer]:
+                      - img [ref=e243]
+                - columnheader "Speed" [ref=e246]:
+                  - generic [ref=e247]:
+                    - generic [ref=e248]: Speed
+                    - button [ref=e249] [cursor=pointer]:
+                      - img [ref=e250]
+                - columnheader "Latency" [ref=e253]:
+                  - generic [ref=e254]:
+                    - generic [ref=e255]: Latency
+                    - button [ref=e256] [cursor=pointer]:
+                      - img [ref=e257]
+                - columnheader [ref=e260]
+              - row "Model Context Window Creator Artificial Analysis Intelligence Index Blended USD/1M Tokens Median Tokens/s Latency First Answer Chunk (s) Further Analysis" [ref=e261]:
+                - columnheader "Model" [ref=e262]:
+                  - button "Model" [ref=e263] [cursor=pointer]:
+                    - generic [ref=e266]: Model
+                    - img
+                - columnheader "Context Window" [ref=e267]:
+                  - button "Context Window" [ref=e268] [cursor=pointer]:
+                    - generic [ref=e271]:
+                      - text: Context
+                      - text: Window
+                    - img
+                - columnheader "Creator" [ref=e272]:
+                  - button "Creator" [ref=e273] [cursor=pointer]:
+                    - generic [ref=e276]: Creator
+                    - img
+                - columnheader "Artificial Analysis Intelligence Index" [ref=e277]:
+                  - button "Artificial Analysis Intelligence Index" [ref=e278] [cursor=pointer]:
+                    - generic [ref=e281]:
+                      - text: Artificial
+                      - text: Analysis
+                      - text: Intelligence Index
+                    - img
+                - columnheader "Blended USD/1M Tokens" [ref=e282]:
+                  - button "Blended USD/1M Tokens" [ref=e283] [cursor=pointer]:
+                    - generic [ref=e284]:
+                      - generic [ref=e286]: Blended
+                      - generic [ref=e287]: USD/1M Tokens
+                    - img
+                - columnheader "Median Tokens/s" [ref=e288]:
+                  - button "Median Tokens/s" [ref=e289] [cursor=pointer]:
+                    - generic [ref=e290]:
+                      - generic [ref=e292]: Median
+                      - generic [ref=e293]: Tokens/s
+                    - img
+                - columnheader "Latency First Answer Chunk (s)" [ref=e294]:
+                  - button "Latency First Answer Chunk (s)" [ref=e295] [cursor=pointer]:
+                    - generic [ref=e296]:
+                      - generic [ref=e298]: Latency
+                      - generic [ref=e299]: First Answer Chunk (s)
+                    - img
+                - columnheader "Further Analysis" [ref=e300]:
+                  - generic [ref=e304]:
+                    - text: Further
+                    - text: Analysis
+            - rowgroup [ref=e305]:
+              - row "GLM-5 200k Z AI logo Z AI 50 $1.55 69 1.60 Model Providers" [ref=e306]:
+                - cell "GLM-5" [ref=e307]:
+                  - generic [ref=e311]:
+                    - generic [ref=e312]: GLM-5
+                    - img [ref=e313]
+                - cell "200k" [ref=e315]:
+                  - generic [ref=e319]: 200k
+                - cell "Z AI logo Z AI" [ref=e320]:
+                  - generic [ref=e321]:
+                    - img "Z AI logo" [ref=e322]
+                    - paragraph [ref=e323]: Z AI
+                - cell "50" [ref=e324]:
+                  - generic [ref=e326]: "50"
+                - cell "$1.55" [ref=e327]:
+                  - generic [ref=e331]: $1.55
+                - cell "69" [ref=e332]:
+                  - generic [ref=e336]: "69"
+                - cell "1.60" [ref=e337]:
+                  - generic [ref=e341]: "1.60"
+                - cell "Model Providers" [ref=e342]:
+                  - generic [ref=e343]:
+                    - link "Model" [ref=e344] [cursor=pointer]:
+                      - /url: /models/glm-5
+                      - button "Model" [ref=e345]:
+                        - img [ref=e346]
+                        - text: Model
+                    - link "Providers" [ref=e350] [cursor=pointer]:
+                      - /url: /models/glm-5/providers
+                      - img [ref=e351]
+                      - text: Providers
+              - row "Kimi K2.5 256k Kimi logo Kimi 47 $1.20 43 2.87 Model Providers" [ref=e355]:
+                - cell "Kimi K2.5" [ref=e356]:
+                  - generic [ref=e360]:
+                    - generic [ref=e361]: Kimi K2.5
+                    - img [ref=e362]
+                - cell "256k" [ref=e364]:
+                  - generic [ref=e368]: 256k
+                - cell "Kimi logo Kimi" [ref=e369]:
+                  - generic [ref=e370]:
+                    - img "Kimi logo" [ref=e371]
+                    - paragraph [ref=e372]: Kimi
+                - cell "47" [ref=e373]:
+                  - generic [ref=e375]: "47"
+                - cell "$1.20" [ref=e376]:
+                  - generic [ref=e380]: $1.20
+                - cell "43" [ref=e381]:
+                  - generic [ref=e385]: "43"
+                - cell "2.87" [ref=e386]:
+                  - generic [ref=e390]: "2.87"
+                - cell "Model Providers" [ref=e391]:
+                  - generic [ref=e392]:
+                    - link "Model" [ref=e393] [cursor=pointer]:
+                      - /url: /models/kimi-k2-5
+                      - button "Model" [ref=e394]:
+                        - img [ref=e395]
+                        - text: Model
+                    - link "Providers" [ref=e399] [cursor=pointer]:
+                      - /url: /models/kimi-k2-5/providers
+                      - img [ref=e400]
+                      - text: Providers
+              - row "Qwen3.5 397B A17B 262k Alibaba logo Alibaba 45 $1.35 96 2.61 Model Providers" [ref=e404]:
+                - cell "Qwen3.5 397B A17B" [ref=e405]:
+                  - generic [ref=e409]:
+                    - generic [ref=e410]: Qwen3.5 397B A17B
+                    - img [ref=e411]
+                - cell "262k" [ref=e413]:
+                  - generic [ref=e417]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e418]:
+                  - generic [ref=e419]:
+                    - img "Alibaba logo" [ref=e420]
+                    - paragraph [ref=e421]: Alibaba
+                - cell "45" [ref=e422]:
+                  - generic [ref=e424]: "45"
+                - cell "$1.35" [ref=e425]:
+                  - generic [ref=e429]: $1.35
+                - cell "96" [ref=e430]:
+                  - generic [ref=e434]: "96"
+                - cell "2.61" [ref=e435]:
+                  - generic [ref=e439]: "2.61"
+                - cell "Model Providers" [ref=e440]:
+                  - generic [ref=e441]:
+                    - link "Model" [ref=e442] [cursor=pointer]:
+                      - /url: /models/qwen3-5-397b-a17b
+                      - button "Model" [ref=e443]:
+                        - img [ref=e444]
+                        - text: Model
+                    - link "Providers" [ref=e448] [cursor=pointer]:
+                      - /url: /models/qwen3-5-397b-a17b/providers
+                      - img [ref=e449]
+                      - text: Providers
+              - row "Qwen3.5 27B 262k Alibaba logo Alibaba 42 $0.82 85 5.61 Model Providers" [ref=e453]:
+                - cell "Qwen3.5 27B" [ref=e454]:
+                  - generic [ref=e458]:
+                    - generic [ref=e459]: Qwen3.5 27B
+                    - img [ref=e460]
+                - cell "262k" [ref=e462]:
+                  - generic [ref=e466]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e467]:
+                  - generic [ref=e468]:
+                    - img "Alibaba logo" [ref=e469]
+                    - paragraph [ref=e470]: Alibaba
+                - cell "42" [ref=e471]:
+                  - generic [ref=e473]: "42"
+                - cell "$0.82" [ref=e474]:
+                  - generic [ref=e478]: $0.82
+                - cell "85" [ref=e479]:
+                  - generic [ref=e483]: "85"
+                - cell "5.61" [ref=e484]:
+                  - generic [ref=e488]: "5.61"
+                - cell "Model Providers" [ref=e489]:
+                  - generic [ref=e490]:
+                    - link "Model" [ref=e491] [cursor=pointer]:
+                      - /url: /models/qwen3-5-27b
+                      - button "Model" [ref=e492]:
+                        - img [ref=e493]
+                        - text: Model
+                    - link "Providers" [ref=e497] [cursor=pointer]:
+                      - /url: /models/qwen3-5-27b/providers
+                      - img [ref=e498]
+                      - text: Providers
+              - row "DeepSeek V3.2 128k DeepSeek logo DeepSeek 42 $0.32 33 1.79 Model Providers" [ref=e502]:
+                - cell "DeepSeek V3.2" [ref=e503]:
+                  - generic [ref=e507]:
+                    - generic [ref=e508]: DeepSeek V3.2
+                    - img [ref=e509]
+                - cell "128k" [ref=e511]:
+                  - generic [ref=e515]: 128k
+                - cell "DeepSeek logo DeepSeek" [ref=e516]:
+                  - generic [ref=e517]:
+                    - img "DeepSeek logo" [ref=e518]
+                    - paragraph [ref=e519]: DeepSeek
+                - cell "42" [ref=e520]:
+                  - generic [ref=e522]: "42"
+                - cell "$0.32" [ref=e523]:
+                  - generic [ref=e527]: $0.32
+                - cell "33" [ref=e528]:
+                  - generic [ref=e532]: "33"
+                - cell "1.79" [ref=e533]:
+                  - generic [ref=e537]: "1.79"
+                - cell "Model Providers" [ref=e538]:
+                  - generic [ref=e539]:
+                    - link "Model" [ref=e540] [cursor=pointer]:
+                      - /url: /models/deepseek-v3-2-reasoning
+                      - button "Model" [ref=e541]:
+                        - img [ref=e542]
+                        - text: Model
+                    - link "Providers" [ref=e546] [cursor=pointer]:
+                      - /url: /models/deepseek-v3-2-reasoning/providers
+                      - img [ref=e547]
+                      - text: Providers
+              - row "Qwen3.5 122B A10B 262k Alibaba logo Alibaba 42 $1.10 121 2.33 Model Providers" [ref=e551]:
+                - cell "Qwen3.5 122B A10B" [ref=e552]:
+                  - generic [ref=e556]:
+                    - generic [ref=e557]: Qwen3.5 122B A10B
+                    - img [ref=e558]
+                - cell "262k" [ref=e560]:
+                  - generic [ref=e564]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e565]:
+                  - generic [ref=e566]:
+                    - img "Alibaba logo" [ref=e567]
+                    - paragraph [ref=e568]: Alibaba
+                - cell "42" [ref=e569]:
+                  - generic [ref=e571]: "42"
+                - cell "$1.10" [ref=e572]:
+                  - generic [ref=e576]: $1.10
+                - cell "121" [ref=e577]:
+                  - generic [ref=e581]: "121"
+                - cell "2.33" [ref=e582]:
+                  - generic [ref=e586]: "2.33"
+                - cell "Model Providers" [ref=e587]:
+                  - generic [ref=e588]:
+                    - link "Model" [ref=e589] [cursor=pointer]:
+                      - /url: /models/qwen3-5-122b-a10b
+                      - button "Model" [ref=e590]:
+                        - img [ref=e591]
+                        - text: Model
+                    - link "Providers" [ref=e595] [cursor=pointer]:
+                      - /url: /models/qwen3-5-122b-a10b/providers
+                      - img [ref=e596]
+                      - text: Providers
+              - row "MiMo-V2-Flash (Feb 2026) 256k Xiaomi logo Xiaomi 41 $0.15 132 2.17 Model Providers" [ref=e600]:
+                - cell "MiMo-V2-Flash (Feb 2026)" [ref=e601]:
+                  - generic [ref=e605]:
+                    - generic [ref=e606]: MiMo-V2-Flash (Feb 2026)
+                    - img [ref=e607]
+                - cell "256k" [ref=e609]:
+                  - generic [ref=e613]: 256k
+                - cell "Xiaomi logo Xiaomi" [ref=e614]:
+                  - generic [ref=e615]:
+                    - img "Xiaomi logo" [ref=e616]
+                    - paragraph [ref=e617]: Xiaomi
+                - cell "41" [ref=e618]:
+                  - generic [ref=e620]: "41"
+                - cell "$0.15" [ref=e621]:
+                  - generic [ref=e625]: $0.15
+                - cell "132" [ref=e626]:
+                  - generic [ref=e630]: "132"
+                - cell "2.17" [ref=e631]:
+                  - generic [ref=e635]: "2.17"
+                - cell "Model Providers" [ref=e636]:
+                  - generic [ref=e637]:
+                    - link "Model" [ref=e638] [cursor=pointer]:
+                      - /url: /models/mimo-v2-0206
+                      - button "Model" [ref=e639]:
+                        - img [ref=e640]
+                        - text: Model
+                    - link "Providers" [ref=e644] [cursor=pointer]:
+                      - /url: /models/mimo-v2-0206/providers
+                      - img [ref=e645]
+                      - text: Providers
+              - row "GLM-5 200k Z AI logo Z AI 41 $1.55 59 1.69 Model Providers" [ref=e649]:
+                - cell "GLM-5" [ref=e650]:
+                  - generic [ref=e655]: GLM-5
+                - cell "200k" [ref=e656]:
+                  - generic [ref=e660]: 200k
+                - cell "Z AI logo Z AI" [ref=e661]:
+                  - generic [ref=e662]:
+                    - img "Z AI logo" [ref=e663]
+                    - paragraph [ref=e664]: Z AI
+                - cell "41" [ref=e665]:
+                  - generic [ref=e667]: "41"
+                - cell "$1.55" [ref=e668]:
+                  - generic [ref=e672]: $1.55
+                - cell "59" [ref=e673]:
+                  - generic [ref=e677]: "59"
+                - cell "1.69" [ref=e678]:
+                  - generic [ref=e682]: "1.69"
+                - cell "Model Providers" [ref=e683]:
+                  - generic [ref=e684]:
+                    - link "Model" [ref=e685] [cursor=pointer]:
+                      - /url: /models/glm-5-non-reasoning
+                      - button "Model" [ref=e686]:
+                        - img [ref=e687]
+                        - text: Model
+                    - link "Providers" [ref=e691] [cursor=pointer]:
+                      - /url: /models/glm-5-non-reasoning/providers
+                      - img [ref=e692]
+                      - text: Providers
+              - row "Qwen3.5 397B A17B 262k Alibaba logo Alibaba 40 $1.35 85 2.48 Model Providers" [ref=e696]:
+                - cell "Qwen3.5 397B A17B" [ref=e697]:
+                  - generic [ref=e702]: Qwen3.5 397B A17B
+                - cell "262k" [ref=e703]:
+                  - generic [ref=e707]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e708]:
+                  - generic [ref=e709]:
+                    - img "Alibaba logo" [ref=e710]
+                    - paragraph [ref=e711]: Alibaba
+                - cell "40" [ref=e712]:
+                  - generic [ref=e714]: "40"
+                - cell "$1.35" [ref=e715]:
+                  - generic [ref=e719]: $1.35
+                - cell "85" [ref=e720]:
+                  - generic [ref=e724]: "85"
+                - cell "2.48" [ref=e725]:
+                  - generic [ref=e729]: "2.48"
+                - cell "Model Providers" [ref=e730]:
+                  - generic [ref=e731]:
+                    - link "Model" [ref=e732] [cursor=pointer]:
+                      - /url: /models/qwen3-5-397b-a17b-non-reasoning
+                      - button "Model" [ref=e733]:
+                        - img [ref=e734]
+                        - text: Model
+                    - link "Providers" [ref=e738] [cursor=pointer]:
+                      - /url: /models/qwen3-5-397b-a17b-non-reasoning/providers
+                      - img [ref=e739]
+                      - text: Providers
+              - row "Step 3.5 Flash 256k StepFun logo StepFun 38 $0.15 96 3.53 Model Providers" [ref=e743]:
+                - cell "Step 3.5 Flash" [ref=e744]:
+                  - generic [ref=e748]:
+                    - generic [ref=e749]: Step 3.5 Flash
+                    - img [ref=e750]
+                - cell "256k" [ref=e752]:
+                  - generic [ref=e756]: 256k
+                - cell "StepFun logo StepFun" [ref=e757]:
+                  - generic [ref=e758]:
+                    - img "StepFun logo" [ref=e759]
+                    - paragraph [ref=e760]: StepFun
+                - cell "38" [ref=e761]:
+                  - generic [ref=e763]: "38"
+                - cell "$0.15" [ref=e764]:
+                  - generic [ref=e768]: $0.15
+                - cell "96" [ref=e769]:
+                  - generic [ref=e773]: "96"
+                - cell "3.53" [ref=e774]:
+                  - generic [ref=e778]: "3.53"
+                - cell "Model Providers" [ref=e779]:
+                  - generic [ref=e780]:
+                    - link "Model" [ref=e781] [cursor=pointer]:
+                      - /url: /models/step-3-5-flash
+                      - button "Model" [ref=e782]:
+                        - img [ref=e783]
+                        - text: Model
+                    - link "Providers" [ref=e787] [cursor=pointer]:
+                      - /url: /models/step-3-5-flash/providers
+                      - img [ref=e788]
+                      - text: Providers
+              - row "Kimi K2.5 256k Kimi logo Kimi 37 $1.20 45 3.93 Model Providers" [ref=e792]:
+                - cell "Kimi K2.5" [ref=e793]:
+                  - generic [ref=e798]: Kimi K2.5
+                - cell "256k" [ref=e799]:
+                  - generic [ref=e803]: 256k
+                - cell "Kimi logo Kimi" [ref=e804]:
+                  - generic [ref=e805]:
+                    - img "Kimi logo" [ref=e806]
+                    - paragraph [ref=e807]: Kimi
+                - cell "37" [ref=e808]:
+                  - generic [ref=e810]: "37"
+                - cell "$1.20" [ref=e811]:
+                  - generic [ref=e815]: $1.20
+                - cell "45" [ref=e816]:
+                  - generic [ref=e820]: "45"
+                - cell "3.93" [ref=e821]:
+                  - generic [ref=e825]: "3.93"
+                - cell "Model Providers" [ref=e826]:
+                  - generic [ref=e827]:
+                    - link "Model" [ref=e828] [cursor=pointer]:
+                      - /url: /models/kimi-k2-5-non-reasoning
+                      - button "Model" [ref=e829]:
+                        - img [ref=e830]
+                        - text: Model
+                    - link "Providers" [ref=e834] [cursor=pointer]:
+                      - /url: /models/kimi-k2-5-non-reasoning/providers
+                      - img [ref=e835]
+                      - text: Providers
+              - row "Qwen3.5 27B 262k Alibaba logo Alibaba 37 $0.82 85 5.63 Model Providers" [ref=e839]:
+                - cell "Qwen3.5 27B" [ref=e840]:
+                  - generic [ref=e845]: Qwen3.5 27B
+                - cell "262k" [ref=e846]:
+                  - generic [ref=e850]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e851]:
+                  - generic [ref=e852]:
+                    - img "Alibaba logo" [ref=e853]
+                    - paragraph [ref=e854]: Alibaba
+                - cell "37" [ref=e855]:
+                  - generic [ref=e857]: "37"
+                - cell "$0.82" [ref=e858]:
+                  - generic [ref=e862]: $0.82
+                - cell "85" [ref=e863]:
+                  - generic [ref=e867]: "85"
+                - cell "5.63" [ref=e868]:
+                  - generic [ref=e872]: "5.63"
+                - cell "Model Providers" [ref=e873]:
+                  - generic [ref=e874]:
+                    - link "Model" [ref=e875] [cursor=pointer]:
+                      - /url: /models/qwen3-5-27b-non-reasoning
+                      - button "Model" [ref=e876]:
+                        - img [ref=e877]
+                        - text: Model
+                    - link "Providers" [ref=e881] [cursor=pointer]:
+                      - /url: /models/qwen3-5-27b-non-reasoning/providers
+                      - img [ref=e882]
+                      - text: Providers
+              - row "Qwen3.5 35B A3B 262k Alibaba logo Alibaba 37 $0.69 165 2.08 Model Providers" [ref=e886]:
+                - cell "Qwen3.5 35B A3B" [ref=e887]:
+                  - generic [ref=e891]:
+                    - generic [ref=e892]: Qwen3.5 35B A3B
+                    - img [ref=e893]
+                - cell "262k" [ref=e895]:
+                  - generic [ref=e899]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e900]:
+                  - generic [ref=e901]:
+                    - img "Alibaba logo" [ref=e902]
+                    - paragraph [ref=e903]: Alibaba
+                - cell "37" [ref=e904]:
+                  - generic [ref=e906]: "37"
+                - cell "$0.69" [ref=e907]:
+                  - generic [ref=e911]: $0.69
+                - cell "165" [ref=e912]:
+                  - generic [ref=e916]: "165"
+                - cell "2.08" [ref=e917]:
+                  - generic [ref=e921]: "2.08"
+                - cell "Model Providers" [ref=e922]:
+                  - generic [ref=e923]:
+                    - link "Model" [ref=e924] [cursor=pointer]:
+                      - /url: /models/qwen3-5-35b-a3b
+                      - button "Model" [ref=e925]:
+                        - img [ref=e926]
+                        - text: Model
+                    - link "Providers" [ref=e930] [cursor=pointer]:
+                      - /url: /models/qwen3-5-35b-a3b/providers
+                      - img [ref=e931]
+                      - text: Providers
+              - row "NVIDIA Nemotron 3 Super 1m NVIDIA logo NVIDIA 36 $0.41 399 0.72 Model Providers" [ref=e935]:
+                - cell "NVIDIA Nemotron 3 Super" [ref=e936]:
+                  - generic [ref=e940]:
+                    - generic [ref=e941]: NVIDIA Nemotron 3 Super
+                    - img [ref=e942]
+                - cell "1m" [ref=e944]:
+                  - generic [ref=e948]: 1m
+                - cell "NVIDIA logo NVIDIA" [ref=e949]:
+                  - generic [ref=e950]:
+                    - img "NVIDIA logo" [ref=e951]
+                    - paragraph [ref=e952]: NVIDIA
+                - cell "36" [ref=e953]:
+                  - generic [ref=e955]: "36"
+                - cell "$0.41" [ref=e956]:
+                  - generic [ref=e960]: $0.41
+                - cell "399" [ref=e961]:
+                  - generic [ref=e965]: "399"
+                - cell "0.72" [ref=e966]:
+                  - generic [ref=e970]: "0.72"
+                - cell "Model Providers" [ref=e971]:
+                  - generic [ref=e972]:
+                    - link "Model" [ref=e973] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-3-super-120b-a12b
+                      - button "Model" [ref=e974]:
+                        - img [ref=e975]
+                        - text: Model
+                    - link "Providers" [ref=e979] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-3-super-120b-a12b/providers
+                      - img [ref=e980]
+                      - text: Providers
+              - row "Qwen3.5 122B A10B 262k Alibaba logo Alibaba 36 $1.10 145 2.43 Model Providers" [ref=e984]:
+                - cell "Qwen3.5 122B A10B" [ref=e985]:
+                  - generic [ref=e990]: Qwen3.5 122B A10B
+                - cell "262k" [ref=e991]:
+                  - generic [ref=e995]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e996]:
+                  - generic [ref=e997]:
+                    - img "Alibaba logo" [ref=e998]
+                    - paragraph [ref=e999]: Alibaba
+                - cell "36" [ref=e1000]:
+                  - generic [ref=e1002]: "36"
+                - cell "$1.10" [ref=e1003]:
+                  - generic [ref=e1007]: $1.10
+                - cell "145" [ref=e1008]:
+                  - generic [ref=e1012]: "145"
+                - cell "2.43" [ref=e1013]:
+                  - generic [ref=e1017]: "2.43"
+                - cell "Model Providers" [ref=e1018]:
+                  - generic [ref=e1019]:
+                    - link "Model" [ref=e1020] [cursor=pointer]:
+                      - /url: /models/qwen3-5-122b-a10b-non-reasoning
+                      - button "Model" [ref=e1021]:
+                        - img [ref=e1022]
+                        - text: Model
+                    - link "Providers" [ref=e1026] [cursor=pointer]:
+                      - /url: /models/qwen3-5-122b-a10b-non-reasoning/providers
+                      - img [ref=e1027]
+                      - text: Providers
+              - row "gpt-oss-120B (high) 131k OpenAI logo OpenAI 33 $0.26 263 0.83 Model Providers" [ref=e1031]:
+                - cell "gpt-oss-120B (high)" [ref=e1032]:
+                  - generic [ref=e1036]:
+                    - generic [ref=e1037]: gpt-oss-120B (high)
+                    - img [ref=e1038]
+                - cell "131k" [ref=e1040]:
+                  - generic [ref=e1044]: 131k
+                - cell "OpenAI logo OpenAI" [ref=e1045]:
+                  - generic [ref=e1046]:
+                    - img "OpenAI logo" [ref=e1047]
+                    - paragraph [ref=e1048]: OpenAI
+                - cell "33" [ref=e1049]:
+                  - generic [ref=e1051]: "33"
+                - cell "$0.26" [ref=e1052]:
+                  - generic [ref=e1056]: $0.26
+                - cell "263" [ref=e1057]:
+                  - generic [ref=e1061]: "263"
+                - cell "0.83" [ref=e1062]:
+                  - generic [ref=e1066]: "0.83"
+                - cell "Model Providers" [ref=e1067]:
+                  - generic [ref=e1068]:
+                    - link "Model" [ref=e1069] [cursor=pointer]:
+                      - /url: /models/gpt-oss-120b
+                      - button "Model" [ref=e1070]:
+                        - img [ref=e1071]
+                        - text: Model
+                    - link "Providers" [ref=e1075] [cursor=pointer]:
+                      - /url: /models/gpt-oss-120b/providers
+                      - img [ref=e1076]
+                      - text: Providers
+              - row "Qwen3.5 9B 262k Alibaba logo Alibaba 32 $0.11 54 0.62 Model Providers" [ref=e1080]:
+                - cell "Qwen3.5 9B" [ref=e1081]:
+                  - generic [ref=e1085]:
+                    - generic [ref=e1086]: Qwen3.5 9B
+                    - img [ref=e1087]
+                - cell "262k" [ref=e1089]:
+                  - generic [ref=e1093]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e1094]:
+                  - generic [ref=e1095]:
+                    - img "Alibaba logo" [ref=e1096]
+                    - paragraph [ref=e1097]: Alibaba
+                - cell "32" [ref=e1098]:
+                  - generic [ref=e1100]: "32"
+                - cell "$0.11" [ref=e1101]:
+                  - generic [ref=e1105]: $0.11
+                - cell "54" [ref=e1106]:
+                  - generic [ref=e1110]: "54"
+                - cell "0.62" [ref=e1111]:
+                  - generic [ref=e1115]: "0.62"
+                - cell "Model Providers" [ref=e1116]:
+                  - generic [ref=e1117]:
+                    - link "Model" [ref=e1118] [cursor=pointer]:
+                      - /url: /models/qwen3-5-9b
+                      - button "Model" [ref=e1119]:
+                        - img [ref=e1120]
+                        - text: Model
+                    - link "Providers" [ref=e1124] [cursor=pointer]:
+                      - /url: /models/qwen3-5-9b/providers
+                      - img [ref=e1125]
+                      - text: Providers
+              - row "K-EXAONE 256k LG AI Research logo LG AI Research 32 $0.00 0 0.00 Model Providers" [ref=e1129]:
+                - cell "K-EXAONE" [ref=e1130]:
+                  - generic [ref=e1134]:
+                    - generic [ref=e1135]: K-EXAONE
+                    - img [ref=e1136]
+                - cell "256k" [ref=e1138]:
+                  - generic [ref=e1142]: 256k
+                - cell "LG AI Research logo LG AI Research" [ref=e1143]:
+                  - generic [ref=e1144]:
+                    - img "LG AI Research logo" [ref=e1145]
+                    - paragraph [ref=e1146]: LG AI Research
+                - cell "32" [ref=e1147]:
+                  - generic [ref=e1149]: "32"
+                - cell "$0.00" [ref=e1150]:
+                  - generic [ref=e1154]: $0.00
+                - cell "0" [ref=e1155]:
+                  - generic [ref=e1159]: "0"
+                - cell "0.00" [ref=e1160]:
+                  - generic [ref=e1164]: "0.00"
+                - cell "Model Providers" [ref=e1165]:
+                  - generic [ref=e1166]:
+                    - link "Model" [ref=e1167] [cursor=pointer]:
+                      - /url: /models/k-exaone
+                      - button "Model" [ref=e1168]:
+                        - img [ref=e1169]
+                        - text: Model
+                    - link "Providers" [ref=e1173] [cursor=pointer]:
+                      - /url: /models/k-exaone/providers
+                      - img [ref=e1174]
+                      - text: Providers
+              - row "DeepSeek V3.2 128k DeepSeek logo DeepSeek 32 $0.32 32 1.67 Model Providers" [ref=e1178]:
+                - cell "DeepSeek V3.2" [ref=e1179]:
+                  - generic [ref=e1184]: DeepSeek V3.2
+                - cell "128k" [ref=e1185]:
+                  - generic [ref=e1189]: 128k
+                - cell "DeepSeek logo DeepSeek" [ref=e1190]:
+                  - generic [ref=e1191]:
+                    - img "DeepSeek logo" [ref=e1192]
+                    - paragraph [ref=e1193]: DeepSeek
+                - cell "32" [ref=e1194]:
+                  - generic [ref=e1196]: "32"
+                - cell "$0.32" [ref=e1197]:
+                  - generic [ref=e1201]: $0.32
+                - cell "32" [ref=e1202]:
+                  - generic [ref=e1206]: "32"
+                - cell "1.67" [ref=e1207]:
+                  - generic [ref=e1211]: "1.67"
+                - cell "Model Providers" [ref=e1212]:
+                  - generic [ref=e1213]:
+                    - link "Model" [ref=e1214] [cursor=pointer]:
+                      - /url: /models/deepseek-v3-2
+                      - button "Model" [ref=e1215]:
+                        - img [ref=e1216]
+                        - text: Model
+                    - link "Providers" [ref=e1220] [cursor=pointer]:
+                      - /url: /models/deepseek-v3-2/providers
+                      - img [ref=e1221]
+                      - text: Providers
+              - row "Qwen3.5 35B A3B 262k Alibaba logo Alibaba 31 $0.69 152 2.11 Model Providers" [ref=e1225]:
+                - cell "Qwen3.5 35B A3B" [ref=e1226]:
+                  - generic [ref=e1231]: Qwen3.5 35B A3B
+                - cell "262k" [ref=e1232]:
+                  - generic [ref=e1236]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e1237]:
+                  - generic [ref=e1238]:
+                    - img "Alibaba logo" [ref=e1239]
+                    - paragraph [ref=e1240]: Alibaba
+                - cell "31" [ref=e1241]:
+                  - generic [ref=e1243]: "31"
+                - cell "$0.69" [ref=e1244]:
+                  - generic [ref=e1248]: $0.69
+                - cell "152" [ref=e1249]:
+                  - generic [ref=e1253]: "152"
+                - cell "2.11" [ref=e1254]:
+                  - generic [ref=e1258]: "2.11"
+                - cell "Model Providers" [ref=e1259]:
+                  - generic [ref=e1260]:
+                    - link "Model" [ref=e1261] [cursor=pointer]:
+                      - /url: /models/qwen3-5-35b-a3b-non-reasoning
+                      - button "Model" [ref=e1262]:
+                        - img [ref=e1263]
+                        - text: Model
+                    - link "Providers" [ref=e1267] [cursor=pointer]:
+                      - /url: /models/qwen3-5-35b-a3b-non-reasoning/providers
+                      - img [ref=e1268]
+                      - text: Providers
+              - row "MiMo-V2-Flash 256k Xiaomi logo Xiaomi 30 $0.15 133 2.28 Model Providers" [ref=e1272]:
+                - cell "MiMo-V2-Flash" [ref=e1273]:
+                  - generic [ref=e1278]: MiMo-V2-Flash
+                - cell "256k" [ref=e1279]:
+                  - generic [ref=e1283]: 256k
+                - cell "Xiaomi logo Xiaomi" [ref=e1284]:
+                  - generic [ref=e1285]:
+                    - img "Xiaomi logo" [ref=e1286]
+                    - paragraph [ref=e1287]: Xiaomi
+                - cell "30" [ref=e1288]:
+                  - generic [ref=e1290]: "30"
+                - cell "$0.15" [ref=e1291]:
+                  - generic [ref=e1295]: $0.15
+                - cell "133" [ref=e1296]:
+                  - generic [ref=e1300]: "133"
+                - cell "2.28" [ref=e1301]:
+                  - generic [ref=e1305]: "2.28"
+                - cell "Model Providers" [ref=e1306]:
+                  - generic [ref=e1307]:
+                    - link "Model" [ref=e1308] [cursor=pointer]:
+                      - /url: /models/mimo-v2-flash
+                      - button "Model" [ref=e1309]:
+                        - img [ref=e1310]
+                        - text: Model
+                    - link "Providers" [ref=e1314] [cursor=pointer]:
+                      - /url: /models/mimo-v2-flash/providers
+                      - img [ref=e1315]
+                      - text: Providers
+              - row "DeepSeek V3.2 Speciale 128k DeepSeek logo DeepSeek 29 $0.00 0 0.00 Model Providers" [ref=e1319]:
+                - cell "DeepSeek V3.2 Speciale" [ref=e1320]:
+                  - generic [ref=e1324]:
+                    - generic [ref=e1325]: DeepSeek V3.2 Speciale
+                    - img [ref=e1326]
+                - cell "128k" [ref=e1328]:
+                  - generic [ref=e1332]: 128k
+                - cell "DeepSeek logo DeepSeek" [ref=e1333]:
+                  - generic [ref=e1334]:
+                    - img "DeepSeek logo" [ref=e1335]
+                    - paragraph [ref=e1336]: DeepSeek
+                - cell "29" [ref=e1337]:
+                  - generic [ref=e1339]: "29"
+                - cell "$0.00" [ref=e1340]:
+                  - generic [ref=e1344]: $0.00
+                - cell "0" [ref=e1345]:
+                  - generic [ref=e1349]: "0"
+                - cell "0.00" [ref=e1350]:
+                  - generic [ref=e1354]: "0.00"
+                - cell "Model Providers" [ref=e1355]:
+                  - generic [ref=e1356]:
+                    - link "Model" [ref=e1357] [cursor=pointer]:
+                      - /url: /models/deepseek-v3-2-speciale
+                      - button "Model" [ref=e1358]:
+                        - img [ref=e1359]
+                        - text: Model
+                    - link "Providers" [ref=e1363] [cursor=pointer]:
+                      - /url: /models/deepseek-v3-2-speciale/providers
+                      - img [ref=e1364]
+                      - text: Providers
+              - row "Qwen3 Coder Next 256k Alibaba logo Alibaba 28 $0.60 147 1.29 Model Providers" [ref=e1368]:
+                - cell "Qwen3 Coder Next" [ref=e1369]:
+                  - generic [ref=e1374]: Qwen3 Coder Next
+                - cell "256k" [ref=e1375]:
+                  - generic [ref=e1379]: 256k
+                - cell "Alibaba logo Alibaba" [ref=e1380]:
+                  - generic [ref=e1381]:
+                    - img "Alibaba logo" [ref=e1382]
+                    - paragraph [ref=e1383]: Alibaba
+                - cell "28" [ref=e1384]:
+                  - generic [ref=e1386]: "28"
+                - cell "$0.60" [ref=e1387]:
+                  - generic [ref=e1391]: $0.60
+                - cell "147" [ref=e1392]:
+                  - generic [ref=e1396]: "147"
+                - cell "1.29" [ref=e1397]:
+                  - generic [ref=e1401]: "1.29"
+                - cell "Model Providers" [ref=e1402]:
+                  - generic [ref=e1403]:
+                    - link "Model" [ref=e1404] [cursor=pointer]:
+                      - /url: /models/qwen3-coder-next
+                      - button "Model" [ref=e1405]:
+                        - img [ref=e1406]
+                        - text: Model
+                    - link "Providers" [ref=e1410] [cursor=pointer]:
+                      - /url: /models/qwen3-coder-next/providers
+                      - img [ref=e1411]
+                      - text: Providers
+              - row "Apriel-v1.6-15B-Thinker 128k ServiceNow logo ServiceNow 28 $0.00 129 0.44 Model Providers" [ref=e1415]:
+                - cell "Apriel-v1.6-15B-Thinker" [ref=e1416]:
+                  - generic [ref=e1420]:
+                    - generic [ref=e1421]: Apriel-v1.6-15B-Thinker
+                    - img [ref=e1422]
+                - cell "128k" [ref=e1424]:
+                  - generic [ref=e1428]: 128k
+                - cell "ServiceNow logo ServiceNow" [ref=e1429]:
+                  - generic [ref=e1430]:
+                    - img "ServiceNow logo" [ref=e1431]
+                    - paragraph [ref=e1432]: ServiceNow
+                - cell "28" [ref=e1433]:
+                  - generic [ref=e1435]: "28"
+                - cell "$0.00" [ref=e1436]:
+                  - generic [ref=e1440]: $0.00
+                - cell "129" [ref=e1441]:
+                  - generic [ref=e1445]: "129"
+                - cell "0.44" [ref=e1446]:
+                  - generic [ref=e1450]: "0.44"
+                - cell "Model Providers" [ref=e1451]:
+                  - generic [ref=e1452]:
+                    - link "Model" [ref=e1453] [cursor=pointer]:
+                      - /url: /models/apriel-v1-6-15b-thinker
+                      - button "Model" [ref=e1454]:
+                        - img [ref=e1455]
+                        - text: Model
+                    - link "Providers" [ref=e1459] [cursor=pointer]:
+                      - /url: /models/apriel-v1-6-15b-thinker/providers
+                      - img [ref=e1460]
+                      - text: Providers
+              - row "Qwen3.5 9B 262k Alibaba logo Alibaba 27 $0.00 0 0.00 Model Providers" [ref=e1464]:
+                - cell "Qwen3.5 9B" [ref=e1465]:
+                  - generic [ref=e1470]: Qwen3.5 9B
+                - cell "262k" [ref=e1471]:
+                  - generic [ref=e1475]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e1476]:
+                  - generic [ref=e1477]:
+                    - img "Alibaba logo" [ref=e1478]
+                    - paragraph [ref=e1479]: Alibaba
+                - cell "27" [ref=e1480]:
+                  - generic [ref=e1482]: "27"
+                - cell "$0.00" [ref=e1483]:
+                  - generic [ref=e1487]: $0.00
+                - cell "0" [ref=e1488]:
+                  - generic [ref=e1492]: "0"
+                - cell "0.00" [ref=e1493]:
+                  - generic [ref=e1497]: "0.00"
+                - cell "Model Providers" [ref=e1498]:
+                  - generic [ref=e1499]:
+                    - link "Model" [ref=e1500] [cursor=pointer]:
+                      - /url: /models/qwen3-5-9b-non-reasoning
+                      - button "Model" [ref=e1501]:
+                        - img [ref=e1502]
+                        - text: Model
+                    - link "Providers" [ref=e1506] [cursor=pointer]:
+                      - /url: /models/qwen3-5-9b-non-reasoning/providers
+                      - img [ref=e1507]
+                      - text: Providers
+              - row "Qwen3.5 4B 262k Alibaba logo Alibaba 27 $0.00 0 0.00 Model Providers" [ref=e1511]:
+                - cell "Qwen3.5 4B" [ref=e1512]:
+                  - generic [ref=e1516]:
+                    - generic [ref=e1517]: Qwen3.5 4B
+                    - img [ref=e1518]
+                - cell "262k" [ref=e1520]:
+                  - generic [ref=e1524]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e1525]:
+                  - generic [ref=e1526]:
+                    - img "Alibaba logo" [ref=e1527]
+                    - paragraph [ref=e1528]: Alibaba
+                - cell "27" [ref=e1529]:
+                  - generic [ref=e1531]: "27"
+                - cell "$0.00" [ref=e1532]:
+                  - generic [ref=e1536]: $0.00
+                - cell "0" [ref=e1537]:
+                  - generic [ref=e1541]: "0"
+                - cell "0.00" [ref=e1542]:
+                  - generic [ref=e1546]: "0.00"
+                - cell "Model Providers" [ref=e1547]:
+                  - generic [ref=e1548]:
+                    - link "Model" [ref=e1549] [cursor=pointer]:
+                      - /url: /models/qwen3-5-4b
+                      - button "Model" [ref=e1550]:
+                        - img [ref=e1551]
+                        - text: Model
+                    - link "Providers" [ref=e1555] [cursor=pointer]:
+                      - /url: /models/qwen3-5-4b/providers
+                      - img [ref=e1556]
+                      - text: Providers
+              - row "DeepSeek R1 0528 128k DeepSeek logo DeepSeek 27 $2.36 0 0.00 Model Providers" [ref=e1560]:
+                - cell "DeepSeek R1 0528" [ref=e1561]:
+                  - generic [ref=e1565]:
+                    - generic [ref=e1566]: DeepSeek R1 0528
+                    - img [ref=e1567]
+                - cell "128k" [ref=e1569]:
+                  - generic [ref=e1573]: 128k
+                - cell "DeepSeek logo DeepSeek" [ref=e1574]:
+                  - generic [ref=e1575]:
+                    - img "DeepSeek logo" [ref=e1576]
+                    - paragraph [ref=e1577]: DeepSeek
+                - cell "27" [ref=e1578]:
+                  - generic [ref=e1580]: "27"
+                - cell "$2.36" [ref=e1581]:
+                  - generic [ref=e1585]: $2.36
+                - cell "0" [ref=e1586]:
+                  - generic [ref=e1590]: "0"
+                - cell "0.00" [ref=e1591]:
+                  - generic [ref=e1595]: "0.00"
+                - cell "Model Providers" [ref=e1596]:
+                  - generic [ref=e1597]:
+                    - link "Model" [ref=e1598] [cursor=pointer]:
+                      - /url: /models/deepseek-r1
+                      - button "Model" [ref=e1599]:
+                        - img [ref=e1600]
+                        - text: Model
+                    - link "Providers" [ref=e1604] [cursor=pointer]:
+                      - /url: /models/deepseek-r1/providers
+                      - img [ref=e1605]
+                      - text: Providers
+              - row "Mistral Small 4 256k Mistral logo Mistral 27 $0.26 0 0.00 Model Providers" [ref=e1609]:
+                - cell "Mistral Small 4" [ref=e1610]:
+                  - generic [ref=e1614]:
+                    - generic [ref=e1615]: Mistral Small 4
+                    - img [ref=e1616]
+                - cell "256k" [ref=e1618]:
+                  - generic [ref=e1622]: 256k
+                - cell "Mistral logo Mistral" [ref=e1623]:
+                  - generic [ref=e1624]:
+                    - img "Mistral logo" [ref=e1625]
+                    - paragraph [ref=e1626]: Mistral
+                - cell "27" [ref=e1627]:
+                  - generic [ref=e1629]: "27"
+                - cell "$0.26" [ref=e1630]:
+                  - generic [ref=e1634]: $0.26
+                - cell "0" [ref=e1635]:
+                  - generic [ref=e1639]: "0"
+                - cell "0.00" [ref=e1640]:
+                  - generic [ref=e1644]: "0.00"
+                - cell "Model Providers" [ref=e1645]:
+                  - generic [ref=e1646]:
+                    - link "Model" [ref=e1647] [cursor=pointer]:
+                      - /url: /models/mistral-small-4
+                      - button "Model" [ref=e1648]:
+                        - img [ref=e1649]
+                        - text: Model
+                    - link "Providers" [ref=e1653] [cursor=pointer]:
+                      - /url: /models/mistral-small-4/providers
+                      - img [ref=e1654]
+                      - text: Providers
+              - row "Qwen3 Next 80B A3B 262k Alibaba logo Alibaba 27 $1.88 152 2.07 Model Providers" [ref=e1658]:
+                - cell "Qwen3 Next 80B A3B" [ref=e1659]:
+                  - generic [ref=e1663]:
+                    - generic [ref=e1664]: Qwen3 Next 80B A3B
+                    - img [ref=e1665]
+                - cell "262k" [ref=e1667]:
+                  - generic [ref=e1671]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e1672]:
+                  - generic [ref=e1673]:
+                    - img "Alibaba logo" [ref=e1674]
+                    - paragraph [ref=e1675]: Alibaba
+                - cell "27" [ref=e1676]:
+                  - generic [ref=e1678]: "27"
+                - cell "$1.88" [ref=e1679]:
+                  - generic [ref=e1683]: $1.88
+                - cell "152" [ref=e1684]:
+                  - generic [ref=e1688]: "152"
+                - cell "2.07" [ref=e1689]:
+                  - generic [ref=e1693]: "2.07"
+                - cell "Model Providers" [ref=e1694]:
+                  - generic [ref=e1695]:
+                    - link "Model" [ref=e1696] [cursor=pointer]:
+                      - /url: /models/qwen3-next-80b-a3b-reasoning
+                      - button "Model" [ref=e1697]:
+                        - img [ref=e1698]
+                        - text: Model
+                    - link "Providers" [ref=e1702] [cursor=pointer]:
+                      - /url: /models/qwen3-next-80b-a3b-reasoning/providers
+                      - img [ref=e1703]
+                      - text: Providers
+              - row "Qwen3 Coder 480B 262k Alibaba logo Alibaba 25 $3.00 60 3.06 Model Providers" [ref=e1707]:
+                - cell "Qwen3 Coder 480B" [ref=e1708]:
+                  - generic [ref=e1713]: Qwen3 Coder 480B
+                - cell "262k" [ref=e1714]:
+                  - generic [ref=e1718]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e1719]:
+                  - generic [ref=e1720]:
+                    - img "Alibaba logo" [ref=e1721]
+                    - paragraph [ref=e1722]: Alibaba
+                - cell "25" [ref=e1723]:
+                  - generic [ref=e1725]: "25"
+                - cell "$3.00" [ref=e1726]:
+                  - generic [ref=e1730]: $3.00
+                - cell "60" [ref=e1731]:
+                  - generic [ref=e1735]: "60"
+                - cell "3.06" [ref=e1736]:
+                  - generic [ref=e1740]: "3.06"
+                - cell "Model Providers" [ref=e1741]:
+                  - generic [ref=e1742]:
+                    - link "Model" [ref=e1743] [cursor=pointer]:
+                      - /url: /models/qwen3-coder-480b-a35b-instruct
+                      - button "Model" [ref=e1744]:
+                        - img [ref=e1745]
+                        - text: Model
+                    - link "Providers" [ref=e1749] [cursor=pointer]:
+                      - /url: /models/qwen3-coder-480b-a35b-instruct/providers
+                      - img [ref=e1750]
+                      - text: Providers
+              - row "gpt-oss-120B (low) 131k OpenAI logo OpenAI 24 $0.26 263 0.83 Model Providers" [ref=e1754]:
+                - cell "gpt-oss-120B (low)" [ref=e1755]:
+                  - generic [ref=e1759]:
+                    - generic [ref=e1760]: gpt-oss-120B (low)
+                    - img [ref=e1761]
+                - cell "131k" [ref=e1763]:
+                  - generic [ref=e1767]: 131k
+                - cell "OpenAI logo OpenAI" [ref=e1768]:
+                  - generic [ref=e1769]:
+                    - img "OpenAI logo" [ref=e1770]
+                    - paragraph [ref=e1771]: OpenAI
+                - cell "24" [ref=e1772]:
+                  - generic [ref=e1774]: "24"
+                - cell "$0.26" [ref=e1775]:
+                  - generic [ref=e1779]: $0.26
+                - cell "263" [ref=e1780]:
+                  - generic [ref=e1784]: "263"
+                - cell "0.83" [ref=e1785]:
+                  - generic [ref=e1789]: "0.83"
+                - cell "Model Providers" [ref=e1790]:
+                  - generic [ref=e1791]:
+                    - link "Model" [ref=e1792] [cursor=pointer]:
+                      - /url: /models/gpt-oss-120b-low
+                      - button "Model" [ref=e1793]:
+                        - img [ref=e1794]
+                        - text: Model
+                    - link "Providers" [ref=e1798] [cursor=pointer]:
+                      - /url: /models/gpt-oss-120b-low/providers
+                      - img [ref=e1799]
+                      - text: Providers
+              - row "gpt-oss-20B (high) 131k OpenAI logo OpenAI 24 $0.09 295 0.69 Model Providers" [ref=e1803]:
+                - cell "gpt-oss-20B (high)" [ref=e1804]:
+                  - generic [ref=e1808]:
+                    - generic [ref=e1809]: gpt-oss-20B (high)
+                    - img [ref=e1810]
+                - cell "131k" [ref=e1812]:
+                  - generic [ref=e1816]: 131k
+                - cell "OpenAI logo OpenAI" [ref=e1817]:
+                  - generic [ref=e1818]:
+                    - img "OpenAI logo" [ref=e1819]
+                    - paragraph [ref=e1820]: OpenAI
+                - cell "24" [ref=e1821]:
+                  - generic [ref=e1823]: "24"
+                - cell "$0.09" [ref=e1824]:
+                  - generic [ref=e1828]: $0.09
+                - cell "295" [ref=e1829]:
+                  - generic [ref=e1833]: "295"
+                - cell "0.69" [ref=e1834]:
+                  - generic [ref=e1838]: "0.69"
+                - cell "Model Providers" [ref=e1839]:
+                  - generic [ref=e1840]:
+                    - link "Model" [ref=e1841] [cursor=pointer]:
+                      - /url: /models/gpt-oss-20b
+                      - button "Model" [ref=e1842]:
+                        - img [ref=e1843]
+                        - text: Model
+                    - link "Providers" [ref=e1847] [cursor=pointer]:
+                      - /url: /models/gpt-oss-20b/providers
+                      - img [ref=e1848]
+                      - text: Providers
+              - row "NVIDIA Nemotron 3 Nano 1m NVIDIA logo NVIDIA 24 $0.10 121 1.82 Model Providers" [ref=e1852]:
+                - cell "NVIDIA Nemotron 3 Nano" [ref=e1853]:
+                  - generic [ref=e1857]:
+                    - generic [ref=e1858]: NVIDIA Nemotron 3 Nano
+                    - img [ref=e1859]
+                - cell "1m" [ref=e1861]:
+                  - generic [ref=e1865]: 1m
+                - cell "NVIDIA logo NVIDIA" [ref=e1866]:
+                  - generic [ref=e1867]:
+                    - img "NVIDIA logo" [ref=e1868]
+                    - paragraph [ref=e1869]: NVIDIA
+                - cell "24" [ref=e1870]:
+                  - generic [ref=e1872]: "24"
+                - cell "$0.10" [ref=e1873]:
+                  - generic [ref=e1877]: $0.10
+                - cell "121" [ref=e1878]:
+                  - generic [ref=e1882]: "121"
+                - cell "1.82" [ref=e1883]:
+                  - generic [ref=e1887]: "1.82"
+                - cell "Model Providers" [ref=e1888]:
+                  - generic [ref=e1889]:
+                    - link "Model" [ref=e1890] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-3-nano-30b-a3b-reasoning
+                      - button "Model" [ref=e1891]:
+                        - img [ref=e1892]
+                        - text: Model
+                    - link "Providers" [ref=e1896] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-3-nano-30b-a3b-reasoning/providers
+                      - img [ref=e1897]
+                      - text: Providers
+              - row "K2 Think V2 262k MBZUAI Institute of Foundation Models logo MBZUAI Institute of Foundation Models 24 $0.00 0 0.00 Model Providers" [ref=e1901]:
+                - cell "K2 Think V2" [ref=e1902]:
+                  - generic [ref=e1906]:
+                    - generic [ref=e1907]: K2 Think V2
+                    - img [ref=e1908]
+                - cell "262k" [ref=e1910]:
+                  - generic [ref=e1914]: 262k
+                - cell "MBZUAI Institute of Foundation Models logo MBZUAI Institute of Foundation Models" [ref=e1915]:
+                  - generic [ref=e1916]:
+                    - img "MBZUAI Institute of Foundation Models logo" [ref=e1917]
+                    - paragraph [ref=e1918]: MBZUAI Institute of Foundation Models
+                - cell "24" [ref=e1919]:
+                  - generic [ref=e1921]: "24"
+                - cell "$0.00" [ref=e1922]:
+                  - generic [ref=e1926]: $0.00
+                - cell "0" [ref=e1927]:
+                  - generic [ref=e1931]: "0"
+                - cell "0.00" [ref=e1932]:
+                  - generic [ref=e1936]: "0.00"
+                - cell "Model Providers" [ref=e1937]:
+                  - generic [ref=e1938]:
+                    - link "Model" [ref=e1939] [cursor=pointer]:
+                      - /url: /models/k2-think-v2
+                      - button "Model" [ref=e1940]:
+                        - img [ref=e1941]
+                        - text: Model
+                    - link "Providers" [ref=e1945] [cursor=pointer]:
+                      - /url: /models/k2-think-v2/providers
+                      - img [ref=e1946]
+                      - text: Providers
+              - row "LongCat Flash Lite 256k LongCat logo LongCat 24 $0.00 100 6.68 Model Providers" [ref=e1950]:
+                - cell "LongCat Flash Lite" [ref=e1951]:
+                  - generic [ref=e1956]: LongCat Flash Lite
+                - cell "256k" [ref=e1957]:
+                  - generic [ref=e1961]: 256k
+                - cell "LongCat logo LongCat" [ref=e1962]:
+                  - generic [ref=e1963]:
+                    - img "LongCat logo" [ref=e1964]
+                    - paragraph [ref=e1965]: LongCat
+                - cell "24" [ref=e1966]:
+                  - generic [ref=e1968]: "24"
+                - cell "$0.00" [ref=e1969]:
+                  - generic [ref=e1973]: $0.00
+                - cell "100" [ref=e1974]:
+                  - generic [ref=e1978]: "100"
+                - cell "6.68" [ref=e1979]:
+                  - generic [ref=e1983]: "6.68"
+                - cell "Model Providers" [ref=e1984]:
+                  - generic [ref=e1985]:
+                    - link "Model" [ref=e1986] [cursor=pointer]:
+                      - /url: /models/longcat-flash-lite
+                      - button "Model" [ref=e1987]:
+                        - img [ref=e1988]
+                        - text: Model
+                    - link "Providers" [ref=e1992] [cursor=pointer]:
+                      - /url: /models/longcat-flash-lite/providers
+                      - img [ref=e1993]
+                      - text: Providers
+              - row "HyperCLOVA X SEED Think (32B) 128k Naver logo Naver 24 $0.00 0 0.00 Model Providers" [ref=e1997]:
+                - cell "HyperCLOVA X SEED Think (32B)" [ref=e1998]:
+                  - generic [ref=e2002]:
+                    - generic [ref=e2003]: HyperCLOVA X SEED Think (32B)
+                    - img [ref=e2004]
+                - cell "128k" [ref=e2006]:
+                  - generic [ref=e2010]: 128k
+                - cell "Naver logo Naver" [ref=e2011]:
+                  - generic [ref=e2012]:
+                    - img "Naver logo" [ref=e2013]
+                    - paragraph [ref=e2014]: Naver
+                - cell "24" [ref=e2015]:
+                  - generic [ref=e2017]: "24"
+                - cell "$0.00" [ref=e2018]:
+                  - generic [ref=e2022]: $0.00
+                - cell "0" [ref=e2023]:
+                  - generic [ref=e2027]: "0"
+                - cell "0.00" [ref=e2028]:
+                  - generic [ref=e2032]: "0.00"
+                - cell "Model Providers" [ref=e2033]:
+                  - generic [ref=e2034]:
+                    - link "Model" [ref=e2035] [cursor=pointer]:
+                      - /url: /models/hyperclova-x-seed-think-32b
+                      - button "Model" [ref=e2036]:
+                        - img [ref=e2037]
+                        - text: Model
+                    - link "Providers" [ref=e2041] [cursor=pointer]:
+                      - /url: /models/hyperclova-x-seed-think-32b/providers
+                      - img [ref=e2042]
+                      - text: Providers
+              - row "GLM-4.6V 128k Z AI logo Z AI 23 $0.45 27 2.21 Model Providers" [ref=e2046]:
+                - cell "GLM-4.6V" [ref=e2047]:
+                  - generic [ref=e2051]:
+                    - generic [ref=e2052]: GLM-4.6V
+                    - img [ref=e2053]
+                - cell "128k" [ref=e2055]:
+                  - generic [ref=e2059]: 128k
+                - cell "Z AI logo Z AI" [ref=e2060]:
+                  - generic [ref=e2061]:
+                    - img "Z AI logo" [ref=e2062]
+                    - paragraph [ref=e2063]: Z AI
+                - cell "23" [ref=e2064]:
+                  - generic [ref=e2066]: "23"
+                - cell "$0.45" [ref=e2067]:
+                  - generic [ref=e2071]: $0.45
+                - cell "27" [ref=e2072]:
+                  - generic [ref=e2076]: "27"
+                - cell "2.21" [ref=e2077]:
+                  - generic [ref=e2081]: "2.21"
+                - cell "Model Providers" [ref=e2082]:
+                  - generic [ref=e2083]:
+                    - link "Model" [ref=e2084] [cursor=pointer]:
+                      - /url: /models/glm-4-6v-reasoning
+                      - button "Model" [ref=e2085]:
+                        - img [ref=e2086]
+                        - text: Model
+                    - link "Providers" [ref=e2090] [cursor=pointer]:
+                      - /url: /models/glm-4-6v-reasoning/providers
+                      - img [ref=e2091]
+                      - text: Providers
+              - row "K-EXAONE 256k LG AI Research logo LG AI Research 23 $0.00 0 0.00 Model Providers" [ref=e2095]:
+                - cell "K-EXAONE" [ref=e2096]:
+                  - generic [ref=e2101]: K-EXAONE
+                - cell "256k" [ref=e2102]:
+                  - generic [ref=e2106]: 256k
+                - cell "LG AI Research logo LG AI Research" [ref=e2107]:
+                  - generic [ref=e2108]:
+                    - img "LG AI Research logo" [ref=e2109]
+                    - paragraph [ref=e2110]: LG AI Research
+                - cell "23" [ref=e2111]:
+                  - generic [ref=e2113]: "23"
+                - cell "$0.00" [ref=e2114]:
+                  - generic [ref=e2118]: $0.00
+                - cell "0" [ref=e2119]:
+                  - generic [ref=e2123]: "0"
+                - cell "0.00" [ref=e2124]:
+                  - generic [ref=e2128]: "0.00"
+                - cell "Model Providers" [ref=e2129]:
+                  - generic [ref=e2130]:
+                    - link "Model" [ref=e2131] [cursor=pointer]:
+                      - /url: /models/k-exaone-non-reasoning
+                      - button "Model" [ref=e2132]:
+                        - img [ref=e2133]
+                        - text: Model
+                    - link "Providers" [ref=e2137] [cursor=pointer]:
+                      - /url: /models/k-exaone-non-reasoning/providers
+                      - img [ref=e2138]
+                      - text: Providers
+              - row "Mistral Large 3 256k Mistral logo Mistral 23 $0.75 49 1.09 Model Providers" [ref=e2142]:
+                - cell "Mistral Large 3" [ref=e2143]:
+                  - generic [ref=e2148]: Mistral Large 3
+                - cell "256k" [ref=e2149]:
+                  - generic [ref=e2153]: 256k
+                - cell "Mistral logo Mistral" [ref=e2154]:
+                  - generic [ref=e2155]:
+                    - img "Mistral logo" [ref=e2156]
+                    - paragraph [ref=e2157]: Mistral
+                - cell "23" [ref=e2158]:
+                  - generic [ref=e2160]: "23"
+                - cell "$0.75" [ref=e2161]:
+                  - generic [ref=e2165]: $0.75
+                - cell "49" [ref=e2166]:
+                  - generic [ref=e2170]: "49"
+                - cell "1.09" [ref=e2171]:
+                  - generic [ref=e2175]: "1.09"
+                - cell "Model Providers" [ref=e2176]:
+                  - generic [ref=e2177]:
+                    - link "Model" [ref=e2178] [cursor=pointer]:
+                      - /url: /models/mistral-large-3
+                      - button "Model" [ref=e2179]:
+                        - img [ref=e2180]
+                        - text: Model
+                    - link "Providers" [ref=e2184] [cursor=pointer]:
+                      - /url: /models/mistral-large-3/providers
+                      - img [ref=e2185]
+                      - text: Providers
+              - row "Ring-1T 128k InclusionAI logo InclusionAI 23 $0.00 0 0.00 Model Providers" [ref=e2189]:
+                - cell "Ring-1T" [ref=e2190]:
+                  - generic [ref=e2194]:
+                    - generic [ref=e2195]: Ring-1T
+                    - img [ref=e2196]
+                - cell "128k" [ref=e2198]:
+                  - generic [ref=e2202]: 128k
+                - cell "InclusionAI logo InclusionAI" [ref=e2203]:
+                  - generic [ref=e2204]:
+                    - img "InclusionAI logo" [ref=e2205]
+                    - paragraph [ref=e2206]: InclusionAI
+                - cell "23" [ref=e2207]:
+                  - generic [ref=e2209]: "23"
+                - cell "$0.00" [ref=e2210]:
+                  - generic [ref=e2214]: $0.00
+                - cell "0" [ref=e2215]:
+                  - generic [ref=e2219]: "0"
+                - cell "0.00" [ref=e2220]:
+                  - generic [ref=e2224]: "0.00"
+                - cell "Model Providers" [ref=e2225]:
+                  - generic [ref=e2226]:
+                    - link "Model" [ref=e2227] [cursor=pointer]:
+                      - /url: /models/ring-1t
+                      - button "Model" [ref=e2228]:
+                        - img [ref=e2229]
+                        - text: Model
+                    - link "Providers" [ref=e2233] [cursor=pointer]:
+                      - /url: /models/ring-1t/providers
+                      - img [ref=e2234]
+                      - text: Providers
+              - row "Qwen3.5 4B 262k Alibaba logo Alibaba 23 $0.00 0 0.00 Model Providers" [ref=e2238]:
+                - cell "Qwen3.5 4B" [ref=e2239]:
+                  - generic [ref=e2244]: Qwen3.5 4B
+                - cell "262k" [ref=e2245]:
+                  - generic [ref=e2249]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e2250]:
+                  - generic [ref=e2251]:
+                    - img "Alibaba logo" [ref=e2252]
+                    - paragraph [ref=e2253]: Alibaba
+                - cell "23" [ref=e2254]:
+                  - generic [ref=e2256]: "23"
+                - cell "$0.00" [ref=e2257]:
+                  - generic [ref=e2261]: $0.00
+                - cell "0" [ref=e2262]:
+                  - generic [ref=e2266]: "0"
+                - cell "0.00" [ref=e2267]:
+                  - generic [ref=e2271]: "0.00"
+                - cell "Model Providers" [ref=e2272]:
+                  - generic [ref=e2273]:
+                    - link "Model" [ref=e2274] [cursor=pointer]:
+                      - /url: /models/qwen3-5-4b-non-reasoning
+                      - button "Model" [ref=e2275]:
+                        - img [ref=e2276]
+                        - text: Model
+                    - link "Providers" [ref=e2280] [cursor=pointer]:
+                      - /url: /models/qwen3-5-4b-non-reasoning/providers
+                      - img [ref=e2281]
+                      - text: Providers
+              - row "INTELLECT-3 131k Prime Intellect logo Prime Intellect 22 $0.00 0 0.00 Model Providers" [ref=e2285]:
+                - cell "INTELLECT-3" [ref=e2286]:
+                  - generic [ref=e2290]:
+                    - generic [ref=e2291]: INTELLECT-3
+                    - img [ref=e2292]
+                - cell "131k" [ref=e2294]:
+                  - generic [ref=e2298]: 131k
+                - cell "Prime Intellect logo Prime Intellect" [ref=e2299]:
+                  - generic [ref=e2300]:
+                    - img "Prime Intellect logo" [ref=e2301]
+                    - paragraph [ref=e2302]: Prime Intellect
+                - cell "22" [ref=e2303]:
+                  - generic [ref=e2305]: "22"
+                - cell "$0.00" [ref=e2306]:
+                  - generic [ref=e2310]: $0.00
+                - cell "0" [ref=e2311]:
+                  - generic [ref=e2315]: "0"
+                - cell "0.00" [ref=e2316]:
+                  - generic [ref=e2320]: "0.00"
+                - cell "Model Providers" [ref=e2321]:
+                  - generic [ref=e2322]:
+                    - link "Model" [ref=e2323] [cursor=pointer]:
+                      - /url: /models/intellect-3
+                      - button "Model" [ref=e2324]:
+                        - img [ref=e2325]
+                        - text: Model
+                    - link "Providers" [ref=e2329] [cursor=pointer]:
+                      - /url: /models/intellect-3/providers
+                      - img [ref=e2330]
+                      - text: Providers
+              - row "Devstral 2 256k Mistral logo Mistral 22 $0.00 82 0.85 Model Providers" [ref=e2334]:
+                - cell "Devstral 2" [ref=e2335]:
+                  - generic [ref=e2340]: Devstral 2
+                - cell "256k" [ref=e2341]:
+                  - generic [ref=e2345]: 256k
+                - cell "Mistral logo Mistral" [ref=e2346]:
+                  - generic [ref=e2347]:
+                    - img "Mistral logo" [ref=e2348]
+                    - paragraph [ref=e2349]: Mistral
+                - cell "22" [ref=e2350]:
+                  - generic [ref=e2352]: "22"
+                - cell "$0.00" [ref=e2353]:
+                  - generic [ref=e2357]: $0.00
+                - cell "82" [ref=e2358]:
+                  - generic [ref=e2362]: "82"
+                - cell "0.85" [ref=e2363]:
+                  - generic [ref=e2367]: "0.85"
+                - cell "Model Providers" [ref=e2368]:
+                  - generic [ref=e2369]:
+                    - link "Model" [ref=e2370] [cursor=pointer]:
+                      - /url: /models/devstral-2
+                      - button "Model" [ref=e2371]:
+                        - img [ref=e2372]
+                        - text: Model
+                    - link "Providers" [ref=e2376] [cursor=pointer]:
+                      - /url: /models/devstral-2/providers
+                      - img [ref=e2377]
+                      - text: Providers
+              - row "Solar Open 100B 128k Upstage logo Upstage 22 $0.00 0 0.00 Model Providers" [ref=e2381]:
+                - cell "Solar Open 100B" [ref=e2382]:
+                  - generic [ref=e2386]:
+                    - generic [ref=e2387]: Solar Open 100B
+                    - img [ref=e2388]
+                - cell "128k" [ref=e2390]:
+                  - generic [ref=e2394]: 128k
+                - cell "Upstage logo Upstage" [ref=e2395]:
+                  - generic [ref=e2396]:
+                    - img "Upstage logo" [ref=e2397]
+                    - paragraph [ref=e2398]: Upstage
+                - cell "22" [ref=e2399]:
+                  - generic [ref=e2401]: "22"
+                - cell "$0.00" [ref=e2402]:
+                  - generic [ref=e2406]: $0.00
+                - cell "0" [ref=e2407]:
+                  - generic [ref=e2411]: "0"
+                - cell "0.00" [ref=e2412]:
+                  - generic [ref=e2416]: "0.00"
+                - cell "Model Providers" [ref=e2417]:
+                  - generic [ref=e2418]:
+                    - link "Model" [ref=e2419] [cursor=pointer]:
+                      - /url: /models/solar-open-100b-reasoning
+                      - button "Model" [ref=e2420]:
+                        - img [ref=e2421]
+                        - text: Model
+                    - link "Providers" [ref=e2425] [cursor=pointer]:
+                      - /url: /models/solar-open-100b-reasoning/providers
+                      - img [ref=e2426]
+                      - text: Providers
+              - row "gpt-oss-20B (low) 131k OpenAI logo OpenAI 21 $0.09 291 0.69 Model Providers" [ref=e2430]:
+                - cell "gpt-oss-20B (low)" [ref=e2431]:
+                  - generic [ref=e2435]:
+                    - generic [ref=e2436]: gpt-oss-20B (low)
+                    - img [ref=e2437]
+                - cell "131k" [ref=e2439]:
+                  - generic [ref=e2443]: 131k
+                - cell "OpenAI logo OpenAI" [ref=e2444]:
+                  - generic [ref=e2445]:
+                    - img "OpenAI logo" [ref=e2446]
+                    - paragraph [ref=e2447]: OpenAI
+                - cell "21" [ref=e2448]:
+                  - generic [ref=e2450]: "21"
+                - cell "$0.09" [ref=e2451]:
+                  - generic [ref=e2455]: $0.09
+                - cell "291" [ref=e2456]:
+                  - generic [ref=e2460]: "291"
+                - cell "0.69" [ref=e2461]:
+                  - generic [ref=e2465]: "0.69"
+                - cell "Model Providers" [ref=e2466]:
+                  - generic [ref=e2467]:
+                    - link "Model" [ref=e2468] [cursor=pointer]:
+                      - /url: /models/gpt-oss-20b-low
+                      - button "Model" [ref=e2469]:
+                        - img [ref=e2470]
+                        - text: Model
+                    - link "Providers" [ref=e2474] [cursor=pointer]:
+                      - /url: /models/gpt-oss-20b-low/providers
+                      - img [ref=e2475]
+                      - text: Providers
+              - row "K2-V2 (high) 512k MBZUAI Institute of Foundation Models logo MBZUAI Institute of Foundation Models 21 $0.00 0 0.00 Model Providers" [ref=e2479]:
+                - cell "K2-V2 (high)" [ref=e2480]:
+                  - generic [ref=e2484]:
+                    - generic [ref=e2485]: K2-V2 (high)
+                    - img [ref=e2486]
+                - cell "512k" [ref=e2488]:
+                  - generic [ref=e2492]: 512k
+                - cell "MBZUAI Institute of Foundation Models logo MBZUAI Institute of Foundation Models" [ref=e2493]:
+                  - generic [ref=e2494]:
+                    - img "MBZUAI Institute of Foundation Models logo" [ref=e2495]
+                    - paragraph [ref=e2496]: MBZUAI Institute of Foundation Models
+                - cell "21" [ref=e2497]:
+                  - generic [ref=e2499]: "21"
+                - cell "$0.00" [ref=e2500]:
+                  - generic [ref=e2504]: $0.00
+                - cell "0" [ref=e2505]:
+                  - generic [ref=e2509]: "0"
+                - cell "0.00" [ref=e2510]:
+                  - generic [ref=e2514]: "0.00"
+                - cell "Model Providers" [ref=e2515]:
+                  - generic [ref=e2516]:
+                    - link "Model" [ref=e2517] [cursor=pointer]:
+                      - /url: /models/k2-v2
+                      - button "Model" [ref=e2518]:
+                        - img [ref=e2519]
+                        - text: Model
+                    - link "Providers" [ref=e2523] [cursor=pointer]:
+                      - /url: /models/k2-v2/providers
+                      - img [ref=e2524]
+                      - text: Providers
+              - row "Qwen3 Next 80B A3B 262k Alibaba logo Alibaba 20 $0.88 149 2.23 Model Providers" [ref=e2528]:
+                - cell "Qwen3 Next 80B A3B" [ref=e2529]:
+                  - generic [ref=e2534]: Qwen3 Next 80B A3B
+                - cell "262k" [ref=e2535]:
+                  - generic [ref=e2539]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e2540]:
+                  - generic [ref=e2541]:
+                    - img "Alibaba logo" [ref=e2542]
+                    - paragraph [ref=e2543]: Alibaba
+                - cell "20" [ref=e2544]:
+                  - generic [ref=e2546]: "20"
+                - cell "$0.88" [ref=e2547]:
+                  - generic [ref=e2551]: $0.88
+                - cell "149" [ref=e2552]:
+                  - generic [ref=e2556]: "149"
+                - cell "2.23" [ref=e2557]:
+                  - generic [ref=e2561]: "2.23"
+                - cell "Model Providers" [ref=e2562]:
+                  - generic [ref=e2563]:
+                    - link "Model" [ref=e2564] [cursor=pointer]:
+                      - /url: /models/qwen3-next-80b-a3b-instruct
+                      - button "Model" [ref=e2565]:
+                        - img [ref=e2566]
+                        - text: Model
+                    - link "Providers" [ref=e2570] [cursor=pointer]:
+                      - /url: /models/qwen3-next-80b-a3b-instruct/providers
+                      - img [ref=e2571]
+                      - text: Providers
+              - row "Tri-21B-think Preview 32k Trillion Labs logo Trillion Labs 20 $0.00 0 0.00 Model Providers" [ref=e2575]:
+                - cell "Tri-21B-think Preview" [ref=e2576]:
+                  - generic [ref=e2580]:
+                    - generic [ref=e2581]: Tri-21B-think Preview
+                    - img [ref=e2582]
+                - cell "32k" [ref=e2584]:
+                  - generic [ref=e2588]: 32k
+                - cell "Trillion Labs logo Trillion Labs" [ref=e2589]:
+                  - generic [ref=e2590]:
+                    - img "Trillion Labs logo" [ref=e2591]
+                    - paragraph [ref=e2592]: Trillion Labs
+                - cell "20" [ref=e2593]:
+                  - generic [ref=e2595]: "20"
+                - cell "$0.00" [ref=e2596]:
+                  - generic [ref=e2600]: $0.00
+                - cell "0" [ref=e2601]:
+                  - generic [ref=e2605]: "0"
+                - cell "0.00" [ref=e2606]:
+                  - generic [ref=e2610]: "0.00"
+                - cell "Model Providers" [ref=e2611]:
+                  - generic [ref=e2612]:
+                    - link "Model" [ref=e2613] [cursor=pointer]:
+                      - /url: /models/tri-21b-think-preview
+                      - button "Model" [ref=e2614]:
+                        - img [ref=e2615]
+                        - text: Model
+                    - link "Providers" [ref=e2619] [cursor=pointer]:
+                      - /url: /models/tri-21b-think-preview/providers
+                      - img [ref=e2620]
+                      - text: Providers
+              - row "Devstral Small 2 256k Mistral logo Mistral 19 $0.00 185 0.55 Model Providers" [ref=e2624]:
+                - cell "Devstral Small 2" [ref=e2625]:
+                  - generic [ref=e2630]: Devstral Small 2
+                - cell "256k" [ref=e2631]:
+                  - generic [ref=e2635]: 256k
+                - cell "Mistral logo Mistral" [ref=e2636]:
+                  - generic [ref=e2637]:
+                    - img "Mistral logo" [ref=e2638]
+                    - paragraph [ref=e2639]: Mistral
+                - cell "19" [ref=e2640]:
+                  - generic [ref=e2642]: "19"
+                - cell "$0.00" [ref=e2643]:
+                  - generic [ref=e2647]: $0.00
+                - cell "185" [ref=e2648]:
+                  - generic [ref=e2652]: "185"
+                - cell "0.55" [ref=e2653]:
+                  - generic [ref=e2657]: "0.55"
+                - cell "Model Providers" [ref=e2658]:
+                  - generic [ref=e2659]:
+                    - link "Model" [ref=e2660] [cursor=pointer]:
+                      - /url: /models/devstral-small-2
+                      - button "Model" [ref=e2661]:
+                        - img [ref=e2662]
+                        - text: Model
+                    - link "Providers" [ref=e2666] [cursor=pointer]:
+                      - /url: /models/devstral-small-2/providers
+                      - img [ref=e2667]
+                      - text: Providers
+              - row "Ling-1T 128k InclusionAI logo InclusionAI 19 $0.00 0 0.00 Model Providers" [ref=e2671]:
+                - cell "Ling-1T" [ref=e2672]:
+                  - generic [ref=e2677]: Ling-1T
+                - cell "128k" [ref=e2678]:
+                  - generic [ref=e2682]: 128k
+                - cell "InclusionAI logo InclusionAI" [ref=e2683]:
+                  - generic [ref=e2684]:
+                    - img "InclusionAI logo" [ref=e2685]
+                    - paragraph [ref=e2686]: InclusionAI
+                - cell "19" [ref=e2687]:
+                  - generic [ref=e2689]: "19"
+                - cell "$0.00" [ref=e2690]:
+                  - generic [ref=e2694]: $0.00
+                - cell "0" [ref=e2695]:
+                  - generic [ref=e2699]: "0"
+                - cell "0.00" [ref=e2700]:
+                  - generic [ref=e2704]: "0.00"
+                - cell "Model Providers" [ref=e2705]:
+                  - generic [ref=e2706]:
+                    - link "Model" [ref=e2707] [cursor=pointer]:
+                      - /url: /models/ling-1t
+                      - button "Model" [ref=e2708]:
+                        - img [ref=e2709]
+                        - text: Model
+                    - link "Providers" [ref=e2713] [cursor=pointer]:
+                      - /url: /models/ling-1t/providers
+                      - img [ref=e2714]
+                      - text: Providers
+              - row "Llama Nemotron Super 49B v1.5 128k NVIDIA logo NVIDIA 19 $0.17 50 1.00 Model Providers" [ref=e2718]:
+                - cell "Llama Nemotron Super 49B v1.5" [ref=e2719]:
+                  - generic [ref=e2723]:
+                    - generic [ref=e2724]: Llama Nemotron Super 49B v1.5
+                    - img [ref=e2725]
+                - cell "128k" [ref=e2727]:
+                  - generic [ref=e2731]: 128k
+                - cell "NVIDIA logo NVIDIA" [ref=e2732]:
+                  - generic [ref=e2733]:
+                    - img "NVIDIA logo" [ref=e2734]
+                    - paragraph [ref=e2735]: NVIDIA
+                - cell "19" [ref=e2736]:
+                  - generic [ref=e2738]: "19"
+                - cell "$0.17" [ref=e2739]:
+                  - generic [ref=e2743]: $0.17
+                - cell "50" [ref=e2744]:
+                  - generic [ref=e2748]: "50"
+                - cell "1.00" [ref=e2749]:
+                  - generic [ref=e2753]: "1.00"
+                - cell "Model Providers" [ref=e2754]:
+                  - generic [ref=e2755]:
+                    - link "Model" [ref=e2756] [cursor=pointer]:
+                      - /url: /models/llama-nemotron-super-49b-v1-5-reasoning
+                      - button "Model" [ref=e2757]:
+                        - img [ref=e2758]
+                        - text: Model
+                    - link "Providers" [ref=e2762] [cursor=pointer]:
+                      - /url: /models/llama-nemotron-super-49b-v1-5-reasoning/providers
+                      - img [ref=e2763]
+                      - text: Providers
+              - row "K2-V2 (medium) 512k MBZUAI Institute of Foundation Models logo MBZUAI Institute of Foundation Models 19 $0.00 0 0.00 Model Providers" [ref=e2767]:
+                - cell "K2-V2 (medium)" [ref=e2768]:
+                  - generic [ref=e2772]:
+                    - generic [ref=e2773]: K2-V2 (medium)
+                    - img [ref=e2774]
+                - cell "512k" [ref=e2776]:
+                  - generic [ref=e2780]: 512k
+                - cell "MBZUAI Institute of Foundation Models logo MBZUAI Institute of Foundation Models" [ref=e2781]:
+                  - generic [ref=e2782]:
+                    - img "MBZUAI Institute of Foundation Models logo" [ref=e2783]
+                    - paragraph [ref=e2784]: MBZUAI Institute of Foundation Models
+                - cell "19" [ref=e2785]:
+                  - generic [ref=e2787]: "19"
+                - cell "$0.00" [ref=e2788]:
+                  - generic [ref=e2792]: $0.00
+                - cell "0" [ref=e2793]:
+                  - generic [ref=e2797]: "0"
+                - cell "0.00" [ref=e2798]:
+                  - generic [ref=e2802]: "0.00"
+                - cell "Model Providers" [ref=e2803]:
+                  - generic [ref=e2804]:
+                    - link "Model" [ref=e2805] [cursor=pointer]:
+                      - /url: /models/k2-v2-medium
+                      - button "Model" [ref=e2806]:
+                        - img [ref=e2807]
+                        - text: Model
+                    - link "Providers" [ref=e2811] [cursor=pointer]:
+                      - /url: /models/k2-v2-medium/providers
+                      - img [ref=e2812]
+                      - text: Providers
+              - row "Mistral Small 4 256k Mistral logo Mistral 19 $0.26 134 0.62 Model Providers" [ref=e2816]:
+                - cell "Mistral Small 4" [ref=e2817]:
+                  - generic [ref=e2822]: Mistral Small 4
+                - cell "256k" [ref=e2823]:
+                  - generic [ref=e2827]: 256k
+                - cell "Mistral logo Mistral" [ref=e2828]:
+                  - generic [ref=e2829]:
+                    - img "Mistral logo" [ref=e2830]
+                    - paragraph [ref=e2831]: Mistral
+                - cell "19" [ref=e2832]:
+                  - generic [ref=e2834]: "19"
+                - cell "$0.26" [ref=e2835]:
+                  - generic [ref=e2839]: $0.26
+                - cell "134" [ref=e2840]:
+                  - generic [ref=e2844]: "134"
+                - cell "0.62" [ref=e2845]:
+                  - generic [ref=e2849]: "0.62"
+                - cell "Model Providers" [ref=e2850]:
+                  - generic [ref=e2851]:
+                    - link "Model" [ref=e2852] [cursor=pointer]:
+                      - /url: /models/mistral-small-4-non-reasoning
+                      - button "Model" [ref=e2853]:
+                        - img [ref=e2854]
+                        - text: Model
+                    - link "Providers" [ref=e2858] [cursor=pointer]:
+                      - /url: /models/mistral-small-4-non-reasoning/providers
+                      - img [ref=e2859]
+                      - text: Providers
+              - row "Tri-21B-Think 32k Trillion Labs logo Trillion Labs 19 $0.00 0 0.00 Model Providers" [ref=e2863]:
+                - cell "Tri-21B-Think" [ref=e2864]:
+                  - generic [ref=e2868]:
+                    - generic [ref=e2869]: Tri-21B-Think
+                    - img [ref=e2870]
+                - cell "32k" [ref=e2872]:
+                  - generic [ref=e2876]: 32k
+                - cell "Trillion Labs logo Trillion Labs" [ref=e2877]:
+                  - generic [ref=e2878]:
+                    - img "Trillion Labs logo" [ref=e2879]
+                    - paragraph [ref=e2880]: Trillion Labs
+                - cell "19" [ref=e2881]:
+                  - generic [ref=e2883]: "19"
+                - cell "$0.00" [ref=e2884]:
+                  - generic [ref=e2888]: $0.00
+                - cell "0" [ref=e2889]:
+                  - generic [ref=e2893]: "0"
+                - cell "0.00" [ref=e2894]:
+                  - generic [ref=e2898]: "0.00"
+                - cell "Model Providers" [ref=e2899]:
+                  - generic [ref=e2900]:
+                    - link "Model" [ref=e2901] [cursor=pointer]:
+                      - /url: /models/tri-21b-think-v0-5
+                      - button "Model" [ref=e2902]:
+                        - img [ref=e2903]
+                        - text: Model
+                    - link "Providers" [ref=e2907] [cursor=pointer]:
+                      - /url: /models/tri-21b-think-v0-5/providers
+                      - img [ref=e2908]
+                      - text: Providers
+              - row "Hermes 4 405B 128k Nous Research logo Nous Research 19 $1.50 31 2.40 Model Providers" [ref=e2912]:
+                - cell "Hermes 4 405B" [ref=e2913]:
+                  - generic [ref=e2917]:
+                    - generic [ref=e2918]: Hermes 4 405B
+                    - img [ref=e2919]
+                - cell "128k" [ref=e2921]:
+                  - generic [ref=e2925]: 128k
+                - cell "Nous Research logo Nous Research" [ref=e2926]:
+                  - generic [ref=e2927]:
+                    - img "Nous Research logo" [ref=e2928]
+                    - paragraph [ref=e2929]: Nous Research
+                - cell "19" [ref=e2930]:
+                  - generic [ref=e2932]: "19"
+                - cell "$1.50" [ref=e2933]:
+                  - generic [ref=e2937]: $1.50
+                - cell "31" [ref=e2938]:
+                  - generic [ref=e2942]: "31"
+                - cell "2.40" [ref=e2943]:
+                  - generic [ref=e2947]: "2.40"
+                - cell "Model Providers" [ref=e2948]:
+                  - generic [ref=e2949]:
+                    - link "Model" [ref=e2950] [cursor=pointer]:
+                      - /url: /models/hermes-4-llama-3-1-405b-reasoning
+                      - button "Model" [ref=e2951]:
+                        - img [ref=e2952]
+                        - text: Model
+                    - link "Providers" [ref=e2956] [cursor=pointer]:
+                      - /url: /models/hermes-4-llama-3-1-405b-reasoning/providers
+                      - img [ref=e2957]
+                      - text: Providers
+              - row "Llama 3.3 Nemotron Super 49B 128k NVIDIA logo NVIDIA 18 E $0.00 0 0.00 Model Providers" [ref=e2961]:
+                - cell "Llama 3.3 Nemotron Super 49B" [ref=e2962]:
+                  - generic [ref=e2966]:
+                    - generic [ref=e2967]: Llama 3.3 Nemotron Super 49B
+                    - img [ref=e2968]
+                - cell "128k" [ref=e2970]:
+                  - generic [ref=e2974]: 128k
+                - cell "NVIDIA logo NVIDIA" [ref=e2975]:
+                  - generic [ref=e2976]:
+                    - img "NVIDIA logo" [ref=e2977]
+                    - paragraph [ref=e2978]: NVIDIA
+                - cell "18 E" [ref=e2979]:
+                  - generic [ref=e2980]:
+                    - generic [ref=e2981]: "18"
+                    - generic [ref=e2982]: E
+                - cell "$0.00" [ref=e2983]:
+                  - generic [ref=e2987]: $0.00
+                - cell "0" [ref=e2988]:
+                  - generic [ref=e2992]: "0"
+                - cell "0.00" [ref=e2993]:
+                  - generic [ref=e2997]: "0.00"
+                - cell "Model Providers" [ref=e2998]:
+                  - generic [ref=e2999]:
+                    - link "Model" [ref=e3000] [cursor=pointer]:
+                      - /url: /models/llama-3-3-nemotron-super-49b-reasoning
+                      - button "Model" [ref=e3001]:
+                        - img [ref=e3002]
+                        - text: Model
+                    - link "Providers" [ref=e3006] [cursor=pointer]:
+                      - /url: /models/llama-3-3-nemotron-super-49b-reasoning/providers
+                      - img [ref=e3007]
+                      - text: Providers
+              - row "Llama 4 Maverick 1m Meta logo Meta 18 $0.49 122 0.99 Model Providers" [ref=e3011]:
+                - cell "Llama 4 Maverick" [ref=e3012]:
+                  - generic [ref=e3017]: Llama 4 Maverick
+                - cell "1m" [ref=e3018]:
+                  - generic [ref=e3022]: 1m
+                - cell "Meta logo Meta" [ref=e3023]:
+                  - generic [ref=e3024]:
+                    - img "Meta logo" [ref=e3025]
+                    - paragraph [ref=e3026]: Meta
+                - cell "18" [ref=e3027]:
+                  - generic [ref=e3029]: "18"
+                - cell "$0.49" [ref=e3030]:
+                  - generic [ref=e3034]: $0.49
+                - cell "122" [ref=e3035]:
+                  - generic [ref=e3039]: "122"
+                - cell "0.99" [ref=e3040]:
+                  - generic [ref=e3044]: "0.99"
+                - cell "Model Providers" [ref=e3045]:
+                  - generic [ref=e3046]:
+                    - link "Model" [ref=e3047] [cursor=pointer]:
+                      - /url: /models/llama-4-maverick
+                      - button "Model" [ref=e3048]:
+                        - img [ref=e3049]
+                        - text: Model
+                    - link "Providers" [ref=e3053] [cursor=pointer]:
+                      - /url: /models/llama-4-maverick/providers
+                      - img [ref=e3054]
+                      - text: Providers
+              - row "Magistral Small 1.2 128k Mistral logo Mistral 18 $0.75 106 0.82 Model Providers" [ref=e3058]:
+                - cell "Magistral Small 1.2" [ref=e3059]:
+                  - generic [ref=e3063]:
+                    - generic [ref=e3064]: Magistral Small 1.2
+                    - img [ref=e3065]
+                - cell "128k" [ref=e3067]:
+                  - generic [ref=e3071]: 128k
+                - cell "Mistral logo Mistral" [ref=e3072]:
+                  - generic [ref=e3073]:
+                    - img "Mistral logo" [ref=e3074]
+                    - paragraph [ref=e3075]: Mistral
+                - cell "18" [ref=e3076]:
+                  - generic [ref=e3078]: "18"
+                - cell "$0.75" [ref=e3079]:
+                  - generic [ref=e3083]: $0.75
+                - cell "106" [ref=e3084]:
+                  - generic [ref=e3088]: "106"
+                - cell "0.82" [ref=e3089]:
+                  - generic [ref=e3093]: "0.82"
+                - cell "Model Providers" [ref=e3094]:
+                  - generic [ref=e3095]:
+                    - link "Model" [ref=e3096] [cursor=pointer]:
+                      - /url: /models/magistral-small-2509
+                      - button "Model" [ref=e3097]:
+                        - img [ref=e3098]
+                        - text: Model
+                    - link "Providers" [ref=e3102] [cursor=pointer]:
+                      - /url: /models/magistral-small-2509/providers
+                      - img [ref=e3103]
+                      - text: Providers
+              - row "Sarvam 105B (high) 128k Sarvam logo Sarvam 18 $0.00 110 2.43 Model Providers" [ref=e3107]:
+                - cell "Sarvam 105B (high)" [ref=e3108]:
+                  - generic [ref=e3112]:
+                    - generic [ref=e3113]: Sarvam 105B (high)
+                    - img [ref=e3114]
+                - cell "128k" [ref=e3116]:
+                  - generic [ref=e3120]: 128k
+                - cell "Sarvam logo Sarvam" [ref=e3121]:
+                  - generic [ref=e3122]:
+                    - img "Sarvam logo" [ref=e3123]
+                    - paragraph [ref=e3124]: Sarvam
+                - cell "18" [ref=e3125]:
+                  - generic [ref=e3127]: "18"
+                - cell "$0.00" [ref=e3128]:
+                  - generic [ref=e3132]: $0.00
+                - cell "110" [ref=e3133]:
+                  - generic [ref=e3137]: "110"
+                - cell "2.43" [ref=e3138]:
+                  - generic [ref=e3142]: "2.43"
+                - cell "Model Providers" [ref=e3143]:
+                  - generic [ref=e3144]:
+                    - link "Model" [ref=e3145] [cursor=pointer]:
+                      - /url: /models/sarvam-105b
+                      - button "Model" [ref=e3146]:
+                        - img [ref=e3147]
+                        - text: Model
+                    - link "Providers" [ref=e3151] [cursor=pointer]:
+                      - /url: /models/sarvam-105b/providers
+                      - img [ref=e3152]
+                      - text: Providers
+              - row "Hermes 4 405B 128k Nous Research logo Nous Research 18 $1.50 32 2.40 Model Providers" [ref=e3156]:
+                - cell "Hermes 4 405B" [ref=e3157]:
+                  - generic [ref=e3162]: Hermes 4 405B
+                - cell "128k" [ref=e3163]:
+                  - generic [ref=e3167]: 128k
+                - cell "Nous Research logo Nous Research" [ref=e3168]:
+                  - generic [ref=e3169]:
+                    - img "Nous Research logo" [ref=e3170]
+                    - paragraph [ref=e3171]: Nous Research
+                - cell "18" [ref=e3172]:
+                  - generic [ref=e3174]: "18"
+                - cell "$1.50" [ref=e3175]:
+                  - generic [ref=e3179]: $1.50
+                - cell "32" [ref=e3180]:
+                  - generic [ref=e3184]: "32"
+                - cell "2.40" [ref=e3185]:
+                  - generic [ref=e3189]: "2.40"
+                - cell "Model Providers" [ref=e3190]:
+                  - generic [ref=e3191]:
+                    - link "Model" [ref=e3192] [cursor=pointer]:
+                      - /url: /models/hermes-4-llama-3-1-405b
+                      - button "Model" [ref=e3193]:
+                        - img [ref=e3194]
+                        - text: Model
+                    - link "Providers" [ref=e3198] [cursor=pointer]:
+                      - /url: /models/hermes-4-llama-3-1-405b/providers
+                      - img [ref=e3199]
+                      - text: Providers
+              - row "Llama 3.1 405B 128k Meta logo Meta 17 $3.69 29 2.15 Model Providers" [ref=e3203]:
+                - cell "Llama 3.1 405B" [ref=e3204]:
+                  - generic [ref=e3209]: Llama 3.1 405B
+                - cell "128k" [ref=e3210]:
+                  - generic [ref=e3214]: 128k
+                - cell "Meta logo Meta" [ref=e3215]:
+                  - generic [ref=e3216]:
+                    - img "Meta logo" [ref=e3217]
+                    - paragraph [ref=e3218]: Meta
+                - cell "17" [ref=e3219]:
+                  - generic [ref=e3221]: "17"
+                - cell "$3.69" [ref=e3222]:
+                  - generic [ref=e3226]: $3.69
+                - cell "29" [ref=e3227]:
+                  - generic [ref=e3231]: "29"
+                - cell "2.15" [ref=e3232]:
+                  - generic [ref=e3236]: "2.15"
+                - cell "Model Providers" [ref=e3237]:
+                  - generic [ref=e3238]:
+                    - link "Model" [ref=e3239] [cursor=pointer]:
+                      - /url: /models/llama-3-1-instruct-405b
+                      - button "Model" [ref=e3240]:
+                        - img [ref=e3241]
+                        - text: Model
+                    - link "Providers" [ref=e3245] [cursor=pointer]:
+                      - /url: /models/llama-3-1-instruct-405b/providers
+                      - img [ref=e3246]
+                      - text: Providers
+              - row "GLM-4.6V 128k Z AI logo Z AI 17 $0.45 21 7.72 Model Providers" [ref=e3250]:
+                - cell "GLM-4.6V" [ref=e3251]:
+                  - generic [ref=e3256]: GLM-4.6V
+                - cell "128k" [ref=e3257]:
+                  - generic [ref=e3261]: 128k
+                - cell "Z AI logo Z AI" [ref=e3262]:
+                  - generic [ref=e3263]:
+                    - img "Z AI logo" [ref=e3264]
+                    - paragraph [ref=e3265]: Z AI
+                - cell "17" [ref=e3266]:
+                  - generic [ref=e3268]: "17"
+                - cell "$0.45" [ref=e3269]:
+                  - generic [ref=e3273]: $0.45
+                - cell "21" [ref=e3274]:
+                  - generic [ref=e3278]: "21"
+                - cell "7.72" [ref=e3279]:
+                  - generic [ref=e3283]: "7.72"
+                - cell "Model Providers" [ref=e3284]:
+                  - generic [ref=e3285]:
+                    - link "Model" [ref=e3286] [cursor=pointer]:
+                      - /url: /models/glm-4-6v
+                      - button "Model" [ref=e3287]:
+                        - img [ref=e3288]
+                        - text: Model
+                    - link "Providers" [ref=e3292] [cursor=pointer]:
+                      - /url: /models/glm-4-6v/providers
+                      - img [ref=e3293]
+                      - text: Providers
+              - row "EXAONE 4.0 32B 131k LG AI Research logo LG AI Research 17 $0.00 0 0.00 Model Providers" [ref=e3297]:
+                - cell "EXAONE 4.0 32B" [ref=e3298]:
+                  - generic [ref=e3302]:
+                    - generic [ref=e3303]: EXAONE 4.0 32B
+                    - img [ref=e3304]
+                - cell "131k" [ref=e3306]:
+                  - generic [ref=e3310]: 131k
+                - cell "LG AI Research logo LG AI Research" [ref=e3311]:
+                  - generic [ref=e3312]:
+                    - img "LG AI Research logo" [ref=e3313]
+                    - paragraph [ref=e3314]: LG AI Research
+                - cell "17" [ref=e3315]:
+                  - generic [ref=e3317]: "17"
+                - cell "$0.00" [ref=e3318]:
+                  - generic [ref=e3322]: $0.00
+                - cell "0" [ref=e3323]:
+                  - generic [ref=e3327]: "0"
+                - cell "0.00" [ref=e3328]:
+                  - generic [ref=e3332]: "0.00"
+                - cell "Model Providers" [ref=e3333]:
+                  - generic [ref=e3334]:
+                    - link "Model" [ref=e3335] [cursor=pointer]:
+                      - /url: /models/exaone-4-0-32b-reasoning
+                      - button "Model" [ref=e3336]:
+                        - img [ref=e3337]
+                        - text: Model
+                    - link "Providers" [ref=e3341] [cursor=pointer]:
+                      - /url: /models/exaone-4-0-32b-reasoning/providers
+                      - img [ref=e3342]
+                      - text: Providers
+              - row "DeepSeek R1 0528 Qwen3 8B 33k DeepSeek logo DeepSeek 16 E $0.00 0 0.00 Model Providers" [ref=e3346]:
+                - cell "DeepSeek R1 0528 Qwen3 8B" [ref=e3347]:
+                  - generic [ref=e3351]:
+                    - generic [ref=e3352]: DeepSeek R1 0528 Qwen3 8B
+                    - img [ref=e3353]
+                - cell "33k" [ref=e3355]:
+                  - generic [ref=e3359]: 33k
+                - cell "DeepSeek logo DeepSeek" [ref=e3360]:
+                  - generic [ref=e3361]:
+                    - img "DeepSeek logo" [ref=e3362]
+                    - paragraph [ref=e3363]: DeepSeek
+                - cell "16 E" [ref=e3364]:
+                  - generic [ref=e3365]:
+                    - generic [ref=e3366]: "16"
+                    - generic [ref=e3367]: E
+                - cell "$0.00" [ref=e3368]:
+                  - generic [ref=e3372]: $0.00
+                - cell "0" [ref=e3373]:
+                  - generic [ref=e3377]: "0"
+                - cell "0.00" [ref=e3378]:
+                  - generic [ref=e3382]: "0.00"
+                - cell "Model Providers" [ref=e3383]:
+                  - generic [ref=e3384]:
+                    - link "Model" [ref=e3385] [cursor=pointer]:
+                      - /url: /models/deepseek-r1-qwen3-8b
+                      - button "Model" [ref=e3386]:
+                        - img [ref=e3387]
+                        - text: Model
+                    - link "Providers" [ref=e3391] [cursor=pointer]:
+                      - /url: /models/deepseek-r1-qwen3-8b/providers
+                      - img [ref=e3392]
+                      - text: Providers
+              - row "Qwen3.5 2B 262k Alibaba logo Alibaba 16 $0.00 0 0.00 Model Providers" [ref=e3396]:
+                - cell "Qwen3.5 2B" [ref=e3397]:
+                  - generic [ref=e3401]:
+                    - generic [ref=e3402]: Qwen3.5 2B
+                    - img [ref=e3403]
+                - cell "262k" [ref=e3405]:
+                  - generic [ref=e3409]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e3410]:
+                  - generic [ref=e3411]:
+                    - img "Alibaba logo" [ref=e3412]
+                    - paragraph [ref=e3413]: Alibaba
+                - cell "16" [ref=e3414]:
+                  - generic [ref=e3416]: "16"
+                - cell "$0.00" [ref=e3417]:
+                  - generic [ref=e3421]: $0.00
+                - cell "0" [ref=e3422]:
+                  - generic [ref=e3426]: "0"
+                - cell "0.00" [ref=e3427]:
+                  - generic [ref=e3431]: "0.00"
+                - cell "Model Providers" [ref=e3432]:
+                  - generic [ref=e3433]:
+                    - link "Model" [ref=e3434] [cursor=pointer]:
+                      - /url: /models/qwen3-5-2b
+                      - button "Model" [ref=e3435]:
+                        - img [ref=e3436]
+                        - text: Model
+                    - link "Providers" [ref=e3440] [cursor=pointer]:
+                      - /url: /models/qwen3-5-2b/providers
+                      - img [ref=e3441]
+                      - text: Providers
+              - row "Nanbeige4.1-3B 256k Nanbeige logo Nanbeige 16 $0.00 0 0.00 Model Providers" [ref=e3445]:
+                - cell "Nanbeige4.1-3B" [ref=e3446]:
+                  - generic [ref=e3450]:
+                    - generic [ref=e3451]: Nanbeige4.1-3B
+                    - img [ref=e3452]
+                - cell "256k" [ref=e3454]:
+                  - generic [ref=e3458]: 256k
+                - cell "Nanbeige logo Nanbeige" [ref=e3459]:
+                  - generic [ref=e3460]:
+                    - img "Nanbeige logo" [ref=e3461]
+                    - paragraph [ref=e3462]: Nanbeige
+                - cell "16" [ref=e3463]:
+                  - generic [ref=e3465]: "16"
+                - cell "$0.00" [ref=e3466]:
+                  - generic [ref=e3470]: $0.00
+                - cell "0" [ref=e3471]:
+                  - generic [ref=e3475]: "0"
+                - cell "0.00" [ref=e3476]:
+                  - generic [ref=e3480]: "0.00"
+                - cell "Model Providers" [ref=e3481]:
+                  - generic [ref=e3482]:
+                    - link "Model" [ref=e3483] [cursor=pointer]:
+                      - /url: /models/nanbeige4-1-3b
+                      - button "Model" [ref=e3484]:
+                        - img [ref=e3485]
+                        - text: Model
+                    - link "Providers" [ref=e3489] [cursor=pointer]:
+                      - /url: /models/nanbeige4-1-3b/providers
+                      - img [ref=e3490]
+                      - text: Providers
+              - row "Hermes 4 70B 128k Nous Research logo Nous Research 16 $0.20 70 1.39 Model Providers" [ref=e3494]:
+                - cell "Hermes 4 70B" [ref=e3495]:
+                  - generic [ref=e3499]:
+                    - generic [ref=e3500]: Hermes 4 70B
+                    - img [ref=e3501]
+                - cell "128k" [ref=e3503]:
+                  - generic [ref=e3507]: 128k
+                - cell "Nous Research logo Nous Research" [ref=e3508]:
+                  - generic [ref=e3509]:
+                    - img "Nous Research logo" [ref=e3510]
+                    - paragraph [ref=e3511]: Nous Research
+                - cell "16" [ref=e3512]:
+                  - generic [ref=e3514]: "16"
+                - cell "$0.20" [ref=e3515]:
+                  - generic [ref=e3519]: $0.20
+                - cell "70" [ref=e3520]:
+                  - generic [ref=e3524]: "70"
+                - cell "1.39" [ref=e3525]:
+                  - generic [ref=e3529]: "1.39"
+                - cell "Model Providers" [ref=e3530]:
+                  - generic [ref=e3531]:
+                    - link "Model" [ref=e3532] [cursor=pointer]:
+                      - /url: /models/hermes-4-llama-3-1-70b-reasoning
+                      - button "Model" [ref=e3533]:
+                        - img [ref=e3534]
+                        - text: Model
+                    - link "Providers" [ref=e3538] [cursor=pointer]:
+                      - /url: /models/hermes-4-llama-3-1-70b-reasoning/providers
+                      - img [ref=e3539]
+                      - text: Providers
+              - row "Ministral 3 14B 256k Mistral logo Mistral 16 $0.20 96 0.66 Model Providers" [ref=e3543]:
+                - cell "Ministral 3 14B" [ref=e3544]:
+                  - generic [ref=e3549]: Ministral 3 14B
+                - cell "256k" [ref=e3550]:
+                  - generic [ref=e3554]: 256k
+                - cell "Mistral logo Mistral" [ref=e3555]:
+                  - generic [ref=e3556]:
+                    - img "Mistral logo" [ref=e3557]
+                    - paragraph [ref=e3558]: Mistral
+                - cell "16" [ref=e3559]:
+                  - generic [ref=e3561]: "16"
+                - cell "$0.20" [ref=e3562]:
+                  - generic [ref=e3566]: $0.20
+                - cell "96" [ref=e3567]:
+                  - generic [ref=e3571]: "96"
+                - cell "0.66" [ref=e3572]:
+                  - generic [ref=e3576]: "0.66"
+                - cell "Model Providers" [ref=e3577]:
+                  - generic [ref=e3578]:
+                    - link "Model" [ref=e3579] [cursor=pointer]:
+                      - /url: /models/ministral-3-14b
+                      - button "Model" [ref=e3580]:
+                        - img [ref=e3581]
+                        - text: Model
+                    - link "Providers" [ref=e3585] [cursor=pointer]:
+                      - /url: /models/ministral-3-14b/providers
+                      - img [ref=e3586]
+                      - text: Providers
+              - row "DeepSeek R1 Distill Llama 70B 128k DeepSeek logo DeepSeek 16 E $0.88 38 2.57 Model Providers" [ref=e3590]:
+                - cell "DeepSeek R1 Distill Llama 70B" [ref=e3591]:
+                  - generic [ref=e3595]:
+                    - generic [ref=e3596]: DeepSeek R1 Distill Llama 70B
+                    - img [ref=e3597]
+                - cell "128k" [ref=e3599]:
+                  - generic [ref=e3603]: 128k
+                - cell "DeepSeek logo DeepSeek" [ref=e3604]:
+                  - generic [ref=e3605]:
+                    - img "DeepSeek logo" [ref=e3606]
+                    - paragraph [ref=e3607]: DeepSeek
+                - cell "16 E" [ref=e3608]:
+                  - generic [ref=e3609]:
+                    - generic [ref=e3610]: "16"
+                    - generic [ref=e3611]: E
+                - cell "$0.88" [ref=e3612]:
+                  - generic [ref=e3616]: $0.88
+                - cell "38" [ref=e3617]:
+                  - generic [ref=e3621]: "38"
+                - cell "2.57" [ref=e3622]:
+                  - generic [ref=e3626]: "2.57"
+                - cell "Model Providers" [ref=e3627]:
+                  - generic [ref=e3628]:
+                    - link "Model" [ref=e3629] [cursor=pointer]:
+                      - /url: /models/deepseek-r1-distill-llama-70b
+                      - button "Model" [ref=e3630]:
+                        - img [ref=e3631]
+                        - text: Model
+                    - link "Providers" [ref=e3635] [cursor=pointer]:
+                      - /url: /models/deepseek-r1-distill-llama-70b/providers
+                      - img [ref=e3636]
+                      - text: Providers
+              - row "Falcon-H1R-7B 256k TII UAE logo TII UAE 16 $0.00 0 0.00 Model Providers" [ref=e3640]:
+                - cell "Falcon-H1R-7B" [ref=e3641]:
+                  - generic [ref=e3645]:
+                    - generic [ref=e3646]: Falcon-H1R-7B
+                    - img [ref=e3647]
+                - cell "256k" [ref=e3649]:
+                  - generic [ref=e3653]: 256k
+                - cell "TII UAE logo TII UAE" [ref=e3654]:
+                  - generic [ref=e3655]:
+                    - img "TII UAE logo" [ref=e3656]
+                    - paragraph [ref=e3657]: TII UAE
+                - cell "16" [ref=e3658]:
+                  - generic [ref=e3660]: "16"
+                - cell "$0.00" [ref=e3661]:
+                  - generic [ref=e3665]: $0.00
+                - cell "0" [ref=e3666]:
+                  - generic [ref=e3670]: "0"
+                - cell "0.00" [ref=e3671]:
+                  - generic [ref=e3675]: "0.00"
+                - cell "Model Providers" [ref=e3676]:
+                  - generic [ref=e3677]:
+                    - link "Model" [ref=e3678] [cursor=pointer]:
+                      - /url: /models/falcon-h1r-7b
+                      - button "Model" [ref=e3679]:
+                        - img [ref=e3680]
+                        - text: Model
+                    - link "Providers" [ref=e3684] [cursor=pointer]:
+                      - /url: /models/falcon-h1r-7b/providers
+                      - img [ref=e3685]
+                      - text: Providers
+              - row "Ling-flash-2.0 128k InclusionAI logo InclusionAI 16 $0.25 60 2.34 Model Providers" [ref=e3689]:
+                - cell "Ling-flash-2.0" [ref=e3690]:
+                  - generic [ref=e3695]: Ling-flash-2.0
+                - cell "128k" [ref=e3696]:
+                  - generic [ref=e3700]: 128k
+                - cell "InclusionAI logo InclusionAI" [ref=e3701]:
+                  - generic [ref=e3702]:
+                    - img "InclusionAI logo" [ref=e3703]
+                    - paragraph [ref=e3704]: InclusionAI
+                - cell "16" [ref=e3705]:
+                  - generic [ref=e3707]: "16"
+                - cell "$0.25" [ref=e3708]:
+                  - generic [ref=e3712]: $0.25
+                - cell "60" [ref=e3713]:
+                  - generic [ref=e3717]: "60"
+                - cell "2.34" [ref=e3718]:
+                  - generic [ref=e3722]: "2.34"
+                - cell "Model Providers" [ref=e3723]:
+                  - generic [ref=e3724]:
+                    - link "Model" [ref=e3725] [cursor=pointer]:
+                      - /url: /models/ling-flash-2-0
+                      - button "Model" [ref=e3726]:
+                        - img [ref=e3727]
+                        - text: Model
+                    - link "Providers" [ref=e3731] [cursor=pointer]:
+                      - /url: /models/ling-flash-2-0/providers
+                      - img [ref=e3732]
+                      - text: Providers
+              - row "Qwen3 Omni 30B A3B 66k Alibaba logo Alibaba 16 $0.43 86 1.98 Model Providers" [ref=e3736]:
+                - cell "Qwen3 Omni 30B A3B" [ref=e3737]:
+                  - generic [ref=e3741]:
+                    - generic [ref=e3742]: Qwen3 Omni 30B A3B
+                    - img [ref=e3743]
+                - cell "66k" [ref=e3745]:
+                  - generic [ref=e3749]: 66k
+                - cell "Alibaba logo Alibaba" [ref=e3750]:
+                  - generic [ref=e3751]:
+                    - img "Alibaba logo" [ref=e3752]
+                    - paragraph [ref=e3753]: Alibaba
+                - cell "16" [ref=e3754]:
+                  - generic [ref=e3756]: "16"
+                - cell "$0.43" [ref=e3757]:
+                  - generic [ref=e3761]: $0.43
+                - cell "86" [ref=e3762]:
+                  - generic [ref=e3766]: "86"
+                - cell "1.98" [ref=e3767]:
+                  - generic [ref=e3771]: "1.98"
+                - cell "Model Providers" [ref=e3772]:
+                  - generic [ref=e3773]:
+                    - link "Model" [ref=e3774] [cursor=pointer]:
+                      - /url: /models/qwen3-omni-30b-a3b-reasoning
+                      - button "Model" [ref=e3775]:
+                        - img [ref=e3776]
+                        - text: Model
+                    - link "Providers" [ref=e3780] [cursor=pointer]:
+                      - /url: /models/qwen3-omni-30b-a3b-reasoning/providers
+                      - img [ref=e3781]
+                      - text: Providers
+              - row "Step3 VL 10B 66k StepFun logo StepFun 15 $0.00 0 0.00 Model Providers" [ref=e3785]:
+                - cell "Step3 VL 10B" [ref=e3786]:
+                  - generic [ref=e3790]:
+                    - generic [ref=e3791]: Step3 VL 10B
+                    - img [ref=e3792]
+                - cell "66k" [ref=e3794]:
+                  - generic [ref=e3798]: 66k
+                - cell "StepFun logo StepFun" [ref=e3799]:
+                  - generic [ref=e3800]:
+                    - img "StepFun logo" [ref=e3801]
+                    - paragraph [ref=e3802]: StepFun
+                - cell "15" [ref=e3803]:
+                  - generic [ref=e3805]: "15"
+                - cell "$0.00" [ref=e3806]:
+                  - generic [ref=e3810]: $0.00
+                - cell "0" [ref=e3811]:
+                  - generic [ref=e3815]: "0"
+                - cell "0.00" [ref=e3816]:
+                  - generic [ref=e3820]: "0.00"
+                - cell "Model Providers" [ref=e3821]:
+                  - generic [ref=e3822]:
+                    - link "Model" [ref=e3823] [cursor=pointer]:
+                      - /url: /models/step-3-vl-10b
+                      - button "Model" [ref=e3824]:
+                        - img [ref=e3825]
+                        - text: Model
+                    - link "Providers" [ref=e3829] [cursor=pointer]:
+                      - /url: /models/step-3-vl-10b/providers
+                      - img [ref=e3830]
+                      - text: Providers
+              - row "Llama Nemotron Ultra 128k NVIDIA logo NVIDIA 15 $0.90 42 2.47 Model Providers" [ref=e3834]:
+                - cell "Llama Nemotron Ultra" [ref=e3835]:
+                  - generic [ref=e3839]:
+                    - generic [ref=e3840]: Llama Nemotron Ultra
+                    - img [ref=e3841]
+                - cell "128k" [ref=e3843]:
+                  - generic [ref=e3847]: 128k
+                - cell "NVIDIA logo NVIDIA" [ref=e3848]:
+                  - generic [ref=e3849]:
+                    - img "NVIDIA logo" [ref=e3850]
+                    - paragraph [ref=e3851]: NVIDIA
+                - cell "15" [ref=e3852]:
+                  - generic [ref=e3854]: "15"
+                - cell "$0.90" [ref=e3855]:
+                  - generic [ref=e3859]: $0.90
+                - cell "42" [ref=e3860]:
+                  - generic [ref=e3864]: "42"
+                - cell "2.47" [ref=e3865]:
+                  - generic [ref=e3869]: "2.47"
+                - cell "Model Providers" [ref=e3870]:
+                  - generic [ref=e3871]:
+                    - link "Model" [ref=e3872] [cursor=pointer]:
+                      - /url: /models/llama-3-1-nemotron-ultra-253b-v1-reasoning
+                      - button "Model" [ref=e3873]:
+                        - img [ref=e3874]
+                        - text: Model
+                    - link "Providers" [ref=e3878] [cursor=pointer]:
+                      - /url: /models/llama-3-1-nemotron-ultra-253b-v1-reasoning/providers
+                      - img [ref=e3879]
+                      - text: Providers
+              - row "ERNIE 4.5 300B A47B 131k Baidu logo Baidu 15 $0.48 27 4.16 Model Providers" [ref=e3883]:
+                - cell "ERNIE 4.5 300B A47B" [ref=e3884]:
+                  - generic [ref=e3889]: ERNIE 4.5 300B A47B
+                - cell "131k" [ref=e3890]:
+                  - generic [ref=e3894]: 131k
+                - cell "Baidu logo Baidu" [ref=e3895]:
+                  - generic [ref=e3896]:
+                    - img "Baidu logo" [ref=e3897]
+                    - paragraph [ref=e3898]: Baidu
+                - cell "15" [ref=e3899]:
+                  - generic [ref=e3901]: "15"
+                - cell "$0.48" [ref=e3902]:
+                  - generic [ref=e3906]: $0.48
+                - cell "27" [ref=e3907]:
+                  - generic [ref=e3911]: "27"
+                - cell "4.16" [ref=e3912]:
+                  - generic [ref=e3916]: "4.16"
+                - cell "Model Providers" [ref=e3917]:
+                  - generic [ref=e3918]:
+                    - link "Model" [ref=e3919] [cursor=pointer]:
+                      - /url: /models/ernie-4-5-300b-a47b
+                      - button "Model" [ref=e3920]:
+                        - img [ref=e3921]
+                        - text: Model
+                    - link "Providers" [ref=e3925] [cursor=pointer]:
+                      - /url: /models/ernie-4-5-300b-a47b/providers
+                      - img [ref=e3926]
+                      - text: Providers
+              - row "NVIDIA Nemotron Nano 12B v2 VL 128k NVIDIA logo NVIDIA 15 $0.30 128 0.65 Model Providers" [ref=e3930]:
+                - cell "NVIDIA Nemotron Nano 12B v2 VL" [ref=e3931]:
+                  - generic [ref=e3935]:
+                    - generic [ref=e3936]: NVIDIA Nemotron Nano 12B v2 VL
+                    - img [ref=e3937]
+                - cell "128k" [ref=e3939]:
+                  - generic [ref=e3943]: 128k
+                - cell "NVIDIA logo NVIDIA" [ref=e3944]:
+                  - generic [ref=e3945]:
+                    - img "NVIDIA logo" [ref=e3946]
+                    - paragraph [ref=e3947]: NVIDIA
+                - cell "15" [ref=e3948]:
+                  - generic [ref=e3950]: "15"
+                - cell "$0.30" [ref=e3951]:
+                  - generic [ref=e3955]: $0.30
+                - cell "128" [ref=e3956]:
+                  - generic [ref=e3960]: "128"
+                - cell "0.65" [ref=e3961]:
+                  - generic [ref=e3965]: "0.65"
+                - cell "Model Providers" [ref=e3966]:
+                  - generic [ref=e3967]:
+                    - link "Model" [ref=e3968] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-nano-12b-v2-vl-reasoning
+                      - button "Model" [ref=e3969]:
+                        - img [ref=e3970]
+                        - text: Model
+                    - link "Providers" [ref=e3974] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-nano-12b-v2-vl-reasoning/providers
+                      - img [ref=e3975]
+                      - text: Providers
+              - row "Ministral 3 8B 256k Mistral logo Mistral 15 $0.15 169 0.52 Model Providers" [ref=e3979]:
+                - cell "Ministral 3 8B" [ref=e3980]:
+                  - generic [ref=e3985]: Ministral 3 8B
+                - cell "256k" [ref=e3986]:
+                  - generic [ref=e3990]: 256k
+                - cell "Mistral logo Mistral" [ref=e3991]:
+                  - generic [ref=e3992]:
+                    - img "Mistral logo" [ref=e3993]
+                    - paragraph [ref=e3994]: Mistral
+                - cell "15" [ref=e3995]:
+                  - generic [ref=e3997]: "15"
+                - cell "$0.15" [ref=e3998]:
+                  - generic [ref=e4002]: $0.15
+                - cell "169" [ref=e4003]:
+                  - generic [ref=e4007]: "169"
+                - cell "0.52" [ref=e4008]:
+                  - generic [ref=e4012]: "0.52"
+                - cell "Model Providers" [ref=e4013]:
+                  - generic [ref=e4014]:
+                    - link "Model" [ref=e4015] [cursor=pointer]:
+                      - /url: /models/ministral-3-8b
+                      - button "Model" [ref=e4016]:
+                        - img [ref=e4017]
+                        - text: Model
+                    - link "Providers" [ref=e4021] [cursor=pointer]:
+                      - /url: /models/ministral-3-8b/providers
+                      - img [ref=e4022]
+                      - text: Providers
+              - row "NVIDIA Nemotron Nano 9B V2 131k NVIDIA logo NVIDIA 15 $0.07 126 1.06 Model Providers" [ref=e4026]:
+                - cell "NVIDIA Nemotron Nano 9B V2" [ref=e4027]:
+                  - generic [ref=e4031]:
+                    - generic [ref=e4032]: NVIDIA Nemotron Nano 9B V2
+                    - img [ref=e4033]
+                - cell "131k" [ref=e4035]:
+                  - generic [ref=e4039]: 131k
+                - cell "NVIDIA logo NVIDIA" [ref=e4040]:
+                  - generic [ref=e4041]:
+                    - img "NVIDIA logo" [ref=e4042]
+                    - paragraph [ref=e4043]: NVIDIA
+                - cell "15" [ref=e4044]:
+                  - generic [ref=e4046]: "15"
+                - cell "$0.07" [ref=e4047]:
+                  - generic [ref=e4051]: $0.07
+                - cell "126" [ref=e4052]:
+                  - generic [ref=e4056]: "126"
+                - cell "1.06" [ref=e4057]:
+                  - generic [ref=e4061]: "1.06"
+                - cell "Model Providers" [ref=e4062]:
+                  - generic [ref=e4063]:
+                    - link "Model" [ref=e4064] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-nano-9b-v2-reasoning
+                      - button "Model" [ref=e4065]:
+                        - img [ref=e4066]
+                        - text: Model
+                    - link "Providers" [ref=e4070] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-nano-9b-v2-reasoning/providers
+                      - img [ref=e4071]
+                      - text: Providers
+              - row "NVIDIA Nemotron 3 Nano 4B 262k NVIDIA logo NVIDIA 15 $0.00 0 0.00 Model Providers" [ref=e4075]:
+                - cell "NVIDIA Nemotron 3 Nano 4B" [ref=e4076]:
+                  - generic [ref=e4080]:
+                    - generic [ref=e4081]: NVIDIA Nemotron 3 Nano 4B
+                    - img [ref=e4082]
+                - cell "262k" [ref=e4084]:
+                  - generic [ref=e4088]: 262k
+                - cell "NVIDIA logo NVIDIA" [ref=e4089]:
+                  - generic [ref=e4090]:
+                    - img "NVIDIA logo" [ref=e4091]
+                    - paragraph [ref=e4092]: NVIDIA
+                - cell "15" [ref=e4093]:
+                  - generic [ref=e4095]: "15"
+                - cell "$0.00" [ref=e4096]:
+                  - generic [ref=e4100]: $0.00
+                - cell "0" [ref=e4101]:
+                  - generic [ref=e4105]: "0"
+                - cell "0.00" [ref=e4106]:
+                  - generic [ref=e4110]: "0.00"
+                - cell "Model Providers" [ref=e4111]:
+                  - generic [ref=e4112]:
+                    - link "Model" [ref=e4113] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-3-nano-4b
+                      - button "Model" [ref=e4114]:
+                        - img [ref=e4115]
+                        - text: Model
+                    - link "Providers" [ref=e4119] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-3-nano-4b/providers
+                      - img [ref=e4120]
+                      - text: Providers
+              - row "Qwen3.5 2B 262k Alibaba logo Alibaba 15 $0.00 0 0.00 Model Providers" [ref=e4124]:
+                - cell "Qwen3.5 2B" [ref=e4125]:
+                  - generic [ref=e4130]: Qwen3.5 2B
+                - cell "262k" [ref=e4131]:
+                  - generic [ref=e4135]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e4136]:
+                  - generic [ref=e4137]:
+                    - img "Alibaba logo" [ref=e4138]
+                    - paragraph [ref=e4139]: Alibaba
+                - cell "15" [ref=e4140]:
+                  - generic [ref=e4142]: "15"
+                - cell "$0.00" [ref=e4143]:
+                  - generic [ref=e4147]: $0.00
+                - cell "0" [ref=e4148]:
+                  - generic [ref=e4152]: "0"
+                - cell "0.00" [ref=e4153]:
+                  - generic [ref=e4157]: "0.00"
+                - cell "Model Providers" [ref=e4158]:
+                  - generic [ref=e4159]:
+                    - link "Model" [ref=e4160] [cursor=pointer]:
+                      - /url: /models/qwen3-5-2b-non-reasoning
+                      - button "Model" [ref=e4161]:
+                        - img [ref=e4162]
+                        - text: Model
+                    - link "Providers" [ref=e4166] [cursor=pointer]:
+                      - /url: /models/qwen3-5-2b-non-reasoning/providers
+                      - img [ref=e4167]
+                      - text: Providers
+              - row "Llama Nemotron Super 49B v1.5 128k NVIDIA logo NVIDIA 15 $0.17 49 1.36 Model Providers" [ref=e4171]:
+                - cell "Llama Nemotron Super 49B v1.5" [ref=e4172]:
+                  - generic [ref=e4177]: Llama Nemotron Super 49B v1.5
+                - cell "128k" [ref=e4178]:
+                  - generic [ref=e4182]: 128k
+                - cell "NVIDIA logo NVIDIA" [ref=e4183]:
+                  - generic [ref=e4184]:
+                    - img "NVIDIA logo" [ref=e4185]
+                    - paragraph [ref=e4186]: NVIDIA
+                - cell "15" [ref=e4187]:
+                  - generic [ref=e4189]: "15"
+                - cell "$0.17" [ref=e4190]:
+                  - generic [ref=e4194]: $0.17
+                - cell "49" [ref=e4195]:
+                  - generic [ref=e4199]: "49"
+                - cell "1.36" [ref=e4200]:
+                  - generic [ref=e4204]: "1.36"
+                - cell "Model Providers" [ref=e4205]:
+                  - generic [ref=e4206]:
+                    - link "Model" [ref=e4207] [cursor=pointer]:
+                      - /url: /models/llama-nemotron-super-49b-v1-5
+                      - button "Model" [ref=e4208]:
+                        - img [ref=e4209]
+                        - text: Model
+                    - link "Providers" [ref=e4213] [cursor=pointer]:
+                      - /url: /models/llama-nemotron-super-49b-v1-5/providers
+                      - img [ref=e4214]
+                      - text: Providers
+              - row "Llama 3.3 70B 128k Meta logo Meta 14 $0.64 87 1.38 Model Providers" [ref=e4218]:
+                - cell "Llama 3.3 70B" [ref=e4219]:
+                  - generic [ref=e4224]: Llama 3.3 70B
+                - cell "128k" [ref=e4225]:
+                  - generic [ref=e4229]: 128k
+                - cell "Meta logo Meta" [ref=e4230]:
+                  - generic [ref=e4231]:
+                    - img "Meta logo" [ref=e4232]
+                    - paragraph [ref=e4233]: Meta
+                - cell "14" [ref=e4234]:
+                  - generic [ref=e4236]: "14"
+                - cell "$0.64" [ref=e4237]:
+                  - generic [ref=e4241]: $0.64
+                - cell "87" [ref=e4242]:
+                  - generic [ref=e4246]: "87"
+                - cell "1.38" [ref=e4247]:
+                  - generic [ref=e4251]: "1.38"
+                - cell "Model Providers" [ref=e4252]:
+                  - generic [ref=e4253]:
+                    - link "Model" [ref=e4254] [cursor=pointer]:
+                      - /url: /models/llama-3-3-instruct-70b
+                      - button "Model" [ref=e4255]:
+                        - img [ref=e4256]
+                        - text: Model
+                    - link "Providers" [ref=e4260] [cursor=pointer]:
+                      - /url: /models/llama-3-3-instruct-70b/providers
+                      - img [ref=e4261]
+                      - text: Providers
+              - row "K2-V2 (low) 512k MBZUAI Institute of Foundation Models logo MBZUAI Institute of Foundation Models 14 $0.00 0 0.00 Model Providers" [ref=e4265]:
+                - cell "K2-V2 (low)" [ref=e4266]:
+                  - generic [ref=e4270]:
+                    - generic [ref=e4271]: K2-V2 (low)
+                    - img [ref=e4272]
+                - cell "512k" [ref=e4274]:
+                  - generic [ref=e4278]: 512k
+                - cell "MBZUAI Institute of Foundation Models logo MBZUAI Institute of Foundation Models" [ref=e4279]:
+                  - generic [ref=e4280]:
+                    - img "MBZUAI Institute of Foundation Models logo" [ref=e4281]
+                    - paragraph [ref=e4282]: MBZUAI Institute of Foundation Models
+                - cell "14" [ref=e4283]:
+                  - generic [ref=e4285]: "14"
+                - cell "$0.00" [ref=e4286]:
+                  - generic [ref=e4290]: $0.00
+                - cell "0" [ref=e4291]:
+                  - generic [ref=e4295]: "0"
+                - cell "0.00" [ref=e4296]:
+                  - generic [ref=e4300]: "0.00"
+                - cell "Model Providers" [ref=e4301]:
+                  - generic [ref=e4302]:
+                    - link "Model" [ref=e4303] [cursor=pointer]:
+                      - /url: /models/k2-v2-low
+                      - button "Model" [ref=e4304]:
+                        - img [ref=e4305]
+                        - text: Model
+                    - link "Providers" [ref=e4309] [cursor=pointer]:
+                      - /url: /models/k2-v2-low/providers
+                      - img [ref=e4310]
+                      - text: Providers
+              - row "Llama 3.1 Nemotron Nano 4B v1.1 128k NVIDIA logo NVIDIA 14 E $0.00 0 0.00 Model Providers" [ref=e4314]:
+                - cell "Llama 3.1 Nemotron Nano 4B v1.1" [ref=e4315]:
+                  - generic [ref=e4319]:
+                    - generic [ref=e4320]: Llama 3.1 Nemotron Nano 4B v1.1
+                    - img [ref=e4321]
+                - cell "128k" [ref=e4323]:
+                  - generic [ref=e4327]: 128k
+                - cell "NVIDIA logo NVIDIA" [ref=e4328]:
+                  - generic [ref=e4329]:
+                    - img "NVIDIA logo" [ref=e4330]
+                    - paragraph [ref=e4331]: NVIDIA
+                - cell "14 E" [ref=e4332]:
+                  - generic [ref=e4333]:
+                    - generic [ref=e4334]: "14"
+                    - generic [ref=e4335]: E
+                - cell "$0.00" [ref=e4336]:
+                  - generic [ref=e4340]: $0.00
+                - cell "0" [ref=e4341]:
+                  - generic [ref=e4345]: "0"
+                - cell "0.00" [ref=e4346]:
+                  - generic [ref=e4350]: "0.00"
+                - cell "Model Providers" [ref=e4351]:
+                  - generic [ref=e4352]:
+                    - link "Model" [ref=e4353] [cursor=pointer]:
+                      - /url: /models/llama-3-1-nemotron-nano-4b-reasoning
+                      - button "Model" [ref=e4354]:
+                        - img [ref=e4355]
+                        - text: Model
+                    - link "Providers" [ref=e4359] [cursor=pointer]:
+                      - /url: /models/llama-3-1-nemotron-nano-4b-reasoning/providers
+                      - img [ref=e4360]
+                      - text: Providers
+              - row "Kimi Linear 48B A3B Instruct 1m Kimi logo Kimi 14 E $0.00 0 0.00 Model Providers" [ref=e4364]:
+                - cell "Kimi Linear 48B A3B Instruct" [ref=e4365]:
+                  - generic [ref=e4370]: Kimi Linear 48B A3B Instruct
+                - cell "1m" [ref=e4371]:
+                  - generic [ref=e4375]: 1m
+                - cell "Kimi logo Kimi" [ref=e4376]:
+                  - generic [ref=e4377]:
+                    - img "Kimi logo" [ref=e4378]
+                    - paragraph [ref=e4379]: Kimi
+                - cell "14 E" [ref=e4380]:
+                  - generic [ref=e4381]:
+                    - generic [ref=e4382]: "14"
+                    - generic [ref=e4383]: E
+                - cell "$0.00" [ref=e4384]:
+                  - generic [ref=e4388]: $0.00
+                - cell "0" [ref=e4389]:
+                  - generic [ref=e4393]: "0"
+                - cell "0.00" [ref=e4394]:
+                  - generic [ref=e4398]: "0.00"
+                - cell "Model Providers" [ref=e4399]:
+                  - generic [ref=e4400]:
+                    - link "Model" [ref=e4401] [cursor=pointer]:
+                      - /url: /models/kimi-linear-48b-a3b-instruct
+                      - button "Model" [ref=e4402]:
+                        - img [ref=e4403]
+                        - text: Model
+                    - link "Providers" [ref=e4407] [cursor=pointer]:
+                      - /url: /models/kimi-linear-48b-a3b-instruct/providers
+                      - img [ref=e4408]
+                      - text: Providers
+              - row "Llama 3.3 Nemotron Super 49B 128k NVIDIA logo NVIDIA 14 E $0.00 0 0.00 Model Providers" [ref=e4412]:
+                - cell "Llama 3.3 Nemotron Super 49B" [ref=e4413]:
+                  - generic [ref=e4418]: Llama 3.3 Nemotron Super 49B
+                - cell "128k" [ref=e4419]:
+                  - generic [ref=e4423]: 128k
+                - cell "NVIDIA logo NVIDIA" [ref=e4424]:
+                  - generic [ref=e4425]:
+                    - img "NVIDIA logo" [ref=e4426]
+                    - paragraph [ref=e4427]: NVIDIA
+                - cell "14 E" [ref=e4428]:
+                  - generic [ref=e4429]:
+                    - generic [ref=e4430]: "14"
+                    - generic [ref=e4431]: E
+                - cell "$0.00" [ref=e4432]:
+                  - generic [ref=e4436]: $0.00
+                - cell "0" [ref=e4437]:
+                  - generic [ref=e4441]: "0"
+                - cell "0.00" [ref=e4442]:
+                  - generic [ref=e4446]: "0.00"
+                - cell "Model Providers" [ref=e4447]:
+                  - generic [ref=e4448]:
+                    - link "Model" [ref=e4449] [cursor=pointer]:
+                      - /url: /models/llama-3-3-nemotron-super-49b
+                      - button "Model" [ref=e4450]:
+                        - img [ref=e4451]
+                        - text: Model
+                    - link "Providers" [ref=e4455] [cursor=pointer]:
+                      - /url: /models/llama-3-3-nemotron-super-49b/providers
+                      - img [ref=e4456]
+                      - text: Providers
+              - row "Ring-flash-2.0 128k InclusionAI logo InclusionAI 14 $0.25 66 2.82 Model Providers" [ref=e4460]:
+                - cell "Ring-flash-2.0" [ref=e4461]:
+                  - generic [ref=e4465]:
+                    - generic [ref=e4466]: Ring-flash-2.0
+                    - img [ref=e4467]
+                - cell "128k" [ref=e4469]:
+                  - generic [ref=e4473]: 128k
+                - cell "InclusionAI logo InclusionAI" [ref=e4474]:
+                  - generic [ref=e4475]:
+                    - img "InclusionAI logo" [ref=e4476]
+                    - paragraph [ref=e4477]: InclusionAI
+                - cell "14" [ref=e4478]:
+                  - generic [ref=e4480]: "14"
+                - cell "$0.25" [ref=e4481]:
+                  - generic [ref=e4485]: $0.25
+                - cell "66" [ref=e4486]:
+                  - generic [ref=e4490]: "66"
+                - cell "2.82" [ref=e4491]:
+                  - generic [ref=e4495]: "2.82"
+                - cell "Model Providers" [ref=e4496]:
+                  - generic [ref=e4497]:
+                    - link "Model" [ref=e4498] [cursor=pointer]:
+                      - /url: /models/ring-flash-2-0
+                      - button "Model" [ref=e4499]:
+                        - img [ref=e4500]
+                        - text: Model
+                    - link "Providers" [ref=e4504] [cursor=pointer]:
+                      - /url: /models/ring-flash-2-0/providers
+                      - img [ref=e4505]
+                      - text: Providers
+              - row "Olmo 3.1 32B Think 66k Allen Institute for AI logo Allen Institute for AI 14 $0.00 91 2.12 Model Providers" [ref=e4509]:
+                - cell "Olmo 3.1 32B Think" [ref=e4510]:
+                  - generic [ref=e4514]:
+                    - generic [ref=e4515]: Olmo 3.1 32B Think
+                    - img [ref=e4516]
+                - cell "66k" [ref=e4518]:
+                  - generic [ref=e4522]: 66k
+                - cell "Allen Institute for AI logo Allen Institute for AI" [ref=e4523]:
+                  - generic [ref=e4524]:
+                    - img "Allen Institute for AI logo" [ref=e4525]
+                    - paragraph [ref=e4526]: Allen Institute for AI
+                - cell "14" [ref=e4527]:
+                  - generic [ref=e4529]: "14"
+                - cell "$0.00" [ref=e4530]:
+                  - generic [ref=e4534]: $0.00
+                - cell "91" [ref=e4535]:
+                  - generic [ref=e4539]: "91"
+                - cell "2.12" [ref=e4540]:
+                  - generic [ref=e4544]: "2.12"
+                - cell "Model Providers" [ref=e4545]:
+                  - generic [ref=e4546]:
+                    - link "Model" [ref=e4547] [cursor=pointer]:
+                      - /url: /models/olmo-3-1-32b-think
+                      - button "Model" [ref=e4548]:
+                        - img [ref=e4549]
+                        - text: Model
+                    - link "Providers" [ref=e4553] [cursor=pointer]:
+                      - /url: /models/olmo-3-1-32b-think/providers
+                      - img [ref=e4554]
+                      - text: Providers
+              - row "Llama 4 Scout 10m Meta logo Meta 14 $0.29 128 0.77 Model Providers" [ref=e4558]:
+                - cell "Llama 4 Scout" [ref=e4559]:
+                  - generic [ref=e4564]: Llama 4 Scout
+                - cell "10m" [ref=e4565]:
+                  - generic [ref=e4569]: 10m
+                - cell "Meta logo Meta" [ref=e4570]:
+                  - generic [ref=e4571]:
+                    - img "Meta logo" [ref=e4572]
+                    - paragraph [ref=e4573]: Meta
+                - cell "14" [ref=e4574]:
+                  - generic [ref=e4576]: "14"
+                - cell "$0.29" [ref=e4577]:
+                  - generic [ref=e4581]: $0.29
+                - cell "128" [ref=e4582]:
+                  - generic [ref=e4586]: "128"
+                - cell "0.77" [ref=e4587]:
+                  - generic [ref=e4591]: "0.77"
+                - cell "Model Providers" [ref=e4592]:
+                  - generic [ref=e4593]:
+                    - link "Model" [ref=e4594] [cursor=pointer]:
+                      - /url: /models/llama-4-scout
+                      - button "Model" [ref=e4595]:
+                        - img [ref=e4596]
+                        - text: Model
+                    - link "Providers" [ref=e4600] [cursor=pointer]:
+                      - /url: /models/llama-4-scout/providers
+                      - img [ref=e4601]
+                      - text: Providers
+              - row "Command A 256k Cohere logo Cohere 13 $4.38 45 1.94 Model Providers" [ref=e4605]:
+                - cell "Command A" [ref=e4606]:
+                  - generic [ref=e4611]: Command A
+                - cell "256k" [ref=e4612]:
+                  - generic [ref=e4616]: 256k
+                - cell "Cohere logo Cohere" [ref=e4617]:
+                  - generic [ref=e4618]:
+                    - img "Cohere logo" [ref=e4619]
+                    - paragraph [ref=e4620]: Cohere
+                - cell "13" [ref=e4621]:
+                  - generic [ref=e4623]: "13"
+                - cell "$4.38" [ref=e4624]:
+                  - generic [ref=e4628]: $4.38
+                - cell "45" [ref=e4629]:
+                  - generic [ref=e4633]: "45"
+                - cell "1.94" [ref=e4634]:
+                  - generic [ref=e4638]: "1.94"
+                - cell "Model Providers" [ref=e4639]:
+                  - generic [ref=e4640]:
+                    - link "Model" [ref=e4641] [cursor=pointer]:
+                      - /url: /models/command-a
+                      - button "Model" [ref=e4642]:
+                        - img [ref=e4643]
+                        - text: Model
+                    - link "Providers" [ref=e4647] [cursor=pointer]:
+                      - /url: /models/command-a/providers
+                      - img [ref=e4648]
+                      - text: Providers
+              - row "Llama 3.1 Nemotron 70B 128k NVIDIA logo NVIDIA 13 $1.20 32 1.85 Model Providers" [ref=e4652]:
+                - cell "Llama 3.1 Nemotron 70B" [ref=e4653]:
+                  - generic [ref=e4658]: Llama 3.1 Nemotron 70B
+                - cell "128k" [ref=e4659]:
+                  - generic [ref=e4663]: 128k
+                - cell "NVIDIA logo NVIDIA" [ref=e4664]:
+                  - generic [ref=e4665]:
+                    - img "NVIDIA logo" [ref=e4666]
+                    - paragraph [ref=e4667]: NVIDIA
+                - cell "13" [ref=e4668]:
+                  - generic [ref=e4670]: "13"
+                - cell "$1.20" [ref=e4671]:
+                  - generic [ref=e4675]: $1.20
+                - cell "32" [ref=e4676]:
+                  - generic [ref=e4680]: "32"
+                - cell "1.85" [ref=e4681]:
+                  - generic [ref=e4685]: "1.85"
+                - cell "Model Providers" [ref=e4686]:
+                  - generic [ref=e4687]:
+                    - link "Model" [ref=e4688] [cursor=pointer]:
+                      - /url: /models/llama-3-1-nemotron-instruct-70b
+                      - button "Model" [ref=e4689]:
+                        - img [ref=e4690]
+                        - text: Model
+                    - link "Providers" [ref=e4694] [cursor=pointer]:
+                      - /url: /models/llama-3-1-nemotron-instruct-70b/providers
+                      - img [ref=e4695]
+                      - text: Providers
+              - row "NVIDIA Nemotron 3 Nano 1m NVIDIA logo NVIDIA 13 $0.09 70 0.45 Model Providers" [ref=e4699]:
+                - cell "NVIDIA Nemotron 3 Nano" [ref=e4700]:
+                  - generic [ref=e4705]: NVIDIA Nemotron 3 Nano
+                - cell "1m" [ref=e4706]:
+                  - generic [ref=e4710]: 1m
+                - cell "NVIDIA logo NVIDIA" [ref=e4711]:
+                  - generic [ref=e4712]:
+                    - img "NVIDIA logo" [ref=e4713]
+                    - paragraph [ref=e4714]: NVIDIA
+                - cell "13" [ref=e4715]:
+                  - generic [ref=e4717]: "13"
+                - cell "$0.09" [ref=e4718]:
+                  - generic [ref=e4722]: $0.09
+                - cell "70" [ref=e4723]:
+                  - generic [ref=e4727]: "70"
+                - cell "0.45" [ref=e4728]:
+                  - generic [ref=e4732]: "0.45"
+                - cell "Model Providers" [ref=e4733]:
+                  - generic [ref=e4734]:
+                    - link "Model" [ref=e4735] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-3-nano-30b-a3b
+                      - button "Model" [ref=e4736]:
+                        - img [ref=e4737]
+                        - text: Model
+                    - link "Providers" [ref=e4741] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-3-nano-30b-a3b/providers
+                      - img [ref=e4742]
+                      - text: Providers
+              - row "NVIDIA Nemotron Nano 9B V2 131k NVIDIA logo NVIDIA 13 $0.09 154 1.15 Model Providers" [ref=e4746]:
+                - cell "NVIDIA Nemotron Nano 9B V2" [ref=e4747]:
+                  - generic [ref=e4752]: NVIDIA Nemotron Nano 9B V2
+                - cell "131k" [ref=e4753]:
+                  - generic [ref=e4757]: 131k
+                - cell "NVIDIA logo NVIDIA" [ref=e4758]:
+                  - generic [ref=e4759]:
+                    - img "NVIDIA logo" [ref=e4760]
+                    - paragraph [ref=e4761]: NVIDIA
+                - cell "13" [ref=e4762]:
+                  - generic [ref=e4764]: "13"
+                - cell "$0.09" [ref=e4765]:
+                  - generic [ref=e4769]: $0.09
+                - cell "154" [ref=e4770]:
+                  - generic [ref=e4774]: "154"
+                - cell "1.15" [ref=e4775]:
+                  - generic [ref=e4779]: "1.15"
+                - cell "Model Providers" [ref=e4780]:
+                  - generic [ref=e4781]:
+                    - link "Model" [ref=e4782] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-nano-9b-v2
+                      - button "Model" [ref=e4783]:
+                        - img [ref=e4784]
+                        - text: Model
+                    - link "Providers" [ref=e4788] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-nano-9b-v2/providers
+                      - img [ref=e4789]
+                      - text: Providers
+              - row "Hermes 4 70B 128k Nous Research logo Nous Research 13 $0.20 78 1.48 Model Providers" [ref=e4793]:
+                - cell "Hermes 4 70B" [ref=e4794]:
+                  - generic [ref=e4799]: Hermes 4 70B
+                - cell "128k" [ref=e4800]:
+                  - generic [ref=e4804]: 128k
+                - cell "Nous Research logo Nous Research" [ref=e4805]:
+                  - generic [ref=e4806]:
+                    - img "Nous Research logo" [ref=e4807]
+                    - paragraph [ref=e4808]: Nous Research
+                - cell "13" [ref=e4809]:
+                  - generic [ref=e4811]: "13"
+                - cell "$0.20" [ref=e4812]:
+                  - generic [ref=e4816]: $0.20
+                - cell "78" [ref=e4817]:
+                  - generic [ref=e4821]: "78"
+                - cell "1.48" [ref=e4822]:
+                  - generic [ref=e4826]: "1.48"
+                - cell "Model Providers" [ref=e4827]:
+                  - generic [ref=e4828]:
+                    - link "Model" [ref=e4829] [cursor=pointer]:
+                      - /url: /models/hermes-4-llama-3-1-70b
+                      - button "Model" [ref=e4830]:
+                        - img [ref=e4831]
+                        - text: Model
+                    - link "Providers" [ref=e4835] [cursor=pointer]:
+                      - /url: /models/hermes-4-llama-3-1-70b/providers
+                      - img [ref=e4836]
+                      - text: Providers
+              - row "Sarvam 30B (high) 66k Sarvam logo Sarvam 12 $0.00 157 1.96 Model Providers" [ref=e4840]:
+                - cell "Sarvam 30B (high)" [ref=e4841]:
+                  - generic [ref=e4845]:
+                    - generic [ref=e4846]: Sarvam 30B (high)
+                    - img [ref=e4847]
+                - cell "66k" [ref=e4849]:
+                  - generic [ref=e4853]: 66k
+                - cell "Sarvam logo Sarvam" [ref=e4854]:
+                  - generic [ref=e4855]:
+                    - img "Sarvam logo" [ref=e4856]
+                    - paragraph [ref=e4857]: Sarvam
+                - cell "12" [ref=e4858]:
+                  - generic [ref=e4860]: "12"
+                - cell "$0.00" [ref=e4861]:
+                  - generic [ref=e4865]: $0.00
+                - cell "157" [ref=e4866]:
+                  - generic [ref=e4870]: "157"
+                - cell "1.96" [ref=e4871]:
+                  - generic [ref=e4875]: "1.96"
+                - cell "Model Providers" [ref=e4876]:
+                  - generic [ref=e4877]:
+                    - link "Model" [ref=e4878] [cursor=pointer]:
+                      - /url: /models/sarvam-30b
+                      - button "Model" [ref=e4879]:
+                        - img [ref=e4880]
+                        - text: Model
+                    - link "Providers" [ref=e4884] [cursor=pointer]:
+                      - /url: /models/sarvam-30b/providers
+                      - img [ref=e4885]
+                      - text: Providers
+              - row "Olmo 3.1 32B Instruct 66k Allen Institute for AI logo Allen Institute for AI 12 $0.30 54 0.88 Model Providers" [ref=e4889]:
+                - cell "Olmo 3.1 32B Instruct" [ref=e4890]:
+                  - generic [ref=e4895]: Olmo 3.1 32B Instruct
+                - cell "66k" [ref=e4896]:
+                  - generic [ref=e4900]: 66k
+                - cell "Allen Institute for AI logo Allen Institute for AI" [ref=e4901]:
+                  - generic [ref=e4902]:
+                    - img "Allen Institute for AI logo" [ref=e4903]
+                    - paragraph [ref=e4904]: Allen Institute for AI
+                - cell "12" [ref=e4905]:
+                  - generic [ref=e4907]: "12"
+                - cell "$0.30" [ref=e4908]:
+                  - generic [ref=e4912]: $0.30
+                - cell "54" [ref=e4913]:
+                  - generic [ref=e4917]: "54"
+                - cell "0.88" [ref=e4918]:
+                  - generic [ref=e4922]: "0.88"
+                - cell "Model Providers" [ref=e4923]:
+                  - generic [ref=e4924]:
+                    - link "Model" [ref=e4925] [cursor=pointer]:
+                      - /url: /models/olmo-3-1-32b-instruct
+                      - button "Model" [ref=e4926]:
+                        - img [ref=e4927]
+                        - text: Model
+                    - link "Providers" [ref=e4931] [cursor=pointer]:
+                      - /url: /models/olmo-3-1-32b-instruct/providers
+                      - img [ref=e4932]
+                      - text: Providers
+              - row "R1 1776 128k Perplexity logo Perplexity 12 E $0.00 0 0.00 Model Providers" [ref=e4936]:
+                - cell "R1 1776" [ref=e4937]:
+                  - generic [ref=e4941]:
+                    - generic [ref=e4942]: R1 1776
+                    - img [ref=e4943]
+                - cell "128k" [ref=e4945]:
+                  - generic [ref=e4949]: 128k
+                - cell "Perplexity logo Perplexity" [ref=e4950]:
+                  - generic [ref=e4951]:
+                    - img "Perplexity logo" [ref=e4952]
+                    - paragraph [ref=e4953]: Perplexity
+                - cell "12 E" [ref=e4954]:
+                  - generic [ref=e4955]:
+                    - generic [ref=e4956]: "12"
+                    - generic [ref=e4957]: E
+                - cell "$0.00" [ref=e4958]:
+                  - generic [ref=e4962]: $0.00
+                - cell "0" [ref=e4963]:
+                  - generic [ref=e4967]: "0"
+                - cell "0.00" [ref=e4968]:
+                  - generic [ref=e4972]: "0.00"
+                - cell "Model Providers" [ref=e4973]:
+                  - generic [ref=e4974]:
+                    - link "Model" [ref=e4975] [cursor=pointer]:
+                      - /url: /models/r1-1776
+                      - button "Model" [ref=e4976]:
+                        - img [ref=e4977]
+                        - text: Model
+                    - link "Providers" [ref=e4981] [cursor=pointer]:
+                      - /url: /models/r1-1776/providers
+                      - img [ref=e4982]
+                      - text: Providers
+              - row "Llama 3.2 90B (Vision) 128k Meta logo Meta 12 E $0.72 52 0.93 Model Providers" [ref=e4986]:
+                - cell "Llama 3.2 90B (Vision)" [ref=e4987]:
+                  - generic [ref=e4992]: Llama 3.2 90B (Vision)
+                - cell "128k" [ref=e4993]:
+                  - generic [ref=e4997]: 128k
+                - cell "Meta logo Meta" [ref=e4998]:
+                  - generic [ref=e4999]:
+                    - img "Meta logo" [ref=e5000]
+                    - paragraph [ref=e5001]: Meta
+                - cell "12 E" [ref=e5002]:
+                  - generic [ref=e5003]:
+                    - generic [ref=e5004]: "12"
+                    - generic [ref=e5005]: E
+                - cell "$0.72" [ref=e5006]:
+                  - generic [ref=e5010]: $0.72
+                - cell "52" [ref=e5011]:
+                  - generic [ref=e5015]: "52"
+                - cell "0.93" [ref=e5016]:
+                  - generic [ref=e5020]: "0.93"
+                - cell "Model Providers" [ref=e5021]:
+                  - generic [ref=e5022]:
+                    - link "Model" [ref=e5023] [cursor=pointer]:
+                      - /url: /models/llama-3-2-instruct-90b-vision
+                      - button "Model" [ref=e5024]:
+                        - img [ref=e5025]
+                        - text: Model
+                    - link "Providers" [ref=e5029] [cursor=pointer]:
+                      - /url: /models/llama-3-2-instruct-90b-vision/providers
+                      - img [ref=e5030]
+                      - text: Providers
+              - row "EXAONE 4.0 32B 131k LG AI Research logo LG AI Research 12 $0.00 0 0.00 Model Providers" [ref=e5034]:
+                - cell "EXAONE 4.0 32B" [ref=e5035]:
+                  - generic [ref=e5040]: EXAONE 4.0 32B
+                - cell "131k" [ref=e5041]:
+                  - generic [ref=e5045]: 131k
+                - cell "LG AI Research logo LG AI Research" [ref=e5046]:
+                  - generic [ref=e5047]:
+                    - img "LG AI Research logo" [ref=e5048]
+                    - paragraph [ref=e5049]: LG AI Research
+                - cell "12" [ref=e5050]:
+                  - generic [ref=e5052]: "12"
+                - cell "$0.00" [ref=e5053]:
+                  - generic [ref=e5057]: $0.00
+                - cell "0" [ref=e5058]:
+                  - generic [ref=e5062]: "0"
+                - cell "0.00" [ref=e5063]:
+                  - generic [ref=e5067]: "0.00"
+                - cell "Model Providers" [ref=e5068]:
+                  - generic [ref=e5069]:
+                    - link "Model" [ref=e5070] [cursor=pointer]:
+                      - /url: /models/exaone-4-0-32b
+                      - button "Model" [ref=e5071]:
+                        - img [ref=e5072]
+                        - text: Model
+                    - link "Providers" [ref=e5076] [cursor=pointer]:
+                      - /url: /models/exaone-4-0-32b/providers
+                      - img [ref=e5077]
+                      - text: Providers
+              - row "Ministral 3 3B 256k Mistral logo Mistral 11 $0.10 278 0.42 Model Providers" [ref=e5081]:
+                - cell "Ministral 3 3B" [ref=e5082]:
+                  - generic [ref=e5087]: Ministral 3 3B
+                - cell "256k" [ref=e5088]:
+                  - generic [ref=e5092]: 256k
+                - cell "Mistral logo Mistral" [ref=e5093]:
+                  - generic [ref=e5094]:
+                    - img "Mistral logo" [ref=e5095]
+                    - paragraph [ref=e5096]: Mistral
+                - cell "11" [ref=e5097]:
+                  - generic [ref=e5099]: "11"
+                - cell "$0.10" [ref=e5100]:
+                  - generic [ref=e5104]: $0.10
+                - cell "278" [ref=e5105]:
+                  - generic [ref=e5109]: "278"
+                - cell "0.42" [ref=e5110]:
+                  - generic [ref=e5114]: "0.42"
+                - cell "Model Providers" [ref=e5115]:
+                  - generic [ref=e5116]:
+                    - link "Model" [ref=e5117] [cursor=pointer]:
+                      - /url: /models/ministral-3-3b
+                      - button "Model" [ref=e5118]:
+                        - img [ref=e5119]
+                        - text: Model
+                    - link "Providers" [ref=e5123] [cursor=pointer]:
+                      - /url: /models/ministral-3-3b/providers
+                      - img [ref=e5124]
+                      - text: Providers
+              - row "DeepHermes 3 - Mistral 24B 32k Nous Research logo Nous Research 11 E $0.00 0 0.00 Model Providers" [ref=e5128]:
+                - cell "DeepHermes 3 - Mistral 24B" [ref=e5129]:
+                  - generic [ref=e5134]: DeepHermes 3 - Mistral 24B
+                - cell "32k" [ref=e5135]:
+                  - generic [ref=e5139]: 32k
+                - cell "Nous Research logo Nous Research" [ref=e5140]:
+                  - generic [ref=e5141]:
+                    - img "Nous Research logo" [ref=e5142]
+                    - paragraph [ref=e5143]: Nous Research
+                - cell "11 E" [ref=e5144]:
+                  - generic [ref=e5145]:
+                    - generic [ref=e5146]: "11"
+                    - generic [ref=e5147]: E
+                - cell "$0.00" [ref=e5148]:
+                  - generic [ref=e5152]: $0.00
+                - cell "0" [ref=e5153]:
+                  - generic [ref=e5157]: "0"
+                - cell "0.00" [ref=e5158]:
+                  - generic [ref=e5162]: "0.00"
+                - cell "Model Providers" [ref=e5163]:
+                  - generic [ref=e5164]:
+                    - link "Model" [ref=e5165] [cursor=pointer]:
+                      - /url: /models/deephermes-3-mistral-24b-preview
+                      - button "Model" [ref=e5166]:
+                        - img [ref=e5167]
+                        - text: Model
+                    - link "Providers" [ref=e5171] [cursor=pointer]:
+                      - /url: /models/deephermes-3-mistral-24b-preview/providers
+                      - img [ref=e5172]
+                      - text: Providers
+              - row "Jamba 1.7 Large 256k AI21 Labs logo AI21 Labs 11 $3.50 59 1.40 Model Providers" [ref=e5176]:
+                - cell "Jamba 1.7 Large" [ref=e5177]:
+                  - generic [ref=e5182]: Jamba 1.7 Large
+                - cell "256k" [ref=e5183]:
+                  - generic [ref=e5187]: 256k
+                - cell "AI21 Labs logo AI21 Labs" [ref=e5188]:
+                  - generic [ref=e5189]:
+                    - img "AI21 Labs logo" [ref=e5190]
+                    - paragraph [ref=e5191]: AI21 Labs
+                - cell "11" [ref=e5192]:
+                  - generic [ref=e5194]: "11"
+                - cell "$3.50" [ref=e5195]:
+                  - generic [ref=e5199]: $3.50
+                - cell "59" [ref=e5200]:
+                  - generic [ref=e5204]: "59"
+                - cell "1.40" [ref=e5205]:
+                  - generic [ref=e5209]: "1.40"
+                - cell "Model Providers" [ref=e5210]:
+                  - generic [ref=e5211]:
+                    - link "Model" [ref=e5212] [cursor=pointer]:
+                      - /url: /models/jamba-1-7-large
+                      - button "Model" [ref=e5213]:
+                        - img [ref=e5214]
+                        - text: Model
+                    - link "Providers" [ref=e5218] [cursor=pointer]:
+                      - /url: /models/jamba-1-7-large/providers
+                      - img [ref=e5219]
+                      - text: Providers
+              - row "Granite 4.0 H Small 128k IBM logo IBM 11 $0.11 368 10.18 Model Providers" [ref=e5223]:
+                - cell "Granite 4.0 H Small" [ref=e5224]:
+                  - generic [ref=e5229]: Granite 4.0 H Small
+                - cell "128k" [ref=e5230]:
+                  - generic [ref=e5234]: 128k
+                - cell "IBM logo IBM" [ref=e5235]:
+                  - generic [ref=e5236]:
+                    - img "IBM logo" [ref=e5237]
+                    - paragraph [ref=e5238]: IBM
+                - cell "11" [ref=e5239]:
+                  - generic [ref=e5241]: "11"
+                - cell "$0.11" [ref=e5242]:
+                  - generic [ref=e5246]: $0.11
+                - cell "368" [ref=e5247]:
+                  - generic [ref=e5251]: "368"
+                - cell "10.18" [ref=e5252]:
+                  - generic [ref=e5256]: "10.18"
+                - cell "Model Providers" [ref=e5257]:
+                  - generic [ref=e5258]:
+                    - link "Model" [ref=e5259] [cursor=pointer]:
+                      - /url: /models/granite-4-0-h-small
+                      - button "Model" [ref=e5260]:
+                        - img [ref=e5261]
+                        - text: Model
+                    - link "Providers" [ref=e5265] [cursor=pointer]:
+                      - /url: /models/granite-4-0-h-small/providers
+                      - img [ref=e5266]
+                      - text: Providers
+              - row "Qwen3 Omni 30B A3B 66k Alibaba logo Alibaba 11 $0.43 94 1.84 Model Providers" [ref=e5270]:
+                - cell "Qwen3 Omni 30B A3B" [ref=e5271]:
+                  - generic [ref=e5276]: Qwen3 Omni 30B A3B
+                - cell "66k" [ref=e5277]:
+                  - generic [ref=e5281]: 66k
+                - cell "Alibaba logo Alibaba" [ref=e5282]:
+                  - generic [ref=e5283]:
+                    - img "Alibaba logo" [ref=e5284]
+                    - paragraph [ref=e5285]: Alibaba
+                - cell "11" [ref=e5286]:
+                  - generic [ref=e5288]: "11"
+                - cell "$0.43" [ref=e5289]:
+                  - generic [ref=e5293]: $0.43
+                - cell "94" [ref=e5294]:
+                  - generic [ref=e5298]: "94"
+                - cell "1.84" [ref=e5299]:
+                  - generic [ref=e5303]: "1.84"
+                - cell "Model Providers" [ref=e5304]:
+                  - generic [ref=e5305]:
+                    - link "Model" [ref=e5306] [cursor=pointer]:
+                      - /url: /models/qwen3-omni-30b-a3b-instruct
+                      - button "Model" [ref=e5307]:
+                        - img [ref=e5308]
+                        - text: Model
+                    - link "Providers" [ref=e5312] [cursor=pointer]:
+                      - /url: /models/qwen3-omni-30b-a3b-instruct/providers
+                      - img [ref=e5313]
+                      - text: Providers
+              - row "Qwen3.5 0.8B 262k Alibaba logo Alibaba 11 $0.00 0 0.00 Model Providers" [ref=e5317]:
+                - cell "Qwen3.5 0.8B" [ref=e5318]:
+                  - generic [ref=e5322]:
+                    - generic [ref=e5323]: Qwen3.5 0.8B
+                    - img [ref=e5324]
+                - cell "262k" [ref=e5326]:
+                  - generic [ref=e5330]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e5331]:
+                  - generic [ref=e5332]:
+                    - img "Alibaba logo" [ref=e5333]
+                    - paragraph [ref=e5334]: Alibaba
+                - cell "11" [ref=e5335]:
+                  - generic [ref=e5337]: "11"
+                - cell "$0.00" [ref=e5338]:
+                  - generic [ref=e5342]: $0.00
+                - cell "0" [ref=e5343]:
+                  - generic [ref=e5347]: "0"
+                - cell "0.00" [ref=e5348]:
+                  - generic [ref=e5352]: "0.00"
+                - cell "Model Providers" [ref=e5353]:
+                  - generic [ref=e5354]:
+                    - link "Model" [ref=e5355] [cursor=pointer]:
+                      - /url: /models/qwen3-5-0-8b
+                      - button "Model" [ref=e5356]:
+                        - img [ref=e5357]
+                        - text: Model
+                    - link "Providers" [ref=e5361] [cursor=pointer]:
+                      - /url: /models/qwen3-5-0-8b/providers
+                      - img [ref=e5362]
+                      - text: Providers
+              - row "LFM2 24B A2B 33k Liquid AI logo Liquid AI 10 $0.05 201 0.42 Model Providers" [ref=e5366]:
+                - cell "LFM2 24B A2B" [ref=e5367]:
+                  - generic [ref=e5372]: LFM2 24B A2B
+                - cell "33k" [ref=e5373]:
+                  - generic [ref=e5377]: 33k
+                - cell "Liquid AI logo Liquid AI" [ref=e5378]:
+                  - generic [ref=e5379]:
+                    - img "Liquid AI logo" [ref=e5380]
+                    - paragraph [ref=e5381]: Liquid AI
+                - cell "10" [ref=e5382]:
+                  - generic [ref=e5384]: "10"
+                - cell "$0.05" [ref=e5385]:
+                  - generic [ref=e5389]: $0.05
+                - cell "201" [ref=e5390]:
+                  - generic [ref=e5394]: "201"
+                - cell "0.42" [ref=e5395]:
+                  - generic [ref=e5399]: "0.42"
+                - cell "Model Providers" [ref=e5400]:
+                  - generic [ref=e5401]:
+                    - link "Model" [ref=e5402] [cursor=pointer]:
+                      - /url: /models/lfm2-24b-a2b
+                      - button "Model" [ref=e5403]:
+                        - img [ref=e5404]
+                        - text: Model
+                    - link "Providers" [ref=e5408] [cursor=pointer]:
+                      - /url: /models/lfm2-24b-a2b/providers
+                      - img [ref=e5409]
+                      - text: Providers
+              - row "Phi-4 16k Microsoft Azure logo Microsoft Azure 10 $0.22 18 2.38 Model Providers" [ref=e5413]:
+                - cell "Phi-4" [ref=e5414]:
+                  - generic [ref=e5419]: Phi-4
+                - cell "16k" [ref=e5420]:
+                  - generic [ref=e5424]: 16k
+                - cell "Microsoft Azure logo Microsoft Azure" [ref=e5425]:
+                  - generic [ref=e5426]:
+                    - img "Microsoft Azure logo" [ref=e5427]
+                    - paragraph [ref=e5428]: Microsoft Azure
+                - cell "10" [ref=e5429]:
+                  - generic [ref=e5431]: "10"
+                - cell "$0.22" [ref=e5432]:
+                  - generic [ref=e5436]: $0.22
+                - cell "18" [ref=e5437]:
+                  - generic [ref=e5441]: "18"
+                - cell "2.38" [ref=e5442]:
+                  - generic [ref=e5446]: "2.38"
+                - cell "Model Providers" [ref=e5447]:
+                  - generic [ref=e5448]:
+                    - link "Model" [ref=e5449] [cursor=pointer]:
+                      - /url: /models/phi-4
+                      - button "Model" [ref=e5450]:
+                        - img [ref=e5451]
+                        - text: Model
+                    - link "Providers" [ref=e5455] [cursor=pointer]:
+                      - /url: /models/phi-4/providers
+                      - img [ref=e5456]
+                      - text: Providers
+              - row "Gemma 3 27B 128k Google logo Google 10 $0.00 29 2.20 Model Providers" [ref=e5460]:
+                - cell "Gemma 3 27B" [ref=e5461]:
+                  - generic [ref=e5466]: Gemma 3 27B
+                - cell "128k" [ref=e5467]:
+                  - generic [ref=e5471]: 128k
+                - cell "Google logo Google" [ref=e5472]:
+                  - generic [ref=e5473]:
+                    - img "Google logo" [ref=e5474]
+                    - paragraph [ref=e5475]: Google
+                - cell "10" [ref=e5476]:
+                  - generic [ref=e5478]: "10"
+                - cell "$0.00" [ref=e5479]:
+                  - generic [ref=e5483]: $0.00
+                - cell "29" [ref=e5484]:
+                  - generic [ref=e5488]: "29"
+                - cell "2.20" [ref=e5489]:
+                  - generic [ref=e5493]: "2.20"
+                - cell "Model Providers" [ref=e5494]:
+                  - generic [ref=e5495]:
+                    - link "Model" [ref=e5496] [cursor=pointer]:
+                      - /url: /models/gemma-3-27b
+                      - button "Model" [ref=e5497]:
+                        - img [ref=e5498]
+                        - text: Model
+                    - link "Providers" [ref=e5502] [cursor=pointer]:
+                      - /url: /models/gemma-3-27b/providers
+                      - img [ref=e5503]
+                      - text: Providers
+              - row "NVIDIA Nemotron Nano 12B v2 VL 128k NVIDIA logo NVIDIA 10 $0.30 133 1.04 Model Providers" [ref=e5507]:
+                - cell "NVIDIA Nemotron Nano 12B v2 VL" [ref=e5508]:
+                  - generic [ref=e5513]: NVIDIA Nemotron Nano 12B v2 VL
+                - cell "128k" [ref=e5514]:
+                  - generic [ref=e5518]: 128k
+                - cell "NVIDIA logo NVIDIA" [ref=e5519]:
+                  - generic [ref=e5520]:
+                    - img "NVIDIA logo" [ref=e5521]
+                    - paragraph [ref=e5522]: NVIDIA
+                - cell "10" [ref=e5523]:
+                  - generic [ref=e5525]: "10"
+                - cell "$0.30" [ref=e5526]:
+                  - generic [ref=e5530]: $0.30
+                - cell "133" [ref=e5531]:
+                  - generic [ref=e5535]: "133"
+                - cell "1.04" [ref=e5536]:
+                  - generic [ref=e5540]: "1.04"
+                - cell "Model Providers" [ref=e5541]:
+                  - generic [ref=e5542]:
+                    - link "Model" [ref=e5543] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-nano-12b-v2-vl
+                      - button "Model" [ref=e5544]:
+                        - img [ref=e5545]
+                        - text: Model
+                    - link "Providers" [ref=e5549] [cursor=pointer]:
+                      - /url: /models/nvidia-nemotron-nano-12b-v2-vl/providers
+                      - img [ref=e5550]
+                      - text: Providers
+              - row "Phi-4 Multimodal 128k Microsoft Azure logo Microsoft Azure 10 E $0.00 17 0.86 Model Providers" [ref=e5554]:
+                - cell "Phi-4 Multimodal" [ref=e5555]:
+                  - generic [ref=e5560]: Phi-4 Multimodal
+                - cell "128k" [ref=e5561]:
+                  - generic [ref=e5565]: 128k
+                - cell "Microsoft Azure logo Microsoft Azure" [ref=e5566]:
+                  - generic [ref=e5567]:
+                    - img "Microsoft Azure logo" [ref=e5568]
+                    - paragraph [ref=e5569]: Microsoft Azure
+                - cell "10 E" [ref=e5570]:
+                  - generic [ref=e5571]:
+                    - generic [ref=e5572]: "10"
+                    - generic [ref=e5573]: E
+                - cell "$0.00" [ref=e5574]:
+                  - generic [ref=e5578]: $0.00
+                - cell "17" [ref=e5579]:
+                  - generic [ref=e5583]: "17"
+                - cell "0.86" [ref=e5584]:
+                  - generic [ref=e5588]: "0.86"
+                - cell "Model Providers" [ref=e5589]:
+                  - generic [ref=e5590]:
+                    - link "Model" [ref=e5591] [cursor=pointer]:
+                      - /url: /models/phi-4-multimodal
+                      - button "Model" [ref=e5592]:
+                        - img [ref=e5593]
+                        - text: Model
+                    - link "Providers" [ref=e5597] [cursor=pointer]:
+                      - /url: /models/phi-4-multimodal/providers
+                      - img [ref=e5598]
+                      - text: Providers
+              - row "Qwen3.5 0.8B 262k Alibaba logo Alibaba 10 $0.00 0 0.00 Model Providers" [ref=e5602]:
+                - cell "Qwen3.5 0.8B" [ref=e5603]:
+                  - generic [ref=e5608]: Qwen3.5 0.8B
+                - cell "262k" [ref=e5609]:
+                  - generic [ref=e5613]: 262k
+                - cell "Alibaba logo Alibaba" [ref=e5614]:
+                  - generic [ref=e5615]:
+                    - img "Alibaba logo" [ref=e5616]
+                    - paragraph [ref=e5617]: Alibaba
+                - cell "10" [ref=e5618]:
+                  - generic [ref=e5620]: "10"
+                - cell "$0.00" [ref=e5621]:
+                  - generic [ref=e5625]: $0.00
+                - cell "0" [ref=e5626]:
+                  - generic [ref=e5630]: "0"
+                - cell "0.00" [ref=e5631]:
+                  - generic [ref=e5635]: "0.00"
+                - cell "Model Providers" [ref=e5636]:
+                  - generic [ref=e5637]:
+                    - link "Model" [ref=e5638] [cursor=pointer]:
+                      - /url: /models/qwen3-5-0-8b-non-reasoning
+                      - button "Model" [ref=e5639]:
+                        - img [ref=e5640]
+                        - text: Model
+                    - link "Providers" [ref=e5644] [cursor=pointer]:
+                      - /url: /models/qwen3-5-0-8b-non-reasoning/providers
+                      - img [ref=e5645]
+                      - text: Providers
+              - row "Jamba Reasoning 3B 262k AI21 Labs logo AI21 Labs 10 $0.00 0 0.00 Model Providers" [ref=e5649]:
+                - cell "Jamba Reasoning 3B" [ref=e5650]:
+                  - generic [ref=e5654]:
+                    - generic [ref=e5655]: Jamba Reasoning 3B
+                    - img [ref=e5656]
+                - cell "262k" [ref=e5658]:
+                  - generic [ref=e5662]: 262k
+                - cell "AI21 Labs logo AI21 Labs" [ref=e5663]:
+                  - generic [ref=e5664]:
+                    - img "AI21 Labs logo" [ref=e5665]
+                    - paragraph [ref=e5666]: AI21 Labs
+                - cell "10" [ref=e5667]:
+                  - generic [ref=e5669]: "10"
+                - cell "$0.00" [ref=e5670]:
+                  - generic [ref=e5674]: $0.00
+                - cell "0" [ref=e5675]:
+                  - generic [ref=e5679]: "0"
+                - cell "0.00" [ref=e5680]:
+                  - generic [ref=e5684]: "0.00"
+                - cell "Model Providers" [ref=e5685]:
+                  - generic [ref=e5686]:
+                    - link "Model" [ref=e5687] [cursor=pointer]:
+                      - /url: /models/jamba-reasoning-3b
+                      - button "Model" [ref=e5688]:
+                        - img [ref=e5689]
+                        - text: Model
+                    - link "Providers" [ref=e5693] [cursor=pointer]:
+                      - /url: /models/jamba-reasoning-3b/providers
+                      - img [ref=e5694]
+                      - text: Providers
+              - row "Reka Flash 3 128k Reka AI logo Reka AI 10 $0.35 45 2.40 Model Providers" [ref=e5698]:
+                - cell "Reka Flash 3" [ref=e5699]:
+                  - generic [ref=e5703]:
+                    - generic [ref=e5704]: Reka Flash 3
+                    - img [ref=e5705]
+                - cell "128k" [ref=e5707]:
+                  - generic [ref=e5711]: 128k
+                - cell "Reka AI logo Reka AI" [ref=e5712]:
+                  - generic [ref=e5713]:
+                    - img "Reka AI logo" [ref=e5714]
+                    - paragraph [ref=e5715]: Reka AI
+                - cell "10" [ref=e5716]:
+                  - generic [ref=e5718]: "10"
+                - cell "$0.35" [ref=e5719]:
+                  - generic [ref=e5723]: $0.35
+                - cell "45" [ref=e5724]:
+                  - generic [ref=e5728]: "45"
+                - cell "2.40" [ref=e5729]:
+                  - generic [ref=e5733]: "2.40"
+                - cell "Model Providers" [ref=e5734]:
+                  - generic [ref=e5735]:
+                    - link "Model" [ref=e5736] [cursor=pointer]:
+                      - /url: /models/reka-flash-3
+                      - button "Model" [ref=e5737]:
+                        - img [ref=e5738]
+                        - text: Model
+                    - link "Providers" [ref=e5742] [cursor=pointer]:
+                      - /url: /models/reka-flash-3/providers
+                      - img [ref=e5743]
+                      - text: Providers
+              - row "Olmo 3 7B Think 66k Allen Institute for AI logo Allen Institute for AI 9 $0.00 0 0.00 Model Providers" [ref=e5747]:
+                - cell "Olmo 3 7B Think" [ref=e5748]:
+                  - generic [ref=e5752]:
+                    - generic [ref=e5753]: Olmo 3 7B Think
+                    - img [ref=e5754]
+                - cell "66k" [ref=e5756]:
+                  - generic [ref=e5760]: 66k
+                - cell "Allen Institute for AI logo Allen Institute for AI" [ref=e5761]:
+                  - generic [ref=e5762]:
+                    - img "Allen Institute for AI logo" [ref=e5763]
+                    - paragraph [ref=e5764]: Allen Institute for AI
+                - cell "9" [ref=e5765]:
+                  - generic [ref=e5767]: "9"
+                - cell "$0.00" [ref=e5768]:
+                  - generic [ref=e5772]: $0.00
+                - cell "0" [ref=e5773]:
+                  - generic [ref=e5777]: "0"
+                - cell "0.00" [ref=e5778]:
+                  - generic [ref=e5782]: "0.00"
+                - cell "Model Providers" [ref=e5783]:
+                  - generic [ref=e5784]:
+                    - link "Model" [ref=e5785] [cursor=pointer]:
+                      - /url: /models/olmo-3-7b-think
+                      - button "Model" [ref=e5786]:
+                        - img [ref=e5787]
+                        - text: Model
+                    - link "Providers" [ref=e5791] [cursor=pointer]:
+                      - /url: /models/olmo-3-7b-think/providers
+                      - img [ref=e5792]
+                      - text: Providers
+              - row "Ling-mini-2.0 131k InclusionAI logo InclusionAI 9 $0.00 0 0.00 Model Providers" [ref=e5796]:
+                - cell "Ling-mini-2.0" [ref=e5797]:
+                  - generic [ref=e5802]: Ling-mini-2.0
+                - cell "131k" [ref=e5803]:
+                  - generic [ref=e5807]: 131k
+                - cell "InclusionAI logo InclusionAI" [ref=e5808]:
+                  - generic [ref=e5809]:
+                    - img "InclusionAI logo" [ref=e5810]
+                    - paragraph [ref=e5811]: InclusionAI
+                - cell "9" [ref=e5812]:
+                  - generic [ref=e5814]: "9"
+                - cell "$0.00" [ref=e5815]:
+                  - generic [ref=e5819]: $0.00
+                - cell "0" [ref=e5820]:
+                  - generic [ref=e5824]: "0"
+                - cell "0.00" [ref=e5825]:
+                  - generic [ref=e5829]: "0.00"
+                - cell "Model Providers" [ref=e5830]:
+                  - generic [ref=e5831]:
+                    - link "Model" [ref=e5832] [cursor=pointer]:
+                      - /url: /models/ling-mini-2-0
+                      - button "Model" [ref=e5833]:
+                        - img [ref=e5834]
+                        - text: Model
+                    - link "Providers" [ref=e5838] [cursor=pointer]:
+                      - /url: /models/ling-mini-2-0/providers
+                      - img [ref=e5839]
+                      - text: Providers
+              - row "Gemma 3 12B 128k Google logo Google 9 $0.00 28 18.62 Model Providers" [ref=e5843]:
+                - cell "Gemma 3 12B" [ref=e5844]:
+                  - generic [ref=e5849]: Gemma 3 12B
+                - cell "128k" [ref=e5850]:
+                  - generic [ref=e5854]: 128k
+                - cell "Google logo Google" [ref=e5855]:
+                  - generic [ref=e5856]:
+                    - img "Google logo" [ref=e5857]
+                    - paragraph [ref=e5858]: Google
+                - cell "9" [ref=e5859]:
+                  - generic [ref=e5861]: "9"
+                - cell "$0.00" [ref=e5862]:
+                  - generic [ref=e5866]: $0.00
+                - cell "28" [ref=e5867]:
+                  - generic [ref=e5871]: "28"
+                - cell "18.62" [ref=e5872]:
+                  - generic [ref=e5876]: "18.62"
+                - cell "Model Providers" [ref=e5877]:
+                  - generic [ref=e5878]:
+                    - link "Model" [ref=e5879] [cursor=pointer]:
+                      - /url: /models/gemma-3-12b
+                      - button "Model" [ref=e5880]:
+                        - img [ref=e5881]
+                        - text: Model
+                    - link "Providers" [ref=e5885] [cursor=pointer]:
+                      - /url: /models/gemma-3-12b/providers
+                      - img [ref=e5886]
+                      - text: Providers
+              - row "Llama 3.2 11B (Vision) 128k Meta logo Meta 9 $0.16 47 0.57 Model Providers" [ref=e5890]:
+                - cell "Llama 3.2 11B (Vision)" [ref=e5891]:
+                  - generic [ref=e5896]: Llama 3.2 11B (Vision)
+                - cell "128k" [ref=e5897]:
+                  - generic [ref=e5901]: 128k
+                - cell "Meta logo Meta" [ref=e5902]:
+                  - generic [ref=e5903]:
+                    - img "Meta logo" [ref=e5904]
+                    - paragraph [ref=e5905]: Meta
+                - cell "9" [ref=e5906]:
+                  - generic [ref=e5908]: "9"
+                - cell "$0.16" [ref=e5909]:
+                  - generic [ref=e5913]: $0.16
+                - cell "47" [ref=e5914]:
+                  - generic [ref=e5918]: "47"
+                - cell "0.57" [ref=e5919]:
+                  - generic [ref=e5923]: "0.57"
+                - cell "Model Providers" [ref=e5924]:
+                  - generic [ref=e5925]:
+                    - link "Model" [ref=e5926] [cursor=pointer]:
+                      - /url: /models/llama-3-2-instruct-11b-vision
+                      - button "Model" [ref=e5927]:
+                        - img [ref=e5928]
+                        - text: Model
+                    - link "Providers" [ref=e5932] [cursor=pointer]:
+                      - /url: /models/llama-3-2-instruct-11b-vision/providers
+                      - img [ref=e5933]
+                      - text: Providers
+              - row "Phi-4 Mini 128k Microsoft Azure logo Microsoft Azure 8 $0.00 43 0.81 Model Providers" [ref=e5937]:
+                - cell "Phi-4 Mini" [ref=e5938]:
+                  - generic [ref=e5943]: Phi-4 Mini
+                - cell "128k" [ref=e5944]:
+                  - generic [ref=e5948]: 128k
+                - cell "Microsoft Azure logo Microsoft Azure" [ref=e5949]:
+                  - generic [ref=e5950]:
+                    - img "Microsoft Azure logo" [ref=e5951]
+                    - paragraph [ref=e5952]: Microsoft Azure
+                - cell "8" [ref=e5953]:
+                  - generic [ref=e5955]: "8"
+                - cell "$0.00" [ref=e5956]:
+                  - generic [ref=e5960]: $0.00
+                - cell "43" [ref=e5961]:
+                  - generic [ref=e5965]: "43"
+                - cell "0.81" [ref=e5966]:
+                  - generic [ref=e5970]: "0.81"
+                - cell "Model Providers" [ref=e5971]:
+                  - generic [ref=e5972]:
+                    - link "Model" [ref=e5973] [cursor=pointer]:
+                      - /url: /models/phi-4-mini
+                      - button "Model" [ref=e5974]:
+                        - img [ref=e5975]
+                        - text: Model
+                    - link "Providers" [ref=e5979] [cursor=pointer]:
+                      - /url: /models/phi-4-mini/providers
+                      - img [ref=e5980]
+                      - text: Providers
+              - row "Exaone 4.0 1.2B 64k LG AI Research logo LG AI Research 8 $0.00 0 0.00 Model Providers" [ref=e5984]:
+                - cell "Exaone 4.0 1.2B" [ref=e5985]:
+                  - generic [ref=e5989]:
+                    - generic [ref=e5990]: Exaone 4.0 1.2B
+                    - img [ref=e5991]
+                - cell "64k" [ref=e5993]:
+                  - generic [ref=e5997]: 64k
+                - cell "LG AI Research logo LG AI Research" [ref=e5998]:
+                  - generic [ref=e5999]:
+                    - img "LG AI Research logo" [ref=e6000]
+                    - paragraph [ref=e6001]: LG AI Research
+                - cell "8" [ref=e6002]:
+                  - generic [ref=e6004]: "8"
+                - cell "$0.00" [ref=e6005]:
+                  - generic [ref=e6009]: $0.00
+                - cell "0" [ref=e6010]:
+                  - generic [ref=e6014]: "0"
+                - cell "0.00" [ref=e6015]:
+                  - generic [ref=e6019]: "0.00"
+                - cell "Model Providers" [ref=e6020]:
+                  - generic [ref=e6021]:
+                    - link "Model" [ref=e6022] [cursor=pointer]:
+                      - /url: /models/exaone-4-0-1-2b-reasoning
+                      - button "Model" [ref=e6023]:
+                        - img [ref=e6024]
+                        - text: Model
+                    - link "Providers" [ref=e6028] [cursor=pointer]:
+                      - /url: /models/exaone-4-0-1-2b-reasoning/providers
+                      - img [ref=e6029]
+                      - text: Providers
+              - row "Olmo 3 7B 66k Allen Institute for AI logo Allen Institute for AI 8 $0.13 0 0.00 Model Providers" [ref=e6033]:
+                - cell "Olmo 3 7B" [ref=e6034]:
+                  - generic [ref=e6039]: Olmo 3 7B
+                - cell "66k" [ref=e6040]:
+                  - generic [ref=e6044]: 66k
+                - cell "Allen Institute for AI logo Allen Institute for AI" [ref=e6045]:
+                  - generic [ref=e6046]:
+                    - img "Allen Institute for AI logo" [ref=e6047]
+                    - paragraph [ref=e6048]: Allen Institute for AI
+                - cell "8" [ref=e6049]:
+                  - generic [ref=e6051]: "8"
+                - cell "$0.13" [ref=e6052]:
+                  - generic [ref=e6056]: $0.13
+                - cell "0" [ref=e6057]:
+                  - generic [ref=e6061]: "0"
+                - cell "0.00" [ref=e6062]:
+                  - generic [ref=e6066]: "0.00"
+                - cell "Model Providers" [ref=e6067]:
+                  - generic [ref=e6068]:
+                    - link "Model" [ref=e6069] [cursor=pointer]:
+                      - /url: /models/olmo-3-7b-instruct
+                      - button "Model" [ref=e6070]:
+                        - img [ref=e6071]
+                        - text: Model
+                    - link "Providers" [ref=e6075] [cursor=pointer]:
+                      - /url: /models/olmo-3-7b-instruct/providers
+                      - img [ref=e6076]
+                      - text: Providers
+              - row "Exaone 4.0 1.2B 64k LG AI Research logo LG AI Research 8 $0.00 0 0.00 Model Providers" [ref=e6080]:
+                - cell "Exaone 4.0 1.2B" [ref=e6081]:
+                  - generic [ref=e6086]: Exaone 4.0 1.2B
+                - cell "64k" [ref=e6087]:
+                  - generic [ref=e6091]: 64k
+                - cell "LG AI Research logo LG AI Research" [ref=e6092]:
+                  - generic [ref=e6093]:
+                    - img "LG AI Research logo" [ref=e6094]
+                    - paragraph [ref=e6095]: LG AI Research
+                - cell "8" [ref=e6096]:
+                  - generic [ref=e6098]: "8"
+                - cell "$0.00" [ref=e6099]:
+                  - generic [ref=e6103]: $0.00
+                - cell "0" [ref=e6104]:
+                  - generic [ref=e6108]: "0"
+                - cell "0.00" [ref=e6109]:
+                  - generic [ref=e6113]: "0.00"
+                - cell "Model Providers" [ref=e6114]:
+                  - generic [ref=e6115]:
+                    - link "Model" [ref=e6116] [cursor=pointer]:
+                      - /url: /models/exaone-4-0-1-2b
+                      - button "Model" [ref=e6117]:
+                        - img [ref=e6118]
+                        - text: Model
+                    - link "Providers" [ref=e6122] [cursor=pointer]:
+                      - /url: /models/exaone-4-0-1-2b/providers
+                      - img [ref=e6123]
+                      - text: Providers
+              - row "LFM2.5-1.2B-Thinking 32k Liquid AI logo Liquid AI 8 $0.00 0 0.00 Model Providers" [ref=e6127]:
+                - cell "LFM2.5-1.2B-Thinking" [ref=e6128]:
+                  - generic [ref=e6132]:
+                    - generic [ref=e6133]: LFM2.5-1.2B-Thinking
+                    - img [ref=e6134]
+                - cell "32k" [ref=e6136]:
+                  - generic [ref=e6140]: 32k
+                - cell "Liquid AI logo Liquid AI" [ref=e6141]:
+                  - generic [ref=e6142]:
+                    - img "Liquid AI logo" [ref=e6143]
+                    - paragraph [ref=e6144]: Liquid AI
+                - cell "8" [ref=e6145]:
+                  - generic [ref=e6147]: "8"
+                - cell "$0.00" [ref=e6148]:
+                  - generic [ref=e6152]: $0.00
+                - cell "0" [ref=e6153]:
+                  - generic [ref=e6157]: "0"
+                - cell "0.00" [ref=e6158]:
+                  - generic [ref=e6162]: "0.00"
+                - cell "Model Providers" [ref=e6163]:
+                  - generic [ref=e6164]:
+                    - link "Model" [ref=e6165] [cursor=pointer]:
+                      - /url: /models/lfm2-5-1-2b-thinking
+                      - button "Model" [ref=e6166]:
+                        - img [ref=e6167]
+                        - text: Model
+                    - link "Providers" [ref=e6171] [cursor=pointer]:
+                      - /url: /models/lfm2-5-1-2b-thinking/providers
+                      - img [ref=e6172]
+                      - text: Providers
+              - row "Jamba 1.7 Mini 258k AI21 Labs logo AI21 Labs 8 $0.00 0 0.00 Model Providers" [ref=e6176]:
+                - cell "Jamba 1.7 Mini" [ref=e6177]:
+                  - generic [ref=e6182]: Jamba 1.7 Mini
+                - cell "258k" [ref=e6183]:
+                  - generic [ref=e6187]: 258k
+                - cell "AI21 Labs logo AI21 Labs" [ref=e6188]:
+                  - generic [ref=e6189]:
+                    - img "AI21 Labs logo" [ref=e6190]
+                    - paragraph [ref=e6191]: AI21 Labs
+                - cell "8" [ref=e6192]:
+                  - generic [ref=e6194]: "8"
+                - cell "$0.00" [ref=e6195]:
+                  - generic [ref=e6199]: $0.00
+                - cell "0" [ref=e6200]:
+                  - generic [ref=e6204]: "0"
+                - cell "0.00" [ref=e6205]:
+                  - generic [ref=e6209]: "0.00"
+                - cell "Model Providers" [ref=e6210]:
+                  - generic [ref=e6211]:
+                    - link "Model" [ref=e6212] [cursor=pointer]:
+                      - /url: /models/jamba-1-7-mini
+                      - button "Model" [ref=e6213]:
+                        - img [ref=e6214]
+                        - text: Model
+                    - link "Providers" [ref=e6218] [cursor=pointer]:
+                      - /url: /models/jamba-1-7-mini/providers
+                      - img [ref=e6219]
+                      - text: Providers
+              - row "LFM2.5-1.2B-Instruct 32k Liquid AI logo Liquid AI 8 $0.00 0 0.00 Model Providers" [ref=e6223]:
+                - cell "LFM2.5-1.2B-Instruct" [ref=e6224]:
+                  - generic [ref=e6229]: LFM2.5-1.2B-Instruct
+                - cell "32k" [ref=e6230]:
+                  - generic [ref=e6234]: 32k
+                - cell "Liquid AI logo Liquid AI" [ref=e6235]:
+                  - generic [ref=e6236]:
+                    - img "Liquid AI logo" [ref=e6237]
+                    - paragraph [ref=e6238]: Liquid AI
+                - cell "8" [ref=e6239]:
+                  - generic [ref=e6241]: "8"
+                - cell "$0.00" [ref=e6242]:
+                  - generic [ref=e6246]: $0.00
+                - cell "0" [ref=e6247]:
+                  - generic [ref=e6251]: "0"
+                - cell "0.00" [ref=e6252]:
+                  - generic [ref=e6256]: "0.00"
+                - cell "Model Providers" [ref=e6257]:
+                  - generic [ref=e6258]:
+                    - link "Model" [ref=e6259] [cursor=pointer]:
+                      - /url: /models/lfm2-5-1-2b-instruct
+                      - button "Model" [ref=e6260]:
+                        - img [ref=e6261]
+                        - text: Model
+                    - link "Providers" [ref=e6265] [cursor=pointer]:
+                      - /url: /models/lfm2-5-1-2b-instruct/providers
+                      - img [ref=e6266]
+                      - text: Providers
+              - row "LFM2 2.6B 33k Liquid AI logo Liquid AI 8 $0.00 0 0.00 Model Providers" [ref=e6270]:
+                - cell "LFM2 2.6B" [ref=e6271]:
+                  - generic [ref=e6276]: LFM2 2.6B
+                - cell "33k" [ref=e6277]:
+                  - generic [ref=e6281]: 33k
+                - cell "Liquid AI logo Liquid AI" [ref=e6282]:
+                  - generic [ref=e6283]:
+                    - img "Liquid AI logo" [ref=e6284]
+                    - paragraph [ref=e6285]: Liquid AI
+                - cell "8" [ref=e6286]:
+                  - generic [ref=e6288]: "8"
+                - cell "$0.00" [ref=e6289]:
+                  - generic [ref=e6293]: $0.00
+                - cell "0" [ref=e6294]:
+                  - generic [ref=e6298]: "0"
+                - cell "0.00" [ref=e6299]:
+                  - generic [ref=e6303]: "0.00"
+                - cell "Model Providers" [ref=e6304]:
+                  - generic [ref=e6305]:
+                    - link "Model" [ref=e6306] [cursor=pointer]:
+                      - /url: /models/lfm2-2-6b
+                      - button "Model" [ref=e6307]:
+                        - img [ref=e6308]
+                        - text: Model
+                    - link "Providers" [ref=e6312] [cursor=pointer]:
+                      - /url: /models/lfm2-2-6b/providers
+                      - img [ref=e6313]
+                      - text: Providers
+              - row "Granite 4.0 H 1B 128k IBM logo IBM 8 $0.00 0 0.00 Model Providers" [ref=e6317]:
+                - cell "Granite 4.0 H 1B" [ref=e6318]:
+                  - generic [ref=e6323]: Granite 4.0 H 1B
+                - cell "128k" [ref=e6324]:
+                  - generic [ref=e6328]: 128k
+                - cell "IBM logo IBM" [ref=e6329]:
+                  - generic [ref=e6330]:
+                    - img "IBM logo" [ref=e6331]
+                    - paragraph [ref=e6332]: IBM
+                - cell "8" [ref=e6333]:
+                  - generic [ref=e6335]: "8"
+                - cell "$0.00" [ref=e6336]:
+                  - generic [ref=e6340]: $0.00
+                - cell "0" [ref=e6341]:
+                  - generic [ref=e6345]: "0"
+                - cell "0.00" [ref=e6346]:
+                  - generic [ref=e6350]: "0.00"
+                - cell "Model Providers" [ref=e6351]:
+                  - generic [ref=e6352]:
+                    - link "Model" [ref=e6353] [cursor=pointer]:
+                      - /url: /models/granite-4-0-h-nano-1b
+                      - button "Model" [ref=e6354]:
+                        - img [ref=e6355]
+                        - text: Model
+                    - link "Providers" [ref=e6359] [cursor=pointer]:
+                      - /url: /models/granite-4-0-h-nano-1b/providers
+                      - img [ref=e6360]
+                      - text: Providers
+              - row "Gemma 3 270M 32k Google logo Google 8 $0.00 0 0.00 Model Providers" [ref=e6364]:
+                - cell "Gemma 3 270M" [ref=e6365]:
+                  - generic [ref=e6370]: Gemma 3 270M
+                - cell "32k" [ref=e6371]:
+                  - generic [ref=e6375]: 32k
+                - cell "Google logo Google" [ref=e6376]:
+                  - generic [ref=e6377]:
+                    - img "Google logo" [ref=e6378]
+                    - paragraph [ref=e6379]: Google
+                - cell "8" [ref=e6380]:
+                  - generic [ref=e6382]: "8"
+                - cell "$0.00" [ref=e6383]:
+                  - generic [ref=e6387]: $0.00
+                - cell "0" [ref=e6388]:
+                  - generic [ref=e6392]: "0"
+                - cell "0.00" [ref=e6393]:
+                  - generic [ref=e6397]: "0.00"
+                - cell "Model Providers" [ref=e6398]:
+                  - generic [ref=e6399]:
+                    - link "Model" [ref=e6400] [cursor=pointer]:
+                      - /url: /models/gemma-3-270m
+                      - button "Model" [ref=e6401]:
+                        - img [ref=e6402]
+                        - text: Model
+                    - link "Providers" [ref=e6406] [cursor=pointer]:
+                      - /url: /models/gemma-3-270m/providers
+                      - img [ref=e6407]
+                      - text: Providers
+              - row "Apertus 70B Instruct 66k Swiss AI Initiative logo Swiss AI Initiative 8 $1.34 61 2.77 Model Providers" [ref=e6411]:
+                - cell "Apertus 70B Instruct" [ref=e6412]:
+                  - generic [ref=e6417]: Apertus 70B Instruct
+                - cell "66k" [ref=e6418]:
+                  - generic [ref=e6422]: 66k
+                - cell "Swiss AI Initiative logo Swiss AI Initiative" [ref=e6423]:
+                  - generic [ref=e6424]:
+                    - img "Swiss AI Initiative logo" [ref=e6425]
+                    - paragraph [ref=e6426]: Swiss AI Initiative
+                - cell "8" [ref=e6427]:
+                  - generic [ref=e6429]: "8"
+                - cell "$1.34" [ref=e6430]:
+                  - generic [ref=e6434]: $1.34
+                - cell "61" [ref=e6435]:
+                  - generic [ref=e6439]: "61"
+                - cell "2.77" [ref=e6440]:
+                  - generic [ref=e6444]: "2.77"
+                - cell "Model Providers" [ref=e6445]:
+                  - generic [ref=e6446]:
+                    - link "Model" [ref=e6447] [cursor=pointer]:
+                      - /url: /models/apertus-70b-instruct
+                      - button "Model" [ref=e6448]:
+                        - img [ref=e6449]
+                        - text: Model
+                    - link "Providers" [ref=e6453] [cursor=pointer]:
+                      - /url: /models/apertus-70b-instruct/providers
+                      - img [ref=e6454]
+                      - text: Providers
+              - row "Granite 4.0 Micro 128k IBM logo IBM 8 $0.00 0 0.00 Model Providers" [ref=e6458]:
+                - cell "Granite 4.0 Micro" [ref=e6459]:
+                  - generic [ref=e6464]: Granite 4.0 Micro
+                - cell "128k" [ref=e6465]:
+                  - generic [ref=e6469]: 128k
+                - cell "IBM logo IBM" [ref=e6470]:
+                  - generic [ref=e6471]:
+                    - img "IBM logo" [ref=e6472]
+                    - paragraph [ref=e6473]: IBM
+                - cell "8" [ref=e6474]:
+                  - generic [ref=e6476]: "8"
+                - cell "$0.00" [ref=e6477]:
+                  - generic [ref=e6481]: $0.00
+                - cell "0" [ref=e6482]:
+                  - generic [ref=e6486]: "0"
+                - cell "0.00" [ref=e6487]:
+                  - generic [ref=e6491]: "0.00"
+                - cell "Model Providers" [ref=e6492]:
+                  - generic [ref=e6493]:
+                    - link "Model" [ref=e6494] [cursor=pointer]:
+                      - /url: /models/granite-4-0-micro
+                      - button "Model" [ref=e6495]:
+                        - img [ref=e6496]
+                        - text: Model
+                    - link "Providers" [ref=e6500] [cursor=pointer]:
+                      - /url: /models/granite-4-0-micro/providers
+                      - img [ref=e6501]
+                      - text: Providers
+              - row "DeepHermes 3 - Llama-3.1 8B 128k Nous Research logo Nous Research 8 E $0.00 0 0.00 Model Providers" [ref=e6505]:
+                - cell "DeepHermes 3 - Llama-3.1 8B" [ref=e6506]:
+                  - generic [ref=e6511]: DeepHermes 3 - Llama-3.1 8B
+                - cell "128k" [ref=e6512]:
+                  - generic [ref=e6516]: 128k
+                - cell "Nous Research logo Nous Research" [ref=e6517]:
+                  - generic [ref=e6518]:
+                    - img "Nous Research logo" [ref=e6519]
+                    - paragraph [ref=e6520]: Nous Research
+                - cell "8 E" [ref=e6521]:
+                  - generic [ref=e6522]:
+                    - generic [ref=e6523]: "8"
+                    - generic [ref=e6524]: E
+                - cell "$0.00" [ref=e6525]:
+                  - generic [ref=e6529]: $0.00
+                - cell "0" [ref=e6530]:
+                  - generic [ref=e6534]: "0"
+                - cell "0.00" [ref=e6535]:
+                  - generic [ref=e6539]: "0.00"
+                - cell "Model Providers" [ref=e6540]:
+                  - generic [ref=e6541]:
+                    - link "Model" [ref=e6542] [cursor=pointer]:
+                      - /url: /models/deephermes-3-llama-3-1-8b-preview
+                      - button "Model" [ref=e6543]:
+                        - img [ref=e6544]
+                        - text: Model
+                    - link "Providers" [ref=e6548] [cursor=pointer]:
+                      - /url: /models/deephermes-3-llama-3-1-8b-preview/providers
+                      - img [ref=e6549]
+                      - text: Providers
+              - row "Granite 4.0 1B 128k IBM logo IBM 7 $0.00 0 0.00 Model Providers" [ref=e6553]:
+                - cell "Granite 4.0 1B" [ref=e6554]:
+                  - generic [ref=e6559]: Granite 4.0 1B
+                - cell "128k" [ref=e6560]:
+                  - generic [ref=e6564]: 128k
+                - cell "IBM logo IBM" [ref=e6565]:
+                  - generic [ref=e6566]:
+                    - img "IBM logo" [ref=e6567]
+                    - paragraph [ref=e6568]: IBM
+                - cell "7" [ref=e6569]:
+                  - generic [ref=e6571]: "7"
+                - cell "$0.00" [ref=e6572]:
+                  - generic [ref=e6576]: $0.00
+                - cell "0" [ref=e6577]:
+                  - generic [ref=e6581]: "0"
+                - cell "0.00" [ref=e6582]:
+                  - generic [ref=e6586]: "0.00"
+                - cell "Model Providers" [ref=e6587]:
+                  - generic [ref=e6588]:
+                    - link "Model" [ref=e6589] [cursor=pointer]:
+                      - /url: /models/granite-4-0-nano-1b
+                      - button "Model" [ref=e6590]:
+                        - img [ref=e6591]
+                        - text: Model
+                    - link "Providers" [ref=e6595] [cursor=pointer]:
+                      - /url: /models/granite-4-0-nano-1b/providers
+                      - img [ref=e6596]
+                      - text: Providers
+              - row "Molmo2-8B 37k Allen Institute for AI logo Allen Institute for AI 7 $0.00 0 0.00 Model Providers" [ref=e6600]:
+                - cell "Molmo2-8B" [ref=e6601]:
+                  - generic [ref=e6606]: Molmo2-8B
+                - cell "37k" [ref=e6607]:
+                  - generic [ref=e6611]: 37k
+                - cell "Allen Institute for AI logo Allen Institute for AI" [ref=e6612]:
+                  - generic [ref=e6613]:
+                    - img "Allen Institute for AI logo" [ref=e6614]
+                    - paragraph [ref=e6615]: Allen Institute for AI
+                - cell "7" [ref=e6616]:
+                  - generic [ref=e6618]: "7"
+                - cell "$0.00" [ref=e6619]:
+                  - generic [ref=e6623]: $0.00
+                - cell "0" [ref=e6624]:
+                  - generic [ref=e6628]: "0"
+                - cell "0.00" [ref=e6629]:
+                  - generic [ref=e6633]: "0.00"
+                - cell "Model Providers" [ref=e6634]:
+                  - generic [ref=e6635]:
+                    - link "Model" [ref=e6636] [cursor=pointer]:
+                      - /url: /models/molmo2-8b
+                      - button "Model" [ref=e6637]:
+                        - img [ref=e6638]
+                        - text: Model
+                    - link "Providers" [ref=e6642] [cursor=pointer]:
+                      - /url: /models/molmo2-8b/providers
+                      - img [ref=e6643]
+                      - text: Providers
+              - row "LFM2 8B A1B 33k Liquid AI logo Liquid AI 7 $0.00 0 0.00 Model Providers" [ref=e6647]:
+                - cell "LFM2 8B A1B" [ref=e6648]:
+                  - generic [ref=e6653]: LFM2 8B A1B
+                - cell "33k" [ref=e6654]:
+                  - generic [ref=e6658]: 33k
+                - cell "Liquid AI logo Liquid AI" [ref=e6659]:
+                  - generic [ref=e6660]:
+                    - img "Liquid AI logo" [ref=e6661]
+                    - paragraph [ref=e6662]: Liquid AI
+                - cell "7" [ref=e6663]:
+                  - generic [ref=e6665]: "7"
+                - cell "$0.00" [ref=e6666]:
+                  - generic [ref=e6670]: $0.00
+                - cell "0" [ref=e6671]:
+                  - generic [ref=e6675]: "0"
+                - cell "0.00" [ref=e6676]:
+                  - generic [ref=e6680]: "0.00"
+                - cell "Model Providers" [ref=e6681]:
+                  - generic [ref=e6682]:
+                    - link "Model" [ref=e6683] [cursor=pointer]:
+                      - /url: /models/lfm2-8b-a1b
+                      - button "Model" [ref=e6684]:
+                        - img [ref=e6685]
+                        - text: Model
+                    - link "Providers" [ref=e6689] [cursor=pointer]:
+                      - /url: /models/lfm2-8b-a1b/providers
+                      - img [ref=e6690]
+                      - text: Providers
+              - row "Gemma 3n E4B 32k Google logo Google 6 $0.03 41 1.07 Model Providers" [ref=e6694]:
+                - cell "Gemma 3n E4B" [ref=e6695]:
+                  - generic [ref=e6700]: Gemma 3n E4B
+                - cell "32k" [ref=e6701]:
+                  - generic [ref=e6705]: 32k
+                - cell "Google logo Google" [ref=e6706]:
+                  - generic [ref=e6707]:
+                    - img "Google logo" [ref=e6708]
+                    - paragraph [ref=e6709]: Google
+                - cell "6" [ref=e6710]:
+                  - generic [ref=e6712]: "6"
+                - cell "$0.03" [ref=e6713]:
+                  - generic [ref=e6717]: $0.03
+                - cell "41" [ref=e6718]:
+                  - generic [ref=e6722]: "41"
+                - cell "1.07" [ref=e6723]:
+                  - generic [ref=e6727]: "1.07"
+                - cell "Model Providers" [ref=e6728]:
+                  - generic [ref=e6729]:
+                    - link "Model" [ref=e6730] [cursor=pointer]:
+                      - /url: /models/gemma-3n-e4b
+                      - button "Model" [ref=e6731]:
+                        - img [ref=e6732]
+                        - text: Model
+                    - link "Providers" [ref=e6736] [cursor=pointer]:
+                      - /url: /models/gemma-3n-e4b/providers
+                      - img [ref=e6737]
+                      - text: Providers
+              - row "Gemma 3 4B 128k Google logo Google 6 $0.00 30 1.50 Model Providers" [ref=e6741]:
+                - cell "Gemma 3 4B" [ref=e6742]:
+                  - generic [ref=e6747]: Gemma 3 4B
+                - cell "128k" [ref=e6748]:
+                  - generic [ref=e6752]: 128k
+                - cell "Google logo Google" [ref=e6753]:
+                  - generic [ref=e6754]:
+                    - img "Google logo" [ref=e6755]
+                    - paragraph [ref=e6756]: Google
+                - cell "6" [ref=e6757]:
+                  - generic [ref=e6759]: "6"
+                - cell "$0.00" [ref=e6760]:
+                  - generic [ref=e6764]: $0.00
+                - cell "30" [ref=e6765]:
+                  - generic [ref=e6769]: "30"
+                - cell "1.50" [ref=e6770]:
+                  - generic [ref=e6774]: "1.50"
+                - cell "Model Providers" [ref=e6775]:
+                  - generic [ref=e6776]:
+                    - link "Model" [ref=e6777] [cursor=pointer]:
+                      - /url: /models/gemma-3-4b
+                      - button "Model" [ref=e6778]:
+                        - img [ref=e6779]
+                        - text: Model
+                    - link "Providers" [ref=e6783] [cursor=pointer]:
+                      - /url: /models/gemma-3-4b/providers
+                      - img [ref=e6784]
+                      - text: Providers
+              - row "LFM2.5-VL-1.6B 32k Liquid AI logo Liquid AI 6 $0.00 0 0.00 Model Providers" [ref=e6788]:
+                - cell "LFM2.5-VL-1.6B" [ref=e6789]:
+                  - generic [ref=e6794]: LFM2.5-VL-1.6B
+                - cell "32k" [ref=e6795]:
+                  - generic [ref=e6799]: 32k
+                - cell "Liquid AI logo Liquid AI" [ref=e6800]:
+                  - generic [ref=e6801]:
+                    - img "Liquid AI logo" [ref=e6802]
+                    - paragraph [ref=e6803]: Liquid AI
+                - cell "6" [ref=e6804]:
+                  - generic [ref=e6806]: "6"
+                - cell "$0.00" [ref=e6807]:
+                  - generic [ref=e6811]: $0.00
+                - cell "0" [ref=e6812]:
+                  - generic [ref=e6816]: "0"
+                - cell "0.00" [ref=e6817]:
+                  - generic [ref=e6821]: "0.00"
+                - cell "Model Providers" [ref=e6822]:
+                  - generic [ref=e6823]:
+                    - link "Model" [ref=e6824] [cursor=pointer]:
+                      - /url: /models/lfm2-5-vl-1-6b
+                      - button "Model" [ref=e6825]:
+                        - img [ref=e6826]
+                        - text: Model
+                    - link "Providers" [ref=e6830] [cursor=pointer]:
+                      - /url: /models/lfm2-5-vl-1-6b/providers
+                      - img [ref=e6831]
+                      - text: Providers
+              - row "Granite 4.0 350M 33k IBM logo IBM 6 $0.00 0 0.00 Model Providers" [ref=e6835]:
+                - cell "Granite 4.0 350M" [ref=e6836]:
+                  - generic [ref=e6841]: Granite 4.0 350M
+                - cell "33k" [ref=e6842]:
+                  - generic [ref=e6846]: 33k
+                - cell "IBM logo IBM" [ref=e6847]:
+                  - generic [ref=e6848]:
+                    - img "IBM logo" [ref=e6849]
+                    - paragraph [ref=e6850]: IBM
+                - cell "6" [ref=e6851]:
+                  - generic [ref=e6853]: "6"
+                - cell "$0.00" [ref=e6854]:
+                  - generic [ref=e6858]: $0.00
+                - cell "0" [ref=e6859]:
+                  - generic [ref=e6863]: "0"
+                - cell "0.00" [ref=e6864]:
+                  - generic [ref=e6868]: "0.00"
+                - cell "Model Providers" [ref=e6869]:
+                  - generic [ref=e6870]:
+                    - link "Model" [ref=e6871] [cursor=pointer]:
+                      - /url: /models/granite-4-0-350m
+                      - button "Model" [ref=e6872]:
+                        - img [ref=e6873]
+                        - text: Model
+                    - link "Providers" [ref=e6877] [cursor=pointer]:
+                      - /url: /models/granite-4-0-350m/providers
+                      - img [ref=e6878]
+                      - text: Providers
+              - row "Apertus 8B Instruct 66k Swiss AI Initiative logo Swiss AI Initiative 6 $0.13 134 2.39 Model Providers" [ref=e6882]:
+                - cell "Apertus 8B Instruct" [ref=e6883]:
+                  - generic [ref=e6888]: Apertus 8B Instruct
+                - cell "66k" [ref=e6889]:
+                  - generic [ref=e6893]: 66k
+                - cell "Swiss AI Initiative logo Swiss AI Initiative" [ref=e6894]:
+                  - generic [ref=e6895]:
+                    - img "Swiss AI Initiative logo" [ref=e6896]
+                    - paragraph [ref=e6897]: Swiss AI Initiative
+                - cell "6" [ref=e6898]:
+                  - generic [ref=e6900]: "6"
+                - cell "$0.13" [ref=e6901]:
+                  - generic [ref=e6905]: $0.13
+                - cell "134" [ref=e6906]:
+                  - generic [ref=e6910]: "134"
+                - cell "2.39" [ref=e6911]:
+                  - generic [ref=e6915]: "2.39"
+                - cell "Model Providers" [ref=e6916]:
+                  - generic [ref=e6917]:
+                    - link "Model" [ref=e6918] [cursor=pointer]:
+                      - /url: /models/apertus-8b-instruct
+                      - button "Model" [ref=e6919]:
+                        - img [ref=e6920]
+                        - text: Model
+                    - link "Providers" [ref=e6924] [cursor=pointer]:
+                      - /url: /models/apertus-8b-instruct/providers
+                      - img [ref=e6925]
+                      - text: Providers
+              - row "Gemma 3 1B 32k Google logo Google 6 $0.00 38 0.79 Model Providers" [ref=e6929]:
+                - cell "Gemma 3 1B" [ref=e6930]:
+                  - generic [ref=e6935]: Gemma 3 1B
+                - cell "32k" [ref=e6936]:
+                  - generic [ref=e6940]: 32k
+                - cell "Google logo Google" [ref=e6941]:
+                  - generic [ref=e6942]:
+                    - img "Google logo" [ref=e6943]
+                    - paragraph [ref=e6944]: Google
+                - cell "6" [ref=e6945]:
+                  - generic [ref=e6947]: "6"
+                - cell "$0.00" [ref=e6948]:
+                  - generic [ref=e6952]: $0.00
+                - cell "38" [ref=e6953]:
+                  - generic [ref=e6957]: "38"
+                - cell "0.79" [ref=e6958]:
+                  - generic [ref=e6962]: "0.79"
+                - cell "Model Providers" [ref=e6963]:
+                  - generic [ref=e6964]:
+                    - link "Model" [ref=e6965] [cursor=pointer]:
+                      - /url: /models/gemma-3-1b
+                      - button "Model" [ref=e6966]:
+                        - img [ref=e6967]
+                        - text: Model
+                    - link "Providers" [ref=e6971] [cursor=pointer]:
+                      - /url: /models/gemma-3-1b/providers
+                      - img [ref=e6972]
+                      - text: Providers
+              - row "Granite 4.0 H 350M 33k IBM logo IBM 5 $0.00 0 0.00 Model Providers" [ref=e6976]:
+                - cell "Granite 4.0 H 350M" [ref=e6977]:
+                  - generic [ref=e6982]: Granite 4.0 H 350M
+                - cell "33k" [ref=e6983]:
+                  - generic [ref=e6987]: 33k
+                - cell "IBM logo IBM" [ref=e6988]:
+                  - generic [ref=e6989]:
+                    - img "IBM logo" [ref=e6990]
+                    - paragraph [ref=e6991]: IBM
+                - cell "5" [ref=e6992]:
+                  - generic [ref=e6994]: "5"
+                - cell "$0.00" [ref=e6995]:
+                  - generic [ref=e6999]: $0.00
+                - cell "0" [ref=e7000]:
+                  - generic [ref=e7004]: "0"
+                - cell "0.00" [ref=e7005]:
+                  - generic [ref=e7009]: "0.00"
+                - cell "Model Providers" [ref=e7010]:
+                  - generic [ref=e7011]:
+                    - link "Model" [ref=e7012] [cursor=pointer]:
+                      - /url: /models/granite-4-0-h-350m
+                      - button "Model" [ref=e7013]:
+                        - img [ref=e7014]
+                        - text: Model
+                    - link "Providers" [ref=e7018] [cursor=pointer]:
+                      - /url: /models/granite-4-0-h-350m/providers
+                      - img [ref=e7019]
+                      - text: Providers
+              - row "Gemma 3n E2B 32k Google logo Google 5 $0.00 0 0.00 Model Providers" [ref=e7023]:
+                - cell "Gemma 3n E2B" [ref=e7024]:
+                  - generic [ref=e7029]: Gemma 3n E2B
+                - cell "32k" [ref=e7030]:
+                  - generic [ref=e7034]: 32k
+                - cell "Google logo Google" [ref=e7035]:
+                  - generic [ref=e7036]:
+                    - img "Google logo" [ref=e7037]
+                    - paragraph [ref=e7038]: Google
+                - cell "5" [ref=e7039]:
+                  - generic [ref=e7041]: "5"
+                - cell "$0.00" [ref=e7042]:
+                  - generic [ref=e7046]: $0.00
+                - cell "0" [ref=e7047]:
+                  - generic [ref=e7051]: "0"
+                - cell "0.00" [ref=e7052]:
+                  - generic [ref=e7056]: "0.00"
+                - cell "Model Providers" [ref=e7057]:
+                  - generic [ref=e7058]:
+                    - link "Model" [ref=e7059] [cursor=pointer]:
+                      - /url: /models/gemma-3n-e2b
+                      - button "Model" [ref=e7060]:
+                        - img [ref=e7061]
+                        - text: Model
+                    - link "Providers" [ref=e7065] [cursor=pointer]:
+                      - /url: /models/gemma-3n-e2b/providers
+                      - img [ref=e7066]
+                      - text: Providers
+              - row "Cogito v2.1 128k Deep Cogito logo Deep Cogito -- $1.25 89 0.71 Model Providers" [ref=e7070]:
+                - cell "Cogito v2.1" [ref=e7071]:
+                  - generic [ref=e7075]:
+                    - generic [ref=e7076]: Cogito v2.1
+                    - img [ref=e7077]
+                - cell "128k" [ref=e7079]:
+                  - generic [ref=e7083]: 128k
+                - cell "Deep Cogito logo Deep Cogito" [ref=e7084]:
+                  - generic [ref=e7085]:
+                    - img "Deep Cogito logo" [ref=e7086]
+                    - paragraph [ref=e7087]: Deep Cogito
+                - cell "--" [ref=e7088]:
+                  - generic [ref=e7090]: "--"
+                - cell "$1.25" [ref=e7091]:
+                  - generic [ref=e7095]: $1.25
+                - cell "89" [ref=e7096]:
+                  - generic [ref=e7100]: "89"
+                - cell "0.71" [ref=e7101]:
+                  - generic [ref=e7105]: "0.71"
+                - cell "Model Providers" [ref=e7106]:
+                  - generic [ref=e7107]:
+                    - link "Model" [ref=e7108] [cursor=pointer]:
+                      - /url: /models/cogito-v2-1-reasoning
+                      - button "Model" [ref=e7109]:
+                        - img [ref=e7110]
+                        - text: Model
+                    - link "Providers" [ref=e7114] [cursor=pointer]:
+                      - /url: /models/cogito-v2-1-reasoning/providers
+                      - img [ref=e7115]
+                      - text: Providers
+        - heading "Key definitions" [level=2] [ref=e7121]
+        - generic [ref=e7123]:
+          - generic [ref=e7125]:
+            - heading "Context window" [level=3] [ref=e7126]:
+              - button "Context window" [ref=e7127] [cursor=pointer]:
+                - generic [ref=e7128]:
+                  - img [ref=e7129]
+                  - text: Context window
+                - img [ref=e7131]
+            - region "Context window":
+              - paragraph [ref=e7134]: Maximum number of combined input & output tokens. Output tokens commonly have a significantly lower limit (varied by model).
+          - generic [ref=e7136]:
+            - heading "Output Speed" [level=3] [ref=e7137]:
+              - button "Output Speed" [ref=e7138] [cursor=pointer]:
+                - generic [ref=e7139]:
+                  - img [ref=e7140]
+                  - text: Output Speed
+                - img [ref=e7142]
+            - region "Output Speed":
+              - paragraph [ref=e7145]: Tokens per second received while the model is generating tokens (ie. after first chunk has been received from the API for models which support streaming).
+          - generic [ref=e7147]:
+            - heading "Latency (Time to First Token)" [level=3] [ref=e7148]:
+              - button "Latency (Time to First Token)" [ref=e7149] [cursor=pointer]:
+                - generic [ref=e7150]:
+                  - img [ref=e7151]
+                  - text: Latency (Time to First Token)
+                - img [ref=e7153]
+            - region "Latency (Time to First Token)":
+              - paragraph [ref=e7156]: Time to first token received, in seconds, after API request sent. For reasoning models which share reasoning tokens, this will be the first reasoning token. For models which do not support streaming, this represents time to receive the completion.
+          - generic [ref=e7158]:
+            - heading "Price" [level=3] [ref=e7159]:
+              - button "Price" [ref=e7160] [cursor=pointer]:
+                - generic [ref=e7161]:
+                  - img [ref=e7162]
+                  - text: Price
+                - img [ref=e7164]
+            - region "Price":
+              - paragraph [ref=e7167]: Price per token, represented as USD per million Tokens. Price is a blend of Input & Output token prices (3:1 ratio).
+          - generic [ref=e7169]:
+            - heading "Output Price" [level=3] [ref=e7170]:
+              - button "Output Price" [ref=e7171] [cursor=pointer]:
+                - generic [ref=e7172]:
+                  - img [ref=e7173]
+                  - text: Output Price
+                - img [ref=e7175]
+            - region "Output Price":
+              - paragraph [ref=e7178]: Price per token generated by the model (received from the API), represented as USD per million Tokens.
+          - generic [ref=e7180]:
+            - heading "Input Price" [level=3] [ref=e7181]:
+              - button "Input Price" [ref=e7182] [cursor=pointer]:
+                - generic [ref=e7183]:
+                  - img [ref=e7184]
+                  - text: Input Price
+                - img [ref=e7186]
+            - region "Input Price":
+              - paragraph [ref=e7189]: Price per token included in the request/message sent to the API, represented as USD per million Tokens.
+          - generic [ref=e7191]:
+            - heading "Time period" [level=3] [ref=e7192]:
+              - button "Time period" [ref=e7193] [cursor=pointer]:
+                - generic [ref=e7194]:
+                  - img [ref=e7195]
+                  - text: Time period
+                - img [ref=e7197]
+            - region "Time period":
+              - paragraph [ref=e7200]: Metrics are 'live' and are based on the past 72 hours of measurements, measurements are taken 8 times a day for single requests and 2 times per day for parallel requests.
+        - heading "Frequently Asked Questions" [level=2] [ref=e7203]
+        - generic [ref=e7205]:
+          - generic [ref=e7206]:
+            - 'heading "Which AI model ranks #1 on the LLM Leaderboard?" [level=3] [ref=e7207]':
+              - 'button "Which AI model ranks #1 on the LLM Leaderboard?" [ref=e7208] [cursor=pointer]':
+                - text: "Which AI model ranks #1 on the LLM Leaderboard?"
+                - img [ref=e7209]
+            - 'region "Which AI model ranks #1 on the LLM Leaderboard?"':
+              - paragraph [ref=e7212]: "Gemini 3.1 Pro Preview currently ranks #1 on the Artificial Analysis LLM Leaderboard with an Intelligence Index score of 57, out of 314 models ranked."
+          - generic [ref=e7213]:
+            - heading "What are the top models on the LLM Leaderboard?" [level=3] [ref=e7214]:
+              - button "What are the top models on the LLM Leaderboard?" [ref=e7215] [cursor=pointer]:
+                - text: What are the top models on the LLM Leaderboard?
+                - img [ref=e7216]
+            - region "What are the top models on the LLM Leaderboard?":
+              - paragraph [ref=e7219]: "The top models by Intelligence Index are: 1. Gemini 3.1 Pro Preview (57), 2. GPT-5.4 (xhigh) (57), 3. GPT-5.3 Codex (xhigh) (54), 4. Claude Opus 4.6 (Adaptive Reasoning, Max Effort) (53), 5. Claude Sonnet 4.6 (Adaptive Reasoning, Max Effort) (52)."
+          - generic [ref=e7220]:
+            - heading "Which AI model has the fastest output speed?" [level=3] [ref=e7221]:
+              - button "Which AI model has the fastest output speed?" [ref=e7222] [cursor=pointer]:
+                - text: Which AI model has the fastest output speed?
+                - img [ref=e7223]
+            - region "Which AI model has the fastest output speed?":
+              - paragraph [ref=e7226]: Mercury 2 is the fastest at 764.5 tokens per second, followed by NVIDIA Nemotron 3 Super 120B A12B (Reasoning) (399.3 t/s) and Granite 3.3 8B (Non-reasoning) (399.1 t/s).
+          - generic [ref=e7227]:
+            - heading "Which AI model is the most affordable?" [level=3] [ref=e7228]:
+              - button "Which AI model is the most affordable?" [ref=e7229] [cursor=pointer]:
+                - text: Which AI model is the most affordable?
+                - img [ref=e7230]
+            - region "Which AI model is the most affordable?":
+              - paragraph [ref=e7233]: Gemma 3n E4B Instruct is the most affordable at $0.03 per 1M tokens (blended 3:1 input-to-output), followed by LFM2 24B A2B ($0.05) and Nova Micro ($0.06).
+          - generic [ref=e7234]:
+            - heading "Which is the best open weights model on the leaderboard?" [level=3] [ref=e7235]:
+              - button "Which is the best open weights model on the leaderboard?" [ref=e7236] [cursor=pointer]:
+                - text: Which is the best open weights model on the leaderboard?
+                - img [ref=e7237]
+            - region "Which is the best open weights model on the leaderboard?":
+              - paragraph [ref=e7240]: GLM-5 (Reasoning) is the highest-ranked open weights model with an Intelligence Index score of 50. There are 200 open weights models out of 314 total on the leaderboard.
+          - generic [ref=e7241]:
+            - heading "What are the top open weights models on the leaderboard?" [level=3] [ref=e7242]:
+              - button "What are the top open weights models on the leaderboard?" [ref=e7243] [cursor=pointer]:
+                - text: What are the top open weights models on the leaderboard?
+                - img [ref=e7244]
+            - region "What are the top open weights models on the leaderboard?":
+              - paragraph [ref=e7247]: "The top open weights models by Intelligence Index are: 1. GLM-5 (Reasoning) (50), 2. Kimi K2.5 (Reasoning) (47), 3. Qwen3.5 397B A17B (Reasoning) (45)."
+          - generic [ref=e7248]:
+            - heading "Which is the best reasoning model on the leaderboard?" [level=3] [ref=e7249]:
+              - button "Which is the best reasoning model on the leaderboard?" [ref=e7250] [cursor=pointer]:
+                - text: Which is the best reasoning model on the leaderboard?
+                - img [ref=e7251]
+            - region "Which is the best reasoning model on the leaderboard?":
+              - paragraph [ref=e7254]: Gemini 3.1 Pro Preview leads among 159 reasoning models with an Intelligence Index score of 57. Reasoning models use extended thinking to solve complex problems before responding.
+          - generic [ref=e7255]:
+            - heading "How do I filter models on the leaderboard?" [level=3] [ref=e7256]:
+              - button "How do I filter models on the leaderboard?" [ref=e7257] [cursor=pointer]:
+                - text: How do I filter models on the leaderboard?
+                - img [ref=e7258]
+            - region "How do I filter models on the leaderboard?":
+              - paragraph [ref=e7261]: The leaderboard includes filters to narrow results by model type (reasoning vs non-reasoning), openness (open weights vs proprietary), and other criteria. You can also adjust prompt options to see how performance varies with different input lengths.
+          - generic [ref=e7262]:
+            - heading "Where can I see more detailed metrics for a model?" [level=3] [ref=e7263]:
+              - button "Where can I see more detailed metrics for a model?" [ref=e7264] [cursor=pointer]:
+                - text: Where can I see more detailed metrics for a model?
+                - img [ref=e7265]
+            - region "Where can I see more detailed metrics for a model?":
+              - paragraph [ref=e7268]:
+                - text: Click on any model name in the leaderboard to visit its dedicated comparison page with detailed charts covering intelligence, pricing, speed, latency, and more. You can also compare API providers for each model.
+                - link "View all models" [ref=e7269] [cursor=pointer]:
+                  - /url: /models
+    - button "Back to top":
+      - img
+    - region "Notifications alt+T"
+    - generic "Footer" [ref=e7270]:
+      - heading "Footer" [level=2] [ref=e7271]
+      - generic [ref=e7273]:
+        - generic [ref=e7274]:
+          - generic [ref=e7275]:
+            - heading "Products & Resources" [level=3] [ref=e7276]
+            - list [ref=e7277]:
+              - listitem [ref=e7278]:
+                - link "Dashboard" [ref=e7279] [cursor=pointer]:
+                  - /url: /orgs
+              - listitem [ref=e7280]:
+                - link "Articles" [ref=e7281] [cursor=pointer]:
+                  - /url: /articles
+              - listitem [ref=e7282]:
+                - link "Methodology" [ref=e7283] [cursor=pointer]:
+                  - /url: /methodology
+          - generic [ref=e7284]:
+            - heading "Artificial Analysis" [level=3] [ref=e7285]
+            - list [ref=e7286]:
+              - listitem [ref=e7287]:
+                - link "FAQ" [ref=e7288] [cursor=pointer]:
+                  - /url: /faq
+              - listitem [ref=e7289]:
+                - link "Contact" [ref=e7290] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=e7291]:
+                - link "Terms of Use" [ref=e7292] [cursor=pointer]:
+                  - /url: /docs/legal/Terms-of-Use.pdf
+              - listitem [ref=e7293]:
+                - link "Privacy Policy" [ref=e7294] [cursor=pointer]:
+                  - /url: /docs/legal/Privacy-Policy.pdf
+              - listitem [ref=e7295]:
+                - link "hello@artificialanalysis.ai" [ref=e7296] [cursor=pointer]:
+                  - /url: mailto:hello@artificialanalysis.ai
+        - generic [ref=e7297]:
+          - generic [ref=e7298]:
+            - heading "Subscribe to new insights, delivered monthly" [level=3] [ref=e7299]
+            - generic [ref=e7301]:
+              - generic [ref=e7302]: Email address
+              - textbox "Email address" [ref=e7303]:
+                - /placeholder: Newsletter
+              - button "Subscribe" [ref=e7305] [cursor=pointer]
+          - generic [ref=e7306]:
+            - link "X" [ref=e7307] [cursor=pointer]:
+              - /url: https://x.com/ArtificialAnlys
+              - generic [ref=e7308]: X
+              - img [ref=e7309]
+            - link "LinkedIn" [ref=e7311] [cursor=pointer]:
+              - /url: https://www.linkedin.com/company/artificial-analysis/
+              - generic [ref=e7312]: LinkedIn
+              - img [ref=e7313]
+            - link "Discord" [ref=e7317] [cursor=pointer]:
+              - /url: https://discord.gg/aAvvUqxGjM
+              - generic [ref=e7318]: Discord
+              - img [ref=e7319]
+  - alert [ref=e7321]

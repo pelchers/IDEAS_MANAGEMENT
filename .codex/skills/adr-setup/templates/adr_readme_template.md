@@ -17,4 +17,4 @@ This directory manages Architecture Decision Records and session orchestration f
 - Sessions use UPPERCASE_SNAKE_CASE with numeric prefix
 - Phase files: `phase_N.md` (plan) and `phase_N_review.md` (review)
 - Orchestration files are permanent; phase files move from current/ to history/ on completion
-- See `.codex/skills/adr-setup/SKILL.md` for full convention reference
+- See `.claude/skills/adr-setup/SKILL.md` for full convention reference

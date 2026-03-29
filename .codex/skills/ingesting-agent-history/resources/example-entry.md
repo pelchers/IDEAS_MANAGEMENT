@@ -24,7 +24,7 @@
 ## Key Files and Areas
 
 - Primary files touched: app/globals.css, components/ThemeToggle.tsx
-- Related docs: .codex/templates/agent-ingest/agent-ingest-entry.md
+- Related docs: .claude/templates/agent-ingest/agent-ingest-entry.md
 - Tests/validation: none
 
 ## Next Steps

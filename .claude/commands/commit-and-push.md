@@ -66,3 +66,5 @@ Claude: Let me check the current git status...
 - Follow atomic commit principles (one logical change per commit)
 - Update logs/development-progress.md if significant work was done
 
+
+$ARGUMENTS

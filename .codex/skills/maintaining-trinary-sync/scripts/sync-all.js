@@ -25,7 +25,7 @@ const VERBOSE = args.includes('--verbose');
 
 // Base paths - resolve dynamically
 // Accepts --base-dir <path> or derives project root from script location
-// Script lives at <PROJECT_ROOT>/.codex/skills/maintaining-trinary-sync/scripts/
+// Script lives at <PROJECT_ROOT>/.claude/skills/maintaining-trinary-sync/scripts/
 function resolveBaseDir() {
   const idx = args.indexOf('--base-dir');
   if (idx !== -1 && args[idx + 1]) {

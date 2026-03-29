@@ -32,11 +32,11 @@ Role: Scan agents, skills, hooks, orchestration files, and system docs for hardc
 ### PowerShell Scripts (`.ps1`)
 ```powershell
 # BAD: Hardcoded path
-$QueueFile = "C:\\coding\\apps\\myproject\\.codex\\orchestration\\queue\\next_phase.json"
+$QueueFile = "C:\\coding\\apps\\myproject\\.claude\\orchestration\\queue\\next_phase.json"
 
 # GOOD: Derive from script location
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..")).Path
-$QueueFile = Join-Path $repoRoot ".codex\orchestration\queue\next_phase.json"
+$QueueFile = Join-Path $repoRoot ".claude\orchestration\queue\next_phase.json"
 ```
 
 ### Node.js Scripts (`.js`)
@@ -71,16 +71,16 @@ PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 ### Documentation (`.md`)
 ```markdown
 <!-- BAD: Hardcoded path -->
-Main App: `C:\coding\apps\wavz.fm\.codex\`
+Main App: `C:\coding\apps\wavz.fm\.claude\`
 
 <!-- GOOD: Placeholder -->
-Main App: `<PROJECT_ROOT>/.codex/`
+Main App: `<PROJECT_ROOT>/.claude/`
 ```
 
 ## Execution Flow
 
-1. Run grep for patterns: `C:\\\\coding|C:/coding|/home/|/Users/` across `.claude/`, `.codex/`, `.adr/`
-2. Run grep for known project names that shouldn't be in templates
+1. Run `Grep` for patterns: `C:\\\\coding|C:/coding|/home/|/Users/` across `.claude/`, `.codex/`, `.adr/`
+2. Run `Grep` for known project names that shouldn't be in templates
 3. Categorize each finding by severity
 4. For each HIGH severity finding, apply the appropriate fix pattern
 5. For MEDIUM/LOW findings, report them for human review

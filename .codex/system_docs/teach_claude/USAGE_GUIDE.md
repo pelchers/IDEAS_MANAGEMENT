@@ -6,41 +6,28 @@
 /skill teach-claude
 ```
 
-After loading, ask configuration questions directly in the conversation.
+Then ask configuration questions in the conversation.
 
 ## Detailed Usage
 
 ### Finding Config Paths
 
-Ask: "Where does Claude Code store global settings on Windows/Mac/Linux?"
-The skill points you to `references/claude/global-paths.md` which lists exact filesystem paths.
+Ask: "Where does Claude Code store global settings on Windows?"
+References `references/claude/global-paths.md`.
 
-### Modifying Settings
+### Skill Frontmatter Format
 
-Ask: "How do I add a new MCP server to Claude Code?"
-The skill references `references/claude/settings-config.md` with the exact JSON structure.
-
-### Creating Skills/Agents
-
-Ask: "What frontmatter fields are required in SKILL.md?"
-References: `references/claude/skills-agents-format.md`
-
-Required frontmatter:
 ```yaml
 ---
 name: my-skill-name
-description: One-line description of what this skill does
+description: One-line description
+user_invocable: true   # optional — enables /skill invocation
 ---
 ```
 
-Optional fields: `user_invocable`, `trigger`, `category`, `tags`, `related_skills`
+Full format: `references/claude/skills-agents-format.md`
 
-### Cross-Tool Configuration
-
-Ask: "How do I configure an equivalent skill in Codex CLI?"
-The skill reads from `references/codex/skills-agents-format.md` to explain the differences.
-
-### MCP Server Setup Example
+### Adding an MCP Server
 
 ```json
 {
@@ -48,20 +35,22 @@ The skill reads from `references/codex/skills-agents-format.md` to explain the d
     "my-server": {
       "command": "npx",
       "args": ["-y", "@my-org/mcp-server"],
-      "env": {
-        "API_KEY": "${MY_API_KEY}"
-      }
+      "env": { "API_KEY": "${MY_API_KEY}" }
     }
   }
 }
 ```
 
-Location: `.claude/settings.json` (project) or `~/.claude/settings.json` (global)
+File: `.claude/settings.json` (project) or `~/.claude/settings.json` (global).
+Full config: `references/claude/settings-config.md`
+
+### Cross-Tool (Codex CLI)
+
+Ask: "How do I create the same skill in Codex CLI?"
+References `references/codex/skills-agents-format.md`.
 
 ## Troubleshooting
 
-**Reference files not found**
-The skill references files in `.claude/skills/teach-claude/references/`. If the directory is missing, the skill definition itself (`SKILL.md`) still exists and provides the structure — recreate the references directory from scratch if needed.
+**Reference files missing** — Recreate the `references/` subdirectories from the SKILL.md structure definition.
 
-**Codex references outdated**
-These reference docs are maintained manually. Check the official Codex CLI changelog if behavior differs from what the references describe.
+**Codex references outdated** — Maintained manually; check the official Codex CLI changelog if behavior differs.

@@ -137,7 +137,7 @@ Status: planned | in_progress | blocked | complete
 
 ## Subagent Handoff (Orchestrator Pattern)
 When using the orchestrator-session skill:
-1. Orchestrator writes `next_phase.json` to `.codex/orchestration/queue/`
+1. Orchestrator writes `next_phase.json` to `.claude/orchestration/queue/`
 2. Orchestrator poke hook spawns a new Claude exec session
 3. Subagent executes the phase and returns a structured "poke" report
 4. Orchestrator processes the poke and prepares the next phase

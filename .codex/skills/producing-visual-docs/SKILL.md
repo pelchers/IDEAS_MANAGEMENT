@@ -1,4 +1,4 @@
----
+﻿---
 name: producing-visual-docs
 description: Produces user-facing and developer-facing documentation with Playwright visual capture, coverage maps, and appdocs viewers. Use when building or updating user/dev docs, visual QA assets, or documentation sites.
 ---

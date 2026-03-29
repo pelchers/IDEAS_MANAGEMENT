@@ -71,9 +71,9 @@ graph TD
 
 **Implicit Requirements** (inferred):
 ```
-"Research paper" implies literature review, citations, formal writing
-"Academic sources" implies peer-reviewed journals, not blogs
-"10 pages" implies ~2500-3000 words, proper formatting
+"Research paper" → implies literature review, citations, formal writing
+"Academic sources" → implies peer-reviewed journals, not blogs
+"10 pages" → implies ~2500-3000 words, proper formatting
 ```
 
 ### Requirement Categories
@@ -327,7 +327,7 @@ graph TD
     style K fill:#99ff99
 ```
 
-**Critical Path**: A -> B -> C -> D -> E -> F -> G -> H -> I -> J -> K
+**Critical Path**: A → B → C → D → E → F → G → H → I → J → K
 
 ### Time-Based Prioritization
 
@@ -359,10 +359,10 @@ tasks.sort((a, b) => b.urgency - a.urgency);
 
 **Bottom-up Estimation**:
 ```
-Research (5 sources x 30 min each) = 2.5 hours
+Research (5 sources × 30 min each) = 2.5 hours
 Note-taking = 1 hour
 Outline = 0.5 hours
-Writing (2500 words / 250 words/hour) = 10 hours
+Writing (2500 words ÷ 250 words/hour) = 10 hours
 Editing = 2 hours
 Formatting = 1 hour
 Buffer (20%) = 3.4 hours
@@ -533,3 +533,4 @@ For detailed information:
 - Eisenhower Decision Matrix
 - Bloom's Taxonomy for question generation
 - Agile task decomposition principles
+

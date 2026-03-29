@@ -19,6 +19,8 @@ async function exists(p) {
 
 function htmlTokens(content) {
   const tokens = [];
+
+  // Extract body classes
   const bodyClassMatch = content.match(/<body[^>]*class=['"]([^'"]+)['"]/i);
   if (bodyClassMatch) {
     for (const cls of bodyClassMatch[1].split(/\s+/).filter(Boolean)) {
@@ -26,51 +28,72 @@ function htmlTokens(content) {
     }
   }
 
-  const navStyleMatches = content.match(/class=['"][^'"]*\bnav-btn\b[^'"]*['"]/gi) ?? [];
-  for (const match of navStyleMatches) {
+  // Extract all class attributes as structural tokens
+  const classMatches = content.match(/class=['"][^'"]+['"]/gi) ?? [];
+  for (const match of classMatches) {
     const classes = match
       .replace(/class=['"]/, "")
       .replace(/['"]$/, "")
       .split(/\s+/)
-      .map((x) => x.toLowerCase());
+      .map((x) => x.toLowerCase().trim())
+      .filter(Boolean);
     for (const cls of classes) {
-      if (cls !== "nav-btn") tokens.push(`nav:${cls}`);
+      tokens.push(`class:${cls}`);
     }
   }
 
-  const flowMatches = content.match(/class=['"][^'"]*\bflow-[a-z0-9-]+/gi) ?? [];
-  for (const match of flowMatches) {
-    const flow = match.match(/flow-[a-z0-9-]+/i)?.[0]?.toLowerCase();
-    if (flow) tokens.push(`flow:${flow}`);
+  // Extract HTML element types used
+  const tagMatches = content.match(/<([\w-]+)[\s>]/gi) ?? [];
+  for (const match of tagMatches) {
+    const tag = match.replace(/[<\s>]/g, "").toLowerCase();
+    if (tag && !["html", "head", "meta", "link", "title", "script"].includes(tag)) {
+      tokens.push(`tag:${tag}`);
+    }
   }
 
-  const dataAttrs = [
-    "data-profile-id",
-    "data-nav-pattern",
-    "data-content-flow",
-    "data-scroll-mode",
-    "data-motion-language",
-    "data-hero-treatment"
-  ];
-  for (const attr of dataAttrs) {
-    const rx = new RegExp(`${attr}=['"]([^'"]+)['"]`, "gi");
-    let match;
-    while ((match = rx.exec(content)) !== null) {
-      tokens.push(`meta:${attr}:${String(match[1]).toLowerCase()}`);
-    }
+  // Extract data attributes
+  const dataAttrMatches = content.match(/data-[\w-]+=['"][^'"]*['"]/gi) ?? [];
+  for (const match of dataAttrMatches) {
+    tokens.push(`data:${match.toLowerCase()}`);
+  }
+
+  // Extract id attributes
+  const idMatches = content.match(/id=['"][^'"]+['"]/gi) ?? [];
+  for (const match of idMatches) {
+    tokens.push(`id:${match.replace(/id=['"]/, "").replace(/['"]$/, "").toLowerCase()}`);
   }
 
   return tokens;
 }
 
-function cssVariableTokens(content) {
+function cssTokens(content) {
   const tokens = [];
+
+  // Extract CSS custom properties
   const rootMatch = content.match(/:root\s*\{([^}]+)\}/i);
-  if (!rootMatch) return tokens;
-  const vars = rootMatch[1].match(/--[a-z0-9-]+\s*:\s*[^;]+/gi) ?? [];
-  for (const v of vars) {
-    tokens.push(`var:${v.replace(/\s+/g, "").toLowerCase()}`);
+  if (rootMatch) {
+    const vars = rootMatch[1].match(/--[a-z0-9-]+\s*:\s*[^;]+/gi) ?? [];
+    for (const v of vars) {
+      tokens.push(`var:${v.replace(/\s+/g, "").toLowerCase()}`);
+    }
   }
+
+  // Extract CSS selectors
+  const selectorMatches = content.match(/[.#][\w-]+(?=\s*[{,:])/g) ?? [];
+  for (const sel of selectorMatches) {
+    tokens.push(`sel:${sel.toLowerCase()}`);
+  }
+
+  // Extract CSS property-value pairs for layout-significant properties
+  const layoutProps = ["display", "grid-template", "flex-direction", "position", "overflow"];
+  for (const prop of layoutProps) {
+    const propRegex = new RegExp(`${prop}\\s*:\\s*([^;]+)`, "gi");
+    let match;
+    while ((match = propRegex.exec(content)) !== null) {
+      tokens.push(`css:${prop}:${match[1].trim().toLowerCase()}`);
+    }
+  }
+
   return tokens;
 }
 
@@ -80,22 +103,6 @@ function freq(tokens) {
     map.set(token, (map.get(token) ?? 0) + 1);
   }
   return map;
-}
-
-function cosine(a, b) {
-  const all = new Set([...a.keys(), ...b.keys()]);
-  let dot = 0;
-  let magA = 0;
-  let magB = 0;
-  for (const key of all) {
-    const va = a.get(key) ?? 0;
-    const vb = b.get(key) ?? 0;
-    dot += va * vb;
-    magA += va * va;
-    magB += vb * vb;
-  }
-  if (!magA || !magB) return 0;
-  return dot / (Math.sqrt(magA) * Math.sqrt(magB));
 }
 
 function jaccard(a, b) {
@@ -111,7 +118,7 @@ function jaccard(a, b) {
 }
 
 const conceptRoot = path.resolve(arg("--concept-root", ".docs/planning/concepts"));
-const threshold = Number(arg("--threshold", "0.62"));
+const threshold = Number(arg("--threshold", "0.55"));
 
 if (!(await exists(conceptRoot))) {
   console.error(`Concept root not found: ${conceptRoot}`);
@@ -119,7 +126,7 @@ if (!(await exists(conceptRoot))) {
 }
 
 const styles = (await fs.readdir(conceptRoot, { withFileTypes: true }))
-  .filter((entry) => entry.isDirectory() && entry.name !== "_orchestration");
+  .filter((entry) => entry.isDirectory() && !entry.name.startsWith("_") && !entry.name.startsWith("run-"));
 
 const passes = [];
 for (const style of styles) {
@@ -137,17 +144,18 @@ for (const style of styles) {
     }
     const html = await fs.readFile(htmlPath, "utf8");
     const css = await fs.readFile(cssPath, "utf8");
-    const signatureTokens = [...htmlTokens(html), ...cssVariableTokens(css)];
+    const signatureTokens = [...htmlTokens(html), ...cssTokens(css)];
 
     passes.push({
       id: `${style.name}/${pass.name}`,
       style: style.name,
       pass: pass.name,
-      rawTokens: signatureTokens
+      rawTokens: signatureTokens,
     });
   }
 }
 
+// Filter out tokens that appear in too many documents (shared boilerplate)
 const docFrequency = new Map();
 for (const pass of passes) {
   for (const token of new Set(pass.rawTokens)) {
@@ -170,7 +178,7 @@ for (let i = 0; i < passes.length; i += 1) {
     pairs.push({
       a: passes[i].id,
       b: passes[j].id,
-      similarity: Number(similarity.toFixed(4))
+      similarity: Number(similarity.toFixed(4)),
     });
   }
 }
@@ -185,15 +193,19 @@ const report = {
   totalPasses: passes.length,
   maxSimilarity: Number(maxSimilarity.toFixed(4)),
   topPairs: pairs.slice(0, 10),
-  violations
+  violations,
 };
 
 const outPath = path.join(conceptRoot, "uniqueness-report.json");
 await fs.writeFile(outPath, JSON.stringify(report, null, 2), "utf8");
 
 if (violations.length > 0) {
-  console.error(`Uniqueness check failed. ${violations.length} pair(s) exceeded threshold ${threshold}.`);
+  console.error(
+    `Uniqueness check failed. ${violations.length} pair(s) exceeded threshold ${threshold}.`
+  );
   process.exit(3);
 }
 
-console.log(`Uniqueness check passed for ${passes.length} passes. Max similarity: ${report.maxSimilarity}`);
+console.log(
+  `Uniqueness check passed for ${passes.length} passes. Max similarity: ${report.maxSimilarity}`
+);

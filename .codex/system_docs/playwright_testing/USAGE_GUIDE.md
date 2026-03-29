@@ -3,14 +3,8 @@
 ## Quick Start
 
 ```bash
-# Install Playwright
 npm init playwright@latest
-
-# Run all tests
-npx playwright test
-
-# UI mode (recommended for development)
-npx playwright test --ui
+npx playwright test --ui   # recommended for dev
 ```
 
 ## Detailed Usage
@@ -29,42 +23,37 @@ test('user can log in', async ({ page }) => {
 });
 ```
 
-### Using playwright-cli for One-Off Automation
-
-```bash
-playwright-cli open https://example.com
-playwright-cli snapshot                    # capture accessibility tree
-playwright-cli click e5                   # click by ref from snapshot
-playwright-cli screenshot --filename=out.png
-playwright-cli close
-```
+Prefer `getByRole` and `getByLabel` over CSS selectors.
 
 ### Visual Regression
 
 ```typescript
-// Capture baseline
-await expect(page).toHaveScreenshot('homepage.png');
-// On subsequent runs, Playwright diffs against baseline
+await expect(page).toHaveScreenshot('homepage.png');  // diffs on re-run
 ```
 
-### Running Specific Tests
+### playwright-cli (Interactive)
 
 ```bash
-npx playwright test auth.spec.ts           # specific file
-npx playwright test --project=chromium    # specific browser
-npx playwright test --debug               # debug mode
+playwright-cli open https://example.com
+playwright-cli snapshot               # capture accessibility tree
+playwright-cli click e5              # click by ref
+playwright-cli screenshot --filename=out.png
+playwright-cli close
+```
+
+### Common Test Commands
+
+```bash
+npx playwright test auth.spec.ts       # specific file
+npx playwright test --project=chromium # specific browser
+npx playwright test --debug            # debug mode
+npx playwright show-report             # view HTML report
 ```
 
 ## Troubleshooting
 
-**Element not found / timeout**
-Use `--ui` mode to inspect the DOM. Prefer `getByRole` and `getByLabel` over CSS selectors. Check if the element requires a `waitFor()` call.
+**Element not found / timeout** — Use `--ui` mode to inspect. Check `waitFor()` is used for dynamic content.
 
-**Visual regression false positives**
-Delete baseline screenshots to regenerate: `rm tests/screenshots/*.png`. Re-run to create new baselines.
+**Visual regression false positives** — Delete baseline PNGs and regenerate.
 
-**playwright-cli command not found**
-Install globally: `npm install -g playwright-cli` or use `npx playwright-cli`.
-
-**Tests fail in CI but pass locally**
-Add `retries: 2` in `playwright.config.ts` for CI. Use `workers: 1` to avoid parallelism issues. Check that `baseURL` matches the CI server URL.
+**Tests fail in CI** — Add `retries: 2` and `workers: 1` in `playwright.config.ts` for CI env.

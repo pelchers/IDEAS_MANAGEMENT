@@ -1,7 +1,7 @@
 ---
 name: production-frontend-orchestrator
 description: Orchestrate production-quality frontend generation by performing comprehensive repository discovery, building a production spec from app docs/user stories/schemas, and dispatching the production subagent with a chosen design direction.
-agent: .codex/agents/production-frontend-orchestrator/agent.md
+agent: .claude/agents/production-frontend-orchestrator/agent.md
 ---
 
 # Production Frontend Orchestrator
@@ -176,7 +176,7 @@ Based on source mode, extract or build the design system:
 ### Step 3: Production Spec Generation
 
 Write `PRODUCTION-SPEC.md` to the output directory using the template at:
-`.codex/skills/production-frontend-orchestrator/references/production-spec-template.md`
+`.claude/skills/production-frontend-orchestrator/references/production-spec-template.md`
 
 The spec must include ALL of the following:
 1. Application overview
@@ -235,9 +235,9 @@ Dispatch a Task agent with `subagent_type=general-purpose`:
 Provide in the prompt:
 - Full path to PRODUCTION-SPEC.md
 - Output directory path
-- Skill path: `.codex/skills/production-frontend-subagent`
-- Library catalog path: `.codex/skills/production-frontend-subagent/references/library-catalog.json`
-- Validation script path: `.codex/skills/production-frontend-subagent/scripts/validate-production-playwright.mjs`
+- Skill path: `.claude/skills/production-frontend-subagent`
+- Library catalog path: `.claude/skills/production-frontend-subagent/references/library-catalog.json`
+- Validation script path: `.claude/skills/production-frontend-subagent/scripts/validate-production-playwright.mjs`
 - Mode: `fresh` or `iterate`
 - Previous output dir (if iterating)
 - Summary of key requirements (page count, user story count, data model count)

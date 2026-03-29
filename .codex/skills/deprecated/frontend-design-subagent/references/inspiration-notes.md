@@ -44,4 +44,4 @@ Animation libraries are style-dependent, not universally mandated:
 - **Slate**: Subtle CSS transitions only. No playful motion.
 
 ## External Inspiration Catalog
-- `.codex/skills/frontend-design-subagent/references/external-inspiration-catalog.json`
+- `.claude/skills/frontend-design-subagent/references/external-inspiration-catalog.json`

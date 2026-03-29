@@ -1,6 +1,6 @@
 #!/bin/bash
 # Session start setup script
-# Runs at the beginning of each Codex session
+# Runs at the beginning of each Claude Code session
 # Displays project info and performs environment checks
 
 PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
@@ -15,7 +15,7 @@ if [ -f "$PROJECT_ROOT/package.json" ]; then
 fi
 
 echo ""
-echo "Codex session started for $PROJECT_NAME"
+echo "Claude Code session started for $PROJECT_NAME"
 echo "Working directory: $(pwd)"
 echo ""
 
@@ -50,6 +50,6 @@ echo ""
 echo "Quick commands:"
 echo "  /help - View custom commands"
 echo ""
-echo "Project memory loaded from .codex/CODEX.md or AGENTS.md"
-echo "See .codex/ for active hooks and skills"
+echo "Project memory loaded from .claude/CLAUDE.md"
+echo "See .claude/settings.json for active hooks"
 echo ""

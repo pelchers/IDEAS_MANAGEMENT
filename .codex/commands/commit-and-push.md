@@ -30,7 +30,7 @@ When this command is invoked:
 
      <body>
 
-     Generated with Claude Code
+     🤖 Generated with Claude Code
      Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
      ```
 
@@ -65,3 +65,6 @@ Claude: Let me check the current git status...
 - Always run tests before pushing if applicable
 - Follow atomic commit principles (one logical change per commit)
 - Update logs/development-progress.md if significant work was done
+
+
+$ARGUMENTS

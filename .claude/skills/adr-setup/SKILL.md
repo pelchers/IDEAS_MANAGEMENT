@@ -55,7 +55,7 @@ production readiness. Phases are created dynamically as feedback cycles occur.
 ```
 
 ### Per-Session Files
-Each session (`orchestration/<N>_SESSION_NAME/`) requires exactly 4 files:
+Each session (`orchestration/<N>_SESSION_NAME/`) requires exactly 4 files (5 if frontend work):
 
 | File | Purpose |
 |------|---------|
@@ -63,6 +63,7 @@ Each session (`orchestration/<N>_SESSION_NAME/`) requires exactly 4 files:
 | `prd.md` | Product Requirements Document |
 | `technical_requirements.md` | Technical constraints and architecture |
 | `notes.md` | Decisions (D#), Constraints (C#), Open Questions (Q#) |
+| `frontend_spec.md` | Frontend design reference — **required if session has frontend phases** |
 
 ### Phase Files
 - Plan files live in `current/<SESSION>/phase_N.md` while active
@@ -78,8 +79,9 @@ Each session (`orchestration/<N>_SESSION_NAME/`) requires exactly 4 files:
 | Phase review | lowercase with number + review | `phase_1_review.md` |
 | Orchestration files | lowercase snake_case | `primary_task_list.md` |
 
-## Phase Lifecycle (10 Steps)
+## Phase Lifecycle (11 Steps)
 
+0. If session involves frontend work, verify `frontend_spec.md` exists (session-level, then root default). If missing, prompt user: "Which design spec should this session follow?" Options: internal prototype path, external URL, paste spec in chat, or similarity match. Create `frontend_spec.md` from their answer using `templates/frontend_spec_template.md`.
 1. Ensure session folders exist in orchestration/, current/, history/
 2. Create or update the 4 orchestration files (prd, tech_reqs, task_list, notes)
 3. Create phase plan in `current/` before starting work
@@ -130,6 +132,8 @@ All templates are in `templates/` subdirectory:
 - [ ] Phase file ready to move to history
 - [ ] Phase review file created in history
 - [ ] Changes committed and pushed
+- [ ] frontend_spec.md exists and references valid source (if frontend session)
+- [ ] New UI visually matches referenced spec (Playwright screenshot comparison)
 ```
 
 ## Commit Convention

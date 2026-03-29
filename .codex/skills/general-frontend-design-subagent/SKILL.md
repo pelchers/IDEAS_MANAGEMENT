@@ -1,7 +1,7 @@
 ---
 name: general-frontend-design-subagent
 description: Generate one isolated frontend concept pass as a fully functional website/app frontend using plain HTML/CSS/JS with interactive design, responsive layout, and Playwright validation.
-agent: .codex/agents/general-frontend-design-subagent/AGENT.md
+agent: .claude/agents/general-frontend-design-subagent/agent.md
 ---
 
 # General-Purpose Frontend Design Subagent
@@ -143,7 +143,7 @@ The README spec will include reference direction hints from the orchestrator. Fo
 
 ## CDN Libraries
 
-Reference: `.codex/skills/general-frontend-design-subagent/references/library-catalog.json`
+Reference: `.claude/skills/general-frontend-design-subagent/references/library-catalog.json`
 
 Rules:
 - Pick 0-5 libraries based on style fit and pass needs

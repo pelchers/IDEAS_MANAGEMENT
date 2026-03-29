@@ -34,7 +34,7 @@ Only after reading all required files should the subagent begin executing tasks.
 
 ### 1. Playwright screenshots (PNG only)
 - Take screenshots of every UI surface built or modified in this phase.
-- Use Playwright to capture at desktop (1536×960) and mobile (390×844 @2x) viewports.
+- Use Playwright to capture at desktop (1536x960) and mobile (390x844 @2x) viewports.
 - Screenshots MUST be PNG files — NOT HTML mockups.
 - If the dev server is not running, start it, wait for ready, then capture.
 - Save to: `.docs/validation/<SESSION>/<PHASE>/`

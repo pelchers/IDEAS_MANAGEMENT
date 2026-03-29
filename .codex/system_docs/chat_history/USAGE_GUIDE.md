@@ -2,24 +2,16 @@
 
 ## Quick Start
 
-At the start of every conversation, run:
-
+At the start of every conversation:
 ```
 /skill chat-history-convention
 ```
 
-This ensures `.chat-history/user-messages.md` exists and appends the current message with full structured analysis.
+Appends the current message to `.chat-history/user-messages.md` with all structured sections.
 
 ## Detailed Usage
 
-### Appending a Message
-
-The skill handles this automatically. When invoked, it:
-1. Checks that `.chat-history/` directory and `user-messages.md` exist (creates them if not)
-2. Appends the current user message with ISO 8601 timestamp
-3. Populates all six structured sections
-
-### Manual Log Entry Format
+### Entry Format
 
 ```text
 ---
@@ -27,46 +19,35 @@ The skill handles this automatically. When invoked, it:
 <raw user message verbatim>
 
 SESSION CONTEXT:
-- What's being worked on
-- Active agents/skills
-- Phase: planning | building | reviewing | debugging
+- What's being worked on, active agents, phase
 
 USER INTENT:
 1. First action item (imperative phrasing)
-2. Second action item
 
 REFERENCE FILES:
 - path/to/file — description
 
 KEY DECISIONS:
-- None — request only.   (or list decisions made)
+- None — request only.
 
 AGENT REPORT:
-  Initial Response:
-  - What the agent planned to do
-
-  Final Response:
-  - Files created/modified (count)
-  - Systems affected
-  - Pending items
+  Initial Response: Plan/commitments made
+  Final Response: Files created/modified, systems affected
 ---
 ```
 
 ### Updating AGENT REPORT After Work Completes
 
-When finishing a task, update the Final Response section of the most recent log entry:
+Fill in Final Response after completing work. This turns the log from a user-only transcript into a full conversation record.
 
-```
-/skill chat-history-convention  (fills Final Response)
-```
+### Short Messages
+
+"yes" and "ok" still get all sections — brief is fine. Use `"No agent work — conversational response only."` in AGENT REPORT.
 
 ## Troubleshooting
 
-**Log file missing**
-The skill creates it automatically. If the directory doesn't exist, check write permissions on the repo root.
+**Log file missing** — Created automatically on first skill run.
 
-**Entry has blank sections**
-The USER INTENT and AGENT REPORT sections require the agent to actively interpret the message. Short messages like "yes" or "ok" should still have all sections, just brief ones.
+**Blank AGENT REPORT** — Agent must actively fill this in after completing work.
 
-**Old sessions not visible**
-All history is in a single append-only file: `.chat-history/user-messages.md`. Scroll up or search within it.
+**History from old sessions** — All history is append-only in `.chat-history/user-messages.md`. Search within the file.

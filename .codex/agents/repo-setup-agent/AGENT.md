@@ -94,4 +94,4 @@ Use your judgment. The goal is a complete planning foundation for the specific p
 ## Skill reference
 
 Use the detailed workflow and templates from:
-- `.codex/skills/repo-setup-session/SKILL.md`
+- `.claude/skills/repo-setup-session/SKILL.md`

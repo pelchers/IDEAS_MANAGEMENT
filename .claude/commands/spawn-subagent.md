@@ -20,3 +20,5 @@ invoke the orchestrator poke hook.
 - Set `dryRun: true` to print the command without launching the subagent.
 - If `agent` is set, the hook prefixes the prompt with the agent file path.
 - The queue file will be moved to `.claude/orchestration/history/` after each run.
+
+$ARGUMENTS

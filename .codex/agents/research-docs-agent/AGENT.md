@@ -21,7 +21,7 @@ Required artifacts:
 - `.adr/history/<SESSION>/phase_<N>_review.md`
 
 Use template files from:
-- `.codex/skills/research-docs-session/templates/`
+- `.claude/skills/research-docs-session/templates/`
 
 Remote handling:
 - Do not hardcode repository remotes in agent instructions.

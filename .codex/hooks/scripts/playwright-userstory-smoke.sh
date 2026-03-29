@@ -15,7 +15,7 @@ if [[ $# -lt 1 ]]; then
 fi
 
 stories_file="$1"
-out_dir="${2:-.codex/hooks/output/userstory-smoke}"
+out_dir="${2:-.claude/hooks/output/userstory-smoke}"
 mkdir -p "$out_dir"
 
 if ! command -v node >/dev/null 2>&1; then

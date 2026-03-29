@@ -50,7 +50,7 @@ Scan the conversation for:
 ### Step 3: Cross-Reference
 - Match git diff output against conversation actions to build a complete picture.
 - Identify files that were changed by subagents (may not appear in direct conversation).
-- Check if `.claude` mirrors were updated (trinary sync).
+- Check if `.codex` mirrors were updated (trinary sync).
 - Note any files that were created but not committed.
 
 ## Report Template
@@ -104,7 +104,7 @@ Use this exact structure for every report. All 8 sections are mandatory.
 
 ## 5. Systems Affected
 
-- <Which `.codex/` subsystems were touched>
+- <Which `.claude/` subsystems were touched>
 - <Whether CLAUDE.md or root config was updated>
 - <Which workflow pipelines were modified>
 
@@ -112,7 +112,7 @@ Use this exact structure for every report. All 8 sections are mandatory.
 
 ## 6. Sync Status
 
-- `.claude` mirror: <updated / not updated / not applicable>
+- `.codex` mirror: <updated / not updated / not applicable>
 - Remote push: <pushed / not pushed / partial>
 - External systems: <details or "none">
 
@@ -219,7 +219,7 @@ This integrates with the `chat-history-convention` skill's entry format.
 | `chat-history-convention` | Reports can be appended to `user-messages.log` under AGENT REPORT section |
 | `ingesting-agent-history` | Reports complement ingest summaries; both capture session state but reports are more detailed |
 | `savepoint-branching` | Report Metrics section should include savepoint branch names if any were created |
-| `maintaining-trinary-sync` | Report Sync Status section tracks `.claude` mirror updates |
+| `maintaining-trinary-sync` | Report Sync Status section tracks `.codex` mirror updates |
 
 ## Agent Reference
-Agent definition: `.codex/agents/chat-report-agent/AGENT.md`
+Agent definition: `.claude/agents/chat-report-agent/agent.md`

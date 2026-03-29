@@ -2,12 +2,12 @@ param(
   [string]$QueueFile
 )
 
-# Derive repo root from script location: .codex/hooks/scripts/ -> repo root
+# Derive repo root from script location: .claude/hooks/scripts/ -> repo root
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..")).Path
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
 
 if (-not $QueueFile) {
-  $QueueFile = Join-Path $repoRoot ".codex\orchestration\queue\next_phase.json"
+  $QueueFile = Join-Path $repoRoot ".claude\orchestration\queue\next_phase.json"
 }
 
 if (-not (Test-Path $QueueFile)) {
@@ -41,13 +41,13 @@ $fullAuto = $payload.fullAuto
 $dryRun = $payload.dryRun
 $agent = $payload.agent
 
-# Build the full command string for codex exec
-$cmdStr = "codex exec --cd `"$workdir`""
+# Build the full command string for claude exec
+$cmdStr = "claude exec --cd `"$workdir`""
 if ($fullAuto) {
   $cmdStr += " --full-auto"
 }
 if ($agent) {
-  $prompt = "Use agent file: .codex/agents/$agent/AGENT.md. " + $prompt
+  $prompt = "Use agent file: .claude/agents/$agent/AGENT.md. " + $prompt
 }
 # Escape double quotes in prompt for cmd /c
 $escapedPrompt = $prompt -replace '"', '\"'
@@ -57,7 +57,7 @@ if ($dryRun) {
   Write-Host "Orchestrator dry run: $cmdStr"
 } else {
   # Log file for subagent output
-  $logsDir = Join-Path $repoRoot ".codex\orchestration\logs"
+  $logsDir = Join-Path $repoRoot ".claude\orchestration\logs"
   if (-not (Test-Path $logsDir)) {
     New-Item -ItemType Directory -Path $logsDir -Force | Out-Null
   }
@@ -66,13 +66,13 @@ if ($dryRun) {
 
   Write-Host "Orchestrator: spawning subagent (log: $logFile)"
 
-  # codex is a .cmd file, so launch via cmd.exe with output redirected
+  # claude is a .cmd file, so launch via cmd.exe with output redirected
   $fullCmd = "$cmdStr > `"$logFile`" 2> `"$errFile`""
   Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $fullCmd -WindowStyle Hidden
 }
 
 # Archive the queue file
-$historyDir = Join-Path $repoRoot ".codex\orchestration\history"
+$historyDir = Join-Path $repoRoot ".claude\orchestration\history"
 if (-not (Test-Path $historyDir)) {
   New-Item -ItemType Directory -Path $historyDir -Force | Out-Null
 }

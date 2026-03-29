@@ -69,12 +69,12 @@ Phases are created dynamically as feedback cycles occur.
 ## Testing policy
 - Never force passing tests. Investigate failures, document causes, and fix for production readiness.
 
-## Subagent spawning (Codex exec)
+## Subagent spawning (Claude exec)
 Use the orchestration queue + hook to spawn subagents:
-1) Write `.codex/orchestration/queue/next_phase.json`
+1) Write `.claude/orchestration/queue/next_phase.json`
 2) Set `autoSpawn: true` (and `dryRun: false` for real execution)
-3) Run `powershell -NoProfile -ExecutionPolicy Bypass -File .codex/hooks/scripts/orchestrator-poke.ps1`
-4) The hook runs `codex exec` with the provided prompt and moves the queue file to history.
+3) Run `powershell -NoProfile -ExecutionPolicy Bypass -File .claude/hooks/scripts/orchestrator-poke.ps1`
+4) The hook runs `claude exec` with the provided prompt and moves the queue file to history.
 5) If `agent` is set in the queue file, the hook prefixes the prompt with the agent file path.
 
 ## Templates

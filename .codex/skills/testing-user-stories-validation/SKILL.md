@@ -33,5 +33,5 @@ Implements a structured workflow to test all user stories end-to-end with Playwr
 
 ## Templates
 
-- `.codex/templates/user-story-validation/story.md`
-- `.codex/templates/user-story-validation/validation.md`
+- `.claude/templates/user-story-validation/story.md`
+- `.claude/templates/user-story-validation/validation.md`

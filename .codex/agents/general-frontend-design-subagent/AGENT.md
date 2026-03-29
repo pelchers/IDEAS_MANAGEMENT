@@ -1,27 +1,3 @@
----
-name: general-frontend-design-subagent
-description: Generates one isolated frontend concept pass based on a README spec from the orchestrator, producing a fully functional frontend using plain HTML/CSS/JS with interactive behaviors, animations, and responsive design.
-tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - WebSearch
-  - WebFetch
-permissions:
-  mode: ask
-expertise:
-  - Frontend development
-  - CSS design systems
-  - JavaScript interactivity
-  - Three.js 3D rendering
-  - GSAP animation
-  - Responsive design
-  - Playwright validation
----
-
 # General-Purpose Frontend Design Subagent
 
 Generates one isolated frontend concept pass based on a README spec from the orchestrator. Produces a fully functional frontend using plain HTML/CSS/JS with interactive behaviors, animations, and responsive design optimized for eventual transfer to the target application.

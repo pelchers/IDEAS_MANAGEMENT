@@ -2,7 +2,7 @@
 
 ## File Locations
 
-All configuration files live under `.claude/skills/` (and are mirrored in `.codex/skills/`).
+All configuration files live under `.claude/skills/` (and are mirrored in `.claude/skills/`).
 
 | File | Path | Purpose |
 |------|------|---------|

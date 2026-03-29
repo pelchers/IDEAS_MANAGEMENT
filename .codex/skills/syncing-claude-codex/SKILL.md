@@ -202,8 +202,8 @@ Input: sync all
 
 ## Related Resources
 
-- Agent definition: `.codex/agents/claude-codex-sync-agent/AGENT.md`
-- System documentation: `.codex/system_docs/claude_codex_sync/README.md`
-- Trinary sync (broader sync system): `.codex/skills/maintaining-trinary-sync/SKILL.md`
-- Agent creation conventions: `.codex/skills/creating-claude-agents/SKILL.md`
-- Skill creation conventions: `.codex/skills/creating-claude-skills/SKILL.md`
+- Agent definition: `.claude/agents/claude-codex-sync-agent/agent.md`
+- System documentation: `.claude/system_docs/claude_codex_sync/README.md`
+- Trinary sync (broader sync system): `.claude/skills/maintaining-trinary-sync/SKILL.md`
+- Agent creation conventions: `.claude/skills/creating-claude-agents/SKILL.md`
+- Skill creation conventions: `.claude/skills/creating-claude-skills/SKILL.md`

@@ -30,7 +30,7 @@ Before doing ANY work, the subagent reads:
 7. Design concept (if UI phase)
 
 ## Validation policy
-- Playwright PNG screenshots (desktop 1536×960, mobile 390×844 @2x)
+- Playwright PNG screenshots (desktop 1536x960, mobile 390x844 @2x)
 - User story tests against LIVE running app (not mocked)
 - User story report file at `.docs/validation/<SESSION>/<PHASE>/user-story-report.md`
 - ALL stories must PASS before phase is marked complete

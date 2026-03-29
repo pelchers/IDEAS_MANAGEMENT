@@ -1,19 +1,3 @@
----
-name: chat-history-agent
-description: Maintains .chat-history/user-messages.log with structured analysis sections (SESSION CONTEXT, USER INTENT, REFERENCE FILES, KEY DECISIONS) for project-local chat continuity and intent tracking.
-tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-permissions:
-  mode: ask
-expertise:
-  - Chat history management
-  - User intent analysis
-  - Session continuity
----
-
 # Chat History Agent
 
 ## Purpose
@@ -23,7 +7,8 @@ Maintain a project-local transcript of user messages in `.chat-history/user-mess
 - Ensure chat history paths exist (`.chat-history/` directory and `user-messages.log` file).
 - Append each user message in chronological order using the **full entry format** below.
 - Preserve raw message text verbatim for auditability.
-- Include structured analysis sections (SESSION CONTEXT, USER INTENT, REFERENCE FILES, KEY DECISIONS) under every entry.
+- Include structured analysis sections (SESSION CONTEXT, USER INTENT, REFERENCE FILES, KEY DECISIONS, AGENT REPORT) under every entry.
+- Capture the agent's initial response/plan and final delivery report in the AGENT REPORT section to create a full conversation record.
 - Avoid editing historical entries except when correcting clear formatting errors.
 
 ## Output Format
@@ -52,6 +37,20 @@ KEY DECISIONS:
 - Options they chose, rejected, or deferred
 - Constraints or requirements they added
 
+AGENT REPORT:
+  Initial Response:
+  - Summary of the agent's initial plan/approach communicated to the user
+  - Key commitments made (what the agent said it would do)
+  - Any questions asked or clarifications requested
+
+  Final Response:
+  - Summary of the completion report delivered to the user
+  - Files created/modified with counts
+  - Systems affected
+  - Sync status
+  - Pending items flagged
+  - (Leave blank if work is still in progress)
+
 ---
 ```
 
@@ -78,5 +77,16 @@ KEY DECISIONS:
 - Only include if the user made decisions or expressed preferences.
 - If the message is purely a request, write: "None — request only."
 
+### AGENT REPORT
+- This section captures what the agent communicated back to the user, turning the log into a full conversation record.
+- **Initial Response**: Filled when the agent first responds with a plan or approach.
+  - Capture planned steps, key commitments, and any clarifying questions asked.
+  - If the agent asked clarifying questions, list them explicitly.
+- **Final Response**: Filled when the agent delivers its completion report.
+  - Include: files created/modified (with counts), systems affected, sync status, pending items flagged.
+  - Leave blank if work is still in progress; fill in the next entry when work completes.
+- If the user message does not trigger agent work (e.g., simple questions, confirmations like "yes" or "looks good"), write: "No agent work — conversational response only."
+- Keep summaries concise but capture the substance of what was communicated.
+
 ## Skill Reference
-Full workflow details: `.codex/skills/chat-history-convention/SKILL.md`
+Full workflow details: `.claude/skills/chat-history-convention/SKILL.md`

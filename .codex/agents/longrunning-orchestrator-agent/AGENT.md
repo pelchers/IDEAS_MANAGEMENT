@@ -121,9 +121,9 @@ When spawning a subagent, the orchestrator MUST pass a comprehensive prompt that
 - Subagent uses professional judgment for UI/UX
 
 ## Subagent spawning
-- Queue the next phase in `.codex/orchestration/queue/next_phase.json`.
-- Run the orchestrator poke hook to call `codex exec`.
-- Confirm the queue file moves to `.codex/orchestration/history/`.
+- Queue the next phase in `.claude/orchestration/queue/next_phase.json`.
+- Run the orchestrator poke hook to call `claude exec`.
+- Confirm the queue file moves to `.claude/orchestration/history/`.
 - If `agent` is provided, the hook prefixes the prompt with the agent file path.
 
 ## Phase loop

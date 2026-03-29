@@ -11,7 +11,7 @@ if [[ $# -lt 1 ]]; then
 fi
 
 urls_file="$1"
-out_dir="${2:-.codex/hooks/output/web-metadata}"
+out_dir="${2:-.claude/hooks/output/web-metadata}"
 mkdir -p "$out_dir"
 
 if ! command -v node >/dev/null 2>&1; then
@@ -59,9 +59,9 @@ for (const url of urls) {
   const data = await page.evaluate(() => ({
     title: document.title || null,
     h1: document.querySelector('h1')?.textContent?.trim() || null,
-    description: document.querySelector('meta[name="description"]')?.getAttribute('content') || null,
-    ogTitle: document.querySelector('meta[property="og:title"]')?.getAttribute('content') || null,
-    ogDescription: document.querySelector('meta[property="og:description"]')?.getAttribute('content') || null,
+    description: document.querySelector('meta[name=\"description\"]')?.getAttribute('content') || null,
+    ogTitle: document.querySelector('meta[property=\"og:title\"]')?.getAttribute('content') || null,
+    ogDescription: document.querySelector('meta[property=\"og:description\"]')?.getAttribute('content') || null,
   }));
   results.push({ url, ...data });
   await page.close();

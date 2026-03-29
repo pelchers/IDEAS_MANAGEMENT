@@ -1,7 +1,7 @@
 ---
 name: production-frontend-subagent
 description: Generate a production-quality frontend from a PRODUCTION-SPEC.md with full interactivity, real data shapes, user story coverage, component boundaries, and a transfer manifest for framework migration.
-agent: .codex/agents/production-frontend-subagent/agent.md
+agent: .claude/agents/production-frontend-subagent/agent.md
 ---
 
 # Production Frontend Subagent
@@ -124,7 +124,7 @@ const store = {
 
 ## CDN Libraries
 
-Reference: `.codex/skills/production-frontend-subagent/references/library-catalog.json`
+Reference: `.claude/skills/production-frontend-subagent/references/library-catalog.json`
 
 Rules:
 - Pick 0-5 libraries based on production needs

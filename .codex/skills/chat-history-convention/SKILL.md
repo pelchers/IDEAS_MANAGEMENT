@@ -42,6 +42,20 @@ KEY DECISIONS:
 - Options they chose, rejected, or deferred
 - Constraints or requirements they added
 
+AGENT REPORT:
+  Initial Response:
+  - Summary of the agent's initial plan/approach communicated to the user
+  - Key commitments made (what the agent said it would do)
+  - Any questions asked or clarifications requested
+
+  Final Response:
+  - Summary of the completion report delivered to the user
+  - Files created/modified with counts
+  - Systems affected
+  - Sync status
+  - Pending items flagged
+  - (Leave blank if work is still in progress)
+
 ---
 ```
 
@@ -73,6 +87,17 @@ KEY DECISIONS:
 - Only include if the user made decisions, expressed preferences, or set constraints
 - If the user's message is purely a request with no decisions, write: "None — request only."
 - Track decision evolution: if a user changes their mind, note what changed
+
+### AGENT REPORT
+- This section turns the log from a user-only transcript into a full conversation record
+- **Initial Response** is filled when the agent first responds with a plan or approach
+  - Capture the substance of what the agent communicated: planned steps, commitments, questions asked
+  - If the agent asked clarifying questions, list them here
+- **Final Response** is filled when the agent delivers its completion report
+  - Include: files created/modified (with counts), systems affected, sync status, pending items
+  - If work is still in progress, leave Final Response blank and fill it in the next entry
+- If the user message doesn't trigger agent work (e.g., simple questions, confirmations, "yes", "looks good"), write: "No agent work — conversational response only."
+- Keep summaries concise but capture the substance of what was communicated
 
 ## Example Entry
 
@@ -106,6 +131,18 @@ KEY DECISIONS:
 - Chat history skill MUST include structured analysis sections, not just raw messages
 - Portfolio generation is approved but blocked on this fix
 - User prefers the verbose format with bullet-pointed intent analysis
+
+AGENT REPORT:
+  Initial Response:
+  - Agent proposed a two-step plan: (1) diagnose the chat-history-convention skill for missing structured sections, (2) fix the skill and agent definitions to include USER INTENT, SESSION CONTEXT, REFERENCE FILES, and KEY DECISIONS under every entry
+  - Committed to updating both `.claude/skills/chat-history-convention/SKILL.md` and `.claude/agents/chat-history-agent/AGENT.md`
+  - No clarifying questions — user intent was clear
+
+  Final Response:
+  - Updated 2 files: SKILL.md (added structured section requirements, section rules, and example) and AGENT.md (added matching output format and section rules)
+  - Systems affected: chat-history-convention skill, chat-history-agent agent
+  - Sync status: changes committed
+  - Pending items: portfolio generation (16 passes) ready to proceed after this fix
 
 ---
 ```
