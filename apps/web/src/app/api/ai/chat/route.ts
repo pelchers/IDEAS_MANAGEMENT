@@ -165,6 +165,10 @@ export async function POST(req: Request) {
     systemParts.push(`\nCurrent page: ${pageContext}.`);
     if (pageHints[pageContext]) systemParts.push(pageHints[pageContext]);
   }
+  // Append /no_think for qwen3 models — disables verbose thinking mode
+  // so the model responds with direct text instead of empty content + reasoning.
+  // Tool calling still works normally without thinking mode.
+  systemParts.push("\n/no_think");
   const systemPrompt = systemParts.join("\n");
 
   // Resolve user's AI model (OpenRouter key or fallback to server OpenAI key)
