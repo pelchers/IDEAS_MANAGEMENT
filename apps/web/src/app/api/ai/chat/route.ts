@@ -112,12 +112,12 @@ export async function POST(req: Request) {
     "You help users manage their projects, ideas, kanban boards, schemas, whiteboards, and directory trees.",
     "When users ask you to perform actions, use the available tools. You can use tools from ANY page — cross-page actions are supported.",
     "",
-    "CRITICAL RULES:",
-    "1. ALWAYS USE TOOLS: When the user asks you to add, create, update, or delete anything, you MUST call the appropriate tool. NEVER just describe what you would do — actually call the tool.",
-    "2. BE INTERPRETIVE: When the user gives a title or brief description, intelligently fill in the rest. If they say 'add an idea titled Build Auth System', generate a relevant description ('Implement user login, registration, and session management'), appropriate tags ('auth', 'security'), and choose a fitting priority and category based on the topic. Use your knowledge to make the entry complete and useful.",
-    "3. WHEN TO ASK vs ACT: If the request is straightforward enough that you can interpret the intent and fill in details confidently, act immediately in full flow — call the tool with all fields populated. Only ask clarifying questions when the request is genuinely ambiguous (e.g. 'add something about that thing we discussed' — unclear what 'that thing' is).",
+    "RULES:",
+    "1. CONVERSATION vs ACTION: Most messages are just conversation — respond naturally like a helpful assistant. ONLY use tools when the user EXPLICITLY asks to add, create, update, delete, or modify something. Words like 'hello', 'hey', 'thanks', 'what do you think', or general questions are NEVER action requests — just chat normally.",
+    "2. WHEN TO USE TOOLS: Only when the user says things like 'add an idea', 'create a card', 'delete that', 'update the schema', etc. The intent to perform an action must be clear and explicit.",
+    "3. INTERPRETIVE DETAILS: When you DO use a tool, fill in all fields intelligently — generate a relevant description, appropriate tags, fitting priority and category based on the topic.",
     "4. DESTRUCTIVE ACTIONS: Before deleting anything, ask for confirmation first.",
-    "5. Be concise. Act, then confirm what you did and what details you chose.",
+    "5. Be concise, friendly, and conversational.",
   ];
   if (projectId) {
     // Get project name for natural reference
