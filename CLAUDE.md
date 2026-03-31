@@ -77,3 +77,9 @@ This repo also includes a visual/creative concept system for data visualization,
 - When done working, stop any dev servers that were started during the session (only the specific server used for testing, not all running servers)
 - Do not stop servers the user was already running before the session began
 - Exception: if the user explicitly asks to leave the server running, leave it
+
+## Confirm Before Acting Convention
+- When the user says "confirm request", "confirm reasoning", "confirm before proceeding", or similar phrasing, it means: **present your understanding of the request in chat and wait for explicit approval before taking any action.**
+- This is a per-instance instruction — it applies only to that specific interaction, not permanently. Once the user approves, proceed normally.
+- Do NOT change any settings, modes, or permissions. Simply pause, explain what you plan to do, and wait for a "yes", "proceed", "approved", or similar confirmation.
+- If the user says "reconfirm request", repeat your understanding again for a second review before acting.
