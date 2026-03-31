@@ -35,7 +35,7 @@ export default function AiPage() {
   const [showSlashMenu, setShowSlashMenu] = useState(false);
   const [projects, setProjects] = useState<{ id: string; name: string }[]>([]);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
-  const [logReasoning, setLogReasoning] = useState(() => typeof window !== "undefined" && localStorage.getItem("ai_log_reasoning") === "true");
+  const [showReasoning, setShowReasoning] = useState(() => typeof window !== "undefined" ? localStorage.getItem("ai_show_reasoning") !== "false" : true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -397,14 +397,14 @@ export default function AiPage() {
           {messages.length > 0 && (
             <button onClick={exportSession} className="nb-btn nb-btn--small font-mono text-[0.7rem]">EXPORT</button>
           )}
-          <label className="flex items-center gap-1 font-mono text-[0.65rem] uppercase cursor-pointer select-none" title="Show full AI reasoning in chat messages">
+          <label className="flex items-center gap-1 font-mono text-[0.65rem] uppercase cursor-pointer select-none" title="Show AI reasoning and tool use under messages">
             <input
               type="checkbox"
-              checked={logReasoning}
-              onChange={(e) => { setLogReasoning(e.target.checked); localStorage.setItem("ai_log_reasoning", String(e.target.checked)); }}
+              checked={showReasoning}
+              onChange={(e) => { setShowReasoning(e.target.checked); localStorage.setItem("ai_show_reasoning", String(e.target.checked)); }}
               className="w-3 h-3"
             />
-            LOG REASONING
+            SHOW REASONING
           </label>
           <span className={`font-mono text-[0.8rem] px-3 py-1 border-2 ${statusColor}`}>
             ● {statusLabel}
@@ -503,8 +503,8 @@ export default function AiPage() {
                       </div>
 
                       {/* Reasoning + Tool area (gray, below message) */}
-                      {msg.role === "ai" && (msg.reasoning || (msg.toolCalls && msg.toolCalls.length > 0)) && (
-                        <details open={logReasoning} className="border-2 border-dashed border-signal-black/30 bg-creamy-milk/50 mt-[-2px]">
+                      {msg.role === "ai" && showReasoning && (msg.reasoning || (msg.toolCalls && msg.toolCalls.length > 0)) && (
+                        <details className="border-2 border-dashed border-signal-black/30 bg-creamy-milk/50 mt-[-2px]">
                           <summary className="px-3 py-1 cursor-pointer font-mono text-[0.65rem] uppercase text-[#999] tracking-wider select-none">
                             {msg.isStreaming ? "⚙ Working..." : `${msg.toolCalls?.length || 0} tool(s) · reasoning`}
                           </summary>
