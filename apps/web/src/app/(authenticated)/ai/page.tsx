@@ -246,10 +246,11 @@ export default function AiPage() {
 
       setMessages((prev) => [...prev, { role: "ai", text: "", isStreaming: true }]);
       setIsTyping(false);
+      let stepComplete = false; // Track if we should stop after first step
 
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
+        if (done || stepComplete) break;
 
         const chunk = decoder.decode(value, { stream: true });
         for (const line of chunk.split("\n")) {
@@ -312,8 +313,15 @@ export default function AiPage() {
               }
 
               // Step finish (marks end of a step in multi-step)
+              // Step finish — if no tools were called, stop processing
+              // to prevent the double-write bug where step 2 overwrites step 1 text
               if (evt.type === "finish-step") {
-                aiReasoning += "\n—";
+                if (pendingToolCalls.length === 0 && aiText) {
+                  // Simple conversation — no tools used, text already generated
+                  // Stop here to prevent step 2 from overwriting
+                  stepComplete = true;
+                }
+                if (aiReasoning) aiReasoning += "\n—";
                 updateMsg();
               }
             } catch { /* skip */ }
@@ -496,7 +504,7 @@ export default function AiPage() {
 
                       {/* Reasoning + Tool area (gray, below message) */}
                       {msg.role === "ai" && (msg.reasoning || (msg.toolCalls && msg.toolCalls.length > 0)) && (
-                        <details open={msg.isStreaming || logReasoning} className="border-2 border-dashed border-signal-black/30 bg-creamy-milk/50 mt-[-2px]">
+                        <details open={logReasoning} className="border-2 border-dashed border-signal-black/30 bg-creamy-milk/50 mt-[-2px]">
                           <summary className="px-3 py-1 cursor-pointer font-mono text-[0.65rem] uppercase text-[#999] tracking-wider select-none">
                             {msg.isStreaming ? "⚙ Working..." : `${msg.toolCalls?.length || 0} tool(s) · reasoning`}
                           </summary>
