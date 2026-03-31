@@ -1,0 +1,9 @@
+[
+  {
+    "name": "infinite-vertical-carousel",
+    "title": "GSAP Infinite Vertical Carousel — Even-Count Boundary Spacing Fix",
+    "categories": ["animation", "gsap", "carousel"],
+    "keywords": ["carousel", "infinite", "spacing", "circular", "modulo", "even-count", "vertical", "wrap"],
+    "added": "2026-03-30"
+  }
+]
