@@ -125,6 +125,17 @@ system_docs/
 │         .ai-ingest-docs/project-goals-understanding.md
 │         .docs/planning/
 │
+├── idea_logging/                      ← Idea Capture and Planning Folders
+│   ├── README.md
+│   ├── USAGE_GUIDE.md
+│   └── ARCHITECTURE.md
+│       Agents:
+│         .claude/agents/idea-logger/
+│       Skills:
+│         .claude/skills/logging-ideas/
+│       Output:
+│         .ideas/
+│
 └── deprecated/                        ← Superseded Systems
     ├── DEPRECATED.md
     └── frontend_planning/             (replaced by general_frontend/)
@@ -166,4 +177,5 @@ These skills are standalone utilities that don't warrant their own system docs f
 | Chat Reports | Session report generation | 1 | 1 |
 | Claude-Codex Sync | .claude ↔ .codex mirroring | 1 | 1 |
 | Repo Setup | Interactive project bootstrapper | 1 | 1 |
-| **Total** | | **9** | **18** |
+| Idea Logging | Repo-local idea capture and planning sync | 1 | 1 |
+| **Total** | | **10** | **19** |
