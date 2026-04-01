@@ -27,10 +27,11 @@
 ## Current AI Setup
 
 - **Runtime:** Ollama v0.18.1 (installed via winget)
-- **Default model:** qwen2.5:3b (to be upgraded to qwen2.5:14b)
-- **Models pulled:** qwen2.5:3b, qwen3:4b, qwen3-nothink (custom)
+- **Default model:** qwen3:32b (with /no_think in system prompt)
+- **Models pulled:** qwen3:32b, qwen3:4b, qwen3-coder:30b, qwen2.5:7b, qwen2.5:3b
 - **Endpoint:** localhost:11434 (OpenAI-compatible at localhost:11434/v1)
 - **Integration:** Vercel AI SDK via createOpenAI({ baseURL: localhost:11434/v1 })
+- **Production model:** openai/gpt-oss-120b via Groq API
 
 ## Software Stack
 

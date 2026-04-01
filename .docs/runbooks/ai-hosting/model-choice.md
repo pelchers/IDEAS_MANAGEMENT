@@ -130,19 +130,18 @@ Even cheap models are expensive if they generate unnecessary tokens. A verbose m
 
 | Choice | Model | Size | Why |
 |--------|-------|------|-----|
-| **Recommended** | `qwen2.5:14b` | 8.5 GB | Verified `/v1/` tool calling works, good balance |
-| **Lightweight** | `qwen2.5:7b` | 4.4 GB | Faster, but less reliable on complex tools |
+| **Current default** | `qwen3:32b` | 19.8 GB | Tool calling ✅, text ✅ (with /no_think), 32B intelligence, fits RTX 4090 |
+| **Fallback** | `qwen2.5:7b` | 4.4 GB | Fast, reliable text + tools, but less intelligent |
 | **Avoid** | `qwen3-coder:30b` | 18 GB | Broken — generates XML text instead of tool_calls via `/v1/` |
-| **Tested** | `qwen3:32b` | 19.8 GB | Tool calling works ✅ but empty content (thinking mode) — no text responses |
-| **Tested** | `qwen3:4b` | 2.5 GB | Tool calling works ✅ but empty content (thinking mode) — same issue |
+| **Not needed** | `qwen2.5:14b` | 8.5 GB | Works but qwen3:32b is smarter with /no_think fix |
 
-**Why not qwen3:32b?** We tested qwen3:4b (same family/template). Tool calling via `/v1/` works correctly — it produces proper `tool_calls` JSON. But the "thinking mode" puts all reasoning in a separate field and returns empty `content`. This means the AI calls tools but never generates visible text responses or confirmations. For a chat interface, this is unusable — users see blank replies.
+**qwen3:32b thinking mode fix:** By default, qwen3 models use "thinking mode" which puts output in a `reasoning` field and returns empty `content`. We fixed this by appending `/no_think` to the system prompt — this disables verbose thinking so the model responds with direct text. Tool calling works normally with or without thinking mode. The reasoning field is captured and displayed in a collapsible section under each AI message.
 
 ### Locked-In Choices
 
 | Environment | Model | Why |
 |-------------|-------|-----|
 | **Groq (production)** | `openai/gpt-oss-120b` | Highest intelligence on Groq (33), fast (500/s), tools ✅, text ✅ |
-| **Ollama (local dev)** | `qwen2.5:14b` | Verified tools + text via `/v1/`, 8.5GB, fast on RTX 4090 |
+| **Ollama (local dev)** | `qwen3:32b` | 32B intelligence, tool calling ✅, text ✅ (with /no_think), reasoning display, fits 24GB VRAM |
 
 **Next step:** Get Groq API key (`gsk_...` from https://console.groq.com/keys) → add to `.env` → production AI works.
