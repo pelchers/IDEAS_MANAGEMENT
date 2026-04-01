@@ -53,6 +53,11 @@
             "type": "command",
             "command": ".claude/hooks/scripts/planning-detect.sh",
             "description": "Detect planning requests and invoke pre-planning agent"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scripts/idea-log-detect.sh",
+            "description": "Detect idea logging requests and enforce the .ideas workflow"
           }
         ]
       }

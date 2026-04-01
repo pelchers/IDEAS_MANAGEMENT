@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AiHelper } from "@/components/ai/ai-helper";
+import { SyncStatusIndicator } from "@/components/sync/sync-status-indicator";
 
 /* ── Title from pathname ── */
 function getTitleFromPathname(pathname: string): string {
@@ -17,6 +18,7 @@ function getTitleFromPathname(pathname: string): string {
   if (pathname.includes("/schema")) return "SCHEMA PLANNER";
   if (pathname.includes("/directory-tree")) return "DIRECTORY TREE";
   if (pathname.includes("/ideas")) return "IDEAS";
+  if (pathname.includes("/conflicts")) return "SYNC CONFLICTS";
   if (/^\/projects\/[^/]+$/.test(pathname)) return "WORKSPACE";
   return "DASHBOARD";
 }
@@ -39,8 +41,9 @@ const NAV_LINKS: NavLink[] = [
   { num: "06", label: "Schema", href: "/projects", projectRoute: true, suffix: "/schema" },
   { num: "07", label: "Directory", href: "/projects", projectRoute: true, suffix: "/directory-tree" },
   { num: "08", label: "Ideas", href: "/projects", projectRoute: true, suffix: "/ideas" },
-  { num: "09", label: "AI Chat", href: "/ai" },
-  { num: "10", label: "Settings", href: "/settings" },
+  { num: "09", label: "Conflicts", href: "/projects", projectRoute: true, suffix: "/conflicts" },
+  { num: "10", label: "AI Chat", href: "/ai" },
+  { num: "11", label: "Settings", href: "/settings" },
 ];
 
 function extractProjectId(pathname: string): string | null {
@@ -233,8 +236,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           )}
         </div>
 
-        {/* Right — search + notification */}
+        {/* Right — sync status + search + notification */}
         <div style={{ display: "flex", alignItems: "center", gap: "16px", flexShrink: 0 }}>
+          <SyncStatusIndicator />
           <input
             type="text"
             placeholder="SEARCH..."

@@ -11,6 +11,14 @@ interface Preferences {
   soundEffects: boolean;
 }
 
+/* ── Billing state ── */
+interface BillingState {
+  plan: "FREE" | "PRO" | "TEAM";
+  features: string[];
+  loading: boolean;
+  billingConfigured: boolean;
+}
+
 /* ── AI Config state ── */
 interface AiConfig {
   provider: "NONE" | "OPENROUTER_OAUTH" | "OPENROUTER_BYOK";
@@ -52,6 +60,16 @@ function SettingsContent() {
   const [hasAiEntitlement, setHasAiEntitlement] = useState(false);
   const [aiMessage, setAiMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
+  // Billing state
+  const [billing, setBilling] = useState<BillingState>({
+    plan: "FREE",
+    features: [],
+    loading: true,
+    billingConfigured: true, // assume configured until proven otherwise
+  });
+  const [billingMessage, setBillingMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [billingRedirecting, setBillingRedirecting] = useState<string | null>(null);
+
   // Fetch AI config on mount
   const fetchAiConfig = useCallback(async () => {
     try {
@@ -83,6 +101,23 @@ function SettingsContent() {
     }
     if (searchParams.get("ai_error")) {
       setAiMessage({ type: "error", text: `OpenRouter error: ${searchParams.get("ai_error")}` });
+    }
+    if (searchParams.get("billing_success") === "true") {
+      setBillingMessage({ type: "success", text: "Subscription activated! Your plan may take a moment to update." });
+      // Re-fetch entitlements to reflect new plan
+      fetch("/api/auth/me")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.ok && data.entitlements) {
+            setBilling({
+              plan: data.entitlements.plan || "FREE",
+              features: data.entitlements.features || [],
+              loading: false,
+              billingConfigured: true,
+            });
+          }
+        })
+        .catch(() => {});
     }
   }, [searchParams, fetchAiConfig]);
 
@@ -140,6 +175,67 @@ function SettingsContent() {
     window.location.href = authUrl;
   };
 
+  // Billing handlers
+  const handleCheckout = async (plan: "PRO" | "TEAM") => {
+    setBillingRedirecting(plan);
+    setBillingMessage(null);
+    try {
+      const res = await fetch("/api/billing/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          plan,
+          successUrl: window.location.href.split("?")[0] + "?billing_success=true",
+          cancelUrl: window.location.href.split("?")[0],
+        }),
+      });
+      const data = await res.json();
+      if (data.ok && data.url) {
+        window.location.href = data.url;
+        return; // redirecting, keep spinner
+      }
+      if (data.error === "billing_not_configured") {
+        setBilling((prev) => ({ ...prev, billingConfigured: false }));
+        setBillingMessage({ type: "error", text: "Billing is not configured. Stripe keys are missing." });
+      } else {
+        setBillingMessage({ type: "error", text: data.message || "Failed to start checkout." });
+      }
+    } catch {
+      setBillingMessage({ type: "error", text: "Network error. Please try again." });
+    }
+    setBillingRedirecting(null);
+  };
+
+  const handleManageSubscription = async () => {
+    setBillingRedirecting("MANAGE");
+    setBillingMessage(null);
+    try {
+      const res = await fetch("/api/billing/portal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          returnUrl: window.location.href.split("?")[0],
+        }),
+      });
+      const data = await res.json();
+      if (data.ok && data.url) {
+        window.location.href = data.url;
+        return;
+      }
+      if (data.error === "billing_not_configured") {
+        setBilling((prev) => ({ ...prev, billingConfigured: false }));
+        setBillingMessage({ type: "error", text: "Billing is not configured. Stripe keys are missing." });
+      } else if (data.error === "no_subscription") {
+        setBillingMessage({ type: "error", text: "No active subscription found." });
+      } else {
+        setBillingMessage({ type: "error", text: data.message || "Failed to open billing portal." });
+      }
+    } catch {
+      setBillingMessage({ type: "error", text: "Network error. Please try again." });
+    }
+    setBillingRedirecting(null);
+  };
+
   // Profile state
   const [profileEmail, setProfileEmail] = useState("");
   const [profileSaving, setProfileSaving] = useState(false);
@@ -154,6 +250,17 @@ function SettingsContent() {
           setProfileEmail(data.user.email);
           if (data.user.role === "ADMIN") setIsAdmin(true);
           if (data.entitlements?.features?.includes("ai_chat")) setHasAiEntitlement(true);
+          // Populate billing state from entitlements
+          if (data.entitlements) {
+            setBilling({
+              plan: data.entitlements.plan || "FREE",
+              features: data.entitlements.features || [],
+              loading: false,
+              billingConfigured: true,
+            });
+          } else {
+            setBilling((prev) => ({ ...prev, loading: false }));
+          }
           if (data.user.preferences && typeof data.user.preferences === "object") {
             const prefs = data.user.preferences as Record<string, unknown>;
             setPreferences((prev) => ({ ...prev, ...prefs }));
@@ -163,9 +270,13 @@ function SettingsContent() {
               setIntegrations((prev) => prev.map((i) => ({ ...i, connected: !!intPrefs[i.name.toLowerCase()] })));
             }
           }
+        } else {
+          setBilling((prev) => ({ ...prev, loading: false }));
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        setBilling((prev) => ({ ...prev, loading: false }));
+      });
   }, []);
 
   const handleProfileSave = async (e: React.FormEvent) => {
@@ -519,6 +630,164 @@ function SettingsContent() {
                   </button>
                 </div>
               </div>
+            </>
+          )}
+        </div>
+
+        {/* ── Billing Card ── */}
+        <div className="nb-card p-8 col-span-full">
+          <h2 className="nb-card-title">BILLING &amp; SUBSCRIPTION</h2>
+
+          {billingMessage && (
+            <div
+              className={`p-3 mb-4 border-2 border-signal-black font-mono text-[0.85rem] ${
+                billingMessage.type === "success"
+                  ? "bg-malachite/20 text-malachite"
+                  : "bg-watermelon/20 text-watermelon"
+              }`}
+            >
+              {billingMessage.text}
+            </div>
+          )}
+
+          {billing.loading ? (
+            <p className="font-mono text-[0.85rem] text-gray-mid">Loading billing information...</p>
+          ) : !billing.billingConfigured ? (
+            <div className="p-4 border-2 border-dashed border-signal-black">
+              <div className="flex items-center gap-3">
+                <div className="text-[1.5rem]">⚙️</div>
+                <div>
+                  <div className="font-bold text-[0.9rem] uppercase">BILLING NOT CONFIGURED</div>
+                  <div className="font-mono text-[0.75rem] text-gray-mid leading-relaxed mt-1">
+                    Stripe is not set up for this instance. Contact the administrator to enable billing.
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Current plan badge */}
+              <div className="flex items-center gap-3 mb-6 p-4 border-2 border-dashed border-signal-black">
+                <div className="text-[1.5rem]">
+                  {billing.plan === "FREE" ? "📦" : billing.plan === "PRO" ? "⚡" : "👥"}
+                </div>
+                <div className="flex-1">
+                  <div className="font-bold text-[0.9rem] uppercase">
+                    CURRENT PLAN: <span className={billing.plan !== "FREE" ? "text-malachite" : ""}>{billing.plan}</span>
+                  </div>
+                  <div className="font-mono text-[0.75rem] text-gray-mid">
+                    {billing.plan === "FREE"
+                      ? "Basic features included. Upgrade to unlock more."
+                      : billing.plan === "PRO"
+                      ? "Pro features active: AI Chat, Whiteboard, Schema Planner"
+                      : "Team features active: Everything in Pro + Collaboration"}
+                  </div>
+                </div>
+                {billing.plan !== "FREE" && (
+                  <button
+                    className="nb-btn nb-btn--small"
+                    onClick={handleManageSubscription}
+                    disabled={billingRedirecting !== null}
+                  >
+                    {billingRedirecting === "MANAGE" ? "REDIRECTING..." : "MANAGE SUBSCRIPTION"}
+                  </button>
+                )}
+              </div>
+
+              {/* Plan comparison cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                {/* FREE plan */}
+                <div className={`p-5 border-2 ${billing.plan === "FREE" ? "border-signal-black bg-creamy-milk" : "border-dashed border-signal-black"}`}>
+                  <div className="font-bold text-[1rem] uppercase tracking-wider mb-1">FREE</div>
+                  <div className="font-mono text-[0.75rem] text-gray-mid mb-4">$0 / month</div>
+                  <ul className="flex flex-col gap-2 font-mono text-[0.8rem]">
+                    <li>✓ Dashboard</li>
+                    <li>✓ Projects (limited)</li>
+                    <li>✓ Kanban boards</li>
+                    <li>✓ Ideas capture</li>
+                    <li className="text-gray-mid line-through">✗ AI Chat</li>
+                    <li className="text-gray-mid line-through">✗ Whiteboard</li>
+                    <li className="text-gray-mid line-through">✗ Schema Planner</li>
+                    <li className="text-gray-mid line-through">✗ Team collaboration</li>
+                  </ul>
+                  {billing.plan === "FREE" && (
+                    <div className="mt-4 p-2 border-2 border-signal-black text-center font-bold text-[0.8rem] uppercase">
+                      CURRENT PLAN
+                    </div>
+                  )}
+                </div>
+
+                {/* PRO plan */}
+                <div className={`p-5 border-2 ${billing.plan === "PRO" ? "border-malachite bg-malachite/5" : "border-dashed border-signal-black"}`}>
+                  <div className="font-bold text-[1rem] uppercase tracking-wider mb-1">PRO</div>
+                  <div className="font-mono text-[0.75rem] text-gray-mid mb-4">Pricing on checkout</div>
+                  <ul className="flex flex-col gap-2 font-mono text-[0.8rem]">
+                    <li>✓ Everything in Free</li>
+                    <li className="font-bold">✓ AI Chat</li>
+                    <li className="font-bold">✓ Whiteboard</li>
+                    <li className="font-bold">✓ Schema Planner</li>
+                    <li>✓ Unlimited projects</li>
+                    <li className="text-gray-mid line-through">✗ Team collaboration</li>
+                  </ul>
+                  {billing.plan === "PRO" ? (
+                    <div className="mt-4 p-2 border-2 border-malachite text-center font-bold text-[0.8rem] uppercase text-malachite">
+                      CURRENT PLAN
+                    </div>
+                  ) : billing.plan === "FREE" ? (
+                    <button
+                      className="nb-btn nb-btn--primary w-full mt-4"
+                      onClick={() => handleCheckout("PRO")}
+                      disabled={billingRedirecting !== null}
+                    >
+                      {billingRedirecting === "PRO" ? "REDIRECTING..." : "UPGRADE TO PRO"}
+                    </button>
+                  ) : null}
+                </div>
+
+                {/* TEAM plan */}
+                <div className={`p-5 border-2 ${billing.plan === "TEAM" ? "border-malachite bg-malachite/5" : "border-dashed border-signal-black"}`}>
+                  <div className="font-bold text-[1rem] uppercase tracking-wider mb-1">TEAM</div>
+                  <div className="font-mono text-[0.75rem] text-gray-mid mb-4">Pricing on checkout</div>
+                  <ul className="flex flex-col gap-2 font-mono text-[0.8rem]">
+                    <li>✓ Everything in Pro</li>
+                    <li className="font-bold">✓ Team collaboration</li>
+                    <li className="font-bold">✓ Shared workspaces</li>
+                    <li>✓ Priority support</li>
+                  </ul>
+                  {billing.plan === "TEAM" ? (
+                    <div className="mt-4 p-2 border-2 border-malachite text-center font-bold text-[0.8rem] uppercase text-malachite">
+                      CURRENT PLAN
+                    </div>
+                  ) : (
+                    <button
+                      className="nb-btn nb-btn--primary w-full mt-4"
+                      onClick={() => handleCheckout("TEAM")}
+                      disabled={billingRedirecting !== null}
+                    >
+                      {billingRedirecting === "TEAM" ? "REDIRECTING..." : "UPGRADE TO TEAM"}
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Active features list */}
+              {billing.features.length > 0 && (
+                <div className="p-4 border-2 border-dashed border-malachite">
+                  <h3 className="font-bold text-[0.85rem] uppercase tracking-wider mb-2 text-malachite">
+                    ACTIVE FEATURES
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {billing.features.map((feature) => (
+                      <span
+                        key={feature}
+                        className="px-3 py-1 border-2 border-signal-black font-mono text-[0.75rem] uppercase bg-creamy-milk"
+                      >
+                        {feature.replace(/_/g, " ")}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>
