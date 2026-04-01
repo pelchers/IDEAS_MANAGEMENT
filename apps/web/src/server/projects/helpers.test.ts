@@ -66,6 +66,11 @@ describe("checkProjectAccess", () => {
     email: "user@example.com",
     role: "USER",
     emailVerifiedAt: new Date(),
+    displayName: null,
+    bio: null,
+    avatarUrl: null,
+    tags: [],
+    preferences: null,
   };
 
   const adminUser: AuthenticatedUser = {
@@ -73,6 +78,11 @@ describe("checkProjectAccess", () => {
     email: "admin@example.com",
     role: "ADMIN",
     emailVerifiedAt: new Date(),
+    displayName: null,
+    bio: null,
+    avatarUrl: null,
+    tags: [],
+    preferences: null,
   };
 
   it("grants admin bypass", async () => {
