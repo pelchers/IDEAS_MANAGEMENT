@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, KeyboardEvent } from "react";
+import { detectOllama, type OllamaStatus } from "@/lib/ollama-client";
+import { streamOllamaChat, type OllamaChatMessage, type OllamaToolDef } from "@/lib/ollama-chat";
 
 /* ── Types ── */
 interface ToolCall {
@@ -36,6 +38,9 @@ export default function AiPage() {
   const [projects, setProjects] = useState<{ id: string; name: string }[]>([]);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
   const [showReasoning, setShowReasoning] = useState(() => typeof window !== "undefined" ? localStorage.getItem("ai_show_reasoning") !== "false" : true);
+  const [ollamaStatus, setOllamaStatus] = useState<OllamaStatus | null>(null);
+  const [useClientOllama, setUseClientOllama] = useState(false);
+  const [projectContext, setProjectContext] = useState<{ name: string; contextSummary: string } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -43,14 +48,31 @@ export default function AiPage() {
   useEffect(() => {
     fetch("/api/ai/config")
       .then((res) => res.json())
-      .then((data) => {
-        if (data.provider === "OLLAMA_LOCAL") setAiStatus("local");
-        else if (data.provider !== "NONE") setAiStatus("connected");
-        else {
-          // Auto-detect Ollama
-          fetch("http://localhost:11434/api/tags", { signal: AbortSignal.timeout(2000) })
-            .then((r) => { if (r.ok) setAiStatus("local"); else setAiStatus("not_configured"); })
-            .catch(() => setAiStatus("not_configured"));
+      .then(async (data) => {
+        if (data.provider === "OLLAMA_LOCAL") {
+          // Provider is set to local Ollama — check if it's reachable from browser
+          const status = await detectOllama();
+          setOllamaStatus(status);
+          if (status.running) {
+            setAiStatus("local");
+            setUseClientOllama(true);
+          } else {
+            // Ollama configured but not running — fall back to server-side
+            setAiStatus("local");
+            setUseClientOllama(false);
+          }
+        } else if (data.provider !== "NONE") {
+          setAiStatus("connected");
+        } else {
+          // Auto-detect Ollama from browser
+          const status = await detectOllama();
+          setOllamaStatus(status);
+          if (status.running) {
+            setAiStatus("local");
+            setUseClientOllama(true);
+          } else {
+            setAiStatus("not_configured");
+          }
         }
       })
       .catch(() => setAiStatus("not_configured"));
@@ -79,6 +101,15 @@ export default function AiPage() {
       }
     }).catch(() => {});
   }, [activeProjectId]);
+
+  /* ── Fetch project context for client-side Ollama ── */
+  useEffect(() => {
+    if (!activeProjectId || !useClientOllama) { setProjectContext(null); return; }
+    fetch(`/api/ai/context/${activeProjectId}`)
+      .then((r) => r.json())
+      .then((d) => { if (d.ok) setProjectContext({ name: d.project.name, contextSummary: d.contextSummary }); })
+      .catch(() => {});
+  }, [activeProjectId, useClientOllama]);
 
   /* ── Load sessions ── */
   const loadSessions = useCallback(() => {
@@ -175,6 +206,130 @@ export default function AiPage() {
     }
   }, [newChat, sessionId, renameSession, exportSession]);
 
+  /* ── Build system prompt for client-side Ollama ── */
+  const buildClientSystemPrompt = useCallback(() => {
+    const parts = [
+      "You are an AI assistant for the IDEA-MANAGEMENT application.",
+      "You help users manage their projects, ideas, kanban boards, schemas, whiteboards, and directory trees.",
+      "When users ask you to perform actions, use the available tools. You can use tools from ANY page.",
+      "",
+      "RULES:",
+      "1. CONVERSATION vs ACTION: Most messages are just conversation — respond naturally. ONLY use tools when the user EXPLICITLY asks to add, create, update, delete, or modify something.",
+      "2. WHEN TO USE TOOLS: Only when the user says things like 'add an idea', 'create a card', 'delete that', 'update the schema', etc.",
+      "3. INTERPRETIVE DETAILS: When you DO use a tool, fill in all fields intelligently.",
+      "4. DESTRUCTIVE ACTIONS: Before deleting anything, ask for confirmation.",
+      "5. Be concise, friendly, and conversational.",
+    ];
+    if (activeProjectId && projectContext) {
+      parts.push(`\nCurrent project: "${projectContext.name}" (ID: ${activeProjectId}). ALWAYS use this projectId when calling tools.`);
+      if (projectContext.contextSummary) {
+        parts.push(`\nCurrent project state:\n${projectContext.contextSummary}`);
+      }
+    }
+    parts.push("\n/no_think");
+    return parts.join("\n");
+  }, [activeProjectId, projectContext]);
+
+  /* ── Tool definitions for client-side Ollama (OpenAI function calling format) ── */
+  const ollamaTools: OllamaToolDef[] = [
+    { type: "function", function: { name: "read_artifact", description: "Read any project artifact by path", parameters: { type: "object", properties: { projectId: { type: "string" }, artifactPath: { type: "string" } }, required: ["projectId", "artifactPath"] } } },
+    { type: "function", function: { name: "list_projects", description: "List all projects the user has access to", parameters: { type: "object", properties: {} } } },
+    { type: "function", function: { name: "update_ideas_artifact", description: "Add, edit, or delete ideas in a project", parameters: { type: "object", properties: { projectId: { type: "string" }, action: { type: "string", enum: ["add", "edit", "delete"] }, ideaId: { type: "string" }, title: { type: "string" }, body: { type: "string" }, category: { type: "string" }, priority: { type: "string", enum: ["low", "medium", "high"] }, tags: { type: "array", items: { type: "string" } } }, required: ["projectId", "action"] } } },
+    { type: "function", function: { name: "update_kanban_artifact", description: "Add, move, or delete kanban cards", parameters: { type: "object", properties: { projectId: { type: "string" }, action: { type: "string", enum: ["add_card", "move_card", "update_card", "delete_card", "add_column"] }, cardId: { type: "string" }, column: { type: "string" }, title: { type: "string" }, description: { type: "string" }, labels: { type: "array", items: { type: "string" } }, columnName: { type: "string" } }, required: ["projectId", "action"] } } },
+    { type: "function", function: { name: "update_schema_artifact", description: "Add entities, fields, or relations to a schema", parameters: { type: "object", properties: { projectId: { type: "string" }, action: { type: "string", enum: ["add_entity", "add_field", "add_relation", "add_enum", "delete_entity"] }, entityName: { type: "string" }, fieldName: { type: "string" }, fieldType: { type: "string" }, fromEntity: { type: "string" }, toEntity: { type: "string" }, relationType: { type: "string", enum: ["1:1", "1:N", "N:N"] }, enumName: { type: "string" }, enumValues: { type: "array", items: { type: "string" } } }, required: ["projectId", "action"] } } },
+    { type: "function", function: { name: "update_whiteboard_artifact", description: "Add sticky notes to whiteboard", parameters: { type: "object", properties: { projectId: { type: "string" }, action: { type: "string", enum: ["add_sticky"] }, title: { type: "string" }, description: { type: "string" }, color: { type: "string", enum: ["lemon", "watermelon", "malachite", "amethyst"] } }, required: ["projectId", "action", "title"] } } },
+    { type: "function", function: { name: "update_directory_tree_artifact", description: "Add or remove files/folders in directory tree", parameters: { type: "object", properties: { projectId: { type: "string" }, action: { type: "string", enum: ["add_node", "delete_node"] }, nodeName: { type: "string" }, nodeType: { type: "string", enum: ["folder", "file"] }, parentPath: { type: "string" } }, required: ["projectId", "action", "nodeName"] } } },
+    { type: "function", function: { name: "manage_project", description: "Create or update a project", parameters: { type: "object", properties: { action: { type: "string", enum: ["create", "update"] }, projectId: { type: "string" }, name: { type: "string" }, description: { type: "string" }, status: { type: "string", enum: ["PLANNING", "ACTIVE", "PAUSED", "ARCHIVED"] }, tags: { type: "array", items: { type: "string" } } }, required: ["action"] } } },
+  ];
+
+  /* ── Send via client-side Ollama ── */
+  const sendViaClientOllama = useCallback(async (userText: string, allMessages: ChatMessage[]) => {
+    const systemPrompt = buildClientSystemPrompt();
+    const ollamaMessages: OllamaChatMessage[] = [{ role: "system", content: systemPrompt }];
+
+    for (const m of allMessages) {
+      if (m.role === "user") ollamaMessages.push({ role: "user", content: m.text });
+      else if (m.role === "ai") ollamaMessages.push({ role: "assistant", content: m.text });
+    }
+
+    setMessages((prev) => [...prev, { role: "ai", text: "", isStreaming: true }]);
+    setIsTyping(false);
+
+    let aiText = "";
+    let aiReasoning = "";
+    const pendingToolCalls: ToolCall[] = [];
+
+    const updateMsg = () => {
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          role: "ai", text: aiText,
+          reasoning: aiReasoning || undefined,
+          toolCalls: pendingToolCalls.length > 0 ? [...pendingToolCalls] : undefined,
+          isStreaming: true,
+        };
+        return updated;
+      });
+    };
+
+    try {
+      await streamOllamaChat(ollamaMessages, ollamaTools, ollamaStatus?.hasCustomModel || false, {
+        onToken: (token) => { aiText += token; updateMsg(); },
+        onReasoning: (r) => { aiReasoning += r; updateMsg(); },
+        onToolCall: (name, args) => {
+          pendingToolCalls.push({ name, args });
+          aiReasoning += `\n▶ Calling: ${name.replace(/_/g, " ")}...`;
+          updateMsg();
+        },
+        onToolResult: (name, result) => {
+          const tc = pendingToolCalls.find((t) => t.name === name && !t.result);
+          if (tc) tc.result = result;
+          const resultMsg = typeof result === "object" && result !== null && "message" in (result as Record<string,unknown>)
+            ? String((result as Record<string,unknown>).message) : "completed";
+          aiReasoning += `\n✅ ${resultMsg}`;
+          if (!aiText) aiText = resultMsg;
+          updateMsg();
+        },
+        onComplete: () => {
+          setMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { ...updated[updated.length - 1], isStreaming: false };
+            return updated;
+          });
+        },
+        onError: (err) => {
+          aiReasoning += `\n❌ Error: ${err}`;
+          if (!aiText) aiText = `Error: ${err}`;
+          updateMsg();
+        },
+      });
+
+      // Save to server DB
+      await fetch("/api/ai/chat/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          userMessage: userText,
+          aiMessage: aiText,
+          toolCalls: pendingToolCalls.filter((tc) => tc.result !== undefined).map((tc) => ({ name: tc.name, args: tc.args, result: tc.result })),
+          provider: "ollama-local",
+        }),
+      }).then((r) => r.json()).then((d) => {
+        if (d.ok && d.sessionId && !sessionId) { setSessionId(d.sessionId); loadSessions(); }
+      }).catch(() => {});
+
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : "Local Ollama connection failed";
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1] = { role: "ai", text: `Error: ${errMsg}. Try checking that Ollama is running.`, isStreaming: false };
+        return updated;
+      });
+    }
+    setIsTyping(false);
+  }, [buildClientSystemPrompt, ollamaStatus, sessionId, loadSessions]);
+
   /* ── Send message ── */
   const sendMessage = useCallback(async () => {
     const trimmed = input.trim();
@@ -188,6 +343,13 @@ export default function AiPage() {
     setMessages((prev) => [...prev, userMessage]);
     setIsTyping(true);
 
+    // ── Client-side Ollama path ──
+    if (useClientOllama && ollamaStatus?.running) {
+      await sendViaClientOllama(trimmed, [...messages, userMessage]);
+      return;
+    }
+
+    // ── Server-side path (Groq / BYOK / server Ollama) ──
     const apiMessages = [...messages, userMessage]
       .filter((m) => m.role !== "tool")
       .map((m) => ({ role: m.role === "user" ? "user" : "assistant", content: m.text }));
@@ -361,7 +523,7 @@ export default function AiPage() {
       setMessages((prev) => [...prev, { role: "ai", text: `Error: ${errMsg}` }]);
       setIsTyping(false);
     }
-  }, [input, isTyping, messages, sessionId, handleSlashCommand, loadSessions]);
+  }, [input, isTyping, messages, sessionId, handleSlashCommand, loadSessions, useClientOllama, ollamaStatus, sendViaClientOllama, activeProjectId]);
 
   /* ── Keyboard ── */
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -374,7 +536,7 @@ export default function AiPage() {
     ? sessions.filter((s) => s.title.toLowerCase().includes(searchQuery.toLowerCase()))
     : sessions;
 
-  const statusLabel = aiStatus === "connected" ? "CONNECTED" : aiStatus === "local" ? "LOCAL AI" : aiStatus === "not_configured" ? "NOT CONFIGURED" : "CHECKING...";
+  const statusLabel = aiStatus === "connected" ? "CONNECTED" : aiStatus === "local" ? (useClientOllama ? "LOCAL AI (YOUR GPU)" : "LOCAL AI") : aiStatus === "not_configured" ? "NOT CONFIGURED" : "CHECKING...";
   const statusColor = aiStatus === "connected" ? "text-malachite border-malachite" : aiStatus === "local" ? "text-cornflower border-cornflower" : aiStatus === "not_configured" ? "text-watermelon border-watermelon" : "text-gray-mid border-gray-mid";
 
   return (
