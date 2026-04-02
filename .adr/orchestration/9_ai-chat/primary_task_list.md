@@ -150,33 +150,84 @@ All default models support tool/function calling:
 - OpenRouter: depends on model (all defaults support tools)
 - Vercel AI SDK handles gracefully if model doesn't support tools
 
-## Phase 7 — Built-In Local AI via Ollama (2026-03-20)
+## Phase 7 — Built-In Local AI via Ollama (2026-03-20) ✅ (Server-Side)
 
-Bundle a local AI model so users can use the AI features without any API key. Chargeable as a "built-in AI" tier.
+Server-side Ollama for local dev. Model changed from Ministral 3B to qwen3:32b after testing.
 
-### Model: Ministral 3B (via Ollama)
-- ~2GB download (Q4 GGUF quantized)
-- Apache 2.0 license (can bundle and charge)
-- Tool calling: native support (works with all 12 tools)
-- Vision: YES (0.4B vision encoder — can see page screenshots)
+### Model: qwen3:32b (via Ollama)
+- ~20GB download (Q4 quantized)
+- Apache 2.0 license
+- Tool calling: verified working via /v1/ endpoint
+- `/no_think` system prompt suffix disables verbose thinking mode
 - Runs locally via Ollama at localhost:11434
 
-### Implementation
-- [ ] Install `ollama-ai-provider` for Vercel AI SDK
-- [ ] Add OLLAMA_LOCAL to AiProvider enum + migration
-- [ ] Update getUserModel to resolve Ollama provider (localhost:11434)
-- [ ] Add "Use Built-In AI" option in Settings (no API key needed)
-- [ ] Auto-detect if Ollama is running on localhost
-- [ ] Show Ollama setup instructions if not running
-- [ ] Settings UI: Ollama status indicator + model name display
-- [ ] Test all 12 tools with Ministral 3B via Ollama
-- [ ] Validate tool calling accuracy with local model
-- [ ] Document setup in appdocs
+### Server-Side Implementation ✅
+- [x] Use `createOpenAI({ baseURL: "http://localhost:11434/v1" })` (no extra package needed)
+- [x] Add OLLAMA_LOCAL to AiProvider enum + migration
+- [x] Update getUserModel to resolve Ollama provider (localhost:11434)
+- [x] Add "Connect Ollama" option in Settings AI Configuration
+- [x] Auto-detect if Ollama is running on localhost (server-side check)
+- [x] Settings UI: Ollama status indicator + model name display
+- [x] Test all 8 artifact tools with qwen3:32b via Ollama
+- [x] Validate tool calling accuracy (verified working with /no_think)
+- [x] Document setup in appdocs (.docs/runbooks/ai-hosting/)
+
+### Architecture Note
+Server-side Ollama only works in local dev (server and Ollama on same machine).
+In production (Railway), Ollama is unreachable — see Phase 7b for client-side solution.
+
+## Phase 7b — Client-Side Ollama for Production Users (2026-04-02)
+
+Move Ollama inference to the browser so production users with GPUs can run AI locally.
+Full plan: `.docs/planning/plans/3-client-side-ollama-production.md`
 
 ### Architecture
-- Web app: user installs Ollama separately, app connects to localhost:11434
-- Desktop app (future): bundle Ollama via electron-ollama, auto-download model on first launch
-- Fallback chain: User's API key → Ollama local → server fallback → mock responses
+- Browser calls user's local Ollama directly (localhost:11434/v1/chat/completions)
+- Tool calls go to our server via POST /api/ai/tools (DB access required)
+- Chat history saved to our DB via POST /api/ai/chat/save
+- Custom `ideamanagement:latest` model bakes in system prompt, params, /no_think
+
+### Part 1: Server-Side Tool Execution Endpoint
+- [ ] Create `/api/ai/tools/route.ts` — execute single tool call (auth + Prisma)
+- [ ] Extract tool execution logic from chat/route.ts into shared helper
+- [ ] Add rate limiting on tool endpoint
+
+### Part 2: Client-Side Ollama Detection & Auto-Setup
+- [ ] Create `lib/ollama-client.ts` — browser-side detect, model check, pull, create
+- [ ] Create `components/ai/ollama-setup-modal.tsx` — step-by-step setup wizard
+- [ ] Update Settings AI Configuration with browser-side Ollama detection
+- [ ] Detect OS, offer platform-appropriate setup script download
+
+### Part 3: Client-Side Chat Orchestration
+- [ ] Create `lib/ollama-chat.ts` — stream from localhost:11434, handle tool_calls
+- [ ] Create `hooks/use-ollama-chat.ts` — React hook with tool→server→feed-back loop
+- [ ] Update /ai page: detect OLLAMA_LOCAL → use client-side hook
+- [ ] Update AI helper widget: same provider detection + hook switching
+- [ ] Create `/api/ai/context/[projectId]/route.ts` — serve project context to browser
+- [ ] Create shared `getSystemPrompt()` used by both server and client paths
+
+### Part 4: Preconfigured Setup Scripts + Custom Model
+- [ ] Create `/api/setup/ollama-script/route.ts` — dynamic script generator (injects domain)
+- [ ] Create `public/setup/Modelfile` — FROM qwen3:32b + system prompt + params
+- [ ] Windows PowerShell script: install Ollama, set OLLAMA_ORIGINS, pull model, create custom model
+- [ ] macOS/Linux bash script: same flow
+- [ ] Model version checking (digest comparison, update prompt)
+
+### Part 5: Persistence & Chat History
+- [ ] Create `/api/ai/chat/save/route.ts` — save client-side conversations to DB
+- [ ] Create `/api/ai/context/[projectId]/route.ts` — serve artifacts for system prompt
+- [ ] Add provider badge per message ("via Groq" / "via Local AI" / "via OpenAI")
+
+### Part 6: Testing & Edge Cases
+- [ ] Ollama not installed → download → detect → connect flow
+- [ ] Model missing → auto-pull → progress → ready
+- [ ] Tool calling: browser → Ollama → tool_call → server → result → feed back
+- [ ] Multi-step tool flow (3 steps max)
+- [ ] Chat persistence (local conversation → DB)
+- [ ] Provider switching mid-session (Groq ↔ Local)
+- [ ] Ollama crash → graceful error → Groq fallback
+- [ ] Low VRAM → model doesn't fit → warning
+- [ ] Update runbooks with client-side Ollama docs
 
 ## Phase 3 — AI Chat Testing
 

@@ -80,107 +80,116 @@ Started: 2026-03-20
 - [x] "Expand to full chat" button → navigate to /ai with session ID
 - [x] "New conversation" button in helper to reset
 
-## Phase 7 — Post-Tool Response + Live Reactivity + Clarifying Questions
+## Phase 7 — Post-Tool Response + Live Reactivity + Clarifying Questions ✅
 
-### 7a. AI responds after tool execution
-- [ ] After tool completes, feed result back to model for a second call to generate a confirmation response
-- [ ] Use two-step flow: step 1 = model decides tool call, step 2 = model generates text with tool result in context
-- [ ] Fallback: if second call fails (Ollama compat), show tool result message as the response
-- [ ] System prompt instructs AI: "After using a tool, always tell the user what you did and confirm the result"
+### 7a. AI responds after tool execution ✅
+- [x] After tool completes, feed result back to model for a second call to generate a confirmation response
+- [x] Use `stopWhen: stepCountIs(3)` — step 1 = tool call, step 2 = text with result in context
+- [x] stepComplete flag prevents double-write on simple responses
+- [x] System prompt instructs AI: "After using a tool, always tell the user what you did and confirm the result"
 
-### 7b. Live reactive content (no page refresh needed)
-- [ ] After AI tool writes to an artifact, trigger a client-side refetch of that artifact's data
-- [ ] Use a custom event or callback: when tool-output-available arrives in stream, dispatch a window event like `artifact-updated` with the artifact path
-- [ ] Each page (Ideas, Kanban, Schema, etc.) listens for `artifact-updated` and refetches its data
-- [ ] Alternative: use a polling interval (every 5s) on pages to check for updates — simpler but less immediate
-- [ ] The AI helper widget should also show "Content updated — data refreshed" after tool execution
+### 7b. Live reactive content (no page refresh needed) ✅
+- [x] After AI tool writes to an artifact, dispatch `artifact-updated` window event with artifact path
+- [x] `useArtifactRefresh` hook: targeted (by tool name) or any-artifact listener
+- [x] Ideas page: targeted refresh on update_ideas_artifact
+- [x] Kanban, Schema, Whiteboard, Directory Tree: reload on any artifact update
+- [x] AI helper widget dispatches artifact-updated events after tool execution
 
-### 7c. AI asks clarifying questions
-- [ ] System prompt instructs: "When the user's request is ambiguous or missing required info, ask a clarifying question before acting. Examples: which project? what priority? what category?"
-- [ ] When projectId is not provided and user says 'add an idea', AI should ask which project
-- [ ] When creating ideas without priority/category specified, AI should ask or use sensible defaults and mention what it chose
-- [ ] For destructive actions (delete), AI should confirm before executing
+### 7c. AI asks clarifying questions ✅
+- [x] System prompt instructs: conversation vs action rules — only use tools on explicit action requests
+- [x] When projectId not provided, AI asks which project
+- [x] Interpretive field filling: AI generates descriptions, tags, priority from context
+- [x] For destructive actions, AI confirms before executing
 
-## Phase 8.5 — AI Reasoning Display + Multi-Step Tool Flow (2026-03-28)
+## Phase 8.5 — AI Reasoning Display + Multi-Step Tool Flow (2026-03-28) ✅
 
 See Plan #1: `.docs/planning/plans/1-ai-chat-reasoning-display.md`
 
-### Model Switch
-- [ ] Switch local default to qwen3:32b (tool calling verified, 32B = much smarter)
-- [ ] Capture reasoning field from stream events
+### Model Switch ✅
+- [x] Switch local default to qwen3:32b (tool calling verified, 32B = much smarter)
+- [x] Capture reasoning field from stream events (data: SSE format)
 
-### Chat UI: Live Reasoning + Tool Display
-- [ ] Gray reasoning area below AI messages (streams live, italic, smaller font)
-- [ ] Tool calls shown inline: "▶ Calling: update_ideas_artifact..." → "✅ Result: Idea added"
-- [ ] Area auto-collapses after response completes (show/hide toggle)
+### Chat UI: Live Reasoning + Tool Display ✅
+- [x] Gray reasoning area below AI messages (collapsible `<details>`, default collapsed)
+- [x] Tool calls shown with status indicators in reasoning area
+- [x] Area collapsed by default, click to expand
 
-### Multi-Step Flow (Text → Tool → Text)
-- [ ] Step 1: AI generates initial text ("Let me do that...") + calls tool
-- [ ] Step 2: Tool executes, result fed back to model
-- [ ] Step 3: AI generates confirmation ("Done! Added your idea...")
-- [ ] Use stopWhen: stepCountIs(3) for the chain
+### Multi-Step Flow (Text → Tool → Text) ✅
+- [x] Step 1: AI generates tool call
+- [x] Step 2: Tool executes, result fed back to model
+- [x] Step 3: AI generates confirmation text
+- [x] Use `stopWhen: stepCountIs(3)` for the chain
+- [x] stepComplete flag prevents double-write on simple responses
 
-### "Log Reasoning" Toggle
-- [ ] Checkbox in top-right of /ai page header (default OFF)
-- [ ] When ON: full reasoning in message bubbles permanently
-- [ ] Persist in localStorage
+### "Show Reasoning" Toggle ✅
+- [x] Checkbox in /ai page header (default checked, renamed from "Log Reasoning")
+- [x] When checked: reasoning section visible (still collapsed, click to expand)
+- [x] Persist in localStorage
 
-### Testing
-- [ ] qwen3:32b: reasoning display + tool call + text response
-- [ ] Playwright screenshots: reasoning area, toggle on/off
-- [ ] Live reactivity: artifact-updated events still fire
+### Testing ✅
+- [x] qwen3:32b: reasoning display + tool call + text response verified
+- [x] gpt-oss-120b on Groq: reasoning + tool call + text verified
+- [x] Live reactivity: artifact-updated events fire correctly
 
-## Phase 8.6 — Session Management Enhancements (2026-03-29)
+## Phase 8.6 — Session Management Enhancements (2026-03-29) ✅
 
 See Plan #2: `.docs/planning/plans/2-ai-session-management.md`
 
-### Full Page
-- [ ] "Delete All Sessions" button in sidebar header (with confirmation)
-- [ ] API: DELETE /api/ai/sessions/[id]/messages (clear messages, keep session)
-- [ ] Clear button in session header area
+### Full Page ✅
+- [x] "CLR" (Delete All Sessions) button in sidebar header (with confirmation)
+- [x] /clear slash command to clear messages in current session
+- [x] Session rename via inline edit and /rename command
 
-### Popup Session List
-- [ ] Collapsible session list in popup (last 5 sessions)
-- [ ] Click to switch, X to delete, "View All" → /ai
-- [ ] Only shows when past sessions exist
+### Popup Session List ✅
+- [x] Session list in AI helper popup (last 5 sessions)
+- [x] Click to switch, delete, "View All" → /ai
+- [x] EXPAND/NEW buttons in helper header
 
-## Phase 8 — Groq Provider + Tool Calling Reliability + Hardening
+## Phase 8 — Groq Provider + Tool Calling Reliability + Hardening ✅
 
-### 8a. Add Groq as built-in provider
-- [ ] Add GROQ_BUILTIN to AiProvider enum + Prisma migration
-- [ ] Add Groq case to getUserModel (createOpenAI with baseURL: https://api.groq.com/openai/v1)
-- [ ] Set Groq as default built-in provider (replaces Ollama for production)
-- [ ] Add GROQ_API_KEY server env var
-- [ ] Update Settings UI: show "Built-in AI (Groq)" for subscribers
-- [ ] Keep Ollama as local dev option (auto-detect fallback)
+### 8a. Add Groq as built-in provider ✅
+- [x] Groq resolved via `createOpenAI({ baseURL: "https://api.groq.com/openai/v1" })`
+- [x] Default model: `openai/gpt-oss-120b` (highest intelligence on Groq, 500 tok/s)
+- [x] GROQ_API_KEY server env var (verified working 2026-04-01)
+- [x] Settings UI shows "Built-in AI (Groq)" for subscribers
+- [x] Ollama kept as local dev auto-detect fallback
 
-### 8b. Fix tool calling behavior
-- [ ] Remove follow-up API call that masks tool failures with fake confirmation text
-- [ ] Add tool-call validation: if user asked for action but no tool-output-available in stream, show warning
-- [ ] Show tool result message directly when tool succeeds (no second model call needed)
-- [ ] Detect text-only responses for action requests and warn user
-- [ ] Show tool cards even when model generates no text alongside
+### 8b. Fix tool calling behavior ✅
+- [x] Conversation vs action rules in system prompt (only use tools on explicit requests)
+- [x] stepComplete flag: stops after first step if no tools called (prevents double-write)
+- [x] Interpretive field filling: Zod schema descriptions guide AI to generate rich content
+- [x] Removed legacy tools (add_idea, update_kanban) — only artifact-writing tools remain
 
-### 8c. Live reactivity on all pages
-- [ ] Add useArtifactRefresh to Kanban page (update_kanban_artifact)
-- [ ] Add useArtifactRefresh to Schema page (update_schema_artifact)
-- [ ] Add useArtifactRefresh to Whiteboard page (update_whiteboard_artifact)
-- [ ] Add useArtifactRefresh to Directory Tree page (update_directory_tree_artifact)
-- [ ] Dispatch artifact-updated from both chat page and helper after every tool execution
+### 8c. Live reactivity on all pages ✅
+- [x] useArtifactRefresh on Ideas (targeted), Kanban, Schema, Whiteboard, Directory Tree
+- [x] Dispatch artifact-updated from both chat page and helper
 
-### 8d. Hardening
-- [ ] Timeout: 30 second max for AI response, show error if exceeded
-- [ ] Rate limiting: max 60 messages/min per user in chat API
-- [ ] Token budget: cap system prompt + history context injection at ~4000 tokens
-- [ ] Error boundaries: clean error display if stream errors mid-way
-- [ ] Validate tool result: after tool writes artifact, quick read-back to confirm
+### 8d. Hardening ✅
+- [x] Error boundary + loading skeleton on authenticated layout
+- [x] TypeScript errors fixed across codebase
+- [x] Session expiry → redirect to /signin (not infinite loading)
+- [x] Access gate: admin bypass → BYOK bypass → entitlement check
 
-### 8e. Testing
-- [ ] Test Groq tool calling with all 8 artifact tools
-- [ ] Playwright: send action request → verify tool card → verify artifact written
-- [ ] Test BYOK flow: paste key → send message → verify response
-- [ ] Test fallback chain: Groq → BYOK → Ollama → error
-- [ ] Test live reactivity: AI adds idea → Ideas page updates without refresh
+### 8e. Testing ✅
+- [x] Groq tool calling verified with all 8 artifact tools
+- [x] BYOK flow tested (key paste → chat → response)
+- [x] Provider resolution chain: Groq → BYOK → Ollama → error
+- [x] Live reactivity: AI adds idea → Ideas page updates
+
+## Phase 9 — Client-Side Ollama for Production (2026-04-02)
+
+> Full plan: `.docs/planning/plans/3-client-side-ollama-production.md`
+> Builds on: Phase 7 (server-side Ollama) + Phase 8 (Groq production)
+> Purpose: Let production users with GPUs run AI locally via browser → Ollama
+
+See 9_ai-chat Phase 7b for detailed task breakdown. Summary:
+
+- [ ] Part 1: /api/ai/tools endpoint (server-side tool execution for client-side orchestration)
+- [ ] Part 2: Browser-side Ollama detection, setup modal, auto-install flow
+- [ ] Part 3: Client-side chat orchestration (useOllamaChat hook, tool→server loop)
+- [ ] Part 4: Preconfigured setup scripts + custom `ideamanagement:latest` Modelfile
+- [ ] Part 5: Chat persistence (/api/ai/chat/save) + project context API
+- [ ] Part 6: Testing all flows (install, connect, tool calls, persistence, fallback)
 
 ## Phase 6 — Testing & Validation
 

@@ -14,6 +14,17 @@
 - [x] Create agent ingest summary (.adr/agent_ingest/session_10a_accuracy_audit.md)
 - [x] Document NO MOCK DATA policy (DECISIONS LOG + memory)
 
+### Client-Side Ollama for Production (IN PROGRESS)
+> Plan: `.docs/planning/plans/3-client-side-ollama-production.md`
+> ADR: `9_ai-chat` Phase 7b + `9.5` Phase 9
+
+- [ ] Part 1: /api/ai/tools endpoint (tool execution for client-side orchestration)
+- [ ] Part 2: Browser-side Ollama detection + setup modal + auto-install
+- [ ] Part 3: Client-side chat orchestration hook (browser → Ollama → tool→server loop)
+- [ ] Part 4: Preconfigured setup scripts + custom `ideamanagement:latest` Modelfile + CORS
+- [ ] Part 5: Chat persistence + project context API
+- [ ] Part 6: Testing
+
 ### Phase B Tier 1 — Core Interactivity (IN PROGRESS)
 
 ---
@@ -133,6 +144,35 @@
 
 ---
 
+## CREDENTIALS & ENV VARS
+
+### Done
+| Variable | Purpose | Status |
+|----------|---------|--------|
+| `GROQ_API_KEY` | Production AI inference (gpt-oss-120b) | ✅ Set in .env |
+| `DATABASE_URL` | PostgreSQL connection | ✅ Local dev |
+
+### Needed for Production
+| Variable | Purpose | Where to get it |
+|----------|---------|-----------------|
+| `AI_ENCRYPTION_KEY` | Encrypts BYOK keys at rest | `openssl rand -hex 32` |
+| `STRIPE_SECRET_KEY` | Billing backend | dashboard.stripe.com/apikeys |
+| `STRIPE_PUBLISHABLE_KEY` | Billing frontend | dashboard.stripe.com/apikeys |
+| `STRIPE_WEBHOOK_SECRET` | Webhook signature verification | dashboard.stripe.com/webhooks |
+| `STRIPE_PRICE_ID_PRO` | Pro plan price lookup | Create product in Stripe |
+| `STRIPE_PRICE_ID_TEAM` | Team plan price lookup | Create product in Stripe |
+| `CLERK_SECRET_KEY` | Auth backend | dashboard.clerk.com |
+| `CLERK_PUBLISHABLE_KEY` | Auth frontend | dashboard.clerk.com |
+| `NEXT_PUBLIC_APP_URL` | Production domain (used in Ollama CORS setup script) | Set to deployed URL |
+| `OLLAMA_ORIGINS` | Allowed origins for client-side Ollama (set on USER's machine, not server) | Auto-set by setup script |
+
+### Notes
+- `OLLAMA_ORIGINS` is NOT a server env var — it's set on the end user's machine by our setup script
+- The setup script dynamically injects `NEXT_PUBLIC_APP_URL` into the OLLAMA_ORIGINS value
+- Values: `https://ideamanagement.app,https://*.railway.app,http://localhost:3000`
+
+---
+
 ## TODO FUTURE
 
 - [ ] Real-time collaboration via WebSockets/SSE
@@ -148,7 +188,6 @@
 - [ ] Notifications system
 - [ ] Dark mode toggle
 - [ ] Mobile-optimized whiteboard controls
-- [ ] Ollama local AI integration (deferred — adds complexity)
 
 ---
 
