@@ -229,6 +229,59 @@ Full plan: `.docs/planning/plans/3-client-side-ollama-production.md`
 - [ ] Low VRAM → model doesn't fit → warning
 - [ ] Update runbooks with client-side Ollama docs
 
+## Phase 8 — Settings AI Panel Redesign (2026-04-03)
+
+> Plan: `.docs/planning/plans/4-ai-provider-switcher-subscription-tiers.md`
+> Replaces the current 3-section layout with a single dropdown + context panel
+
+### Provider Selector Dropdown
+- [ ] Replace 3 separate sections (Ollama / OpenRouter / BYOK) with single `<select>` dropdown
+- [ ] Dropdown options:
+  - "Hosted AI (Built-in)" — requires Pro/Team, shows lock icon if Free
+  - "Local AI (Your GPU)" — triggers OllamaSetupModal if not detected
+  - "OpenAI (Your Key)" — shows key input
+  - "Anthropic (Your Key)" — shows key input
+  - "Google (Your Key)" — shows key input
+  - "OpenRouter" — shows OAuth button
+- [ ] Save selection to `preferredAiProvider` via PUT /api/ai/config
+- [ ] Persist across page reloads (fetched from GET /api/ai/config)
+
+### Context Panel (swaps based on dropdown)
+- [ ] Create `components/ai/provider-context-panel.tsx`
+- [ ] Hosted AI panel:
+  - Subscription badge (FREE / PRO / TEAM)
+  - Usage meter component (from 10_billing Phase 5)
+  - "Upgrade" CTA if on Free tier
+  - Current model display: "gpt-oss-120b via Groq"
+- [ ] Local AI panel:
+  - Ollama status: "Connected (ideamanagement:latest)" or "Not detected"
+  - [SETUP LOCAL AI] button → opens OllamaSetupModal
+  - "Free, private, runs on your GPU · Unlimited messages"
+- [ ] BYOK panel (OpenAI / Anthropic / Google):
+  - Key input with provider auto-detect from prefix
+  - "Unlimited — you pay your provider directly"
+  - [SAVE KEY] / [DISCONNECT] buttons
+- [ ] OpenRouter panel:
+  - [CONNECT OPENROUTER] OAuth button or connected status
+  - "200+ models, billed to your OpenRouter account"
+
+### Fallback Setting
+- [ ] Show fallback dropdown ONLY for Hosted AI users
+- [ ] Options: "Auto-switch to Local AI" (default) / "Show upgrade prompt" / "Disable AI"
+- [ ] Save to `aiFallbackSetting` via PUT /api/ai/config
+
+### Connection Status Bar
+- [ ] Always-visible bar at bottom of AI config card
+- [ ] Shows: "Active: [provider name] ([model]) · [usage if hosted]"
+- [ ] Green dot for connected, red dot for not configured
+
+### Testing
+- [ ] Playwright: dropdown open, each context panel rendered
+- [ ] Playwright: provider switch → correct panel appears
+- [ ] Playwright: desktop + mobile responsive layout
+- [ ] Test: select Hosted AI on Free → shows upgrade CTA
+- [ ] Test: select Local AI without Ollama → setup modal opens
+
 ## Phase 3 — AI Chat Testing
 
 - [x] Playwright screenshots (desktop + mobile)

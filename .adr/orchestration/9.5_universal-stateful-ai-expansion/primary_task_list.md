@@ -219,3 +219,50 @@ See 9_ai-chat Phase 7b for detailed task breakdown. Summary:
 - [x] Send "add an idea about X" → verify idea appears in project's ideas artifact
 - [x] Send "list my projects" → verify project list returned
 - [x] Test on multiple pages via floating helper
+
+## Phase 10 — Auto-Fallback + Provider Switching (2026-04-03)
+
+> Plan: `.docs/planning/plans/4-ai-provider-switcher-subscription-tiers.md`
+> Depends on: 10_billing Phase 4 (token tracking) + 9_ai-chat Phase 8 (Settings redesign)
+
+### AI Page — Limit Detection + Auto-Fallback
+- [ ] On mount: fetch `/api/ai/usage` to get current usage vs limit
+- [ ] Before sending message (hosted AI path):
+  - Check cached usage — if approaching limit, fetch fresh from API
+  - If over limit → trigger fallback logic
+- [ ] Fallback logic (respects `aiFallbackSetting`):
+  - `"local"`: detect Ollama from browser → if running, auto-switch to client-side path
+  - `"upgrade"`: show upgrade modal with tier comparison
+  - `"disable"`: show error message "Monthly limit reached"
+- [ ] After successful message: increment local usage counter (optimistic) + refresh from API
+
+### Limit-Reached Banner
+- [ ] Create `components/ai/limit-reached-banner.tsx`
+  - Dismissible banner at top of chat area
+  - "Monthly AI limit reached (50/50). Using Local AI." (if auto-switched)
+  - "Monthly AI limit reached. Upgrade for more." (if no fallback available)
+  - [UPGRADE] button → navigates to Settings billing section
+  - [DISMISS] button → hides until next page load
+- [ ] Show banner in both AI page and floating AI helper
+
+### AI Helper Widget — Same Fallback
+- [ ] Update `components/ai/ai-helper.tsx`:
+  - Fetch usage on expand
+  - Same fallback logic as AI page
+  - Show condensed limit warning in header: "49/50 msgs"
+  - When limit reached: show "Limit reached" in place of send button (if no fallback)
+
+### Provider Badge Per Message
+- [ ] Add `provider` field to ChatMessage type
+- [ ] Set provider on each AI response: "groq", "ollama-local", "openai", etc.
+- [ ] Show small badge under each AI message: "via Groq" / "via Local AI" / "via OpenAI"
+- [ ] Style: monospace, 0.6rem, gray-mid color
+
+### Testing
+- [ ] Test: Hosted AI user at limit → banner appears
+- [ ] Test: Auto-fallback to Local AI → message sends via Ollama, banner shows
+- [ ] Test: No fallback available → upgrade modal shown
+- [ ] Test: Provider badge shows correct provider per message
+- [ ] Test: Helper widget shows usage count in header
+- [ ] Test: Usage refreshes after each message
+- [ ] Playwright screenshots: limit banner, fallback switch, upgrade modal
