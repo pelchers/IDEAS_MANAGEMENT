@@ -18,6 +18,8 @@ export async function GET(req: Request) {
     select: {
       aiProvider: true,
       aiApiKeyEncrypted: true,
+      preferredAiProvider: true,
+      aiFallbackSetting: true,
     },
   });
 
@@ -42,6 +44,8 @@ export async function GET(req: Request) {
     ok: true,
     provider: dbUser.aiProvider,
     maskedKey,
+    preferredProvider: dbUser.preferredAiProvider,
+    fallbackSetting: dbUser.aiFallbackSetting,
   });
 }
 
@@ -54,7 +58,7 @@ export async function PUT(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: { apiKey?: string; action?: string; provider?: string };
+  let body: { apiKey?: string; action?: string; provider?: string; preferredAiProvider?: string; aiFallbackSetting?: string };
   try {
     body = await req.json();
   } catch {
@@ -80,6 +84,25 @@ export async function PUT(req: Request) {
     });
 
     return NextResponse.json({ ok: true, provider: "NONE" });
+  }
+
+  // Handle preference-only updates (no provider switch)
+  if (body.preferredAiProvider || body.aiFallbackSetting) {
+    const data: Record<string, string> = {};
+    if (body.preferredAiProvider) data.preferredAiProvider = body.preferredAiProvider;
+    if (body.aiFallbackSetting) data.aiFallbackSetting = body.aiFallbackSetting;
+    await prisma.user.update({ where: { id: user.id }, data });
+    return NextResponse.json({ ok: true });
+  }
+
+  // Handle Groq built-in connect
+  if (body.action === "connect_groq") {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { aiProvider: "GROQ_BUILTIN", aiApiKeyEncrypted: null, preferredAiProvider: "hosted" },
+    });
+    await auditLog({ actorUserId: user.id, action: "ai.groq_connected", targetType: "User", targetId: user.id });
+    return NextResponse.json({ ok: true, provider: "GROQ_BUILTIN" });
   }
 
   // Handle Ollama local connect

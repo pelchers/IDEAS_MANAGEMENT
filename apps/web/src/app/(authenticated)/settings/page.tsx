@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { OllamaSetupModal } from "@/components/ai/ollama-setup-modal";
+import { UsageMeter } from "@/components/ai/usage-meter";
 import type { OllamaStatus } from "@/lib/ollama-client";
 
 /* ── Toggle state for preferences ── */
@@ -23,7 +24,7 @@ interface BillingState {
 
 /* ── AI Config state ── */
 interface AiConfig {
-  provider: "NONE" | "OPENROUTER_OAUTH" | "OPENROUTER_BYOK";
+  provider: string; // NONE | OPENROUTER_OAUTH | OPENROUTER_BYOK | OPENAI_BYOK | ANTHROPIC_BYOK | GOOGLE_BYOK | OLLAMA_LOCAL | GROQ_BUILTIN
   maskedKey: string | null;
   loading: boolean;
 }
@@ -62,6 +63,9 @@ function SettingsContent() {
   const [hasAiEntitlement, setHasAiEntitlement] = useState(false);
   const [aiMessage, setAiMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [ollamaModalOpen, setOllamaModalOpen] = useState(false);
+  const [selectedProvider, setSelectedProvider] = useState("hosted");
+  const [fallbackSetting, setFallbackSetting] = useState("local");
+  const [aiUsage, setAiUsage] = useState<{ used: number; limit: number; packBalance: number; periodEnd: string; plan: string } | null>(null);
 
   // Billing state
   const [billing, setBilling] = useState<BillingState>({
@@ -84,12 +88,53 @@ function SettingsContent() {
           maskedKey: data.maskedKey,
           loading: false,
         });
+        // Sync dropdown to current provider
+        if (data.provider === "GROQ_BUILTIN") setSelectedProvider("hosted");
+        else if (data.provider === "OLLAMA_LOCAL") setSelectedProvider("local");
+        else if (data.provider === "OPENROUTER_OAUTH" || data.provider === "OPENROUTER_BYOK") setSelectedProvider("openrouter");
+        else if (["OPENAI_BYOK", "ANTHROPIC_BYOK", "GOOGLE_BYOK"].includes(data.provider)) setSelectedProvider("byok");
+        if (data.fallbackSetting) setFallbackSetting(data.fallbackSetting);
       } else {
         setAiConfig((prev) => ({ ...prev, loading: false }));
       }
     } catch {
       setAiConfig((prev) => ({ ...prev, loading: false }));
     }
+    // Fetch AI usage
+    try {
+      const usageRes = await fetch("/api/ai/usage");
+      if (usageRes.ok) {
+        const usageData = await usageRes.json();
+        if (usageData.ok) setAiUsage({ used: usageData.used, limit: usageData.limit, packBalance: usageData.packBalance, periodEnd: usageData.periodEnd, plan: usageData.plan });
+      }
+    } catch { /* non-critical */ }
+  }, []);
+
+  const handleProviderChange = useCallback((value: string) => {
+    setSelectedProvider(value);
+    if (value === "local") {
+      // Check if Ollama is already connected — if not, open setup modal
+      if (aiConfig.provider !== "OLLAMA_LOCAL") {
+        fetch("http://localhost:11434/api/tags", { signal: AbortSignal.timeout(2000) })
+          .then((r) => { if (!r.ok) setOllamaModalOpen(true); })
+          .catch(() => setOllamaModalOpen(true));
+      }
+    }
+    // Save preference to server
+    fetch("/api/ai/config", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ preferredAiProvider: value }),
+    }).catch(() => {});
+  }, [aiConfig.provider]);
+
+  const handleFallbackChange = useCallback((value: string) => {
+    setFallbackSetting(value);
+    fetch("/api/ai/config", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ aiFallbackSetting: value }),
+    }).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -475,18 +520,12 @@ function SettingsContent() {
           </div>
         </div>
 
-        {/* ── AI Configuration Card ── */}
+        {/* ── AI Configuration Card (Redesigned) ── */}
         <div className="nb-card p-8">
           <h2 className="nb-card-title">AI CONFIGURATION</h2>
 
           {aiMessage && (
-            <div
-              className={`p-3 mb-4 border-2 border-signal-black font-mono text-[0.85rem] ${
-                aiMessage.type === "success"
-                  ? "bg-malachite/20 text-malachite"
-                  : "bg-watermelon/20 text-watermelon"
-              }`}
-            >
+            <div className={`p-3 mb-4 border-2 border-signal-black font-mono text-[0.85rem] ${aiMessage.type === "success" ? "bg-malachite/20 text-malachite" : "bg-watermelon/20 text-watermelon"}`}>
               {aiMessage.text}
             </div>
           )}
@@ -495,146 +534,225 @@ function SettingsContent() {
             <p className="font-mono text-[0.85rem] text-gray-mid">Loading AI configuration...</p>
           ) : (
             <>
-              {/* Current status */}
-              <div className="flex items-center gap-3 mb-6 p-4 border-2 border-dashed border-signal-black">
-                <div className="text-[1.5rem]">
-                  {aiConfig.provider === "NONE" ? "⚡" : "✅"}
+              {/* Admin badge */}
+              {isAdmin && (
+                <div className="mb-4 p-3 border-2 border-malachite bg-malachite/10 font-mono text-[0.8rem] text-malachite">
+                  ● Admin — unlimited AI access, all providers available.
                 </div>
-                <div className="flex-1">
-                  <div className="font-bold text-[0.9rem] uppercase">
-                    {aiConfig.provider === "NONE"
-                      ? "NO AI PROVIDER"
-                      : aiConfig.provider === "OPENROUTER_OAUTH"
-                      ? "OPENROUTER (OAUTH)"
-                      : aiConfig.provider === "OPENROUTER_BYOK"
-                      ? "OPENROUTER (API KEY)"
-                      : aiConfig.provider === "OPENAI_BYOK"
-                      ? "OPENAI (API KEY)"
-                      : aiConfig.provider === "ANTHROPIC_BYOK"
-                      ? "ANTHROPIC / CLAUDE (API KEY)"
-                      : aiConfig.provider === "GOOGLE_BYOK"
-                      ? "GOOGLE / GEMINI (API KEY)"
-                      : aiConfig.provider === "OLLAMA_LOCAL"
-                      ? "OLLAMA (LOCAL)"
-                      : aiConfig.provider === "GROQ_BUILTIN"
-                      ? "GROQ (BUILT-IN)"
-                      : aiConfig.provider}
+              )}
+
+              {/* Provider selector dropdown */}
+              <div className="mb-6">
+                <label className="font-bold text-[0.85rem] uppercase tracking-wider block mb-2">
+                  SELECT AI PROVIDER
+                </label>
+                <select
+                  className="nb-input w-full font-mono text-[0.85rem] p-3 border-4 border-signal-black bg-white cursor-pointer"
+                  value={selectedProvider}
+                  onChange={(e) => handleProviderChange(e.target.value)}
+                  disabled={aiSaving}
+                >
+                  <option value="hosted">Hosted AI (Built-in) — gpt-oss-120b via Groq</option>
+                  <option value="local">Local AI (Your GPU) — Free, Private, Unlimited</option>
+                  <option value="byok">Bring Your Own Key — OpenAI / Anthropic / Google</option>
+                  <option value="openrouter">OpenRouter — 200+ Models</option>
+                </select>
+              </div>
+
+              {/* Context panel — changes based on selected provider */}
+              <div className="mb-6 p-4 border-2 border-dashed border-signal-black/30">
+                {/* ── Hosted AI panel ── */}
+                {selectedProvider === "hosted" && (
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-bold text-[0.85rem] uppercase tracking-wider text-cornflower">HOSTED AI (GROQ)</h3>
+                      {!hasAiEntitlement && !isAdmin && (
+                        <span className="px-2 py-1 border-2 border-watermelon text-watermelon font-mono text-[0.65rem] font-bold">SUBSCRIPTION REQUIRED</span>
+                      )}
+                      {(hasAiEntitlement || isAdmin) && (
+                        <span className="px-2 py-1 border-2 border-malachite text-malachite font-mono text-[0.65rem] font-bold">ACTIVE</span>
+                      )}
+                    </div>
+                    <p className="font-mono text-[0.75rem] text-gray-mid mb-4 leading-relaxed">
+                      Powered by gpt-oss-120b on Groq. Fast, reliable, with full tool calling support. Included with Pro and Team subscriptions.
+                    </p>
+                    {aiUsage && (
+                      <div className="mb-4">
+                        <UsageMeter
+                          used={aiUsage.used}
+                          limit={aiUsage.limit}
+                          packBalance={aiUsage.packBalance}
+                          periodEnd={aiUsage.periodEnd}
+                          plan={aiUsage.plan}
+                        />
+                      </div>
+                    )}
+                    {!hasAiEntitlement && !isAdmin && (
+                      <button className="nb-btn nb-btn--primary" onClick={() => { const el = document.getElementById("billing-card"); el?.scrollIntoView({ behavior: "smooth" }); }}>
+                        UPGRADE TO PRO ($7/MO)
+                      </button>
+                    )}
+                    {(hasAiEntitlement || isAdmin) && aiConfig.provider !== "GROQ_BUILTIN" && (
+                      <button
+                        className="nb-btn nb-btn--primary"
+                        onClick={async () => {
+                          setAiSaving(true);
+                          try {
+                            await fetch("/api/ai/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "connect_groq" }) });
+                            setAiMessage({ type: "success", text: "Switched to Hosted AI (Groq)." });
+                            fetchAiConfig();
+                          } catch { setAiMessage({ type: "error", text: "Failed to switch provider." }); }
+                          setAiSaving(false);
+                        }}
+                        disabled={aiSaving}
+                      >
+                        ACTIVATE HOSTED AI
+                      </button>
+                    )}
                   </div>
-                  <div
-                    className={`font-mono text-[0.75rem] ${
-                      aiConfig.provider !== "NONE" ? "text-malachite" : "text-gray-mid"
-                    }`}
+                )}
+
+                {/* ── Local AI panel ── */}
+                {selectedProvider === "local" && (
+                  <div>
+                    <h3 className="font-bold text-[0.85rem] uppercase tracking-wider text-malachite mb-2">LOCAL AI (YOUR GPU)</h3>
+                    <p className="font-mono text-[0.75rem] text-gray-mid mb-4 leading-relaxed">
+                      Run AI locally via Ollama. Free, private, unlimited messages. Requires a GPU with 20+ GB VRAM (RTX 3090/4090 or similar).
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        className="nb-btn nb-btn--primary"
+                        onClick={() => setOllamaModalOpen(true)}
+                        disabled={aiSaving}
+                      >
+                        {aiConfig.provider === "OLLAMA_LOCAL" ? "RECONFIGURE LOCAL AI" : "SETUP LOCAL AI"}
+                      </button>
+                      {aiConfig.provider !== "OLLAMA_LOCAL" && (
+                        <button
+                          className="nb-btn"
+                          onClick={async () => {
+                            setAiSaving(true);
+                            try {
+                              const check = await fetch("http://localhost:11434/api/tags", { signal: AbortSignal.timeout(2000) }).catch(() => null);
+                              if (!check?.ok) { setAiMessage({ type: "error", text: "Ollama not detected. Click SETUP LOCAL AI to install." }); setAiSaving(false); return; }
+                              await fetch("/api/ai/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "connect_ollama" }) });
+                              setAiMessage({ type: "success", text: "Switched to Local AI!" }); fetchAiConfig();
+                            } catch { setAiMessage({ type: "error", text: "Failed to connect." }); }
+                            setAiSaving(false);
+                          }}
+                          disabled={aiSaving}
+                        >
+                          QUICK CONNECT
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* ── BYOK panel ── */}
+                {selectedProvider === "byok" && (
+                  <div>
+                    <h3 className="font-bold text-[0.85rem] uppercase tracking-wider mb-2">BRING YOUR OWN KEY</h3>
+                    <p className="font-mono text-[0.75rem] text-gray-mid mb-3 leading-relaxed">
+                      Paste an API key from any supported provider. Unlimited usage — you pay your provider directly. Key prefix auto-detects the provider.
+                    </p>
+                    <div className="font-mono text-[0.65rem] text-gray-mid mb-3 flex flex-col gap-1">
+                      <span><strong>OpenAI:</strong> sk-... (platform.openai.com — GPT-4o)</span>
+                      <span><strong>Anthropic:</strong> sk-ant-... (console.anthropic.com — Claude)</span>
+                      <span><strong>Google:</strong> AIza... (aistudio.google.com — Gemini)</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="password"
+                        className="nb-input flex-1"
+                        placeholder="sk-..., sk-ant-..., or AIza..."
+                        value={byokKey}
+                        onChange={(e) => setByokKey(e.target.value)}
+                        disabled={aiSaving}
+                      />
+                      <button className="nb-btn nb-btn--primary" onClick={handleByokSave} disabled={!byokKey.trim() || aiSaving}>
+                        {aiSaving ? "SAVING..." : "SAVE KEY"}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── OpenRouter panel ── */}
+                {selectedProvider === "openrouter" && (
+                  <div>
+                    <h3 className="font-bold text-[0.85rem] uppercase tracking-wider mb-2">OPENROUTER</h3>
+                    <p className="font-mono text-[0.75rem] text-gray-mid mb-3 leading-relaxed">
+                      Connect your OpenRouter account for access to 200+ AI models. Usage billed to your OpenRouter account.
+                    </p>
+                    <div className="flex gap-2">
+                      <button className="nb-btn nb-btn--primary" onClick={handleOpenRouterConnect} disabled={aiSaving}>
+                        CONNECT OPENROUTER
+                      </button>
+                      <input
+                        type="password"
+                        className="nb-input flex-1"
+                        placeholder="Or paste sk-or-v1-... key"
+                        value={byokKey}
+                        onChange={(e) => setByokKey(e.target.value)}
+                        disabled={aiSaving}
+                      />
+                      <button className="nb-btn" onClick={handleByokSave} disabled={!byokKey.trim() || aiSaving}>
+                        SAVE
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Fallback setting (only for hosted AI users) */}
+              {selectedProvider === "hosted" && (hasAiEntitlement || isAdmin) && (
+                <div className="mb-6">
+                  <label className="font-bold text-[0.7rem] uppercase tracking-wider block mb-1 text-gray-mid">
+                    WHEN MONTHLY LIMIT REACHED
+                  </label>
+                  <select
+                    className="nb-input w-full font-mono text-[0.8rem] p-2 border-2 border-signal-black/30"
+                    value={fallbackSetting}
+                    onChange={(e) => handleFallbackChange(e.target.value)}
                   >
-                    {aiConfig.provider !== "NONE" && aiConfig.maskedKey
-                      ? `Key: ${aiConfig.maskedKey}`
-                      : "Not connected — AI chat will use mock responses"}
-                  </div>
+                    <option value="local">Auto-switch to Local AI (recommended)</option>
+                    <option value="upgrade">Show upgrade prompt</option>
+                    <option value="disable">Disable AI until next period</option>
+                  </select>
                 </div>
+              )}
+
+              {/* Connection status bar */}
+              <div className="p-3 border-2 border-signal-black/10 bg-signal-black/5 font-mono text-[0.75rem] flex items-center gap-2">
+                <span className={`w-2 h-2 rounded-full ${aiConfig.provider !== "NONE" ? "bg-malachite" : "bg-watermelon"}`} />
+                <span>
+                  {aiConfig.provider !== "NONE"
+                    ? `Active: ${aiConfig.provider === "OLLAMA_LOCAL" ? "Local AI" : aiConfig.provider === "GROQ_BUILTIN" ? "Hosted AI (Groq)" : aiConfig.provider.replace(/_/g, " ").toLowerCase()}`
+                    : "No provider connected"}
+                  {aiConfig.maskedKey && ` · Key: ${aiConfig.maskedKey}`}
+                </span>
                 {aiConfig.provider !== "NONE" && (
-                  <button
-                    className="nb-btn nb-btn--small"
-                    onClick={handleDisconnect}
-                    disabled={aiSaving}
-                  >
+                  <button className="ml-auto text-watermelon font-bold hover:underline" onClick={handleDisconnect} disabled={aiSaving}>
                     DISCONNECT
                   </button>
                 )}
               </div>
-
-              {/* Admin: AI access status */}
-              {isAdmin && (
-                <div className="mb-6 p-3 border-2 border-malachite bg-malachite/10 font-mono text-[0.8rem] text-malachite">
-                  ● AI access active (admin). You have full access to built-in AI and all providers.
-                </div>
-              )}
-
-              {/* Local AI (Ollama) */}
-              <div className="mb-6 p-4 border-2 border-dashed border-malachite">
-                <h3 className="font-bold text-[0.85rem] uppercase tracking-wider mb-2 text-malachite">
-                  LOCAL AI (FREE, PRIVATE, YOUR GPU)
-                </h3>
-                <p className="font-mono text-[0.75rem] text-gray-mid mb-3 leading-relaxed">
-                  Run AI locally on your machine via Ollama. Zero cost, your data stays private.
-                  Requires a GPU with 20+ GB VRAM (RTX 3090/4090 or similar).
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    className="nb-btn nb-btn--primary"
-                    onClick={() => setOllamaModalOpen(true)}
-                    disabled={aiConfig.provider !== "NONE" || aiSaving}
-                  >
-                    ENABLE LOCAL AI
-                  </button>
-                </div>
-              </div>
-
-              <OllamaSetupModal
-                open={ollamaModalOpen}
-                onClose={() => setOllamaModalOpen(false)}
-                onConnected={async () => {
-                  // Save provider to DB
-                  try {
-                    await fetch("/api/ai/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "connect_ollama" }) });
-                    setAiMessage({ type: "success", text: "Local AI connected! Your chats now run on your GPU." });
-                    fetchAiConfig();
-                  } catch { setAiMessage({ type: "error", text: "Connected to Ollama but failed to save config." }); }
-                  setOllamaModalOpen(false);
-                }}
-              />
-
-              {/* Connect via OpenRouter OAuth */}
-              <div className="mb-6">
-                <h3 className="font-bold text-[0.85rem] uppercase tracking-wider mb-2">
-                  OPTION 1: CONNECT OPENROUTER ACCOUNT
-                </h3>
-                <p className="font-mono text-[0.75rem] text-gray-mid mb-3 leading-relaxed">
-                  Connect your OpenRouter account for access to 200+ AI models.
-                  AI usage is billed to your OpenRouter account.
-                </p>
-                <button
-                  className="nb-btn nb-btn--primary"
-                  onClick={handleOpenRouterConnect}
-                  disabled={aiConfig.provider !== "NONE" || aiSaving}
-                >
-                  CONNECT OPENROUTER
-                </button>
-              </div>
-
-              {/* BYOK: Paste API Key */}
-              <div>
-                <h3 className="font-bold text-[0.85rem] uppercase tracking-wider mb-2">
-                  OPTION 2: PASTE API KEY
-                </h3>
-                <p className="font-mono text-[0.75rem] text-gray-mid mb-3 leading-relaxed">
-                  Paste an API key from any supported provider. Key prefix auto-detects the provider.
-                </p>
-                <div className="font-mono text-[0.65rem] text-gray-mid mb-3 leading-relaxed flex flex-col gap-1">
-                  <span><strong>OpenRouter:</strong> sk-or-v1-... (openrouter.ai/keys — 200+ models)</span>
-                  <span><strong>OpenAI:</strong> sk-... (platform.openai.com — GPT-4o, o1)</span>
-                  <span><strong>Anthropic:</strong> sk-ant-... (console.anthropic.com — Claude)</span>
-                  <span><strong>Google:</strong> AIza... (aistudio.google.com — Gemini)</span>
-                </div>
-                <div className="flex gap-2">
-                  <input
-                    type="password"
-                    className="nb-input flex-1"
-                    placeholder="sk-or-..., sk-..., sk-ant-..., or AIza..."
-                    value={byokKey}
-                    onChange={(e) => setByokKey(e.target.value)}
-                    disabled={aiConfig.provider !== "NONE" || aiSaving}
-                  />
-                  <button
-                    className="nb-btn nb-btn--primary"
-                    onClick={handleByokSave}
-                    disabled={!byokKey.trim() || aiConfig.provider !== "NONE" || aiSaving}
-                  >
-                    {aiSaving ? "SAVING..." : "SAVE KEY"}
-                  </button>
-                </div>
-              </div>
             </>
           )}
         </div>
+
+        <OllamaSetupModal
+          open={ollamaModalOpen}
+          onClose={() => setOllamaModalOpen(false)}
+          onConnected={async () => {
+            try {
+              await fetch("/api/ai/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "connect_ollama" }) });
+              setAiMessage({ type: "success", text: "Local AI connected! Your chats now run on your GPU." });
+              fetchAiConfig();
+            } catch { setAiMessage({ type: "error", text: "Connected to Ollama but failed to save config." }); }
+            setOllamaModalOpen(false);
+          }}
+        />
 
         {/* ── Billing Card ── */}
         <div className="nb-card p-8 col-span-full">
