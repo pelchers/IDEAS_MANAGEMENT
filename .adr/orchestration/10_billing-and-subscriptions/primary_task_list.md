@@ -113,3 +113,64 @@ Design Fidelity: Faithful (pass-1 brutalism-neobrutalism) for UI elements
 - [ ] Test: Mid-cycle upgrade Free → Pro → limit increases immediately
 - [ ] Test: Subscription cancellation → reverts to Free limits
 - [ ] Playwright screenshots: usage meter at 0%, 50%, 90%, 100%
+
+## Phase 7 — Free Tier Admin Toggle / Promotion Mode (2026-04-03)
+
+> Plan: `.docs/planning/plans/4-ai-provider-switcher-subscription-tiers.md`
+> Purpose: Admin-controlled toggle to enable/disable free tier hosted AI as a promotional tool
+
+### Schema
+- [ ] Add `AdminConfig` model to Prisma schema (key String @id, value String, updatedAt DateTime)
+- [ ] Run migration: `prisma migrate dev --name add-admin-config`
+- [ ] Seed default: `{ key: "free_tier_ai_enabled", value: "false" }`
+
+### Admin Config Service
+- [ ] Create `server/admin/config.ts`:
+  - `getAdminConfig(key: string): Promise<string | null>` — read from DB
+  - `setAdminConfig(key: string, value: string): Promise<void>` — write to DB
+  - `isFreeTierEnabled(): Promise<boolean>` — check env var first, then DB, default false
+- [ ] Env var override: `FREE_TIER_AI_ENABLED=true` takes precedence over DB value
+
+### API
+- [ ] Create `GET /api/admin/config` — admin-only, returns all config key-value pairs
+- [ ] Create `PUT /api/admin/config` — admin-only, accepts `{ key, value }`, validates key whitelist
+
+### Entitlement Integration
+- [ ] Update `AI_MESSAGE_LIMITS` resolution to be dynamic:
+  - `getMessageLimit(plan)` checks `isFreeTierEnabled()` for FREE plan
+  - Returns 50 when enabled, 0 when disabled
+  - PRO/TEAM limits are static (5,000 / 15,000)
+- [ ] Update `checkLimit()` in token-tracking.ts to use `getMessageLimit()` instead of static lookup
+
+### Admin UI (Settings page, admin-only section)
+- [ ] Add "ADMIN SETTINGS" card (visible only when `user.role === "ADMIN"`)
+- [ ] Free Tier AI toggle:
+  - ON/OFF switch
+  - Description: "When ON, unsubscribed users get 50 hosted AI messages/month"
+  - Shows current state + last changed timestamp
+- [ ] AI model override dropdown (optional, for switching default model)
+- [ ] Usage stats display (read-only):
+  - Total hosted messages this billing period
+  - Estimated Groq cost this period
+  - Active subscriber count (Pro + Team breakdown)
+
+### Subscribe Page Updates
+- [ ] Read `isFreeTierEnabled()` on subscribe/billing card render
+- [ ] When ENABLED: show 3 tier cards (Free with "50 AI msgs" / Pro / Team)
+- [ ] When DISABLED: show 2 tier cards (Pro / Team) + banner "Free accounts: Local AI & BYOK only"
+- [ ] Ensure plan comparison dynamically reflects toggle state
+
+### Gating Updates
+- [ ] AI chat route: when free tier disabled + user is FREE + provider is hosted → 403 "Subscribe required"
+- [ ] AI chat page: detect 403 → show subscribe prompt (not generic error)
+- [ ] Settings AI config: when free tier disabled + user is FREE + selects "Hosted AI" → show "Requires subscription" inline
+
+### Testing
+- [ ] Test: Toggle ON → free user gets 50 hosted msgs
+- [ ] Test: Toggle OFF → free user gets 0 hosted msgs, sees subscribe prompt
+- [ ] Test: Toggle OFF → free user can still use Local AI and BYOK
+- [ ] Test: Subscribe page renders 3 cards (ON) vs 2 cards (OFF)
+- [ ] Test: Env var override takes precedence over DB toggle
+- [ ] Test: Non-admin cannot access /api/admin/config
+- [ ] Test: Toggle change takes effect immediately (no redeploy)
+- [ ] Playwright screenshots: admin panel, subscribe page both states

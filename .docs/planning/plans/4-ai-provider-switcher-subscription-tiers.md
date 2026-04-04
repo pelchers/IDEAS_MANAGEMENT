@@ -184,12 +184,222 @@
 | **Profit** | | **$15,409.20** |
 | **Overall ROI** | | **429%** |
 
-### Annual Projections at 10K Users
+### Annual Projections at 10K Users (Free Tier ENABLED)
 
 | Scenario | Annual Revenue | Annual Cost | Annual Profit |
 |----------|---------------|-------------|---------------|
 | Worst case (100% usage) | $228,000 | $102,516 | $125,484 |
 | Realistic (60% usage) | $228,000 | $43,090 | $184,910 |
+
+---
+
+## Free Tier Toggle (Promotion Mode)
+
+### Concept
+
+An admin-controlled toggle that enables or disables the free tier's hosted AI allowance (50 messages). When disabled, unsubscribed users get **zero hosted AI messages** — they must subscribe, use BYOK, or use Local AI. This lets us run the free tier as a **time-limited promotion** rather than a permanent offering.
+
+### How it works
+
+| Setting | Free tier hosted AI | Subscribe page | Unsubscribed user experience |
+|---------|-------------------|----------------|------------------------------|
+| **ENABLED** (promotion on) | 50 msgs/mo | Shows 3 tiers: Free (50 msgs) / Pro / Team | Can try hosted AI immediately |
+| **DISABLED** (default) | 0 msgs/mo | Shows 2 paid tiers: Pro / Team + "Free: Local AI only" | Must subscribe, use BYOK, or install Ollama |
+
+### Implementation
+
+**Storage:** `AdminConfig` model in DB (key-value pairs), with env var override.
+
+```prisma
+model AdminConfig {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+```
+
+**Resolution chain:**
+1. Check env var `FREE_TIER_AI_ENABLED` — if set, use it (overrides DB)
+2. Check `AdminConfig` table for key `free_tier_ai_enabled`
+3. Default: `false` (disabled — promotion off by default)
+
+**Admin panel:** Single toggle in admin settings section:
+```
+FREE TIER AI PROMOTION
+[● OFF] / [○ ON]
+"When ON, unsubscribed users get 50 hosted AI messages/month.
+ When OFF, hosted AI requires a Pro or Team subscription."
+Last changed: 2026-04-01 by admin@example.com
+```
+
+**What changes when toggled:**
+1. `AI_MESSAGE_LIMITS.FREE` switches between 0 and 50
+2. Subscribe page re-renders: shows/hides free tier card or updates its content
+3. AI chat access gate: unsubscribed users see "Subscribe to use AI" (when off) or get 50 msgs (when on)
+4. No deployment needed — change takes effect immediately via DB read
+
+**What does NOT change:**
+- Local AI (Ollama): always unlimited for everyone
+- BYOK: always unlimited for everyone
+- Pro/Team limits: unchanged
+- Existing usage records: preserved (if a user used 30/50 during promotion, that data stays)
+
+### Gating Logic (updated)
+
+```
+User sends AI message:
+│
+├─ Provider = "Hosted AI"
+│   ├─ Admin? → No limit (bypass)
+│   ├─ Pro/Team subscriber? → Check AI_MESSAGE_LIMITS[plan]
+│   ├─ Free (unsubscribed)?
+│   │   ├─ isFreeTierEnabled() → true?
+│   │   │   ├─ Check AI_MESSAGE_LIMITS.FREE (50)
+��   │   │   └─ Under limit? → Allow, increment
+│   │   └─ isFreeTierEnabled() → false?
+│   │       └─ Return 403: "Hosted AI requires a subscription"
+│   └─ Over limit → Fallback logic
+│
+├─ Provider = "Local AI" → Always allowed (no limit)
+├─ Provider = "BYOK" → Always allowed (no limit)
+└─ Provider = "NONE" → "Select a provider in Settings"
+```
+
+### Subscribe Page Behavior
+
+**When free tier ENABLED:**
+```
+┌─────────────┐  ┌─────────────┐  ┌─────────────┐
+│    FREE      │  │     PRO     │  │    TEAM     │
+│   $0/mo      │  │   $7/mo     │  │  $17/seat   │
+│              │  │             │  │             │
+│ 50 AI msgs   │  │ 5,000 msgs  │  │ 15,000 msgs │
+│ 3 projects   │  │ Unlimited   │  │ Unlimited   │
+│ Local AI ∞   │  │ Local AI ∞  │  │ Local AI ∞  │
+│              │  │             │  │ + Team collab│
+│ [CURRENT]    │  │ [UPGRADE]   │  │ [UPGRADE]   │
+└─────────────┘  └─────────────���  └─────────────┘
+```
+
+**When free tier DISABLED:**
+```
+┌──────────────────────────────────────────────┐
+│  FREE ACCOUNT — Local AI & BYOK only         │
+│  Install Ollama or add your own API key       │
+│  to use AI features.                          │
+└──────────────────────────────────────────────┘
+
+┌─────────────┐  ┌──���──────────┐
+│     PRO     │  │    TEAM     │
+│   $7/mo     │  │  $17/seat   │
+│             │  │             │
+│ 5,000 msgs  │  │ 15,000 msgs │
+│ Unlimited   │  │ Unlimited   │
+│ Local AI ∞  │  │ Local AI ∞  │
+│             │  │ + Team collab│
+│ [SUBSCRIBE] │  │ [SUBSCRIBE] │
+└─────────────┘  └─��───────────┘
+```
+
+---
+
+## Economics: Free Tier DISABLED (Comparison Tables)
+
+> These tables show the same 10K user base (80/15/5 split) but with free tier AI set to 0.
+> Compare against the "Free Tier ENABLED" tables above.
+
+### Per-User Economics — Free Tier DISABLED (Worst Case)
+
+| | Free | Pro | Team |
+|---|---|---|---|
+| Revenue | $0.00 | $7.00 | $17.00 |
+| AI cost | **$0.00** | $2.75 | $8.25 |
+| Infra share | $0.007 | $0.007 | $0.007 |
+| Free subsidy share | — | **$0.00** | **$0.00** |
+| **Total cost** | **$0.007** | **$2.757** | **$8.257** |
+| **Profit** | -$0.007 | **$4.24** | **$8.74** |
+| **ROI per user** | Loss (infra only) | **154%** | **106%** |
+
+### Aggregate — Free Tier DISABLED, Worst Case (100% utilization)
+
+| Item | Calculation | Monthly |
+|------|-------------|---------|
+| Infrastructure (fixed) | Railway + Clerk + domain | $73.00 |
+| Free tier AI | 8,000 × **0** × $0.00055 | **$0.00** |
+| Pro tier AI | 1,500 × 5,000 × $0.00055 | $4,125.00 |
+| Team tier AI | 500 × 15,000 × $0.00055 | $4,125.00 |
+| **Total cost** | | **$8,323.00** |
+| **Revenue** | 1,500 × $7 + 500 × $17 | **$19,000.00** |
+| **Profit** | | **$10,677.00** |
+| **Overall ROI** | | **128%** |
+
+### Aggregate — Free Tier DISABLED, Realistic (60% utilization)
+
+| Item | Calculation | Monthly |
+|------|-------------|---------|
+| Infrastructure (fixed) | | $73.00 |
+| Free tier AI | | **$0.00** |
+| Pro tier AI (70% active, 60% of limit) | 1,050 × 3,000 × $0.00055 | $1,732.50 |
+| Team tier AI (70% active, 60% of limit) | 350 × 9,000 × $0.00055 | $1,732.50 |
+| **Total cost** | | **$3,538.00** |
+| **Revenue** | | **$19,000.00** |
+| **Profit** | | **$15,462.00** |
+| **Overall ROI** | | **437%** |
+
+### Annual Projections at 10K Users (Free Tier DISABLED)
+
+| Scenario | Annual Revenue | Annual Cost | Annual Profit |
+|----------|---------------|-------------|---------------|
+| Worst case (100% usage) | $228,000 | $99,876 | $128,124 |
+| Realistic (60% usage) | $228,000 | $42,456 | $185,544 |
+
+### Side-by-Side Comparison: Free ENABLED vs DISABLED
+
+| Metric | Free ENABLED | Free DISABLED | Difference |
+|--------|-------------|---------------|------------|
+| Monthly revenue | $19,000 | $19,000 | $0 |
+| Monthly cost (worst) | $8,543 | $8,323 | **-$220** |
+| Monthly cost (realistic) | $3,591 | $3,538 | **-$53** |
+| Monthly profit (worst) | $10,457 | $10,677 | **+$220** |
+| Monthly profit (realistic) | $15,409 | $15,462 | **+$53** |
+| ROI (worst) | 122% | 128% | **+6%** |
+| ROI (realistic) | 429% | 437% | **+8%** |
+| Annual profit (worst) | $125,484 | $128,124 | **+$2,640** |
+| Annual profit (realistic) | $184,910 | $185,544 | **+$634** |
+| Free user conversion friction | Low (try before buy) | Higher (must commit) | Trade-off |
+
+### Key Takeaway
+
+The financial difference is **small** ($220/mo worst case). The real value of the toggle is **strategic flexibility:**
+- **Launch with free tier ON** → attract users, let them experience hosted AI, drive conversions
+- **Turn it OFF** after initial growth → reduce subsidy, push toward subscriptions
+- **Turn it ON for campaigns** → Black Friday, Product Hunt launch, referral promotions
+- **No code changes needed** — just flip the toggle in admin panel
+
+---
+
+## Admin Panel Addition
+
+### Admin Config Section (Settings page, admin-only)
+
+```
+ADMIN SETTINGS (visible to ADMIN role only)
+│
+├─ FREE TIER AI PROMOTION
+│   [Toggle: ● OFF / ○ ON]
+│   "When ON, unsubscribed users get 50 hosted AI messages/month."
+│   "When OFF, hosted AI requires Pro or Team subscription."
+│   Current: OFF · Last changed: never
+│
+├─ AI MODEL OVERRIDE
+│   [Dropdown: gpt-oss-120b (default) ▼]
+│   "Override the built-in AI model for all users."
+│
+└─ USAGE STATS (read-only)
+    Total hosted messages this month: 47,293
+    Total cost estimate: $26.01
+    Active subscribers: 2,000 (1,500 Pro + 500 Team)
+```
 
 ---
 
@@ -333,15 +543,34 @@ preferredAiProvider  String    @default("NONE")  // Dropdown selection
 aiFallbackSetting    String    @default("local") // "local" | "upgrade" | "disable"
 ```
 
+### New model: AdminConfig
+
+```prisma
+model AdminConfig {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+```
+
 ### Entitlements addition
 
 ```typescript
 // In server/billing/entitlements.ts:
 export const AI_MESSAGE_LIMITS: Record<SubscriptionPlan, number> = {
-  FREE: 50,
+  FREE: 50,   // becomes 0 when free tier disabled
   PRO: 5_000,
   TEAM: 15_000,
 };
+
+// Dynamic limit resolution:
+export async function getMessageLimit(plan: SubscriptionPlan): Promise<number> {
+  if (plan === "FREE") {
+    const enabled = await isFreeTierEnabled();
+    return enabled ? 50 : 0;
+  }
+  return AI_MESSAGE_LIMITS[plan];
+}
 ```
 
 ---
@@ -396,7 +625,25 @@ export const AI_MESSAGE_LIMITS: Record<SubscriptionPlan, number> = {
 - [ ] Add limit-reached banner component
 - [ ] Fetch usage on AI page mount, refresh after each message
 
-### Part 6: Testing
+### Part 6: Admin Toggle — Free Tier Promotion Mode
+- [ ] Add `AdminConfig` model to Prisma schema (key/value pairs)
+- [ ] Run migration: `prisma migrate dev --name add-admin-config`
+- [ ] Create `server/admin/config.ts`:
+  - `getAdminConfig(key)` — read from DB, env var override
+  - `setAdminConfig(key, value)` — write to DB
+  - `isFreeTierEnabled()` — shorthand for `free_tier_ai_enabled` check
+- [ ] Create `GET/PUT /api/admin/config` — admin-only endpoint for toggle
+- [ ] Update `getMessageLimit()` in entitlements to use `isFreeTierEnabled()`
+- [ ] Add admin section to Settings page (visible to ADMIN role only):
+  - Free tier AI toggle (ON/OFF)
+  - AI model override dropdown
+  - Usage stats display (total messages, cost estimate, subscriber count)
+- [ ] Update subscribe/billing UI to conditionally render free tier card:
+  - When enabled: show 3 cards (Free/Pro/Team)
+  - When disabled: show 2 cards (Pro/Team) + "Free: Local AI only" note
+- [ ] Seed default: `{ key: "free_tier_ai_enabled", value: "false" }`
+
+### Part 7: Testing
 - [ ] Test: Free user hits 50-message limit → fallback triggers
 - [ ] Test: Pro user sends 5,001st message → limit enforced
 - [ ] Test: Provider switching via dropdown → correct path used
@@ -405,7 +652,11 @@ export const AI_MESSAGE_LIMITS: Record<SubscriptionPlan, number> = {
 - [ ] Test: Upgrade prompt when limit reached + no Ollama
 - [ ] Test: Period reset at billing cycle boundary
 - [ ] Test: BYOK users have no limit (unlimited)
-- [ ] Playwright screenshots of new Settings panel
+- [ ] Test: Admin toggles free tier ON → free users get 50 msgs
+- [ ] Test: Admin toggles free tier OFF → free users get 0 hosted msgs
+- [ ] Test: Subscribe page shows/hides free tier card on toggle
+- [ ] Test: Env var FREE_TIER_AI_ENABLED overrides DB value
+- [ ] Playwright screenshots of new Settings panel + admin section
 
 ---
 
@@ -413,7 +664,7 @@ export const AI_MESSAGE_LIMITS: Record<SubscriptionPlan, number> = {
 
 This work does NOT create a new ADR subfolder. It adds phases to 3 existing subfolders:
 
-### `10_billing-and-subscriptions` — 3 new phases
+### `10_billing-and-subscriptions` — 4 new phases
 
 **Phase 4 — AI Token Usage Tracking**
 - AiTokenUsage Prisma model + migration
@@ -434,6 +685,15 @@ This work does NOT create a new ADR subfolder. It adds phases to 3 existing subf
 - Period reset at billing cycle boundary
 - Usage meter accuracy after each message
 - BYOK users have no hosted limit
+
+**Phase 7 — Free Tier Admin Toggle (Promotion Mode)**
+- AdminConfig model + migration
+- server/admin/config.ts (getAdminConfig, setAdminConfig, isFreeTierEnabled)
+- GET/PUT /api/admin/config (admin-only)
+- Dynamic AI_MESSAGE_LIMITS.FREE (0 when disabled, 50 when enabled)
+- Admin section on Settings page (toggle + stats)
+- Subscribe page conditional rendering (2 or 3 tier cards)
+- Env var override: FREE_TIER_AI_ENABLED takes precedence over DB
 
 ### `9_ai-chat` — 1 new phase
 
