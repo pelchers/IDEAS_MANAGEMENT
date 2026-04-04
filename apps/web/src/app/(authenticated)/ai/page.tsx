@@ -375,6 +375,20 @@ export default function AiPage() {
           setIsTyping(false);
           return;
         }
+        if (res.status === 429) {
+          // Monthly limit reached — try auto-fallback to Local AI
+          if (ollamaStatus?.running) {
+            setMessages((prev) => [...prev, { role: "ai", text: "Monthly AI limit reached. Switching to Local AI (your GPU)..." }]);
+            setUseClientOllama(true);
+            // Re-send via client-side Ollama
+            await sendViaClientOllama(trimmed, [...messages, userMessage]);
+            return;
+          }
+          const limitMsg = errorData?.message || "Monthly AI limit reached.";
+          setMessages((prev) => [...prev, { role: "ai", text: `${limitMsg}\n\nOptions:\n1. Install [Ollama](https://ollama.com) for free unlimited Local AI\n2. Upgrade your plan in Settings\n3. Purchase a token pack in Settings > Billing` }]);
+          setIsTyping(false);
+          return;
+        }
         if (res.status === 403) {
           setMessages((prev) => [...prev, { role: "ai", text: "Built-in AI requires a subscription. You can:\n1. Subscribe to a Pro or Team plan for built-in AI access\n2. Add your own API key (OpenAI, Anthropic, Google) in Settings — no subscription needed\n3. If you're an admin, enable AI access in Settings > AI Configuration" }]);
           setIsTyping(false);
