@@ -39,9 +39,11 @@ model User {
   preferences Json?
 
   // AI configuration
-  aiProvider            AiProvider @default(NONE)
-  aiApiKeyEncrypted     String?    // AES-256-GCM encrypted API key or OAuth access token
-  openrouterRefreshToken String?   // Encrypted OAuth refresh token (for token rotation)
+  aiProvider             AiProvider @default(NONE)
+  aiApiKeyEncrypted      String?    // AES-256-GCM encrypted API key or OAuth access token
+  openrouterRefreshToken String?    // Encrypted OAuth refresh token (for token rotation)
+  preferredAiProvider    String     @default("NONE") // Dropdown selection in Settings
+  aiFallbackSetting      String     @default("local") // "local" | "upgrade" | "disable"
 
   credential         Credential?
   sessions           Session[]
@@ -52,6 +54,7 @@ model User {
   subscriptions      Subscription[]
   entitlements       Entitlement[]
   aiChatSessions     AiChatSession[]
+  aiTokenUsage       AiTokenUsage[]
   aiToolOutputs      AiToolOutput[]
   projectMembers     ProjectMember[]
   syncOperations     SyncOperation[]
@@ -365,4 +368,30 @@ model SyncSnapshot {
   createdAt DateTime @default(now())
 
   @@index([projectId, artifactPath])
+}
+
+// ── AI Token Usage Tracking ──────────────────────────────────────────
+
+model AiTokenUsage {
+  id               String   @id @default(cuid())
+  userId           String
+  periodStart      DateTime
+  periodEnd        DateTime
+  messagesUsed     Int      @default(0)
+  tokensInput      Int      @default(0)
+  tokensOutput     Int      @default(0)
+  tokenPackBalance Int      @default(0) // Purchased overage tokens (no rollover)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, periodStart])
+  @@index([userId])
+}
+
+// ── Admin Config (key-value settings) ────────────────────────────────
+
+model AdminConfig {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }

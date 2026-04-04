@@ -1,10 +1,11 @@
 import { streamText, tool, stepCountIs } from "ai";
 import { NextResponse } from "next/server";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
-import { checkEntitlement, FEATURES } from "@/server/billing/entitlements";
+import { checkEntitlement, FEATURES, getUserEntitlements } from "@/server/billing/entitlements";
 import { prisma } from "@/server/db";
 import type { Prisma } from "@prisma/client";
 import { getUserModel } from "@/server/ai/get-user-model";
+import { checkLimit, incrementUsage } from "@/server/ai/token-tracking";
 import {
   readArtifactSchema,
   executeReadArtifact,
@@ -35,17 +36,37 @@ export async function POST(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  // AI access: admin bypass, BYOK bypass (user pays their own provider), or entitlement required
+  // AI access: admin bypass, BYOK bypass, or entitlement + limit check
+  const userAiConfig = await prisma.user.findUnique({ where: { id: user.id }, select: { aiProvider: true } });
+  const isBYOK = userAiConfig?.aiProvider && !["NONE", "OLLAMA_LOCAL", "GROQ_BUILTIN"].includes(userAiConfig.aiProvider);
+  const isHostedAI = !isBYOK && userAiConfig?.aiProvider !== "OLLAMA_LOCAL";
+
   if (user.role !== "ADMIN") {
-    // Check if user has their own API key (BYOK = they pay their provider, no billing needed from us)
-    const userAiConfig = await prisma.user.findUnique({ where: { id: user.id }, select: { aiProvider: true } });
-    const isBYOK = userAiConfig?.aiProvider && !["NONE", "OLLAMA_LOCAL"].includes(userAiConfig.aiProvider);
     if (!isBYOK) {
       const hasEntitlement = await checkEntitlement(user.id, FEATURES.AI_CHAT, user.role);
       if (!hasEntitlement) {
         return NextResponse.json(
           { ok: false, error: "ai_subscription_required", message: "Built-in AI requires an active subscription. Go to Settings to subscribe, or add your own API key to use AI for free." },
           { status: 403 }
+        );
+      }
+    }
+
+    // Enforce message limits for hosted AI (Groq) — not BYOK, not Ollama, not admin
+    if (isHostedAI) {
+      const entitlements = await getUserEntitlements(user.id, user.role);
+      const limitCheck = await checkLimit(user.id, entitlements.plan);
+      if (!limitCheck.allowed) {
+        return NextResponse.json(
+          {
+            ok: false,
+            error: "ai_limit_reached",
+            message: `Monthly AI limit reached (${limitCheck.used}/${limitCheck.limit} messages). Upgrade your plan, purchase a token pack, or switch to Local AI.`,
+            used: limitCheck.used,
+            limit: limitCheck.limit,
+            periodEnd: limitCheck.periodEnd,
+          },
+          { status: 429 }
         );
       }
     }
@@ -270,6 +291,13 @@ export async function POST(req: Request) {
               content: text,
             },
           });
+        }
+
+        // Increment usage for hosted AI (approximate token counts)
+        if (isHostedAI && user.role !== "ADMIN") {
+          const approxInputTokens = 2000; // system + context + user msg
+          const approxOutputTokens = text ? Math.ceil(text.length / 4) : 500;
+          await incrementUsage(user.id, 1, approxInputTokens, approxOutputTokens).catch(() => {});
         }
       },
     });
