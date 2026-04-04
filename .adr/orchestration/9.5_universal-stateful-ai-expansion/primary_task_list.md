@@ -259,7 +259,7 @@ See 9_ai-chat Phase 7b for detailed task breakdown. Summary:
 - [ ] Style: monospace, 0.6rem, gray-mid color
 
 ### Testing
-- [ ] Test: Hosted AI user at limit → banner appears
+- [ ] Test: Free user at 25-message limit → banner appears
 - [ ] Test: Auto-fallback to Local AI → message sends via Ollama, banner shows
 - [ ] Test: No fallback available → upgrade modal shown
 - [ ] Test: Provider badge shows correct provider per message

@@ -50,7 +50,7 @@ Design Fidelity: Faithful (pass-1 brutalism-neobrutalism) for UI elements
   - `checkLimit(userId, plan)` — return `{ allowed: bool, used, limit, remaining, periodEnd }`
   - `getUsage(userId)` — return current period stats for UI display
 - [ ] Add `AI_MESSAGE_LIMITS` to `server/billing/entitlements.ts`:
-  - FREE: 50 messages/month
+  - FREE: 25 messages/month (0 when free tier disabled)
   - PRO: 5,000 messages/month
   - TEAM: 15,000 messages/month
 
@@ -75,7 +75,7 @@ Design Fidelity: Faithful (pass-1 brutalism-neobrutalism) for UI elements
 
 | Tier | Price | Hosted msgs | AI cost/user | Infra/user | Total cost/user | Profit/user | ROI |
 |------|-------|-------------|-------------|-----------|----------------|------------|-----|
-| FREE | $0 | 50/mo | $0.028 | $0.007 | $0.035 | -$0.035 | Loss leader |
+| FREE | $0 | 25/mo | $0.014 | $0.007 | $0.021 | -$0.021 | Loss leader |
 | PRO | $7/mo | 5,000/mo | $2.75 | $0.007 | $2.87 | $4.13 | 144% |
 | TEAM | $17/seat | 15,000/mo | $8.25 | $0.007 | $8.37 | $8.63 | 103% |
 
@@ -146,7 +146,7 @@ Design Fidelity: Faithful (pass-1 brutalism-neobrutalism) for UI elements
 - [ ] Add "ADMIN SETTINGS" card (visible only when `user.role === "ADMIN"`)
 - [ ] Free Tier AI toggle:
   - ON/OFF switch
-  - Description: "When ON, unsubscribed users get 50 hosted AI messages/month"
+  - Description: "When ON, unsubscribed users get 25 hosted AI messages/month"
   - Shows current state + last changed timestamp
 - [ ] AI model override dropdown (optional, for switching default model)
 - [ ] Usage stats display (read-only):
@@ -156,7 +156,7 @@ Design Fidelity: Faithful (pass-1 brutalism-neobrutalism) for UI elements
 
 ### Subscribe Page Updates
 - [ ] Read `isFreeTierEnabled()` on subscribe/billing card render
-- [ ] When ENABLED: show 3 tier cards (Free with "50 AI msgs" / Pro / Team)
+- [ ] When ENABLED: show 3 tier cards (Free with "25 AI msgs" / Pro / Team)
 - [ ] When DISABLED: show 2 tier cards (Pro / Team) + banner "Free accounts: Local AI & BYOK only"
 - [ ] Ensure plan comparison dynamically reflects toggle state
 
@@ -174,3 +174,58 @@ Design Fidelity: Faithful (pass-1 brutalism-neobrutalism) for UI elements
 - [ ] Test: Non-admin cannot access /api/admin/config
 - [ ] Test: Toggle change takes effect immediately (no redeploy)
 - [ ] Playwright screenshots: admin panel, subscribe page both states
+
+## Phase 8 — Token Packs (Overage Purchases) (2026-04-04)
+
+> Plan: `.docs/planning/plans/4-ai-provider-switcher-subscription-tiers.md`
+> Pricing: 100% ROI per token, bulk purchase, no rollover
+
+### Token Pack Pricing
+
+| Pack | Tokens | ~Messages | Our Cost | Price | ROI |
+|------|--------|-----------|----------|-------|-----|
+| Small | 5M | ~2,000 | $1.20 | $2.50 | 108% |
+| Medium | 10M | ~4,000 | $2.40 | $5.00 | 108% |
+| Large | 25M | ~10,000 | $6.00 | $12.00 | 100% |
+
+### Rules
+- Pro and Team subscribers only (not Free)
+- One-time Stripe payment (not recurring)
+- No rollover — unused tokens expire at billing period end
+- Usage order: subscription allowance first, then pack tokens
+- Multiple packs can stack in same period
+
+### Schema
+- [ ] Add `tokenPackBalance` (Int, default 0) to `AiTokenUsage` model
+- [ ] Add `tokenPackPurchases` as separate model or JSON log field for audit
+
+### API
+- [ ] Create `POST /api/billing/token-pack` — initiates Stripe one-time checkout
+  - Accept `{ packSize: "small" | "medium" | "large" }`
+  - Create Stripe checkout session with correct price
+  - Return checkout URL
+- [ ] Webhook handler: on `checkout.session.completed` for token pack:
+  - Identify pack size from metadata
+  - Credit `tokenPackBalance` in current `AiTokenUsage` period
+  - Log purchase for audit
+
+### Token Tracking Updates
+- [ ] Update `checkLimit()`: when sub limit reached, check `tokenPackBalance > 0`
+  - If pack tokens available → allow, decrement `tokenPackBalance`
+  - If no pack tokens → trigger fallback
+- [ ] Update `incrementUsage()`: track which tokens came from sub vs pack
+- [ ] Period rollover: zero out `tokenPackBalance` (no rollover)
+
+### UI
+- [ ] "Buy More Tokens" button in usage meter (shown when usage > 80%)
+- [ ] Token pack selection modal (Small/Medium/Large cards)
+- [ ] Usage meter shows: "4,200 / 5,000 sub + 3,100 pack tokens"
+- [ ] Purchase history in billing section
+
+### Testing
+- [ ] Test: Pro user at limit → buys Small pack → gets 5M more tokens
+- [ ] Test: Pack tokens used after sub tokens exhausted
+- [ ] Test: Period rollover zeros pack balance
+- [ ] Test: Free user cannot purchase packs (must subscribe first)
+- [ ] Test: Multiple pack purchases stack correctly
+- [ ] Playwright: token pack modal, purchase flow, updated meter

@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-03
 **Commit:** 0a9dcca
-**Status:** Draft
+**Status:** Approved
 **Author:** Claude + User
 
 ---
@@ -135,8 +135,8 @@
 | | **FREE** | **PRO** | **TEAM** |
 |---|---|---|---|
 | **Price** | $0/mo | $7/mo | $17/mo per seat |
-| **Hosted AI (Groq)** | 50 msgs/mo | 5,000 msgs/mo | 15,000 msgs/mo |
-| **Token equivalent** | ~125K | ~12.5M | ~37.5M |
+| **Hosted AI (Groq)** | 25 msgs/mo | 5,000 msgs/mo | 15,000 msgs/mo |
+| **Token equivalent** | ~62.5K | ~12.5M | ~37.5M |
 | **Local AI (Ollama)** | Unlimited | Unlimited | Unlimited |
 | **BYOK (own API key)** | Unlimited | Unlimited | Unlimited |
 | **Projects** | 3 | Unlimited | Unlimited |
@@ -151,45 +151,45 @@
 | | Free | Pro | Team |
 |---|---|---|---|
 | Revenue | $0.00 | $7.00 | $17.00 |
-| AI cost (max msgs × $0.00055) | $0.028 | $2.75 | $8.25 |
+| AI cost (max msgs × $0.00055) | $0.014 | $2.75 | $8.25 |
 | Infra share ($73/10K) | $0.007 | $0.007 | $0.007 |
-| Free tier subsidy share ($220/2K paid) | — | $0.11 | $0.11 |
-| **Total cost** | **$0.035** | **$2.87** | **$8.37** |
-| **Profit** | -$0.035 | **$4.13** | **$8.63** |
-| **ROI per user** | Loss leader | 144% | 103% |
+| Free tier subsidy share ($110/2K paid) | — | $0.055 | $0.055 |
+| **Total cost** | **$0.021** | **$2.81** | **$8.31** |
+| **Profit** | -$0.021 | **$4.19** | **$8.69** |
+| **ROI per user** | Loss leader | 149% | 105% |
 
 ### Aggregate Economics — Worst Case (100% utilization)
 
 | Item | Calculation | Monthly |
 |------|-------------|---------|
 | Infrastructure (fixed) | Railway + Clerk + domain | $73.00 |
-| Free tier AI | 8,000 × 50 × $0.00055 | $220.00 |
+| Free tier AI | 8,000 × 25 × $0.00055 | $110.00 |
 | Pro tier AI | 1,500 × 5,000 × $0.00055 | $4,125.00 |
 | Team tier AI | 500 × 15,000 × $0.00055 | $4,125.00 |
-| **Total cost** | | **$8,543.00** |
+| **Total cost** | | **$8,433.00** |
 | **Revenue** | 1,500 × $7 + 500 × $17 | **$19,000.00** |
-| **Profit** | | **$10,457.00** |
-| **Overall ROI** | | **122%** |
+| **Profit** | | **$10,567.00** |
+| **Overall ROI** | | **125%** |
 
 ### Aggregate Economics — Realistic (60% utilization)
 
 | Item | Calculation | Monthly |
 |------|-------------|---------|
 | Infrastructure (fixed) | | $73.00 |
-| Free tier AI (40% active, avg 30 msgs) | 3,200 × 30 × $0.00055 | $52.80 |
+| Free tier AI (40% active, avg 15 msgs) | 3,200 × 15 × $0.00055 | $26.40 |
 | Pro tier AI (70% active, 60% of limit) | 1,050 × 3,000 × $0.00055 | $1,732.50 |
 | Team tier AI (70% active, 60% of limit) | 350 × 9,000 × $0.00055 | $1,732.50 |
-| **Total cost** | | **$3,590.80** |
+| **Total cost** | | **$3,564.40** |
 | **Revenue** | | **$19,000.00** |
-| **Profit** | | **$15,409.20** |
-| **Overall ROI** | | **429%** |
+| **Profit** | | **$15,435.60** |
+| **Overall ROI** | | **433%** |
 
 ### Annual Projections at 10K Users (Free Tier ENABLED)
 
 | Scenario | Annual Revenue | Annual Cost | Annual Profit |
 |----------|---------------|-------------|---------------|
-| Worst case (100% usage) | $228,000 | $102,516 | $125,484 |
-| Realistic (60% usage) | $228,000 | $43,090 | $184,910 |
+| Worst case (100% usage) | $228,000 | $101,196 | $126,804 |
+| Realistic (60% usage) | $228,000 | $42,773 | $185,227 |
 
 ---
 
@@ -203,7 +203,7 @@ An admin-controlled toggle that enables or disables the free tier's hosted AI al
 
 | Setting | Free tier hosted AI | Subscribe page | Unsubscribed user experience |
 |---------|-------------------|----------------|------------------------------|
-| **ENABLED** (promotion on) | 50 msgs/mo | Shows 3 tiers: Free (50 msgs) / Pro / Team | Can try hosted AI immediately |
+| **ENABLED** (promotion on) | 25 msgs/mo | Shows 3 tiers: Free (25 msgs) / Pro / Team | Can try hosted AI immediately |
 | **DISABLED** (default) | 0 msgs/mo | Shows 2 paid tiers: Pro / Team + "Free: Local AI only" | Must subscribe, use BYOK, or install Ollama |
 
 ### Implementation
@@ -227,7 +227,7 @@ model AdminConfig {
 ```
 FREE TIER AI PROMOTION
 [● OFF] / [○ ON]
-"When ON, unsubscribed users get 50 hosted AI messages/month.
+"When ON, unsubscribed users get 25 hosted AI messages/month.
  When OFF, hosted AI requires a Pro or Team subscription."
 Last changed: 2026-04-01 by admin@example.com
 ```
@@ -273,7 +273,7 @@ User sends AI message:
 │    FREE      │  │     PRO     │  │    TEAM     │
 │   $0/mo      │  │   $7/mo     │  │  $17/seat   │
 │              │  │             │  │             │
-│ 50 AI msgs   │  │ 5,000 msgs  │  │ 15,000 msgs │
+│ 25 AI msgs   │  │ 5,000 msgs  │  │ 15,000 msgs │
 │ 3 projects   │  │ Unlimited   │  │ Unlimited   │
 │ Local AI ∞   │  │ Local AI ∞  │  │ Local AI ∞  │
 │              │  │             │  │ + Team collab│
@@ -315,10 +315,10 @@ User sends AI message:
 | Revenue | $0.00 | $7.00 | $17.00 |
 | AI cost | **$0.00** | $2.75 | $8.25 |
 | Infra share | $0.007 | $0.007 | $0.007 |
-| Free subsidy share | — | **$0.00** | **$0.00** |
+| Free subsidy share | — | $0.00 | $0.00 |
 | **Total cost** | **$0.007** | **$2.757** | **$8.257** |
 | **Profit** | -$0.007 | **$4.24** | **$8.74** |
-| **ROI per user** | Loss (infra only) | **154%** | **106%** |
+| **ROI per user** | Loss (infra only) | 154% | 106% |
 
 ### Aggregate — Free Tier DISABLED, Worst Case (100% utilization)
 
@@ -358,14 +358,14 @@ User sends AI message:
 | Metric | Free ENABLED | Free DISABLED | Difference |
 |--------|-------------|---------------|------------|
 | Monthly revenue | $19,000 | $19,000 | $0 |
-| Monthly cost (worst) | $8,543 | $8,323 | **-$220** |
-| Monthly cost (realistic) | $3,591 | $3,538 | **-$53** |
-| Monthly profit (worst) | $10,457 | $10,677 | **+$220** |
-| Monthly profit (realistic) | $15,409 | $15,462 | **+$53** |
-| ROI (worst) | 122% | 128% | **+6%** |
-| ROI (realistic) | 429% | 437% | **+8%** |
-| Annual profit (worst) | $125,484 | $128,124 | **+$2,640** |
-| Annual profit (realistic) | $184,910 | $185,544 | **+$634** |
+| Monthly cost (worst) | $8,433 | $8,323 | **-$110** |
+| Monthly cost (realistic) | $3,564 | $3,538 | **-$26** |
+| Monthly profit (worst) | $10,567 | $10,677 | **+$110** |
+| Monthly profit (realistic) | $15,436 | $15,462 | **+$26** |
+| ROI (worst) | 125% | 128% | **+3%** |
+| ROI (realistic) | 433% | 437% | **+4%** |
+| Annual profit (worst) | $126,804 | $128,124 | **+$1,320** |
+| Annual profit (realistic) | $185,227 | $185,544 | **+$317** |
 | Free user conversion friction | Low (try before buy) | Higher (must commit) | Trade-off |
 
 ### Key Takeaway
@@ -387,7 +387,7 @@ ADMIN SETTINGS (visible to ADMIN role only)
 │
 ├─ FREE TIER AI PROMOTION
 │   [Toggle: ● OFF / ○ ON]
-│   "When ON, unsubscribed users get 50 hosted AI messages/month."
+│   "When ON, unsubscribed users get 25 hosted AI messages/month."
 │   "When OFF, hosted AI requires Pro or Team subscription."
 │   Current: OFF · Last changed: never
 │
@@ -558,7 +558,7 @@ model AdminConfig {
 ```typescript
 // In server/billing/entitlements.ts:
 export const AI_MESSAGE_LIMITS: Record<SubscriptionPlan, number> = {
-  FREE: 50,   // becomes 0 when free tier disabled
+  FREE: 25,   // becomes 0 when free tier disabled
   PRO: 5_000,
   TEAM: 15_000,
 };
@@ -567,7 +567,7 @@ export const AI_MESSAGE_LIMITS: Record<SubscriptionPlan, number> = {
 export async function getMessageLimit(plan: SubscriptionPlan): Promise<number> {
   if (plan === "FREE") {
     const enabled = await isFreeTierEnabled();
-    return enabled ? 50 : 0;
+    return enabled ? 25 : 0;
   }
   return AI_MESSAGE_LIMITS[plan];
 }
@@ -721,10 +721,50 @@ Token limits = billing (10). Provider switching = AI chat (9). Auto-fallback = s
 
 ---
 
-## Questions
+## Overage: Token Packs (Bulk Purchase, No Rollover)
 
-1. **Pricing confirmation:** $7/mo Pro and $17/mo Team — acceptable? Or adjust?
-2. **Free tier messages:** 50 messages/month enough as a trial? Or lower to 25 to reduce subsidy cost?
-3. **Fallback default:** Should "Auto-switch to Local AI" be the default, or "Show upgrade prompt"?
-4. **Model per tier:** Same model (gpt-oss-120b) for all tiers? Or gpt-oss-20b for Free to save cost?
-5. **Overage option:** Should Pro/Team users be able to pay for extra messages beyond their limit ($0.001/msg)? Or hard cap?
+When a Pro or Team user exhausts their included messages, they can purchase additional tokens in bulk packs. Tokens are priced at **100% ROI** (price = 2x our Groq cost). Unused tokens **expire at end of billing period** — no rollover.
+
+### Token Cost Calculation
+
+| Component | Rate | Per 1M tokens (80/20 input/output split) |
+|-----------|------|----------------------------------------|
+| Input (80% of tokens) | $0.15/1M | $0.12 |
+| Output (20% of tokens) | $0.60/1M | $0.12 |
+| **Our blended cost** | | **$0.24 per 1M tokens** |
+| **User price (100% ROI)** | | **$0.48 per 1M tokens** |
+
+### Token Pack Options
+
+| Pack | Tokens | ~Messages | Our Cost | Price | ROI |
+|------|--------|-----------|----------|-------|-----|
+| **Small** | 5M | ~2,000 | $1.20 | **$2.50** | 108% |
+| **Medium** | 10M | ~4,000 | $2.40 | **$5.00** | 108% |
+| **Large** | 25M | ~10,000 | $6.00 | **$12.00** | 100% |
+
+### Rules
+- Available to **Pro and Team** subscribers only (not Free)
+- Purchased via Stripe one-time payment (not recurring)
+- Tokens tracked separately from subscription allowance
+- **No rollover** — unused tokens expire at billing period end
+- Usage order: subscription allowance first, then token pack
+- Multiple packs can be purchased in same period (stack)
+- Token balance visible in usage meter: "4,200 / 5,000 sub + 3,100 pack tokens remaining"
+
+### Implementation
+- Add `tokenPackBalance` field to `AiTokenUsage` model
+- Create `POST /api/billing/token-pack` — Stripe one-time checkout for token pack
+- Webhook handler: on successful payment, credit `tokenPackBalance`
+- Update `checkLimit()`: if sub limit reached, check pack balance before denying
+- Update usage meter: show pack balance alongside subscription usage
+- Pack expiry: on period rollover, zero out `tokenPackBalance`
+
+---
+
+## Answers (Confirmed 2026-04-04)
+
+1. **Pricing:** $7/mo Pro, $17/mo Team — **confirmed**
+2. **Free tier:** 25 messages/month — **confirmed** (lowered from 50)
+3. **Default fallback:** Auto-switch to Local AI — **confirmed**
+4. **Model per tier:** Same gpt-oss-120b for all tiers — **confirmed** (strong model for retention)
+5. **Overage:** Pay-per-token in bulk packs, 100% ROI pricing, no rollover — **confirmed**
