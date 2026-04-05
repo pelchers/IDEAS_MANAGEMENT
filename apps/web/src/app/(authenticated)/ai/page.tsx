@@ -678,6 +678,13 @@ export default function AiPage() {
                         <div style={{ whiteSpace: "pre-wrap" }}>{msg.text || (msg.isStreaming ? "" : "")}</div>
                       </div>
 
+                      {/* Provider badge */}
+                      {msg.role === "ai" && !msg.isStreaming && msg.text && (
+                        <div className="font-mono text-[0.6rem] text-[#aaa] mt-1 ml-1">
+                          {useClientOllama ? "via Local AI" : aiStatus === "connected" ? "via Groq" : aiStatus === "local" ? "via Local AI" : ""}
+                        </div>
+                      )}
+
                       {/* Reasoning + Tool area (gray, below message) */}
                       {msg.role === "ai" && showReasoning && (msg.reasoning || (msg.toolCalls && msg.toolCalls.length > 0)) && (
                         <details className="border-2 border-dashed border-signal-black/30 bg-creamy-milk/50 mt-[-2px]">

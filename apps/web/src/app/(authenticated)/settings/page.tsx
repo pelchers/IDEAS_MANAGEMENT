@@ -66,6 +66,8 @@ function SettingsContent() {
   const [selectedProvider, setSelectedProvider] = useState("hosted");
   const [fallbackSetting, setFallbackSetting] = useState("local");
   const [aiUsage, setAiUsage] = useState<{ used: number; limit: number; packBalance: number; periodEnd: string; plan: string } | null>(null);
+  const [adminConfig, setAdminConfig] = useState<{ free_tier_ai_enabled?: string; default_ai_model?: string } | null>(null);
+  const [adminStats, setAdminStats] = useState<{ totalMessagesThisPeriod: number; estimatedCost: number; activeSubscribers: { pro: number; team: number } } | null>(null);
 
   // Billing state
   const [billing, setBilling] = useState<BillingState>({
@@ -140,6 +142,18 @@ function SettingsContent() {
   useEffect(() => {
     fetchAiConfig();
   }, [fetchAiConfig]);
+
+  // Fetch admin config (admin only)
+  const fetchAdminConfig = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/config");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok) { setAdminConfig(data.config); setAdminStats(data.stats); }
+      }
+    } catch { /* non-admin or network error */ }
+  }, []);
+  useEffect(() => { if (isAdmin) fetchAdminConfig(); }, [isAdmin, fetchAdminConfig]);
 
   // Handle OAuth callback messages from URL params
   useEffect(() => {
@@ -754,8 +768,62 @@ function SettingsContent() {
           }}
         />
 
+        {/* ── Admin Settings Card (admin only) ── */}
+        {isAdmin && (
+          <div className="nb-card p-8 col-span-full border-4 border-amethyst">
+            <h2 className="nb-card-title text-amethyst">ADMIN SETTINGS</h2>
+
+            {/* Free Tier AI Toggle */}
+            <div className="mb-6 p-4 border-2 border-dashed border-amethyst/30">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-bold text-[0.85rem] uppercase tracking-wider">FREE TIER AI PROMOTION</h3>
+                <button
+                  className={`px-4 py-2 border-4 border-signal-black font-bold text-[0.85rem] uppercase tracking-wider transition-colors ${
+                    adminConfig?.free_tier_ai_enabled === "true"
+                      ? "bg-malachite text-white shadow-[4px_4px_0_rgba(0,0,0,1)]"
+                      : "bg-white text-signal-black shadow-[4px_4px_0_rgba(0,0,0,1)]"
+                  }`}
+                  onClick={async () => {
+                    const newVal = adminConfig?.free_tier_ai_enabled === "true" ? "false" : "true";
+                    await fetch("/api/admin/config", {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ key: "free_tier_ai_enabled", value: newVal }),
+                    });
+                    fetchAdminConfig();
+                  }}
+                >
+                  {adminConfig?.free_tier_ai_enabled === "true" ? "ON" : "OFF"}
+                </button>
+              </div>
+              <p className="font-mono text-[0.75rem] text-gray-mid leading-relaxed">
+                When ON, unsubscribed users get 25 hosted AI messages/month.
+                When OFF, hosted AI requires a Pro or Team subscription.
+              </p>
+            </div>
+
+            {/* Usage Stats */}
+            {adminStats && (
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="p-4 border-2 border-signal-black/10 text-center">
+                  <div className="font-bold text-[1.5rem]">{adminStats.totalMessagesThisPeriod.toLocaleString()}</div>
+                  <div className="font-mono text-[0.65rem] text-gray-mid uppercase">MSGS THIS MONTH</div>
+                </div>
+                <div className="p-4 border-2 border-signal-black/10 text-center">
+                  <div className="font-bold text-[1.5rem]">${adminStats.estimatedCost.toFixed(2)}</div>
+                  <div className="font-mono text-[0.65rem] text-gray-mid uppercase">EST. GROQ COST</div>
+                </div>
+                <div className="p-4 border-2 border-signal-black/10 text-center">
+                  <div className="font-bold text-[1.5rem]">{adminStats.activeSubscribers.pro + adminStats.activeSubscribers.team}</div>
+                  <div className="font-mono text-[0.65rem] text-gray-mid uppercase">SUBSCRIBERS ({adminStats.activeSubscribers.pro}P + {adminStats.activeSubscribers.team}T)</div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* ── Billing Card ── */}
-        <div className="nb-card p-8 col-span-full">
+        <div className="nb-card p-8 col-span-full" id="billing-card">
           <h2 className="nb-card-title">BILLING &amp; SUBSCRIPTION</h2>
 
           {billingMessage && (
@@ -815,6 +883,13 @@ function SettingsContent() {
               </div>
 
               {/* Plan comparison cards */}
+              {/* Free tier banner (when promotion is OFF) */}
+              {adminConfig?.free_tier_ai_enabled !== "true" && billing.plan === "FREE" && (
+                <div className="mb-4 p-3 border-2 border-dashed border-signal-black/30 font-mono text-[0.8rem] text-gray-mid">
+                  Free accounts include Local AI (Ollama) and BYOK. Subscribe for hosted AI access.
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 {/* FREE plan */}
                 <div className={`p-5 border-2 ${billing.plan === "FREE" ? "border-signal-black bg-creamy-milk" : "border-dashed border-signal-black"}`}>
@@ -822,12 +897,16 @@ function SettingsContent() {
                   <div className="font-mono text-[0.75rem] text-gray-mid mb-4">$0 / month</div>
                   <ul className="flex flex-col gap-2 font-mono text-[0.8rem]">
                     <li>✓ Dashboard</li>
-                    <li>✓ Projects (limited)</li>
+                    <li>✓ 3 Projects</li>
                     <li>✓ Kanban boards</li>
                     <li>✓ Ideas capture</li>
-                    <li className="text-gray-mid line-through">✗ AI Chat</li>
-                    <li className="text-gray-mid line-through">✗ Whiteboard</li>
-                    <li className="text-gray-mid line-through">✗ Schema Planner</li>
+                    <li>✓ Local AI (Ollama) — unlimited</li>
+                    <li>✓ BYOK (own API key) — unlimited</li>
+                    {adminConfig?.free_tier_ai_enabled === "true" ? (
+                      <li className="font-bold text-cornflower">✓ 25 Hosted AI msgs/mo</li>
+                    ) : (
+                      <li className="text-gray-mid line-through">✗ Hosted AI (subscribe)</li>
+                    )}
                     <li className="text-gray-mid line-through">✗ Team collaboration</li>
                   </ul>
                   {billing.plan === "FREE" && (
@@ -840,13 +919,14 @@ function SettingsContent() {
                 {/* PRO plan */}
                 <div className={`p-5 border-2 ${billing.plan === "PRO" ? "border-malachite bg-malachite/5" : "border-dashed border-signal-black"}`}>
                   <div className="font-bold text-[1rem] uppercase tracking-wider mb-1">PRO</div>
-                  <div className="font-mono text-[0.75rem] text-gray-mid mb-4">Pricing on checkout</div>
+                  <div className="font-mono text-[0.75rem] text-gray-mid mb-4">$7 / month</div>
                   <ul className="flex flex-col gap-2 font-mono text-[0.8rem]">
                     <li>✓ Everything in Free</li>
-                    <li className="font-bold">✓ AI Chat</li>
-                    <li className="font-bold">✓ Whiteboard</li>
-                    <li className="font-bold">✓ Schema Planner</li>
+                    <li className="font-bold text-cornflower">✓ 5,000 Hosted AI msgs/mo</li>
+                    <li className="font-bold">✓ Whiteboard (full)</li>
+                    <li className="font-bold">✓ Schema Planner (full)</li>
                     <li>✓ Unlimited projects</li>
+                    <li>✓ Token packs available</li>
                     <li className="text-gray-mid line-through">✗ Team collaboration</li>
                   </ul>
                   {billing.plan === "PRO" ? (
@@ -854,12 +934,8 @@ function SettingsContent() {
                       CURRENT PLAN
                     </div>
                   ) : billing.plan === "FREE" ? (
-                    <button
-                      className="nb-btn nb-btn--primary w-full mt-4"
-                      onClick={() => handleCheckout("PRO")}
-                      disabled={billingRedirecting !== null}
-                    >
-                      {billingRedirecting === "PRO" ? "REDIRECTING..." : "UPGRADE TO PRO"}
+                    <button className="nb-btn nb-btn--primary w-full mt-4" onClick={() => handleCheckout("PRO")} disabled={billingRedirecting !== null}>
+                      {billingRedirecting === "PRO" ? "REDIRECTING..." : "UPGRADE TO PRO — $7/MO"}
                     </button>
                   ) : null}
                 </div>
@@ -867,24 +943,22 @@ function SettingsContent() {
                 {/* TEAM plan */}
                 <div className={`p-5 border-2 ${billing.plan === "TEAM" ? "border-malachite bg-malachite/5" : "border-dashed border-signal-black"}`}>
                   <div className="font-bold text-[1rem] uppercase tracking-wider mb-1">TEAM</div>
-                  <div className="font-mono text-[0.75rem] text-gray-mid mb-4">Pricing on checkout</div>
+                  <div className="font-mono text-[0.75rem] text-gray-mid mb-4">$17 / seat / month</div>
                   <ul className="flex flex-col gap-2 font-mono text-[0.8rem]">
                     <li>✓ Everything in Pro</li>
+                    <li className="font-bold text-cornflower">✓ 15,000 Hosted AI msgs/mo</li>
                     <li className="font-bold">✓ Team collaboration</li>
                     <li className="font-bold">✓ Shared workspaces</li>
                     <li>✓ Priority support</li>
+                    <li>✓ Token packs available</li>
                   </ul>
                   {billing.plan === "TEAM" ? (
                     <div className="mt-4 p-2 border-2 border-malachite text-center font-bold text-[0.8rem] uppercase text-malachite">
                       CURRENT PLAN
                     </div>
                   ) : (
-                    <button
-                      className="nb-btn nb-btn--primary w-full mt-4"
-                      onClick={() => handleCheckout("TEAM")}
-                      disabled={billingRedirecting !== null}
-                    >
-                      {billingRedirecting === "TEAM" ? "REDIRECTING..." : "UPGRADE TO TEAM"}
+                    <button className="nb-btn nb-btn--primary w-full mt-4" onClick={() => handleCheckout("TEAM")} disabled={billingRedirecting !== null}>
+                      {billingRedirecting === "TEAM" ? "REDIRECTING..." : "UPGRADE TO TEAM — $17/SEAT"}
                     </button>
                   )}
                 </div>

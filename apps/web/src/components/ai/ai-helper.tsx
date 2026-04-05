@@ -156,6 +156,16 @@ export function AiHelper() {
 
       if (!res.ok) {
         const errData = await res.json().catch(() => null);
+        if (res.status === 429) {
+          setMessages((prev) => [...prev, { role: "ai", text: "Monthly AI limit reached. Switch to Local AI in Settings, upgrade your plan, or purchase a token pack." }]);
+          setIsTyping(false);
+          return;
+        }
+        if (res.status === 403) {
+          setMessages((prev) => [...prev, { role: "ai", text: "AI requires a subscription. Go to Settings to subscribe or add your own API key." }]);
+          setIsTyping(false);
+          return;
+        }
         if (res.status === 503) {
           setMessages((prev) => [...prev, { role: "ai", text: "AI not available. Install Ollama for free local AI, or add an API key in Settings." }]);
           setIsTyping(false);
