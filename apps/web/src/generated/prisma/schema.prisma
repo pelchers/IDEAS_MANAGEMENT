@@ -1,0 +1,398 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum AiProvider {
+  NONE
+  OPENROUTER_OAUTH
+  OPENROUTER_BYOK
+  OPENAI_BYOK
+  ANTHROPIC_BYOK
+  GOOGLE_BYOK
+  OLLAMA_LOCAL
+  GROQ_BUILTIN
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  role            UserRole  @default(USER)
+  emailVerifiedAt DateTime?
+
+  // Profile
+  displayName String?
+  bio         String?
+  avatarUrl   String?
+  tags        String[] @default([])
+
+  // Preferences (JSON blob)
+  preferences Json?
+
+  // AI configuration
+  aiProvider             AiProvider @default(NONE)
+  aiApiKeyEncrypted      String? // AES-256-GCM encrypted API key or OAuth access token
+  openrouterRefreshToken String? // Encrypted OAuth refresh token (for token rotation)
+  preferredAiProvider    String     @default("NONE") // Dropdown selection in Settings
+  aiFallbackSetting      String     @default("local") // "local" | "upgrade" | "disable"
+
+  credential         Credential?
+  sessions           Session[]
+  refreshes          RefreshToken[]
+  auditLogs          AuditLog[]               @relation("audit_actor")
+  emailVerifications EmailVerificationToken[]
+  passwordResets     PasswordResetToken[]
+  subscriptions      Subscription[]
+  entitlements       Entitlement[]
+  aiChatSessions     AiChatSession[]
+  aiTokenUsage       AiTokenUsage[]
+  aiToolOutputs      AiToolOutput[]
+  projectMembers     ProjectMember[]
+  syncOperations     SyncOperation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Credential {
+  id           String @id @default(cuid())
+  userId       String @unique
+  passwordHash String
+  passwordAlgo String @default("argon2id")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Session {
+  id               String    @id @default(cuid())
+  userId           String
+  sessionTokenHash String    @unique
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  lastSeenAt       DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+
+  // Rotation chain support
+  replacedById String?       @unique
+  replacedBy   RefreshToken? @relation("refresh_rotation", fields: [replacedById], references: [id])
+  replaces     RefreshToken? @relation("refresh_rotation")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id          String  @id @default(cuid())
+  actorUserId String?
+  action      String
+  targetType  String?
+  targetId    String?
+  ip          String?
+  userAgent   String?
+  metadata    Json?
+
+  actor User? @relation("audit_actor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+}
+
+// ─── Billing & Subscriptions ──────────────────────────────────────────
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  TRIALING
+  UNPAID
+}
+
+enum SubscriptionPlan {
+  FREE
+  PRO
+  TEAM
+}
+
+enum EntitlementSource {
+  SUBSCRIPTION
+  ADMIN_GRANT
+  TRIAL
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String
+  stripeCustomerId     String
+  stripeSubscriptionId String             @unique
+  status               SubscriptionStatus
+  plan                 SubscriptionPlan
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean            @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([stripeCustomerId])
+}
+
+model Entitlement {
+  id        String            @id @default(cuid())
+  userId    String
+  feature   String
+  grantedAt DateTime          @default(now())
+  expiresAt DateTime?
+  source    EntitlementSource
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, feature])
+  @@index([userId])
+}
+
+model BillingEvent {
+  id               String   @id @default(cuid())
+  stripeEventId    String   @unique
+  eventType        String
+  stripeCustomerId String?
+  data             Json
+  processedAt      DateTime @default(now())
+
+  createdAt DateTime @default(now())
+}
+
+// ─── AI Chat ─────────────────────────────────────────────────────────
+
+enum AiMessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+  TOOL
+}
+
+model AiChatSession {
+  id        String  @id @default(cuid())
+  userId    String
+  projectId String?
+  title     String  @default("New Chat")
+
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages AiChatMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model AiChatMessage {
+  id          String        @id @default(cuid())
+  sessionId   String
+  role        AiMessageRole
+  content     String        @db.Text
+  toolCalls   Json?
+  toolResults Json?
+
+  session AiChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+}
+
+model AiToolOutput {
+  id        String  @id @default(cuid())
+  userId    String
+  sessionId String?
+  toolName  String
+  input     Json
+  output    Json
+  projectId String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([projectId])
+}
+
+// ─── Projects & Sync ─────────────────────────────────────────────────
+
+enum ProjectStatus {
+  PLANNING
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+enum MemberRole {
+  OWNER
+  EDITOR
+  VIEWER
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String
+  description String        @default("")
+  status      ProjectStatus @default(PLANNING)
+  tags        String[]      @default([])
+
+  members   ProjectMember[]
+  artifacts ProjectArtifact[]
+  syncOps   SyncOperation[]
+  snapshots SyncSnapshot[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+}
+
+model ProjectMember {
+  id        String     @id @default(cuid())
+  projectId String
+  userId    String
+  role      MemberRole @default(EDITOR)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([projectId, userId])
+  @@index([userId])
+}
+
+model ProjectArtifact {
+  id           String @id @default(cuid())
+  projectId    String
+  artifactPath String
+  content      Json
+  revision     Int    @default(1)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([projectId, artifactPath])
+  @@index([projectId])
+}
+
+model SyncOperation {
+  id           String @id @default(cuid())
+  operationId  String @unique
+  projectId    String
+  userId       String
+  artifactPath String
+  baseRevision Int
+  payload      Json
+  status       String @default("pending") // pending, applied, conflict, resolved
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([projectId, artifactPath])
+}
+
+model SyncSnapshot {
+  id           String @id @default(cuid())
+  projectId    String
+  artifactPath String
+  content      Json
+  revision     Int
+  reason       String @default("pre-merge")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([projectId, artifactPath])
+}
+
+// ── AI Token Usage Tracking ──────────────────────────────────────────
+
+model AiTokenUsage {
+  id               String   @id @default(cuid())
+  userId           String
+  periodStart      DateTime
+  periodEnd        DateTime
+  messagesUsed     Int      @default(0)
+  tokensInput      Int      @default(0)
+  tokensOutput     Int      @default(0)
+  tokenPackBalance Int      @default(0) // Purchased overage tokens (no rollover)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, periodStart])
+  @@index([userId])
+}
+
+// ── Admin Config (key-value settings) ────────────────────────────────
+
+model AdminConfig {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

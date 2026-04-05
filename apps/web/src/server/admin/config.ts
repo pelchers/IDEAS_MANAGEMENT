@@ -1,4 +1,4 @@
-import { prisma } from "@/server/db";
+import { prisma } from "../db";
 
 const ALLOWED_KEYS = [
   "free_tier_ai_enabled",

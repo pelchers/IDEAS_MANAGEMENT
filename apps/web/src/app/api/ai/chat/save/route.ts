@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/generated/prisma";
 
 /**
  * POST /api/ai/chat/save

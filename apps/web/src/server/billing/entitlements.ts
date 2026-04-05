@@ -1,5 +1,5 @@
 import { prisma } from "../db";
-import type { SubscriptionPlan } from "@prisma/client";
+import type { SubscriptionPlan } from "@/generated/prisma";
 
 /**
  * Features that can be gated by entitlements.

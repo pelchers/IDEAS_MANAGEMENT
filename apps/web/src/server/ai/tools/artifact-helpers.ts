@@ -1,5 +1,5 @@
 import { prisma } from "@/server/db";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/generated/prisma";
 
 /**
  * Read a project artifact by path. Returns the content JSON or null.

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { checkEntitlement, FEATURES, getUserEntitlements } from "@/server/billing/entitlements";
 import { prisma } from "@/server/db";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/generated/prisma";
 import { getUserModel } from "@/server/ai/get-user-model";
 import { checkLimit, incrementUsage } from "@/server/ai/token-tracking";
 import {

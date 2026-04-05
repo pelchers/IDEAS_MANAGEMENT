@@ -22,6 +22,8 @@ export async function GET(req: Request) {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to get usage";
+    const stack = err instanceof Error ? err.stack : undefined;
+    console.error("[/api/ai/usage] ERROR:", message, "\nSTACK:", stack);
     return NextResponse.json({ ok: false, error: message }, { status: 500 });
   }
 }

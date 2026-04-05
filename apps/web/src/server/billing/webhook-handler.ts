@@ -4,7 +4,7 @@ import {
   syncEntitlementsForPlan,
   revokeSubscriptionEntitlements,
 } from "./entitlements";
-import type { SubscriptionPlan, SubscriptionStatus, Prisma } from "@prisma/client";
+import type { SubscriptionPlan, SubscriptionStatus, Prisma } from "@/generated/prisma";
 
 /**
  * Map Stripe subscription status strings to our enum values.

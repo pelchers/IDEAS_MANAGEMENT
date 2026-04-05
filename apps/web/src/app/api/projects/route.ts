@@ -6,7 +6,7 @@ import {
   generateSlug,
   bootstrapProjectArtifacts,
 } from "@/server/projects/helpers";
-import type { ProjectStatus } from "@prisma/client";
+import type { ProjectStatus } from "@/generated/prisma";
 
 /**
  * POST /api/projects

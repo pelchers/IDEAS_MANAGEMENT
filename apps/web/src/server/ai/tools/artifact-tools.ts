@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { prisma } from "@/server/db";
 import { readArtifact, writeArtifact } from "./artifact-helpers";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/generated/prisma";
 
 /* ══════════════════════════════════════════════════════════════════════
    read_artifact — Read any project artifact

@@ -1,5 +1,5 @@
-import { prisma } from "@/server/db";
-import type { SubscriptionPlan } from "@prisma/client";
+import { prisma } from "../db";
+import type { SubscriptionPlan } from "@/generated/prisma";
 
 /**
  * AI message limits per subscription plan.
