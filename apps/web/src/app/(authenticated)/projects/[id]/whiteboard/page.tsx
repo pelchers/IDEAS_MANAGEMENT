@@ -5,7 +5,7 @@ import { useAnyArtifactRefresh } from "@/hooks/use-artifact-refresh";
 import { useParams } from "next/navigation";
 
 /* ── Types ── */
-type Tool = "select" | "draw" | "line" | "eraser" | "dot" | "sticky" | "media";
+type Tool = "select" | "hand" | "draw" | "line" | "rect" | "circle" | "arrow" | "eraser" | "dot" | "sticky" | "media" | "text";
 
 interface DrawPath {
   id: string;
@@ -68,15 +68,22 @@ const MEDIA_EXTENSIONS: Record<string, MediaType> = {
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB warning threshold
 
 /* ── Constants ── */
-const TOOLS: { id: Tool; icon: string; title: string }[] = [
-  { id: "select", icon: "\u261A", title: "Select" },
-  { id: "draw", icon: "\u270E", title: "Freehand Draw" },
-  { id: "line", icon: "\u2571", title: "Straight Line" },
+const TOOLS: { id: Tool; icon: string; title: string; shortcut?: string }[] = [
+  { id: "select", icon: "\u261A", title: "Select", shortcut: "V" },
+  { id: "hand", icon: "\u270B", title: "Hand / Pan", shortcut: "H" },
+  { id: "draw", icon: "\u270E", title: "Freehand Draw", shortcut: "P" },
+  { id: "line", icon: "\u2571", title: "Straight Line", shortcut: "L" },
+  { id: "rect", icon: "\u25AD", title: "Rectangle", shortcut: "R" },
+  { id: "circle", icon: "\u25CB", title: "Circle / Ellipse", shortcut: "O" },
+  { id: "arrow", icon: "\u2794", title: "Arrow", shortcut: "A" },
   { id: "dot", icon: "\u25CF", title: "Place Dot / Pin" },
-  { id: "eraser", icon: "\u232B", title: "Eraser (click a stroke to remove it)" },
-  { id: "sticky", icon: "\u25A0", title: "Add Sticky Note" },
-  { id: "media", icon: "\uD83D\uDCCE", title: "Attach Media (image, video, document)" },
+  { id: "eraser", icon: "\u232B", title: "Eraser", shortcut: "E" },
+  { id: "sticky", icon: "\u25A0", title: "Add Sticky Note", shortcut: "S" },
+  { id: "media", icon: "\uD83D\uDCCE", title: "Attach Media" },
 ];
+
+const DRAW_COLORS = ["#282828", "#FF5E54", "#2BBF5D", "#A259FF", "#6C8EBF", "#FFE459", "#FF6D28", "#708090"];
+const DRAW_WIDTHS = [1, 2, 3, 5, 8];
 
 const STICKY_PRESETS: Record<StickyColor, { bg: string; border: string }> = {
   yellow: { bg: "#FFE459", border: "#D4B800" },
@@ -285,6 +292,57 @@ export default function WhiteboardPage() {
   const elementDragStart = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const [resizingElement, setResizingElement] = useState<{ id: string; type: "path" | "dot"; startX: number; startY: number; startBBox: { x: number; y: number; width: number; height: number } } | null>(null);
 
+  // ── Render tick (forces re-render when refs change) ──
+  const [, setRenderTick] = useState(0);
+
+  // ── Zoom/Pan state ──
+  const [zoom, setZoom] = useState(1);
+  const [panX, setPanX] = useState(0);
+  const [panY, setPanY] = useState(0);
+  const [isPanning, setIsPanning] = useState(false);
+  const panStartRef = useRef<{ x: number; y: number; panX: number; panY: number }>({ x: 0, y: 0, panX: 0, panY: 0 });
+
+  // ── Drawing customization ──
+  const [drawColor, setDrawColor] = useState("#282828");
+  const [drawWidth, setDrawWidth] = useState(3);
+
+  // ── Context menu ──
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; target: "canvas" | "sticky" | "media" | "element"; targetId?: string } | null>(null);
+
+  // ── Undo/Redo ──
+  const historyRef = useRef<Array<{ paths: DrawPath[]; dots: Dot[]; stickies: StickyNote[]; media: MediaItem[] }>>([]);
+  const historyIdxRef = useRef(-1);
+
+  const pushHistory = useCallback(() => {
+    const snapshot = { paths: JSON.parse(JSON.stringify(pathsRef.current)), dots: JSON.parse(JSON.stringify(dotsRef.current)), stickies: JSON.parse(JSON.stringify(stickies)), media: JSON.parse(JSON.stringify(mediaItems)) };
+    historyRef.current = historyRef.current.slice(0, historyIdxRef.current + 1);
+    historyRef.current.push(snapshot);
+    if (historyRef.current.length > 50) historyRef.current.shift();
+    historyIdxRef.current = historyRef.current.length - 1;
+  }, [stickies, mediaItems]);
+
+  const undo = useCallback(() => {
+    if (historyIdxRef.current <= 0) return;
+    historyIdxRef.current--;
+    const s = historyRef.current[historyIdxRef.current];
+    pathsRef.current = JSON.parse(JSON.stringify(s.paths));
+    dotsRef.current = JSON.parse(JSON.stringify(s.dots));
+    setStickies(JSON.parse(JSON.stringify(s.stickies)));
+    setMediaItems(JSON.parse(JSON.stringify(s.media)));
+    setRenderTick((t) => t + 1);
+  }, []);
+
+  const redo = useCallback(() => {
+    if (historyIdxRef.current >= historyRef.current.length - 1) return;
+    historyIdxRef.current++;
+    const s = historyRef.current[historyIdxRef.current];
+    pathsRef.current = JSON.parse(JSON.stringify(s.paths));
+    dotsRef.current = JSON.parse(JSON.stringify(s.dots));
+    setStickies(JSON.parse(JSON.stringify(s.stickies)));
+    setMediaItems(JSON.parse(JSON.stringify(s.media)));
+    setRenderTick((t) => t + 1);
+  }, []);
+
   // Force re-render for dot/stroke counts
   const [, forceRender] = useState(0);
   const bump = () => forceRender((n) => n + 1);
@@ -477,10 +535,65 @@ export default function WhiteboardPage() {
   const getCanvasPos = (e: React.MouseEvent<HTMLCanvasElement>): { x: number; y: number } => {
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    // Account for zoom/pan
+    return { x: (e.clientX - rect.left - panX) / zoom, y: (e.clientY - rect.top - panY) / zoom };
   };
 
+  // ── Zoom handler ──
+  const handleWheelZoom = useCallback((e: React.WheelEvent) => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      setZoom((prev) => Math.min(3, Math.max(0.25, prev + delta)));
+    }
+  }, []);
+
+  // ── Pan handler ──
+  useEffect(() => {
+    if (!isPanning) return;
+    const handleMove = (e: MouseEvent) => {
+      setPanX(panStartRef.current.panX + (e.clientX - panStartRef.current.x));
+      setPanY(panStartRef.current.panY + (e.clientY - panStartRef.current.y));
+    };
+    const handleUp = () => setIsPanning(false);
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
+  }, [isPanning]);
+
+  // ── Keyboard shortcuts ──
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      const shortcuts: Record<string, Tool> = { v: "select", h: "hand", p: "draw", l: "line", r: "rect", o: "circle", a: "arrow", e: "eraser", s: "sticky" };
+      if (shortcuts[e.key.toLowerCase()] && !e.ctrlKey && !e.metaKey) { setActiveTool(shortcuts[e.key.toLowerCase()]); return; }
+      if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) { e.preventDefault(); undo(); }
+      if ((e.ctrlKey || e.metaKey) && e.key === "z" && e.shiftKey) { e.preventDefault(); redo(); }
+      if ((e.ctrlKey || e.metaKey) && e.key === "y") { e.preventDefault(); redo(); }
+      if (e.key === "+" || e.key === "=") setZoom((z) => Math.min(3, z + 0.1));
+      if (e.key === "-") setZoom((z) => Math.max(0.25, z - 0.1));
+      if (e.key === "Escape") { setContextMenu(null); setSelectedElementId(null); }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [undo, redo]);
+
+  // ── Context menu handler ──
+  const handleContextMenu = useCallback((e: React.MouseEvent, target: "canvas" | "sticky" | "media" | "element", targetId?: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setContextMenu({ x: e.clientX, y: e.clientY, target, targetId });
+  }, []);
+
   const handleCanvasMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    setContextMenu(null);
+    // Hand tool: start panning
+    if (activeTool === "hand" || e.button === 1) {
+      e.preventDefault();
+      setIsPanning(true);
+      panStartRef.current = { x: e.clientX, y: e.clientY, panX, panY };
+      return;
+    }
     const pos = getCanvasPos(e);
 
     if (activeTool === "draw") {
@@ -1091,14 +1204,14 @@ export default function WhiteboardPage() {
             {stickies.length} note{stickies.length !== 1 ? "s" : ""} / {strokeCount} stroke{strokeCount !== 1 ? "s" : ""}{mediaItems.length > 0 ? ` / ${mediaItems.length} media` : ""}
           </span>
           {/* Tools */}
-          <div style={{ display: "flex", gap: "4px" }}>
+          <div style={{ display: "flex", gap: "3px", flexWrap: "wrap" }}>
             {TOOLS.map((tool) => (
               <button
                 key={tool.id}
-                title={tool.title}
+                title={`${tool.title}${tool.shortcut ? ` (${tool.shortcut})` : ""}`}
                 onClick={() => setActiveTool(tool.id)}
                 style={{
-                  width: "40px", height: "40px", fontSize: "1.1rem",
+                  width: "36px", height: "36px", fontSize: "1rem",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   border: "3px solid #282828", cursor: "pointer", fontWeight: 700,
                   backgroundColor: activeTool === tool.id ? "#282828" : "#FFFFFF",
@@ -1110,9 +1223,46 @@ export default function WhiteboardPage() {
               </button>
             ))}
           </div>
+
+          {/* Divider */}
+          <div style={{ width: "1px", height: "32px", backgroundColor: "#28282830" }} />
+
+          {/* Color picker (for draw/line/shape tools) */}
+          {["draw", "line", "rect", "circle", "arrow", "dot"].includes(activeTool) && (
+            <div style={{ display: "flex", gap: "3px", alignItems: "center" }}>
+              {DRAW_COLORS.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setDrawColor(c)}
+                  style={{
+                    width: "20px", height: "20px", backgroundColor: c,
+                    border: drawColor === c ? "3px solid #282828" : "1px solid #28282860",
+                    cursor: "pointer", borderRadius: "2px",
+                    transform: drawColor === c ? "scale(1.2)" : "none",
+                  }}
+                  title={c}
+                />
+              ))}
+              <div style={{ width: "1px", height: "20px", backgroundColor: "#28282830", margin: "0 4px" }} />
+              {DRAW_WIDTHS.map((w) => (
+                <button
+                  key={w}
+                  onClick={() => setDrawWidth(w)}
+                  style={{
+                    width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center",
+                    border: drawWidth === w ? "2px solid #282828" : "1px solid #28282860",
+                    cursor: "pointer", backgroundColor: drawWidth === w ? "#f0f0f0" : "#FFF",
+                    fontSize: "0.6rem", fontFamily: "monospace", fontWeight: 700,
+                  }}
+                  title={`${w}px`}
+                >{w}</button>
+              ))}
+            </div>
+          )}
+
           {/* Sticky color picker */}
           {activeTool === "sticky" && (
-            <div style={{ display: "flex", gap: "4px", borderLeft: "3px solid #282828", paddingLeft: "12px" }}>
+            <div style={{ display: "flex", gap: "4px" }}>
               {STICKY_COLOR_KEYS.map((color) => (
                 <button
                   key={color}
@@ -1129,6 +1279,13 @@ export default function WhiteboardPage() {
               ))}
             </div>
           )}
+
+          {/* Divider */}
+          <div style={{ width: "1px", height: "32px", backgroundColor: "#28282830" }} />
+
+          {/* Undo/Redo */}
+          <button onClick={undo} disabled={historyIdxRef.current <= 0} style={{ fontSize: "0.7rem", fontFamily: "monospace", fontWeight: 700, border: "2px solid #282828", padding: "4px 8px", cursor: "pointer", backgroundColor: "#FFF", opacity: historyIdxRef.current <= 0 ? 0.3 : 1 }} title="Undo (Ctrl+Z)">UNDO</button>
+          <button onClick={redo} disabled={historyIdxRef.current >= historyRef.current.length - 1} style={{ fontSize: "0.7rem", fontFamily: "monospace", fontWeight: 700, border: "2px solid #282828", padding: "4px 8px", cursor: "pointer", backgroundColor: "#FFF", opacity: historyIdxRef.current >= historyRef.current.length - 1 ? 0.3 : 1 }} title="Redo (Ctrl+Shift+Z)">REDO</button>
         </div>
       </div>
 
@@ -1141,13 +1298,23 @@ export default function WhiteboardPage() {
           boxShadow: "4px 4px 0 #282828",
           backgroundColor: "#FFFFFF",
           minHeight: "max(500px, calc(100vh - 60px - 200px))",
-          cursor: getCursor(activeTool),
+          cursor: activeTool === "hand" ? (isPanning ? "grabbing" : "grab") : getCursor(activeTool),
           overflow: "hidden",
         }}
+        onWheel={handleWheelZoom}
+        onContextMenu={(e) => handleContextMenu(e, "canvas")}
       >
+        {/* Zoom controls (bottom-left) */}
+        <div style={{ position: "absolute", bottom: "12px", left: "12px", zIndex: 40, display: "flex", gap: "4px" }}>
+          <button onClick={() => setZoom((z) => Math.max(0.25, z - 0.15))} style={{ width: "28px", height: "28px", border: "2px solid #282828", backgroundColor: "#FFF", cursor: "pointer", fontWeight: 700, fontSize: "0.8rem" }}>-</button>
+          <span style={{ padding: "4px 8px", border: "2px solid #282828", backgroundColor: "#FFF", fontFamily: "monospace", fontSize: "0.7rem", fontWeight: 700, display: "flex", alignItems: "center" }}>{Math.round(zoom * 100)}%</span>
+          <button onClick={() => setZoom((z) => Math.min(3, z + 0.15))} style={{ width: "28px", height: "28px", border: "2px solid #282828", backgroundColor: "#FFF", cursor: "pointer", fontWeight: 700, fontSize: "0.8rem" }}>+</button>
+          <button onClick={() => { setZoom(1); setPanX(0); setPanY(0); }} style={{ padding: "4px 8px", border: "2px solid #282828", backgroundColor: "#FFF", cursor: "pointer", fontFamily: "monospace", fontSize: "0.65rem", fontWeight: 700 }}>FIT</button>
+        </div>
+
         <canvas
           ref={canvasRef}
-          style={{ display: "block", width: "100%", height: "100%", position: "absolute", inset: 0 }}
+          style={{ display: "block", width: "100%", height: "100%", position: "absolute", inset: 0, transform: `translate(${panX}px, ${panY}px) scale(${zoom})`, transformOrigin: "0 0" }}
           onMouseDown={handleCanvasMouseDown}
           onMouseMove={handleCanvasMouseMove}
           onMouseUp={handleCanvasMouseUp}
@@ -1178,6 +1345,7 @@ export default function WhiteboardPage() {
               <div
                 key={sticky.id}
                 onMouseEnter={() => setHoverStickyId(sticky.id)}
+                onContextMenu={(e) => handleContextMenu(e, "sticky", sticky.id)}
                 onMouseLeave={() => setHoverStickyId(null)}
                 style={{
                   position: "absolute",
@@ -1310,6 +1478,7 @@ export default function WhiteboardPage() {
               <div
                 key={media.id}
                 onMouseEnter={() => setHoverMediaId(media.id)}
+                onContextMenu={(e) => handleContextMenu(e, "media", media.id)}
                 onMouseLeave={() => setHoverMediaId(null)}
                 style={{
                   position: "absolute",
@@ -1695,6 +1864,63 @@ export default function WhiteboardPage() {
               )}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ── Right-Click Context Menu ── */}
+      {contextMenu && (
+        <div
+          style={{
+            position: "fixed", left: `${contextMenu.x}px`, top: `${contextMenu.y}px`, zIndex: 3000,
+            backgroundColor: "#FFF", border: "3px solid #282828", boxShadow: "4px 4px 0 #282828",
+            minWidth: "160px", fontFamily: "IBM Plex Mono, monospace", fontSize: "0.8rem",
+          }}
+          onClick={() => setContextMenu(null)}
+        >
+          {contextMenu.target === "canvas" && (
+            <>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => { setActiveTool("sticky"); }}>Add Sticky Note</button>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => { fileInputRef.current?.click(); }}>Add Media</button>
+              <div style={{ height: "1px", backgroundColor: "#28282820" }} />
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => { setZoom(1); setPanX(0); setPanY(0); }}>Zoom to Fit</button>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={undo} disabled={historyIdxRef.current <= 0}>Undo</button>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={redo}>Redo</button>
+            </>
+          )}
+          {contextMenu.target === "sticky" && contextMenu.targetId && (
+            <>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => {
+                const s = stickies.find((st) => st.id === contextMenu.targetId);
+                if (s) { setSettingsSticky(s); setSsTitle(s.title); setSsDesc(s.description); setSsTags(s.tags.join(", ")); setSsBgColor(s.bgColor); setSsBorderColor(s.borderColor); }
+              }}>Edit</button>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => {
+                const s = stickies.find((st) => st.id === contextMenu.targetId);
+                if (s) { pushHistory(); setStickies((prev) => [...prev, { ...s, id: `sticky-${Date.now()}`, x: s.x + 20, y: s.y + 20 }]); }
+              }}>Duplicate</button>
+              <div style={{ height: "1px", backgroundColor: "#28282820" }} />
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem] text-watermelon" onClick={() => {
+                pushHistory();
+                setStickies((prev) => prev.filter((s) => s.id !== contextMenu.targetId));
+              }}>Delete</button>
+            </>
+          )}
+          {contextMenu.target === "media" && contextMenu.targetId && (
+            <>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => {
+                const m = mediaItems.find((mi) => mi.id === contextMenu.targetId);
+                if (m) setViewerMedia(m);
+              }}>View</button>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => {
+                const m = mediaItems.find((mi) => mi.id === contextMenu.targetId);
+                if (m) { pushHistory(); setMediaItems((prev) => [...prev, { ...m, id: `media-${Date.now()}`, x: m.x + 20, y: m.y + 20 }]); }
+              }}>Duplicate</button>
+              <div style={{ height: "1px", backgroundColor: "#28282820" }} />
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem] text-watermelon" onClick={() => {
+                pushHistory();
+                setMediaItems((prev) => prev.filter((m) => m.id !== contextMenu.targetId));
+              }}>Delete</button>
+            </>
+          )}
         </div>
       )}
     </div>

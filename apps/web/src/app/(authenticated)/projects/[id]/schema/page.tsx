@@ -961,6 +961,7 @@ export default function SchemaPage() {
   const [selectedRelationId, setSelectedRelationId] = useState<string | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
   const canvasWrapRef = useRef<HTMLDivElement>(null);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; target: "canvas" | "entity" | "relation"; targetId?: string } | null>(null);
 
   // ── Undo/Redo ──
   const historyRef = useRef<SchemaGraph[]>([]);
@@ -1690,7 +1691,8 @@ export default function SchemaPage() {
         }}
         onWheel={handleWheel}
         onMouseDown={handleCanvasMouseDown}
-        onClick={() => { if (!draggingEntityId) { setSelectedEntityId(null); setSidePanelOpen(false); } }}
+        onClick={() => { if (!draggingEntityId) { setSelectedEntityId(null); setSidePanelOpen(false); } setContextMenu(null); }}
+        onContextMenu={(e) => { e.preventDefault(); setContextMenu({ x: e.clientX, y: e.clientY, target: "canvas" }); }}
       >
       <div
         ref={canvasRef}
@@ -1725,7 +1727,8 @@ export default function SchemaPage() {
               onMouseDown={(e) => handleEntityMouseDown(e, entity.id)}
               onMouseEnter={() => setHoverEntityId(entity.id)}
               onMouseLeave={() => { setHoverEntityId(null); setHoverFieldKey(null); }}
-              onClick={(e) => { e.stopPropagation(); setSelectedEntityId(entity.id); }}
+              onClick={(e) => { e.stopPropagation(); setSelectedEntityId(entity.id); setContextMenu(null); }}
+              onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); setContextMenu({ x: e.clientX, y: e.clientY, target: "entity", targetId: entity.id }); }}
               className="shadow-nb bg-white overflow-hidden"
               style={{
                 position: "absolute",
@@ -1868,6 +1871,54 @@ export default function SchemaPage() {
           <button className="nb-btn nb-btn--small" onClick={fitView}>FIT</button>
         </div>
       </div>
+
+      {/* ── Right-Click Context Menu ── */}
+      {contextMenu && (
+        <div
+          style={{
+            position: "fixed", left: `${contextMenu.x}px`, top: `${contextMenu.y}px`, zIndex: 3000,
+            backgroundColor: "#FFF", border: "3px solid #282828", boxShadow: "4px 4px 0 #282828",
+            minWidth: "160px", fontFamily: "IBM Plex Mono, monospace", fontSize: "0.8rem",
+          }}
+          onClick={() => setContextMenu(null)}
+        >
+          {contextMenu.target === "canvas" && (
+            <>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => { setFormEntityName(""); setModal("addEntity"); }}>Add Entity</button>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => { if (graph.entities.length >= 2) { setFormRelFrom(graph.entities[0]?.id || ""); setFormRelTo(graph.entities[1]?.id || ""); setModal("addRelation"); } }}>Add Relation</button>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => { setFormEnumName(""); setFormEnumValues(""); setModal("addEnum"); }}>Add Enum</button>
+              <div style={{ height: "1px", backgroundColor: "#28282820" }} />
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={handleAutoLayout}>Auto Layout</button>
+              <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={fitView}>Fit View</button>
+            </>
+          )}
+          {contextMenu.target === "entity" && contextMenu.targetId && (() => {
+            const ent = graph.entities.find((e) => e.id === contextMenu.targetId);
+            if (!ent) return null;
+            return (
+              <>
+                <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => { setEditEntityId(ent.id); setFormEntityName(ent.name); setModal("editEntity"); }}>Rename</button>
+                <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => { setEditFieldEntityId(ent.id); setFormFieldName(""); setFormFieldType("string"); setModal("addField"); }}>Add Field</button>
+                <div style={{ height: "1px", backgroundColor: "#28282820" }} />
+                <div className="px-3 py-2 text-[0.65rem] text-gray-mid uppercase">Color</div>
+                <div className="px-3 pb-2 flex gap-2">
+                  {Object.entries(HEADER_COLORS).map(([key, c]) => (
+                    <button key={key} onClick={() => { pushHistory(graph); setGraph((prev) => ({ ...prev, entities: prev.entities.map((en) => en.id === ent.id ? { ...en, headerColor: key } : en) })); }} style={{ width: "16px", height: "16px", backgroundColor: c.bg, border: "1px solid #282828", cursor: "pointer" }} />
+                  ))}
+                </div>
+                <div style={{ height: "1px", backgroundColor: "#28282820" }} />
+                <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem] text-watermelon" onClick={() => {
+                  const deps = getTableDependents(graph, ent.name);
+                  if (deps.length > 0 && !window.confirm(`${ent.name} has ${deps.length} dependencies. Delete?`)) return;
+                  pushHistory(graph);
+                  setGraph((prev) => ({ ...prev, entities: prev.entities.filter((en) => en.id !== ent.id), relations: prev.relations.filter((r) => r.fromEntityId !== ent.id && r.toEntityId !== ent.id) }));
+                  setSelectedEntityId(null);
+                }}>Delete</button>
+              </>
+            );
+          })()}
+        </div>
+      )}
 
       {/* Relations list (below canvas) */}
       {graph.relations.length > 0 && (
