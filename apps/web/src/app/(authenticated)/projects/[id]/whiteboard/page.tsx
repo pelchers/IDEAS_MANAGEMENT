@@ -1355,25 +1355,23 @@ export default function WhiteboardPage() {
                     />
                   )}
 
-                  {/* Video */}
+                  {/* Video — drag from anywhere, double-click to view */}
                   {media.type === "video" && (
                     <video
                       src={media.dataUrl}
-                      controls
-                      style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
-                      onMouseDown={(e) => e.stopPropagation()}
+                      style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", pointerEvents: "none" }}
+                      onDoubleClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
                     />
                   )}
 
-                  {/* Document — emoji IS the item, scales with container */}
+                  {/* Document — drag from anywhere, double-click to preview */}
                   {media.type === "document" && (
                     <div
-                      onClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
-                      onMouseDown={(e) => e.stopPropagation()}
+                      onDoubleClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
                       style={{
                         width: "100%", height: "100%",
                         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                        cursor: "pointer",
+                        pointerEvents: "none",
                       }}
                     >
                       <span style={{
