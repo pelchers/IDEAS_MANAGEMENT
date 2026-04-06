@@ -41,6 +41,7 @@ interface StickyNote {
   y: number;
   width: number;
   height: number;
+  rotation?: number;
 }
 
 type MediaType = "image" | "video" | "document";
@@ -54,6 +55,7 @@ interface MediaItem {
   y: number;
   width: number;
   height: number;
+  rotation?: number;
 }
 
 const MEDIA_EXTENSIONS: Record<string, MediaType> = {
@@ -992,6 +994,61 @@ export default function WhiteboardPage() {
     };
   }, [resizing, mediaItems, saveWhiteboard]);
 
+  /* ── Rotation handling (stickies + media) ── */
+  const [rotating, setRotating] = useState<{ id: string; kind: "sticky" | "media"; centerX: number; centerY: number; startAngle: number; startRotation: number } | null>(null);
+
+  const handleRotateStart = (e: React.MouseEvent, id: string, kind: "sticky" | "media") => {
+    e.preventDefault();
+    e.stopPropagation();
+    const item = kind === "sticky" ? stickies.find((s) => s.id === id) : mediaItems.find((m) => m.id === id);
+    if (!item) return;
+    const wrapper = wrapRef.current;
+    if (!wrapper) return;
+    const rect = wrapper.getBoundingClientRect();
+    const centerX = item.x + item.width / 2;
+    const centerY = item.y + (kind === "sticky" ? (item as StickyNote).height || item.width : (item as MediaItem).height) / 2;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const startAngle = Math.atan2(mouseY - centerY, mouseX - centerX) * (180 / Math.PI);
+    setRotating({ id, kind, centerX, centerY, startAngle, startRotation: item.rotation || 0 });
+  };
+
+  useEffect(() => {
+    if (!rotating) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      const wrapper = wrapRef.current;
+      if (!wrapper) return;
+      const rect = wrapper.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      const currentAngle = Math.atan2(mouseY - rotating.centerY, mouseX - rotating.centerX) * (180 / Math.PI);
+      const delta = currentAngle - rotating.startAngle;
+      const newRotation = Math.round(rotating.startRotation + delta);
+
+      if (rotating.kind === "sticky") {
+        setStickies((prev) => prev.map((s) => (s.id === rotating.id ? { ...s, rotation: newRotation } : s)));
+      } else {
+        setMediaItems((prev) => prev.map((m) => (m.id === rotating.id ? { ...m, rotation: newRotation } : m)));
+      }
+    };
+    const handleMouseUp = () => {
+      setRotating(null);
+      setStickies((curStickies) => {
+        setMediaItems((curMedia) => {
+          saveWhiteboard(pathsRef.current, dotsRef.current, curStickies, curMedia);
+          return curMedia;
+        });
+        return curStickies;
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [rotating, saveWhiteboard]);
+
   /* ── Loading ── */
   if (!loaded) {
     return (
@@ -1133,7 +1190,7 @@ export default function WhiteboardPage() {
                   fontSize: "0.85rem",
                   pointerEvents: "auto",
                   userSelect: "none",
-                  transform: isDragging ? "rotate(0deg) scale(1.05)" : getStickyRotation(index),
+                  transform: isDragging ? "rotate(0deg) scale(1.05)" : (sticky.rotation !== undefined ? `rotate(${sticky.rotation}deg)` : getStickyRotation(index)),
                   boxShadow: isDragging ? "6px 6px 0px #282828" : "3px 3px 0px #282828",
                   zIndex: isDragging ? 20 : "auto",
                   cursor: isDragging ? "grabbing" : "grab",
@@ -1207,6 +1264,19 @@ export default function WhiteboardPage() {
                     }}
                   />
                 )}
+                {/* Rotate handle — just outside bottom-right corner */}
+                {isHover && !isDragging && !resizing && (
+                  <div
+                    onMouseDown={(e) => handleRotateStart(e, sticky.id, "sticky")}
+                    style={{
+                      position: "absolute", bottom: "-18px", right: "-18px",
+                      width: "14px", height: "14px", cursor: "grab",
+                      borderRadius: "50%", border: "2px solid #282828",
+                      backgroundColor: "#A259FF", opacity: 0.8,
+                    }}
+                    title="Rotate"
+                  />
+                )}
               </div>
             );
           })}
@@ -1243,18 +1313,20 @@ export default function WhiteboardPage() {
                     boxShadow: isDragging ? "6px 6px 0px #282828" : isHover ? "3px 3px 0px #282828" : "none",
                     backgroundColor: "#fff",
                   }),
-                  transition: isDragging ? "none" : "box-shadow 150ms",
+                  transform: media.rotation ? `rotate(${media.rotation}deg)` : undefined,
+                  transition: isDragging ? "none" : "box-shadow 150ms, transform 150ms",
                 }}
               >
                 {/* Inner wrapper with overflow hidden for content only */}
                 <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
-                  {/* Image */}
+                  {/* Image — double-click to view full size */}
                   {media.type === "image" && (
                     <img
                       src={media.dataUrl}
                       alt={media.fileName}
                       style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
                       draggable={false}
+                      onDoubleClick={(e) => { e.stopPropagation(); setViewerMedia(media); }}
                     />
                   )}
 
@@ -1337,6 +1409,19 @@ export default function WhiteboardPage() {
                       background: "linear-gradient(135deg, transparent 50%, #282828 50%)",
                       opacity: 0.6,
                     }}
+                  />
+                )}
+                {/* Rotate handle — just outside bottom-right corner */}
+                {isHover && !isDragging && !resizing && (
+                  <div
+                    onMouseDown={(e) => handleRotateStart(e, media.id, "media")}
+                    style={{
+                      position: "absolute", bottom: "-18px", right: "-18px",
+                      width: "14px", height: "14px", cursor: "grab",
+                      borderRadius: "50%", border: "2px solid #282828",
+                      backgroundColor: "#A259FF", opacity: 0.8,
+                    }}
+                    title="Rotate"
                   />
                 )}
               </div>
