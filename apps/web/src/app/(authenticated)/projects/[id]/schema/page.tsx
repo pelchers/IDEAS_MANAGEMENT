@@ -4,6 +4,11 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useAnyArtifactRefresh } from "@/hooks/use-artifact-refresh";
 import { useParams } from "next/navigation";
 import rough from "roughjs";
+import { SchemaToolbar } from "@/components/schema/SchemaToolbar";
+import { RelationLines } from "@/components/schema/RelationLines";
+import { SchemaMinimap } from "@/components/schema/SchemaMinimap";
+import { HEADER_COLORS } from "@/lib/schema-types";
+import { autoLayout } from "@/lib/schema-layout";
 
 /* ══════════════════════════════════════════════════════════════════════
    Types
@@ -41,6 +46,9 @@ interface SchemaEntity {
   fields: SchemaField[];
   x: number;
   y: number;
+  width?: number;
+  headerColor?: string;
+  collapsed?: boolean;
   schema?: string;
   comment?: string;
   isUnlogged?: boolean;
@@ -937,6 +945,50 @@ export default function SchemaPage() {
   const dragOffsetRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLDivElement>(null);
 
+  // ── Zoom/Pan state ──
+  const [zoom, setZoom] = useState(1);
+  const [panX, setPanX] = useState(0);
+  const [panY, setPanY] = useState(0);
+  const [isPanning, setIsPanning] = useState(false);
+  const panStartRef = useRef<{ x: number; y: number; panX: number; panY: number }>({ x: 0, y: 0, panX: 0, panY: 0 });
+
+  // ── New feature state ──
+  const [searchQuery, setSearchQuery] = useState("");
+  const [gridEnabled, setGridEnabled] = useState(true);
+  const [snapEnabled, setSnapEnabled] = useState(false);
+  const [roughMode, setRoughMode] = useState(false);
+  const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
+  const [selectedRelationId, setSelectedRelationId] = useState<string | null>(null);
+  const [sidePanelOpen, setSidePanelOpen] = useState(false);
+  const canvasWrapRef = useRef<HTMLDivElement>(null);
+
+  // ── Undo/Redo ──
+  const historyRef = useRef<SchemaGraph[]>([]);
+  const historyIdxRef = useRef(-1);
+
+  const pushHistory = useCallback((g: SchemaGraph) => {
+    historyRef.current = historyRef.current.slice(0, historyIdxRef.current + 1);
+    historyRef.current.push(JSON.parse(JSON.stringify(g)));
+    if (historyRef.current.length > 50) historyRef.current.shift();
+    historyIdxRef.current = historyRef.current.length - 1;
+  }, []);
+
+  const undo = useCallback(() => {
+    if (historyIdxRef.current <= 0) return;
+    historyIdxRef.current--;
+    const snapshot = JSON.parse(JSON.stringify(historyRef.current[historyIdxRef.current]));
+    setGraph(snapshot);
+    saveGraph(snapshot);
+  }, []);
+
+  const redo = useCallback(() => {
+    if (historyIdxRef.current >= historyRef.current.length - 1) return;
+    historyIdxRef.current++;
+    const snapshot = JSON.parse(JSON.stringify(historyRef.current[historyIdxRef.current]));
+    setGraph(snapshot);
+    saveGraph(snapshot);
+  }, []);
+
   // Live reactivity: reload when AI modifies schema via tool
   useAnyArtifactRefresh(useCallback(() => window.location.reload(), []));
 
@@ -1474,6 +1526,93 @@ export default function SchemaPage() {
     return () => { window.removeEventListener("mousemove", handleMouseMove); window.removeEventListener("mouseup", handleMouseUp); };
   }, [draggingEntityId, graph, saveGraph]);
 
+  // ── Zoom handler (Ctrl+scroll) ──
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      setZoom((prev) => Math.min(3, Math.max(0.25, prev + delta)));
+    }
+  }, []);
+
+  // ── Pan handler (middle-click or space+click) ──
+  useEffect(() => {
+    if (!isPanning) return;
+    const handleMove = (e: MouseEvent) => {
+      setPanX(panStartRef.current.panX + (e.clientX - panStartRef.current.x));
+      setPanY(panStartRef.current.panY + (e.clientY - panStartRef.current.y));
+    };
+    const handleUp = () => setIsPanning(false);
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
+  }, [isPanning]);
+
+  const handleCanvasMouseDown = useCallback((e: React.MouseEvent) => {
+    // Middle-click pan
+    if (e.button === 1) {
+      e.preventDefault();
+      setIsPanning(true);
+      panStartRef.current = { x: e.clientX, y: e.clientY, panX, panY };
+    }
+  }, [panX, panY]);
+
+  // ── Keyboard shortcuts ──
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement) return;
+      if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) { e.preventDefault(); undo(); }
+      if ((e.ctrlKey || e.metaKey) && e.key === "z" && e.shiftKey) { e.preventDefault(); redo(); }
+      if ((e.ctrlKey || e.metaKey) && e.key === "y") { e.preventDefault(); redo(); }
+      if (e.key === "Escape") { setSelectedEntityId(null); setSidePanelOpen(false); setModal(null); }
+      if (e.key === "+" || e.key === "=") { setZoom((z) => Math.min(3, z + 0.1)); }
+      if (e.key === "-") { setZoom((z) => Math.max(0.25, z - 0.1)); }
+      if (e.key === "0" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); setZoom(1); setPanX(0); setPanY(0); }
+      if ((e.key === "Delete" || e.key === "Backspace") && selectedEntityId && !modal) {
+        const deps = getTableDependents(graph, graph.entities.find((en) => en.id === selectedEntityId)?.name || "");
+        if (deps.length > 0 && !window.confirm(`This entity has ${deps.length} dependencies. Delete anyway?`)) return;
+        setGraph((prev) => ({ ...prev, entities: prev.entities.filter((en) => en.id !== selectedEntityId), relations: prev.relations.filter((r) => r.fromEntityId !== selectedEntityId && r.toEntityId !== selectedEntityId) }));
+        setSelectedEntityId(null);
+        pushHistory(graph);
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === "f") { e.preventDefault(); document.querySelector<HTMLInputElement>("[data-schema-search]")?.focus(); }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [undo, redo, selectedEntityId, modal, graph, pushHistory]);
+
+  // ── Fit view ──
+  const fitView = useCallback(() => {
+    if (graph.entities.length === 0) return;
+    const wrapEl = canvasWrapRef.current;
+    if (!wrapEl) return;
+    const minX = Math.min(...graph.entities.map((e) => e.x));
+    const minY = Math.min(...graph.entities.map((e) => e.y));
+    const maxX = Math.max(...graph.entities.map((e) => e.x + 320));
+    const maxY = Math.max(...graph.entities.map((e) => e.y + 300));
+    const worldW = maxX - minX + 80;
+    const worldH = maxY - minY + 80;
+    const fitZoom = Math.min(wrapEl.clientWidth / worldW, wrapEl.clientHeight / worldH, 1.5);
+    setZoom(fitZoom);
+    setPanX(-(minX - 40) * fitZoom + (wrapEl.clientWidth - worldW * fitZoom) / 2);
+    setPanY(-(minY - 40) * fitZoom);
+  }, [graph.entities]);
+
+  // ── Auto layout ──
+  const handleAutoLayout = useCallback(() => {
+    if (!window.confirm("Auto-layout will rearrange all entities. Continue?")) return;
+    const laid = autoLayout(graph.entities, graph.relations);
+    pushHistory(graph);
+    setGraph((prev) => ({ ...prev, entities: laid }));
+    saveGraph({ ...graph, entities: laid });
+  }, [graph, pushHistory, saveGraph]);
+
+  // ── Search filter ──
+  const matchesSearch = useCallback((name: string) => {
+    if (!searchQuery) return true;
+    return name.toLowerCase().includes(searchQuery.toLowerCase());
+  }, [searchQuery]);
+
   // Calculate canvas size from entity positions
   const canvasWidth = Math.max(900, ...graph.entities.map((e) => e.x + 320));
   const canvasHeight = Math.max(600, ...graph.entities.map((e) => e.y + 300));
@@ -1491,40 +1630,38 @@ export default function SchemaPage() {
   return (
     <div className="animate-[view-slam_0.3s_cubic-bezier(0.2,0,0,1)]">
       {/* View header */}
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="nb-view-title">SCHEMA PLANNER</h1>
-          {saving && <span className="font-mono text-[0.7rem] text-[#999] uppercase">Saving...</span>}
-        </div>
-        <div className="flex gap-2 flex-wrap">
-          <button className="nb-btn" onClick={() => setModal("import")}>IMPORT</button>
-          <div className="flex gap-1">
-            <button className="nb-btn" onClick={() => openExport("prisma")}>PRISMA</button>
-            <button className="nb-btn" onClick={() => openExport("sql")}>SQL</button>
-            <button className="nb-btn" onClick={() => openExport("json")}>JSON</button>
-          </div>
-          <button className="nb-btn nb-btn--primary" onClick={() => { setFormEntityName(""); setModal("addEntity"); }}>+ TABLE</button>
-          {graph.entities.length >= 2 && (
-            <button className="nb-btn" onClick={() => { setFormRelFrom(graph.entities[0]?.id || ""); setFormRelTo(graph.entities[1]?.id || ""); setFormRelType("1:N"); setFormRelOnDelete("CASCADE"); setFormRelOnUpdate("NO ACTION"); setModal("addRelation"); }}>+ RELATION</button>
-          )}
-          <button className="nb-btn" onClick={() => { setFormEnumName(""); setFormEnumValues(""); setModal("addEnum"); }}>+ ENUM</button>
-          <button className="nb-btn" onClick={() => { setFormObj({}); setModal("addView"); }}>+ VIEW</button>
-          <button className="nb-btn" onClick={() => { setFormObj({}); setModal("addFunction"); }}>+ FN</button>
-          <button className="nb-btn" onClick={() => { setFormObj({}); setModal("addIndex"); }}>+ IDX</button>
-          <details className="relative inline-block">
-            <summary className="nb-btn cursor-pointer list-none">MORE +</summary>
-            <div className="absolute right-0 top-full mt-1 bg-white border-2 border-signal-black shadow-nb z-50 flex flex-col min-w-[140px]">
-              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addSequence"); }}>SEQUENCE</button>
-              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addTrigger"); }}>TRIGGER</button>
-              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addPolicy"); }}>RLS POLICY</button>
-              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addExtension"); }}>EXTENSION</button>
-              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addDomain"); }}>DOMAIN</button>
-              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk border-b border-signal-black/10" onClick={() => { setFormObj({}); setModal("addCompositeType"); }}>COMPOSITE TYPE</button>
-              <button className="px-3 py-2 text-left font-mono text-[0.8rem] uppercase hover:bg-creamy-milk" onClick={() => { setFormObj({}); setModal("addRole"); }}>ROLE</button>
-            </div>
-          </details>
-        </div>
-      </div>
+      <h1 className="nb-view-title mb-4">SCHEMA PLANNER</h1>
+
+      {/* Toolbar */}
+      <SchemaToolbar
+        entityCount={graph.entities.length}
+        fieldCount={graph.entities.reduce((c, e) => c + e.fields.length, 0)}
+        relationCount={graph.relations.length}
+        zoom={zoom}
+        gridEnabled={gridEnabled}
+        snapEnabled={snapEnabled}
+        roughMode={roughMode}
+        searchQuery={searchQuery}
+        canUndo={historyIdxRef.current > 0}
+        canRedo={historyIdxRef.current < historyRef.current.length - 1}
+        saving={saving}
+        onAddEntity={() => { setFormEntityName(""); setModal("addEntity"); }}
+        onAddRelation={() => { if (graph.entities.length >= 2) { setFormRelFrom(graph.entities[0]?.id || ""); setFormRelTo(graph.entities[1]?.id || ""); setFormRelType("1:N"); setFormRelOnDelete("CASCADE"); setFormRelOnUpdate("NO ACTION"); setModal("addRelation"); } }}
+        onAddEnum={() => { setFormEnumName(""); setFormEnumValues(""); setModal("addEnum"); }}
+        onAutoLayout={handleAutoLayout}
+        onFitView={fitView}
+        onZoomIn={() => setZoom((z) => Math.min(3, z + 0.15))}
+        onZoomOut={() => setZoom((z) => Math.max(0.25, z - 0.15))}
+        onZoomReset={() => { setZoom(1); setPanX(0); setPanY(0); }}
+        onToggleGrid={() => setGridEnabled((g) => !g)}
+        onToggleSnap={() => setSnapEnabled((s) => !s)}
+        onToggleRough={() => setRoughMode((r) => !r)}
+        onSearchChange={setSearchQuery}
+        onImport={() => setModal("import")}
+        onExport={() => openExport("prisma")}
+        onUndo={undo}
+        onRedo={redo}
+      />
 
       {/* Empty state */}
       {graph.entities.length === 0 && (
@@ -1538,14 +1675,49 @@ export default function SchemaPage() {
         </div>
       )}
 
-      {/* Entity cards canvas (whiteboard-style) */}
+      {/* Entity cards canvas (zoom/pan) */}
+      <div
+        ref={canvasWrapRef}
+        className="relative border-2 border-dashed border-signal-black/20 overflow-hidden"
+        style={{
+          height: "calc(100vh - 220px)", minHeight: "500px",
+          cursor: isPanning ? "grabbing" : "default",
+          background: gridEnabled
+            ? `radial-gradient(circle, #28282815 1px, transparent 1px)`
+            : "#faf8f4",
+          backgroundSize: gridEnabled ? `${20 * zoom}px ${20 * zoom}px` : undefined,
+          backgroundPosition: gridEnabled ? `${panX}px ${panY}px` : undefined,
+        }}
+        onWheel={handleWheel}
+        onMouseDown={handleCanvasMouseDown}
+        onClick={() => { if (!draggingEntityId) { setSelectedEntityId(null); setSidePanelOpen(false); } }}
+      >
       <div
         ref={canvasRef}
-        className="relative border-2 border-dashed border-signal-black/20 bg-[#faf8f4] overflow-auto"
-        style={{ minHeight: `${canvasHeight}px`, minWidth: "100%" }}
+        style={{
+          position: "absolute", inset: 0,
+          transform: `translate(${panX}px, ${panY}px) scale(${zoom})`,
+          transformOrigin: "0 0",
+          minHeight: `${canvasHeight}px`, minWidth: `${canvasWidth}px`,
+        }}
       >
+        {/* Crow's foot relation lines (when not using rough mode) */}
+        {!roughMode && (
+          <RelationLines
+            entities={graph.entities}
+            relations={graph.relations}
+            highlightEntityId={selectedEntityId || hoverEntityId}
+            selectedRelationId={selectedRelationId}
+            onSelectRelation={setSelectedRelationId}
+            zoom={zoom}
+          />
+        )}
+
         {graph.entities.map((entity) => {
           const isDragging = draggingEntityId === entity.id;
+          const isSelected = selectedEntityId === entity.id;
+          const dimmed = searchQuery && !matchesSearch(entity.name);
+          const headerColor = HEADER_COLORS[entity.headerColor || "signal-black"] || HEADER_COLORS["signal-black"];
           return (
             <div
               key={entity.id}
@@ -1553,21 +1725,24 @@ export default function SchemaPage() {
               onMouseDown={(e) => handleEntityMouseDown(e, entity.id)}
               onMouseEnter={() => setHoverEntityId(entity.id)}
               onMouseLeave={() => { setHoverEntityId(null); setHoverFieldKey(null); }}
-              className="border-4 border-signal-black shadow-nb bg-white overflow-hidden"
+              onClick={(e) => { e.stopPropagation(); setSelectedEntityId(entity.id); }}
+              className="shadow-nb bg-white overflow-hidden"
               style={{
                 position: "absolute",
                 left: `${entity.x}px`,
                 top: `${entity.y}px`,
-                width: "280px",
-                zIndex: isDragging ? 50 : 1,
+                width: `${entity.width || 280}px`,
+                zIndex: isDragging ? 50 : isSelected ? 10 : 1,
                 cursor: isDragging ? "grabbing" : "grab",
-                boxShadow: isDragging ? "8px 8px 0px #282828" : "4px 4px 0px #282828",
-                transition: isDragging ? "none" : "box-shadow 150ms",
+                border: isSelected ? "4px solid #A259FF" : "4px solid #282828",
+                boxShadow: isDragging ? "8px 8px 0px #282828" : isSelected ? "6px 6px 0px #A259FF" : "4px 4px 0px #282828",
+                transition: isDragging ? "none" : "box-shadow 150ms, opacity 150ms",
                 userSelect: "none",
+                opacity: dimmed ? 0.25 : 1,
               }}
             >
-              {/* Entity header */}
-              <div className="bg-signal-black text-creamy-milk px-4 py-3 font-bold text-base uppercase tracking-[0.1em] flex items-center justify-between">
+              {/* Entity header — color-coded */}
+              <div style={{ backgroundColor: headerColor.bg, color: headerColor.text }} className="px-4 py-3 font-bold text-base uppercase tracking-[0.1em] flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span>{entity.name}</span>
                   {/* Linked object badges */}
@@ -1668,10 +1843,30 @@ export default function SchemaPage() {
           );
         })}
 
-        {/* Rough.js relation SVG — overlays cards */}
-        {graph.relations.length > 0 && (
+        {/* Rough.js relation SVG — only in rough mode */}
+        {roughMode && graph.relations.length > 0 && (
           <svg ref={svgRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 10 }} data-testid="schema-relations-svg" />
         )}
+      </div>
+
+        {/* Minimap */}
+        <SchemaMinimap
+          entities={graph.entities}
+          zoom={zoom}
+          panX={panX}
+          panY={panY}
+          viewportWidth={canvasWrapRef.current?.clientWidth || 800}
+          viewportHeight={canvasWrapRef.current?.clientHeight || 600}
+          onPan={(x, y) => { setPanX(x); setPanY(y); }}
+        />
+
+        {/* Zoom controls (bottom-left) */}
+        <div style={{ position: "absolute", bottom: "12px", left: "12px", zIndex: 40, display: "flex", gap: "4px" }}>
+          <button className="nb-btn nb-btn--small" onClick={() => setZoom((z) => Math.max(0.25, z - 0.15))}>-</button>
+          <span style={{ padding: "4px 8px", border: "2px solid #282828", backgroundColor: "#FFF", fontFamily: "monospace", fontSize: "0.75rem", fontWeight: 700 }}>{Math.round(zoom * 100)}%</span>
+          <button className="nb-btn nb-btn--small" onClick={() => setZoom((z) => Math.min(3, z + 0.15))}>+</button>
+          <button className="nb-btn nb-btn--small" onClick={fitView}>FIT</button>
+        </div>
       </div>
 
       {/* Relations list (below canvas) */}
