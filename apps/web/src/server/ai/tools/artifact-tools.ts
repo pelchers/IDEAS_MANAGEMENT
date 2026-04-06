@@ -179,8 +179,9 @@ export async function executeUpdateKanbanArtifact(input: z.infer<typeof updateKa
 
 export const updateSchemaSchema = z.object({
   projectId: z.string().min(1),
-  action: z.enum(["add_entity", "add_field", "add_relation", "add_enum", "delete_entity"]),
+  action: z.enum(["add_entity", "add_field", "add_relation", "add_enum", "delete_entity", "set_entity_color", "auto_layout"]),
   entityName: z.string().optional(),
+  headerColor: z.string().optional().describe("Entity header color: signal-black, watermelon, malachite, cornflower, amethyst, lemon, orange, slate"),
   entityId: z.string().optional(),
   fieldName: z.string().optional(),
   fieldType: z.string().optional(),
@@ -238,6 +239,24 @@ export async function executeUpdateSchema(input: z.infer<typeof updateSchemaSche
     graph.entities = graph.entities.filter((e) => (e.name as string).toUpperCase() !== v.entityName!.toUpperCase());
     await writeArtifact(v.projectId, path, graph as unknown as Prisma.InputJsonValue);
     return { success: true, message: `Entity "${v.entityName}" deleted.` };
+  }
+  if (v.action === "set_entity_color") {
+    if (!v.entityName || !v.headerColor) throw new Error("entityName and headerColor required");
+    const entity = graph.entities.find((e) => (e.name as string).toUpperCase() === v.entityName!.toUpperCase());
+    if (!entity) throw new Error(`Entity "${v.entityName}" not found`);
+    (entity as Record<string, unknown>).headerColor = v.headerColor;
+    await writeArtifact(v.projectId, path, graph as unknown as Prisma.InputJsonValue);
+    return { success: true, message: `Entity "${v.entityName}" color set to ${v.headerColor}.` };
+  }
+  if (v.action === "auto_layout") {
+    // Simple auto-layout: arrange entities in a grid
+    const cols = 3;
+    graph.entities.forEach((e, i) => {
+      (e as Record<string, unknown>).x = 40 + (i % cols) * 340;
+      (e as Record<string, unknown>).y = 40 + Math.floor(i / cols) * 300;
+    });
+    await writeArtifact(v.projectId, path, graph as unknown as Prisma.InputJsonValue);
+    return { success: true, message: `Auto-layout applied to ${graph.entities.length} entities.` };
   }
   throw new Error("Invalid action");
 }

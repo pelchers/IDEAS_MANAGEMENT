@@ -247,7 +247,7 @@ export async function POST(req: Request) {
           execute: async (params) => executeUpdateKanbanArtifact(params, user.id),
         }),
         update_schema_artifact: tool({
-          description: "Add entities, fields, relations, or enum types to a project's database schema. Writes directly to the schema artifact. Works from ANY page.",
+          description: "Add entities, fields, relations, or enum types to a project's database schema. Can also set entity header colors (set_entity_color with headerColor) and trigger auto_layout. Writes directly to the schema artifact. Works from ANY page.",
           inputSchema: updateSchemaSchema,
           execute: async (params) => executeUpdateSchema(params, user.id),
         }),
