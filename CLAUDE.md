@@ -83,3 +83,9 @@ This repo also includes a visual/creative concept system for data visualization,
 - This is a per-instance instruction — it applies only to that specific interaction, not permanently. Once the user approves, proceed normally.
 - Do NOT change any settings, modes, or permissions. Simply pause, explain what you plan to do, and wait for a "yes", "proceed", "approved", or similar confirmation.
 - If the user says "reconfirm request", repeat your understanding again for a second review before acting.
+
+## Completion Convention
+- When tasked with implementing features, plans, or scoped work — complete ALL items in the defined scope. Do not defer remaining tasks to "next session" unless the user explicitly asks to stop or split the work.
+- Go out of the way to perform additional testing, research, and validation to assure best practices are met and exceeded. Validation (build checks, Playwright tests, screenshots) is part of completing work, not a separate optional step.
+- This applies to agent-defined scopes of work as well — agents must finish what they start, not leave partial implementations.
+- Exception: If a dependency is missing (e.g., API keys not yet provided), or a blocking issue requires user input, document what's blocked and why — but complete everything that can be completed.
