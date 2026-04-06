@@ -1173,13 +1173,22 @@ export default function WhiteboardPage() {
             return (
               <div
                 key={sticky.id}
-                onMouseDown={(e) => handleStickyMouseDown(e, sticky.id)}
                 onMouseEnter={() => setHoverStickyId(sticky.id)}
                 onMouseLeave={() => setHoverStickyId(null)}
                 style={{
                   position: "absolute",
-                  left: `${sticky.x}px`,
-                  top: `${sticky.y}px`,
+                  left: `${sticky.x - 20}px`,
+                  top: `${sticky.y - 20}px`,
+                  width: `${stickyW + 40}px`,
+                  height: stickyH === "auto" ? "auto" : `${(sticky.height || 0) + 40}px`,
+                  padding: "20px",
+                  pointerEvents: "auto",
+                  zIndex: isDragging ? 20 : "auto",
+                }}
+              >
+              <div
+                onMouseDown={(e) => handleStickyMouseDown(e, sticky.id)}
+                style={{
                   width: `${stickyW}px`,
                   height: stickyH,
                   padding: "14px",
@@ -1188,13 +1197,12 @@ export default function WhiteboardPage() {
                   color: textColor,
                   fontWeight: 600,
                   fontSize: "0.85rem",
-                  pointerEvents: "auto",
                   userSelect: "none",
                   transform: isDragging ? "rotate(0deg) scale(1.05)" : (sticky.rotation !== undefined ? `rotate(${sticky.rotation}deg)` : getStickyRotation(index)),
                   boxShadow: isDragging ? "6px 6px 0px #282828" : "3px 3px 0px #282828",
-                  zIndex: isDragging ? 20 : "auto",
                   cursor: isDragging ? "grabbing" : "grab",
                   transition: isDragging ? "none" : "transform 150ms, box-shadow 150ms",
+                  position: "relative",
                 }}
               >
                 {/* Content wrapper — hides overflow when sticky is resized small */}
@@ -1269,14 +1277,20 @@ export default function WhiteboardPage() {
                   <div
                     onMouseDown={(e) => handleRotateStart(e, sticky.id, "sticky")}
                     style={{
-                      position: "absolute", bottom: "-18px", right: "-18px",
-                      width: "14px", height: "14px", cursor: "grab",
-                      borderRadius: "50%", border: "2px solid #282828",
-                      backgroundColor: "#A259FF", opacity: 0.8,
+                      position: "absolute", bottom: "-20px", right: "-20px",
+                      width: "18px", height: "18px",
+                      cursor: `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23282828" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="17 2 21 3.5 21 8"/></svg>')}") 10 10, grab`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
                     }}
                     title="Rotate"
-                  />
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#282828" strokeWidth="2.5">
+                      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                      <polyline points="17 2 21 3.5 21 8" />
+                    </svg>
+                  </div>
                 )}
+              </div>
               </div>
             );
           })}
@@ -1291,21 +1305,28 @@ export default function WhiteboardPage() {
             return (
               <div
                 key={media.id}
-                onMouseDown={(e) => handleMediaMouseDown(e, media.id)}
                 onMouseEnter={() => setHoverMediaId(media.id)}
                 onMouseLeave={() => setHoverMediaId(null)}
                 style={{
                   position: "absolute",
-                  left: `${media.x}px`,
-                  top: `${media.y}px`,
+                  left: `${media.x - 20}px`,
+                  top: `${media.y - 20}px`,
+                  width: `${media.width + 40}px`,
+                  height: `${media.height + 40}px`,
+                  padding: "20px",
+                  pointerEvents: "auto",
+                  zIndex: isDragging ? 20 : 5,
+                }}
+              >
+              <div
+                onMouseDown={(e) => handleMediaMouseDown(e, media.id)}
+                style={{
                   width: `${media.width}px`,
                   height: `${media.height}px`,
-                  pointerEvents: "auto",
                   userSelect: "none",
-                  zIndex: isDragging ? 20 : 5,
                   cursor: isDragging ? "grabbing" : "grab",
+                  position: "relative",
                   ...(media.type === "document" ? {
-                    // Documents render as bare emoji — no card chrome
                     border: isHover ? "2px dashed #28282860" : "2px solid transparent",
                     backgroundColor: "transparent",
                   } : {
@@ -1416,14 +1437,20 @@ export default function WhiteboardPage() {
                   <div
                     onMouseDown={(e) => handleRotateStart(e, media.id, "media")}
                     style={{
-                      position: "absolute", bottom: "-18px", right: "-18px",
-                      width: "14px", height: "14px", cursor: "grab",
-                      borderRadius: "50%", border: "2px solid #282828",
-                      backgroundColor: "#A259FF", opacity: 0.8,
+                      position: "absolute", bottom: "-20px", right: "-20px",
+                      width: "18px", height: "18px",
+                      cursor: `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23282828" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="17 2 21 3.5 21 8"/></svg>')}") 10 10, grab`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
                     }}
                     title="Rotate"
-                  />
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#282828" strokeWidth="2.5">
+                      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                      <polyline points="17 2 21 3.5 21 8" />
+                    </svg>
+                  </div>
                 )}
+              </div>
               </div>
             );
           })}
