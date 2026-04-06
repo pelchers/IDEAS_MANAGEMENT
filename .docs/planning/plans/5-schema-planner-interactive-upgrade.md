@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-06
 **Commit:** 8205e05
-**Status:** Draft
+**Status:** Approved
 **Author:** Claude + User
 
 ---
@@ -235,9 +235,19 @@ Note: Phase 13 (refactor) should execute FIRST despite being numbered last — t
 
 ---
 
-## Questions
+## Answers (Confirmed 2026-04-06)
 
-1. **Refactor first?** The monolith is 3000+ lines. I recommend extracting components BEFORE adding features. This adds a session but prevents the file from becoming unmaintainable. Agree?
-2. **Rough.js keep or drop?** Currently relations use Rough.js for hand-drawn look. Should we keep it as a toggle ("Brutalist mode"), or replace entirely with clean SVG?
-3. **Side panel vs modals?** Should the side panel fully replace modals for entity/field editing, or coexist (panel for common edits, modals for advanced operations like import/export)?
-4. **Scope priority?** If you want to ship sooner, which parts are must-have vs nice-to-have? My suggestion: Parts 1-4 are must-have, Parts 5-7 are nice-to-have.
+1. **Refactor first?** YES — extract components before adding features (my recommendation, user approved)
+2. **Rough.js:** Keep as toggle — "Brutalist mode" (Rough.js) vs "Clean mode" (smooth SVG). Default to clean.
+3. **Side panel vs modals:** Coexist — panel for common entity/field editing, modals for advanced ops (import, export, bulk operations)
+4. **Scope:** ALL 9 parts — no deferral. Also add AI tool updates for new schema features.
+
+## Additional: AI Tools for New Features
+
+The existing `update_schema_artifact` AI tool needs expansion to support the new visual features:
+
+- [ ] Add `set_entity_color` action — AI can suggest color groupings ("color all auth tables red")
+- [ ] Add `set_entity_position` action — AI can arrange entities ("put User at top center")
+- [ ] Add `collapse_entity` / `expand_entity` actions — AI can focus the view
+- [ ] Add `auto_layout` action — AI can trigger layout optimization
+- [ ] Update tool descriptions so AI knows about new capabilities

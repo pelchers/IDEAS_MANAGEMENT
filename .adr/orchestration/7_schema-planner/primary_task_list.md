@@ -295,9 +295,156 @@ All PostgreSQL objects are interconnected. This phase adds the missing linkages 
 - [x] Deleting a role: warns about policies referencing it (getRoleDependents)
 - [x] User can confirm or cancel deletion (window.confirm)
 
-## Phase 6 — Schema Testing
+## Phase 6 — Schema Testing (Original)
 
 - [ ] User story validation: add entity, drag to reposition, add fields, create relationship, verify FK auto-created, delete entity
 - [ ] Export: Prisma output includes @relation + enums, SQL output includes FOREIGN KEY + INDEX + ENUM + SCHEMA
 - [ ] GitHub import: import from a known public repo, verify entities created
 - [ ] Compare against pass-1 schema validation PNGs
+
+## Phase 10 — Component Extraction / Refactor (2026-04-06)
+
+> Plan: `.docs/planning/plans/5-schema-planner-interactive-upgrade.md`
+> Execute FIRST — monolith must be decomposed before adding features
+
+- [ ] Extract `components/schema/SchemaCanvas.tsx` — zoom/pan/grid container with transform state
+- [ ] Extract `components/schema/EntityCard.tsx` — single entity card rendering + drag + hover
+- [ ] Extract `components/schema/FieldRow.tsx` — single field display with badges, inline edit trigger
+- [ ] Extract `components/schema/RelationLines.tsx` — SVG relation rendering (Rough.js + clean mode)
+- [ ] Extract `components/schema/EntitySidePanel.tsx` — selected entity detail/edit panel
+- [ ] Extract `components/schema/SchemaToolbar.tsx` — toolbar with all action buttons + toggles
+- [ ] Extract `components/schema/SchemaMinimap.tsx` — overview minimap component
+- [ ] Extract `components/schema/SchemaModals.tsx` — remaining modal forms (import, export, bulk)
+- [ ] Extract `hooks/use-schema-graph.ts` — graph state management, undo/redo stack, auto-save
+- [ ] Extract `lib/schema-layout.ts` — auto-layout algorithm
+- [ ] Extract `lib/schema-export.ts` — Prisma/SQL/JSON export generators (already ~400 lines)
+- [ ] Extract `lib/schema-import.ts` — parsers for Prisma/TS/SQL/JSON (already ~100 lines)
+- [ ] Keep `page.tsx` as thin orchestrator (~200 lines max)
+- [ ] Verify all existing functionality still works after extraction (no regressions)
+
+## Phase 11 — Canvas Infrastructure: Zoom + Pan + Grid (2026-04-06)
+
+- [ ] Add `zoom` (0.25–3.0) and `pan` (x, y) state to SchemaCanvas
+- [ ] Transform group: `<div style={{ transform: scale(zoom) translate(panX, panY) }}>` wrapping all children
+- [ ] Mouse wheel zoom: Ctrl/Cmd + scroll = zoom centered on cursor
+- [ ] Pan: middle-click drag or Space + left-click drag
+- [ ] Trackpad: pinch-to-zoom, two-finger pan
+- [ ] Zoom controls UI: [+] [-] [Fit] [100%] in bottom-left corner
+- [ ] Grid background: dot grid via CSS `radial-gradient` that scales with zoom
+- [ ] Grid snap toggle: entities snap to 20px grid on drag release
+- [ ] Coordinate conversion: `screenToCanvas(x, y)` and `canvasToScreen(x, y)` utilities
+
+## Phase 12 — Entity Card Improvements (2026-04-06)
+
+- [ ] **Drag from anywhere** — mousedown on entire card body initiates drag (not just header)
+- [ ] **Resizable width** — drag right edge to resize (min 220px, max 500px), persist `width` on entity
+- [ ] **Color-coded headers** — add `headerColor` to SchemaEntity, 8 presets:
+  - signal-black (default), watermelon, malachite, cornflower, amethyst, lemon, orange, slate
+  - Selectable via right-click context menu or header color dot
+- [ ] **Collapse/expand** — chevron toggle on header, collapsed = header-only with field count badge
+- [ ] **Field reordering** — drag fields within entity to reorder (native HTML drag)
+- [ ] **Inline field edit** — double-click field name or type to edit in-place (input overlay)
+- [ ] **FK arrow indicator** — FK fields show small colored arrow icon pointing to referenced entity
+
+## Phase 13 — Crow's Foot Relation Lines (2026-04-06)
+
+- [ ] SVG `<marker>` definitions for crow's foot symbols:
+  - One: `|` (perpendicular line)
+  - Many: `>` (three-pronged fork)
+  - Zero: `O` (open circle)
+- [ ] Render proper cardinality: `||--||` (1:1), `||--|<` (1:N), `>|--|<` (N:N)
+- [ ] Smooth bezier curves (SVG `<path>` with cubic bezier) routing around entities
+- [ ] Relation label: FK field name on midpoint with white pill background
+- [ ] Clickable relations: click line to select, show edit/delete actions
+- [ ] Hover highlight: hovering entity highlights its relations, dims others to 20% opacity
+- [ ] Color per relation: keep rotating palette, allow user override
+- [ ] Toggle: "Clean" (default) vs "Rough" (Rough.js hand-drawn) mode via toolbar button
+
+## Phase 14 — Side Panel Detail View (2026-04-06)
+
+- [ ] Right-side slide-out panel (380px wide) on entity click
+- [ ] Panel sections:
+  - Entity name (editable inline)
+  - Header color selector (row of color swatches)
+  - Schema namespace dropdown
+  - Comment textarea
+  - Fields list (full detail, editable per field)
+  - Add field quick-input (name + tab + type + enter)
+  - Relations list (from/to this entity)
+  - Advanced: composite PK, composite unique, RLS toggle, unlogged toggle
+- [ ] Field editing: click field in panel to expand full property form inline
+- [ ] Panel closes on Escape or click-away
+- [ ] Panel coexists with modals (import/export/bulk use modals still)
+
+## Phase 15 — Search, Filter, Minimap (2026-04-06)
+
+- [ ] **Search bar** — top of canvas, type-to-filter entities (non-matching dim to 30%)
+- [ ] **Filter chips** — by: has relations, has FK, has triggers, has RLS, by schema namespace
+- [ ] **Minimap** — 200x150px in bottom-right, shows all entities as tiny rectangles with viewport indicator
+- [ ] **Minimap pan** — drag viewport indicator to pan the main canvas
+- [ ] **Jump-to-entity** — click search result centers canvas on entity with smooth animation
+- [ ] **Entity count** — "12 entities, 47 fields, 8 relations" in toolbar
+
+## Phase 16 — Auto-Layout Algorithm (2026-04-06)
+
+- [ ] Dagre-style layered layout: root entities at top, dependents below
+- [ ] Minimize relation line crossings
+- [ ] Cluster entities by schema namespace
+- [ ] "Auto Layout" button in toolbar with confirmation prompt
+- [ ] Smooth animation: entities move to new positions over 300ms
+
+## Phase 17 — Toolbar + UX Polish + Undo/Redo (2026-04-06)
+
+### Toolbar
+- [ ] Floating toolbar at top of canvas:
+  - [Add Entity] [Add Relation] [Add Enum] — primary actions
+  - [Auto Layout] [Fit View] — layout
+  - [Search...] — inline search input
+  - [Grid: ON/OFF] [Snap: ON/OFF] [Lines: Clean/Rough] — toggles
+  - [Import] [Export] — file operations
+
+### Context Menu
+- [ ] Right-click entity: Rename, Change Color, Duplicate, Delete, Collapse/Expand
+
+### Keyboard Shortcuts
+- [ ] `Delete` / `Backspace`: delete selected entity
+- [ ] `Ctrl+D`: duplicate selected entity
+- [ ] `Ctrl+F`: focus search
+- [ ] `Ctrl+A`: select all entities
+- [ ] `Escape`: deselect / close panel
+- [ ] `+` / `-`: zoom in/out
+- [ ] `0`: reset zoom to 100%
+- [ ] `F`: fit all entities in view
+
+### Undo/Redo
+- [ ] 50-step history stack for graph state
+- [ ] `Ctrl+Z`: undo last action
+- [ ] `Ctrl+Shift+Z`: redo
+- [ ] History entries: add/delete entity, add/delete field, move entity, add/delete relation, color change
+
+## Phase 18 — AI Tool Updates for Schema Features (2026-04-06)
+
+- [ ] Add `set_entity_color` action to `update_schema_artifact` tool
+- [ ] Add `set_entity_position` action (x, y coordinates)
+- [ ] Add `collapse_entity` / `expand_entity` actions
+- [ ] Add `auto_layout` action (triggers layout algorithm)
+- [ ] Update AI tool descriptions to mention new visual capabilities
+- [ ] Test: "color all auth tables red" → AI calls set_entity_color for matching entities
+- [ ] Test: "arrange my schema" → AI calls auto_layout
+
+## Phase 19 — Full Testing + Validation (2026-04-06)
+
+- [ ] Playwright: zoom in/out via toolbar, verify scale
+- [ ] Playwright: drag entity from card body, verify position persists
+- [ ] Playwright: inline edit field name, verify auto-save
+- [ ] Playwright: side panel opens on click, shows correct fields
+- [ ] Playwright: search filters entities
+- [ ] Playwright: auto-layout rearranges entities
+- [ ] Playwright: crow's foot notation renders for 1:N relation
+- [ ] Playwright: minimap shows all entities
+- [ ] Playwright: color-coded headers render
+- [ ] Playwright: undo/redo works (add entity → Ctrl+Z → entity removed)
+- [ ] Playwright: collapse/expand toggle
+- [ ] Playwright: context menu on right-click
+- [ ] Screenshots: desktop full schema, zoomed, side panel, minimap, collapsed entities, color-coded
+- [ ] Verify all existing Phase 1-9 functionality still works (no regressions)
