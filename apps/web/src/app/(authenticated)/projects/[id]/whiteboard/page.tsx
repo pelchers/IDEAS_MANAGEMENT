@@ -1015,9 +1015,8 @@ export default function WhiteboardPage() {
 
   useEffect(() => {
     if (!rotating) return;
-    // Set rotation cursor on body during rotation so it doesn't disappear
-    const rotateCursorSvg = encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23282828" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="17 2 21 3.5 21 8"/></svg>');
-    document.body.style.cursor = `url("data:image/svg+xml,${rotateCursorSvg}") 12 12, grabbing`;
+    // Set crosshair cursor on body during rotation so it stays visible everywhere
+    document.body.style.cursor = "crosshair";
     const handleMouseMove = (e: MouseEvent) => {
       const wrapper = wrapRef.current;
       if (!wrapper) return;
@@ -1284,7 +1283,7 @@ export default function WhiteboardPage() {
                     style={{
                       position: "absolute", bottom: "-20px", right: "-20px",
                       width: "18px", height: "18px",
-                      cursor: `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23282828" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="17 2 21 3.5 21 8"/></svg>')}") 10 10, grab`,
+                      cursor: "grab",
                       display: "flex", alignItems: "center", justifyContent: "center",
                     }}
                     title="Rotate"
@@ -1444,7 +1443,7 @@ export default function WhiteboardPage() {
                     style={{
                       position: "absolute", bottom: "-20px", right: "-20px",
                       width: "18px", height: "18px",
-                      cursor: `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23282828" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="17 2 21 3.5 21 8"/></svg>')}") 10 10, grab`,
+                      cursor: "grab",
                       display: "flex", alignItems: "center", justifyContent: "center",
                     }}
                     title="Rotate"
