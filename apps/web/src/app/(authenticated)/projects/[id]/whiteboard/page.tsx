@@ -1015,6 +1015,9 @@ export default function WhiteboardPage() {
 
   useEffect(() => {
     if (!rotating) return;
+    // Set rotation cursor on body during rotation so it doesn't disappear
+    const rotateCursorSvg = encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23282828" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="17 2 21 3.5 21 8"/></svg>');
+    document.body.style.cursor = `url("data:image/svg+xml,${rotateCursorSvg}") 12 12, grabbing`;
     const handleMouseMove = (e: MouseEvent) => {
       const wrapper = wrapRef.current;
       if (!wrapper) return;
@@ -1032,6 +1035,7 @@ export default function WhiteboardPage() {
       }
     };
     const handleMouseUp = () => {
+      document.body.style.cursor = "";
       setRotating(null);
       setStickies((curStickies) => {
         setMediaItems((curMedia) => {
@@ -1044,6 +1048,7 @@ export default function WhiteboardPage() {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
     return () => {
+      document.body.style.cursor = "";
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
