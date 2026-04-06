@@ -82,7 +82,91 @@ Design Source: `.docs/planning/concepts/brutalism-neobrutalism/pass-1/index.html
 - [x] Add `getDocIcon` mapping for `.md` files (memo icon)
 - [x] Markdown viewer in media preview modal: render `.md` file content as formatted HTML (basic inline renderer)
 
-## Phase 5 — Whiteboard Testing
+## Phase 5 — Whiteboard Testing (Original)
 
 - [ ] User story validation: draw on canvas, add sticky note, drag sticky note, switch tools, add media, resize elements
 - [ ] Compare against pass-1 whiteboard validation PNGs
+
+## Phase 6 — Canvas Infrastructure: Zoom + Pan + Hand Tool (2026-04-06)
+
+> Plan: `.docs/planning/plans/6-canvas-tools-whiteboard-upgrade.md`
+
+- [ ] Add zoom state (0.25–3.0) and panX/panY state
+- [ ] Wrap canvas in transform group (scale + translate)
+- [ ] Mouse wheel zoom: Ctrl/Cmd + scroll centered on cursor
+- [ ] Hand/grab tool: new tool in toolbar, left-click-drag pans canvas
+- [ ] Middle-click pan (always works regardless of tool)
+- [ ] Zoom controls: [+] [-] [FIT] [100%] in bottom-left corner
+- [ ] Coordinate conversion: all tools use screen→canvas coords
+- [ ] Grid snap toggle: elements snap to 20px grid
+
+## Phase 7 — Drawing Customization + Undo/Redo (2026-04-06)
+
+### Color Picker
+- [ ] 8 preset colors in toolbar: black, watermelon, malachite, amethyst, cornflower, lemon, orange, slate
+- [ ] Custom hex input option
+- [ ] Selected color applies to: draw, line, dot, shapes
+- [ ] Add `color` and `strokeWidth` to DrawPath and Dot types
+
+### Line Thickness
+- [ ] 5 options: 1px, 2px, 3px (default), 5px, 8px
+- [ ] Thickness selector in toolbar (dots or dropdown)
+
+### Undo/Redo
+- [ ] 50-step history stack
+- [ ] Ctrl+Z undo, Ctrl+Shift+Z redo
+- [ ] Toolbar buttons for undo/redo
+- [ ] Tracks: paths, dots, stickies, media additions/moves/deletions
+
+## Phase 8 — Additional Shape Tools (2026-04-06)
+
+- [ ] Rectangle tool: click-drag for outlined rectangle
+- [ ] Circle/ellipse tool: click-drag for outlined ellipse
+- [ ] Arrow tool: line with arrowhead marker
+- [ ] Text tool: click to place, opens inline text editor
+- [ ] Add to TOOLS array with icons
+
+## Phase 9 — Export + Keyboard Shortcuts (2026-04-06)
+
+### Export
+- [ ] Export as PNG: composite canvas + overlay elements
+- [ ] Export as SVG: vector output of all paths/shapes
+- [ ] Export button in toolbar
+
+### Keyboard Shortcuts
+- [ ] V: select, H: hand, P: draw, L: line, R: rect, O: circle, A: arrow, T: text, E: eraser, S: sticky
+- [ ] Delete: delete selected element
+- [ ] Ctrl+Z/Y: undo/redo
+- [ ] +/-: zoom
+
+## Phase 10 — Right-Click Context Menus (2026-04-06)
+
+### Whiteboard
+- [ ] Right-click empty canvas: Paste, Add Sticky, Add Media, Select All, Zoom to Fit
+- [ ] Right-click sticky: Edit, Duplicate, Change Color, Bring to Front, Send to Back, Delete
+- [ ] Right-click media: View, Duplicate, Bring to Front, Send to Back, Delete
+- [ ] Right-click drawing element: Change Color, Change Thickness, Delete
+- [ ] Custom `CanvasContextMenu` component (suppress browser default)
+
+### Schema Planner (also applies)
+- [ ] Right-click empty canvas: Add Entity, Add Relation, Paste, Auto Layout, Fit View
+- [ ] Right-click entity: Rename, Change Color, Duplicate, Collapse/Expand, Add Field, Delete
+- [ ] Right-click relation: Edit, Delete
+- [ ] Reuse same `CanvasContextMenu` component with different items
+
+## Phase 11 — Minimap + Full Testing (2026-04-06)
+
+- [ ] Minimap: 200x150px in bottom-right, shows strokes + stickies + media as colored shapes
+- [ ] Viewport indicator (draggable to pan)
+- [ ] Only visible when canvas is zoomed/panned
+
+### Testing
+- [ ] Playwright: zoom in/out via controls
+- [ ] Playwright: hand tool pans canvas
+- [ ] Playwright: color picker changes draw color
+- [ ] Playwright: undo/redo works
+- [ ] Playwright: rect/circle/arrow tools create shapes
+- [ ] Playwright: keyboard shortcuts switch tools
+- [ ] Playwright: right-click context menu on sticky/media/empty canvas
+- [ ] Playwright: schema planner context menu on entity
+- [ ] Screenshots: all new features
