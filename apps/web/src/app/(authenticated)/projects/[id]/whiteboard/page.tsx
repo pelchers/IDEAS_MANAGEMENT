@@ -539,11 +539,25 @@ export default function WhiteboardPage() {
     return { x: (e.clientX - rect.left - panX) / zoom, y: (e.clientY - rect.top - panY) / zoom };
   };
 
-  // ── Zoom handler (scroll = zoom, no Ctrl needed) ──
+  // ── Zoom handler (scroll = zoom centered on mouse position) ──
   const handleWheelZoom = useCallback((e: React.WheelEvent) => {
     e.preventDefault();
+    const wrapper = wrapRef.current;
+    if (!wrapper) return;
+    const rect = wrapper.getBoundingClientRect();
+    // Mouse position relative to wrapper
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
     const delta = e.deltaY > 0 ? -0.08 : 0.08;
-    setZoom((prev) => Math.min(3, Math.max(0.25, prev + delta)));
+
+    setZoom((prevZoom) => {
+      const newZoom = Math.min(3, Math.max(0.25, prevZoom + delta));
+      const scale = newZoom / prevZoom;
+      // Adjust pan so the point under the cursor stays fixed
+      setPanX((prevPanX) => mouseX - scale * (mouseX - prevPanX));
+      setPanY((prevPanY) => mouseY - scale * (mouseY - prevPanY));
+      return newZoom;
+    });
   }, []);
 
   // ── Pan handler ──

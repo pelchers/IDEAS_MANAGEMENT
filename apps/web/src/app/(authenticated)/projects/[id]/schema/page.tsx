@@ -1528,11 +1528,23 @@ export default function SchemaPage() {
     return () => { window.removeEventListener("mousemove", handleMouseMove); window.removeEventListener("mouseup", handleMouseUp); };
   }, [draggingEntityId, graph, saveGraph]);
 
-  // ── Zoom handler (scroll = zoom, no Ctrl needed) ──
+  // ── Zoom handler (scroll = zoom centered on mouse position) ──
   const handleWheel = useCallback((e: React.WheelEvent) => {
     e.preventDefault();
+    const wrapper = canvasWrapRef.current;
+    if (!wrapper) return;
+    const rect = wrapper.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
     const delta = e.deltaY > 0 ? -0.08 : 0.08;
-    setZoom((prev) => Math.min(3, Math.max(0.25, prev + delta)));
+
+    setZoom((prevZoom) => {
+      const newZoom = Math.min(3, Math.max(0.25, prevZoom + delta));
+      const scale = newZoom / prevZoom;
+      setPanX((prevPanX) => mouseX - scale * (mouseX - prevPanX));
+      setPanY((prevPanY) => mouseY - scale * (mouseY - prevPanY));
+      return newZoom;
+    });
   }, []);
 
   // ── Pan handler (middle-click or space+click) ──
