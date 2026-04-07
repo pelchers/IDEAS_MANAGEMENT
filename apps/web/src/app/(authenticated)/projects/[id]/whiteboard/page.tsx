@@ -79,6 +79,7 @@ const TOOLS: { id: Tool; icon: string; title: string; shortcut?: string }[] = [
   { id: "dot", icon: "\u25CF", title: "Place Dot / Pin" },
   { id: "eraser", icon: "\u232B", title: "Eraser", shortcut: "E" },
   { id: "sticky", icon: "\u25A0", title: "Add Sticky Note", shortcut: "S" },
+  { id: "text", icon: "T", title: "Add Text (no border)", shortcut: "T" },
   { id: "media", icon: "\uD83D\uDCCE", title: "Attach Media" },
 ];
 
@@ -122,8 +123,13 @@ function getStickyRotation(index: number): string {
 function getCursor(tool: Tool): string {
   switch (tool) {
     case "select": return "default";
+    case "hand": return "grab";
     case "draw": return "crosshair";
     case "line": return "crosshair";
+    case "rect": return "crosshair";
+    case "circle": return "crosshair";
+    case "arrow": return "crosshair";
+    case "text": return "text";
     case "eraser": return "pointer";
     case "dot": return "crosshair";
     case "sticky": return "cell";
@@ -539,25 +545,27 @@ export default function WhiteboardPage() {
     return { x: (e.clientX - rect.left - panX) / zoom, y: (e.clientY - rect.top - panY) / zoom };
   };
 
-  // ── Zoom handler (scroll = zoom centered on mouse position) ──
-  const handleWheelZoom = useCallback((e: React.WheelEvent) => {
-    e.preventDefault();
-    const wrapper = wrapRef.current;
-    if (!wrapper) return;
-    const rect = wrapper.getBoundingClientRect();
-    // Mouse position relative to wrapper
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const delta = e.deltaY > 0 ? -0.08 : 0.08;
-
-    setZoom((prevZoom) => {
-      const newZoom = Math.min(3, Math.max(0.25, prevZoom + delta));
-      const scale = newZoom / prevZoom;
-      // Adjust pan so the point under the cursor stays fixed
-      setPanX((prevPanX) => mouseX - scale * (mouseX - prevPanX));
-      setPanY((prevPanY) => mouseY - scale * (mouseY - prevPanY));
-      return newZoom;
-    });
+  // ── Zoom handler (native listener to prevent page scroll) ──
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const handler = (e: WheelEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const rect = el.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      const delta = e.deltaY > 0 ? -0.08 : 0.08;
+      setZoom((prevZoom) => {
+        const newZoom = Math.min(3, Math.max(0.25, prevZoom + delta));
+        const scl = newZoom / prevZoom;
+        setPanX((prevPanX) => mouseX - scl * (mouseX - prevPanX));
+        setPanY((prevPanY) => mouseY - scl * (mouseY - prevPanY));
+        return newZoom;
+      });
+    };
+    el.addEventListener("wheel", handler, { passive: false });
+    return () => el.removeEventListener("wheel", handler);
   }, []);
 
   // ── Pan handler ──
@@ -577,7 +585,7 @@ export default function WhiteboardPage() {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-      const shortcuts: Record<string, Tool> = { v: "select", h: "hand", p: "draw", l: "line", r: "rect", o: "circle", a: "arrow", e: "eraser", s: "sticky" };
+      const shortcuts: Record<string, Tool> = { v: "select", h: "hand", p: "draw", l: "line", r: "rect", o: "circle", a: "arrow", t: "text", e: "eraser", s: "sticky" };
       if (shortcuts[e.key.toLowerCase()] && !e.ctrlKey && !e.metaKey) { setActiveTool(shortcuts[e.key.toLowerCase()]); return; }
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) { e.preventDefault(); undo(); }
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && e.shiftKey) { e.preventDefault(); redo(); }
@@ -1482,7 +1490,6 @@ export default function WhiteboardPage() {
           cursor: activeTool === "hand" ? (isPanning ? "grabbing" : "grab") : getCursor(activeTool),
           overflow: "hidden",
         }}
-        onWheel={handleWheelZoom}
         onContextMenu={(e) => handleContextMenu(e, "canvas")}
       >
         {/* Zoom controls (bottom-left) */}

@@ -960,9 +960,10 @@ export default function SchemaPage() {
   const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
   const [selectedRelationId, setSelectedRelationId] = useState<string | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
-  const [schemaToolMode, setSchemaToolMode] = useState<"select" | "hand">("select");
+  const [schemaToolMode, setSchemaToolMode] = useState<"select" | "hand" | "text" | "rect">("select");
   const canvasWrapRef = useRef<HTMLDivElement>(null);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; target: "canvas" | "entity" | "relation"; targetId?: string } | null>(null);
+  const [relationsPanelOpen, setRelationsPanelOpen] = useState(false);
 
   // ── Undo/Redo ──
   const historyRef = useRef<SchemaGraph[]>([]);
@@ -1528,23 +1529,27 @@ export default function SchemaPage() {
     return () => { window.removeEventListener("mousemove", handleMouseMove); window.removeEventListener("mouseup", handleMouseUp); };
   }, [draggingEntityId, graph, saveGraph]);
 
-  // ── Zoom handler (scroll = zoom centered on mouse position) ──
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault();
-    const wrapper = canvasWrapRef.current;
-    if (!wrapper) return;
-    const rect = wrapper.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const delta = e.deltaY > 0 ? -0.08 : 0.08;
-
-    setZoom((prevZoom) => {
-      const newZoom = Math.min(3, Math.max(0.25, prevZoom + delta));
-      const scale = newZoom / prevZoom;
-      setPanX((prevPanX) => mouseX - scale * (mouseX - prevPanX));
-      setPanY((prevPanY) => mouseY - scale * (mouseY - prevPanY));
-      return newZoom;
-    });
+  // ── Zoom handler (native listener to prevent page scroll) ──
+  useEffect(() => {
+    const el = canvasWrapRef.current;
+    if (!el) return;
+    const handler = (e: WheelEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const rect = el.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      const delta = e.deltaY > 0 ? -0.08 : 0.08;
+      setZoom((prevZoom) => {
+        const newZoom = Math.min(3, Math.max(0.25, prevZoom + delta));
+        const scl = newZoom / prevZoom;
+        setPanX((prevPanX) => mouseX - scl * (mouseX - prevPanX));
+        setPanY((prevPanY) => mouseY - scl * (mouseY - prevPanY));
+        return newZoom;
+      });
+    };
+    el.addEventListener("wheel", handler, { passive: false });
+    return () => el.removeEventListener("wheel", handler);
   }, []);
 
   // ── Pan handler (middle-click or space+click) ──
@@ -1649,8 +1654,10 @@ export default function SchemaPage() {
       {/* Canvas tool mode */}
       <div style={{ display: "flex", gap: "4px", marginBottom: "8px" }}>
         {[
-          { id: "select" as const, icon: "\u261A", title: "Select / Move (V)", shortcut: "V" },
-          { id: "hand" as const, icon: "\u270B", title: "Hand / Pan (H)", shortcut: "H" },
+          { id: "select" as const, icon: "\u261A", title: "Select / Move (V)" },
+          { id: "hand" as const, icon: "\u270B", title: "Hand / Pan (H)" },
+          { id: "text" as const, icon: "T", title: "Add Text Label (T)" },
+          { id: "rect" as const, icon: "\u25AD", title: "Draw Rectangle (R)" },
         ].map((tool) => (
           <button
             key={tool.id}
@@ -1686,7 +1693,7 @@ export default function SchemaPage() {
         canRedo={historyIdxRef.current < historyRef.current.length - 1}
         saving={saving}
         onAddEntity={() => { setFormEntityName(""); setModal("addEntity"); }}
-        onAddRelation={() => { if (graph.entities.length >= 2) { setFormRelFrom(graph.entities[0]?.id || ""); setFormRelTo(graph.entities[1]?.id || ""); setFormRelType("1:N"); setFormRelOnDelete("CASCADE"); setFormRelOnUpdate("NO ACTION"); setModal("addRelation"); } }}
+        onAddRelation={() => setRelationsPanelOpen(true)}
         onAddEnum={() => { setFormEnumName(""); setFormEnumValues(""); setModal("addEnum"); }}
         onAutoLayout={handleAutoLayout}
         onFitView={fitView}
@@ -1728,7 +1735,6 @@ export default function SchemaPage() {
           backgroundSize: gridEnabled ? `${20 * zoom}px ${20 * zoom}px` : undefined,
           backgroundPosition: gridEnabled ? `${panX}px ${panY}px` : undefined,
         }}
-        onWheel={handleWheel}
         onMouseDown={handleCanvasMouseDown}
         onClick={() => { if (!draggingEntityId) { setSelectedEntityId(null); setSidePanelOpen(false); } setContextMenu(null); }}
         onContextMenu={(e) => { e.preventDefault(); setContextMenu({ x: e.clientX, y: e.clientY, target: "canvas" }); }}
@@ -1959,29 +1965,51 @@ export default function SchemaPage() {
         </div>
       )}
 
-      {/* Relations list (below canvas) */}
-      {graph.relations.length > 0 && (
-        <div className="mt-4 mb-4">
-          <h3 className="font-bold text-[0.8rem] uppercase tracking-wider mb-2">RELATIONS</h3>
-            <div className="flex flex-wrap gap-2">
-              {graph.relations.map((rel) => {
-                const from = graph.entities.find((e) => e.id === rel.fromEntityId);
-                const to = graph.entities.find((e) => e.id === rel.toEntityId);
-                return (
-                  <div key={rel.id} className="inline-flex items-center gap-2 px-3 py-1.5 border-2 border-signal-black bg-white font-mono text-[0.75rem] uppercase">
-                    <span className="font-bold">{from?.name || "?"}</span>
-                    <span className="text-watermelon font-bold">{rel.type}</span>
-                    <span className="font-bold">{to?.name || "?"}</span>
-                    {rel.onDelete && rel.onDelete !== "CASCADE" && <span className="text-[0.6rem] text-[#999]">ON DEL: {rel.onDelete}</span>}
-                    {rel.fkFieldName && <span className="text-[0.6rem] text-malachite">FK: {rel.fkFieldName}</span>}
-                    <button onClick={() => openEditRelation(rel)} className="ml-1 text-signal-black font-bold cursor-pointer hover:opacity-70 text-[0.6rem]">E</button>
-                    <button onClick={() => deleteRelation(rel.id)} className="text-watermelon font-bold cursor-pointer hover:opacity-70">X</button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+      {/* Relations slide-out panel (right side, like nav drawer) */}
+      <div
+        style={{
+          position: "fixed", top: 0, right: 0, height: "100vh", width: "340px",
+          backgroundColor: "#FFF", borderLeft: "4px solid #282828",
+          boxShadow: "-6px 0 0 #282828",
+          transform: relationsPanelOpen ? "translateX(0)" : "translateX(100%)",
+          transition: "transform 300ms cubic-bezier(0.2,0,0,1)",
+          zIndex: 100, overflowY: "auto", padding: "20px",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+          <h3 className="font-bold text-[1rem] uppercase tracking-wider">RELATIONS</h3>
+          <button onClick={() => setRelationsPanelOpen(false)} style={{ fontSize: "1.2rem", fontWeight: 700, cursor: "pointer", border: "none", background: "none" }}>X</button>
+        </div>
+        {graph.relations.length === 0 && (
+          <p className="font-mono text-[0.8rem] text-[#999]">No relations yet.</p>
         )}
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          {graph.relations.map((rel) => {
+            const from = graph.entities.find((e) => e.id === rel.fromEntityId);
+            const to = graph.entities.find((e) => e.id === rel.toEntityId);
+            return (
+              <div key={rel.id} className="flex items-center gap-2 px-3 py-2 border-2 border-signal-black bg-white font-mono text-[0.75rem] uppercase">
+                <span className="font-bold">{from?.name || "?"}</span>
+                <span className="text-watermelon font-bold">{rel.type}</span>
+                <span className="font-bold">{to?.name || "?"}</span>
+                {rel.fkFieldName && <span className="text-[0.55rem] text-malachite">FK: {rel.fkFieldName}</span>}
+                <div className="ml-auto flex gap-1">
+                  <button onClick={() => openEditRelation(rel)} className="text-signal-black font-bold cursor-pointer hover:opacity-70 text-[0.6rem]">E</button>
+                  <button onClick={() => deleteRelation(rel.id)} className="text-watermelon font-bold cursor-pointer hover:opacity-70">X</button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <button
+          className="nb-btn nb-btn--primary w-full mt-4"
+          onClick={() => { if (graph.entities.length >= 2) { setFormRelFrom(graph.entities[0]?.id || ""); setFormRelTo(graph.entities[1]?.id || ""); setFormRelType("1:N"); setFormRelOnDelete("CASCADE"); setFormRelOnUpdate("NO ACTION"); setModal("addRelation"); } }}
+        >+ ADD RELATION</button>
+      </div>
+      {/* Overlay when panel open */}
+      {relationsPanelOpen && (
+        <div onClick={() => setRelationsPanelOpen(false)} style={{ position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.2)", zIndex: 99 }} />
+      )}
 
       {/* Enum types list */}
       {(graph.enumTypes || []).length > 0 && (
