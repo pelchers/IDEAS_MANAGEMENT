@@ -960,6 +960,7 @@ export default function SchemaPage() {
   const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
   const [selectedRelationId, setSelectedRelationId] = useState<string | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
+  const [schemaToolMode, setSchemaToolMode] = useState<"select" | "hand">("select");
   const canvasWrapRef = useRef<HTMLDivElement>(null);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; target: "canvas" | "entity" | "relation"; targetId?: string } | null>(null);
 
@@ -1527,13 +1528,11 @@ export default function SchemaPage() {
     return () => { window.removeEventListener("mousemove", handleMouseMove); window.removeEventListener("mouseup", handleMouseUp); };
   }, [draggingEntityId, graph, saveGraph]);
 
-  // ── Zoom handler (Ctrl+scroll) ──
+  // ── Zoom handler (scroll = zoom, no Ctrl needed) ──
   const handleWheel = useCallback((e: React.WheelEvent) => {
-    if (e.ctrlKey || e.metaKey) {
-      e.preventDefault();
-      const delta = e.deltaY > 0 ? -0.1 : 0.1;
-      setZoom((prev) => Math.min(3, Math.max(0.25, prev + delta)));
-    }
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.08 : 0.08;
+    setZoom((prev) => Math.min(3, Math.max(0.25, prev + delta)));
   }, []);
 
   // ── Pan handler (middle-click or space+click) ──
@@ -1550,13 +1549,13 @@ export default function SchemaPage() {
   }, [isPanning]);
 
   const handleCanvasMouseDown = useCallback((e: React.MouseEvent) => {
-    // Middle-click pan
-    if (e.button === 1) {
+    // Middle-click pan or hand tool left-click pan
+    if (e.button === 1 || (e.button === 0 && schemaToolMode === "hand")) {
       e.preventDefault();
       setIsPanning(true);
       panStartRef.current = { x: e.clientX, y: e.clientY, panX, panY };
     }
-  }, [panX, panY]);
+  }, [panX, panY, schemaToolMode]);
 
   // ── Keyboard shortcuts ──
   useEffect(() => {
@@ -1565,7 +1564,9 @@ export default function SchemaPage() {
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) { e.preventDefault(); undo(); }
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && e.shiftKey) { e.preventDefault(); redo(); }
       if ((e.ctrlKey || e.metaKey) && e.key === "y") { e.preventDefault(); redo(); }
-      if (e.key === "Escape") { setSelectedEntityId(null); setSidePanelOpen(false); setModal(null); }
+      if (e.key === "Escape") { setSelectedEntityId(null); setSidePanelOpen(false); setModal(null); setContextMenu(null); }
+      if (e.key.toLowerCase() === "v" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("select");
+      if (e.key.toLowerCase() === "h" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("hand");
       if (e.key === "+" || e.key === "=") { setZoom((z) => Math.min(3, z + 0.1)); }
       if (e.key === "-") { setZoom((z) => Math.max(0.25, z - 0.1)); }
       if (e.key === "0" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); setZoom(1); setPanX(0); setPanY(0); }
@@ -1633,6 +1634,32 @@ export default function SchemaPage() {
       {/* View header */}
       <h1 className="nb-view-title mb-4">SCHEMA PLANNER</h1>
 
+      {/* Canvas tool mode */}
+      <div style={{ display: "flex", gap: "4px", marginBottom: "8px" }}>
+        {[
+          { id: "select" as const, icon: "\u261A", title: "Select / Move (V)", shortcut: "V" },
+          { id: "hand" as const, icon: "\u270B", title: "Hand / Pan (H)", shortcut: "H" },
+        ].map((tool) => (
+          <button
+            key={tool.id}
+            title={tool.title}
+            onClick={() => setSchemaToolMode(tool.id)}
+            style={{
+              width: "36px", height: "36px", fontSize: "1rem",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              border: "3px solid #282828", cursor: "pointer", fontWeight: 700,
+              backgroundColor: schemaToolMode === tool.id ? "#282828" : "#FFF",
+              color: schemaToolMode === tool.id ? "#FFF" : "#282828",
+            }}
+          >
+            {tool.icon}
+          </button>
+        ))}
+        <span style={{ fontFamily: "monospace", fontSize: "0.65rem", color: "#999", alignSelf: "center", marginLeft: "8px" }}>
+          V = Select, H = Hand/Pan, Scroll = Zoom
+        </span>
+      </div>
+
       {/* Toolbar */}
       <SchemaToolbar
         entityCount={graph.entities.length}
@@ -1682,7 +1709,7 @@ export default function SchemaPage() {
         className="relative border-2 border-dashed border-signal-black/20 overflow-hidden"
         style={{
           height: "calc(100vh - 220px)", minHeight: "500px",
-          cursor: isPanning ? "grabbing" : "default",
+          cursor: isPanning ? "grabbing" : schemaToolMode === "hand" ? "grab" : "default",
           background: gridEnabled
             ? `radial-gradient(circle, #28282815 1px, transparent 1px)`
             : "#faf8f4",

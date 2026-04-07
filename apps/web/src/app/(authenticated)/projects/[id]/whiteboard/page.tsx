@@ -539,13 +539,11 @@ export default function WhiteboardPage() {
     return { x: (e.clientX - rect.left - panX) / zoom, y: (e.clientY - rect.top - panY) / zoom };
   };
 
-  // ── Zoom handler ──
+  // ── Zoom handler (scroll = zoom, no Ctrl needed) ──
   const handleWheelZoom = useCallback((e: React.WheelEvent) => {
-    if (e.ctrlKey || e.metaKey) {
-      e.preventDefault();
-      const delta = e.deltaY > 0 ? -0.1 : 0.1;
-      setZoom((prev) => Math.min(3, Math.max(0.25, prev + delta)));
-    }
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.08 : 0.08;
+    setZoom((prev) => Math.min(3, Math.max(0.25, prev + delta)));
   }, []);
 
   // ── Pan handler ──
@@ -1332,8 +1330,8 @@ export default function WhiteboardPage() {
           onChange={handleFileSelect}
         />
 
-        {/* Sticky notes */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+        {/* Sticky notes — transforms with canvas zoom/pan */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", transform: `translate(${panX}px, ${panY}px) scale(${zoom})`, transformOrigin: "0 0" }}>
           {stickies.map((sticky, index) => {
             const isDragging = draggingId === sticky.id;
             const isHover = hoverStickyId === sticky.id;
@@ -1468,8 +1466,8 @@ export default function WhiteboardPage() {
           })}
         </div>
 
-        {/* Media items */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+        {/* Media items — transforms with canvas zoom/pan */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", transform: `translate(${panX}px, ${panY}px) scale(${zoom})`, transformOrigin: "0 0" }}>
           {mediaItems.map((media) => {
             const isDragging = draggingMediaId === media.id;
             const isHover = hoverMediaId === media.id;
