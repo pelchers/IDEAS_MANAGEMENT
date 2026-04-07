@@ -616,7 +616,8 @@ export default function WhiteboardPage() {
       lineStart.current = pos;
       setLinePreview(pos);
     } else if (activeTool === "dot") {
-      const dot: Dot = { id: genId("dot"), x: pos.x, y: pos.y, color: "#282828", size: 6, offsetX: 0, offsetY: 0 };
+      pushHistory();
+      const dot: Dot = { id: genId("dot"), x: pos.x, y: pos.y, color: drawColor, size: Math.max(4, drawWidth * 2), offsetX: 0, offsetY: 0 };
       dotsRef.current.push(dot);
       redraw();
       saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
@@ -668,6 +669,36 @@ export default function WhiteboardPage() {
     } else if (activeTool === "media") {
       pendingMediaPos.current = pos;
       fileInputRef.current?.click();
+    } else if (activeTool === "rect") {
+      // Start rectangle draw — store start point, will complete on mouseup
+      lineStart.current = pos;
+      setLinePreview(pos);
+    } else if (activeTool === "circle") {
+      lineStart.current = pos;
+      setLinePreview(pos);
+    } else if (activeTool === "arrow") {
+      lineStart.current = pos;
+      setLinePreview(pos);
+    } else if (activeTool === "text") {
+      // Create a text sticky with no background/border
+      const newSticky: StickyNote = {
+        id: genId("text"),
+        title: "Text",
+        description: "",
+        tags: [],
+        color: "yellow" as StickyColor,
+        bgColor: "transparent",
+        borderColor: "transparent",
+        x: pos.x - 60,
+        y: pos.y - 15,
+        width: 200,
+        height: 0,
+      };
+      const updated = [...stickies, newSticky];
+      setStickies(updated);
+      saveWhiteboard(pathsRef.current, dotsRef.current, updated, mediaItems);
+      setActiveTool("select");
+      setTimeout(() => openStickySettings(newSticky), 50);
     } else if (activeTool === "select") {
       // Check if clicking on resize handle of selected element
       if (selectedElementId) {
@@ -729,8 +760,8 @@ export default function WhiteboardPage() {
       const ctx = canvas.getContext("2d");
       if (!ctx || !lastPos.current) return;
 
-      ctx.strokeStyle = "#282828";
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = drawColor;
+      ctx.lineWidth = drawWidth;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       ctx.beginPath();
@@ -805,8 +836,8 @@ export default function WhiteboardPage() {
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
-      ctx.strokeStyle = "#282828";
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = drawColor;
+      ctx.lineWidth = drawWidth;
       ctx.lineCap = "round";
       ctx.setLineDash([8, 4]);
       ctx.beginPath();
@@ -815,17 +846,77 @@ export default function WhiteboardPage() {
       ctx.stroke();
       ctx.setLineDash([]);
       setLinePreview(pos);
+    } else if (activeTool === "rect" && lineStart.current) {
+      redraw();
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.strokeStyle = drawColor;
+      ctx.lineWidth = drawWidth;
+      ctx.setLineDash([8, 4]);
+      const x = Math.min(lineStart.current.x, pos.x);
+      const y = Math.min(lineStart.current.y, pos.y);
+      const w = Math.abs(pos.x - lineStart.current.x);
+      const h = Math.abs(pos.y - lineStart.current.y);
+      ctx.strokeRect(x, y, w, h);
+      ctx.setLineDash([]);
+      setLinePreview(pos);
+    } else if (activeTool === "circle" && lineStart.current) {
+      redraw();
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.strokeStyle = drawColor;
+      ctx.lineWidth = drawWidth;
+      ctx.setLineDash([8, 4]);
+      const cx = (lineStart.current.x + pos.x) / 2;
+      const cy = (lineStart.current.y + pos.y) / 2;
+      const rx = Math.abs(pos.x - lineStart.current.x) / 2;
+      const ry = Math.abs(pos.y - lineStart.current.y) / 2;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      setLinePreview(pos);
+    } else if (activeTool === "arrow" && lineStart.current) {
+      redraw();
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.strokeStyle = drawColor;
+      ctx.lineWidth = drawWidth;
+      ctx.lineCap = "round";
+      ctx.setLineDash([8, 4]);
+      ctx.beginPath();
+      ctx.moveTo(lineStart.current.x, lineStart.current.y);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      // Arrowhead preview
+      const angle = Math.atan2(pos.y - lineStart.current.y, pos.x - lineStart.current.x);
+      const headLen = 12;
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+      ctx.lineTo(pos.x - headLen * Math.cos(angle - Math.PI / 6), pos.y - headLen * Math.sin(angle - Math.PI / 6));
+      ctx.moveTo(pos.x, pos.y);
+      ctx.lineTo(pos.x - headLen * Math.cos(angle + Math.PI / 6), pos.y - headLen * Math.sin(angle + Math.PI / 6));
+      ctx.stroke();
+      ctx.setLineDash([]);
+      setLinePreview(pos);
     }
   };
 
   const handleCanvasMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (activeTool === "draw" && isDrawing.current && currentPath.current.length > 0) {
+      pushHistory();
       pathsRef.current.push({
         id: genId("path"),
         type: "freehand",
         points: [...currentPath.current],
-        color: "#282828",
-        width: 3,
+        color: drawColor,
+        width: drawWidth,
         offsetX: 0,
         offsetY: 0,
       });
@@ -836,14 +927,92 @@ export default function WhiteboardPage() {
       const pos = getCanvasPos(e);
       const dist = Math.hypot(pos.x - lineStart.current.x, pos.y - lineStart.current.y);
       if (dist > 5) {
+        pushHistory();
         pathsRef.current.push({
           id: genId("line"),
           type: "line",
           points: [lineStart.current, pos],
-          color: "#282828",
-          width: 3,
+          color: drawColor,
+          width: drawWidth,
           offsetX: 0,
           offsetY: 0,
+        });
+        saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
+        bump();
+      }
+      lineStart.current = null;
+      setLinePreview(null);
+      redraw();
+    } else if (activeTool === "rect" && lineStart.current) {
+      const pos = getCanvasPos(e);
+      const x = Math.min(lineStart.current.x, pos.x);
+      const y = Math.min(lineStart.current.y, pos.y);
+      const w = Math.abs(pos.x - lineStart.current.x);
+      const h = Math.abs(pos.y - lineStart.current.y);
+      if (w > 5 && h > 5) {
+        pushHistory();
+        pathsRef.current.push({
+          id: genId("rect"),
+          type: "freehand" as const, // stored as freehand with rectangular points
+          points: [{ x, y }, { x: x + w, y }, { x: x + w, y: y + h }, { x, y: y + h }, { x, y }],
+          color: drawColor, width: drawWidth, offsetX: 0, offsetY: 0,
+        });
+        saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
+        bump();
+      }
+      lineStart.current = null;
+      setLinePreview(null);
+      redraw();
+    } else if (activeTool === "circle" && lineStart.current) {
+      const pos = getCanvasPos(e);
+      const cx = (lineStart.current.x + pos.x) / 2;
+      const cy = (lineStart.current.y + pos.y) / 2;
+      const rx = Math.abs(pos.x - lineStart.current.x) / 2;
+      const ry = Math.abs(pos.y - lineStart.current.y) / 2;
+      if (rx > 3 && ry > 3) {
+        pushHistory();
+        // Generate ellipse as point series
+        const pts: { x: number; y: number }[] = [];
+        for (let a = 0; a <= Math.PI * 2; a += 0.15) {
+          pts.push({ x: cx + rx * Math.cos(a), y: cy + ry * Math.sin(a) });
+        }
+        pts.push(pts[0]); // close the shape
+        pathsRef.current.push({
+          id: genId("circle"),
+          type: "freehand" as const,
+          points: pts, color: drawColor, width: drawWidth, offsetX: 0, offsetY: 0,
+        });
+        saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
+        bump();
+      }
+      lineStart.current = null;
+      setLinePreview(null);
+      redraw();
+    } else if (activeTool === "arrow" && lineStart.current) {
+      const pos = getCanvasPos(e);
+      const dist = Math.hypot(pos.x - lineStart.current.x, pos.y - lineStart.current.y);
+      if (dist > 5) {
+        pushHistory();
+        const angle = Math.atan2(pos.y - lineStart.current.y, pos.x - lineStart.current.x);
+        const headLen = 12;
+        // Arrow = main line + two head lines
+        pathsRef.current.push({
+          id: genId("arrow"),
+          type: "line" as const,
+          points: [lineStart.current, pos],
+          color: drawColor, width: drawWidth, offsetX: 0, offsetY: 0,
+        });
+        pathsRef.current.push({
+          id: genId("arrowhead"),
+          type: "line" as const,
+          points: [pos, { x: pos.x - headLen * Math.cos(angle - Math.PI / 6), y: pos.y - headLen * Math.sin(angle - Math.PI / 6) }],
+          color: drawColor, width: drawWidth, offsetX: 0, offsetY: 0,
+        });
+        pathsRef.current.push({
+          id: genId("arrowhead"),
+          type: "line" as const,
+          points: [pos, { x: pos.x - headLen * Math.cos(angle + Math.PI / 6), y: pos.y - headLen * Math.sin(angle + Math.PI / 6) }],
+          color: drawColor, width: drawWidth, offsetX: 0, offsetY: 0,
         });
         saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
         bump();
