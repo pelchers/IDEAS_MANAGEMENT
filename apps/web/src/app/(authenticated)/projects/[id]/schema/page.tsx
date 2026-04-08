@@ -961,6 +961,8 @@ export default function SchemaPage() {
   const [selectedRelationId, setSelectedRelationId] = useState<string | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
   const [schemaToolMode, setSchemaToolMode] = useState<"select" | "hand" | "text" | "rect">("select");
+  const [annotations, setAnnotations] = useState<Array<{ id: string; type: "text" | "rect"; x: number; y: number; width: number; height: number; text?: string; color?: string }>>([]);
+  const [drawingRect, setDrawingRect] = useState<{ startX: number; startY: number; x: number; y: number; width: number; height: number } | null>(null);
   const canvasWrapRef = useRef<HTMLDivElement>(null);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; target: "canvas" | "entity" | "relation"; targetId?: string } | null>(null);
   const [relationsPanelOpen, setRelationsPanelOpen] = useState(false);
@@ -1565,14 +1567,62 @@ export default function SchemaPage() {
     return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
   }, [isPanning]);
 
+  // ── Rect drawing handler ──
+  useEffect(() => {
+    if (!drawingRect) return;
+    const handleMove = (e: MouseEvent) => {
+      const wrap = canvasWrapRef.current;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const worldX = (e.clientX - rect.left - panX) / zoom;
+      const worldY = (e.clientY - rect.top - panY) / zoom;
+      setDrawingRect((prev) => prev ? {
+        ...prev,
+        x: Math.min(prev.startX, worldX),
+        y: Math.min(prev.startY, worldY),
+        width: Math.abs(worldX - prev.startX),
+        height: Math.abs(worldY - prev.startY),
+      } : null);
+    };
+    const handleUp = () => {
+      setDrawingRect((current) => {
+        if (current && current.width > 5 && current.height > 5) {
+          setAnnotations((prev) => [...prev, { id: `ann-${Date.now()}`, type: "rect", x: current.x, y: current.y, width: current.width, height: current.height, color: "#282828" }]);
+        }
+        setSchemaToolMode("select");
+        return null;
+      });
+    };
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
+  }, [drawingRect, panX, panY, zoom]);
+
   const handleCanvasMouseDown = useCallback((e: React.MouseEvent) => {
     // Middle-click pan or hand tool left-click pan
     if (e.button === 1 || (e.button === 0 && schemaToolMode === "hand")) {
       e.preventDefault();
       setIsPanning(true);
       panStartRef.current = { x: e.clientX, y: e.clientY, panX, panY };
+      return;
     }
-  }, [panX, panY, schemaToolMode]);
+    // Convert screen coords to canvas world coords
+    const wrap = canvasWrapRef.current;
+    if (!wrap) return;
+    const rect = wrap.getBoundingClientRect();
+    const worldX = (e.clientX - rect.left - panX) / zoom;
+    const worldY = (e.clientY - rect.top - panY) / zoom;
+
+    if (schemaToolMode === "text" && e.button === 0) {
+      const text = window.prompt("Enter text:");
+      if (text) {
+        setAnnotations((prev) => [...prev, { id: `ann-${Date.now()}`, type: "text", x: worldX, y: worldY, width: 200, height: 30, text, color: "#282828" }]);
+      }
+      setSchemaToolMode("select");
+    } else if (schemaToolMode === "rect" && e.button === 0) {
+      setDrawingRect({ startX: worldX, startY: worldY, x: worldX, y: worldY, width: 0, height: 0 });
+    }
+  }, [panX, panY, zoom, schemaToolMode]);
 
   // ── Keyboard shortcuts ──
   useEffect(() => {
@@ -1757,6 +1807,65 @@ export default function SchemaPage() {
             selectedRelationId={selectedRelationId}
             onSelectRelation={setSelectedRelationId}
             zoom={zoom}
+          />
+        )}
+
+        {/* Annotations: text labels and rectangles */}
+        {annotations.map((ann) => (
+          <div
+            key={ann.id}
+            style={{
+              position: "absolute",
+              left: `${ann.x}px`,
+              top: `${ann.y}px`,
+              width: `${ann.width}px`,
+              height: `${ann.height}px`,
+              border: ann.type === "rect" ? `2px solid ${ann.color || "#282828"}` : "none",
+              backgroundColor: "transparent",
+              color: ann.color || "#282828",
+              fontFamily: "IBM Plex Mono, monospace",
+              fontSize: ann.type === "text" ? "0.85rem" : "0.7rem",
+              fontWeight: 700,
+              padding: ann.type === "text" ? "4px" : 0,
+              pointerEvents: "auto",
+              cursor: schemaToolMode === "select" ? "move" : "default",
+              userSelect: "none",
+              zIndex: 5,
+            }}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (window.confirm(`Delete this ${ann.type}?`)) {
+                setAnnotations((prev) => prev.filter((a) => a.id !== ann.id));
+              }
+            }}
+            onDoubleClick={() => {
+              if (ann.type === "text") {
+                const newText = window.prompt("Edit text:", ann.text);
+                if (newText !== null) {
+                  setAnnotations((prev) => prev.map((a) => a.id === ann.id ? { ...a, text: newText } : a));
+                }
+              }
+            }}
+          >
+            {ann.type === "text" && ann.text}
+          </div>
+        ))}
+
+        {/* Live rectangle preview while drawing */}
+        {drawingRect && drawingRect.width > 0 && drawingRect.height > 0 && (
+          <div
+            style={{
+              position: "absolute",
+              left: `${drawingRect.x}px`,
+              top: `${drawingRect.y}px`,
+              width: `${drawingRect.width}px`,
+              height: `${drawingRect.height}px`,
+              border: "2px dashed #A259FF",
+              backgroundColor: "rgba(162, 89, 255, 0.05)",
+              pointerEvents: "none",
+              zIndex: 5,
+            }}
           />
         )}
 

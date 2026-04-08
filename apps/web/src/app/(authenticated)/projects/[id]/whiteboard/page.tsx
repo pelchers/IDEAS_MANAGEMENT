@@ -15,6 +15,7 @@ interface DrawPath {
   width: number;
   offsetX: number;
   offsetY: number;
+  rotation?: number; // degrees, rotates around bbox center
 }
 
 interface Dot {
@@ -297,6 +298,7 @@ export default function WhiteboardPage() {
   const [draggingElement, setDraggingElement] = useState(false);
   const elementDragStart = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const [resizingElement, setResizingElement] = useState<{ id: string; type: "path" | "dot"; startX: number; startY: number; startBBox: { x: number; y: number; width: number; height: number } } | null>(null);
+  const [rotatingElement, setRotatingElement] = useState<{ id: string; type: "path" | "dot"; centerX: number; centerY: number; startAngle: number; startRotation: number } | null>(null);
 
   // ── Render tick (forces re-render when refs change) ──
   const [, setRenderTick] = useState(0);
@@ -464,6 +466,17 @@ export default function WhiteboardPage() {
       if (!path.points || path.points.length < 2) continue;
       const ox = path.offsetX || 0;
       const oy = path.offsetY || 0;
+      ctx.save();
+      // Apply rotation around path center if set
+      if (path.rotation) {
+        const xs = path.points.map((p) => p.x + ox);
+        const ys = path.points.map((p) => p.y + oy);
+        const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+        const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+        ctx.translate(cx, cy);
+        ctx.rotate((path.rotation * Math.PI) / 180);
+        ctx.translate(-cx, -cy);
+      }
       ctx.strokeStyle = path.color || "#282828";
       ctx.lineWidth = path.width || 3;
       ctx.lineCap = "round";
@@ -474,6 +487,7 @@ export default function WhiteboardPage() {
         ctx.lineTo(path.points[i].x + ox, path.points[i].y + oy);
       }
       ctx.stroke();
+      ctx.restore();
     }
 
     // Dots
@@ -513,6 +527,16 @@ export default function WhiteboardPage() {
         ctx.strokeStyle = "#282828";
         ctx.lineWidth = 1;
         ctx.strokeRect(bbox.x + bbox.width - hSize / 2, bbox.y + bbox.height - hSize / 2, hSize, hSize);
+        // Draw rotation handle (purple circle) outside bottom-right
+        const rotX = bbox.x + bbox.width + 18;
+        const rotY = bbox.y + bbox.height + 18;
+        ctx.fillStyle = "#A259FF";
+        ctx.beginPath();
+        ctx.arc(rotX, rotY, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "#282828";
+        ctx.lineWidth = 2;
+        ctx.stroke();
         ctx.restore();
       }
     }
@@ -708,7 +732,7 @@ export default function WhiteboardPage() {
       setActiveTool("select");
       setTimeout(() => openStickySettings(newSticky), 50);
     } else if (activeTool === "select") {
-      // Check if clicking on resize handle of selected element
+      // Check if clicking on resize/rotation handle of selected element
       if (selectedElementId) {
         let bbox: { x: number; y: number; width: number; height: number } | null = null;
         if (selectedElementType === "path") {
@@ -721,6 +745,17 @@ export default function WhiteboardPage() {
         if (bbox) {
           const hx = bbox.x + bbox.width;
           const hy = bbox.y + bbox.height;
+          // Rotation handle (purple circle, 18px outside bbox bottom-right)
+          const rotX = bbox.x + bbox.width + 18;
+          const rotY = bbox.y + bbox.height + 18;
+          if (Math.hypot(pos.x - rotX, pos.y - rotY) < 12) {
+            const cx = bbox.x + bbox.width / 2;
+            const cy = bbox.y + bbox.height / 2;
+            const startAngle = Math.atan2(pos.y - cy, pos.x - cx) * 180 / Math.PI;
+            const path = selectedElementType === "path" ? pathsRef.current.find((p) => p.id === selectedElementId) : null;
+            setRotatingElement({ id: selectedElementId, type: selectedElementType!, centerX: cx, centerY: cy, startAngle, startRotation: path?.rotation || 0 });
+            return;
+          }
           if (Math.abs(pos.x - hx) < 10 && Math.abs(pos.y - hy) < 10) {
             setResizingElement({ id: selectedElementId, type: selectedElementType!, startX: pos.x, startY: pos.y, startBBox: bbox });
             return;
@@ -779,6 +814,17 @@ export default function WhiteboardPage() {
 
       lastPos.current = pos;
       currentPath.current.push(pos);
+    } else if (activeTool === "select" && rotatingElement) {
+      // Calculate angle from element center to current mouse position
+      const currentAngle = Math.atan2(pos.y - rotatingElement.centerY, pos.x - rotatingElement.centerX) * 180 / Math.PI;
+      const delta = currentAngle - rotatingElement.startAngle;
+      const newRotation = Math.round(rotatingElement.startRotation + delta);
+      if (rotatingElement.type === "path") {
+        const path = pathsRef.current.find((p) => p.id === rotatingElement.id);
+        if (path) path.rotation = newRotation;
+      }
+      redraw();
+      bump();
     } else if (activeTool === "select" && resizingElement) {
       // Scale the element uniformly based on drag delta
       const bbox = resizingElement.startBBox;
@@ -1036,6 +1082,10 @@ export default function WhiteboardPage() {
     }
     if (activeTool === "select" && resizingElement) {
       setResizingElement(null);
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
+    }
+    if (activeTool === "select" && rotatingElement) {
+      setRotatingElement(null);
       saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
     }
 
@@ -1525,7 +1575,7 @@ export default function WhiteboardPage() {
           {stickies.map((sticky, index) => {
             const isDragging = draggingId === sticky.id;
             const isHover = hoverStickyId === sticky.id;
-            const textColor = contrastText(sticky.bgColor);
+            const textColor = sticky.bgColor === "transparent" ? "#282828" : contrastText(sticky.bgColor);
             const stickyW = sticky.width || 170;
             const stickyH = sticky.height && sticky.height > 0 ? `${sticky.height}px` : "auto";
 
@@ -1551,15 +1601,15 @@ export default function WhiteboardPage() {
                 style={{
                   width: `${stickyW}px`,
                   height: stickyH,
-                  padding: "14px",
-                  border: `3px solid ${sticky.borderColor}`,
+                  padding: sticky.bgColor === "transparent" ? "4px" : "14px",
+                  border: sticky.bgColor === "transparent" ? "none" : `3px solid ${sticky.borderColor}`,
                   backgroundColor: sticky.bgColor,
                   color: textColor,
                   fontWeight: 600,
                   fontSize: "0.85rem",
                   userSelect: "none",
-                  transform: isDragging ? "rotate(0deg) scale(1.05)" : (sticky.rotation !== undefined ? `rotate(${sticky.rotation}deg)` : getStickyRotation(index)),
-                  boxShadow: isDragging ? "6px 6px 0px #282828" : "3px 3px 0px #282828",
+                  transform: isDragging ? "rotate(0deg) scale(1.05)" : (sticky.rotation !== undefined ? `rotate(${sticky.rotation}deg)` : (sticky.bgColor === "transparent" ? "none" : getStickyRotation(index))),
+                  boxShadow: sticky.bgColor === "transparent" ? "none" : (isDragging ? "6px 6px 0px #282828" : "3px 3px 0px #282828"),
                   cursor: isDragging ? "grabbing" : "grab",
                   transition: isDragging ? "none" : "transform 150ms, box-shadow 150ms",
                   position: "relative",
