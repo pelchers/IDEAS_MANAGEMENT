@@ -300,6 +300,17 @@ export default function WhiteboardPage() {
   const [resizingElement, setResizingElement] = useState<{ id: string; type: "path" | "dot"; startX: number; startY: number; startBBox: { x: number; y: number; width: number; height: number } } | null>(null);
   const [rotatingElement, setRotatingElement] = useState<{ id: string; type: "path" | "dot"; centerX: number; centerY: number; startAngle: number; startRotation: number } | null>(null);
 
+  // ── Marquee selection state ──
+  const [marquee, setMarquee] = useState<{ startX: number; startY: number; x: number; y: number; w: number; h: number } | null>(null);
+  const [multiSel, setMultiSel] = useState<{ paths: Set<string>; dots: Set<string>; stickies: Set<string>; media: Set<string> }>({ paths: new Set(), dots: new Set(), stickies: new Set(), media: new Set() });
+  const [draggingMulti, setDraggingMulti] = useState(false);
+  const multiDragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  const hasMultiSelection = multiSel.paths.size + multiSel.dots.size + multiSel.stickies.size + multiSel.media.size > 1;
+  const clearMultiSelection = useCallback(() => {
+    setMultiSel({ paths: new Set(), dots: new Set(), stickies: new Set(), media: new Set() });
+  }, []);
+
   // ── Render tick (forces re-render when refs change) ──
   const [, setRenderTick] = useState(0);
 
@@ -540,7 +551,51 @@ export default function WhiteboardPage() {
         ctx.restore();
       }
     }
-  }, [drawGrid, selectedElementId, selectedElementType]);
+
+    // Marquee selection rectangle
+    if (marquee && marquee.w > 0 && marquee.h > 0) {
+      ctx.save();
+      ctx.strokeStyle = "#A259FF";
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 3]);
+      ctx.fillStyle = "rgba(162, 89, 255, 0.08)";
+      ctx.fillRect(marquee.x, marquee.y, marquee.w, marquee.h);
+      ctx.strokeRect(marquee.x, marquee.y, marquee.w, marquee.h);
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+
+    // Group selection bounding box (paths + dots only — stickies/media drawn as overlay divs)
+    if (multiSel.paths.size + multiSel.dots.size > 0) {
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      for (const id of multiSel.paths) {
+        const p = pathsRef.current.find((pp) => pp.id === id);
+        if (p) {
+          const bb = getPathBoundingBox(p);
+          minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y);
+          maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height);
+        }
+      }
+      for (const id of multiSel.dots) {
+        const d = dotsRef.current.find((dd) => dd.id === id);
+        if (d) {
+          const bb = getDotBoundingBox(d);
+          minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y);
+          maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height);
+        }
+      }
+      if (minX < Infinity) {
+        ctx.save();
+        ctx.strokeStyle = "#A259FF";
+        ctx.lineWidth = 2;
+        ctx.setLineDash([8, 4]);
+        const pad = 6;
+        ctx.strokeRect(minX - pad, minY - pad, maxX - minX + pad * 2, maxY - minY + pad * 2);
+        ctx.setLineDash([]);
+        ctx.restore();
+      }
+    }
+  }, [drawGrid, selectedElementId, selectedElementType, marquee, multiSel]);
 
   /* ── Canvas setup + resize ── */
   useEffect(() => {
@@ -766,10 +821,16 @@ export default function WhiteboardPage() {
       const dotIdx = dotsRef.current.findIndex((d) => isNearDot(pos.x, pos.y, d));
       if (dotIdx !== -1) {
         const dot = dotsRef.current[dotIdx];
+        if (multiSel.dots.has(dot.id)) {
+          setDraggingMulti(true);
+          multiDragStartRef.current = { x: pos.x, y: pos.y };
+          return;
+        }
         setSelectedElementId(dot.id);
         setSelectedElementType("dot");
         setDraggingElement(true);
         elementDragStart.current = { x: pos.x, y: pos.y };
+        clearMultiSelection();
         redraw();
         bump();
         return;
@@ -778,17 +839,26 @@ export default function WhiteboardPage() {
       const pathIdx = pathsRef.current.findIndex((p) => isNearPath(pos.x, pos.y, p));
       if (pathIdx !== -1) {
         const path = pathsRef.current[pathIdx];
+        // If path is part of multi-selection, start group drag
+        if (multiSel.paths.has(path.id)) {
+          setDraggingMulti(true);
+          multiDragStartRef.current = { x: pos.x, y: pos.y };
+          return;
+        }
         setSelectedElementId(path.id);
         setSelectedElementType("path");
         setDraggingElement(true);
         elementDragStart.current = { x: pos.x, y: pos.y };
+        clearMultiSelection();
         redraw();
         bump();
         return;
       }
-      // Clicked empty space — deselect
+      // Clicked empty space — start marquee selection
       setSelectedElementId(null);
       setSelectedElementType(null);
+      clearMultiSelection();
+      setMarquee({ startX: pos.x, startY: pos.y, x: pos.x, y: pos.y, w: 0, h: 0 });
       redraw();
       bump();
     }
@@ -796,6 +866,48 @@ export default function WhiteboardPage() {
 
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const pos = getCanvasPos(e);
+
+    // Marquee drag (priority — happens regardless of tool sub-state)
+    if (marquee) {
+      setMarquee({
+        startX: marquee.startX,
+        startY: marquee.startY,
+        x: Math.min(marquee.startX, pos.x),
+        y: Math.min(marquee.startY, pos.y),
+        w: Math.abs(pos.x - marquee.startX),
+        h: Math.abs(pos.y - marquee.startY),
+      });
+      redraw();
+      return;
+    }
+
+    // Multi-selection group drag
+    if (draggingMulti) {
+      const dx = pos.x - multiDragStartRef.current.x;
+      const dy = pos.y - multiDragStartRef.current.y;
+      multiDragStartRef.current = { x: pos.x, y: pos.y };
+      // Move paths
+      for (const id of multiSel.paths) {
+        const p = pathsRef.current.find((pp) => pp.id === id);
+        if (p) { p.offsetX = (p.offsetX || 0) + dx; p.offsetY = (p.offsetY || 0) + dy; }
+      }
+      // Move dots
+      for (const id of multiSel.dots) {
+        const d = dotsRef.current.find((dd) => dd.id === id);
+        if (d) { d.offsetX = (d.offsetX || 0) + dx; d.offsetY = (d.offsetY || 0) + dy; }
+      }
+      // Move stickies
+      if (multiSel.stickies.size > 0) {
+        setStickies((prev) => prev.map((s) => multiSel.stickies.has(s.id) ? { ...s, x: s.x + dx, y: s.y + dy } : s));
+      }
+      // Move media
+      if (multiSel.media.size > 0) {
+        setMediaItems((prev) => prev.map((m) => multiSel.media.has(m.id) ? { ...m, x: m.x + dx, y: m.y + dy } : m));
+      }
+      redraw();
+      bump();
+      return;
+    }
 
     if (activeTool === "draw" && isDrawing.current) {
       const canvas = canvasRef.current;
@@ -963,6 +1075,46 @@ export default function WhiteboardPage() {
   };
 
   const handleCanvasMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    // Marquee selection completion
+    if (marquee) {
+      const m = marquee;
+      // Only meaningful if there's a real area
+      if (m.w > 4 && m.h > 4) {
+        const newSel = { paths: new Set<string>(), dots: new Set<string>(), stickies: new Set<string>(), media: new Set<string>() };
+        const rectIntersects = (bx: number, by: number, bw: number, bh: number) =>
+          !(bx + bw < m.x || bx > m.x + m.w || by + bh < m.y || by > m.y + m.h);
+        // Paths
+        for (const p of pathsRef.current) {
+          const bb = getPathBoundingBox(p);
+          if (rectIntersects(bb.x, bb.y, bb.width, bb.height)) newSel.paths.add(p.id);
+        }
+        // Dots
+        for (const d of dotsRef.current) {
+          const ox = d.offsetX || 0; const oy = d.offsetY || 0;
+          const r = d.size || 6;
+          if (rectIntersects(d.x + ox - r, d.y + oy - r, r * 2, r * 2)) newSel.dots.add(d.id);
+        }
+        // Stickies
+        for (const s of stickies) {
+          if (rectIntersects(s.x, s.y, s.width || 170, s.height || 100)) newSel.stickies.add(s.id);
+        }
+        // Media
+        for (const me of mediaItems) {
+          if (rectIntersects(me.x, me.y, me.width, me.height)) newSel.media.add(me.id);
+        }
+        setMultiSel(newSel);
+      }
+      setMarquee(null);
+      redraw();
+      bump();
+      return;
+    }
+    // Multi-drag completion
+    if (draggingMulti) {
+      setDraggingMulti(false);
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
+      return;
+    }
     if (activeTool === "draw" && isDrawing.current && currentPath.current.length > 0) {
       pushHistory();
       pathsRef.current.push({

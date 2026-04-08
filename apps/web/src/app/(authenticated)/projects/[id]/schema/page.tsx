@@ -963,6 +963,10 @@ export default function SchemaPage() {
   const [schemaToolMode, setSchemaToolMode] = useState<"select" | "hand" | "text" | "rect">("select");
   const [annotations, setAnnotations] = useState<Array<{ id: string; type: "text" | "rect"; x: number; y: number; width: number; height: number; text?: string; color?: string }>>([]);
   const [drawingRect, setDrawingRect] = useState<{ startX: number; startY: number; x: number; y: number; width: number; height: number } | null>(null);
+  const [marquee, setMarquee] = useState<{ startX: number; startY: number; x: number; y: number; w: number; h: number } | null>(null);
+  const [multiEntityIds, setMultiEntityIds] = useState<Set<string>>(new Set());
+  const [draggingMultiEntities, setDraggingMultiEntities] = useState(false);
+  const multiEntityDragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const canvasWrapRef = useRef<HTMLDivElement>(null);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; target: "canvas" | "entity" | "relation"; targetId?: string } | null>(null);
   const [relationsPanelOpen, setRelationsPanelOpen] = useState(false);
@@ -1502,6 +1506,20 @@ export default function SchemaPage() {
     const target = e.target as HTMLElement;
     if (target.tagName === "BUTTON" || target.tagName === "INPUT" || target.tagName === "SELECT" || target.closest("button") || target.closest("input")) return;
     e.preventDefault();
+    e.stopPropagation();
+    // If entity is part of multi-selection, start group drag
+    if (multiEntityIds.has(entityId)) {
+      const wrap = canvasWrapRef.current;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const worldX = (e.clientX - rect.left - panX) / zoom;
+      const worldY = (e.clientY - rect.top - panY) / zoom;
+      multiEntityDragStartRef.current = { x: worldX, y: worldY };
+      setDraggingMultiEntities(true);
+      return;
+    }
+    // Single-entity drag — clear multi selection
+    if (multiEntityIds.size > 0) setMultiEntityIds(new Set());
     const entity = graph.entities.find((en) => en.id === entityId);
     if (!entity || !canvasRef.current) return;
     const canvasRect = canvasRef.current.getBoundingClientRect();
@@ -1567,6 +1585,70 @@ export default function SchemaPage() {
     return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
   }, [isPanning]);
 
+  // ── Marquee selection handler ──
+  useEffect(() => {
+    if (!marquee) return;
+    const handleMove = (e: MouseEvent) => {
+      const wrap = canvasWrapRef.current;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const worldX = (e.clientX - rect.left - panX) / zoom;
+      const worldY = (e.clientY - rect.top - panY) / zoom;
+      setMarquee((prev) => prev ? {
+        ...prev,
+        x: Math.min(prev.startX, worldX),
+        y: Math.min(prev.startY, worldY),
+        w: Math.abs(worldX - prev.startX),
+        h: Math.abs(worldY - prev.startY),
+      } : null);
+    };
+    const handleUp = () => {
+      setMarquee((current) => {
+        if (current && current.w > 4 && current.h > 4) {
+          const ids = new Set<string>();
+          for (const ent of graph.entities) {
+            const eW = ent.width || 280;
+            const eH = 200; // approximation for entity height
+            if (!(ent.x + eW < current.x || ent.x > current.x + current.w || ent.y + eH < current.y || ent.y > current.y + current.h)) {
+              ids.add(ent.id);
+            }
+          }
+          setMultiEntityIds(ids);
+        }
+        return null;
+      });
+    };
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
+  }, [marquee, panX, panY, zoom, graph.entities]);
+
+  // ── Multi-entity drag handler ──
+  useEffect(() => {
+    if (!draggingMultiEntities) return;
+    const handleMove = (e: MouseEvent) => {
+      const wrap = canvasWrapRef.current;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const worldX = (e.clientX - rect.left - panX) / zoom;
+      const worldY = (e.clientY - rect.top - panY) / zoom;
+      const dx = worldX - multiEntityDragStartRef.current.x;
+      const dy = worldY - multiEntityDragStartRef.current.y;
+      multiEntityDragStartRef.current = { x: worldX, y: worldY };
+      setGraph((prev) => ({
+        ...prev,
+        entities: prev.entities.map((ent) => multiEntityIds.has(ent.id) ? { ...ent, x: ent.x + dx, y: ent.y + dy } : ent),
+      }));
+    };
+    const handleUp = () => {
+      setDraggingMultiEntities(false);
+      saveGraph(graph);
+    };
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
+  }, [draggingMultiEntities, panX, panY, zoom, multiEntityIds, graph, saveGraph]);
+
   // ── Rect drawing handler ──
   useEffect(() => {
     if (!drawingRect) return;
@@ -1621,6 +1703,10 @@ export default function SchemaPage() {
       setSchemaToolMode("select");
     } else if (schemaToolMode === "rect" && e.button === 0) {
       setDrawingRect({ startX: worldX, startY: worldY, x: worldX, y: worldY, width: 0, height: 0 });
+    } else if (schemaToolMode === "select" && e.button === 0) {
+      // Start marquee selection on empty canvas click (entities have stopPropagation)
+      setMarquee({ startX: worldX, startY: worldY, x: worldX, y: worldY, w: 0, h: 0 });
+      setMultiEntityIds(new Set());
     }
   }, [panX, panY, zoom, schemaToolMode]);
 
@@ -1631,7 +1717,7 @@ export default function SchemaPage() {
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) { e.preventDefault(); undo(); }
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && e.shiftKey) { e.preventDefault(); redo(); }
       if ((e.ctrlKey || e.metaKey) && e.key === "y") { e.preventDefault(); redo(); }
-      if (e.key === "Escape") { setSelectedEntityId(null); setSidePanelOpen(false); setModal(null); setContextMenu(null); }
+      if (e.key === "Escape") { setSelectedEntityId(null); setSidePanelOpen(false); setModal(null); setContextMenu(null); setMultiEntityIds(new Set()); }
       if (e.key.toLowerCase() === "v" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("select");
       if (e.key.toLowerCase() === "h" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("hand");
       if (e.key === "+" || e.key === "=") { setZoom((z) => Math.min(3, z + 0.1)); }
@@ -1869,9 +1955,52 @@ export default function SchemaPage() {
           />
         )}
 
+        {/* Marquee selection rectangle */}
+        {marquee && marquee.w > 0 && marquee.h > 0 && (
+          <div
+            style={{
+              position: "absolute",
+              left: `${marquee.x}px`,
+              top: `${marquee.y}px`,
+              width: `${marquee.w}px`,
+              height: `${marquee.h}px`,
+              border: "1.5px dashed #A259FF",
+              backgroundColor: "rgba(162, 89, 255, 0.08)",
+              pointerEvents: "none",
+              zIndex: 50,
+            }}
+          />
+        )}
+
+        {/* Group selection bounding box */}
+        {multiEntityIds.size > 1 && (() => {
+          const sel = graph.entities.filter((e) => multiEntityIds.has(e.id));
+          if (sel.length === 0) return null;
+          const minX = Math.min(...sel.map((e) => e.x));
+          const minY = Math.min(...sel.map((e) => e.y));
+          const maxX = Math.max(...sel.map((e) => e.x + (e.width || 280)));
+          const maxY = Math.max(...sel.map((e) => e.y + 200));
+          const pad = 8;
+          return (
+            <div
+              style={{
+                position: "absolute",
+                left: `${minX - pad}px`,
+                top: `${minY - pad}px`,
+                width: `${maxX - minX + pad * 2}px`,
+                height: `${maxY - minY + pad * 2}px`,
+                border: "2px dashed #A259FF",
+                backgroundColor: "transparent",
+                pointerEvents: "none",
+                zIndex: 5,
+              }}
+            />
+          );
+        })()}
+
         {graph.entities.map((entity) => {
           const isDragging = draggingEntityId === entity.id;
-          const isSelected = selectedEntityId === entity.id;
+          const isSelected = selectedEntityId === entity.id || multiEntityIds.has(entity.id);
           const dimmed = searchQuery && !matchesSearch(entity.name);
           const headerColor = HEADER_COLORS[entity.headerColor || "signal-black"] || HEADER_COLORS["signal-black"];
           return (
