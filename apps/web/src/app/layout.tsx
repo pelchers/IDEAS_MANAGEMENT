@@ -64,7 +64,10 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-creamy-milk text-signal-black font-sans min-h-screen">
-        {children}
+        <a href="#main-content" className="skip-link">Skip to content</a>
+        <main id="main-content">
+          {children}
+        </main>
       </body>
     </html>
   );

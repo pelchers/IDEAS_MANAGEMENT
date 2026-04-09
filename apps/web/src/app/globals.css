@@ -275,7 +275,8 @@ a {
 }
 
 .nb-input:focus {
-  outline: none;
+  outline: 3px solid #FF5E54;
+  outline-offset: 2px;
   box-shadow: 4px 4px 0px #282828;
   border-color: #FF5E54;
 }
@@ -456,5 +457,44 @@ a {
   :root {
     --space-lg: 16px;
     --space-xl: 24px;
+  }
+}
+
+/* ============================================ */
+/* ACCESSIBILITY                                */
+/* ============================================ */
+
+/* Global focus-visible: any focusable element gets a visible ring */
+*:focus-visible {
+  outline: 3px solid #FF5E54;
+  outline-offset: 2px;
+}
+
+/* Skip to content link — visually hidden until focused */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 9999;
+  padding: 8px 16px;
+  background: #282828;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  border: 3px solid #FF5E54;
+  text-decoration: none;
+  transition: top 150ms;
+}
+.skip-link:focus {
+  top: 16px;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

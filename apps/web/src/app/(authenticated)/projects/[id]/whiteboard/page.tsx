@@ -1616,6 +1616,8 @@ export default function WhiteboardPage() {
               <button
                 key={tool.id}
                 title={`${tool.title}${tool.shortcut ? ` (${tool.shortcut})` : ""}`}
+                aria-label={tool.title}
+                aria-pressed={activeTool === tool.id}
                 onClick={() => setActiveTool(tool.id)}
                 style={{
                   width: "36px", height: "36px", fontSize: "1rem",

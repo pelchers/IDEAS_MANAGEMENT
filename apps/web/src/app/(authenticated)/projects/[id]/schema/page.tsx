@@ -1798,6 +1798,8 @@ export default function SchemaPage() {
           <button
             key={tool.id}
             title={tool.title}
+            aria-label={tool.title}
+            aria-pressed={schemaToolMode === tool.id}
             onClick={() => setSchemaToolMode(tool.id)}
             style={{
               width: "36px", height: "36px", fontSize: "1rem",
