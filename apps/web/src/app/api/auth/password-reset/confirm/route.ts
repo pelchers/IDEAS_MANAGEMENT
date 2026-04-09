@@ -7,6 +7,7 @@ import {
   revokeAllRefreshTokensForUser
 } from "@/server/auth/session";
 import { auditLog } from "@/server/audit";
+import { rateLimit, getClientIp, rateLimitResponse, PRESETS } from "@/server/rate-limit";
 
 const ConfirmResetSchema = z.object({
   token: z.string().min(1),
@@ -19,6 +20,11 @@ const ConfirmResetSchema = z.object({
  * Also revokes all existing sessions/refresh tokens for security.
  */
 export async function POST(req: Request) {
+  // Rate limit: 5 confirm attempts per 15 min per IP
+  const clientIp = getClientIp(req);
+  const limitResult = rateLimit(`pwreset-confirm:${clientIp}`, PRESETS.authStrict.limit, PRESETS.authStrict.windowMs);
+  if (!limitResult.allowed) return rateLimitResponse(limitResult);
+
   const body = await req.json().catch(() => null);
   const parsed = ConfirmResetSchema.safeParse(body);
   if (!parsed.success) {

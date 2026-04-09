@@ -5,6 +5,7 @@ import { verifyPassword } from "@/server/auth/password";
 import { issueSession } from "@/server/auth/session";
 import { setAuthCookies } from "@/server/auth/cookies";
 import { auditLog } from "@/server/audit";
+import { rateLimit, getClientIp, rateLimitResponse, PRESETS } from "@/server/rate-limit";
 
 function reqMeta(req: Request) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
@@ -14,6 +15,11 @@ function reqMeta(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    // Rate limit: 5 signin attempts per 15 min per IP
+    const clientIp = getClientIp(req);
+    const limitResult = rateLimit(`signin:${clientIp}`, PRESETS.authStrict.limit, PRESETS.authStrict.windowMs);
+    if (!limitResult.allowed) return rateLimitResponse(limitResult);
+
     const body = await req.json().catch(() => null);
     const parsed = CredentialsSchema.safeParse(body);
     if (!parsed.success) {

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/server/db";
 import { issuePasswordResetToken } from "@/server/auth/password-reset";
 import { auditLog } from "@/server/audit";
+import { rateLimit, getClientIp, rateLimitResponse, PRESETS } from "@/server/rate-limit";
 
 const RequestResetSchema = z.object({
   email: z.string().email().max(320)
@@ -13,6 +14,11 @@ const RequestResetSchema = z.object({
  * Request a password reset. Always returns 200 to avoid email enumeration.
  */
 export async function POST(req: Request) {
+  // Rate limit: 3 password-reset requests per hour per IP
+  const clientIp = getClientIp(req);
+  const limitResult = rateLimit(`pwreset:${clientIp}`, PRESETS.passwordReset.limit, PRESETS.passwordReset.windowMs);
+  if (!limitResult.allowed) return rateLimitResponse(limitResult);
+
   const body = await req.json().catch(() => null);
   const parsed = RequestResetSchema.safeParse(body);
   if (!parsed.success) {

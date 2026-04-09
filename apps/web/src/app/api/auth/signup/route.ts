@@ -6,6 +6,7 @@ import { issueSession } from "@/server/auth/session";
 import { setAuthCookies } from "@/server/auth/cookies";
 import { issueEmailVerificationToken } from "@/server/auth/email-verification";
 import { auditLog } from "@/server/audit";
+import { rateLimit, getClientIp, rateLimitResponse, PRESETS } from "@/server/rate-limit";
 
 function reqMeta(req: Request) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
@@ -15,6 +16,11 @@ function reqMeta(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    // Rate limit: 5 signup attempts per 15 min per IP
+    const clientIp = getClientIp(req);
+    const limitResult = rateLimit(`signup:${clientIp}`, PRESETS.authStrict.limit, PRESETS.authStrict.windowMs);
+    if (!limitResult.allowed) return rateLimitResponse(limitResult);
+
     const body = await req.json().catch(() => null);
     const parsed = CredentialsSchema.safeParse(body);
     if (!parsed.success) {
@@ -50,9 +56,11 @@ export async function POST(req: Request) {
       {
         ok: true,
         user,
-        // In production, verificationToken would NOT be in the response.
-        // It's included here for dev/testing convenience.
-        _dev: { verificationToken: verification.token }
+        // Dev-only: include verification token in response for local testing.
+        // NEVER exposed in production.
+        ...(process.env.NODE_ENV !== "production"
+          ? { _dev: { verificationToken: verification.token } }
+          : {}),
       },
       { status: 201 }
     );
