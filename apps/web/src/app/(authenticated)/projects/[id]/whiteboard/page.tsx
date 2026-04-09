@@ -618,9 +618,10 @@ export default function WhiteboardPage() {
 
   /* ── Canvas mouse events ── */
   const getCanvasPos = (e: React.MouseEvent<HTMLCanvasElement>): { x: number; y: number } => {
-    const canvas = canvasRef.current!;
-    const rect = canvas.getBoundingClientRect();
-    // Account for zoom/pan
+    // Use the WRAPPER rect (untransformed) to convert screen → world coords
+    const wrap = wrapRef.current;
+    if (!wrap) return { x: 0, y: 0 };
+    const rect = wrap.getBoundingClientRect();
     return { x: (e.clientX - rect.left - panX) / zoom, y: (e.clientY - rect.top - panY) / zoom };
   };
 
@@ -710,7 +711,8 @@ export default function WhiteboardPage() {
       saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
       bump();
     } else if (activeTool === "eraser") {
-      // Find nearest path or dot and remove it
+      // Find nearest path or dot and remove it; start continuous erase mode
+      isDrawing.current = true;
       let removedSomething = false;
 
       // Check dots first (smaller targets)
@@ -906,6 +908,17 @@ export default function WhiteboardPage() {
       }
       redraw();
       bump();
+      return;
+    }
+
+    // Continuous eraser: erase while dragging
+    if (activeTool === "eraser" && isDrawing.current) {
+      let erased = false;
+      const dotIdx = dotsRef.current.findIndex((d) => isNearDot(pos.x, pos.y, d));
+      if (dotIdx !== -1) { dotsRef.current.splice(dotIdx, 1); erased = true; }
+      const pathIdx = pathsRef.current.findIndex((p) => isNearPath(pos.x, pos.y, p));
+      if (pathIdx !== -1) { pathsRef.current.splice(pathIdx, 1); erased = true; }
+      if (erased) { redraw(); bump(); }
       return;
     }
 
@@ -1241,6 +1254,9 @@ export default function WhiteboardPage() {
       saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
     }
 
+    if (activeTool === "eraser" && isDrawing.current) {
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
+    }
     isDrawing.current = false;
     lastPos.current = null;
   };

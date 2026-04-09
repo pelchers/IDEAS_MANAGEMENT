@@ -1,7 +1,21 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import type { Prisma } from "@/generated/prisma";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const SaveChatSchema = z.object({
+  sessionId: z.string().nullish(),
+  userMessage: z.string().min(1, "userMessage required"),
+  aiMessage: z.string().optional().default(""),
+  toolCalls: z.array(z.object({
+    name: z.string(),
+    args: z.record(z.string(), z.unknown()),
+    result: z.unknown(),
+  })).optional(),
+  provider: z.string().optional(),
+});
 
 /**
  * POST /api/ai/chat/save
@@ -13,25 +27,11 @@ export async function POST(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: {
-    sessionId?: string | null;
-    userMessage: string;
-    aiMessage: string;
-    toolCalls?: Array<{ name: string; args: Record<string, unknown>; result: unknown }>;
-    provider?: string;
-  };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
-  }
+  const parsed = await validateBody(req, SaveChatSchema);
+  if (isValidationError(parsed)) return parsed;
 
-  const { userMessage, aiMessage, toolCalls, provider } = body;
-  let { sessionId } = body;
-
-  if (!userMessage) {
-    return NextResponse.json({ ok: false, error: "userMessage required" }, { status: 400 });
-  }
+  const { userMessage, aiMessage, toolCalls, provider } = parsed;
+  let { sessionId } = parsed;
 
   try {
     // Create session if needed

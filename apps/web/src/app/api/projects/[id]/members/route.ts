@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { auditLog } from "@/server/audit";
 import { checkProjectAccess } from "@/server/projects/helpers";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const AddMemberSchema = z.object({
+  userId: z.string().min(1),
+  role: z.string().optional(),
+});
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -24,26 +31,12 @@ export async function POST(req: Request, { params }: RouteParams) {
     );
   }
 
-  let body: { userId?: string; role?: string };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "invalid_body" },
-      { status: 400 }
-    );
-  }
-
-  if (!body.userId || typeof body.userId !== "string") {
-    return NextResponse.json(
-      { ok: false, error: "userId_required" },
-      { status: 400 }
-    );
-  }
+  const parsed = await validateBody(req, AddMemberSchema);
+  if (isValidationError(parsed)) return parsed;
 
   // Verify the target user exists
   const targetUser = await prisma.user.findUnique({
-    where: { id: body.userId },
+    where: { id: parsed.userId },
   });
   if (!targetUser) {
     return NextResponse.json(
@@ -54,7 +47,7 @@ export async function POST(req: Request, { params }: RouteParams) {
 
   // Check if already a member
   const existing = await prisma.projectMember.findUnique({
-    where: { projectId_userId: { projectId, userId: body.userId } },
+    where: { projectId_userId: { projectId, userId: parsed.userId } },
   });
   if (existing) {
     return NextResponse.json(
@@ -64,14 +57,14 @@ export async function POST(req: Request, { params }: RouteParams) {
   }
 
   const validRoles = ["OWNER", "EDITOR", "VIEWER"];
-  const role = body.role && validRoles.includes(body.role.toUpperCase())
-    ? body.role.toUpperCase()
+  const role = parsed.role && validRoles.includes(parsed.role.toUpperCase())
+    ? parsed.role.toUpperCase()
     : "EDITOR";
 
   const member = await prisma.projectMember.create({
     data: {
       projectId,
-      userId: body.userId,
+      userId: parsed.userId,
       role: role as any,
     },
   });
@@ -86,7 +79,7 @@ export async function POST(req: Request, { params }: RouteParams) {
     targetId: member.id,
     ip,
     userAgent,
-    metadata: { projectId, addedUserId: body.userId, role },
+    metadata: { projectId, addedUserId: parsed.userId, role },
   });
 
   return NextResponse.json(

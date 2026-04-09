@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { auditLog } from "@/server/audit";
 import { checkProjectAccess } from "@/server/projects/helpers";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const UpsertArtifactSchema = z.object({
+  content: z.unknown().refine((val) => val !== undefined, { message: "content is required" }),
+});
 
 type RouteParams = { params: Promise<{ id: string; path: string[] }> };
 
@@ -68,22 +74,8 @@ export async function PUT(req: Request, { params }: RouteParams) {
     );
   }
 
-  let body: { content?: unknown };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "invalid_body" },
-      { status: 400 }
-    );
-  }
-
-  if (body.content === undefined) {
-    return NextResponse.json(
-      { ok: false, error: "content_required" },
-      { status: 400 }
-    );
-  }
+  const parsed = await validateBody(req, UpsertArtifactSchema);
+  if (isValidationError(parsed)) return parsed;
 
   // Check if artifact already exists to determine revision
   const existing = await prisma.projectArtifact.findUnique({
@@ -97,11 +89,11 @@ export async function PUT(req: Request, { params }: RouteParams) {
     create: {
       projectId,
       artifactPath,
-      content: body.content as any,
+      content: parsed.content as any,
       revision: 1,
     },
     update: {
-      content: body.content as any,
+      content: parsed.content as any,
       revision: newRevision,
     },
   });

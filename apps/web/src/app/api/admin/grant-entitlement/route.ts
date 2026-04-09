@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAdmin, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { auditLog } from "@/server/audit";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const GrantEntitlementSchema = z.object({
+  feature: z.string().optional().default("ai_chat"),
+  targetUserId: z.string().optional(),
+});
 
 /**
  * POST /api/admin/grant-entitlement
@@ -12,11 +19,11 @@ export async function POST(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: { feature?: string; targetUserId?: string };
-  try { body = await req.json(); } catch { body = {}; }
+  const parsed = await validateBody(req, GrantEntitlementSchema);
+  if (isValidationError(parsed)) return parsed;
 
-  const feature = body.feature || "ai_chat";
-  const targetUserId = body.targetUserId || user.id;
+  const feature = parsed.feature;
+  const targetUserId = parsed.targetUserId || user.id;
 
   await prisma.entitlement.upsert({
     where: { userId_feature: { userId: targetUserId, feature } },

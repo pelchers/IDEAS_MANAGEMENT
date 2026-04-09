@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { getAllAdminConfig, setAdminConfig, getAiUsageStats, type AdminConfigKey } from "@/server/admin/config";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const UpdateConfigSchema = z.object({
+  key: z.string().min(1),
+  value: z.string(),
+});
 
 /**
  * GET /api/admin/config
@@ -41,19 +48,11 @@ export async function PUT(req: Request) {
     return NextResponse.json({ ok: false, error: "Admin access required" }, { status: 403 });
   }
 
-  let body: { key: string; value: string };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ ok: false, error: "Invalid JSON" }, { status: 400 });
-  }
-
-  if (!body.key || typeof body.value !== "string") {
-    return NextResponse.json({ ok: false, error: "key and value required" }, { status: 400 });
-  }
+  const parsed = await validateBody(req, UpdateConfigSchema);
+  if (isValidationError(parsed)) return parsed;
 
   try {
-    await setAdminConfig(body.key as AdminConfigKey, body.value);
+    await setAdminConfig(parsed.key as AdminConfigKey, parsed.value);
     return NextResponse.json({ ok: true });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to update config";

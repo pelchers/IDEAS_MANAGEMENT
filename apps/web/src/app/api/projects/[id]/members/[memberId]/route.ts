@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { auditLog } from "@/server/audit";
 import { checkProjectAccess } from "@/server/projects/helpers";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const PatchMemberSchema = z.object({
+  role: z.string().min(1),
+});
 
 type RouteParams = { params: Promise<{ id: string; memberId: string }> };
 
@@ -25,25 +31,18 @@ export async function PATCH(req: Request, { params }: RouteParams) {
     );
   }
 
-  let body: { role?: string };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "invalid_body" },
-      { status: 400 }
-    );
-  }
+  const parsed = await validateBody(req, PatchMemberSchema);
+  if (isValidationError(parsed)) return parsed;
 
   const validRoles = ["OWNER", "EDITOR", "VIEWER"];
-  if (!body.role || !validRoles.includes(body.role.toUpperCase())) {
+  if (!validRoles.includes(parsed.role.toUpperCase())) {
     return NextResponse.json(
       { ok: false, error: "invalid_role" },
       { status: 400 }
     );
   }
 
-  const newRole = body.role.toUpperCase();
+  const newRole = parsed.role.toUpperCase();
 
   // Find the member
   const member = await prisma.projectMember.findUnique({

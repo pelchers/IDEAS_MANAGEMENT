@@ -1,8 +1,17 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { auditLog } from "@/server/audit";
 import { checkProjectAccess } from "@/server/projects/helpers";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const PatchProjectSchema = z.object({
+  name: z.string().min(1).max(200).optional(),
+  description: z.string().max(2000).optional(),
+  status: z.enum(["PLANNING", "ACTIVE", "PAUSED", "ARCHIVED"]).optional(),
+  tags: z.array(z.string().max(50)).max(20).optional(),
+});
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -92,36 +101,21 @@ export async function PATCH(req: Request, { params }: RouteParams) {
     );
   }
 
-  let body: {
-    name?: string;
-    description?: string;
-    tags?: string[];
-    status?: string;
-  };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "invalid_body" },
-      { status: 400 }
-    );
-  }
+  const parsed = await validateBody(req, PatchProjectSchema);
+  if (isValidationError(parsed)) return parsed;
 
   const data: Record<string, unknown> = {};
-  if (body.name !== undefined && typeof body.name === "string" && body.name.trim()) {
-    data.name = body.name.trim();
+  if (parsed.name !== undefined) {
+    data.name = parsed.name.trim();
   }
-  if (body.description !== undefined && typeof body.description === "string") {
-    data.description = body.description.trim();
+  if (parsed.description !== undefined) {
+    data.description = parsed.description.trim();
   }
-  if (body.tags !== undefined && Array.isArray(body.tags)) {
-    data.tags = body.tags.filter((t) => typeof t === "string");
+  if (parsed.tags !== undefined) {
+    data.tags = parsed.tags;
   }
-  if (body.status !== undefined) {
-    const validStatuses = ["PLANNING", "ACTIVE", "PAUSED", "ARCHIVED"];
-    if (validStatuses.includes(String(body.status).toUpperCase())) {
-      data.status = String(body.status).toUpperCase();
-    }
+  if (parsed.status !== undefined) {
+    data.status = parsed.status;
   }
 
   if (Object.keys(data).length === 0) {

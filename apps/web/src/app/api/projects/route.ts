@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { auditLog } from "@/server/audit";
@@ -7,6 +8,14 @@ import {
   bootstrapProjectArtifacts,
 } from "@/server/projects/helpers";
 import type { ProjectStatus } from "@/generated/prisma";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const CreateProjectSchema = z.object({
+  name: z.string().min(1).max(200).transform((s) => s.trim()),
+  description: z.string().max(2000).optional().default("").transform((s) => s.trim()),
+  tags: z.array(z.string().max(50)).max(20).optional().default([]),
+  status: z.enum(["PLANNING", "ACTIVE", "PAUSED", "ARCHIVED"]).optional().default("PLANNING"),
+});
 
 /**
  * POST /api/projects
@@ -17,38 +26,14 @@ export async function POST(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: {
-    name?: string;
-    description?: string;
-    tags?: string[];
-    status?: string;
-  };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "invalid_body" },
-      { status: 400 }
-    );
-  }
+  const parsed = await validateBody(req, CreateProjectSchema);
+  if (isValidationError(parsed)) return parsed;
 
-  if (!body.name || typeof body.name !== "string" || body.name.trim().length === 0) {
-    return NextResponse.json(
-      { ok: false, error: "name_required" },
-      { status: 400 }
-    );
-  }
-
-  const name = body.name.trim();
+  const name = parsed.name;
   const slug = generateSlug(name);
-  const description = body.description?.trim() ?? "";
-  const tags = Array.isArray(body.tags) ? body.tags.filter((t) => typeof t === "string") : [];
-  const validStatuses = ["PLANNING", "ACTIVE", "PAUSED", "ARCHIVED"];
-  const status = (
-    body.status && validStatuses.includes(body.status.toUpperCase())
-      ? body.status.toUpperCase()
-      : "PLANNING"
-  ) as ProjectStatus;
+  const description = parsed.description;
+  const tags = parsed.tags;
+  const status = parsed.status as ProjectStatus;
 
   let project;
   try {

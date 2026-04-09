@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const CreateSessionSchema = z.object({
+  title: z.string().optional(),
+  projectId: z.string().optional(),
+});
 
 /**
  * GET /api/ai/sessions
@@ -46,18 +53,14 @@ export async function POST(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: { title?: string; projectId?: string } = {};
-  try {
-    body = await req.json();
-  } catch {
-    // Empty body is fine — defaults will be used
-  }
+  const parsed = await validateBody(req, CreateSessionSchema);
+  if (isValidationError(parsed)) return parsed;
 
   const session = await prisma.aiChatSession.create({
     data: {
       userId: user.id,
-      title: body.title || "New Chat",
-      projectId: body.projectId ?? null,
+      title: parsed.title || "New Chat",
+      projectId: parsed.projectId ?? null,
     },
   });
 

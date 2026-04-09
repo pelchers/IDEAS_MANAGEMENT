@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const UpdateSessionSchema = z.object({
+  title: z.string().max(200).optional(),
+});
 
 /**
  * GET /api/ai/sessions/[id]
@@ -66,11 +72,11 @@ export async function PUT(
   const session = await prisma.aiChatSession.findFirst({ where: { id, userId: user.id } });
   if (!session) return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
 
-  let body: { title?: string };
-  try { body = await req.json(); } catch { body = {}; }
+  const parsed = await validateBody(req, UpdateSessionSchema);
+  if (isValidationError(parsed)) return parsed;
 
   const data: Record<string, unknown> = {};
-  if (body.title && typeof body.title === "string") data.title = body.title.trim().slice(0, 200);
+  if (parsed.title) data.title = parsed.title.trim().slice(0, 200);
 
   if (Object.keys(data).length === 0) return NextResponse.json({ ok: true, message: "no_changes" });
 

@@ -1,8 +1,17 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { checkProjectAccess } from "@/server/projects/helpers";
 import { createSnapshot } from "@/server/sync/snapshot";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const ForceSyncSchema = z.object({
+  projectId: z.string().min(1),
+  direction: z.enum(["push", "pull"]),
+  artifactPath: z.string().optional(),
+  content: z.unknown().optional(),
+});
 
 /**
  * POST /api/sync/force
@@ -14,36 +23,10 @@ export async function POST(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: {
-    projectId?: string;
-    direction?: string;
-    artifactPath?: string;
-    content?: unknown;
-  };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "invalid_body" },
-      { status: 400 }
-    );
-  }
+  const parsed = await validateBody(req, ForceSyncSchema);
+  if (isValidationError(parsed)) return parsed;
 
-  if (!body.projectId || !body.direction) {
-    return NextResponse.json(
-      { ok: false, error: "projectId_and_direction_required" },
-      { status: 400 }
-    );
-  }
-
-  if (body.direction !== "push" && body.direction !== "pull") {
-    return NextResponse.json(
-      { ok: false, error: "direction_must_be_push_or_pull" },
-      { status: 400 }
-    );
-  }
-
-  const access = await checkProjectAccess(body.projectId, user, "OWNER");
+  const access = await checkProjectAccess(parsed.projectId, user, "OWNER");
   if (!access) {
     return NextResponse.json(
       { ok: false, error: "forbidden" },
@@ -51,7 +34,7 @@ export async function POST(req: Request) {
     );
   }
 
-  if (body.direction === "push") {
+  if (parsed.direction === "push") {
     // Force push: overwrite server artifact with provided content
     if (!body.artifactPath || body.content === undefined) {
       return NextResponse.json(

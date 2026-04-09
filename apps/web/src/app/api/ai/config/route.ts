@@ -1,8 +1,18 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { encrypt, decrypt } from "@/server/ai/crypto";
 import { auditLog } from "@/server/audit";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const AiConfigSchema = z.object({
+  apiKey: z.string().optional(),
+  action: z.string().optional(),
+  provider: z.string().optional(),
+  preferredAiProvider: z.string().optional(),
+  aiFallbackSetting: z.string().optional(),
+});
 
 /**
  * GET /api/ai/config
@@ -58,12 +68,8 @@ export async function PUT(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: { apiKey?: string; action?: string; provider?: string; preferredAiProvider?: string; aiFallbackSetting?: string };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
-  }
+  const body = await validateBody(req, AiConfigSchema);
+  if (isValidationError(body)) return body;
 
   // Handle disconnect action
   if (body.action === "disconnect") {

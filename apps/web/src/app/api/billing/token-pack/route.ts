@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { getUserEntitlements } from "@/server/billing/entitlements";
 import { getOrCreatePeriod } from "@/server/ai/token-tracking";
+import { validateBody, isValidationError } from "@/server/api-validation";
 
 const TOKEN_PACKS = {
   small: { tokens: 5_000_000, price: 250, label: "5M tokens (~2,000 msgs)" },
@@ -11,6 +13,10 @@ const TOKEN_PACKS = {
 } as const;
 
 type PackSize = keyof typeof TOKEN_PACKS;
+
+const TokenPackSchema = z.object({
+  packSize: z.enum(["small", "medium", "large"]),
+});
 
 /**
  * POST /api/billing/token-pack
@@ -23,17 +29,10 @@ export async function POST(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: { packSize: string };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
-  }
+  const parsed = await validateBody(req, TokenPackSchema);
+  if (isValidationError(parsed)) return parsed;
 
-  const packSize = body.packSize as PackSize;
-  if (!TOKEN_PACKS[packSize]) {
-    return NextResponse.json({ ok: false, error: "Invalid pack size. Use: small, medium, large" }, { status: 400 });
-  }
+  const packSize = parsed.packSize;
 
   // Only Pro/Team can buy packs
   const entitlements = await getUserEntitlements(user.id, user.role);
