@@ -306,10 +306,13 @@ export default function WhiteboardPage() {
   const [draggingMulti, setDraggingMulti] = useState(false);
   const multiDragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  const hasMultiSelection = multiSel.paths.size + multiSel.dots.size + multiSel.stickies.size + multiSel.media.size > 1;
+  const multiSelCount = multiSel.paths.size + multiSel.dots.size + multiSel.stickies.size + multiSel.media.size;
+  const hasMultiSelection = multiSelCount > 1;
   const clearMultiSelection = useCallback(() => {
     setMultiSel({ paths: new Set(), dots: new Set(), stickies: new Set(), media: new Set() });
   }, []);
+  const [resizingMulti, setResizingMulti] = useState<{ startX: number; startY: number; startBBox: { x: number; y: number; w: number; h: number } } | null>(null);
+  const [rotatingMulti, setRotatingMulti] = useState<{ centerX: number; centerY: number; startAngle: number } | null>(null);
 
   // ── Render tick (forces re-render when refs change) ──
   const [, setRenderTick] = useState(0);
@@ -869,6 +872,64 @@ export default function WhiteboardPage() {
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const pos = getCanvasPos(e);
 
+    // Group resize
+    if (resizingMulti) {
+      const wrap = wrapRef.current;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const worldX = (e.clientX - rect.left - panX) / zoom;
+      const worldY = (e.clientY - rect.top - panY) / zoom;
+      const sb = resizingMulti.startBBox;
+      const scaleX = Math.max(0.2, (worldX - sb.x) / sb.w);
+      const scaleY = Math.max(0.2, (worldY - sb.y) / sb.h);
+      const cx = sb.x + sb.w / 2;
+      const cy = sb.y + sb.h / 2;
+      // Scale all selected items around group center
+      for (const id of multiSel.paths) {
+        const p = pathsRef.current.find((pp) => pp.id === id);
+        if (p) { const bb = getPathBoundingBox(p); const pcx = bb.x + bb.width / 2; const pcy = bb.y + bb.height / 2; p.offsetX = (p.offsetX || 0) + (pcx - cx) * (scaleX - 1); p.offsetY = (p.offsetY || 0) + (pcy - cy) * (scaleY - 1); }
+      }
+      for (const id of multiSel.stickies) setStickies((prev) => prev.map((s) => multiSel.stickies.has(s.id) ? { ...s, x: cx + (s.x - cx) * scaleX, y: cy + (s.y - cy) * scaleY } : s));
+      for (const id of multiSel.media) setMediaItems((prev) => prev.map((m) => multiSel.media.has(m.id) ? { ...m, x: cx + (m.x - cx) * scaleX, y: cy + (m.y - cy) * scaleY } : m));
+      setResizingMulti((prev) => prev ? { ...prev, startBBox: { x: sb.x, y: sb.y, w: sb.w * scaleX, h: sb.h * scaleY } } : null);
+      redraw(); bump();
+      return;
+    }
+
+    // Group rotate
+    if (rotatingMulti) {
+      const wrap = wrapRef.current;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const worldX = (e.clientX - rect.left - panX) / zoom;
+      const worldY = (e.clientY - rect.top - panY) / zoom;
+      const currentAngle = Math.atan2(worldY - rotatingMulti.centerY, worldX - rotatingMulti.centerX) * 180 / Math.PI;
+      const delta = (currentAngle - rotatingMulti.startAngle) * Math.PI / 180;
+      const cx = rotatingMulti.centerX;
+      const cy = rotatingMulti.centerY;
+      const cos = Math.cos(delta);
+      const sin = Math.sin(delta);
+      // Rotate paths around group center
+      for (const id of multiSel.paths) {
+        const p = pathsRef.current.find((pp) => pp.id === id);
+        if (p) { p.rotation = (p.rotation || 0) + (currentAngle - rotatingMulti.startAngle); }
+      }
+      // Rotate stickies/media positions around group center
+      setStickies((prev) => prev.map((s) => {
+        if (!multiSel.stickies.has(s.id)) return s;
+        const dx = s.x - cx; const dy = s.y - cy;
+        return { ...s, x: cx + dx * cos - dy * sin, y: cy + dx * sin + dy * cos, rotation: (s.rotation || 0) + (currentAngle - rotatingMulti.startAngle) };
+      }));
+      setMediaItems((prev) => prev.map((m) => {
+        if (!multiSel.media.has(m.id)) return m;
+        const dx = m.x - cx; const dy = m.y - cy;
+        return { ...m, x: cx + dx * cos - dy * sin, y: cy + dx * sin + dy * cos, rotation: (m.rotation || 0) + (currentAngle - rotatingMulti.startAngle) };
+      }));
+      setRotatingMulti((prev) => prev ? { ...prev, startAngle: currentAngle } : null);
+      redraw(); bump();
+      return;
+    }
+
     // Marquee drag (priority — happens regardless of tool sub-state)
     if (marquee) {
       setMarquee({
@@ -1088,6 +1149,17 @@ export default function WhiteboardPage() {
   };
 
   const handleCanvasMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    // Group resize/rotate completion
+    if (resizingMulti) {
+      setResizingMulti(null);
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
+      return;
+    }
+    if (rotatingMulti) {
+      setRotatingMulti(null);
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
+      return;
+    }
     // Marquee selection completion
     if (marquee) {
       const m = marquee;
@@ -2274,6 +2346,60 @@ export default function WhiteboardPage() {
           </div>
         </div>
       )}
+
+      {/* ── Group Selection Overlay (resize + rotate handles) ── */}
+      {hasMultiSelection && (() => {
+        // Compute combined bbox of all selected items
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        for (const id of multiSel.paths) {
+          const p = pathsRef.current.find((pp) => pp.id === id);
+          if (p) { const bb = getPathBoundingBox(p); minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y); maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height); }
+        }
+        for (const id of multiSel.dots) {
+          const d = dotsRef.current.find((dd) => dd.id === id);
+          if (d) { const bb = getDotBoundingBox(d); minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y); maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height); }
+        }
+        for (const id of multiSel.stickies) {
+          const s = stickies.find((ss) => ss.id === id);
+          if (s) { minX = Math.min(minX, s.x); minY = Math.min(minY, s.y); maxX = Math.max(maxX, s.x + (s.width || 170)); maxY = Math.max(maxY, s.y + (s.height || 100)); }
+        }
+        for (const id of multiSel.media) {
+          const m = mediaItems.find((mm) => mm.id === id);
+          if (m) { minX = Math.min(minX, m.x); minY = Math.min(minY, m.y); maxX = Math.max(maxX, m.x + m.width); maxY = Math.max(maxY, m.y + m.height); }
+        }
+        if (minX >= Infinity) return null;
+        const pad = 10;
+        const bx = minX - pad;
+        const by = minY - pad;
+        const bw = maxX - minX + pad * 2;
+        const bh = maxY - minY + pad * 2;
+        const cx = minX + (maxX - minX) / 2;
+        const cy = minY + (maxY - minY) / 2;
+        return (
+          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", transform: `translate(${panX}px, ${panY}px) scale(${zoom})`, transformOrigin: "0 0", zIndex: 60 }}>
+            {/* Group bounding box */}
+            <div style={{ position: "absolute", left: `${bx}px`, top: `${by}px`, width: `${bw}px`, height: `${bh}px`, border: "2px dashed #A259FF", backgroundColor: "transparent" }} />
+            {/* Resize handle (bottom-right corner) */}
+            <div
+              style={{ position: "absolute", left: `${bx + bw - 5}px`, top: `${by + bh - 5}px`, width: "10px", height: "10px", backgroundColor: "#A259FF", border: "2px solid #282828", cursor: "nwse-resize", pointerEvents: "auto" }}
+              onMouseDown={(e) => { e.stopPropagation(); setResizingMulti({ startX: (e.clientX - panX) / zoom, startY: (e.clientY - panY) / zoom, startBBox: { x: bx, y: by, w: bw, h: bh } }); }}
+            />
+            {/* Rotation handle (outside bottom-right) */}
+            <div
+              style={{ position: "absolute", left: `${bx + bw + 14}px`, top: `${by + bh + 14}px`, width: "16px", height: "16px", borderRadius: "50%", backgroundColor: "#A259FF", border: "2px solid #282828", cursor: "grab", pointerEvents: "auto", display: "flex", alignItems: "center", justifyContent: "center" }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+                const mouseX = (e.clientX - panX) / zoom;
+                const mouseY = (e.clientY - panY) / zoom;
+                const startAngle = Math.atan2(mouseY - cy, mouseX - cx) * 180 / Math.PI;
+                setRotatingMulti({ centerX: cx, centerY: cy, startAngle });
+              }}
+            >
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFF" strokeWidth="3"><path d="M21 12a9 9 0 1 1-6.219-8.56" /><polyline points="17 2 21 3.5 21 8" /></svg>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ── Right-Click Context Menu ── */}
       {contextMenu && (
