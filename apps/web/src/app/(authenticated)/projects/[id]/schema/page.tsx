@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useAnyArtifactRefresh } from "@/hooks/use-artifact-refresh";
 import { useParams } from "next/navigation";
 import rough from "roughjs";
@@ -1769,8 +1769,8 @@ export default function SchemaPage() {
   }, [searchQuery]);
 
   // Calculate canvas size from entity positions
-  const canvasWidth = Math.max(900, ...graph.entities.map((e) => e.x + 320));
-  const canvasHeight = Math.max(600, ...graph.entities.map((e) => e.y + 300));
+  const canvasWidth = useMemo(() => Math.max(900, ...graph.entities.map((e) => e.x + 320)), [graph.entities]);
+  const canvasHeight = useMemo(() => Math.max(600, ...graph.entities.map((e) => e.y + 300)), [graph.entities]);
 
   /* ── Render ── */
   if (loading) {

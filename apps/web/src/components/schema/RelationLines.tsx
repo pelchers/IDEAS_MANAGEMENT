@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 import type { SchemaEntity, SchemaRelation } from "@/lib/schema-types";
 import { RELATION_COLORS } from "@/lib/schema-types";
 import { getRelationPath } from "@/lib/schema-layout";
@@ -18,7 +18,7 @@ interface RelationLinesProps {
 /**
  * SVG crow's foot relation lines between entity cards.
  */
-export function RelationLines({
+export const RelationLines = memo(function RelationLines({
   entities,
   relations,
   roughMode = false,
@@ -115,7 +115,7 @@ export function RelationLines({
       })}
     </svg>
   );
-}
+});
 
 function estimateHeight(entity: SchemaEntity): number {
   if (entity.collapsed) return 48;

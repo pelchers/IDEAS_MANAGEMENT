@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, memo } from "react";
 import type { SchemaEntity, SchemaField, SchemaGraph } from "@/lib/schema-types";
 import { badgeFor, badgeClasses, badgeLabel, HEADER_COLORS, getTableTriggerCount, getTableIndexCount, getTablePolicyCount, getTableGrantCount } from "@/lib/schema-types";
 
@@ -21,7 +21,7 @@ interface EntityCardProps {
   onInlineFieldUpdate?: (fieldId: string, updates: Partial<SchemaField>) => void;
 }
 
-export function EntityCard({
+export const EntityCard = memo(function EntityCard({
   entity,
   graph,
   isSelected,
@@ -218,4 +218,4 @@ export function EntityCard({
       )}
     </div>
   );
-}
+});
