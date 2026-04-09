@@ -31,6 +31,9 @@ function isPublicPath(pathname: string): boolean {
   // Static assets and Next.js internals
   if (pathname.startsWith("/_next/")) return true;
   if (pathname.startsWith("/favicon")) return true;
+  // SEO files must always be publicly accessible
+  if (pathname === "/sitemap.xml") return true;
+  if (pathname === "/robots.txt") return true;
   return false;
 }
 

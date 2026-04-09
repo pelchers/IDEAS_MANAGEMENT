@@ -515,3 +515,116 @@ USER INTENT: Update docs to match reality, build billing UI + sync UI + hardenin
 KEY DECISIONS: Updated model-choice.md and system-specs.md to reflect qwen3:32b. Launched parallel agents for Session 10 (billing) and Session 11 (sync). Started Session 12 hardening: fixed TypeScript errors, added error boundary + loading skeleton, verified auth security.
 
 ---
+
+---
+[2026-04-03T04:46:00Z] role=user
+
+## SESSION CONTEXT
+Validation agent session: deep validation of client-side Ollama detection and cross-communication system.
+
+## USER INTENT
+Run targeted deep validation of the Ollama detection and cross-communication system including: browser-side detection (TC-D1 through TC-D4), API tool calls and persistence (TC-C1 through TC-C6), and setup script content validation (TC-S1 through TC-S3).
+
+## REFERENCE FILES
+- apps/web/src/lib/ollama-client.ts
+- apps/web/src/lib/ollama-chat.ts
+- apps/web/src/app/(authenticated)/ai/page.tsx
+- apps/web/src/components/ai/ollama-setup-modal.tsx
+- apps/web/src/app/api/ai/tools/route.ts
+- apps/web/src/app/api/ai/chat/save/route.ts
+- apps/web/src/app/api/ai/sessions/route.ts
+- apps/web/src/app/api/ai/context/[projectId]/route.ts
+- apps/web/src/app/api/setup/ollama-script/route.ts
+
+## KEY DECISIONS
+- Used admin@ideamgmt.local / AdminPass123! credentials (not admin@example.com / Testing123!)
+- UI sign-in approach for TC-C4/C5 round-trip tests (API request context cookies don't propagate to page fixture in standalone tests outside describe blocks)
+- Setup script endpoint requires auth (by middleware) — not a public endpoint
+- TC-D4 OllamaSetupModal not found on settings page — modal component exists but not embedded there
+
+## AGENT REPORT
+- 13/13 primary tests PASS
+- 2/2 round-trip tests (TC-C4, TC-C5) PASS
+- Ollama running with 6 models including qwen3:32b
+- ideamanagement:latest custom model NOT yet created (expected pre-setup)
+- All API endpoints (tools, chat/save, sessions, context) verified working
+- Both Windows and Linux setup scripts contain all required content
+- OLLAMA_ORIGINS correctly includes localhost:3000 and *.railway.app
+- Report: .docs/validation/client-side-ollama/DEEP-REPORT.md
+
+---
+[2026-04-08T00:00:00Z] role=user
+Run the "all" audit preset from .claude/skills/audit-system/references/audit-config.json. This covers 10 audit types, explicitly EXCLUDING the infra audit: 1. performance 2. security 3. seo 4. database 5. accessibility 6. code 7. api 8. infra-app 9. ux 10. data. Do NOT run the standalone "infra" audit (the one handled by infra-audit-agent / decimal .11). Project context: App at C:\Ideas\IDEA-MANAGEMENT\apps\web, Next.js 15 App Router + TypeScript + Prisma + Postgres. Recent major work: Plans #1-6.
+
+SESSION CONTEXT: Full 10-type "all" preset audit run. Audit #001. First audit in this repository.
+
+USER INTENT: Comprehensive audit across all 10 types; score each type; write individual + summary reports to .docs/planning/audits/; write remediation plans for critical/high findings to .docs/planning/plans/.
+
+REFERENCE FILES:
+- .claude/skills/audit-system/references/audit-config.json
+- .claude/skills/audit-system/references/checks/*.sh and *.sql
+- apps/web/src/ (full codebase scan)
+- apps/web/prisma/schema.prisma
+- apps/web/next.config.ts
+- apps/web/tsconfig.json
+
+KEY DECISIONS:
+- Run number: 001 (first audit)
+- Live checks SKIPPED (dev server not running)
+- Security score adjusted for mitigating factors
+- 3 remediation plans written for critical/high findings
+
+AGENT REPORT:
+- 10 individual reports written to .docs/planning/audits/001.01 through 001.10
+- 1 summary report: .docs/planning/audits/001.00-summary-2026-04-08.md
+- 3 remediation plans: .docs/planning/plans/001-security-critical-remediation.md, 001-performance-code-splitting.md, 001-api-validation-hardening.md
+- Total findings: 3 critical, 23 high, 34 medium, 23 low (77 total)
+- Average score: 60.7/100 (C)
+
+---
+[2026-04-08T04:40:00Z] role=user
+Run Playwright validation on Audit Cycle 001 fixes. App at C:\Ideas\IDEA-MANAGEMENT\apps\web, dev server port 3000.
+
+## Test Cases
+
+### Security Fixes
+TC-01: Sign in as admin. Verify signup API response does NOT contain `_dev.verificationToken` field...
+TC-02: Verify security headers: X-Frame-Options, X-Content-Type-Options, Strict-Transport-Security, Referrer-Policy.
+TC-03: Rate limiting on signin: 6 rapid bad requests → 6th returns HTTP 429.
+
+### SEO
+TC-04: Fetch /sitemap.xml — verify valid XML with URLs.
+TC-05: Fetch /robots.txt — verify User-agent and Sitemap.
+TC-06: Check homepage HTML for og:title, og:description.
+
+### Accessibility
+TC-07: Check homepage HTML for skip-link class.
+TC-08: Check for <main> landmark element.
+TC-09: Whiteboard tool buttons should have aria-label attributes.
+
+### Whiteboard Fixes
+TC-10: Eraser tool: draw + erase workflow.
+TC-11: Group selection bbox screenshot.
+
+### API Validation
+TC-12: POST /api/projects with empty body → HTTP 400 validation_failed.
+
+## SESSION CONTEXT
+Session: Audit Cycle 001 validation run.
+Task: Run all 12 test cases, capture screenshots, produce report.
+
+## USER INTENT
+Run Playwright E2E validation against live dev server at port 3000 for all 12 test cases in Audit Cycle 001.
+
+## REFERENCE FILES
+- apps/web/e2e/cycle-001-audit-fixes.spec.ts (created)
+- apps/web/src/proxy.ts (fixed sitemap/robots public paths bug)
+- .docs/validation/cycle-001/ (output)
+
+## KEY DECISIONS
+- Fixed app bug: /sitemap.xml and /robots.txt were not in PUBLIC_PATHS in proxy.ts, causing 307 redirects to /signin
+- Fixed test isolation: TC-03 rate limit used unique X-Forwarded-For so admin signin bucket not polluted
+- Used page.route() to inject unique X-Forwarded-For headers for browser-based signin calls
+
+## AGENT REPORT
+12/12 tests PASS. 1 app bug found and fixed (sitemap/robots not public). Screenshots saved to .docs/validation/cycle-001/screenshots/.
