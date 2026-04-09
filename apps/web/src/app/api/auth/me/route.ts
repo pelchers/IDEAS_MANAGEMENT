@@ -1,7 +1,18 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { getAuthenticatedUser, requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { getUserEntitlements } from "@/server/billing/entitlements";
 import { prisma } from "@/server/db";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const UpdateProfileSchema = z.object({
+  email: z.string().email().max(320).optional(),
+  displayName: z.string().max(100).optional(),
+  bio: z.string().max(500).optional(),
+  avatarUrl: z.string().max(2048).nullable().optional(),
+  tags: z.array(z.string().max(50)).max(10).optional(),
+  preferences: z.record(z.string(), z.unknown()).optional(),
+});
 
 /**
  * GET /api/auth/me
@@ -47,21 +58,14 @@ export async function PUT(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  let body: { email?: string; displayName?: string; bio?: string; avatarUrl?: string; tags?: string[]; preferences?: Record<string, unknown> };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
-  }
+  const parsed = await validateBody(req, UpdateProfileSchema);
+  if (isValidationError(parsed)) return parsed;
 
   const updates: Record<string, unknown> = {};
 
   // Email
-  if (body.email && typeof body.email === "string") {
-    const email = body.email.trim().toLowerCase();
-    if (!email.includes("@") || email.length > 320) {
-      return NextResponse.json({ ok: false, error: "invalid_email" }, { status: 400 });
-    }
+  if (parsed.email) {
+    const email = parsed.email.trim().toLowerCase();
     if (email !== user.email) {
       const existing = await prisma.user.findUnique({ where: { email } });
       if (existing) {
@@ -72,43 +76,28 @@ export async function PUT(req: Request) {
   }
 
   // Display name
-  if (body.displayName !== undefined) {
-    if (typeof body.displayName !== "string" || body.displayName.length > 100) {
-      return NextResponse.json({ ok: false, error: "invalid_display_name" }, { status: 400 });
-    }
-    updates.displayName = body.displayName.trim() || null;
+  if (parsed.displayName !== undefined) {
+    updates.displayName = parsed.displayName.trim() || null;
   }
 
   // Bio
-  if (body.bio !== undefined) {
-    if (typeof body.bio !== "string" || body.bio.length > 500) {
-      return NextResponse.json({ ok: false, error: "invalid_bio" }, { status: 400 });
-    }
-    updates.bio = body.bio.trim() || null;
+  if (parsed.bio !== undefined) {
+    updates.bio = parsed.bio.trim() || null;
   }
 
   // Avatar URL
-  if (body.avatarUrl !== undefined) {
-    if (body.avatarUrl !== null && (typeof body.avatarUrl !== "string" || body.avatarUrl.length > 2048)) {
-      return NextResponse.json({ ok: false, error: "invalid_avatar_url" }, { status: 400 });
-    }
-    updates.avatarUrl = body.avatarUrl || null;
+  if (parsed.avatarUrl !== undefined) {
+    updates.avatarUrl = parsed.avatarUrl || null;
   }
 
   // Tags
-  if (body.tags !== undefined) {
-    if (!Array.isArray(body.tags) || body.tags.length > 10 || body.tags.some((t) => typeof t !== "string" || t.length > 50)) {
-      return NextResponse.json({ ok: false, error: "invalid_tags" }, { status: 400 });
-    }
-    updates.tags = body.tags.map((t) => t.trim()).filter(Boolean);
+  if (parsed.tags !== undefined) {
+    updates.tags = parsed.tags.map((t) => t.trim()).filter(Boolean);
   }
 
   // Preferences
-  if (body.preferences !== undefined) {
-    if (typeof body.preferences !== "object" || body.preferences === null || Array.isArray(body.preferences)) {
-      return NextResponse.json({ ok: false, error: "invalid_preferences" }, { status: 400 });
-    }
-    updates.preferences = body.preferences;
+  if (parsed.preferences !== undefined) {
+    updates.preferences = parsed.preferences;
   }
 
   if (Object.keys(updates).length === 0) {
