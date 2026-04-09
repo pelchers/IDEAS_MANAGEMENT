@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { createSnapshot } from "@/server/sync/snapshot";
+import { validateBody, isValidationError } from "@/server/api-validation";
+
+const ResolveConflictSchema = z.object({
+  resolution: z.enum(["keep-local", "keep-remote", "merged"]),
+  mergedContent: z.unknown().optional(),
+});
 
 type RouteParams = { params: Promise<{ operationId: string }> };
 
@@ -16,26 +23,8 @@ export async function POST(req: Request, { params }: RouteParams) {
   const user = authResult;
   const { operationId } = await params;
 
-  let body: {
-    resolution?: string;
-    mergedContent?: unknown;
-  };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "invalid_body" },
-      { status: 400 }
-    );
-  }
-
-  const validResolutions = ["keep-local", "keep-remote", "merged"];
-  if (!body.resolution || !validResolutions.includes(body.resolution)) {
-    return NextResponse.json(
-      { ok: false, error: "invalid_resolution" },
-      { status: 400 }
-    );
-  }
+  const parsed = await validateBody(req, ResolveConflictSchema);
+  if (isValidationError(parsed)) return parsed;
 
   // Find the conflicting operation
   const operation = await prisma.syncOperation.findUnique({
@@ -86,7 +75,7 @@ export async function POST(req: Request, { params }: RouteParams) {
   }
 
   let newContent: unknown;
-  switch (body.resolution) {
+  switch (parsed.resolution) {
     case "keep-local":
       newContent = operation.payload;
       break;
@@ -94,13 +83,13 @@ export async function POST(req: Request, { params }: RouteParams) {
       newContent = artifact?.content ?? {};
       break;
     case "merged":
-      if (body.mergedContent === undefined) {
+      if (parsed.mergedContent === undefined) {
         return NextResponse.json(
           { ok: false, error: "merged_content_required" },
           { status: 400 }
         );
       }
-      newContent = body.mergedContent;
+      newContent = parsed.mergedContent;
       break;
   }
 
@@ -134,7 +123,7 @@ export async function POST(req: Request, { params }: RouteParams) {
 
   return NextResponse.json({
     ok: true,
-    resolution: body.resolution,
+    resolution: parsed.resolution,
     newRevision,
   });
 }

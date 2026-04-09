@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
   if (parsed.direction === "push") {
     // Force push: overwrite server artifact with provided content
-    if (!body.artifactPath || body.content === undefined) {
+    if (!parsed.artifactPath || parsed.content === undefined) {
       return NextResponse.json(
         { ok: false, error: "artifactPath_and_content_required_for_push" },
         { status: 400 }
@@ -47,16 +47,16 @@ export async function POST(req: Request) {
     const existing = await prisma.projectArtifact.findUnique({
       where: {
         projectId_artifactPath: {
-          projectId: body.projectId,
-          artifactPath: body.artifactPath,
+          projectId: parsed.projectId,
+          artifactPath: parsed.artifactPath,
         },
       },
     });
 
     if (existing) {
       await createSnapshot(
-        body.projectId,
-        body.artifactPath,
+        parsed.projectId,
+        parsed.artifactPath,
         existing.content,
         existing.revision,
         "pre-force-push"
@@ -68,18 +68,18 @@ export async function POST(req: Request) {
     const artifact = await prisma.projectArtifact.upsert({
       where: {
         projectId_artifactPath: {
-          projectId: body.projectId,
-          artifactPath: body.artifactPath,
+          projectId: parsed.projectId,
+          artifactPath: parsed.artifactPath,
         },
       },
       create: {
-        projectId: body.projectId,
-        artifactPath: body.artifactPath,
-        content: body.content as any,
+        projectId: parsed.projectId,
+        artifactPath: parsed.artifactPath,
+        content: parsed.content as any,
         revision: 1,
       },
       update: {
-        content: body.content as any,
+        content: parsed.content as any,
         revision: newRevision,
       },
     });
@@ -95,13 +95,13 @@ export async function POST(req: Request) {
   }
 
   // Force pull: return current server artifact for client to overwrite local
-  if (body.artifactPath) {
+  if (parsed.artifactPath) {
     // Single artifact
     const artifact = await prisma.projectArtifact.findUnique({
       where: {
         projectId_artifactPath: {
-          projectId: body.projectId,
-          artifactPath: body.artifactPath,
+          projectId: parsed.projectId,
+          artifactPath: parsed.artifactPath,
         },
       },
     });
@@ -128,7 +128,7 @@ export async function POST(req: Request) {
 
   // All artifacts for the project
   const artifacts = await prisma.projectArtifact.findMany({
-    where: { projectId: body.projectId },
+    where: { projectId: parsed.projectId },
     select: {
       artifactPath: true,
       content: true,
