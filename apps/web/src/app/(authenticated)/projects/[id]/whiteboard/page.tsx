@@ -300,19 +300,214 @@ export default function WhiteboardPage() {
   const [resizingElement, setResizingElement] = useState<{ id: string; type: "path" | "dot"; startX: number; startY: number; startBBox: { x: number; y: number; width: number; height: number } } | null>(null);
   const [rotatingElement, setRotatingElement] = useState<{ id: string; type: "path" | "dot"; centerX: number; centerY: number; startAngle: number; startRotation: number } | null>(null);
 
-  // ── Marquee selection state ──
+  // ── Marquee selection state (snapshot-based transform — Excalidraw/tldraw pattern) ──
   const [marquee, setMarquee] = useState<{ startX: number; startY: number; x: number; y: number; w: number; h: number } | null>(null);
   const [multiSel, setMultiSel] = useState<{ paths: Set<string>; dots: Set<string>; stickies: Set<string>; media: Set<string> }>({ paths: new Set(), dots: new Set(), stickies: new Set(), media: new Set() });
-  const [draggingMulti, setDraggingMulti] = useState(false);
-  const multiDragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const multiSelCount = multiSel.paths.size + multiSel.dots.size + multiSel.stickies.size + multiSel.media.size;
   const hasMultiSelection = multiSelCount > 1;
   const clearMultiSelection = useCallback(() => {
     setMultiSel({ paths: new Set(), dots: new Set(), stickies: new Set(), media: new Set() });
   }, []);
-  const [resizingMulti, setResizingMulti] = useState<{ startX: number; startY: number; startBBox: { x: number; y: number; w: number; h: number } } | null>(null);
-  const [rotatingMulti, setRotatingMulti] = useState<{ centerX: number; centerY: number; startAngle: number } | null>(null);
+
+  // Transform mode + snapshot: captured at pointerdown, never mutated during drag
+  // All transforms recompute final values from snapshot each mousemove (no delta accumulation)
+  type TransformMode = "translate" | "resize" | "rotate";
+  interface TransformSnapshot {
+    mode: TransformMode;
+    // Starting bbox of the entire multi-selection (world coords, unrotated)
+    bbox: { x: number; y: number; w: number; h: number };
+    // Starting pointer position (world coords)
+    startPointer: { x: number; y: number };
+    // For resize: which corner we dragged from → opposite = anchor
+    anchor?: { x: number; y: number };
+    // Deep snapshots of every selected item's state at pointerdown
+    paths: Map<string, { offsetX: number; offsetY: number; rotation: number; points: { x: number; y: number }[] }>;
+    dots: Map<string, { x: number; y: number; offsetX: number; offsetY: number }>;
+    stickies: Map<string, { x: number; y: number; width: number; height: number; rotation: number }>;
+    media: Map<string, { x: number; y: number; width: number; height: number; rotation: number }>;
+  }
+  const transformRef = useRef<TransformSnapshot | null>(null);
+  const [, setTransformTick] = useState(0); // forces re-render during transform
+
+  // Compute combined bbox of current multi-selection (uses CURRENT live state)
+  const computeMultiBBox = useCallback((): { x: number; y: number; w: number; h: number } | null => {
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (const id of multiSel.paths) {
+      const p = pathsRef.current.find((pp) => pp.id === id);
+      if (p) { const bb = getPathBoundingBox(p); minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y); maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height); }
+    }
+    for (const id of multiSel.dots) {
+      const d = dotsRef.current.find((dd) => dd.id === id);
+      if (d) { const bb = getDotBoundingBox(d); minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y); maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height); }
+    }
+    for (const id of multiSel.stickies) {
+      const s = stickies.find((ss) => ss.id === id);
+      if (s) { minX = Math.min(minX, s.x); minY = Math.min(minY, s.y); maxX = Math.max(maxX, s.x + (s.width || 170)); maxY = Math.max(maxY, s.y + (s.height || 100)); }
+    }
+    for (const id of multiSel.media) {
+      const m = mediaItems.find((mm) => mm.id === id);
+      if (m) { minX = Math.min(minX, m.x); minY = Math.min(minY, m.y); maxX = Math.max(maxX, m.x + m.width); maxY = Math.max(maxY, m.y + m.height); }
+    }
+    if (minX >= Infinity) return null;
+    return { x: minX, y: minY, w: maxX - minX, h: maxY - minY };
+  }, [multiSel, stickies, mediaItems]);
+
+  // Snapshot current selection state at pointerdown
+  const snapshotSelection = useCallback((mode: TransformMode, startPointer: { x: number; y: number }, anchor?: { x: number; y: number }): boolean => {
+    const bbox = computeMultiBBox();
+    if (!bbox) return false;
+    const snap: TransformSnapshot = {
+      mode, bbox, startPointer, anchor,
+      paths: new Map(), dots: new Map(), stickies: new Map(), media: new Map(),
+    };
+    for (const id of multiSel.paths) {
+      const p = pathsRef.current.find((pp) => pp.id === id);
+      if (p) snap.paths.set(id, { offsetX: p.offsetX || 0, offsetY: p.offsetY || 0, rotation: p.rotation || 0, points: p.points.map((pt) => ({ ...pt })) });
+    }
+    for (const id of multiSel.dots) {
+      const d = dotsRef.current.find((dd) => dd.id === id);
+      if (d) snap.dots.set(id, { x: d.x, y: d.y, offsetX: d.offsetX || 0, offsetY: d.offsetY || 0 });
+    }
+    for (const id of multiSel.stickies) {
+      const s = stickies.find((ss) => ss.id === id);
+      if (s) snap.stickies.set(id, { x: s.x, y: s.y, width: s.width || 170, height: s.height || 100, rotation: s.rotation || 0 });
+    }
+    for (const id of multiSel.media) {
+      const m = mediaItems.find((mm) => mm.id === id);
+      if (m) snap.media.set(id, { x: m.x, y: m.y, width: m.width, height: m.height, rotation: m.rotation || 0 });
+    }
+    transformRef.current = snap;
+    return true;
+  }, [multiSel, stickies, mediaItems, computeMultiBBox]);
+
+  // Refs that mirror zoom/pan state — needed for window-level listeners that
+  // can't depend on state in their closure (would need re-binding every render)
+  const zoomRef = useRef(1);
+  const panXRef = useRef(0);
+  const panYRef = useRef(0);
+
+  // Apply the current transform from snapshot — recomputes ALL positions/sizes/rotations
+  // from the snapshot + delta. Never mutates the snapshot itself.
+  const applyTransformFromSnapshot = useCallback((pointer: { x: number; y: number }) => {
+    const snap = transformRef.current;
+    if (!snap) return;
+
+    if (snap.mode === "translate") {
+      const dx = pointer.x - snap.startPointer.x;
+      const dy = pointer.y - snap.startPointer.y;
+      for (const [id, orig] of snap.paths) {
+        const p = pathsRef.current.find((pp) => pp.id === id);
+        if (p) { p.offsetX = orig.offsetX + dx; p.offsetY = orig.offsetY + dy; }
+      }
+      for (const [id, orig] of snap.dots) {
+        const d = dotsRef.current.find((dd) => dd.id === id);
+        if (d) { d.offsetX = orig.offsetX + dx; d.offsetY = orig.offsetY + dy; }
+      }
+      if (snap.stickies.size > 0) {
+        setStickies((prev) => prev.map((s) => {
+          const orig = snap.stickies.get(s.id);
+          return orig ? { ...s, x: orig.x + dx, y: orig.y + dy } : s;
+        }));
+      }
+      if (snap.media.size > 0) {
+        setMediaItems((prev) => prev.map((m) => {
+          const orig = snap.media.get(m.id);
+          return orig ? { ...m, x: orig.x + dx, y: orig.y + dy } : m;
+        }));
+      }
+    } else if (snap.mode === "resize" && snap.anchor) {
+      // Scale around the fixed anchor (opposite corner from dragged handle)
+      const newW = Math.abs(pointer.x - snap.anchor.x);
+      const newH = Math.abs(pointer.y - snap.anchor.y);
+      const origW = Math.max(1, snap.bbox.w);
+      const origH = Math.max(1, snap.bbox.h);
+      // Uniform scale based on the larger dimension change (prevents drift)
+      const sx = Math.max(0.1, newW / origW);
+      const sy = Math.max(0.1, newH / origH);
+      const scale = Math.min(sx, sy); // Keep aspect ratio to prevent drift
+      const ax = snap.anchor.x;
+      const ay = snap.anchor.y;
+      // Paths: scale points relative to anchor (rebuild from original snapshot points)
+      for (const [id, orig] of snap.paths) {
+        const p = pathsRef.current.find((pp) => pp.id === id);
+        if (p) {
+          p.points = orig.points.map((pt) => ({ x: ax + (pt.x - ax) * scale, y: ay + (pt.y - ay) * scale }));
+          p.offsetX = orig.offsetX;
+          p.offsetY = orig.offsetY;
+        }
+      }
+      // Dots: scale position relative to anchor (size stays)
+      for (const [id, orig] of snap.dots) {
+        const d = dotsRef.current.find((dd) => dd.id === id);
+        if (d) {
+          d.x = ax + (orig.x + orig.offsetX - ax) * scale;
+          d.y = ay + (orig.y + orig.offsetY - ay) * scale;
+          d.offsetX = 0;
+          d.offsetY = 0;
+        }
+      }
+      // Stickies: scale position AND dimensions relative to anchor
+      setStickies((prev) => prev.map((s) => {
+        const orig = snap.stickies.get(s.id);
+        if (!orig) return s;
+        return { ...s, x: ax + (orig.x - ax) * scale, y: ay + (orig.y - ay) * scale, width: Math.max(40, orig.width * scale), height: Math.max(20, orig.height * scale) };
+      }));
+      setMediaItems((prev) => prev.map((m) => {
+        const orig = snap.media.get(m.id);
+        if (!orig) return m;
+        return { ...m, x: ax + (orig.x - ax) * scale, y: ay + (orig.y - ay) * scale, width: Math.max(20, orig.width * scale), height: Math.max(20, orig.height * scale) };
+      }));
+    } else if (snap.mode === "rotate") {
+      // Rotation: rotate each item's center around group center, set angle absolutely from snapshot
+      const cx = snap.bbox.x + snap.bbox.w / 2;
+      const cy = snap.bbox.y + snap.bbox.h / 2;
+      const startAngle = Math.atan2(snap.startPointer.y - cy, snap.startPointer.x - cx);
+      const currAngle = Math.atan2(pointer.y - cy, pointer.x - cx);
+      const deltaRad = currAngle - startAngle;
+      const deltaDeg = deltaRad * 180 / Math.PI;
+      const cos = Math.cos(deltaRad);
+      const sin = Math.sin(deltaRad);
+      const rotPt = (px: number, py: number) => ({ x: cx + (px - cx) * cos - (py - cy) * sin, y: cy + (px - cx) * sin + (py - cy) * cos });
+      // Paths: rotate each point around group center
+      for (const [id, orig] of snap.paths) {
+        const p = pathsRef.current.find((pp) => pp.id === id);
+        if (p) {
+          p.points = orig.points.map((pt) => rotPt(pt.x + orig.offsetX, pt.y + orig.offsetY));
+          p.offsetX = 0;
+          p.offsetY = 0;
+          p.rotation = orig.rotation + deltaDeg;
+        }
+      }
+      for (const [id, orig] of snap.dots) {
+        const d = dotsRef.current.find((dd) => dd.id === id);
+        if (d) {
+          const np = rotPt(orig.x + orig.offsetX, orig.y + orig.offsetY);
+          d.x = np.x;
+          d.y = np.y;
+          d.offsetX = 0;
+          d.offsetY = 0;
+        }
+      }
+      setStickies((prev) => prev.map((s) => {
+        const orig = snap.stickies.get(s.id);
+        if (!orig) return s;
+        const origCenterX = orig.x + orig.width / 2;
+        const origCenterY = orig.y + orig.height / 2;
+        const newCenter = rotPt(origCenterX, origCenterY);
+        return { ...s, x: newCenter.x - orig.width / 2, y: newCenter.y - orig.height / 2, rotation: orig.rotation + deltaDeg };
+      }));
+      setMediaItems((prev) => prev.map((m) => {
+        const orig = snap.media.get(m.id);
+        if (!orig) return m;
+        const origCenterX = orig.x + orig.width / 2;
+        const origCenterY = orig.y + orig.height / 2;
+        const newCenter = rotPt(origCenterX, origCenterY);
+        return { ...m, x: newCenter.x - orig.width / 2, y: newCenter.y - orig.height / 2, rotation: orig.rotation + deltaDeg };
+      }));
+    }
+    setTransformTick((t) => t + 1);
+  }, []);
 
   // ── Render tick (forces re-render when refs change) ──
   const [, setRenderTick] = useState(0);
@@ -323,6 +518,40 @@ export default function WhiteboardPage() {
   const [panY, setPanY] = useState(0);
   const [isPanning, setIsPanning] = useState(false);
   const panStartRef = useRef<{ x: number; y: number; panX: number; panY: number }>({ x: 0, y: 0, panX: 0, panY: 0 });
+
+  // Sync refs with state for use in window-level listeners
+  useEffect(() => { zoomRef.current = zoom; }, [zoom]);
+  useEffect(() => { panXRef.current = panX; }, [panX]);
+  useEffect(() => { panYRef.current = panY; }, [panY]);
+  const stickiesRef = useRef<StickyNote[]>([]);
+  const mediaItemsRef = useRef<MediaItem[]>([]);
+  useEffect(() => { stickiesRef.current = stickies; }, [stickies]);
+  useEffect(() => { mediaItemsRef.current = mediaItems; }, [mediaItems]);
+
+  // Window-level handlers for snapshot transforms (works when mouse leaves canvas).
+  // Mounted ONCE — uses refs internally to avoid stale closures.
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (!transformRef.current) return;
+      const wrap = wrapRef.current;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const worldX = (e.clientX - rect.left - panXRef.current) / zoomRef.current;
+      const worldY = (e.clientY - rect.top - panYRef.current) / zoomRef.current;
+      applyTransformFromSnapshot({ x: worldX, y: worldY });
+      redraw();
+    };
+    const onUp = () => {
+      if (!transformRef.current) return;
+      transformRef.current = null;
+      saveWhiteboard(pathsRef.current, dotsRef.current, stickiesRef.current, mediaItemsRef.current);
+      bump();
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ── Drawing customization ──
   const [drawColor, setDrawColor] = useState("#282828");
@@ -827,8 +1056,7 @@ export default function WhiteboardPage() {
       if (dotIdx !== -1) {
         const dot = dotsRef.current[dotIdx];
         if (multiSel.dots.has(dot.id)) {
-          setDraggingMulti(true);
-          multiDragStartRef.current = { x: pos.x, y: pos.y };
+          snapshotSelection("translate", pos);
           return;
         }
         setSelectedElementId(dot.id);
@@ -844,10 +1072,9 @@ export default function WhiteboardPage() {
       const pathIdx = pathsRef.current.findIndex((p) => isNearPath(pos.x, pos.y, p));
       if (pathIdx !== -1) {
         const path = pathsRef.current[pathIdx];
-        // If path is part of multi-selection, start group drag
+        // If path is part of multi-selection, start group translate (snapshot-based)
         if (multiSel.paths.has(path.id)) {
-          setDraggingMulti(true);
-          multiDragStartRef.current = { x: pos.x, y: pos.y };
+          snapshotSelection("translate", pos);
           return;
         }
         setSelectedElementId(path.id);
@@ -872,61 +1099,10 @@ export default function WhiteboardPage() {
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const pos = getCanvasPos(e);
 
-    // Group resize
-    if (resizingMulti) {
-      const wrap = wrapRef.current;
-      if (!wrap) return;
-      const rect = wrap.getBoundingClientRect();
-      const worldX = (e.clientX - rect.left - panX) / zoom;
-      const worldY = (e.clientY - rect.top - panY) / zoom;
-      const sb = resizingMulti.startBBox;
-      const scaleX = Math.max(0.2, (worldX - sb.x) / sb.w);
-      const scaleY = Math.max(0.2, (worldY - sb.y) / sb.h);
-      const cx = sb.x + sb.w / 2;
-      const cy = sb.y + sb.h / 2;
-      // Scale all selected items around group center
-      for (const id of multiSel.paths) {
-        const p = pathsRef.current.find((pp) => pp.id === id);
-        if (p) { const bb = getPathBoundingBox(p); const pcx = bb.x + bb.width / 2; const pcy = bb.y + bb.height / 2; p.offsetX = (p.offsetX || 0) + (pcx - cx) * (scaleX - 1); p.offsetY = (p.offsetY || 0) + (pcy - cy) * (scaleY - 1); }
-      }
-      for (const id of multiSel.stickies) setStickies((prev) => prev.map((s) => multiSel.stickies.has(s.id) ? { ...s, x: cx + (s.x - cx) * scaleX, y: cy + (s.y - cy) * scaleY } : s));
-      for (const id of multiSel.media) setMediaItems((prev) => prev.map((m) => multiSel.media.has(m.id) ? { ...m, x: cx + (m.x - cx) * scaleX, y: cy + (m.y - cy) * scaleY } : m));
-      setResizingMulti((prev) => prev ? { ...prev, startBBox: { x: sb.x, y: sb.y, w: sb.w * scaleX, h: sb.h * scaleY } } : null);
-      redraw(); bump();
-      return;
-    }
-
-    // Group rotate
-    if (rotatingMulti) {
-      const wrap = wrapRef.current;
-      if (!wrap) return;
-      const rect = wrap.getBoundingClientRect();
-      const worldX = (e.clientX - rect.left - panX) / zoom;
-      const worldY = (e.clientY - rect.top - panY) / zoom;
-      const currentAngle = Math.atan2(worldY - rotatingMulti.centerY, worldX - rotatingMulti.centerX) * 180 / Math.PI;
-      const delta = (currentAngle - rotatingMulti.startAngle) * Math.PI / 180;
-      const cx = rotatingMulti.centerX;
-      const cy = rotatingMulti.centerY;
-      const cos = Math.cos(delta);
-      const sin = Math.sin(delta);
-      // Rotate paths around group center
-      for (const id of multiSel.paths) {
-        const p = pathsRef.current.find((pp) => pp.id === id);
-        if (p) { p.rotation = (p.rotation || 0) + (currentAngle - rotatingMulti.startAngle); }
-      }
-      // Rotate stickies/media positions around group center
-      setStickies((prev) => prev.map((s) => {
-        if (!multiSel.stickies.has(s.id)) return s;
-        const dx = s.x - cx; const dy = s.y - cy;
-        return { ...s, x: cx + dx * cos - dy * sin, y: cy + dx * sin + dy * cos, rotation: (s.rotation || 0) + (currentAngle - rotatingMulti.startAngle) };
-      }));
-      setMediaItems((prev) => prev.map((m) => {
-        if (!multiSel.media.has(m.id)) return m;
-        const dx = m.x - cx; const dy = m.y - cy;
-        return { ...m, x: cx + dx * cos - dy * sin, y: cy + dx * sin + dy * cos, rotation: (m.rotation || 0) + (currentAngle - rotatingMulti.startAngle) };
-      }));
-      setRotatingMulti((prev) => prev ? { ...prev, startAngle: currentAngle } : null);
-      redraw(); bump();
+    // Snapshot-based group transform (translate / resize / rotate)
+    if (transformRef.current) {
+      applyTransformFromSnapshot(pos);
+      redraw();
       return;
     }
 
@@ -944,33 +1120,7 @@ export default function WhiteboardPage() {
       return;
     }
 
-    // Multi-selection group drag
-    if (draggingMulti) {
-      const dx = pos.x - multiDragStartRef.current.x;
-      const dy = pos.y - multiDragStartRef.current.y;
-      multiDragStartRef.current = { x: pos.x, y: pos.y };
-      // Move paths
-      for (const id of multiSel.paths) {
-        const p = pathsRef.current.find((pp) => pp.id === id);
-        if (p) { p.offsetX = (p.offsetX || 0) + dx; p.offsetY = (p.offsetY || 0) + dy; }
-      }
-      // Move dots
-      for (const id of multiSel.dots) {
-        const d = dotsRef.current.find((dd) => dd.id === id);
-        if (d) { d.offsetX = (d.offsetX || 0) + dx; d.offsetY = (d.offsetY || 0) + dy; }
-      }
-      // Move stickies
-      if (multiSel.stickies.size > 0) {
-        setStickies((prev) => prev.map((s) => multiSel.stickies.has(s.id) ? { ...s, x: s.x + dx, y: s.y + dy } : s));
-      }
-      // Move media
-      if (multiSel.media.size > 0) {
-        setMediaItems((prev) => prev.map((m) => multiSel.media.has(m.id) ? { ...m, x: m.x + dx, y: m.y + dy } : m));
-      }
-      redraw();
-      bump();
-      return;
-    }
+    // (Old delta-based group drag removed — now handled by snapshot transform above)
 
     // Continuous eraser: erase while dragging
     if (activeTool === "eraser" && isDrawing.current) {
@@ -1149,15 +1299,11 @@ export default function WhiteboardPage() {
   };
 
   const handleCanvasMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    // Group resize/rotate completion
-    if (resizingMulti) {
-      setResizingMulti(null);
+    // Snapshot transform completion (translate / resize / rotate)
+    if (transformRef.current) {
+      transformRef.current = null;
       saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
-      return;
-    }
-    if (rotatingMulti) {
-      setRotatingMulti(null);
-      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
+      bump();
       return;
     }
     // Marquee selection completion
@@ -1194,12 +1340,7 @@ export default function WhiteboardPage() {
       bump();
       return;
     }
-    // Multi-drag completion
-    if (draggingMulti) {
-      setDraggingMulti(false);
-      saveWhiteboard(pathsRef.current, dotsRef.current, stickies, mediaItems);
-      return;
-    }
+    // (Old multi-drag mouseup removed — handled by transformRef block above)
     if (activeTool === "draw" && isDrawing.current && currentPath.current.length > 0) {
       pushHistory();
       pathsRef.current.push({
@@ -2382,17 +2523,26 @@ export default function WhiteboardPage() {
             {/* Resize handle (bottom-right corner) */}
             <div
               style={{ position: "absolute", left: `${bx + bw - 5}px`, top: `${by + bh - 5}px`, width: "10px", height: "10px", backgroundColor: "#A259FF", border: "2px solid #282828", cursor: "nwse-resize", pointerEvents: "auto" }}
-              onMouseDown={(e) => { e.stopPropagation(); setResizingMulti({ startX: (e.clientX - panX) / zoom, startY: (e.clientY - panY) / zoom, startBBox: { x: bx, y: by, w: bw, h: bh } }); }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+                const wrap = wrapRef.current; if (!wrap) return;
+                const rect = wrap.getBoundingClientRect();
+                const px = (e.clientX - rect.left - panX) / zoom;
+                const py = (e.clientY - rect.top - panY) / zoom;
+                // Anchor = top-left corner of bbox (opposite of dragged corner)
+                snapshotSelection("resize", { x: px, y: py }, { x: minX, y: minY });
+              }}
             />
             {/* Rotation handle (outside bottom-right) */}
             <div
               style={{ position: "absolute", left: `${bx + bw + 14}px`, top: `${by + bh + 14}px`, width: "16px", height: "16px", borderRadius: "50%", backgroundColor: "#A259FF", border: "2px solid #282828", cursor: "grab", pointerEvents: "auto", display: "flex", alignItems: "center", justifyContent: "center" }}
               onMouseDown={(e) => {
                 e.stopPropagation();
-                const mouseX = (e.clientX - panX) / zoom;
-                const mouseY = (e.clientY - panY) / zoom;
-                const startAngle = Math.atan2(mouseY - cy, mouseX - cx) * 180 / Math.PI;
-                setRotatingMulti({ centerX: cx, centerY: cy, startAngle });
+                const wrap = wrapRef.current; if (!wrap) return;
+                const rect = wrap.getBoundingClientRect();
+                const px = (e.clientX - rect.left - panX) / zoom;
+                const py = (e.clientY - rect.top - panY) / zoom;
+                snapshotSelection("rotate", { x: px, y: py });
               }}
             >
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFF" strokeWidth="3"><path d="M21 12a9 9 0 1 1-6.219-8.56" /><polyline points="17 2 21 3.5 21 8" /></svg>

@@ -31,6 +31,7 @@ export async function GET(
           id: true,
           role: true,
           content: true,
+          reasoning: true,
           toolCalls: true,
           toolResults: true,
           createdAt: true,

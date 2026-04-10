@@ -125,16 +125,28 @@ export default function AiPage() {
       const res = await fetch(`/api/ai/sessions/${sid}`);
       const data = await res.json();
       if (data.ok && data.session?.messages) {
-        setMessages(data.session.messages.map((m: { role: string; content: string; toolCalls?: unknown; toolResults?: unknown }) => {
-          if (m.role === "TOOL") {
+        // Filter out separate TOOL rows — they're now bundled into ASSISTANT messages
+        const filtered = data.session.messages.filter((m: { role: string }) => m.role !== "TOOL");
+        setMessages(filtered.map((m: { role: string; content: string; reasoning?: string | null; toolCalls?: unknown; toolResults?: unknown }) => {
+          if (m.role === "ASSISTANT") {
+            // Reconstruct toolCalls array (saved as bundled JSON on the row)
+            let toolCallsArr: Array<{ name: string; args: Record<string, unknown>; result: unknown }> | undefined;
+            if (m.toolCalls && Array.isArray(m.toolCalls)) {
+              toolCallsArr = (m.toolCalls as Array<{ name?: string; args?: Record<string, unknown>; result?: unknown }>).map((tc) => ({
+                name: tc.name || "tool",
+                args: tc.args || {},
+                result: tc.result,
+              }));
+            }
             return {
-              role: "tool" as const,
+              role: "ai" as const,
               text: m.content,
-              toolCalls: m.toolCalls ? [{ name: (m.toolCalls as Record<string, unknown>).toolName as string || m.content, args: (m.toolCalls as Record<string, unknown>).args as Record<string, unknown> || {}, result: m.toolResults }] : undefined,
+              reasoning: m.reasoning || undefined,
+              toolCalls: toolCallsArr,
             };
           }
           return {
-            role: m.role === "USER" ? "user" as const : "ai" as const,
+            role: "user" as const,
             text: m.content,
           };
         }));

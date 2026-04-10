@@ -262,10 +262,10 @@ export async function POST(req: Request) {
           execute: async (params) => executeUpdateDirectoryTree(params),
         }),
       },
-      onFinish: async ({ text, toolCalls, toolResults }) => {
+      onFinish: async ({ text, toolCalls, toolResults, reasoning }) => {
         if (!activeSessionId) return;
 
-        // Persist tool calls as TOOL messages
+        // Persist tool calls as separate TOOL rows (existing behavior)
         if (toolCalls && toolCalls.length > 0) {
           for (let i = 0; i < toolCalls.length; i++) {
             const tc = toolCalls[i];
@@ -282,13 +282,33 @@ export async function POST(req: Request) {
           }
         }
 
-        // Persist assistant text response
+        // Persist assistant text + reasoning + bundled toolCalls for reload
         if (text) {
+          // Aggregate reasoning text from streaming reasoning blocks (if any)
+          let reasoningText: string | null = null;
+          if (reasoning && Array.isArray(reasoning)) {
+            const parts = reasoning.map((r: unknown) => {
+              if (typeof r === "string") return r;
+              if (r && typeof r === "object" && "text" in r) return String((r as { text: unknown }).text);
+              return "";
+            }).filter(Boolean);
+            if (parts.length > 0) reasoningText = parts.join("\n");
+          } else if (typeof reasoning === "string") {
+            reasoningText = reasoning;
+          }
+
+          // Bundle toolCalls + results onto the ASSISTANT message so they reload as a unit
+          const bundledToolCalls = toolCalls && toolCalls.length > 0
+            ? toolCalls.map((tc, i) => ({ name: tc.toolName, args: tc.input || {}, result: toolResults?.[i] || null }))
+            : null;
+
           await prisma.aiChatMessage.create({
             data: {
               sessionId: activeSessionId,
               role: "ASSISTANT",
               content: text,
+              reasoning: reasoningText,
+              toolCalls: bundledToolCalls as unknown as Prisma.InputJsonValue ?? undefined,
             },
           });
         }

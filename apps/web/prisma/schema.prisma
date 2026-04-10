@@ -244,6 +244,7 @@ model AiChatMessage {
   sessionId   String
   role        AiMessageRole
   content     String        @db.Text
+  reasoning   String?       @db.Text
   toolCalls   Json?
   toolResults Json?
 
