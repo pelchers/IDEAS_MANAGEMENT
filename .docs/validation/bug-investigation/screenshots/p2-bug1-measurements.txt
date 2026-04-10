@@ -1,0 +1,7 @@
+BBox BEFORE resize: {"x":-280,"y":103.1875,"width":276,"height":64.390625}
+BBox DURING resize (+100px drag): {"x":-280,"y":103.1875,"width":276,"height":64.390625}
+ResizeHandle DURING resize: {"x":715.8125,"y":263.90625,"width":10,"height":10}
+BBox AFTER resize: {"x":-280,"y":103.1875,"width":276,"height":64.390625}
+
+Expected: BBox and strokes should scale together, handle stays at bottom-right of scaled bbox.
+Observed: Check screenshots for disconnect between bbox overlay and canvas strokes.

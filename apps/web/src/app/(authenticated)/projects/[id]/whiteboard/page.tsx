@@ -428,13 +428,16 @@ export default function WhiteboardPage() {
       const scale = Math.min(sx, sy); // Keep aspect ratio to prevent drift
       const ax = snap.anchor.x;
       const ay = snap.anchor.y;
-      // Paths: scale points relative to anchor (rebuild from original snapshot points)
+      // Paths: transform points to world space (+ offset), scale relative to anchor, zero offset
       for (const [id, orig] of snap.paths) {
         const p = pathsRef.current.find((pp) => pp.id === id);
         if (p) {
-          p.points = orig.points.map((pt) => ({ x: ax + (pt.x - ax) * scale, y: ay + (pt.y - ay) * scale }));
-          p.offsetX = orig.offsetX;
-          p.offsetY = orig.offsetY;
+          p.points = orig.points.map((pt) => ({
+            x: ax + (pt.x + orig.offsetX - ax) * scale,
+            y: ay + (pt.y + orig.offsetY - ay) * scale,
+          }));
+          p.offsetX = 0;
+          p.offsetY = 0;
         }
       }
       // Dots: scale position relative to anchor (size stays)

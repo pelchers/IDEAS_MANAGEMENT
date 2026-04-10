@@ -22,39 +22,44 @@ export async function GET(
 
   const { id } = await params;
 
-  const session = await prisma.aiChatSession.findFirst({
-    where: { id, userId: user.id },
-    include: {
-      messages: {
-        orderBy: { createdAt: "asc" },
-        select: {
-          id: true,
-          role: true,
-          content: true,
-          reasoning: true,
-          toolCalls: true,
-          toolResults: true,
-          createdAt: true,
+  try {
+    const session = await prisma.aiChatSession.findFirst({
+      where: { id, userId: user.id },
+      include: {
+        messages: {
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            role: true,
+            content: true,
+            reasoning: true,
+            toolCalls: true,
+            toolResults: true,
+            createdAt: true,
+          },
         },
       },
-    },
-  });
+    });
 
-  if (!session) {
-    return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
+    if (!session) {
+      return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      ok: true,
+      session: {
+        id: session.id,
+        title: session.title,
+        projectId: session.projectId,
+        createdAt: session.createdAt,
+        updatedAt: session.updatedAt,
+        messages: session.messages,
+      },
+    });
+  } catch (err) {
+    console.error("[AI Sessions] GET error:", err instanceof Error ? err.message : err);
+    return NextResponse.json({ ok: false, error: "server_error" }, { status: 500 });
   }
-
-  return NextResponse.json({
-    ok: true,
-    session: {
-      id: session.id,
-      title: session.title,
-      projectId: session.projectId,
-      createdAt: session.createdAt,
-      updatedAt: session.updatedAt,
-      messages: session.messages,
-    },
-  });
 }
 
 /**

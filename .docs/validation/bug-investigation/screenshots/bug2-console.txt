@@ -1,0 +1,3 @@
+[error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+[error] [AI] Failed to load session: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at AiPage.useCallback[switchSession] (http://localhost:3000/_next/static/chunks/apps_web_src_92f0ab2f._.js:533:40)

@@ -129,37 +129,55 @@ export default function AiPage() {
     setSessionId(sid);
     try {
       const res = await fetch(`/api/ai/sessions/${sid}`);
-      const data = await res.json();
-      if (data.ok && data.session?.messages) {
-        // Filter out separate TOOL rows — they're now bundled into ASSISTANT messages
-        const filtered = data.session.messages.filter((m: { role: string }) => m.role !== "TOOL");
-        setMessages(filtered.map((m: { role: string; content: string; reasoning?: string | null; toolCalls?: unknown; toolResults?: unknown }) => {
-          if (m.role === "ASSISTANT") {
-            // Reconstruct toolCalls array (saved as bundled JSON on the row)
-            let toolCallsArr: Array<{ name: string; args: Record<string, unknown>; result: unknown }> | undefined;
-            if (m.toolCalls && Array.isArray(m.toolCalls)) {
-              toolCallsArr = (m.toolCalls as Array<{ name?: string; args?: Record<string, unknown>; result?: unknown }>).map((tc) => ({
-                name: tc.name || "tool",
-                args: tc.args || {},
-                result: tc.result,
-              }));
-            }
-            return {
-              role: "ai" as const,
-              text: m.content,
-              reasoning: m.reasoning || undefined,
-              toolCalls: toolCallsArr,
-            };
-          }
-          return {
-            role: "user" as const,
-            text: m.content,
-          };
-        }));
+      if (!res.ok) {
+        console.error("[AI] Session fetch failed:", res.status);
+        return; // Don't wipe messages on API error
       }
+      const data = await res.json();
+      if (!data.ok || !data.session?.messages) return;
+
+      // Map DB messages → UI messages.
+      // Handles both old format (separate TOOL rows) and new format (bundled on ASSISTANT).
+      const dbMessages = data.session.messages as Array<{
+        role: string; content: string; reasoning?: string | null;
+        toolCalls?: unknown; toolResults?: unknown;
+      }>;
+
+      const mapped: ChatMessage[] = [];
+      for (let i = 0; i < dbMessages.length; i++) {
+        const m = dbMessages[i];
+        if (m.role === "USER") {
+          mapped.push({ role: "user", text: m.content });
+        } else if (m.role === "ASSISTANT") {
+          // Reconstruct toolCalls: check bundled first, then collect trailing TOOL rows
+          let toolCallsArr: Array<{ name: string; args: Record<string, unknown>; result: unknown }> | undefined;
+          if (m.toolCalls && Array.isArray(m.toolCalls) && (m.toolCalls as unknown[]).length > 0) {
+            toolCallsArr = (m.toolCalls as Array<{ name?: string; args?: Record<string, unknown>; result?: unknown }>).map((tc) => ({
+              name: tc.name || "tool", args: tc.args || {}, result: tc.result,
+            }));
+          }
+          mapped.push({
+            role: "ai", text: m.content,
+            reasoning: m.reasoning || undefined,
+            toolCalls: toolCallsArr,
+          });
+        } else if (m.role === "TOOL") {
+          // Old-format separate TOOL row: attach to the PREVIOUS ai message if it exists
+          const prev = mapped.length > 0 ? mapped[mapped.length - 1] : null;
+          if (prev && prev.role === "ai") {
+            const tc = m.toolCalls as Record<string, unknown> | null;
+            const name = (tc?.toolName as string) || m.content.replace("Tool: ", "");
+            if (!prev.toolCalls) prev.toolCalls = [];
+            prev.toolCalls.push({ name, args: (tc?.args as Record<string, unknown>) || {}, result: m.toolResults });
+          }
+          // If no previous AI message, skip (orphaned tool row)
+        }
+        // Skip SYSTEM messages
+      }
+      setMessages(mapped);
     } catch (err) {
       console.error("[AI] Failed to load session:", err);
-      setMessages([]);
+      // Don't wipe messages on error — preserve whatever was showing
     }
   }, []);
 

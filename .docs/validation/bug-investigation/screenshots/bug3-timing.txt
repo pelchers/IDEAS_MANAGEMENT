@@ -1,0 +1,3 @@
+New chat click -> page ready: 509ms
+Session appeared in sidebar: NO (within 7.5s)
+Response started: NO (within 30s)
