@@ -1483,6 +1483,17 @@ export default function WhiteboardPage() {
     const wrapRect = wrapRef.current?.getBoundingClientRect();
     if (!wrapRect) return;
 
+    // If this sticky is part of a multi-selection, start group translate instead of solo drag
+    if (multiSel.stickies.has(id) && multiSelCount > 1) {
+      const worldX = (e.clientX - wrapRect.left - panX) / zoom;
+      const worldY = (e.clientY - wrapRect.top - panY) / zoom;
+      snapshotSelection("translate", { x: worldX, y: worldY });
+      return;
+    }
+
+    // Clear any existing multi-selection on solo sticky click
+    if (multiSelCount > 0) clearMultiSelection();
+
     dragOffset.current = {
       x: e.clientX - (wrapRect.left + sticky.x),
       y: e.clientY - (wrapRect.top + sticky.y),
@@ -1631,6 +1642,18 @@ export default function WhiteboardPage() {
     if (!media) return;
     const wrapRect = wrapRef.current?.getBoundingClientRect();
     if (!wrapRect) return;
+
+    // If this media is part of a multi-selection, start group translate
+    if (multiSel.media.has(id) && multiSelCount > 1) {
+      const worldX = (e.clientX - wrapRect.left - panX) / zoom;
+      const worldY = (e.clientY - wrapRect.top - panY) / zoom;
+      snapshotSelection("translate", { x: worldX, y: worldY });
+      return;
+    }
+
+    // Clear any existing multi-selection on solo media click
+    if (multiSelCount > 0) clearMultiSelection();
+
     mediaDragOffset.current = {
       x: e.clientX - (wrapRect.left + media.x),
       y: e.clientY - (wrapRect.top + media.y),

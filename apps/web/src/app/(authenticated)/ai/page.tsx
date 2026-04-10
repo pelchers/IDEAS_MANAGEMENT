@@ -119,6 +119,12 @@ export default function AiPage() {
   }, []);
   useEffect(() => { loadSessions(); }, [loadSessions]);
 
+  // Persist sessionId to localStorage so refreshes restore the last chat
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (sessionId) localStorage.setItem("ai_last_session_id", sessionId);
+  }, [sessionId]);
+
   const switchSession = useCallback(async (sid: string) => {
     setSessionId(sid);
     try {
@@ -151,10 +157,30 @@ export default function AiPage() {
           };
         }));
       }
-    } catch { setMessages([]); }
+    } catch (err) {
+      console.error("[AI] Failed to load session:", err);
+      setMessages([]);
+    }
   }, []);
 
-  const newChat = useCallback(() => { setSessionId(null); setMessages([]); setInput(""); }, []);
+  // On mount: restore last sessionId from localStorage and load its messages
+  const didRestoreRef = useRef(false);
+  useEffect(() => {
+    if (didRestoreRef.current) return;
+    if (typeof window === "undefined") return;
+    const saved = localStorage.getItem("ai_last_session_id");
+    if (saved) {
+      didRestoreRef.current = true;
+      switchSession(saved);
+    }
+  }, [switchSession]);
+
+  const newChat = useCallback(() => {
+    setSessionId(null);
+    setMessages([]);
+    setInput("");
+    if (typeof window !== "undefined") localStorage.removeItem("ai_last_session_id");
+  }, []);
 
   const clearSession = useCallback(async () => {
     if (!sessionId) return;
