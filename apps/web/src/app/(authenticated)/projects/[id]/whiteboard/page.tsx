@@ -800,36 +800,9 @@ export default function WhiteboardPage() {
       ctx.restore();
     }
 
-    // Group selection bounding box (paths + dots only — stickies/media drawn as overlay divs)
-    if (multiSel.paths.size + multiSel.dots.size > 0) {
-      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-      for (const id of multiSel.paths) {
-        const p = pathsRef.current.find((pp) => pp.id === id);
-        if (p) {
-          const bb = getPathBoundingBox(p);
-          minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y);
-          maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height);
-        }
-      }
-      for (const id of multiSel.dots) {
-        const d = dotsRef.current.find((dd) => dd.id === id);
-        if (d) {
-          const bb = getDotBoundingBox(d);
-          minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y);
-          maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height);
-        }
-      }
-      if (minX < Infinity) {
-        ctx.save();
-        ctx.strokeStyle = "#A259FF";
-        ctx.lineWidth = 2;
-        ctx.setLineDash([8, 4]);
-        const pad = 6;
-        ctx.strokeRect(minX - pad, minY - pad, maxX - minX + pad * 2, maxY - minY + pad * 2);
-        ctx.setLineDash([]);
-        ctx.restore();
-      }
-    }
+    // Group selection bounding box is rendered ONLY as the HTML overlay (includes
+    // paths + dots + stickies + media in one unified bbox with resize/rotate handles).
+    // Removed the canvas-drawn bbox here to prevent duplicate/disjointed boxes.
   }, [drawGrid, selectedElementId, selectedElementType, marquee, multiSel]);
 
   /* ── Canvas setup + resize ── */
