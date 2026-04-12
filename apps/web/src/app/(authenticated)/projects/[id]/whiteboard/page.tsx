@@ -805,6 +805,13 @@ export default function WhiteboardPage() {
     // Removed the canvas-drawn bbox here to prevent duplicate/disjointed boxes.
   }, [drawGrid, selectedElementId, selectedElementType, marquee, multiSel]);
 
+  // Auto-redraw when marquee or selection state changes (ensures canvas clears
+  // the marquee rectangle after mouseup, since setMarquee(null) is async and the
+  // immediate redraw() call in mouseUp still sees the stale closure value).
+  useEffect(() => {
+    redraw();
+  }, [redraw]);
+
   /* ── Canvas setup + resize ── */
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -2274,6 +2281,69 @@ export default function WhiteboardPage() {
             {fileSizeWarning}
           </div>
         )}
+
+        {/* ── Group Selection Overlay (resize + rotate handles) ── */}
+        {hasMultiSelection && (() => {
+          // Compute combined bbox of all selected items
+          let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+          for (const id of multiSel.paths) {
+            const p = pathsRef.current.find((pp) => pp.id === id);
+            if (p) { const bb = getPathBoundingBox(p); minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y); maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height); }
+          }
+          for (const id of multiSel.dots) {
+            const d = dotsRef.current.find((dd) => dd.id === id);
+            if (d) { const bb = getDotBoundingBox(d); minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y); maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height); }
+          }
+          for (const id of multiSel.stickies) {
+            const s = stickies.find((ss) => ss.id === id);
+            if (s) { minX = Math.min(minX, s.x); minY = Math.min(minY, s.y); maxX = Math.max(maxX, s.x + (s.width || 170)); maxY = Math.max(maxY, s.y + (s.height || 100)); }
+          }
+          for (const id of multiSel.media) {
+            const m = mediaItems.find((mm) => mm.id === id);
+            if (m) { minX = Math.min(minX, m.x); minY = Math.min(minY, m.y); maxX = Math.max(maxX, m.x + m.width); maxY = Math.max(maxY, m.y + m.height); }
+          }
+          if (minX >= Infinity) return null;
+          const pad = 10;
+          const bx = minX - pad;
+          const by = minY - pad;
+          const bw = maxX - minX + pad * 2;
+          const bh = maxY - minY + pad * 2;
+          const cx = minX + (maxX - minX) / 2;
+          const cy = minY + (maxY - minY) / 2;
+          return (
+            <div style={{ position: "absolute", inset: 0, pointerEvents: "none", transform: `translate(${panX}px, ${panY}px) scale(${zoom})`, transformOrigin: "0 0", zIndex: 60 }}>
+              {/* Group bounding box */}
+              <div style={{ position: "absolute", left: `${bx}px`, top: `${by}px`, width: `${bw}px`, height: `${bh}px`, border: "2px dashed #A259FF", backgroundColor: "transparent" }} />
+              {/* Resize handle (bottom-right corner) */}
+              <div
+                style={{ position: "absolute", left: `${bx + bw - 5}px`, top: `${by + bh - 5}px`, width: "10px", height: "10px", backgroundColor: "#A259FF", border: "2px solid #282828", cursor: "nwse-resize", pointerEvents: "auto" }}
+                onMouseDown={(e) => {
+                  e.stopPropagation();
+                  const wrap = wrapRef.current; if (!wrap) return;
+                  const rect = wrap.getBoundingClientRect();
+                  const px = (e.clientX - rect.left - panX) / zoom;
+                  const py = (e.clientY - rect.top - panY) / zoom;
+                  // Anchor = top-left corner of bbox (opposite of dragged corner)
+                  snapshotSelection("resize", { x: px, y: py }, { x: minX, y: minY });
+                }}
+              />
+              {/* Rotation handle (outside bottom-right) */}
+              <div
+                style={{ position: "absolute", left: `${bx + bw + 14}px`, top: `${by + bh + 14}px`, width: "16px", height: "16px", borderRadius: "50%", backgroundColor: "#A259FF", border: "2px solid #282828", cursor: "grab", pointerEvents: "auto", display: "flex", alignItems: "center", justifyContent: "center" }}
+                onMouseDown={(e) => {
+                  e.stopPropagation();
+                  const wrap = wrapRef.current; if (!wrap) return;
+                  const rect = wrap.getBoundingClientRect();
+                  const px = (e.clientX - rect.left - panX) / zoom;
+                  const py = (e.clientY - rect.top - panY) / zoom;
+                  snapshotSelection("rotate", { x: px, y: py });
+                }}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFF" strokeWidth="3"><path d="M21 12a9 9 0 1 1-6.219-8.56" /><polyline points="17 2 21 3.5 21 8" /></svg>
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       {/* ── Sticky Settings Popup ── */}
@@ -2486,69 +2556,6 @@ export default function WhiteboardPage() {
           </div>
         </div>
       )}
-
-      {/* ── Group Selection Overlay (resize + rotate handles) ── */}
-      {hasMultiSelection && (() => {
-        // Compute combined bbox of all selected items
-        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-        for (const id of multiSel.paths) {
-          const p = pathsRef.current.find((pp) => pp.id === id);
-          if (p) { const bb = getPathBoundingBox(p); minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y); maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height); }
-        }
-        for (const id of multiSel.dots) {
-          const d = dotsRef.current.find((dd) => dd.id === id);
-          if (d) { const bb = getDotBoundingBox(d); minX = Math.min(minX, bb.x); minY = Math.min(minY, bb.y); maxX = Math.max(maxX, bb.x + bb.width); maxY = Math.max(maxY, bb.y + bb.height); }
-        }
-        for (const id of multiSel.stickies) {
-          const s = stickies.find((ss) => ss.id === id);
-          if (s) { minX = Math.min(minX, s.x); minY = Math.min(minY, s.y); maxX = Math.max(maxX, s.x + (s.width || 170)); maxY = Math.max(maxY, s.y + (s.height || 100)); }
-        }
-        for (const id of multiSel.media) {
-          const m = mediaItems.find((mm) => mm.id === id);
-          if (m) { minX = Math.min(minX, m.x); minY = Math.min(minY, m.y); maxX = Math.max(maxX, m.x + m.width); maxY = Math.max(maxY, m.y + m.height); }
-        }
-        if (minX >= Infinity) return null;
-        const pad = 10;
-        const bx = minX - pad;
-        const by = minY - pad;
-        const bw = maxX - minX + pad * 2;
-        const bh = maxY - minY + pad * 2;
-        const cx = minX + (maxX - minX) / 2;
-        const cy = minY + (maxY - minY) / 2;
-        return (
-          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", transform: `translate(${panX}px, ${panY}px) scale(${zoom})`, transformOrigin: "0 0", zIndex: 60 }}>
-            {/* Group bounding box */}
-            <div style={{ position: "absolute", left: `${bx}px`, top: `${by}px`, width: `${bw}px`, height: `${bh}px`, border: "2px dashed #A259FF", backgroundColor: "transparent" }} />
-            {/* Resize handle (bottom-right corner) */}
-            <div
-              style={{ position: "absolute", left: `${bx + bw - 5}px`, top: `${by + bh - 5}px`, width: "10px", height: "10px", backgroundColor: "#A259FF", border: "2px solid #282828", cursor: "nwse-resize", pointerEvents: "auto" }}
-              onMouseDown={(e) => {
-                e.stopPropagation();
-                const wrap = wrapRef.current; if (!wrap) return;
-                const rect = wrap.getBoundingClientRect();
-                const px = (e.clientX - rect.left - panX) / zoom;
-                const py = (e.clientY - rect.top - panY) / zoom;
-                // Anchor = top-left corner of bbox (opposite of dragged corner)
-                snapshotSelection("resize", { x: px, y: py }, { x: minX, y: minY });
-              }}
-            />
-            {/* Rotation handle (outside bottom-right) */}
-            <div
-              style={{ position: "absolute", left: `${bx + bw + 14}px`, top: `${by + bh + 14}px`, width: "16px", height: "16px", borderRadius: "50%", backgroundColor: "#A259FF", border: "2px solid #282828", cursor: "grab", pointerEvents: "auto", display: "flex", alignItems: "center", justifyContent: "center" }}
-              onMouseDown={(e) => {
-                e.stopPropagation();
-                const wrap = wrapRef.current; if (!wrap) return;
-                const rect = wrap.getBoundingClientRect();
-                const px = (e.clientX - rect.left - panX) / zoom;
-                const py = (e.clientY - rect.top - panY) / zoom;
-                snapshotSelection("rotate", { x: px, y: py });
-              }}
-            >
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFF" strokeWidth="3"><path d="M21 12a9 9 0 1 1-6.219-8.56" /><polyline points="17 2 21 3.5 21 8" /></svg>
-            </div>
-          </div>
-        );
-      })()}
 
       {/* ── Right-Click Context Menu ── */}
       {contextMenu && (
