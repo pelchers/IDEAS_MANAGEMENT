@@ -1916,7 +1916,7 @@ export default function SchemaPage() {
           backgroundPosition: gridEnabled ? `${panX}px ${panY}px` : undefined,
         }}
         onMouseDown={handleCanvasMouseDown}
-        onClick={() => { if (!draggingEntityId) { setSelectedEntityId(null); setSidePanelOpen(false); } setContextMenu(null); }}
+        onClick={() => { setContextMenu(null); if (schemaToolMode !== "select" && schemaToolMode !== "hand") return; if (!draggingEntityId) { setSelectedEntityId(null); setSidePanelOpen(false); } }}
         onContextMenu={(e) => { e.preventDefault(); setContextMenu({ x: e.clientX, y: e.clientY, target: "canvas" }); }}
       >
       <div
