@@ -970,6 +970,9 @@ export default function SchemaPage() {
   const canvasWrapRef = useRef<HTMLDivElement>(null);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; target: "canvas" | "entity" | "relation"; targetId?: string } | null>(null);
   const [relationsPanelOpen, setRelationsPanelOpen] = useState(false);
+  const [editingAnnotationId, setEditingAnnotationId] = useState<string | null>(null);
+  const [groupResizing, setGroupResizing] = useState(false);
+  const groupResizeStartRef = useRef<{ x: number; y: number; entityPositions: { id: string; x: number; y: number }[]; bboxMinX: number; bboxMinY: number; bboxW: number; bboxH: number }>({ x: 0, y: 0, entityPositions: [], bboxMinX: 0, bboxMinY: 0, bboxW: 0, bboxH: 0 });
 
   // ── Undo/Redo ──
   const historyRef = useRef<SchemaGraph[]>([]);
@@ -1680,6 +1683,46 @@ export default function SchemaPage() {
     return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
   }, [drawingRect, panX, panY, zoom]);
 
+  // ── Group resize handler ──
+  useEffect(() => {
+    if (!groupResizing) return;
+    const handleMove = (e: MouseEvent) => {
+      const wrap = canvasWrapRef.current;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const worldX = (e.clientX - rect.left - panX) / zoom;
+      const worldY = (e.clientY - rect.top - panY) / zoom;
+      const start = groupResizeStartRef.current;
+      // Compute scale based on how far cursor moved from bbox top-left anchor
+      const origW = start.bboxW;
+      const origH = start.bboxH;
+      if (origW < 1 || origH < 1) return;
+      const newW = Math.max(50, worldX - start.bboxMinX);
+      const newH = Math.max(50, worldY - start.bboxMinY);
+      const scaleX = newW / origW;
+      const scaleY = newH / origH;
+      setGraph((prev) => ({
+        ...prev,
+        entities: prev.entities.map((ent) => {
+          const snap = start.entityPositions.find((p) => p.id === ent.id);
+          if (!snap) return ent;
+          return {
+            ...ent,
+            x: start.bboxMinX + (snap.x - start.bboxMinX) * scaleX,
+            y: start.bboxMinY + (snap.y - start.bboxMinY) * scaleY,
+          };
+        }),
+      }));
+    };
+    const handleUp = () => {
+      setGroupResizing(false);
+      saveGraph(graph);
+    };
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
+  }, [groupResizing, panX, panY, zoom, graph, saveGraph]);
+
   const handleCanvasMouseDown = useCallback((e: React.MouseEvent) => {
     // Middle-click pan or hand tool left-click pan
     if (e.button === 1 || (e.button === 0 && schemaToolMode === "hand")) {
@@ -1696,10 +1739,9 @@ export default function SchemaPage() {
     const worldY = (e.clientY - rect.top - panY) / zoom;
 
     if (schemaToolMode === "text" && e.button === 0) {
-      const text = window.prompt("Enter text:");
-      if (text) {
-        setAnnotations((prev) => [...prev, { id: `ann-${Date.now()}`, type: "text", x: worldX, y: worldY, width: 200, height: 30, text, color: "#282828" }]);
-      }
+      const newId = `ann-${Date.now()}`;
+      setAnnotations((prev) => [...prev, { id: newId, type: "text", x: worldX, y: worldY, width: 200, height: 30, text: "", color: "#282828" }]);
+      setEditingAnnotationId(newId);
       setSchemaToolMode("select");
     } else if (schemaToolMode === "rect" && e.button === 0) {
       setDrawingRect({ startX: worldX, startY: worldY, x: worldX, y: worldY, width: 0, height: 0 });
@@ -1717,7 +1759,7 @@ export default function SchemaPage() {
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) { e.preventDefault(); undo(); }
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && e.shiftKey) { e.preventDefault(); redo(); }
       if ((e.ctrlKey || e.metaKey) && e.key === "y") { e.preventDefault(); redo(); }
-      if (e.key === "Escape") { setSelectedEntityId(null); setSidePanelOpen(false); setModal(null); setContextMenu(null); setMultiEntityIds(new Set()); }
+      if (e.key === "Escape") { setSelectedEntityId(null); setSidePanelOpen(false); setModal(null); setContextMenu(null); setMultiEntityIds(new Set()); setEditingAnnotationId(null); }
       if (e.key.toLowerCase() === "v" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("select");
       if (e.key.toLowerCase() === "h" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("hand");
       if (e.key === "+" || e.key === "=") { setZoom((z) => Math.min(3, z + 0.1)); }
@@ -1906,8 +1948,10 @@ export default function SchemaPage() {
               position: "absolute",
               left: `${ann.x}px`,
               top: `${ann.y}px`,
-              width: `${ann.width}px`,
-              height: `${ann.height}px`,
+              width: ann.type === "text" && editingAnnotationId === ann.id ? "auto" : `${ann.width}px`,
+              minWidth: ann.type === "text" ? "60px" : undefined,
+              height: ann.type === "text" ? "auto" : `${ann.height}px`,
+              minHeight: ann.type === "text" ? "24px" : undefined,
               border: ann.type === "rect" ? `2px solid ${ann.color || "#282828"}` : "none",
               backgroundColor: "transparent",
               color: ann.color || "#282828",
@@ -1916,27 +1960,70 @@ export default function SchemaPage() {
               fontWeight: 700,
               padding: ann.type === "text" ? "4px" : 0,
               pointerEvents: "auto",
-              cursor: schemaToolMode === "select" ? "move" : "default",
-              userSelect: "none",
+              cursor: schemaToolMode === "select" && editingAnnotationId !== ann.id ? "move" : "default",
+              userSelect: editingAnnotationId === ann.id ? "text" : "none",
               zIndex: 5,
             }}
             onContextMenu={(e) => {
               e.preventDefault();
               e.stopPropagation();
+              if (editingAnnotationId === ann.id) return;
               if (window.confirm(`Delete this ${ann.type}?`)) {
                 setAnnotations((prev) => prev.filter((a) => a.id !== ann.id));
               }
             }}
-            onDoubleClick={() => {
+            onDoubleClick={(e) => {
               if (ann.type === "text") {
-                const newText = window.prompt("Edit text:", ann.text);
-                if (newText !== null) {
-                  setAnnotations((prev) => prev.map((a) => a.id === ann.id ? { ...a, text: newText } : a));
-                }
+                e.stopPropagation();
+                setEditingAnnotationId(ann.id);
               }
             }}
           >
-            {ann.type === "text" && ann.text}
+            {ann.type === "text" && editingAnnotationId === ann.id ? (
+              <input
+                autoFocus
+                type="text"
+                defaultValue={ann.text || ""}
+                style={{
+                  border: "none",
+                  outline: "none",
+                  background: "transparent",
+                  color: ann.color || "#282828",
+                  fontFamily: "IBM Plex Mono, monospace",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  padding: 0,
+                  margin: 0,
+                  width: "auto",
+                  minWidth: "60px",
+                }}
+                onBlur={(e) => {
+                  const val = e.currentTarget.value.trim();
+                  if (val) {
+                    setAnnotations((prev) => prev.map((a) => a.id === ann.id ? { ...a, text: val } : a));
+                  } else {
+                    setAnnotations((prev) => prev.filter((a) => a.id !== ann.id));
+                  }
+                  setEditingAnnotationId(null);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    (e.currentTarget as HTMLInputElement).blur();
+                  }
+                  if (e.key === "Escape") {
+                    if (!ann.text) {
+                      setAnnotations((prev) => prev.filter((a) => a.id !== ann.id));
+                    }
+                    setEditingAnnotationId(null);
+                  }
+                  e.stopPropagation();
+                }}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={(e) => e.stopPropagation()}
+              />
+            ) : (
+              ann.type === "text" && (ann.text || "\u00A0")
+            )}
           </div>
         ))}
 
@@ -1974,7 +2061,7 @@ export default function SchemaPage() {
           />
         )}
 
-        {/* Group selection bounding box */}
+        {/* Group selection bounding box with resize handle */}
         {multiEntityIds.size > 1 && (() => {
           const sel = graph.entities.filter((e) => multiEntityIds.has(e.id));
           if (sel.length === 0) return null;
@@ -1983,20 +2070,57 @@ export default function SchemaPage() {
           const maxX = Math.max(...sel.map((e) => e.x + (e.width || 280)));
           const maxY = Math.max(...sel.map((e) => e.y + 200));
           const pad = 8;
+          const bx = minX - pad;
+          const by = minY - pad;
+          const bw = maxX - minX + pad * 2;
+          const bh = maxY - minY + pad * 2;
           return (
-            <div
-              style={{
-                position: "absolute",
-                left: `${minX - pad}px`,
-                top: `${minY - pad}px`,
-                width: `${maxX - minX + pad * 2}px`,
-                height: `${maxY - minY + pad * 2}px`,
-                border: "2px dashed #A259FF",
-                backgroundColor: "transparent",
-                pointerEvents: "none",
-                zIndex: 5,
-              }}
-            />
+            <>
+              {/* Dashed bounding box */}
+              <div
+                style={{
+                  position: "absolute",
+                  left: `${bx}px`,
+                  top: `${by}px`,
+                  width: `${bw}px`,
+                  height: `${bh}px`,
+                  border: "2px dashed #A259FF",
+                  backgroundColor: "transparent",
+                  pointerEvents: "none",
+                  zIndex: 55,
+                }}
+              />
+              {/* Resize handle (bottom-right corner) */}
+              <div
+                style={{
+                  position: "absolute",
+                  left: `${bx + bw - 5}px`,
+                  top: `${by + bh - 5}px`,
+                  width: "10px",
+                  height: "10px",
+                  backgroundColor: "#A259FF",
+                  border: "2px solid #282828",
+                  cursor: "nwse-resize",
+                  pointerEvents: "auto",
+                  zIndex: 56,
+                }}
+                onMouseDown={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  const selEntities = graph.entities.filter((ent) => multiEntityIds.has(ent.id));
+                  groupResizeStartRef.current = {
+                    x: 0,
+                    y: 0,
+                    entityPositions: selEntities.map((ent) => ({ id: ent.id, x: ent.x, y: ent.y })),
+                    bboxMinX: minX,
+                    bboxMinY: minY,
+                    bboxW: maxX - minX,
+                    bboxH: maxY - minY,
+                  };
+                  setGroupResizing(true);
+                }}
+              />
+            </>
           );
         })()}
 
