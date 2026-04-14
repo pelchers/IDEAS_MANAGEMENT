@@ -960,17 +960,22 @@ export default function SchemaPage() {
   const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
   const [selectedRelationId, setSelectedRelationId] = useState<string | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
-  const [schemaToolMode, setSchemaToolMode] = useState<"select" | "hand" | "text" | "rect">("select");
-  const [annotations, setAnnotations] = useState<Array<{ id: string; type: "text" | "rect"; x: number; y: number; width: number; height: number; text?: string; color?: string }>>([]);
+  const [schemaToolMode, setSchemaToolMode] = useState<"select" | "hand" | "text" | "rect" | "eraser">("select");
+  const [annotations, setAnnotations] = useState<Array<{ id: string; type: "text" | "rect"; x: number; y: number; width: number; height: number; text?: string; color?: string; rotation?: number }>>([]);
   const [drawingRect, setDrawingRect] = useState<{ startX: number; startY: number; x: number; y: number; width: number; height: number } | null>(null);
   const [marquee, setMarquee] = useState<{ startX: number; startY: number; x: number; y: number; w: number; h: number } | null>(null);
   const [multiEntityIds, setMultiEntityIds] = useState<Set<string>>(new Set());
   const [draggingMultiEntities, setDraggingMultiEntities] = useState(false);
   const multiEntityDragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const canvasWrapRef = useRef<HTMLDivElement>(null);
-  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; target: "canvas" | "entity" | "relation"; targetId?: string } | null>(null);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; target: "canvas" | "entity" | "relation" | "annotation"; targetId?: string } | null>(null);
   const [relationsPanelOpen, setRelationsPanelOpen] = useState(false);
   const [editingAnnotationId, setEditingAnnotationId] = useState<string | null>(null);
+  const [selectedAnnotationId, setSelectedAnnotationId] = useState<string | null>(null);
+  const [draggingAnnotationId, setDraggingAnnotationId] = useState<string | null>(null);
+  const annDragStartRef = useRef<{ mouseX: number; mouseY: number; annX: number; annY: number }>({ mouseX: 0, mouseY: 0, annX: 0, annY: 0 });
+  const [resizingAnnotation, setResizingAnnotation] = useState<{ id: string; startX: number; startY: number; startW: number; startH: number } | null>(null);
+  const [rotatingAnnotation, setRotatingAnnotation] = useState<{ id: string; centerX: number; centerY: number; startAngle: number; startRotation: number } | null>(null);
   const [groupResizing, setGroupResizing] = useState(false);
   const groupResizeStartRef = useRef<{ x: number; y: number; entityPositions: { id: string; x: number; y: number }[]; bboxMinX: number; bboxMinY: number; bboxW: number; bboxH: number }>({ x: 0, y: 0, entityPositions: [], bboxMinX: 0, bboxMinY: 0, bboxW: 0, bboxH: 0 });
 
@@ -1674,7 +1679,6 @@ export default function SchemaPage() {
         if (current && current.width > 5 && current.height > 5) {
           setAnnotations((prev) => [...prev, { id: `ann-${Date.now()}`, type: "rect", x: current.x, y: current.y, width: current.width, height: current.height, color: "#282828" }]);
         }
-        setSchemaToolMode("select");
         return null;
       });
     };
@@ -1682,6 +1686,66 @@ export default function SchemaPage() {
     window.addEventListener("mouseup", handleUp);
     return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
   }, [drawingRect, panX, panY, zoom]);
+
+  // ── Annotation drag handler ──
+  useEffect(() => {
+    if (!draggingAnnotationId) return;
+    const handleMove = (e: MouseEvent) => {
+      const wrap = canvasWrapRef.current;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const worldX = (e.clientX - rect.left - panX) / zoom;
+      const worldY = (e.clientY - rect.top - panY) / zoom;
+      const start = annDragStartRef.current;
+      const dx = worldX - start.mouseX;
+      const dy = worldY - start.mouseY;
+      setAnnotations((prev) => prev.map((a) => a.id === draggingAnnotationId ? { ...a, x: start.annX + dx, y: start.annY + dy } : a));
+    };
+    const handleUp = () => setDraggingAnnotationId(null);
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
+  }, [draggingAnnotationId, panX, panY, zoom]);
+
+  // ── Annotation resize handler ──
+  useEffect(() => {
+    if (!resizingAnnotation) return;
+    const handleMove = (e: MouseEvent) => {
+      const wrap = canvasWrapRef.current;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const worldX = (e.clientX - rect.left - panX) / zoom;
+      const worldY = (e.clientY - rect.top - panY) / zoom;
+      const dx = worldX - resizingAnnotation.startX;
+      const dy = worldY - resizingAnnotation.startY;
+      const newW = Math.max(30, resizingAnnotation.startW + dx);
+      const newH = Math.max(20, resizingAnnotation.startH + dy);
+      setAnnotations((prev) => prev.map((a) => a.id === resizingAnnotation.id ? { ...a, width: newW, height: newH } : a));
+    };
+    const handleUp = () => setResizingAnnotation(null);
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
+  }, [resizingAnnotation, panX, panY, zoom]);
+
+  // ── Annotation rotation handler ──
+  useEffect(() => {
+    if (!rotatingAnnotation) return;
+    const handleMove = (e: MouseEvent) => {
+      const wrap = canvasWrapRef.current;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const worldX = (e.clientX - rect.left - panX) / zoom;
+      const worldY = (e.clientY - rect.top - panY) / zoom;
+      const currentAngle = Math.atan2(worldY - rotatingAnnotation.centerY, worldX - rotatingAnnotation.centerX) * 180 / Math.PI;
+      const delta = currentAngle - rotatingAnnotation.startAngle;
+      setAnnotations((prev) => prev.map((a) => a.id === rotatingAnnotation.id ? { ...a, rotation: Math.round(rotatingAnnotation.startRotation + delta) } : a));
+    };
+    const handleUp = () => setRotatingAnnotation(null);
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
+  }, [rotatingAnnotation, panX, panY, zoom]);
 
   // ── Group resize handler ──
   useEffect(() => {
@@ -1738,19 +1802,32 @@ export default function SchemaPage() {
     const worldX = (e.clientX - rect.left - panX) / zoom;
     const worldY = (e.clientY - rect.top - panY) / zoom;
 
-    if (schemaToolMode === "text" && e.button === 0) {
+    if (schemaToolMode === "eraser" && e.button === 0) {
+      // Hit-test annotations (not entities) — erase the first one found
+      const hitIdx = annotations.findIndex((ann) => {
+        if (ann.type === "rect") {
+          return worldX >= ann.x && worldX <= ann.x + ann.width && worldY >= ann.y && worldY <= ann.y + ann.height;
+        }
+        // Text: check near the label position (generous hit area)
+        return worldX >= ann.x - 4 && worldX <= ann.x + ann.width + 4 && worldY >= ann.y - 4 && worldY <= ann.y + 30;
+      });
+      if (hitIdx !== -1) {
+        setAnnotations((prev) => prev.filter((_, i) => i !== hitIdx));
+      }
+    } else if (schemaToolMode === "text" && e.button === 0) {
       const newId = `ann-${Date.now()}`;
       setAnnotations((prev) => [...prev, { id: newId, type: "text", x: worldX, y: worldY, width: 200, height: 30, text: "", color: "#282828" }]);
       setEditingAnnotationId(newId);
-      setSchemaToolMode("select");
     } else if (schemaToolMode === "rect" && e.button === 0) {
       setDrawingRect({ startX: worldX, startY: worldY, x: worldX, y: worldY, width: 0, height: 0 });
     } else if (schemaToolMode === "select" && e.button === 0) {
+      // Deselect annotation on empty canvas click
+      setSelectedAnnotationId(null);
       // Start marquee selection on empty canvas click (entities have stopPropagation)
       setMarquee({ startX: worldX, startY: worldY, x: worldX, y: worldY, w: 0, h: 0 });
       setMultiEntityIds(new Set());
     }
-  }, [panX, panY, zoom, schemaToolMode]);
+  }, [panX, panY, zoom, schemaToolMode, annotations]);
 
   // ── Keyboard shortcuts ──
   useEffect(() => {
@@ -1759,18 +1836,26 @@ export default function SchemaPage() {
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) { e.preventDefault(); undo(); }
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && e.shiftKey) { e.preventDefault(); redo(); }
       if ((e.ctrlKey || e.metaKey) && e.key === "y") { e.preventDefault(); redo(); }
-      if (e.key === "Escape") { setSelectedEntityId(null); setSidePanelOpen(false); setModal(null); setContextMenu(null); setMultiEntityIds(new Set()); setEditingAnnotationId(null); }
+      if (e.key === "Escape") { setSelectedEntityId(null); setSelectedAnnotationId(null); setSidePanelOpen(false); setModal(null); setContextMenu(null); setMultiEntityIds(new Set()); setEditingAnnotationId(null); }
       if (e.key.toLowerCase() === "v" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("select");
       if (e.key.toLowerCase() === "h" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("hand");
+      if (e.key.toLowerCase() === "t" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("text");
+      if (e.key.toLowerCase() === "r" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("rect");
+      if (e.key.toLowerCase() === "e" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("eraser");
       if (e.key === "+" || e.key === "=") { setZoom((z) => Math.min(3, z + 0.1)); }
       if (e.key === "-") { setZoom((z) => Math.max(0.25, z - 0.1)); }
       if (e.key === "0" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); setZoom(1); setPanX(0); setPanY(0); }
-      if ((e.key === "Delete" || e.key === "Backspace") && selectedEntityId && !modal) {
-        const deps = getTableDependents(graph, graph.entities.find((en) => en.id === selectedEntityId)?.name || "");
-        if (deps.length > 0 && !window.confirm(`This entity has ${deps.length} dependencies. Delete anyway?`)) return;
-        setGraph((prev) => ({ ...prev, entities: prev.entities.filter((en) => en.id !== selectedEntityId), relations: prev.relations.filter((r) => r.fromEntityId !== selectedEntityId && r.toEntityId !== selectedEntityId) }));
-        setSelectedEntityId(null);
-        pushHistory(graph);
+      if ((e.key === "Delete" || e.key === "Backspace") && !modal) {
+        if (selectedAnnotationId) {
+          setAnnotations((prev) => prev.filter((a) => a.id !== selectedAnnotationId));
+          setSelectedAnnotationId(null);
+        } else if (selectedEntityId) {
+          const deps = getTableDependents(graph, graph.entities.find((en) => en.id === selectedEntityId)?.name || "");
+          if (deps.length > 0 && !window.confirm(`This entity has ${deps.length} dependencies. Delete anyway?`)) return;
+          setGraph((prev) => ({ ...prev, entities: prev.entities.filter((en) => en.id !== selectedEntityId), relations: prev.relations.filter((r) => r.fromEntityId !== selectedEntityId && r.toEntityId !== selectedEntityId) }));
+          setSelectedEntityId(null);
+          pushHistory(graph);
+        }
       }
       if ((e.ctrlKey || e.metaKey) && e.key === "f") { e.preventDefault(); document.querySelector<HTMLInputElement>("[data-schema-search]")?.focus(); }
     };
@@ -1836,6 +1921,7 @@ export default function SchemaPage() {
           { id: "hand" as const, icon: "\u270B", title: "Hand / Pan (H)" },
           { id: "text" as const, icon: "T", title: "Add Text Label (T)" },
           { id: "rect" as const, icon: "\u25AD", title: "Draw Rectangle (R)" },
+          { id: "eraser" as const, icon: "\u232B", title: "Eraser (E)" },
         ].map((tool) => (
           <button
             key={tool.id}
@@ -1855,7 +1941,7 @@ export default function SchemaPage() {
           </button>
         ))}
         <span style={{ fontFamily: "monospace", fontSize: "0.65rem", color: "#999", alignSelf: "center", marginLeft: "8px" }}>
-          V = Select, H = Hand/Pan, Scroll = Zoom
+          V = Select, H = Pan, T = Text, R = Rect, E = Eraser
         </span>
       </div>
 
@@ -1908,7 +1994,7 @@ export default function SchemaPage() {
         className="relative border-2 border-dashed border-signal-black/20 overflow-hidden"
         style={{
           height: "calc(100vh - 220px)", minHeight: "500px",
-          cursor: isPanning ? "grabbing" : schemaToolMode === "hand" ? "grab" : "default",
+          cursor: isPanning ? "grabbing" : schemaToolMode === "hand" ? "grab" : schemaToolMode === "eraser" ? "pointer" : schemaToolMode === "text" ? "text" : schemaToolMode === "rect" ? "crosshair" : "default",
           background: gridEnabled
             ? `radial-gradient(circle, #28282815 1px, transparent 1px)`
             : "#faf8f4",
@@ -1941,91 +2027,178 @@ export default function SchemaPage() {
         )}
 
         {/* Annotations: text labels and rectangles */}
-        {annotations.map((ann) => (
-          <div
-            key={ann.id}
-            style={{
-              position: "absolute",
-              left: `${ann.x}px`,
-              top: `${ann.y}px`,
-              width: ann.type === "text" && editingAnnotationId === ann.id ? "auto" : `${ann.width}px`,
-              minWidth: ann.type === "text" ? "60px" : undefined,
-              height: ann.type === "text" ? "auto" : `${ann.height}px`,
-              minHeight: ann.type === "text" ? "24px" : undefined,
-              border: ann.type === "rect" ? `2px solid ${ann.color || "#282828"}` : "none",
-              backgroundColor: "transparent",
-              color: ann.color || "#282828",
-              fontFamily: "IBM Plex Mono, monospace",
-              fontSize: ann.type === "text" ? "0.85rem" : "0.7rem",
-              fontWeight: 700,
-              padding: ann.type === "text" ? "4px" : 0,
-              pointerEvents: "auto",
-              cursor: schemaToolMode === "select" && editingAnnotationId !== ann.id ? "move" : "default",
-              userSelect: editingAnnotationId === ann.id ? "text" : "none",
-              zIndex: 5,
-            }}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (editingAnnotationId === ann.id) return;
-              if (window.confirm(`Delete this ${ann.type}?`)) {
-                setAnnotations((prev) => prev.filter((a) => a.id !== ann.id));
-              }
-            }}
-            onDoubleClick={(e) => {
-              if (ann.type === "text") {
+        {annotations.map((ann) => {
+          const isSelected = selectedAnnotationId === ann.id;
+          const annW = ann.width;
+          const annH = ann.type === "rect" ? ann.height : 30;
+          const rotation = ann.rotation || 0;
+          return (
+            <div
+              key={ann.id}
+              style={{
+                position: "absolute",
+                left: `${ann.x}px`,
+                top: `${ann.y}px`,
+                width: ann.type === "text" && editingAnnotationId === ann.id ? "auto" : `${annW}px`,
+                minWidth: ann.type === "text" ? "60px" : undefined,
+                height: ann.type === "text" ? "auto" : `${ann.height}px`,
+                minHeight: ann.type === "text" ? "24px" : undefined,
+                border: ann.type === "rect"
+                  ? `2px solid ${ann.color || "#282828"}`
+                  : isSelected ? "1px dashed #3498DB" : "none",
+                backgroundColor: "transparent",
+                color: ann.color || "#282828",
+                fontFamily: "IBM Plex Mono, monospace",
+                fontSize: ann.type === "text" ? "0.85rem" : "0.7rem",
+                fontWeight: 700,
+                padding: ann.type === "text" ? "4px" : 0,
+                pointerEvents: "auto",
+                cursor: schemaToolMode === "eraser" ? "pointer"
+                  : schemaToolMode === "select" && editingAnnotationId !== ann.id ? "move" : "default",
+                userSelect: editingAnnotationId === ann.id ? "text" : "none",
+                zIndex: 5,
+                transform: rotation ? `rotate(${rotation}deg)` : undefined,
+                transformOrigin: "center center",
+                outline: isSelected && ann.type === "rect" ? "2px dashed #3498DB" : undefined,
+                outlineOffset: isSelected && ann.type === "rect" ? "2px" : undefined,
+              }}
+              onMouseDown={(e) => {
+                if (editingAnnotationId === ann.id) return;
                 e.stopPropagation();
-                setEditingAnnotationId(ann.id);
-              }
-            }}
-          >
-            {ann.type === "text" && editingAnnotationId === ann.id ? (
-              <input
-                autoFocus
-                type="text"
-                defaultValue={ann.text || ""}
-                style={{
-                  border: "none",
-                  outline: "none",
-                  background: "transparent",
-                  color: ann.color || "#282828",
-                  fontFamily: "IBM Plex Mono, monospace",
-                  fontSize: "0.85rem",
-                  fontWeight: 700,
-                  padding: 0,
-                  margin: 0,
-                  width: "auto",
-                  minWidth: "60px",
-                }}
-                onBlur={(e) => {
-                  const val = e.currentTarget.value.trim();
-                  if (val) {
-                    setAnnotations((prev) => prev.map((a) => a.id === ann.id ? { ...a, text: val } : a));
-                  } else {
-                    setAnnotations((prev) => prev.filter((a) => a.id !== ann.id));
-                  }
-                  setEditingAnnotationId(null);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    (e.currentTarget as HTMLInputElement).blur();
-                  }
-                  if (e.key === "Escape") {
-                    if (!ann.text) {
+                if (schemaToolMode === "eraser") {
+                  setAnnotations((prev) => prev.filter((a) => a.id !== ann.id));
+                  return;
+                }
+                if (schemaToolMode !== "select") return;
+                setSelectedAnnotationId(ann.id);
+                const wrap = canvasWrapRef.current;
+                if (!wrap) return;
+                const rect = wrap.getBoundingClientRect();
+                const worldX = (e.clientX - rect.left - panX) / zoom;
+                const worldY = (e.clientY - rect.top - panY) / zoom;
+                annDragStartRef.current = { mouseX: worldX, mouseY: worldY, annX: ann.x, annY: ann.y };
+                setDraggingAnnotationId(ann.id);
+              }}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (editingAnnotationId === ann.id) return;
+                setSelectedAnnotationId(ann.id);
+                setContextMenu({ x: e.clientX, y: e.clientY, target: "annotation", targetId: ann.id });
+              }}
+              onDoubleClick={(e) => {
+                if (ann.type === "text") {
+                  e.stopPropagation();
+                  setEditingAnnotationId(ann.id);
+                }
+              }}
+            >
+              {ann.type === "text" && editingAnnotationId === ann.id ? (
+                <input
+                  ref={(el) => { if (el) requestAnimationFrame(() => el.focus()); }}
+                  type="text"
+                  defaultValue={ann.text || ""}
+                  style={{
+                    border: "1px dashed #A259FF",
+                    outline: "none",
+                    background: "rgba(162, 89, 255, 0.05)",
+                    color: ann.color || "#282828",
+                    fontFamily: "IBM Plex Mono, monospace",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    padding: "2px 4px",
+                    margin: 0,
+                    width: "auto",
+                    minWidth: "80px",
+                  }}
+                  onBlur={(e) => {
+                    const val = e.currentTarget.value.trim();
+                    if (val) {
+                      setAnnotations((prev) => prev.map((a) => a.id === ann.id ? { ...a, text: val } : a));
+                    } else {
                       setAnnotations((prev) => prev.filter((a) => a.id !== ann.id));
                     }
                     setEditingAnnotationId(null);
-                  }
-                  e.stopPropagation();
-                }}
-                onClick={(e) => e.stopPropagation()}
-                onMouseDown={(e) => e.stopPropagation()}
-              />
-            ) : (
-              ann.type === "text" && (ann.text || "\u00A0")
-            )}
-          </div>
-        ))}
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      (e.currentTarget as HTMLInputElement).blur();
+                    }
+                    if (e.key === "Escape") {
+                      if (!ann.text) {
+                        setAnnotations((prev) => prev.filter((a) => a.id !== ann.id));
+                      }
+                      setEditingAnnotationId(null);
+                    }
+                    e.stopPropagation();
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                  onMouseDown={(e) => e.stopPropagation()}
+                />
+              ) : (
+                ann.type === "text" && (ann.text || "\u00A0")
+              )}
+
+              {/* Resize handle (bottom-right blue square) */}
+              {isSelected && schemaToolMode === "select" && (
+                <div
+                  style={{
+                    position: "absolute",
+                    right: "-5px",
+                    bottom: "-5px",
+                    width: "10px",
+                    height: "10px",
+                    backgroundColor: "#3498DB",
+                    border: "1px solid #282828",
+                    cursor: "nwse-resize",
+                    zIndex: 10,
+                  }}
+                  onMouseDown={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    const wrap = canvasWrapRef.current;
+                    if (!wrap) return;
+                    const rect = wrap.getBoundingClientRect();
+                    const worldX = (e.clientX - rect.left - panX) / zoom;
+                    const worldY = (e.clientY - rect.top - panY) / zoom;
+                    setResizingAnnotation({ id: ann.id, startX: worldX, startY: worldY, startW: annW, startH: annH });
+                  }}
+                />
+              )}
+
+              {/* Rotation handle (purple circle offset from bottom-right) */}
+              {isSelected && schemaToolMode === "select" && (
+                <div
+                  style={{
+                    position: "absolute",
+                    right: "-22px",
+                    bottom: "-22px",
+                    width: "14px",
+                    height: "14px",
+                    borderRadius: "50%",
+                    backgroundColor: "#A259FF",
+                    border: "2px solid #282828",
+                    cursor: "grab",
+                    zIndex: 10,
+                  }}
+                  onMouseDown={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    const wrap = canvasWrapRef.current;
+                    if (!wrap) return;
+                    const rect = wrap.getBoundingClientRect();
+                    const worldX = (e.clientX - rect.left - panX) / zoom;
+                    const worldY = (e.clientY - rect.top - panY) / zoom;
+                    const cx = ann.x + annW / 2;
+                    const cy = ann.y + annH / 2;
+                    const startAngle = Math.atan2(worldY - cy, worldX - cx) * 180 / Math.PI;
+                    setRotatingAnnotation({ id: ann.id, centerX: cx, centerY: cy, startAngle, startRotation: rotation });
+                  }}
+                />
+              )}
+            </div>
+          );
+        })}
 
         {/* Live rectangle preview while drawing */}
         {drawingRect && drawingRect.width > 0 && drawingRect.height > 0 && (
@@ -2322,6 +2495,38 @@ export default function SchemaPage() {
                   pushHistory(graph);
                   setGraph((prev) => ({ ...prev, entities: prev.entities.filter((en) => en.id !== ent.id), relations: prev.relations.filter((r) => r.fromEntityId !== ent.id && r.toEntityId !== ent.id) }));
                   setSelectedEntityId(null);
+                }}>Delete</button>
+              </>
+            );
+          })()}
+          {contextMenu.target === "annotation" && contextMenu.targetId && (() => {
+            const ann = annotations.find((a) => a.id === contextMenu.targetId);
+            if (!ann) return null;
+            return (
+              <>
+                {ann.type === "text" && (
+                  <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => { setEditingAnnotationId(ann.id); }}>Edit Text</button>
+                )}
+                <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => {
+                  const dup = { ...ann, id: `ann-${Date.now()}`, x: ann.x + 20, y: ann.y + 20 };
+                  setAnnotations((prev) => [...prev, dup]);
+                }}>Duplicate</button>
+                <div style={{ height: "1px", backgroundColor: "#28282820" }} />
+                <div className="px-3 py-2 text-[0.65rem] text-gray-mid uppercase">Color</div>
+                <div className="px-3 pb-2 flex gap-2 flex-wrap">
+                  {["#282828", "#E74C3C", "#3498DB", "#2ECC71", "#F39C12", "#9B59B6", "#1ABC9C"].map((c) => (
+                    <button key={c} onClick={() => {
+                      setAnnotations((prev) => prev.map((a) => a.id === ann.id ? { ...a, color: c } : a));
+                    }} style={{ width: "16px", height: "16px", backgroundColor: c, border: "1px solid #282828", cursor: "pointer" }} />
+                  ))}
+                </div>
+                <div style={{ height: "1px", backgroundColor: "#28282820" }} />
+                <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem]" onClick={() => {
+                  setAnnotations((prev) => prev.map((a) => a.id === ann.id ? { ...a, rotation: 0 } : a));
+                }}>Reset Rotation</button>
+                <button className="block w-full text-left px-3 py-2 hover:bg-creamy-milk uppercase font-bold text-[0.75rem] text-watermelon" onClick={() => {
+                  setAnnotations((prev) => prev.filter((a) => a.id !== ann.id));
+                  setSelectedAnnotationId(null);
                 }}>Delete</button>
               </>
             );
