@@ -965,6 +965,7 @@ export default function SchemaPage() {
   const [drawingRect, setDrawingRect] = useState<{ startX: number; startY: number; x: number; y: number; width: number; height: number } | null>(null);
   const [marquee, setMarquee] = useState<{ startX: number; startY: number; x: number; y: number; w: number; h: number } | null>(null);
   const [multiEntityIds, setMultiEntityIds] = useState<Set<string>>(new Set());
+  const [multiAnnotationIds, setMultiAnnotationIds] = useState<Set<string>>(new Set());
   const [draggingMultiEntities, setDraggingMultiEntities] = useState(false);
   const multiEntityDragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const canvasWrapRef = useRef<HTMLDivElement>(null);
@@ -977,7 +978,7 @@ export default function SchemaPage() {
   const [resizingAnnotation, setResizingAnnotation] = useState<{ id: string; startX: number; startY: number; startW: number; startH: number } | null>(null);
   const [rotatingAnnotation, setRotatingAnnotation] = useState<{ id: string; centerX: number; centerY: number; startAngle: number; startRotation: number } | null>(null);
   const [groupResizing, setGroupResizing] = useState(false);
-  const groupResizeStartRef = useRef<{ x: number; y: number; entityPositions: { id: string; x: number; y: number }[]; bboxMinX: number; bboxMinY: number; bboxW: number; bboxH: number }>({ x: 0, y: 0, entityPositions: [], bboxMinX: 0, bboxMinY: 0, bboxW: 0, bboxH: 0 });
+  const groupResizeStartRef = useRef<{ x: number; y: number; entityPositions: { id: string; x: number; y: number }[]; annotationPositions: { id: string; x: number; y: number; w: number; h: number }[]; bboxMinX: number; bboxMinY: number; bboxW: number; bboxH: number }>({ x: 0, y: 0, entityPositions: [], annotationPositions: [], bboxMinX: 0, bboxMinY: 0, bboxW: 0, bboxH: 0 });
 
   // ── Undo/Redo ──
   const historyRef = useRef<SchemaGraph[]>([]);
@@ -1528,6 +1529,7 @@ export default function SchemaPage() {
     }
     // Single-entity drag — clear multi selection
     if (multiEntityIds.size > 0) setMultiEntityIds(new Set());
+    if (multiAnnotationIds.size > 0) setMultiAnnotationIds(new Set());
     const entity = graph.entities.find((en) => en.id === entityId);
     if (!entity || !canvasRef.current) return;
     const canvasRect = canvasRef.current.getBoundingClientRect();
@@ -1613,15 +1615,24 @@ export default function SchemaPage() {
     const handleUp = () => {
       setMarquee((current) => {
         if (current && current.w > 4 && current.h > 4) {
-          const ids = new Set<string>();
+          const entityIds = new Set<string>();
           for (const ent of graph.entities) {
             const eW = ent.width || 280;
-            const eH = 200; // approximation for entity height
+            const eH = 200;
             if (!(ent.x + eW < current.x || ent.x > current.x + current.w || ent.y + eH < current.y || ent.y > current.y + current.h)) {
-              ids.add(ent.id);
+              entityIds.add(ent.id);
             }
           }
-          setMultiEntityIds(ids);
+          setMultiEntityIds(entityIds);
+          // Also select annotations within marquee
+          const annIds = new Set<string>();
+          for (const ann of annotations) {
+            const aH = ann.type === "rect" ? ann.height : 30;
+            if (!(ann.x + ann.width < current.x || ann.x > current.x + current.w || ann.y + aH < current.y || ann.y > current.y + current.h)) {
+              annIds.add(ann.id);
+            }
+          }
+          setMultiAnnotationIds(annIds);
         }
         return null;
       });
@@ -1629,9 +1640,9 @@ export default function SchemaPage() {
     window.addEventListener("mousemove", handleMove);
     window.addEventListener("mouseup", handleUp);
     return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
-  }, [marquee, panX, panY, zoom, graph.entities]);
+  }, [marquee, panX, panY, zoom, graph.entities, annotations]);
 
-  // ── Multi-entity drag handler ──
+  // ── Multi-entity + annotation drag handler ──
   useEffect(() => {
     if (!draggingMultiEntities) return;
     const handleMove = (e: MouseEvent) => {
@@ -1643,10 +1654,15 @@ export default function SchemaPage() {
       const dx = worldX - multiEntityDragStartRef.current.x;
       const dy = worldY - multiEntityDragStartRef.current.y;
       multiEntityDragStartRef.current = { x: worldX, y: worldY };
-      setGraph((prev) => ({
-        ...prev,
-        entities: prev.entities.map((ent) => multiEntityIds.has(ent.id) ? { ...ent, x: ent.x + dx, y: ent.y + dy } : ent),
-      }));
+      if (multiEntityIds.size > 0) {
+        setGraph((prev) => ({
+          ...prev,
+          entities: prev.entities.map((ent) => multiEntityIds.has(ent.id) ? { ...ent, x: ent.x + dx, y: ent.y + dy } : ent),
+        }));
+      }
+      if (multiAnnotationIds.size > 0) {
+        setAnnotations((prev) => prev.map((a) => multiAnnotationIds.has(a.id) ? { ...a, x: a.x + dx, y: a.y + dy } : a));
+      }
     };
     const handleUp = () => {
       setDraggingMultiEntities(false);
@@ -1655,7 +1671,7 @@ export default function SchemaPage() {
     window.addEventListener("mousemove", handleMove);
     window.addEventListener("mouseup", handleUp);
     return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("mouseup", handleUp); };
-  }, [draggingMultiEntities, panX, panY, zoom, multiEntityIds, graph, saveGraph]);
+  }, [draggingMultiEntities, panX, panY, zoom, multiEntityIds, multiAnnotationIds, graph, saveGraph]);
 
   // ── Rect drawing handler ──
   useEffect(() => {
@@ -1765,18 +1781,33 @@ export default function SchemaPage() {
       const newH = Math.max(50, worldY - start.bboxMinY);
       const scaleX = newW / origW;
       const scaleY = newH / origH;
-      setGraph((prev) => ({
-        ...prev,
-        entities: prev.entities.map((ent) => {
-          const snap = start.entityPositions.find((p) => p.id === ent.id);
-          if (!snap) return ent;
+      if (start.entityPositions.length > 0) {
+        setGraph((prev) => ({
+          ...prev,
+          entities: prev.entities.map((ent) => {
+            const snap = start.entityPositions.find((p) => p.id === ent.id);
+            if (!snap) return ent;
+            return {
+              ...ent,
+              x: start.bboxMinX + (snap.x - start.bboxMinX) * scaleX,
+              y: start.bboxMinY + (snap.y - start.bboxMinY) * scaleY,
+            };
+          }),
+        }));
+      }
+      if (start.annotationPositions.length > 0) {
+        setAnnotations((prev) => prev.map((a) => {
+          const snap = start.annotationPositions.find((p) => p.id === a.id);
+          if (!snap) return a;
           return {
-            ...ent,
+            ...a,
             x: start.bboxMinX + (snap.x - start.bboxMinX) * scaleX,
             y: start.bboxMinY + (snap.y - start.bboxMinY) * scaleY,
+            width: snap.w * scaleX,
+            height: snap.h * scaleY,
           };
-        }),
-      }));
+        }));
+      }
     };
     const handleUp = () => {
       setGroupResizing(false);
@@ -1826,6 +1857,7 @@ export default function SchemaPage() {
       // Start marquee selection on empty canvas click (entities have stopPropagation)
       setMarquee({ startX: worldX, startY: worldY, x: worldX, y: worldY, w: 0, h: 0 });
       setMultiEntityIds(new Set());
+      setMultiAnnotationIds(new Set());
     }
   }, [panX, panY, zoom, schemaToolMode, annotations]);
 
@@ -1836,7 +1868,7 @@ export default function SchemaPage() {
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) { e.preventDefault(); undo(); }
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && e.shiftKey) { e.preventDefault(); redo(); }
       if ((e.ctrlKey || e.metaKey) && e.key === "y") { e.preventDefault(); redo(); }
-      if (e.key === "Escape") { setSelectedEntityId(null); setSelectedAnnotationId(null); setSidePanelOpen(false); setModal(null); setContextMenu(null); setMultiEntityIds(new Set()); setEditingAnnotationId(null); }
+      if (e.key === "Escape") { setSelectedEntityId(null); setSelectedAnnotationId(null); setSidePanelOpen(false); setModal(null); setContextMenu(null); setMultiEntityIds(new Set()); setMultiAnnotationIds(new Set()); setEditingAnnotationId(null); }
       if (e.key.toLowerCase() === "v" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("select");
       if (e.key.toLowerCase() === "h" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("hand");
       if (e.key.toLowerCase() === "t" && !e.ctrlKey && !e.metaKey) setSchemaToolMode("text");
@@ -2028,7 +2060,7 @@ export default function SchemaPage() {
 
         {/* Annotations: text labels and rectangles */}
         {annotations.map((ann) => {
-          const isSelected = selectedAnnotationId === ann.id;
+          const isSelected = selectedAnnotationId === ann.id || multiAnnotationIds.has(ann.id);
           const annW = ann.width;
           const annH = ann.type === "rect" ? ann.height : 30;
           const rotation = ann.rotation || 0;
@@ -2070,7 +2102,21 @@ export default function SchemaPage() {
                   return;
                 }
                 if (schemaToolMode !== "select") return;
+                // If annotation is part of multi-selection, start group drag
+                if (multiAnnotationIds.has(ann.id)) {
+                  const wrap = canvasWrapRef.current;
+                  if (!wrap) return;
+                  const rect = wrap.getBoundingClientRect();
+                  const worldX = (e.clientX - rect.left - panX) / zoom;
+                  const worldY = (e.clientY - rect.top - panY) / zoom;
+                  multiEntityDragStartRef.current = { x: worldX, y: worldY };
+                  setDraggingMultiEntities(true);
+                  return;
+                }
+                // Solo annotation drag
                 setSelectedAnnotationId(ann.id);
+                if (multiAnnotationIds.size > 0) setMultiAnnotationIds(new Set());
+                if (multiEntityIds.size > 0) setMultiEntityIds(new Set());
                 const wrap = canvasWrapRef.current;
                 if (!wrap) return;
                 const rect = wrap.getBoundingClientRect();
@@ -2235,13 +2281,26 @@ export default function SchemaPage() {
         )}
 
         {/* Group selection bounding box with resize handle */}
-        {multiEntityIds.size > 1 && (() => {
-          const sel = graph.entities.filter((e) => multiEntityIds.has(e.id));
-          if (sel.length === 0) return null;
-          const minX = Math.min(...sel.map((e) => e.x));
-          const minY = Math.min(...sel.map((e) => e.y));
-          const maxX = Math.max(...sel.map((e) => e.x + (e.width || 280)));
-          const maxY = Math.max(...sel.map((e) => e.y + 200));
+        {(multiEntityIds.size + multiAnnotationIds.size > 1) && (() => {
+          const selEntities = graph.entities.filter((e) => multiEntityIds.has(e.id));
+          const selAnnotations = annotations.filter((a) => multiAnnotationIds.has(a.id));
+          if (selEntities.length === 0 && selAnnotations.length === 0) return null;
+          const allXs: number[] = [];
+          const allYs: number[] = [];
+          const allX2s: number[] = [];
+          const allY2s: number[] = [];
+          for (const e of selEntities) {
+            allXs.push(e.x); allYs.push(e.y);
+            allX2s.push(e.x + (e.width || 280)); allY2s.push(e.y + 200);
+          }
+          for (const a of selAnnotations) {
+            allXs.push(a.x); allYs.push(a.y);
+            allX2s.push(a.x + a.width); allY2s.push(a.y + (a.type === "rect" ? a.height : 30));
+          }
+          const minX = Math.min(...allXs);
+          const minY = Math.min(...allYs);
+          const maxX = Math.max(...allX2s);
+          const maxY = Math.max(...allY2s);
           const pad = 8;
           const bx = minX - pad;
           const by = minY - pad;
@@ -2280,11 +2339,11 @@ export default function SchemaPage() {
                 onMouseDown={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  const selEntities = graph.entities.filter((ent) => multiEntityIds.has(ent.id));
                   groupResizeStartRef.current = {
                     x: 0,
                     y: 0,
                     entityPositions: selEntities.map((ent) => ({ id: ent.id, x: ent.x, y: ent.y })),
+                    annotationPositions: selAnnotations.map((a) => ({ id: a.id, x: a.x, y: a.y, w: a.width, h: a.type === "rect" ? a.height : 30 })),
                     bboxMinX: minX,
                     bboxMinY: minY,
                     bboxW: maxX - minX,
