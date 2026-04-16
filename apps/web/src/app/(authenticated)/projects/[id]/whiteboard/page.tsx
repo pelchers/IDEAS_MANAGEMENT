@@ -1976,13 +1976,14 @@ export default function WhiteboardPage() {
                 onMouseLeave={() => setHoverStickyId(null)}
                 style={{
                   position: "absolute",
-                  left: `${sticky.x - 20}px`,
-                  top: `${sticky.y - 20}px`,
-                  width: `${stickyW + 40}px`,
-                  height: stickyH === "auto" ? "auto" : `${(sticky.height || 0) + 40}px`,
-                  padding: "20px",
+                  left: `${sticky.x - 28}px`,
+                  top: `${sticky.y - 28}px`,
+                  width: `${stickyW + 56}px`,
+                  height: stickyH === "auto" ? "auto" : `${(sticky.height || 0) + 56}px`,
+                  padding: "28px",
                   pointerEvents: "auto",
                   zIndex: isDragging ? 20 : "auto",
+                  overflow: "visible",
                 }}
               >
               <div
@@ -2109,13 +2110,14 @@ export default function WhiteboardPage() {
                 onMouseLeave={() => setHoverMediaId(null)}
                 style={{
                   position: "absolute",
-                  left: `${media.x - 20}px`,
-                  top: `${media.y - 20}px`,
-                  width: `${media.width + 40}px`,
-                  height: `${media.height + 40}px`,
-                  padding: "20px",
+                  left: `${media.x - 28}px`,
+                  top: `${media.y - 28}px`,
+                  width: `${media.width + 56}px`,
+                  height: `${media.height + 56}px`,
+                  padding: "28px",
                   pointerEvents: "auto",
                   zIndex: isDragging ? 20 : 5,
+                  overflow: "visible",
                 }}
               >
               <div
