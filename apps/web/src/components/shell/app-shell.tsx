@@ -13,6 +13,7 @@ function getTitleFromPathname(pathname: string): string {
   if (pathname === "/ai") return "AI CHAT";
   if (pathname === "/profile") return "PROFILE";
   if (pathname === "/settings") return "SETTINGS";
+  if (pathname === "/explore") return "EXPLORE";
   if (pathname.includes("/kanban")) return "KANBAN";
   if (pathname.includes("/whiteboard")) return "WHITEBOARD";
   if (pathname.includes("/schema")) return "SCHEMA PLANNER";
@@ -43,7 +44,8 @@ const NAV_LINKS: NavLink[] = [
   { num: "08", label: "Ideas", href: "/projects", projectRoute: true, suffix: "/ideas" },
   { num: "09", label: "Conflicts", href: "/projects", projectRoute: true, suffix: "/conflicts" },
   { num: "10", label: "AI Chat", href: "/ai" },
-  { num: "11", label: "Settings", href: "/settings" },
+  { num: "11", label: "Explore", href: "/explore" },
+  { num: "12", label: "Settings", href: "/settings" },
 ];
 
 function extractProjectId(pathname: string): string | null {
