@@ -13,6 +13,7 @@ export type AuthenticatedUser = {
   avatarUrl: string | null;
   tags: string[];
   preferences: Record<string, unknown> | null;
+  profileVisibility: Record<string, boolean> | null;
 };
 
 /**

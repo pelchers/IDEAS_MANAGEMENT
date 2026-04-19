@@ -5,6 +5,14 @@ import { getUserEntitlements } from "@/server/billing/entitlements";
 import { prisma } from "@/server/db";
 import { validateBody, isValidationError } from "@/server/api-validation";
 
+const ProfileVisibilitySchema = z.object({
+  displayName: z.boolean().optional(),
+  bio: z.boolean().optional(),
+  email: z.boolean().optional(),
+  tags: z.boolean().optional(),
+  avatarUrl: z.boolean().optional(),
+}).optional();
+
 const UpdateProfileSchema = z.object({
   email: z.string().email().max(320).optional(),
   displayName: z.string().max(100).optional(),
@@ -12,6 +20,7 @@ const UpdateProfileSchema = z.object({
   avatarUrl: z.string().max(2048).nullable().optional(),
   tags: z.array(z.string().max(50)).max(10).optional(),
   preferences: z.record(z.string(), z.unknown()).optional(),
+  profileVisibility: ProfileVisibilitySchema,
 });
 
 /**
@@ -40,6 +49,7 @@ export async function GET(req: Request) {
       avatarUrl: user.avatarUrl ?? null,
       tags: user.tags ?? [],
       preferences: user.preferences ?? {},
+      profileVisibility: user.profileVisibility ?? { displayName: true, avatarUrl: true, bio: false, email: false, tags: true },
     },
     entitlements: {
       plan: entitlements.plan,
@@ -93,6 +103,11 @@ export async function PUT(req: Request) {
   // Tags
   if (parsed.tags !== undefined) {
     updates.tags = parsed.tags.map((t) => t.trim()).filter(Boolean);
+  }
+
+  // Profile visibility
+  if (parsed.profileVisibility !== undefined) {
+    updates.profileVisibility = parsed.profileVisibility;
   }
 
   // Preferences
