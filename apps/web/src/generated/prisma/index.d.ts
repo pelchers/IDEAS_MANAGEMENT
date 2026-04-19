@@ -197,6 +197,14 @@ export const MemberRole: {
 
 export type MemberRole = (typeof MemberRole)[keyof typeof MemberRole]
 
+
+export const ProjectVisibility: {
+  PRIVATE: 'PRIVATE',
+  PUBLIC: 'PUBLIC'
+};
+
+export type ProjectVisibility = (typeof ProjectVisibility)[keyof typeof ProjectVisibility]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -230,6 +238,10 @@ export const ProjectStatus: typeof $Enums.ProjectStatus
 export type MemberRole = $Enums.MemberRole
 
 export const MemberRole: typeof $Enums.MemberRole
+
+export type ProjectVisibility = $Enums.ProjectVisibility
+
+export const ProjectVisibility: typeof $Enums.ProjectVisibility
 
 /**
  * ##  Prisma Client ʲˢ
@@ -2978,6 +2990,7 @@ export namespace Prisma {
     bio: number
     avatarUrl: number
     tags: number
+    profileVisibility: number
     preferences: number
     aiProvider: number
     aiApiKeyEncrypted: number
@@ -3033,6 +3046,7 @@ export namespace Prisma {
     bio?: true
     avatarUrl?: true
     tags?: true
+    profileVisibility?: true
     preferences?: true
     aiProvider?: true
     aiApiKeyEncrypted?: true
@@ -3125,6 +3139,7 @@ export namespace Prisma {
     bio: string | null
     avatarUrl: string | null
     tags: string[]
+    profileVisibility: JsonValue | null
     preferences: JsonValue | null
     aiProvider: $Enums.AiProvider
     aiApiKeyEncrypted: string | null
@@ -3161,6 +3176,7 @@ export namespace Prisma {
     bio?: boolean
     avatarUrl?: boolean
     tags?: boolean
+    profileVisibility?: boolean
     preferences?: boolean
     aiProvider?: boolean
     aiApiKeyEncrypted?: boolean
@@ -3194,6 +3210,7 @@ export namespace Prisma {
     bio?: boolean
     avatarUrl?: boolean
     tags?: boolean
+    profileVisibility?: boolean
     preferences?: boolean
     aiProvider?: boolean
     aiApiKeyEncrypted?: boolean
@@ -3213,6 +3230,7 @@ export namespace Prisma {
     bio?: boolean
     avatarUrl?: boolean
     tags?: boolean
+    profileVisibility?: boolean
     preferences?: boolean
     aiProvider?: boolean
     aiApiKeyEncrypted?: boolean
@@ -3232,6 +3250,7 @@ export namespace Prisma {
     bio?: boolean
     avatarUrl?: boolean
     tags?: boolean
+    profileVisibility?: boolean
     preferences?: boolean
     aiProvider?: boolean
     aiApiKeyEncrypted?: boolean
@@ -3242,7 +3261,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "role" | "emailVerifiedAt" | "displayName" | "bio" | "avatarUrl" | "tags" | "preferences" | "aiProvider" | "aiApiKeyEncrypted" | "openrouterRefreshToken" | "preferredAiProvider" | "aiFallbackSetting" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "role" | "emailVerifiedAt" | "displayName" | "bio" | "avatarUrl" | "tags" | "profileVisibility" | "preferences" | "aiProvider" | "aiApiKeyEncrypted" | "openrouterRefreshToken" | "preferredAiProvider" | "aiFallbackSetting" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     credential?: boolean | User$credentialArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -3288,6 +3307,7 @@ export namespace Prisma {
       bio: string | null
       avatarUrl: string | null
       tags: string[]
+      profileVisibility: Prisma.JsonValue | null
       preferences: Prisma.JsonValue | null
       aiProvider: $Enums.AiProvider
       aiApiKeyEncrypted: string | null
@@ -3740,6 +3760,7 @@ export namespace Prisma {
     readonly bio: FieldRef<"User", 'String'>
     readonly avatarUrl: FieldRef<"User", 'String'>
     readonly tags: FieldRef<"User", 'String[]'>
+    readonly profileVisibility: FieldRef<"User", 'Json'>
     readonly preferences: FieldRef<"User", 'Json'>
     readonly aiProvider: FieldRef<"User", 'AiProvider'>
     readonly aiApiKeyEncrypted: FieldRef<"User", 'String'>
@@ -15383,6 +15404,7 @@ export namespace Prisma {
     sessionId: string | null
     role: $Enums.AiMessageRole | null
     content: string | null
+    reasoning: string | null
     createdAt: Date | null
   }
 
@@ -15391,6 +15413,7 @@ export namespace Prisma {
     sessionId: string | null
     role: $Enums.AiMessageRole | null
     content: string | null
+    reasoning: string | null
     createdAt: Date | null
   }
 
@@ -15399,6 +15422,7 @@ export namespace Prisma {
     sessionId: number
     role: number
     content: number
+    reasoning: number
     toolCalls: number
     toolResults: number
     createdAt: number
@@ -15411,6 +15435,7 @@ export namespace Prisma {
     sessionId?: true
     role?: true
     content?: true
+    reasoning?: true
     createdAt?: true
   }
 
@@ -15419,6 +15444,7 @@ export namespace Prisma {
     sessionId?: true
     role?: true
     content?: true
+    reasoning?: true
     createdAt?: true
   }
 
@@ -15427,6 +15453,7 @@ export namespace Prisma {
     sessionId?: true
     role?: true
     content?: true
+    reasoning?: true
     toolCalls?: true
     toolResults?: true
     createdAt?: true
@@ -15510,6 +15537,7 @@ export namespace Prisma {
     sessionId: string
     role: $Enums.AiMessageRole
     content: string
+    reasoning: string | null
     toolCalls: JsonValue | null
     toolResults: JsonValue | null
     createdAt: Date
@@ -15537,6 +15565,7 @@ export namespace Prisma {
     sessionId?: boolean
     role?: boolean
     content?: boolean
+    reasoning?: boolean
     toolCalls?: boolean
     toolResults?: boolean
     createdAt?: boolean
@@ -15548,6 +15577,7 @@ export namespace Prisma {
     sessionId?: boolean
     role?: boolean
     content?: boolean
+    reasoning?: boolean
     toolCalls?: boolean
     toolResults?: boolean
     createdAt?: boolean
@@ -15559,6 +15589,7 @@ export namespace Prisma {
     sessionId?: boolean
     role?: boolean
     content?: boolean
+    reasoning?: boolean
     toolCalls?: boolean
     toolResults?: boolean
     createdAt?: boolean
@@ -15570,12 +15601,13 @@ export namespace Prisma {
     sessionId?: boolean
     role?: boolean
     content?: boolean
+    reasoning?: boolean
     toolCalls?: boolean
     toolResults?: boolean
     createdAt?: boolean
   }
 
-  export type AiChatMessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "role" | "content" | "toolCalls" | "toolResults" | "createdAt", ExtArgs["result"]["aiChatMessage"]>
+  export type AiChatMessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "role" | "content" | "reasoning" | "toolCalls" | "toolResults" | "createdAt", ExtArgs["result"]["aiChatMessage"]>
   export type AiChatMessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     session?: boolean | AiChatSessionDefaultArgs<ExtArgs>
   }
@@ -15596,6 +15628,7 @@ export namespace Prisma {
       sessionId: string
       role: $Enums.AiMessageRole
       content: string
+      reasoning: string | null
       toolCalls: Prisma.JsonValue | null
       toolResults: Prisma.JsonValue | null
       createdAt: Date
@@ -16027,6 +16060,7 @@ export namespace Prisma {
     readonly sessionId: FieldRef<"AiChatMessage", 'String'>
     readonly role: FieldRef<"AiChatMessage", 'AiMessageRole'>
     readonly content: FieldRef<"AiChatMessage", 'String'>
+    readonly reasoning: FieldRef<"AiChatMessage", 'String'>
     readonly toolCalls: FieldRef<"AiChatMessage", 'Json'>
     readonly toolResults: FieldRef<"AiChatMessage", 'Json'>
     readonly createdAt: FieldRef<"AiChatMessage", 'DateTime'>
@@ -17549,6 +17583,7 @@ export namespace Prisma {
     slug: string | null
     description: string | null
     status: $Enums.ProjectStatus | null
+    visibility: $Enums.ProjectVisibility | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -17559,6 +17594,7 @@ export namespace Prisma {
     slug: string | null
     description: string | null
     status: $Enums.ProjectStatus | null
+    visibility: $Enums.ProjectVisibility | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -17569,6 +17605,7 @@ export namespace Prisma {
     slug: number
     description: number
     status: number
+    visibility: number
     tags: number
     createdAt: number
     updatedAt: number
@@ -17582,6 +17619,7 @@ export namespace Prisma {
     slug?: true
     description?: true
     status?: true
+    visibility?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -17592,6 +17630,7 @@ export namespace Prisma {
     slug?: true
     description?: true
     status?: true
+    visibility?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -17602,6 +17641,7 @@ export namespace Prisma {
     slug?: true
     description?: true
     status?: true
+    visibility?: true
     tags?: true
     createdAt?: true
     updatedAt?: true
@@ -17686,6 +17726,7 @@ export namespace Prisma {
     slug: string
     description: string
     status: $Enums.ProjectStatus
+    visibility: $Enums.ProjectVisibility
     tags: string[]
     createdAt: Date
     updatedAt: Date
@@ -17714,6 +17755,7 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     status?: boolean
+    visibility?: boolean
     tags?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17730,6 +17772,7 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     status?: boolean
+    visibility?: boolean
     tags?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17741,6 +17784,7 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     status?: boolean
+    visibility?: boolean
     tags?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17752,12 +17796,13 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     status?: boolean
+    visibility?: boolean
     tags?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "status" | "tags" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "status" | "visibility" | "tags" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | Project$membersArgs<ExtArgs>
     artifacts?: boolean | Project$artifactsArgs<ExtArgs>
@@ -17782,6 +17827,7 @@ export namespace Prisma {
       slug: string
       description: string
       status: $Enums.ProjectStatus
+      visibility: $Enums.ProjectVisibility
       tags: string[]
       createdAt: Date
       updatedAt: Date
@@ -18217,6 +18263,7 @@ export namespace Prisma {
     readonly slug: FieldRef<"Project", 'String'>
     readonly description: FieldRef<"Project", 'String'>
     readonly status: FieldRef<"Project", 'ProjectStatus'>
+    readonly visibility: FieldRef<"Project", 'ProjectVisibility'>
     readonly tags: FieldRef<"Project", 'String[]'>
     readonly createdAt: FieldRef<"Project", 'DateTime'>
     readonly updatedAt: FieldRef<"Project", 'DateTime'>
@@ -25299,6 +25346,7 @@ export namespace Prisma {
     bio: 'bio',
     avatarUrl: 'avatarUrl',
     tags: 'tags',
+    profileVisibility: 'profileVisibility',
     preferences: 'preferences',
     aiProvider: 'aiProvider',
     aiApiKeyEncrypted: 'aiApiKeyEncrypted',
@@ -25450,6 +25498,7 @@ export namespace Prisma {
     sessionId: 'sessionId',
     role: 'role',
     content: 'content',
+    reasoning: 'reasoning',
     toolCalls: 'toolCalls',
     toolResults: 'toolResults',
     createdAt: 'createdAt'
@@ -25478,6 +25527,7 @@ export namespace Prisma {
     slug: 'slug',
     description: 'description',
     status: 'status',
+    visibility: 'visibility',
     tags: 'tags',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -25762,6 +25812,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'ProjectVisibility'
+   */
+  export type EnumProjectVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectVisibility'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProjectVisibility[]'
+   */
+  export type ListEnumProjectVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectVisibility[]'>
+    
+
+
+  /**
    * Reference to a field of type 'MemberRole'
    */
   export type EnumMemberRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MemberRole'>
@@ -25818,6 +25882,7 @@ export namespace Prisma {
     bio?: StringNullableFilter<"User"> | string | null
     avatarUrl?: StringNullableFilter<"User"> | string | null
     tags?: StringNullableListFilter<"User">
+    profileVisibility?: JsonNullableFilter<"User">
     preferences?: JsonNullableFilter<"User">
     aiProvider?: EnumAiProviderFilter<"User"> | $Enums.AiProvider
     aiApiKeyEncrypted?: StringNullableFilter<"User"> | string | null
@@ -25850,6 +25915,7 @@ export namespace Prisma {
     bio?: SortOrderInput | SortOrder
     avatarUrl?: SortOrderInput | SortOrder
     tags?: SortOrder
+    profileVisibility?: SortOrderInput | SortOrder
     preferences?: SortOrderInput | SortOrder
     aiProvider?: SortOrder
     aiApiKeyEncrypted?: SortOrderInput | SortOrder
@@ -25885,6 +25951,7 @@ export namespace Prisma {
     bio?: StringNullableFilter<"User"> | string | null
     avatarUrl?: StringNullableFilter<"User"> | string | null
     tags?: StringNullableListFilter<"User">
+    profileVisibility?: JsonNullableFilter<"User">
     preferences?: JsonNullableFilter<"User">
     aiProvider?: EnumAiProviderFilter<"User"> | $Enums.AiProvider
     aiApiKeyEncrypted?: StringNullableFilter<"User"> | string | null
@@ -25917,6 +25984,7 @@ export namespace Prisma {
     bio?: SortOrderInput | SortOrder
     avatarUrl?: SortOrderInput | SortOrder
     tags?: SortOrder
+    profileVisibility?: SortOrderInput | SortOrder
     preferences?: SortOrderInput | SortOrder
     aiProvider?: SortOrder
     aiApiKeyEncrypted?: SortOrderInput | SortOrder
@@ -25942,6 +26010,7 @@ export namespace Prisma {
     bio?: StringNullableWithAggregatesFilter<"User"> | string | null
     avatarUrl?: StringNullableWithAggregatesFilter<"User"> | string | null
     tags?: StringNullableListFilter<"User">
+    profileVisibility?: JsonNullableWithAggregatesFilter<"User">
     preferences?: JsonNullableWithAggregatesFilter<"User">
     aiProvider?: EnumAiProviderWithAggregatesFilter<"User"> | $Enums.AiProvider
     aiApiKeyEncrypted?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -26632,6 +26701,7 @@ export namespace Prisma {
     sessionId?: StringFilter<"AiChatMessage"> | string
     role?: EnumAiMessageRoleFilter<"AiChatMessage"> | $Enums.AiMessageRole
     content?: StringFilter<"AiChatMessage"> | string
+    reasoning?: StringNullableFilter<"AiChatMessage"> | string | null
     toolCalls?: JsonNullableFilter<"AiChatMessage">
     toolResults?: JsonNullableFilter<"AiChatMessage">
     createdAt?: DateTimeFilter<"AiChatMessage"> | Date | string
@@ -26643,6 +26713,7 @@ export namespace Prisma {
     sessionId?: SortOrder
     role?: SortOrder
     content?: SortOrder
+    reasoning?: SortOrderInput | SortOrder
     toolCalls?: SortOrderInput | SortOrder
     toolResults?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -26657,6 +26728,7 @@ export namespace Prisma {
     sessionId?: StringFilter<"AiChatMessage"> | string
     role?: EnumAiMessageRoleFilter<"AiChatMessage"> | $Enums.AiMessageRole
     content?: StringFilter<"AiChatMessage"> | string
+    reasoning?: StringNullableFilter<"AiChatMessage"> | string | null
     toolCalls?: JsonNullableFilter<"AiChatMessage">
     toolResults?: JsonNullableFilter<"AiChatMessage">
     createdAt?: DateTimeFilter<"AiChatMessage"> | Date | string
@@ -26668,6 +26740,7 @@ export namespace Prisma {
     sessionId?: SortOrder
     role?: SortOrder
     content?: SortOrder
+    reasoning?: SortOrderInput | SortOrder
     toolCalls?: SortOrderInput | SortOrder
     toolResults?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -26684,6 +26757,7 @@ export namespace Prisma {
     sessionId?: StringWithAggregatesFilter<"AiChatMessage"> | string
     role?: EnumAiMessageRoleWithAggregatesFilter<"AiChatMessage"> | $Enums.AiMessageRole
     content?: StringWithAggregatesFilter<"AiChatMessage"> | string
+    reasoning?: StringNullableWithAggregatesFilter<"AiChatMessage"> | string | null
     toolCalls?: JsonNullableWithAggregatesFilter<"AiChatMessage">
     toolResults?: JsonNullableWithAggregatesFilter<"AiChatMessage">
     createdAt?: DateTimeWithAggregatesFilter<"AiChatMessage"> | Date | string
@@ -26768,6 +26842,7 @@ export namespace Prisma {
     slug?: StringFilter<"Project"> | string
     description?: StringFilter<"Project"> | string
     status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFilter<"Project"> | $Enums.ProjectVisibility
     tags?: StringNullableListFilter<"Project">
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
@@ -26783,6 +26858,7 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrder
     status?: SortOrder
+    visibility?: SortOrder
     tags?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -26801,6 +26877,7 @@ export namespace Prisma {
     slug?: StringFilter<"Project"> | string
     description?: StringFilter<"Project"> | string
     status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFilter<"Project"> | $Enums.ProjectVisibility
     tags?: StringNullableListFilter<"Project">
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
@@ -26816,6 +26893,7 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrder
     status?: SortOrder
+    visibility?: SortOrder
     tags?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -26833,6 +26911,7 @@ export namespace Prisma {
     slug?: StringWithAggregatesFilter<"Project"> | string
     description?: StringWithAggregatesFilter<"Project"> | string
     status?: EnumProjectStatusWithAggregatesFilter<"Project"> | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityWithAggregatesFilter<"Project"> | $Enums.ProjectVisibility
     tags?: StringNullableListFilter<"Project">
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
@@ -27236,6 +27315,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -27268,6 +27348,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -27300,6 +27381,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27332,6 +27414,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27364,6 +27447,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -27383,6 +27467,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27402,6 +27487,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28135,6 +28221,7 @@ export namespace Prisma {
     id?: string
     role: $Enums.AiMessageRole
     content: string
+    reasoning?: string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -28146,6 +28233,7 @@ export namespace Prisma {
     sessionId: string
     role: $Enums.AiMessageRole
     content: string
+    reasoning?: string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -28155,6 +28243,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumAiMessageRoleFieldUpdateOperationsInput | $Enums.AiMessageRole
     content?: StringFieldUpdateOperationsInput | string
+    reasoning?: NullableStringFieldUpdateOperationsInput | string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28166,6 +28255,7 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     role?: EnumAiMessageRoleFieldUpdateOperationsInput | $Enums.AiMessageRole
     content?: StringFieldUpdateOperationsInput | string
+    reasoning?: NullableStringFieldUpdateOperationsInput | string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28176,6 +28266,7 @@ export namespace Prisma {
     sessionId: string
     role: $Enums.AiMessageRole
     content: string
+    reasoning?: string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -28185,6 +28276,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumAiMessageRoleFieldUpdateOperationsInput | $Enums.AiMessageRole
     content?: StringFieldUpdateOperationsInput | string
+    reasoning?: NullableStringFieldUpdateOperationsInput | string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28195,6 +28287,7 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     role?: EnumAiMessageRoleFieldUpdateOperationsInput | $Enums.AiMessageRole
     content?: StringFieldUpdateOperationsInput | string
+    reasoning?: NullableStringFieldUpdateOperationsInput | string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28282,6 +28375,7 @@ export namespace Prisma {
     slug: string
     description?: string
     status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
     tags?: ProjectCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28297,6 +28391,7 @@ export namespace Prisma {
     slug: string
     description?: string
     status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
     tags?: ProjectCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28312,6 +28407,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28327,6 +28423,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28342,6 +28439,7 @@ export namespace Prisma {
     slug: string
     description?: string
     status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
     tags?: ProjectCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28353,6 +28451,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28364,6 +28463,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28997,6 +29097,7 @@ export namespace Prisma {
     bio?: SortOrder
     avatarUrl?: SortOrder
     tags?: SortOrder
+    profileVisibility?: SortOrder
     preferences?: SortOrder
     aiProvider?: SortOrder
     aiApiKeyEncrypted?: SortOrder
@@ -29616,6 +29717,7 @@ export namespace Prisma {
     sessionId?: SortOrder
     role?: SortOrder
     content?: SortOrder
+    reasoning?: SortOrder
     toolCalls?: SortOrder
     toolResults?: SortOrder
     createdAt?: SortOrder
@@ -29626,6 +29728,7 @@ export namespace Prisma {
     sessionId?: SortOrder
     role?: SortOrder
     content?: SortOrder
+    reasoning?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -29634,6 +29737,7 @@ export namespace Prisma {
     sessionId?: SortOrder
     role?: SortOrder
     content?: SortOrder
+    reasoning?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -29683,6 +29787,13 @@ export namespace Prisma {
     not?: NestedEnumProjectStatusFilter<$PrismaModel> | $Enums.ProjectStatus
   }
 
+  export type EnumProjectVisibilityFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProjectVisibility | EnumProjectVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.ProjectVisibility[] | ListEnumProjectVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProjectVisibility[] | ListEnumProjectVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumProjectVisibilityFilter<$PrismaModel> | $Enums.ProjectVisibility
+  }
+
   export type ProjectArtifactListRelationFilter = {
     every?: ProjectArtifactWhereInput
     some?: ProjectArtifactWhereInput
@@ -29709,6 +29820,7 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrder
     status?: SortOrder
+    visibility?: SortOrder
     tags?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -29720,6 +29832,7 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrder
     status?: SortOrder
+    visibility?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -29730,6 +29843,7 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrder
     status?: SortOrder
+    visibility?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -29742,6 +29856,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumProjectStatusFilter<$PrismaModel>
     _max?: NestedEnumProjectStatusFilter<$PrismaModel>
+  }
+
+  export type EnumProjectVisibilityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProjectVisibility | EnumProjectVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.ProjectVisibility[] | ListEnumProjectVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProjectVisibility[] | ListEnumProjectVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumProjectVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.ProjectVisibility
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProjectVisibilityFilter<$PrismaModel>
+    _max?: NestedEnumProjectVisibilityFilter<$PrismaModel>
   }
 
   export type EnumMemberRoleFilter<$PrismaModel = never> = {
@@ -30910,6 +31034,10 @@ export namespace Prisma {
     set?: $Enums.ProjectStatus
   }
 
+  export type EnumProjectVisibilityFieldUpdateOperationsInput = {
+    set?: $Enums.ProjectVisibility
+  }
+
   export type ProjectUpdatetagsInput = {
     set?: string[]
     push?: string | string[]
@@ -31439,6 +31567,13 @@ export namespace Prisma {
     not?: NestedEnumProjectStatusFilter<$PrismaModel> | $Enums.ProjectStatus
   }
 
+  export type NestedEnumProjectVisibilityFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProjectVisibility | EnumProjectVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.ProjectVisibility[] | ListEnumProjectVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProjectVisibility[] | ListEnumProjectVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumProjectVisibilityFilter<$PrismaModel> | $Enums.ProjectVisibility
+  }
+
   export type NestedEnumProjectStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ProjectStatus | EnumProjectStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
@@ -31447,6 +31582,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumProjectStatusFilter<$PrismaModel>
     _max?: NestedEnumProjectStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumProjectVisibilityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProjectVisibility | EnumProjectVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.ProjectVisibility[] | ListEnumProjectVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProjectVisibility[] | ListEnumProjectVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumProjectVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.ProjectVisibility
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProjectVisibilityFilter<$PrismaModel>
+    _max?: NestedEnumProjectVisibilityFilter<$PrismaModel>
   }
 
   export type NestedEnumMemberRoleFilter<$PrismaModel = never> = {
@@ -32256,6 +32401,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -32287,6 +32433,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -32334,6 +32481,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32365,6 +32513,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32396,6 +32545,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -32427,6 +32577,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -32474,6 +32625,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32505,6 +32657,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32586,6 +32739,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -32617,6 +32771,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -32726,6 +32881,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32757,6 +32913,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32788,6 +32945,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -32819,6 +32977,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -32866,6 +33025,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32897,6 +33057,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32928,6 +33089,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -32959,6 +33121,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -33006,6 +33169,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33037,6 +33201,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33068,6 +33233,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -33099,6 +33265,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -33146,6 +33313,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33177,6 +33345,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33208,6 +33377,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -33239,6 +33409,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -33286,6 +33457,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33317,6 +33489,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33348,6 +33521,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -33379,6 +33553,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -33426,6 +33601,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33457,6 +33633,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33488,6 +33665,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -33519,6 +33697,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -33550,6 +33729,7 @@ export namespace Prisma {
     id?: string
     role: $Enums.AiMessageRole
     content: string
+    reasoning?: string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -33559,6 +33739,7 @@ export namespace Prisma {
     id?: string
     role: $Enums.AiMessageRole
     content: string
+    reasoning?: string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -33594,6 +33775,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33625,6 +33807,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33671,6 +33854,7 @@ export namespace Prisma {
     sessionId?: StringFilter<"AiChatMessage"> | string
     role?: EnumAiMessageRoleFilter<"AiChatMessage"> | $Enums.AiMessageRole
     content?: StringFilter<"AiChatMessage"> | string
+    reasoning?: StringNullableFilter<"AiChatMessage"> | string | null
     toolCalls?: JsonNullableFilter<"AiChatMessage">
     toolResults?: JsonNullableFilter<"AiChatMessage">
     createdAt?: DateTimeFilter<"AiChatMessage"> | Date | string
@@ -33737,6 +33921,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -33768,6 +33953,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -33815,6 +34001,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33846,6 +34033,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34076,6 +34264,7 @@ export namespace Prisma {
     slug: string
     description?: string
     status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
     tags?: ProjectCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34090,6 +34279,7 @@ export namespace Prisma {
     slug: string
     description?: string
     status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
     tags?: ProjectCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34112,6 +34302,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -34143,6 +34334,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -34187,6 +34379,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34201,6 +34394,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34229,6 +34423,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34260,6 +34455,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34288,6 +34484,7 @@ export namespace Prisma {
     slug: string
     description?: string
     status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
     tags?: ProjectCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34302,6 +34499,7 @@ export namespace Prisma {
     slug: string
     description?: string
     status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
     tags?: ProjectCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34332,6 +34530,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34346,6 +34545,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34360,6 +34560,7 @@ export namespace Prisma {
     slug: string
     description?: string
     status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
     tags?: ProjectCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34374,6 +34575,7 @@ export namespace Prisma {
     slug: string
     description?: string
     status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
     tags?: ProjectCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34396,6 +34598,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -34427,6 +34630,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -34471,6 +34675,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34485,6 +34690,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34513,6 +34719,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34544,6 +34751,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34572,6 +34780,7 @@ export namespace Prisma {
     slug: string
     description?: string
     status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
     tags?: ProjectCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34586,6 +34795,7 @@ export namespace Prisma {
     slug: string
     description?: string
     status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
     tags?: ProjectCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34616,6 +34826,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34630,6 +34841,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34647,6 +34859,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -34678,6 +34891,7 @@ export namespace Prisma {
     bio?: string | null
     avatarUrl?: string | null
     tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
@@ -34725,6 +34939,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34756,6 +34971,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
@@ -35242,6 +35458,7 @@ export namespace Prisma {
     id?: string
     role: $Enums.AiMessageRole
     content: string
+    reasoning?: string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
@@ -35251,6 +35468,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumAiMessageRoleFieldUpdateOperationsInput | $Enums.AiMessageRole
     content?: StringFieldUpdateOperationsInput | string
+    reasoning?: NullableStringFieldUpdateOperationsInput | string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35260,6 +35478,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumAiMessageRoleFieldUpdateOperationsInput | $Enums.AiMessageRole
     content?: StringFieldUpdateOperationsInput | string
+    reasoning?: NullableStringFieldUpdateOperationsInput | string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35269,6 +35488,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumAiMessageRoleFieldUpdateOperationsInput | $Enums.AiMessageRole
     content?: StringFieldUpdateOperationsInput | string
+    reasoning?: NullableStringFieldUpdateOperationsInput | string | null
     toolCalls?: NullableJsonNullValueInput | InputJsonValue
     toolResults?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

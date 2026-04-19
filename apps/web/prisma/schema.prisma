@@ -36,6 +36,9 @@ model User {
   avatarUrl   String?
   tags        String[] @default([])
 
+  // Privacy — which profile fields are publicly visible (JSON blob)
+  profileVisibility Json? // { displayName: true, bio: false, email: false, tags: true, avatarUrl: true }
+
   // Preferences (JSON blob)
   preferences Json?
 
@@ -287,13 +290,19 @@ enum MemberRole {
   VIEWER
 }
 
+enum ProjectVisibility {
+  PRIVATE
+  PUBLIC
+}
+
 model Project {
-  id          String        @id @default(cuid())
+  id          String            @id @default(cuid())
   name        String
   slug        String
-  description String        @default("")
-  status      ProjectStatus @default(PLANNING)
-  tags        String[]      @default([])
+  description String            @default("")
+  status      ProjectStatus     @default(PLANNING)
+  visibility  ProjectVisibility @default(PRIVATE)
+  tags        String[]          @default([])
 
   members   ProjectMember[]
   artifacts ProjectArtifact[]

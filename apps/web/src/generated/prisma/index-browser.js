@@ -130,6 +130,7 @@ exports.Prisma.UserScalarFieldEnum = {
   bio: 'bio',
   avatarUrl: 'avatarUrl',
   tags: 'tags',
+  profileVisibility: 'profileVisibility',
   preferences: 'preferences',
   aiProvider: 'aiProvider',
   aiApiKeyEncrypted: 'aiApiKeyEncrypted',
@@ -248,6 +249,7 @@ exports.Prisma.AiChatMessageScalarFieldEnum = {
   sessionId: 'sessionId',
   role: 'role',
   content: 'content',
+  reasoning: 'reasoning',
   toolCalls: 'toolCalls',
   toolResults: 'toolResults',
   createdAt: 'createdAt'
@@ -270,6 +272,7 @@ exports.Prisma.ProjectScalarFieldEnum = {
   slug: 'slug',
   description: 'description',
   status: 'status',
+  visibility: 'visibility',
   tags: 'tags',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -409,6 +412,11 @@ exports.ProjectStatus = exports.$Enums.ProjectStatus = {
   ACTIVE: 'ACTIVE',
   PAUSED: 'PAUSED',
   ARCHIVED: 'ARCHIVED'
+};
+
+exports.ProjectVisibility = exports.$Enums.ProjectVisibility = {
+  PRIVATE: 'PRIVATE',
+  PUBLIC: 'PUBLIC'
 };
 
 exports.MemberRole = exports.$Enums.MemberRole = {
