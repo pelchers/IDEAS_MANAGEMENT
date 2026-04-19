@@ -9,22 +9,22 @@ Depends on: W2 profile fields (completed — displayName, bio, avatarUrl, tags o
 ## Phase 1 — Profiles & Explore
 
 ### 1a. Public User Profiles
-- [ ] Add `ProjectVisibility` enum (PRIVATE, PUBLIC) to Project model
-- [ ] Add `visibility` field to Project (default PRIVATE)
-- [ ] Create public profile route `/users/[id]/page.tsx`
-- [ ] Fetch user by ID with public projects list
-- [ ] Display: avatar, display name, bio, tags, public projects
-- [ ] Privacy controls: API to toggle which fields are public
-- [ ] Add user search API endpoint (`GET /api/users?q=...&tags=...`)
+- [x] Add `ProjectVisibility` enum (PRIVATE, PUBLIC) to Project model
+- [x] Add `visibility` field to Project (default PRIVATE)
+- [x] Create public profile route `/users/[id]/page.tsx`
+- [x] Fetch user by ID with public projects list
+- [x] Display: avatar, display name, bio, tags, public projects
+- [x] Privacy controls: API to toggle which fields are public
+- [x] Add user search API endpoint (`GET /api/users?q=...&tags=...`)
 
 ### 1b. Explore Page
-- [ ] Create `/explore/page.tsx` route
-- [ ] Add explore nav link to app-shell (between AI Chat and Settings)
-- [ ] Build project search API (`GET /api/projects/explore?q=...&tags=...&status=...&sort=...`)
-- [ ] Implement project card grid with search bar and tag filters
-- [ ] Add featured/trending section (most members, recent activity)
-- [ ] Add user discovery section (search by name/tags)
-- [ ] Responsive layout: grid adapts from 1 to 3 columns
+- [x] Create `/explore/page.tsx` route
+- [x] Add explore nav link to app-shell (between AI Chat and Settings)
+- [x] Build project search API (`GET /api/projects/explore?q=...&tags=...&status=...&sort=...`)
+- [x] Implement project card grid with search bar and tag filters
+- [x] Add featured/trending section (most members, recent activity)
+- [x] Add user discovery section (search by name/tags)
+- [x] Responsive layout: grid adapts from 1 to 3 columns
 
 ## Phase 2 — Collaboration
 
