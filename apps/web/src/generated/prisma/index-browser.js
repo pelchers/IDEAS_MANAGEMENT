@@ -296,6 +296,41 @@ exports.Prisma.ProjectArtifactScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ProjectInviteScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  email: 'email',
+  invitedByUserId: 'invitedByUserId',
+  role: 'role',
+  status: 'status',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ProjectActivityScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  actorId: 'actorId',
+  action: 'action',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.CommentScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  userId: 'userId',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  content: 'content',
+  mentions: 'mentions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SyncOperationScalarFieldEnum = {
   id: 'id',
   operationId: 'operationId',
@@ -425,6 +460,13 @@ exports.MemberRole = exports.$Enums.MemberRole = {
   VIEWER: 'VIEWER'
 };
 
+exports.InviteStatus = exports.$Enums.InviteStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  EXPIRED: 'EXPIRED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Credential: 'Credential',
@@ -442,6 +484,9 @@ exports.Prisma.ModelName = {
   Project: 'Project',
   ProjectMember: 'ProjectMember',
   ProjectArtifact: 'ProjectArtifact',
+  ProjectInvite: 'ProjectInvite',
+  ProjectActivity: 'ProjectActivity',
+  Comment: 'Comment',
   SyncOperation: 'SyncOperation',
   SyncSnapshot: 'SyncSnapshot',
   AiTokenUsage: 'AiTokenUsage',
