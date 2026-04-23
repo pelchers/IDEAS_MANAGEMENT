@@ -42,7 +42,7 @@ export async function GET(req: Request, { params }: RouteParams) {
           userId: true,
           role: true,
           createdAt: true,
-          user: { select: { email: true } },
+          user: { select: { id: true, email: true, displayName: true, avatarUrl: true } },
         },
       },
       artifacts: {
@@ -71,9 +71,14 @@ export async function GET(req: Request, { params }: RouteParams) {
       members: project.members.map((m) => ({
         id: m.id,
         userId: m.userId,
-        email: m.user.email,
         role: m.role,
         createdAt: m.createdAt,
+        user: {
+          id: m.user.id,
+          email: m.user.email,
+          displayName: m.user.displayName,
+          avatarUrl: m.user.avatarUrl,
+        },
       })),
       artifacts: project.artifacts,
       userRole: access.role,
