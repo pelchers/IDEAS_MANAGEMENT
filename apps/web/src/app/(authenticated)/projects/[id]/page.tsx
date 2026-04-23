@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { MemberPanel, MemberAvatarRow } from "@/components/project/member-panel";
 import { ActivityFeed } from "@/components/project/activity-feed";
+import { PresenceIndicator } from "@/components/project/presence-indicator";
 
 /* ── Constants ── */
 const TABS = ["EDITOR", "PREVIEW", "NOTES"] as const;
@@ -207,6 +208,7 @@ export default function ProjectWorkspacePage() {
             <Link href={`/projects/${projectId}/schema`} className="nb-btn nb-btn--small">SCHEMA</Link>
             <Link href={`/projects/${projectId}/ideas`} className="nb-btn nb-btn--small">IDEAS</Link>
           </div>
+          <PresenceIndicator projectId={projectId} />
           <MemberAvatarRow projectId={projectId} />
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <span className="font-mono text-xs uppercase text-gray-mid">
