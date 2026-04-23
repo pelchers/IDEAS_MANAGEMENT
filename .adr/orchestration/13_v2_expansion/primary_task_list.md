@@ -29,27 +29,27 @@ Depends on: W2 profile fields (completed — displayName, bio, avatarUrl, tags o
 ## Phase 2 — Collaboration
 
 ### 2a. Project Member Management
-- [ ] Extend project settings UI with member management panel
-- [ ] Create invite API (`POST /api/projects/:id/invite`) — by email or user ID
-- [ ] Create invitation acceptance flow
-- [ ] Role management: owner can change member roles (EDITOR, VIEWER)
-- [ ] Remove member API (`DELETE /api/projects/:id/members/:userId`)
-- [ ] Show member avatars/names in project workspace header
+- [x] Extend project settings UI with member management panel
+- [x] Create invite API (`POST /api/projects/:id/invite`) — by email or user ID
+- [x] Create invitation acceptance flow
+- [x] Role management: owner can change member roles (EDITOR, VIEWER)
+- [x] Remove member API (`DELETE /api/projects/:id/members/:userId`)
+- [x] Show member avatars/names in project workspace header
 
 ### 2b. Real-Time Presence
-- [ ] Add presence system (SSE or WebSocket endpoint)
-- [ ] Track which users are active in which project
-- [ ] Display presence indicators (colored dots + avatar list) in project header
-- [ ] Auto-expire stale presence (5-minute heartbeat timeout)
+- [x] Add presence system (SSE or WebSocket endpoint)
+- [x] Track which users are active in which project
+- [x] Display presence indicators (colored dots + avatar list) in project header
+- [x] Auto-expire stale presence (5-minute heartbeat timeout)
 
 ### 2c. Activity Feed & Comments
-- [ ] Create `ProjectActivity` model (actorId, action, targetType, targetId, metadata, timestamp)
-- [ ] Log activity on: artifact create/update/delete, member join/leave, settings change
-- [ ] Create activity feed API (`GET /api/projects/:id/activity`)
-- [ ] Build activity feed UI component (timeline style, brutalist)
-- [ ] Create `Comment` model (userId, targetType, targetId, content, timestamp)
-- [ ] Add comment UI to kanban cards, whiteboard stickies, ideas
-- [ ] @mention support in comments (parse `@displayName`, link to profile)
+- [x] Create `ProjectActivity` model (actorId, action, targetType, targetId, metadata, timestamp)
+- [x] Log activity on: artifact create/update/delete, member join/leave, settings change
+- [x] Create activity feed API (`GET /api/projects/:id/activity`)
+- [x] Build activity feed UI component (timeline style, brutalist)
+- [x] Create `Comment` model (userId, targetType, targetId, content, timestamp)
+- [x] Add comment UI to kanban cards, whiteboard stickies, ideas
+- [x] @mention support in comments (parse `@displayName`, link to profile)
 
 ## Phase 3 — Social Graph (Friends & Groups)
 
