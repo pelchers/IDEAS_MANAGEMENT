@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { MemberPanel, MemberAvatarRow } from "@/components/project/member-panel";
+import { ActivityFeed } from "@/components/project/activity-feed";
 
 /* ── Constants ── */
 const TABS = ["EDITOR", "PREVIEW", "NOTES"] as const;
@@ -205,6 +207,7 @@ export default function ProjectWorkspacePage() {
             <Link href={`/projects/${projectId}/schema`} className="nb-btn nb-btn--small">SCHEMA</Link>
             <Link href={`/projects/${projectId}/ideas`} className="nb-btn nb-btn--small">IDEAS</Link>
           </div>
+          <MemberAvatarRow projectId={projectId} />
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <span className="font-mono text-xs uppercase text-gray-mid">
               {project ? project.status : `PROJECT #${projectId}`}
@@ -515,6 +518,12 @@ export default function ProjectWorkspacePage() {
             )}
           </>
         )}
+      </div>
+
+      {/* Member management + Activity feed */}
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(380px,1fr))] gap-6 mt-8">
+        <MemberPanel projectId={projectId} isOwner={true} />
+        <ActivityFeed projectId={projectId} />
       </div>
     </div>
   );
