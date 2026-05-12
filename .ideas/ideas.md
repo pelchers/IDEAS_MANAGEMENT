@@ -153,3 +153,23 @@ This file is the master list for ideas captured in this repo. Keep entries title
 - Trust & safety: identity verification tiered by user role (poachers and experts require deeper verification than general users), strike system for false submissions, appeal flow, and an external review board option for contested status changes.
 - Risks: legal exposure across jurisdictions (defamation, privacy, harassment), the possibility of bad actors weaponizing the platform against innocent parties (must be mitigated by AI gate + multi-source confirmation + appeal flow), brand-safety for payment processors and ad networks (premium-subscription revenue must be Stripe-compliant; some processors decline this category), and operational load of moderation at scale.
 - Not in scope for v1: direct civil-suit assistance, vigilante coordination, real-world meet-ups, anonymous tip lines for active investigations (deferred to phase 2 with law-enforcement liaison framework).
+
+## 10. 2026-05-12 - Automated Job Application System
+
+**Status:** Captured
+
+**Summary:** A multi-platform automated job application engine driven by user-supplied flags (category, posting date window, location, salary band, remote/hybrid/onsite, seniority, tech-stack keywords, company size, etc.). Runs application cycles in **tiered priority**: (1) jobs matching **all** criteria first, (2) then partial matches with descending criteria match-score, (3) finally a "bulk similar apply" pass to corollary / adjacent job titles in the same job area. Each cycle has a user-set count cap. Supports multiple platforms (LinkedIn, Indeed, ZipRecruiter, Wellfound/AngelList, company ATS surfaces like Greenhouse / Lever / Workday) selected at cycle initiation. A small UI controls cycle config, monitors progress, and reviews/approves AI-drafted application materials. Combines code automation (browser automation, ATS form-fill) with AI automation (cover letters, resume tailoring, screening-question answers). Optional per-application resume optimization derived from a user-uploaded master resume that the user can update over time.
+
+**Planning Folder:** [`./Automated Job Application System/`](./Automated%20Job%20Application%20System/)
+
+**Notes:**
+- Tiered application strategy: **exact-match → partial-match → corollary-area** with descending priority and configurable count caps per tier.
+- Cycle is the unit of work: user defines flags + platforms + per-tier count caps + optional review-before-send toggle, then runs the cycle.
+- Master resume is user-uploaded and version-managed; per-application optimization tailors keywords, project ordering, and skills emphasis without fabricating experience.
+- AI-drafted cover letters, screening-question answers, and resume tailoring are all reviewable (approve / edit / skip / reject) before submission unless user opts into full auto-send.
+- Multi-platform automation uses browser automation (Playwright) for sites without APIs and direct API/ATS integrations where available (Greenhouse, Lever public job feeds, etc.).
+- UI surface (web app + optional Claude Code component): cycle config wizard, per-cycle progress monitor, approval queue, sent-applications log, response tracker, resume version manager.
+- Anti-spam ethics + ToS posture: respect each platform's automation policies; provide a clearly-disclosed "applied via assistant" disclaimer where platform ToS permits; rate-limit per-platform to mimic human pace; ban deceptive practices (no fabricating experience, no impersonation).
+- Risks: platform ToS / automation bans (LinkedIn especially aggressive), captcha / 2FA gates, resume-tailoring quality drift, applicant-tracking-system black-listing for repetitive submissions, and the perception risk of mass-applying with low signal.
+- Revenue model (future): freemium with per-cycle limits, paid tier for higher cycle counts + premium AI tailoring + multi-platform breadth + analytics.
+- Domain not yet selected.
