@@ -333,6 +333,7 @@ model Project {
 
   @@index([status])
   @@index([groupId])
+  @@index([visibility, createdAt]) // explore page: PUBLIC projects ordered by recency
 }
 
 // ─── Social Graph: Friends & Groups ──────────────────────────────────
