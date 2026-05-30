@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/server/db";
+import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 
 const DEFAULT_VISIBILITY: Record<string, boolean> = {
   displayName: true,
@@ -21,6 +22,9 @@ function getVisibility(raw: unknown): Record<string, boolean> {
  * Search users by name or tags. Returns only public profile fields.
  */
 export async function GET(req: Request) {
+  const authResult = await requireAuth(req);
+  if (isErrorResponse(authResult)) return authResult;
+
   const url = new URL(req.url);
   const q = url.searchParams.get("q")?.trim() || "";
   const tagsParam = url.searchParams.get("tags")?.trim() || "";
@@ -29,10 +33,9 @@ export async function GET(req: Request) {
   const where: Record<string, unknown> = {};
 
   if (q) {
-    where.OR = [
-      { displayName: { contains: q, mode: "insensitive" } },
-      { email: { contains: q, mode: "insensitive" } },
-    ];
+    // Search by displayName only — never filter on email (privacy: email
+    // visibility defaults to private; querying it enables enumeration).
+    where.displayName = { contains: q, mode: "insensitive" };
   }
 
   if (tagsParam) {

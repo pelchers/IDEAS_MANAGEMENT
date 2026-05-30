@@ -54,6 +54,25 @@ export async function GET(req: Request, { params }: RouteParams) {
   }
 
   const myMembership = await getGroupMembership(id, user.id);
+  const isActiveMember = myMembership?.status === "active";
+
+  // Non-members get a redacted roster: no emails, no pending-join requests.
+  type RawMember = (typeof group.members)[number];
+  const projectVisibleToViewer = (p: { visibility: string }) =>
+    isActiveMember || p.visibility === "PUBLIC";
+  const shapeMember = (m: RawMember) => ({
+    id: m.id,
+    role: m.role,
+    status: m.status,
+    createdAt: m.createdAt,
+    user: {
+      id: m.user.id,
+      displayName: m.user.displayName,
+      avatarUrl: m.user.avatarUrl,
+      // Email only exposed to active group members
+      email: isActiveMember ? m.user.email : null,
+    },
+  });
 
   return NextResponse.json({
     ok: true,
@@ -64,16 +83,19 @@ export async function GET(req: Request, { params }: RouteParams) {
       description: group.description,
       avatarUrl: group.avatarUrl,
       createdAt: group.createdAt,
-      members: group.members.filter((m) => m.status === "active"),
-      pendingMembers: group.members.filter((m) => m.status === "pending"),
-      projects: group.projects.map((p) => ({
-        id: p.id,
-        name: p.name,
-        status: p.status,
-        visibility: p.visibility,
-        memberCount: p._count.members,
-      })),
-      myRole: myMembership?.status === "active" ? myMembership.role : null,
+      members: group.members.filter((m) => m.status === "active").map(shapeMember),
+      // Pending join requests are only visible to active members (admins act on them)
+      pendingMembers: isActiveMember ? group.members.filter((m) => m.status === "pending").map(shapeMember) : [],
+      projects: group.projects
+        .filter(projectVisibleToViewer)
+        .map((p) => ({
+          id: p.id,
+          name: p.name,
+          status: p.status,
+          visibility: p.visibility,
+          memberCount: p._count.members,
+        })),
+      myRole: isActiveMember ? myMembership!.role : null,
       myStatus: myMembership?.status ?? null,
     },
   });

@@ -7,12 +7,14 @@ import { runDigestCycle } from "@/server/notifications/digest";
  * Email sending is currently stubbed (logged) — wire a provider when keys exist.
  */
 export async function POST(req: Request) {
+  // Fail closed: this endpoint must never run without a configured secret.
   const secret = process.env.CRON_SECRET;
-  if (secret) {
-    const auth = req.headers.get("authorization");
-    if (auth !== `Bearer ${secret}`) {
-      return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
-    }
+  if (!secret) {
+    return NextResponse.json({ ok: false, error: "cron_not_configured" }, { status: 503 });
+  }
+  const auth = req.headers.get("authorization");
+  if (auth !== `Bearer ${secret}`) {
+    return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
 
   const url = new URL(req.url);
@@ -24,5 +26,6 @@ export async function POST(req: Request) {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || url.origin;
   const sent = await runDigestCycle(frequency, baseUrl);
 
-  return NextResponse.json({ ok: true, frequency, sentCount: sent.length, recipients: sent });
+  // Return only the count — never enumerate recipient emails/ids in the response.
+  return NextResponse.json({ ok: true, frequency, sentCount: sent.length });
 }
