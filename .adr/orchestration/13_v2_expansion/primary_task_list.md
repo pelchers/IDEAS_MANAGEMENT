@@ -54,22 +54,23 @@ Depends on: W2 profile fields (completed — displayName, bio, avatarUrl, tags o
 ## Phase 3 — Social Graph (Friends & Groups)
 
 ### 3a. Friend System
-- [ ] Create `Friendship` model (requesterId, addresseeId, status: PENDING/ACCEPTED/DECLINED/BLOCKED, timestamps)
-- [ ] Friend request API: send (`POST /api/friends/request`), accept/decline (`PUT /api/friends/:id`)
-- [ ] Friends list API (`GET /api/friends`) with online status from presence system
-- [ ] Friends list UI in sidebar or dedicated `/friends` route
-- [ ] Block/unblock user functionality
-- [ ] Mutual friends display on public profiles
+- [x] Create `Friendship` model (requesterId, addresseeId, status: PENDING/ACCEPTED/DECLINED/BLOCKED, timestamps)
+- [x] Friend request API: send (`POST /api/friends/request`), accept/decline (`PUT /api/friends/:id`)
+- [x] Friends list API (`GET /api/friends`) — friends/incoming/outgoing/blocked groupings
+  - [ ] Online status from presence system — DEFERRED: presence is per-project (no global user-online tracker yet); revisit in Phase 4 alongside notifications/global SSE
+- [x] Friends list UI in dedicated `/friends` route
+- [x] Block/unblock user functionality
+- [x] Mutual friends display on public profiles
 
 ### 3b. Groups
-- [ ] Create `Group` model (name, slug, description, avatarUrl, createdById, timestamps)
-- [ ] Create `GroupMember` model (groupId, userId, role: OWNER/ADMIN/MEMBER, joinedAt)
-- [ ] Group CRUD API (`/api/groups`)
-- [ ] Group member management (invite, join request, approve, remove)
-- [ ] Group page route (`/groups/[id]`) with member list and shared projects
-- [ ] Create group UI — name, description, avatar
-- [ ] Link projects to groups (optional `groupId` on Project)
-- [ ] Group activity feed
+- [x] Create `Group` model (name, slug, description, avatarUrl, createdById, timestamps)
+- [x] Create `GroupMember` model (groupId, userId, role: OWNER/ADMIN/MEMBER, status active/pending)
+- [x] Group CRUD API (`/api/groups`)
+- [x] Group member management (invite, join request, approve, remove, role change)
+- [x] Group page route (`/groups/[id]`) with member list and shared projects
+- [x] Create group UI — name, description (avatar field in schema, upload UI deferred)
+- [x] Link projects to groups (optional `groupId` on Project)
+- [ ] Group activity feed — DEFERRED: requires a GroupActivity model or cross-project aggregation; revisit in Phase 4
 
 ## Phase 4 — Notifications
 
