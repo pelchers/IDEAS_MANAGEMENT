@@ -4,6 +4,7 @@ import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { validateBody, isValidationError } from "@/server/api-validation";
 import { createNotification } from "@/server/notifications/service";
+import { enforceUserRateLimit } from "@/server/rate-limit";
 
 const RequestSchema = z.object({
   addresseeId: z.string().min(1),
@@ -17,6 +18,9 @@ export async function POST(req: Request) {
   const authResult = await requireAuth(req);
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
+
+  const limited = enforceUserRateLimit(user.id, "friend_request");
+  if (limited) return limited;
 
   const parsed = await validateBody(req, RequestSchema);
   if (isValidationError(parsed)) return parsed;

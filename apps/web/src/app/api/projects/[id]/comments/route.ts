@@ -6,6 +6,7 @@ import { checkProjectAccess } from "@/server/projects/helpers";
 import { validateBody, isValidationError } from "@/server/api-validation";
 import { logProjectActivity } from "@/server/projects/activity";
 import { createNotification } from "@/server/notifications/service";
+import { enforceUserRateLimit } from "@/server/rate-limit";
 
 const CreateCommentSchema = z.object({
   targetType: z.string().min(1).max(50),
@@ -67,6 +68,9 @@ export async function POST(req: Request, { params }: RouteParams) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
   const { id: projectId } = await params;
+
+  const limited = enforceUserRateLimit(user.id, "comment_create");
+  if (limited) return limited;
 
   const access = await checkProjectAccess(projectId, user);
   if (!access) {

@@ -4,6 +4,7 @@ import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { generateSlug } from "@/server/projects/helpers";
 import { validateBody, isValidationError } from "@/server/api-validation";
+import { enforceUserRateLimit } from "@/server/rate-limit";
 
 const CreateGroupSchema = z.object({
   name: z.string().min(1).max(120).transform((s) => s.trim()),
@@ -81,6 +82,9 @@ export async function POST(req: Request) {
   const authResult = await requireAuth(req);
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
+
+  const limited = enforceUserRateLimit(user.id, "group_create");
+  if (limited) return limited;
 
   const parsed = await validateBody(req, CreateGroupSchema);
   if (isValidationError(parsed)) return parsed;

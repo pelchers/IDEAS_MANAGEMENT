@@ -5,6 +5,7 @@ import { prisma } from "@/server/db";
 import { validateBody, isValidationError } from "@/server/api-validation";
 import { getGroupMembership, hasGroupRole } from "@/server/social/groups";
 import { createNotification } from "@/server/notifications/service";
+import { enforceUserRateLimit } from "@/server/rate-limit";
 
 const PostSchema = z.object({
   // "join" = self join-request; "invite" = admin adds by email/userId
@@ -26,6 +27,9 @@ export async function POST(req: Request, { params }: RouteParams) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
   const { id: groupId } = await params;
+
+  const limited = enforceUserRateLimit(user.id, "group_member_action");
+  if (limited) return limited;
 
   const group = await prisma.group.findUnique({ where: { id: groupId }, select: { id: true } });
   if (!group) return NextResponse.json({ ok: false, error: "group_not_found" }, { status: 404 });

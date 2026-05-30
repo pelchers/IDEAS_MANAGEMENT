@@ -90,7 +90,22 @@ export const PRESETS = {
   apiGeneral: { limit: 60, windowMs: 60 * 1000 }, // 60 per minute
   // AI chat (per user)
   aiChat: { limit: 30, windowMs: 60 * 1000 }, // 30 per minute
+  // Social writes (friend requests, invites, group joins/creates, comments)
+  social: { limit: 20, windowMs: 60 * 1000 }, // 20 per minute per user
 };
+
+/**
+ * Apply a per-user rate limit for a named action. Returns a 429 Response when
+ * the limit is exceeded, or null when the request is allowed.
+ */
+export function enforceUserRateLimit(
+  userId: string,
+  action: string,
+  preset: { limit: number; windowMs: number } = PRESETS.social
+): Response | null {
+  const result = rateLimit(`${action}:${userId}`, preset.limit, preset.windowMs);
+  return result.allowed ? null : rateLimitResponse(result);
+}
 
 /**
  * Build a standard 429 response.
