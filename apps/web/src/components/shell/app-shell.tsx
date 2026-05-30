@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AiHelper } from "@/components/ai/ai-helper";
 import { SyncStatusIndicator } from "@/components/sync/sync-status-indicator";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 
 /* ── Title from pathname ── */
 function getTitleFromPathname(pathname: string): string {
@@ -264,36 +265,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               outline: "none",
             }}
           />
-          <button
-            aria-label="Notifications"
-            style={{
-              width: "44px",
-              height: "44px",
-              backgroundColor: "#FFFFFF",
-              border: "3px solid #282828",
-              boxShadow: "4px 4px 0px #282828",
-              cursor: "pointer",
-              fontSize: "1.2rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              position: "relative" as const,
-              flexShrink: 0,
-            }}
-          >
-            <span
-              style={{
-                position: "absolute",
-                top: "6px",
-                right: "6px",
-                width: "10px",
-                height: "10px",
-                backgroundColor: "#FF5E54",
-                border: "2px solid #FFFFFF",
-              }}
-            />
-            &#9872;
-          </button>
+          <NotificationBell />
         </div>
       </header>
 
