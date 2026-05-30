@@ -42,6 +42,10 @@ model User {
   // Preferences (JSON blob)
   preferences Json?
 
+  // Notifications
+  emailDigestFrequency String  @default("OFF") // "OFF" | "DAILY" | "WEEKLY"
+  unsubscribeToken     String?
+
   // AI configuration
   aiProvider             AiProvider @default(NONE)
   aiApiKeyEncrypted      String?    // AES-256-GCM encrypted API key or OAuth access token
@@ -68,10 +72,13 @@ model User {
   friendshipsReceived Friendship[]      @relation("friendshipAddressee")
   groupsCreated       Group[]           @relation("groupCreator")
   groupMemberships    GroupMember[]
+  notifications       Notification[]
   syncOperations     SyncOperation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([unsubscribeToken])
 }
 
 model Credential {
@@ -392,6 +399,26 @@ model GroupMember {
 
   @@unique([groupId, userId])
   @@index([userId])
+}
+
+// ─── Notifications ───────────────────────────────────────────────────
+
+model Notification {
+  id         String   @id @default(cuid())
+  userId     String
+  type       String   // e.g. "friend.request", "friend.accepted", "project.invite", "comment.mention", "group.join_request", "group.approved"
+  title      String
+  body       String   @default("")
+  sourceType String?  // e.g. "User", "Project", "Group", "Comment"
+  sourceId   String?
+  linkPath   String?  // app path to navigate to on click
+  read       Boolean  @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, read, createdAt])
 }
 
 model ProjectMember {

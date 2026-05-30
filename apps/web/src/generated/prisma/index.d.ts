@@ -99,6 +99,11 @@ export type Group = $Result.DefaultSelection<Prisma.$GroupPayload>
  */
 export type GroupMember = $Result.DefaultSelection<Prisma.$GroupMemberPayload>
 /**
+ * Model Notification
+ * 
+ */
+export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
+/**
  * Model ProjectMember
  * 
  */
@@ -601,6 +606,16 @@ export class PrismaClient<
     * ```
     */
   get groupMember(): Prisma.GroupMemberDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.notification`: Exposes CRUD operations for the **Notification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Notifications
+    * const notifications = await prisma.notification.findMany()
+    * ```
+    */
+  get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.projectMember`: Exposes CRUD operations for the **ProjectMember** model.
@@ -1149,6 +1164,7 @@ export namespace Prisma {
     Friendship: 'Friendship',
     Group: 'Group',
     GroupMember: 'GroupMember',
+    Notification: 'Notification',
     ProjectMember: 'ProjectMember',
     ProjectArtifact: 'ProjectArtifact',
     ProjectInvite: 'ProjectInvite',
@@ -1176,7 +1192,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "credential" | "session" | "refreshToken" | "emailVerificationToken" | "passwordResetToken" | "auditLog" | "subscription" | "entitlement" | "billingEvent" | "aiChatSession" | "aiChatMessage" | "aiToolOutput" | "project" | "friendship" | "group" | "groupMember" | "projectMember" | "projectArtifact" | "projectInvite" | "projectActivity" | "comment" | "syncOperation" | "syncSnapshot" | "aiTokenUsage" | "adminConfig"
+      modelProps: "user" | "credential" | "session" | "refreshToken" | "emailVerificationToken" | "passwordResetToken" | "auditLog" | "subscription" | "entitlement" | "billingEvent" | "aiChatSession" | "aiChatMessage" | "aiToolOutput" | "project" | "friendship" | "group" | "groupMember" | "notification" | "projectMember" | "projectArtifact" | "projectInvite" | "projectActivity" | "comment" | "syncOperation" | "syncSnapshot" | "aiTokenUsage" | "adminConfig"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2438,6 +2454,80 @@ export namespace Prisma {
           }
         }
       }
+      Notification: {
+        payload: Prisma.$NotificationPayload<ExtArgs>
+        fields: Prisma.NotificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotificationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          findFirst: {
+            args: Prisma.NotificationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          findMany: {
+            args: Prisma.NotificationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          create: {
+            args: Prisma.NotificationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          createMany: {
+            args: Prisma.NotificationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotificationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          delete: {
+            args: Prisma.NotificationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          update: {
+            args: Prisma.NotificationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.NotificationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotificationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NotificationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          upsert: {
+            args: Prisma.NotificationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          aggregate: {
+            args: Prisma.NotificationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotification>
+          }
+          groupBy: {
+            args: Prisma.NotificationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotificationCountArgs<ExtArgs>
+            result: $Utils.Optional<NotificationCountAggregateOutputType> | number
+          }
+        }
+      }
       ProjectMember: {
         payload: Prisma.$ProjectMemberPayload<ExtArgs>
         fields: Prisma.ProjectMemberFieldRefs
@@ -3217,6 +3307,7 @@ export namespace Prisma {
     friendship?: FriendshipOmit
     group?: GroupOmit
     groupMember?: GroupMemberOmit
+    notification?: NotificationOmit
     projectMember?: ProjectMemberOmit
     projectArtifact?: ProjectArtifactOmit
     projectInvite?: ProjectInviteOmit
@@ -3324,6 +3415,7 @@ export namespace Prisma {
     friendshipsReceived: number
     groupsCreated: number
     groupMemberships: number
+    notifications: number
     syncOperations: number
   }
 
@@ -3346,6 +3438,7 @@ export namespace Prisma {
     friendshipsReceived?: boolean | UserCountOutputTypeCountFriendshipsReceivedArgs
     groupsCreated?: boolean | UserCountOutputTypeCountGroupsCreatedArgs
     groupMemberships?: boolean | UserCountOutputTypeCountGroupMembershipsArgs
+    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
     syncOperations?: boolean | UserCountOutputTypeCountSyncOperationsArgs
   }
 
@@ -3484,6 +3577,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountGroupMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GroupMemberWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
   }
 
   /**
@@ -3672,6 +3772,8 @@ export namespace Prisma {
     displayName: string | null
     bio: string | null
     avatarUrl: string | null
+    emailDigestFrequency: string | null
+    unsubscribeToken: string | null
     aiProvider: $Enums.AiProvider | null
     aiApiKeyEncrypted: string | null
     openrouterRefreshToken: string | null
@@ -3689,6 +3791,8 @@ export namespace Prisma {
     displayName: string | null
     bio: string | null
     avatarUrl: string | null
+    emailDigestFrequency: string | null
+    unsubscribeToken: string | null
     aiProvider: $Enums.AiProvider | null
     aiApiKeyEncrypted: string | null
     openrouterRefreshToken: string | null
@@ -3709,6 +3813,8 @@ export namespace Prisma {
     tags: number
     profileVisibility: number
     preferences: number
+    emailDigestFrequency: number
+    unsubscribeToken: number
     aiProvider: number
     aiApiKeyEncrypted: number
     openrouterRefreshToken: number
@@ -3728,6 +3834,8 @@ export namespace Prisma {
     displayName?: true
     bio?: true
     avatarUrl?: true
+    emailDigestFrequency?: true
+    unsubscribeToken?: true
     aiProvider?: true
     aiApiKeyEncrypted?: true
     openrouterRefreshToken?: true
@@ -3745,6 +3853,8 @@ export namespace Prisma {
     displayName?: true
     bio?: true
     avatarUrl?: true
+    emailDigestFrequency?: true
+    unsubscribeToken?: true
     aiProvider?: true
     aiApiKeyEncrypted?: true
     openrouterRefreshToken?: true
@@ -3765,6 +3875,8 @@ export namespace Prisma {
     tags?: true
     profileVisibility?: true
     preferences?: true
+    emailDigestFrequency?: true
+    unsubscribeToken?: true
     aiProvider?: true
     aiApiKeyEncrypted?: true
     openrouterRefreshToken?: true
@@ -3858,6 +3970,8 @@ export namespace Prisma {
     tags: string[]
     profileVisibility: JsonValue | null
     preferences: JsonValue | null
+    emailDigestFrequency: string
+    unsubscribeToken: string | null
     aiProvider: $Enums.AiProvider
     aiApiKeyEncrypted: string | null
     openrouterRefreshToken: string | null
@@ -3895,6 +4009,8 @@ export namespace Prisma {
     tags?: boolean
     profileVisibility?: boolean
     preferences?: boolean
+    emailDigestFrequency?: boolean
+    unsubscribeToken?: boolean
     aiProvider?: boolean
     aiApiKeyEncrypted?: boolean
     openrouterRefreshToken?: boolean
@@ -3921,6 +4037,7 @@ export namespace Prisma {
     friendshipsReceived?: boolean | User$friendshipsReceivedArgs<ExtArgs>
     groupsCreated?: boolean | User$groupsCreatedArgs<ExtArgs>
     groupMemberships?: boolean | User$groupMembershipsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
     syncOperations?: boolean | User$syncOperationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -3936,6 +4053,8 @@ export namespace Prisma {
     tags?: boolean
     profileVisibility?: boolean
     preferences?: boolean
+    emailDigestFrequency?: boolean
+    unsubscribeToken?: boolean
     aiProvider?: boolean
     aiApiKeyEncrypted?: boolean
     openrouterRefreshToken?: boolean
@@ -3956,6 +4075,8 @@ export namespace Prisma {
     tags?: boolean
     profileVisibility?: boolean
     preferences?: boolean
+    emailDigestFrequency?: boolean
+    unsubscribeToken?: boolean
     aiProvider?: boolean
     aiApiKeyEncrypted?: boolean
     openrouterRefreshToken?: boolean
@@ -3976,6 +4097,8 @@ export namespace Prisma {
     tags?: boolean
     profileVisibility?: boolean
     preferences?: boolean
+    emailDigestFrequency?: boolean
+    unsubscribeToken?: boolean
     aiProvider?: boolean
     aiApiKeyEncrypted?: boolean
     openrouterRefreshToken?: boolean
@@ -3985,7 +4108,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "role" | "emailVerifiedAt" | "displayName" | "bio" | "avatarUrl" | "tags" | "profileVisibility" | "preferences" | "aiProvider" | "aiApiKeyEncrypted" | "openrouterRefreshToken" | "preferredAiProvider" | "aiFallbackSetting" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "role" | "emailVerifiedAt" | "displayName" | "bio" | "avatarUrl" | "tags" | "profileVisibility" | "preferences" | "emailDigestFrequency" | "unsubscribeToken" | "aiProvider" | "aiApiKeyEncrypted" | "openrouterRefreshToken" | "preferredAiProvider" | "aiFallbackSetting" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     credential?: boolean | User$credentialArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -4006,6 +4129,7 @@ export namespace Prisma {
     friendshipsReceived?: boolean | User$friendshipsReceivedArgs<ExtArgs>
     groupsCreated?: boolean | User$groupsCreatedArgs<ExtArgs>
     groupMemberships?: boolean | User$groupMembershipsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
     syncOperations?: boolean | User$syncOperationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -4034,6 +4158,7 @@ export namespace Prisma {
       friendshipsReceived: Prisma.$FriendshipPayload<ExtArgs>[]
       groupsCreated: Prisma.$GroupPayload<ExtArgs>[]
       groupMemberships: Prisma.$GroupMemberPayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
       syncOperations: Prisma.$SyncOperationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -4047,6 +4172,8 @@ export namespace Prisma {
       tags: string[]
       profileVisibility: Prisma.JsonValue | null
       preferences: Prisma.JsonValue | null
+      emailDigestFrequency: string
+      unsubscribeToken: string | null
       aiProvider: $Enums.AiProvider
       aiApiKeyEncrypted: string | null
       openrouterRefreshToken: string | null
@@ -4467,6 +4594,7 @@ export namespace Prisma {
     friendshipsReceived<T extends User$friendshipsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$friendshipsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FriendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     groupsCreated<T extends User$groupsCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$groupsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     groupMemberships<T extends User$groupMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$groupMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     syncOperations<T extends User$syncOperationsArgs<ExtArgs> = {}>(args?: Subset<T, User$syncOperationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyncOperationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4507,6 +4635,8 @@ export namespace Prisma {
     readonly tags: FieldRef<"User", 'String[]'>
     readonly profileVisibility: FieldRef<"User", 'Json'>
     readonly preferences: FieldRef<"User", 'Json'>
+    readonly emailDigestFrequency: FieldRef<"User", 'String'>
+    readonly unsubscribeToken: FieldRef<"User", 'String'>
     readonly aiProvider: FieldRef<"User", 'AiProvider'>
     readonly aiApiKeyEncrypted: FieldRef<"User", 'String'>
     readonly openrouterRefreshToken: FieldRef<"User", 'String'>
@@ -5350,6 +5480,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GroupMemberScalarFieldEnum | GroupMemberScalarFieldEnum[]
+  }
+
+  /**
+   * User.notifications
+   */
+  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
   }
 
   /**
@@ -23130,6 +23284,1129 @@ export namespace Prisma {
 
 
   /**
+   * Model Notification
+   */
+
+  export type AggregateNotification = {
+    _count: NotificationCountAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  export type NotificationMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    type: string | null
+    title: string | null
+    body: string | null
+    sourceType: string | null
+    sourceId: string | null
+    linkPath: string | null
+    read: boolean | null
+    createdAt: Date | null
+  }
+
+  export type NotificationMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    type: string | null
+    title: string | null
+    body: string | null
+    sourceType: string | null
+    sourceId: string | null
+    linkPath: string | null
+    read: boolean | null
+    createdAt: Date | null
+  }
+
+  export type NotificationCountAggregateOutputType = {
+    id: number
+    userId: number
+    type: number
+    title: number
+    body: number
+    sourceType: number
+    sourceId: number
+    linkPath: number
+    read: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type NotificationMinAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    title?: true
+    body?: true
+    sourceType?: true
+    sourceId?: true
+    linkPath?: true
+    read?: true
+    createdAt?: true
+  }
+
+  export type NotificationMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    title?: true
+    body?: true
+    sourceType?: true
+    sourceId?: true
+    linkPath?: true
+    read?: true
+    createdAt?: true
+  }
+
+  export type NotificationCountAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    title?: true
+    body?: true
+    sourceType?: true
+    sourceId?: true
+    linkPath?: true
+    read?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type NotificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Notification to aggregate.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Notifications
+    **/
+    _count?: true | NotificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type GetNotificationAggregateType<T extends NotificationAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotification[P]>
+      : GetScalarType<T[P], AggregateNotification[P]>
+  }
+
+
+
+
+  export type NotificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithAggregationInput | NotificationOrderByWithAggregationInput[]
+    by: NotificationScalarFieldEnum[] | NotificationScalarFieldEnum
+    having?: NotificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotificationCountAggregateInputType | true
+    _min?: NotificationMinAggregateInputType
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type NotificationGroupByOutputType = {
+    id: string
+    userId: string
+    type: string
+    title: string
+    body: string
+    sourceType: string | null
+    sourceId: string | null
+    linkPath: string | null
+    read: boolean
+    createdAt: Date
+    _count: NotificationCountAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  type GetNotificationGroupByPayload<T extends NotificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+            : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    title?: boolean
+    body?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    linkPath?: boolean
+    read?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    title?: boolean
+    body?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    linkPath?: boolean
+    read?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    title?: boolean
+    body?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    linkPath?: boolean
+    read?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    title?: boolean
+    body?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    linkPath?: boolean
+    read?: boolean
+    createdAt?: boolean
+  }
+
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "title" | "body" | "sourceType" | "sourceId" | "linkPath" | "read" | "createdAt", ExtArgs["result"]["notification"]>
+  export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type NotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type NotificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Notification"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      type: string
+      title: string
+      body: string
+      sourceType: string | null
+      sourceId: string | null
+      linkPath: string | null
+      read: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["notification"]>
+    composites: {}
+  }
+
+  type NotificationGetPayload<S extends boolean | null | undefined | NotificationDefaultArgs> = $Result.GetResult<Prisma.$NotificationPayload, S>
+
+  type NotificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NotificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NotificationCountAggregateInputType | true
+    }
+
+  export interface NotificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Notification'], meta: { name: 'Notification' } }
+    /**
+     * Find zero or one Notification that matches the filter.
+     * @param {NotificationFindUniqueArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotificationFindUniqueArgs>(args: SelectSubset<T, NotificationFindUniqueArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Notification that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NotificationFindUniqueOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotificationFindUniqueOrThrowArgs>(args: SelectSubset<T, NotificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindFirstArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotificationFindFirstArgs>(args?: SelectSubset<T, NotificationFindFirstArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindFirstOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotificationFindFirstOrThrowArgs>(args?: SelectSubset<T, NotificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Notifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Notifications
+     * const notifications = await prisma.notification.findMany()
+     * 
+     * // Get first 10 Notifications
+     * const notifications = await prisma.notification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notificationWithIdOnly = await prisma.notification.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotificationFindManyArgs>(args?: SelectSubset<T, NotificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Notification.
+     * @param {NotificationCreateArgs} args - Arguments to create a Notification.
+     * @example
+     * // Create one Notification
+     * const Notification = await prisma.notification.create({
+     *   data: {
+     *     // ... data to create a Notification
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotificationCreateArgs>(args: SelectSubset<T, NotificationCreateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Notifications.
+     * @param {NotificationCreateManyArgs} args - Arguments to create many Notifications.
+     * @example
+     * // Create many Notifications
+     * const notification = await prisma.notification.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotificationCreateManyArgs>(args?: SelectSubset<T, NotificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Notifications and returns the data saved in the database.
+     * @param {NotificationCreateManyAndReturnArgs} args - Arguments to create many Notifications.
+     * @example
+     * // Create many Notifications
+     * const notification = await prisma.notification.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Notifications and only return the `id`
+     * const notificationWithIdOnly = await prisma.notification.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotificationCreateManyAndReturnArgs>(args?: SelectSubset<T, NotificationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Notification.
+     * @param {NotificationDeleteArgs} args - Arguments to delete one Notification.
+     * @example
+     * // Delete one Notification
+     * const Notification = await prisma.notification.delete({
+     *   where: {
+     *     // ... filter to delete one Notification
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotificationDeleteArgs>(args: SelectSubset<T, NotificationDeleteArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Notification.
+     * @param {NotificationUpdateArgs} args - Arguments to update one Notification.
+     * @example
+     * // Update one Notification
+     * const notification = await prisma.notification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotificationUpdateArgs>(args: SelectSubset<T, NotificationUpdateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Notifications.
+     * @param {NotificationDeleteManyArgs} args - Arguments to filter Notifications to delete.
+     * @example
+     * // Delete a few Notifications
+     * const { count } = await prisma.notification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotificationDeleteManyArgs>(args?: SelectSubset<T, NotificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Notifications
+     * const notification = await prisma.notification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotificationUpdateManyArgs>(args: SelectSubset<T, NotificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notifications and returns the data updated in the database.
+     * @param {NotificationUpdateManyAndReturnArgs} args - Arguments to update many Notifications.
+     * @example
+     * // Update many Notifications
+     * const notification = await prisma.notification.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Notifications and only return the `id`
+     * const notificationWithIdOnly = await prisma.notification.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NotificationUpdateManyAndReturnArgs>(args: SelectSubset<T, NotificationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Notification.
+     * @param {NotificationUpsertArgs} args - Arguments to update or create a Notification.
+     * @example
+     * // Update or create a Notification
+     * const notification = await prisma.notification.upsert({
+     *   create: {
+     *     // ... data to create a Notification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Notification we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotificationUpsertArgs>(args: SelectSubset<T, NotificationUpsertArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationCountArgs} args - Arguments to filter Notifications to count.
+     * @example
+     * // Count the number of Notifications
+     * const count = await prisma.notification.count({
+     *   where: {
+     *     // ... the filter for the Notifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotificationCountArgs>(
+      args?: Subset<T, NotificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotificationAggregateArgs>(args: Subset<T, NotificationAggregateArgs>): Prisma.PrismaPromise<GetNotificationAggregateType<T>>
+
+    /**
+     * Group by Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotificationGroupByArgs['orderBy'] }
+        : { orderBy?: NotificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Notification model
+   */
+  readonly fields: NotificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Notification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Notification model
+   */
+  interface NotificationFieldRefs {
+    readonly id: FieldRef<"Notification", 'String'>
+    readonly userId: FieldRef<"Notification", 'String'>
+    readonly type: FieldRef<"Notification", 'String'>
+    readonly title: FieldRef<"Notification", 'String'>
+    readonly body: FieldRef<"Notification", 'String'>
+    readonly sourceType: FieldRef<"Notification", 'String'>
+    readonly sourceId: FieldRef<"Notification", 'String'>
+    readonly linkPath: FieldRef<"Notification", 'String'>
+    readonly read: FieldRef<"Notification", 'Boolean'>
+    readonly createdAt: FieldRef<"Notification", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Notification findUnique
+   */
+  export type NotificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification findUniqueOrThrow
+   */
+  export type NotificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification findFirst
+   */
+  export type NotificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification findFirstOrThrow
+   */
+  export type NotificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification findMany
+   */
+  export type NotificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notifications to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification create
+   */
+  export type NotificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Notification.
+     */
+    data: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
+  }
+
+  /**
+   * Notification createMany
+   */
+  export type NotificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Notifications.
+     */
+    data: NotificationCreateManyInput | NotificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Notification createManyAndReturn
+   */
+  export type NotificationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Notifications.
+     */
+    data: NotificationCreateManyInput | NotificationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Notification update
+   */
+  export type NotificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Notification.
+     */
+    data: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
+    /**
+     * Choose, which Notification to update.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification updateMany
+   */
+  export type NotificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Notifications.
+     */
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which Notifications to update
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Notification updateManyAndReturn
+   */
+  export type NotificationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * The data used to update Notifications.
+     */
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which Notifications to update
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Notification upsert
+   */
+  export type NotificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Notification to update in case it exists.
+     */
+    where: NotificationWhereUniqueInput
+    /**
+     * In case the Notification found by the `where` argument doesn't exist, create a new Notification with this data.
+     */
+    create: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
+    /**
+     * In case the Notification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
+  }
+
+  /**
+   * Notification delete
+   */
+  export type NotificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter which Notification to delete.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification deleteMany
+   */
+  export type NotificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Notifications to delete
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Notification without action
+   */
+  export type NotificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model ProjectMember
    */
 
@@ -33041,6 +34318,8 @@ export namespace Prisma {
     tags: 'tags',
     profileVisibility: 'profileVisibility',
     preferences: 'preferences',
+    emailDigestFrequency: 'emailDigestFrequency',
+    unsubscribeToken: 'unsubscribeToken',
     aiProvider: 'aiProvider',
     aiApiKeyEncrypted: 'aiApiKeyEncrypted',
     openrouterRefreshToken: 'openrouterRefreshToken',
@@ -33266,6 +34545,22 @@ export namespace Prisma {
   };
 
   export type GroupMemberScalarFieldEnum = (typeof GroupMemberScalarFieldEnum)[keyof typeof GroupMemberScalarFieldEnum]
+
+
+  export const NotificationScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    type: 'type',
+    title: 'title',
+    body: 'body',
+    sourceType: 'sourceType',
+    sourceId: 'sourceId',
+    linkPath: 'linkPath',
+    read: 'read',
+    createdAt: 'createdAt'
+  };
+
+  export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
   export const ProjectMemberScalarFieldEnum: {
@@ -33702,6 +34997,8 @@ export namespace Prisma {
     tags?: StringNullableListFilter<"User">
     profileVisibility?: JsonNullableFilter<"User">
     preferences?: JsonNullableFilter<"User">
+    emailDigestFrequency?: StringFilter<"User"> | string
+    unsubscribeToken?: StringNullableFilter<"User"> | string | null
     aiProvider?: EnumAiProviderFilter<"User"> | $Enums.AiProvider
     aiApiKeyEncrypted?: StringNullableFilter<"User"> | string | null
     openrouterRefreshToken?: StringNullableFilter<"User"> | string | null
@@ -33728,6 +35025,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipListRelationFilter
     groupsCreated?: GroupListRelationFilter
     groupMemberships?: GroupMemberListRelationFilter
+    notifications?: NotificationListRelationFilter
     syncOperations?: SyncOperationListRelationFilter
   }
 
@@ -33742,6 +35040,8 @@ export namespace Prisma {
     tags?: SortOrder
     profileVisibility?: SortOrderInput | SortOrder
     preferences?: SortOrderInput | SortOrder
+    emailDigestFrequency?: SortOrder
+    unsubscribeToken?: SortOrderInput | SortOrder
     aiProvider?: SortOrder
     aiApiKeyEncrypted?: SortOrderInput | SortOrder
     openrouterRefreshToken?: SortOrderInput | SortOrder
@@ -33768,6 +35068,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipOrderByRelationAggregateInput
     groupsCreated?: GroupOrderByRelationAggregateInput
     groupMemberships?: GroupMemberOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
     syncOperations?: SyncOperationOrderByRelationAggregateInput
   }
 
@@ -33785,6 +35086,8 @@ export namespace Prisma {
     tags?: StringNullableListFilter<"User">
     profileVisibility?: JsonNullableFilter<"User">
     preferences?: JsonNullableFilter<"User">
+    emailDigestFrequency?: StringFilter<"User"> | string
+    unsubscribeToken?: StringNullableFilter<"User"> | string | null
     aiProvider?: EnumAiProviderFilter<"User"> | $Enums.AiProvider
     aiApiKeyEncrypted?: StringNullableFilter<"User"> | string | null
     openrouterRefreshToken?: StringNullableFilter<"User"> | string | null
@@ -33811,6 +35114,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipListRelationFilter
     groupsCreated?: GroupListRelationFilter
     groupMemberships?: GroupMemberListRelationFilter
+    notifications?: NotificationListRelationFilter
     syncOperations?: SyncOperationListRelationFilter
   }, "id" | "email">
 
@@ -33825,6 +35129,8 @@ export namespace Prisma {
     tags?: SortOrder
     profileVisibility?: SortOrderInput | SortOrder
     preferences?: SortOrderInput | SortOrder
+    emailDigestFrequency?: SortOrder
+    unsubscribeToken?: SortOrderInput | SortOrder
     aiProvider?: SortOrder
     aiApiKeyEncrypted?: SortOrderInput | SortOrder
     openrouterRefreshToken?: SortOrderInput | SortOrder
@@ -33851,6 +35157,8 @@ export namespace Prisma {
     tags?: StringNullableListFilter<"User">
     profileVisibility?: JsonNullableWithAggregatesFilter<"User">
     preferences?: JsonNullableWithAggregatesFilter<"User">
+    emailDigestFrequency?: StringWithAggregatesFilter<"User"> | string
+    unsubscribeToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     aiProvider?: EnumAiProviderWithAggregatesFilter<"User"> | $Enums.AiProvider
     aiApiKeyEncrypted?: StringNullableWithAggregatesFilter<"User"> | string | null
     openrouterRefreshToken?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -34977,6 +36285,86 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"GroupMember"> | Date | string
   }
 
+  export type NotificationWhereInput = {
+    AND?: NotificationWhereInput | NotificationWhereInput[]
+    OR?: NotificationWhereInput[]
+    NOT?: NotificationWhereInput | NotificationWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    userId?: StringFilter<"Notification"> | string
+    type?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    body?: StringFilter<"Notification"> | string
+    sourceType?: StringNullableFilter<"Notification"> | string | null
+    sourceId?: StringNullableFilter<"Notification"> | string | null
+    linkPath?: StringNullableFilter<"Notification"> | string | null
+    read?: BoolFilter<"Notification"> | boolean
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type NotificationOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    sourceType?: SortOrderInput | SortOrder
+    sourceId?: SortOrderInput | SortOrder
+    linkPath?: SortOrderInput | SortOrder
+    read?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type NotificationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: NotificationWhereInput | NotificationWhereInput[]
+    OR?: NotificationWhereInput[]
+    NOT?: NotificationWhereInput | NotificationWhereInput[]
+    userId?: StringFilter<"Notification"> | string
+    type?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    body?: StringFilter<"Notification"> | string
+    sourceType?: StringNullableFilter<"Notification"> | string | null
+    sourceId?: StringNullableFilter<"Notification"> | string | null
+    linkPath?: StringNullableFilter<"Notification"> | string | null
+    read?: BoolFilter<"Notification"> | boolean
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type NotificationOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    sourceType?: SortOrderInput | SortOrder
+    sourceId?: SortOrderInput | SortOrder
+    linkPath?: SortOrderInput | SortOrder
+    read?: SortOrder
+    createdAt?: SortOrder
+    _count?: NotificationCountOrderByAggregateInput
+    _max?: NotificationMaxOrderByAggregateInput
+    _min?: NotificationMinOrderByAggregateInput
+  }
+
+  export type NotificationScalarWhereWithAggregatesInput = {
+    AND?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
+    OR?: NotificationScalarWhereWithAggregatesInput[]
+    NOT?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Notification"> | string
+    userId?: StringWithAggregatesFilter<"Notification"> | string
+    type?: StringWithAggregatesFilter<"Notification"> | string
+    title?: StringWithAggregatesFilter<"Notification"> | string
+    body?: StringWithAggregatesFilter<"Notification"> | string
+    sourceType?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    sourceId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    linkPath?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    read?: BoolWithAggregatesFilter<"Notification"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
+  }
+
   export type ProjectMemberWhereInput = {
     AND?: ProjectMemberWhereInput | ProjectMemberWhereInput[]
     OR?: ProjectMemberWhereInput[]
@@ -35606,6 +36994,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -35632,6 +37022,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -35646,6 +37037,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -35672,6 +37065,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -35686,6 +37080,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -35712,6 +37108,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -35726,6 +37123,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -35752,6 +37151,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -35766,6 +37166,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -35786,6 +37188,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -35806,6 +37210,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37010,6 +38416,96 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type NotificationCreateInput = {
+    id?: string
+    type: string
+    title: string
+    body?: string
+    sourceType?: string | null
+    sourceId?: string | null
+    linkPath?: string | null
+    read?: boolean
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateInput = {
+    id?: string
+    userId: string
+    type: string
+    title: string
+    body?: string
+    sourceType?: string | null
+    sourceId?: string | null
+    linkPath?: string | null
+    read?: boolean
+    createdAt?: Date | string
+  }
+
+  export type NotificationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    sourceType?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPath?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    sourceType?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPath?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationCreateManyInput = {
+    id?: string
+    userId: string
+    type: string
+    title: string
+    body?: string
+    sourceType?: string | null
+    sourceId?: string | null
+    linkPath?: string | null
+    read?: boolean
+    createdAt?: Date | string
+  }
+
+  export type NotificationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    sourceType?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPath?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    sourceType?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPath?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProjectMemberCreateInput = {
     id?: string
     role?: $Enums.MemberRole
@@ -37845,6 +39341,12 @@ export namespace Prisma {
     none?: GroupMemberWhereInput
   }
 
+  export type NotificationListRelationFilter = {
+    every?: NotificationWhereInput
+    some?: NotificationWhereInput
+    none?: NotificationWhereInput
+  }
+
   export type SyncOperationListRelationFilter = {
     every?: SyncOperationWhereInput
     some?: SyncOperationWhereInput
@@ -37924,6 +39426,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type SyncOperationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -37939,6 +39445,8 @@ export namespace Prisma {
     tags?: SortOrder
     profileVisibility?: SortOrder
     preferences?: SortOrder
+    emailDigestFrequency?: SortOrder
+    unsubscribeToken?: SortOrder
     aiProvider?: SortOrder
     aiApiKeyEncrypted?: SortOrder
     openrouterRefreshToken?: SortOrder
@@ -37956,6 +39464,8 @@ export namespace Prisma {
     displayName?: SortOrder
     bio?: SortOrder
     avatarUrl?: SortOrder
+    emailDigestFrequency?: SortOrder
+    unsubscribeToken?: SortOrder
     aiProvider?: SortOrder
     aiApiKeyEncrypted?: SortOrder
     openrouterRefreshToken?: SortOrder
@@ -37973,6 +39483,8 @@ export namespace Prisma {
     displayName?: SortOrder
     bio?: SortOrder
     avatarUrl?: SortOrder
+    emailDigestFrequency?: SortOrder
+    unsubscribeToken?: SortOrder
     aiProvider?: SortOrder
     aiApiKeyEncrypted?: SortOrder
     openrouterRefreshToken?: SortOrder
@@ -38862,6 +40374,45 @@ export namespace Prisma {
     _max?: NestedEnumGroupRoleFilter<$PrismaModel>
   }
 
+  export type NotificationCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    linkPath?: SortOrder
+    read?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type NotificationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    linkPath?: SortOrder
+    read?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type NotificationMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    linkPath?: SortOrder
+    read?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type EnumMemberRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.MemberRole | EnumMemberRoleFieldRefInput<$PrismaModel>
     in?: $Enums.MemberRole[] | ListEnumMemberRoleFieldRefInput<$PrismaModel>
@@ -39383,6 +40934,13 @@ export namespace Prisma {
     connect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
   }
 
+  export type NotificationCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
   export type SyncOperationCreateNestedManyWithoutUserInput = {
     create?: XOR<SyncOperationCreateWithoutUserInput, SyncOperationUncheckedCreateWithoutUserInput> | SyncOperationCreateWithoutUserInput[] | SyncOperationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SyncOperationCreateOrConnectWithoutUserInput | SyncOperationCreateOrConnectWithoutUserInput[]
@@ -39520,6 +41078,13 @@ export namespace Prisma {
     connectOrCreate?: GroupMemberCreateOrConnectWithoutUserInput | GroupMemberCreateOrConnectWithoutUserInput[]
     createMany?: GroupMemberCreateManyUserInputEnvelope
     connect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type SyncOperationUncheckedCreateNestedManyWithoutUserInput = {
@@ -39820,6 +41385,20 @@ export namespace Prisma {
     deleteMany?: GroupMemberScalarWhereInput | GroupMemberScalarWhereInput[]
   }
 
+  export type NotificationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
   export type SyncOperationUpdateManyWithoutUserNestedInput = {
     create?: XOR<SyncOperationCreateWithoutUserInput, SyncOperationUncheckedCreateWithoutUserInput> | SyncOperationCreateWithoutUserInput[] | SyncOperationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SyncOperationCreateOrConnectWithoutUserInput | SyncOperationCreateOrConnectWithoutUserInput[]
@@ -40094,6 +41673,20 @@ export namespace Prisma {
     update?: GroupMemberUpdateWithWhereUniqueWithoutUserInput | GroupMemberUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: GroupMemberUpdateManyWithWhereWithoutUserInput | GroupMemberUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: GroupMemberScalarWhereInput | GroupMemberScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type SyncOperationUncheckedUpdateManyWithoutUserNestedInput = {
@@ -40863,6 +42456,20 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutGroupMembershipsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGroupMembershipsInput, UserUpdateWithoutGroupMembershipsInput>, UserUncheckedUpdateWithoutGroupMembershipsInput>
+  }
+
+  export type UserCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
+    upsert?: UserUpsertWithoutNotificationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
   }
 
   export type ProjectCreateNestedOneWithoutMembersInput = {
@@ -42043,6 +43650,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type NotificationCreateWithoutUserInput = {
+    id?: string
+    type: string
+    title: string
+    body?: string
+    sourceType?: string | null
+    sourceId?: string | null
+    linkPath?: string | null
+    read?: boolean
+    createdAt?: Date | string
+  }
+
+  export type NotificationUncheckedCreateWithoutUserInput = {
+    id?: string
+    type: string
+    title: string
+    body?: string
+    sourceType?: string | null
+    sourceId?: string | null
+    linkPath?: string | null
+    read?: boolean
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationCreateManyUserInputEnvelope = {
+    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SyncOperationCreateWithoutUserInput = {
     id?: string
     operationId: string
@@ -42619,6 +44260,38 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"GroupMember"> | Date | string
   }
 
+  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutUserInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type NotificationScalarWhereInput = {
+    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    OR?: NotificationScalarWhereInput[]
+    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    userId?: StringFilter<"Notification"> | string
+    type?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    body?: StringFilter<"Notification"> | string
+    sourceType?: StringNullableFilter<"Notification"> | string | null
+    sourceId?: StringNullableFilter<"Notification"> | string | null
+    linkPath?: StringNullableFilter<"Notification"> | string | null
+    read?: BoolFilter<"Notification"> | boolean
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+  }
+
   export type SyncOperationUpsertWithWhereUniqueWithoutUserInput = {
     where: SyncOperationWhereUniqueInput
     update: XOR<SyncOperationUpdateWithoutUserInput, SyncOperationUncheckedUpdateWithoutUserInput>
@@ -42661,6 +44334,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -42686,6 +44361,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -42700,6 +44376,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -42725,6 +44403,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -42755,6 +44434,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42780,6 +44461,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -42794,6 +44476,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42819,6 +44503,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -42833,6 +44518,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -42858,6 +44545,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -42872,6 +44560,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -42897,6 +44587,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -42927,6 +44618,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42952,6 +44645,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -42966,6 +44660,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42991,6 +44687,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -43055,6 +44752,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -43080,6 +44779,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -43094,6 +44794,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -43119,6 +44821,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -43211,6 +44914,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43236,6 +44941,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -43250,6 +44956,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43275,6 +44983,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -43289,6 +44998,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -43314,6 +45025,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -43328,6 +45040,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -43353,6 +45067,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -43383,6 +45098,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43408,6 +45125,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -43422,6 +45140,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43447,6 +45167,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -43461,6 +45182,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -43486,6 +45209,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -43500,6 +45224,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -43525,6 +45251,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -43555,6 +45282,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43580,6 +45309,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -43594,6 +45324,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43619,6 +45351,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -43633,6 +45366,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -43658,6 +45393,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -43672,6 +45408,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -43697,6 +45435,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -43727,6 +45466,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43752,6 +45493,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -43766,6 +45508,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43791,6 +45535,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -43805,6 +45550,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -43830,6 +45577,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -43844,6 +45592,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -43869,6 +45619,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -43899,6 +45650,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43924,6 +45677,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -43938,6 +45692,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43963,6 +45719,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -43977,6 +45734,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -44002,6 +45761,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -44016,6 +45776,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -44041,6 +45803,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -44071,6 +45834,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44096,6 +45861,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -44110,6 +45876,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44135,6 +45903,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -44149,6 +45918,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -44174,6 +45945,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -44188,6 +45960,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -44213,6 +45987,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -44273,6 +46048,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44298,6 +46075,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -44312,6 +46090,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44337,6 +46117,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -44433,6 +46214,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -44458,6 +46241,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -44472,6 +46256,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -44497,6 +46283,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -44527,6 +46314,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44552,6 +46341,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -44566,6 +46356,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44591,6 +46383,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -45013,6 +46806,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -45038,6 +46833,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -45052,6 +46848,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -45077,6 +46875,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -45096,6 +46895,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -45121,6 +46922,7 @@ export namespace Prisma {
     friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -45135,6 +46937,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -45160,6 +46964,7 @@ export namespace Prisma {
     friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -45190,6 +46995,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45215,6 +47022,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -45229,6 +47037,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45254,6 +47064,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -45279,6 +47090,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45304,6 +47117,7 @@ export namespace Prisma {
     friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -45318,6 +47132,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45343,6 +47159,7 @@ export namespace Prisma {
     friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -45357,6 +47174,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -45382,6 +47201,7 @@ export namespace Prisma {
     friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -45396,6 +47216,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -45421,6 +47243,7 @@ export namespace Prisma {
     friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -45525,6 +47348,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45550,6 +47375,7 @@ export namespace Prisma {
     friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -45564,6 +47390,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45589,6 +47417,7 @@ export namespace Prisma {
     friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -45680,6 +47509,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -45705,6 +47536,7 @@ export namespace Prisma {
     friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -45719,6 +47551,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -45744,6 +47578,7 @@ export namespace Prisma {
     friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -45809,6 +47644,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45834,6 +47671,7 @@ export namespace Prisma {
     friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -45848,6 +47686,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45873,6 +47713,191 @@ export namespace Prisma {
     friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutNotificationsInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityCreateNestedManyWithoutActorInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementUncheckedCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageUncheckedCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputUncheckedCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteUncheckedCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityUncheckedCreateNestedManyWithoutActorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutNotificationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type UserUpsertWithoutNotificationsInput = {
+    update: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type UserUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUpdateManyWithoutActorNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUncheckedUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUncheckedUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUncheckedUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUncheckedUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUncheckedUpdateManyWithoutActorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -45930,6 +47955,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -45955,6 +47982,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -45969,6 +47997,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -45994,6 +48024,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -46073,6 +48104,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46098,6 +48131,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -46112,6 +48146,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46137,6 +48173,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -46286,6 +48323,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -46311,6 +48350,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -46325,6 +48365,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -46350,6 +48392,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -46429,6 +48472,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46454,6 +48499,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -46468,6 +48514,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46493,6 +48541,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -46550,6 +48599,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -46575,6 +48626,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -46589,6 +48641,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -46614,6 +48668,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -46693,6 +48748,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46718,6 +48775,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -46732,6 +48790,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46757,6 +48817,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -46814,6 +48875,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -46839,6 +48902,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -46853,6 +48917,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -46878,6 +48944,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -46957,6 +49024,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46982,6 +49051,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -46996,6 +49066,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -47021,6 +49093,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -47078,6 +49151,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -47104,6 +49179,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSyncOperationsInput = {
@@ -47117,6 +49193,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -47143,6 +49221,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSyncOperationsInput = {
@@ -47221,6 +49300,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -47247,6 +49328,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSyncOperationsInput = {
@@ -47260,6 +49342,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -47286,6 +49370,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutSnapshotsInput = {
@@ -47391,6 +49476,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -47416,6 +49503,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
   }
 
@@ -47430,6 +49518,8 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
     aiProvider?: $Enums.AiProvider
     aiApiKeyEncrypted?: string | null
     openrouterRefreshToken?: string | null
@@ -47455,6 +49545,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -47485,6 +49576,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -47510,6 +49603,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
   }
 
@@ -47524,6 +49618,8 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | string[]
     profileVisibility?: NullableJsonNullValueInput | InputJsonValue
     preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
     aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
     aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
     openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -47549,6 +49645,7 @@ export namespace Prisma {
     friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -47718,6 +49815,18 @@ export namespace Prisma {
     groupId: string
     role?: $Enums.GroupRole
     status?: string
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateManyUserInput = {
+    id?: string
+    type: string
+    title: string
+    body?: string
+    sourceType?: string | null
+    sourceId?: string | null
+    linkPath?: string | null
+    read?: boolean
     createdAt?: Date | string
   }
 
@@ -48244,6 +50353,42 @@ export namespace Prisma {
     groupId?: StringFieldUpdateOperationsInput | string
     role?: EnumGroupRoleFieldUpdateOperationsInput | $Enums.GroupRole
     status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    sourceType?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPath?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    sourceType?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPath?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    sourceType?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPath?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

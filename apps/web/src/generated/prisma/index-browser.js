@@ -132,6 +132,8 @@ exports.Prisma.UserScalarFieldEnum = {
   tags: 'tags',
   profileVisibility: 'profileVisibility',
   preferences: 'preferences',
+  emailDigestFrequency: 'emailDigestFrequency',
+  unsubscribeToken: 'unsubscribeToken',
   aiProvider: 'aiProvider',
   aiApiKeyEncrypted: 'aiApiKeyEncrypted',
   openrouterRefreshToken: 'openrouterRefreshToken',
@@ -305,6 +307,19 @@ exports.Prisma.GroupMemberScalarFieldEnum = {
   userId: 'userId',
   role: 'role',
   status: 'status',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  linkPath: 'linkPath',
+  read: 'read',
   createdAt: 'createdAt'
 };
 
@@ -528,6 +543,7 @@ exports.Prisma.ModelName = {
   Friendship: 'Friendship',
   Group: 'Group',
   GroupMember: 'GroupMember',
+  Notification: 'Notification',
   ProjectMember: 'ProjectMember',
   ProjectArtifact: 'ProjectArtifact',
   ProjectInvite: 'ProjectInvite',
