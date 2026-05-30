@@ -49,22 +49,26 @@ model User {
   preferredAiProvider    String     @default("NONE") // Dropdown selection in Settings
   aiFallbackSetting      String     @default("local") // "local" | "upgrade" | "disable"
 
-  credential         Credential?
-  sessions           Session[]
-  refreshes          RefreshToken[]
-  auditLogs          AuditLog[]               @relation("audit_actor")
-  emailVerifications EmailVerificationToken[]
-  passwordResets     PasswordResetToken[]
-  subscriptions      Subscription[]
-  entitlements       Entitlement[]
-  aiChatSessions     AiChatSession[]
-  aiTokenUsage       AiTokenUsage[]
-  aiToolOutputs      AiToolOutput[]
-  projectMembers     ProjectMember[]
-  invitesSent        ProjectInvite[]          @relation("invitesSent")
-  activities         ProjectActivity[]        @relation("activityActor")
-  comments           Comment[]                @relation("commentAuthor")
-  syncOperations     SyncOperation[]
+  credential          Credential?
+  sessions            Session[]
+  refreshes           RefreshToken[]
+  auditLogs           AuditLog[]               @relation("audit_actor")
+  emailVerifications  EmailVerificationToken[]
+  passwordResets      PasswordResetToken[]
+  subscriptions       Subscription[]
+  entitlements        Entitlement[]
+  aiChatSessions      AiChatSession[]
+  aiTokenUsage        AiTokenUsage[]
+  aiToolOutputs       AiToolOutput[]
+  projectMembers      ProjectMember[]
+  invitesSent         ProjectInvite[]          @relation("invitesSent")
+  activities          ProjectActivity[]        @relation("activityActor")
+  comments            Comment[]                @relation("commentAuthor")
+  friendshipsSent     Friendship[]             @relation("friendshipRequester")
+  friendshipsReceived Friendship[]             @relation("friendshipAddressee")
+  groupsCreated       Group[]                  @relation("groupCreator")
+  groupMemberships    GroupMember[]
+  syncOperations      SyncOperation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -306,6 +310,7 @@ model Project {
   status      ProjectStatus     @default(PLANNING)
   visibility  ProjectVisibility @default(PRIVATE)
   tags        String[]          @default([])
+  groupId     String?
 
   members    ProjectMember[]
   artifacts  ProjectArtifact[]
@@ -314,11 +319,79 @@ model Project {
   comments   Comment[]
   syncOps    SyncOperation[]
   snapshots  SyncSnapshot[]
+  group      Group?            @relation(fields: [groupId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([status])
+  @@index([groupId])
+}
+
+// ─── Social Graph: Friends & Groups ──────────────────────────────────
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  BLOCKED
+}
+
+model Friendship {
+  id          String           @id @default(cuid())
+  requesterId String
+  addresseeId String
+  status      FriendshipStatus @default(PENDING)
+
+  requester User @relation("friendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee User @relation("friendshipAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId])
+  @@index([status])
+}
+
+enum GroupRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+model Group {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String  @unique
+  description String  @default("")
+  avatarUrl   String?
+  createdById String
+
+  createdBy User          @relation("groupCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  members   GroupMember[]
+  projects  Project[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdById])
+}
+
+model GroupMember {
+  id      String    @id @default(cuid())
+  groupId String
+  userId  String
+  role    GroupRole @default(MEMBER)
+  status  String    @default("active") // "active" | "pending" (join request awaiting approval)
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([groupId, userId])
+  @@index([userId])
 }
 
 model ProjectMember {

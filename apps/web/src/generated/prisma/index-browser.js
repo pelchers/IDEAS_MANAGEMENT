@@ -274,8 +274,38 @@ exports.Prisma.ProjectScalarFieldEnum = {
   status: 'status',
   visibility: 'visibility',
   tags: 'tags',
+  groupId: 'groupId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FriendshipScalarFieldEnum = {
+  id: 'id',
+  requesterId: 'requesterId',
+  addresseeId: 'addresseeId',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  avatarUrl: 'avatarUrl',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GroupMemberScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  userId: 'userId',
+  role: 'role',
+  status: 'status',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.ProjectMemberScalarFieldEnum = {
@@ -454,6 +484,19 @@ exports.ProjectVisibility = exports.$Enums.ProjectVisibility = {
   PUBLIC: 'PUBLIC'
 };
 
+exports.FriendshipStatus = exports.$Enums.FriendshipStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  BLOCKED: 'BLOCKED'
+};
+
+exports.GroupRole = exports.$Enums.GroupRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+};
+
 exports.MemberRole = exports.$Enums.MemberRole = {
   OWNER: 'OWNER',
   EDITOR: 'EDITOR',
@@ -482,6 +525,9 @@ exports.Prisma.ModelName = {
   AiChatMessage: 'AiChatMessage',
   AiToolOutput: 'AiToolOutput',
   Project: 'Project',
+  Friendship: 'Friendship',
+  Group: 'Group',
+  GroupMember: 'GroupMember',
   ProjectMember: 'ProjectMember',
   ProjectArtifact: 'ProjectArtifact',
   ProjectInvite: 'ProjectInvite',
