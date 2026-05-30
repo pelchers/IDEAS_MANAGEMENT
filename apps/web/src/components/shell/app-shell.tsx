@@ -14,6 +14,10 @@ function getTitleFromPathname(pathname: string): string {
   if (pathname === "/profile") return "PROFILE";
   if (pathname === "/settings") return "SETTINGS";
   if (pathname === "/explore") return "EXPLORE";
+  if (pathname === "/friends") return "FRIENDS";
+  if (pathname === "/groups") return "GROUPS";
+  if (/^\/groups\/[^/]+$/.test(pathname)) return "GROUP";
+  if (/^\/users\/[^/]+$/.test(pathname)) return "USER PROFILE";
   if (pathname.includes("/kanban")) return "KANBAN";
   if (pathname.includes("/whiteboard")) return "WHITEBOARD";
   if (pathname.includes("/schema")) return "SCHEMA PLANNER";
@@ -45,7 +49,9 @@ const NAV_LINKS: NavLink[] = [
   { num: "09", label: "Conflicts", href: "/projects", projectRoute: true, suffix: "/conflicts" },
   { num: "10", label: "AI Chat", href: "/ai" },
   { num: "11", label: "Explore", href: "/explore" },
-  { num: "12", label: "Settings", href: "/settings" },
+  { num: "12", label: "Friends", href: "/friends" },
+  { num: "13", label: "Groups", href: "/groups" },
+  { num: "14", label: "Settings", href: "/settings" },
 ];
 
 function extractProjectId(pathname: string): string | null {

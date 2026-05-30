@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/server/db";
+import { getAuthenticatedUser } from "@/server/auth/admin";
+import { getFriendshipState, getMutualFriends } from "@/server/social/friends";
 
 const DEFAULT_VISIBILITY: Record<string, boolean> = {
   displayName: true,
@@ -21,10 +23,11 @@ function getVisibility(raw: unknown): Record<string, boolean> {
  * Returns a user's public profile + their public projects.
  */
 export async function GET(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  const viewer = await getAuthenticatedUser(req);
 
   const user = await prisma.user.findUnique({
     where: { id },
@@ -63,6 +66,17 @@ export async function GET(
 
   const vis = getVisibility(user.profileVisibility);
 
+  // Friendship state + mutual friends (only when a different user is viewing)
+  let friendship: { state: string; friendshipId: string | null } = { state: "none", friendshipId: null };
+  let mutualFriends: { id: string; displayName: string | null; avatarUrl: string | null }[] = [];
+  const isSelf = viewer?.id === id;
+  if (viewer && !isSelf) {
+    [friendship, mutualFriends] = await Promise.all([
+      getFriendshipState(viewer.id, id),
+      getMutualFriends(viewer.id, id),
+    ]);
+  }
+
   // Only return public projects
   const publicProjects = user.projectMembers
     .filter((pm) => pm.project.visibility === "PUBLIC")
@@ -89,5 +103,8 @@ export async function GET(
       tags: vis.tags ? user.tags : [],
     },
     projects: publicProjects,
+    friendship,
+    mutualFriends,
+    isSelf,
   });
 }

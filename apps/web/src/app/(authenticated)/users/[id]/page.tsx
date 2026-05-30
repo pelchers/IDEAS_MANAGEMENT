@@ -25,6 +25,12 @@ interface PublicProject {
   createdAt: string;
 }
 
+interface MutualFriend {
+  id: string;
+  displayName: string | null;
+  avatarUrl: string | null;
+}
+
 export default function PublicProfilePage() {
   const params = useParams();
   const userId = params.id as string;
@@ -32,25 +38,57 @@ export default function PublicProfilePage() {
   const [projects, setProjects] = useState<PublicProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [friendState, setFriendState] = useState<string>("none");
+  const [friendshipId, setFriendshipId] = useState<string | null>(null);
+  const [mutualFriends, setMutualFriends] = useState<MutualFriend[]>([]);
+  const [isSelf, setIsSelf] = useState(false);
+  const [busy, setBusy] = useState(false);
+
+  const load = async () => {
+    try {
+      const res = await fetch(`/api/users/${userId}`);
+      const data = await res.json();
+      if (data.ok) {
+        setUser(data.user);
+        setProjects(data.projects || []);
+        setFriendState(data.friendship?.state || "none");
+        setFriendshipId(data.friendship?.friendshipId || null);
+        setMutualFriends(data.mutualFriends || []);
+        setIsSelf(!!data.isSelf);
+      } else {
+        setError(data.error === "user_not_found" ? "User not found." : "Failed to load profile.");
+      }
+    } catch {
+      setError("Network error.");
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (!userId) return;
-    (async () => {
-      try {
-        const res = await fetch(`/api/users/${userId}`);
-        const data = await res.json();
-        if (data.ok) {
-          setUser(data.user);
-          setProjects(data.projects || []);
-        } else {
-          setError(data.error === "user_not_found" ? "User not found." : "Failed to load profile.");
-        }
-      } catch {
-        setError("Network error.");
-      }
-      setLoading(false);
-    })();
-  }, [userId]);
+    load();
+  }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const sendRequest = async () => {
+    setBusy(true);
+    await fetch("/api/friends/request", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ addresseeId: userId }) });
+    await load();
+    setBusy(false);
+  };
+  const respond = async (action: "accept" | "decline") => {
+    if (!friendshipId) return;
+    setBusy(true);
+    await fetch(`/api/friends/${friendshipId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action }) });
+    await load();
+    setBusy(false);
+  };
+  const unfriend = async () => {
+    if (!friendshipId) return;
+    setBusy(true);
+    await fetch(`/api/friends/${friendshipId}`, { method: "DELETE" });
+    await load();
+    setBusy(false);
+  };
 
   const initials = user
     ? (user.displayName || user.email || "?")
@@ -143,6 +181,50 @@ export default function PublicProfilePage() {
                     <span key={tag} className="font-mono text-[0.75rem] uppercase px-3 py-1 border-2 border-signal-black bg-white">
                       {tag}
                     </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Friend actions */}
+            {!isSelf && (
+              <div className="flex gap-2 flex-wrap">
+                {friendState === "none" && (
+                  <button className="nb-btn nb-btn--primary nb-btn--small" onClick={sendRequest} disabled={busy}>+ ADD FRIEND</button>
+                )}
+                {friendState === "outgoing" && (
+                  <button className="nb-btn nb-btn--small" onClick={unfriend} disabled={busy}>CANCEL REQUEST</button>
+                )}
+                {friendState === "incoming" && (
+                  <>
+                    <button className="nb-btn nb-btn--primary nb-btn--small" onClick={() => respond("accept")} disabled={busy}>ACCEPT</button>
+                    <button className="nb-btn nb-btn--small" onClick={() => respond("decline")} disabled={busy}>DECLINE</button>
+                  </>
+                )}
+                {friendState === "friends" && (
+                  <>
+                    <span className="font-mono text-[0.7rem] uppercase px-3 py-1.5 border-2 border-malachite text-malachite font-bold">&#10003; FRIENDS</span>
+                    <button className="nb-btn nb-btn--small" onClick={unfriend} disabled={busy}>UNFRIEND</button>
+                  </>
+                )}
+                {friendState === "blocked" && (
+                  <span className="font-mono text-[0.7rem] uppercase px-3 py-1.5 border-2 border-signal-black text-[#999]">BLOCKED</span>
+                )}
+              </div>
+            )}
+
+            {/* Mutual friends */}
+            {mutualFriends.length > 0 && (
+              <div>
+                <h3 className="font-bold text-[0.8rem] uppercase tracking-wider mb-2">MUTUAL FRIENDS ({mutualFriends.length})</h3>
+                <div className="flex flex-wrap gap-2">
+                  {mutualFriends.map((m) => (
+                    <Link key={m.id} href={`/users/${m.id}`} className="flex items-center gap-2 px-2 py-1 border border-signal-black/20 hover:bg-creamy-milk">
+                      <div style={{ width: "22px", height: "22px", backgroundColor: "#FF5E54", color: "#FFF", border: "1px solid #282828", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: "0.5rem", overflow: "hidden" }}>
+                        {m.avatarUrl ? <img src={m.avatarUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : (m.displayName || "?")[0].toUpperCase()}
+                      </div>
+                      <span className="font-mono text-[0.7rem] uppercase truncate max-w-[120px]">{m.displayName || "User"}</span>
+                    </Link>
                   ))}
                 </div>
               </div>
