@@ -8,7 +8,7 @@ async function shot(page: Page, name: string) {
 
 async function signIn(page: Page): Promise<boolean> {
   await page.goto('/signin');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.locator('input[type="email"]').fill('admin@ideamgmt.local');
   await page.locator('input[type="password"]').fill('AdminPass123!');
   await page.locator('button[type="submit"]').click();
@@ -28,7 +28,7 @@ test('Phase 2 — Collaboration features validation', async ({ page }) => {
 
   // Find a project
   await page.goto('/projects');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(800);
 
   let projectId = '';

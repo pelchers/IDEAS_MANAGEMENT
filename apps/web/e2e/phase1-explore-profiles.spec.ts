@@ -8,7 +8,7 @@ async function shot(page: Page, name: string) {
 
 async function signIn(page: Page): Promise<boolean> {
   await page.goto('/signin');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.locator('input[type="email"]').fill('admin@ideamgmt.local');
   await page.locator('input[type="password"]').fill('AdminPass123!');
   await page.locator('button[type="submit"]').click();
@@ -25,11 +25,11 @@ test('Phase 1 — Explore page + Public profiles validation', async ({ page }) =
 
   const ok = await signIn(page);
   if (!ok) { test.skip(); return; }
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
 
   // ── Explore page ──
   await page.goto('/explore');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1000);
   await shot(page, 'explore-initial');
 
@@ -60,7 +60,7 @@ test('Phase 1 — Explore page + Public profiles validation', async ({ page }) =
   const userCard = page.locator('a[href*="/users/"]').first();
   if (await userCard.isVisible({ timeout: 3000 }).catch(() => false)) {
     await userCard.click();
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(500);
     await shot(page, 'public-profile-page');
 
@@ -79,7 +79,7 @@ test('Phase 1 — Explore page + Public profiles validation', async ({ page }) =
 
   // ── Sidebar nav link ──
   await page.goto('/dashboard');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(500);
 
   // Open drawer
