@@ -302,6 +302,7 @@ function SettingsContent() {
   const [profileEmail, setProfileEmail] = useState("");
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileMessage, setProfileMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [emailDigest, setEmailDigest] = useState<"OFF" | "DAILY" | "WEEKLY">("OFF");
 
   // Load user profile on mount
   useEffect(() => {
@@ -310,6 +311,7 @@ function SettingsContent() {
       .then((data) => {
         if (data.ok && data.user) {
           setProfileEmail(data.user.email);
+          if (data.user.emailDigestFrequency) setEmailDigest(data.user.emailDigestFrequency);
           if (data.user.role === "ADMIN") setIsAdmin(true);
           if (data.entitlements?.features?.includes("ai_chat")) setHasAiEntitlement(true);
           // Populate billing state from entitlements
@@ -375,6 +377,15 @@ function SettingsContent() {
       }).catch(() => {});
       return next;
     });
+  };
+
+  const changeEmailDigest = (value: "OFF" | "DAILY" | "WEEKLY") => {
+    setEmailDigest(value);
+    fetch("/api/auth/me", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ emailDigestFrequency: value }),
+    }).catch(() => {});
   };
 
   const prefItems: { key: keyof Preferences; label: string }[] = [
@@ -459,6 +470,22 @@ function SettingsContent() {
                 </label>
               </div>
             ))}
+
+            {/* Email digest frequency */}
+            <div className="flex items-center justify-between py-4 border-t-2 border-dashed border-signal-black">
+              <span className="font-bold text-[0.85rem] uppercase tracking-wider">EMAIL DIGEST</span>
+              <select
+                className="nb-input text-[0.75rem]"
+                value={emailDigest}
+                onChange={(e) => changeEmailDigest(e.target.value as "OFF" | "DAILY" | "WEEKLY")}
+                data-testid="email-digest-select"
+                style={{ width: "130px" }}
+              >
+                <option value="OFF">OFF</option>
+                <option value="DAILY">DAILY</option>
+                <option value="WEEKLY">WEEKLY</option>
+              </select>
+            </div>
           </div>
         </div>
 

@@ -21,6 +21,7 @@ const UpdateProfileSchema = z.object({
   tags: z.array(z.string().max(50)).max(10).optional(),
   preferences: z.record(z.string(), z.unknown()).optional(),
   profileVisibility: ProfileVisibilitySchema,
+  emailDigestFrequency: z.enum(["OFF", "DAILY", "WEEKLY"]).optional(),
 });
 
 /**
@@ -50,6 +51,7 @@ export async function GET(req: Request) {
       tags: user.tags ?? [],
       preferences: user.preferences ?? {},
       profileVisibility: user.profileVisibility ?? { displayName: true, avatarUrl: true, bio: false, email: false, tags: true },
+      emailDigestFrequency: user.emailDigestFrequency ?? "OFF",
     },
     entitlements: {
       plan: entitlements.plan,
@@ -108,6 +110,11 @@ export async function PUT(req: Request) {
   // Profile visibility
   if (parsed.profileVisibility !== undefined) {
     updates.profileVisibility = parsed.profileVisibility;
+  }
+
+  // Email digest frequency
+  if (parsed.emailDigestFrequency !== undefined) {
+    updates.emailDigestFrequency = parsed.emailDigestFrequency;
   }
 
   // Preferences
