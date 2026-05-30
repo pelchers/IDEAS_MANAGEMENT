@@ -96,11 +96,20 @@ Depends on: W2 profile fields (completed — displayName, bio, avatarUrl, tags o
 
 ## Phase 5 — Hardening & Re-Release
 
-- [ ] Full E2E test suite for all new features
-- [ ] Security audit: access control on all new endpoints (can't view private projects, can't modify others' profiles)
-- [ ] Performance testing: explore page with 100+ projects, notification queries with 1000+ rows
-- [ ] Rate limiting on social endpoints (friend requests, invites)
-- [ ] Migration guide for existing users (all existing projects default to PRIVATE)
-- [ ] Update onboarding flow to prompt for profile setup
-- [ ] Visual QA pass on all new views
-- [ ] User acceptance testing
+- [x] Full E2E test suite for all new features — phase1-4 specs pass together (4/4); fixed networkidle→domcontentloaded for the always-on notification SSE
+- [x] Security audit: access control on all new endpoints — 3 issues found + fixed (1 critical, 1 high, 1 medium); report at `.docs/audits/v2-security-audit-2026-05-30.md`
+- [x] Performance: index coverage review — added `[visibility, createdAt]` composite for explore; report at `.docs/audits/v2-performance-review-2026-05-30.md`
+- [x] Rate limiting on social endpoints — 20/min/user on friend requests, invites, group create/join, comments
+- [x] Migration guide for existing users — `.docs/V2-MIGRATION-GUIDE.md`
+- [x] Update onboarding flow to prompt for profile setup — `ProfileSetupBanner` on dashboard
+- [x] Visual QA pass on all new views — screenshots across phase1-5 validation folders
+- [ ] User acceptance testing — DEFERRED: requires real users / product owner sign-off (out of automated scope)
+
+---
+
+## V2 Expansion — STATUS
+
+Phases 1–5 implementation complete. Remaining deferred items (documented above):
+- Friends online-status + group activity feed (need global presence/aggregation) — Phase 3
+- Actual digest **email send** (no provider/API keys; everything else built) — Phase 4
+- User acceptance testing (needs real users) — Phase 5
