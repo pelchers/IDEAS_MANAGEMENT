@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ProfileSetupBanner } from "@/components/onboarding/profile-setup-banner";
 
 /* ── Types ── */
 interface DashboardStats {
@@ -110,6 +111,9 @@ export default function DashboardPage() {
           System overview and recent activity
         </p>
       </div>
+
+      {/* Onboarding: prompt profile setup if no display name */}
+      <ProfileSetupBanner />
 
       {/* Stats row */}
       <div style={{
