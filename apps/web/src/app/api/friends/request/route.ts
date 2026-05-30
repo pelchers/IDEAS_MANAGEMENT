@@ -3,6 +3,7 @@ import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { validateBody, isValidationError } from "@/server/api-validation";
+import { createNotification } from "@/server/notifications/service";
 
 const RequestSchema = z.object({
   addresseeId: z.string().min(1),
@@ -53,6 +54,15 @@ export async function POST(req: Request) {
           where: { id: existing.id },
           data: { status: "ACCEPTED" },
         });
+        // Notify the original requester that we accepted
+        await createNotification({
+          userId: existing.requesterId,
+          type: "friend.accepted",
+          title: `${user.displayName || user.email} accepted your friend request`,
+          sourceType: "User",
+          sourceId: user.id,
+          linkPath: `/users/${user.id}`,
+        });
         return NextResponse.json({ ok: true, friendship: { id: updated.id, status: updated.status }, autoAccepted: true });
       }
       return NextResponse.json({ ok: false, error: "request_already_sent" }, { status: 409 });
@@ -62,11 +72,28 @@ export async function POST(req: Request) {
       where: { id: existing.id },
       data: { status: "PENDING", requesterId: user.id, addresseeId: parsed.addresseeId },
     });
+    await createNotification({
+      userId: parsed.addresseeId,
+      type: "friend.request",
+      title: `${user.displayName || user.email} sent you a friend request`,
+      sourceType: "User",
+      sourceId: user.id,
+      linkPath: `/friends`,
+    });
     return NextResponse.json({ ok: true, friendship: { id: reopened.id, status: reopened.status } }, { status: 201 });
   }
 
   const friendship = await prisma.friendship.create({
     data: { requesterId: user.id, addresseeId: parsed.addresseeId, status: "PENDING" },
+  });
+
+  await createNotification({
+    userId: parsed.addresseeId,
+    type: "friend.request",
+    title: `${user.displayName || user.email} sent you a friend request`,
+    sourceType: "User",
+    sourceId: user.id,
+    linkPath: `/friends`,
   });
 
   return NextResponse.json({ ok: true, friendship: { id: friendship.id, status: friendship.status } }, { status: 201 });

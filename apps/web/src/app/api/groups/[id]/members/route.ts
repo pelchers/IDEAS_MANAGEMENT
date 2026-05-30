@@ -4,6 +4,7 @@ import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { validateBody, isValidationError } from "@/server/api-validation";
 import { getGroupMembership, hasGroupRole } from "@/server/social/groups";
+import { createNotification } from "@/server/notifications/service";
 
 const PostSchema = z.object({
   // "join" = self join-request; "invite" = admin adds by email/userId
@@ -40,6 +41,22 @@ export async function POST(req: Request, { params }: RouteParams) {
     const m = await prisma.groupMember.create({
       data: { groupId, userId: user.id, role: "MEMBER", status: "pending" },
     });
+    // Notify group admins/owners of the join request
+    const groupRow = await prisma.group.findUnique({ where: { id: groupId }, select: { name: true } });
+    const admins = await prisma.groupMember.findMany({
+      where: { groupId, status: "active", role: { in: ["OWNER", "ADMIN"] } },
+      select: { userId: true },
+    });
+    for (const a of admins) {
+      await createNotification({
+        userId: a.userId,
+        type: "group.join_request",
+        title: `${user.displayName || user.email} requested to join ${groupRow?.name || "your group"}`,
+        sourceType: "Group",
+        sourceId: groupId,
+        linkPath: `/groups/${groupId}`,
+      });
+    }
     return NextResponse.json({ ok: true, member: { id: m.id, status: m.status } }, { status: 201 });
   }
 
@@ -68,6 +85,16 @@ export async function POST(req: Request, { params }: RouteParams) {
 
   const m = await prisma.groupMember.create({
     data: { groupId, userId: targetUserId, role: parsed.role, status: "active" },
+  });
+  // Notify the invited user
+  const grp = await prisma.group.findUnique({ where: { id: groupId }, select: { name: true } });
+  await createNotification({
+    userId: targetUserId,
+    type: "group.added",
+    title: `${user.displayName || user.email} added you to ${grp?.name || "a group"}`,
+    sourceType: "Group",
+    sourceId: groupId,
+    linkPath: `/groups/${groupId}`,
   });
   return NextResponse.json({ ok: true, member: { id: m.id, status: m.status } }, { status: 201 });
 }

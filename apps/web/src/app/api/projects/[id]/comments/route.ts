@@ -5,6 +5,7 @@ import { prisma } from "@/server/db";
 import { checkProjectAccess } from "@/server/projects/helpers";
 import { validateBody, isValidationError } from "@/server/api-validation";
 import { logProjectActivity } from "@/server/projects/activity";
+import { createNotification } from "@/server/notifications/service";
 
 const CreateCommentSchema = z.object({
   targetType: z.string().min(1).max(50),
@@ -114,6 +115,20 @@ export async function POST(req: Request, { params }: RouteParams) {
     targetId: parsed.targetId,
     metadata: { commentId: comment.id },
   });
+
+  // Notify mentioned users (excluding self)
+  for (const mentionedId of comment.mentions) {
+    if (mentionedId === user.id) continue;
+    await createNotification({
+      userId: mentionedId,
+      type: "comment.mention",
+      title: `${user.displayName || user.email} mentioned you in a comment`,
+      body: parsed.content.slice(0, 140),
+      sourceType: "Comment",
+      sourceId: comment.id,
+      linkPath: `/projects/${projectId}`,
+    });
+  }
 
   return NextResponse.json({ ok: true, comment }, { status: 201 });
 }

@@ -5,6 +5,7 @@ import { prisma } from "@/server/db";
 import { checkProjectAccess } from "@/server/projects/helpers";
 import { validateBody, isValidationError } from "@/server/api-validation";
 import { logProjectActivity } from "@/server/projects/activity";
+import { createNotification } from "@/server/notifications/service";
 
 const InviteSchema = z.object({
   email: z.string().email().max(320),
@@ -70,6 +71,19 @@ export async function POST(req: Request, { params }: RouteParams) {
     targetId: invite.id,
     metadata: { email, role: parsed.role },
   });
+
+  // Notify the invitee if they already have an account
+  if (existingUser) {
+    const project = await prisma.project.findUnique({ where: { id: projectId }, select: { name: true } });
+    await createNotification({
+      userId: existingUser.id,
+      type: "project.invite",
+      title: `${user.displayName || user.email} invited you to ${project?.name || "a project"}`,
+      sourceType: "Project",
+      sourceId: projectId,
+      linkPath: `/invites/${invite.token}`,
+    });
+  }
 
   return NextResponse.json({ ok: true, invite: { id: invite.id, token: invite.token, email, role: parsed.role, expiresAt: invite.expiresAt } }, { status: 201 });
 }

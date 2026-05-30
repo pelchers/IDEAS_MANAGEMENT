@@ -3,6 +3,7 @@ import { z } from "zod";
 import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { validateBody, isValidationError } from "@/server/api-validation";
+import { createNotification } from "@/server/notifications/service";
 
 const PatchSchema = z.object({
   action: z.enum(["accept", "decline"]),
@@ -39,6 +40,17 @@ export async function PUT(req: Request, { params }: RouteParams) {
     where: { id },
     data: { status: newStatus },
   });
+
+  if (parsed.action === "accept") {
+    await createNotification({
+      userId: friendship.requesterId,
+      type: "friend.accepted",
+      title: `${user.displayName || user.email} accepted your friend request`,
+      sourceType: "User",
+      sourceId: user.id,
+      linkPath: `/users/${user.id}`,
+    });
+  }
 
   return NextResponse.json({ ok: true, friendship: { id: updated.id, status: updated.status } });
 }

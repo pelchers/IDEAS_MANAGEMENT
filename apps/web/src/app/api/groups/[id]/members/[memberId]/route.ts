@@ -4,6 +4,7 @@ import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 import { prisma } from "@/server/db";
 import { validateBody, isValidationError } from "@/server/api-validation";
 import { hasGroupRole } from "@/server/social/groups";
+import { createNotification } from "@/server/notifications/service";
 
 const PatchSchema = z.object({
   // approve a pending join request, or change role
@@ -37,6 +38,15 @@ export async function PATCH(req: Request, { params }: RouteParams) {
 
   if (parsed.action === "approve") {
     const updated = await prisma.groupMember.update({ where: { id: memberId }, data: { status: "active" } });
+    const grp = await prisma.group.findUnique({ where: { id: groupId }, select: { name: true } });
+    await createNotification({
+      userId: member.userId,
+      type: "group.approved",
+      title: `Your request to join ${grp?.name || "the group"} was approved`,
+      sourceType: "Group",
+      sourceId: groupId,
+      linkPath: `/groups/${groupId}`,
+    });
     return NextResponse.json({ ok: true, member: { id: updated.id, status: updated.status } });
   }
 
