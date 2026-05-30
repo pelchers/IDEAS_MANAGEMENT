@@ -75,23 +75,24 @@ Depends on: W2 profile fields (completed — displayName, bio, avatarUrl, tags o
 ## Phase 4 — Notifications
 
 ### 4a. Notification Infrastructure
-- [ ] Create `Notification` model (userId, type, title, body, sourceId, sourceType, read, timestamps)
-- [ ] Notification creation service (called from friend requests, invites, comments, etc.)
-- [ ] Notification API: list (`GET /api/notifications`), mark read (`PUT /api/notifications/:id/read`), mark all read
-- [ ] Real-time notification delivery via SSE/WebSocket (reuse presence connection)
+- [x] Create `Notification` model (userId, type, title, body, sourceId, sourceType, linkPath, read, timestamps)
+- [x] Notification creation service (wired into friend requests/accept, project invites, comment @mentions, group join/invite/approve)
+- [x] Notification API: list (`GET /api/notifications`), mark read (`PUT /api/notifications/:id/read`), mark all read (`POST /api/notifications/read-all`), dismiss all (`DELETE`)
+- [x] Real-time notification delivery via SSE (`GET /api/notifications/stream`) with in-memory pub/sub bus
 
 ### 4b. Notification UI
-- [ ] Bell icon in top bar with unread count badge
-- [ ] Notification dropdown/panel with list of notifications
-- [ ] Click-through navigation (notification → relevant page)
-- [ ] Bulk actions: mark all read, dismiss all
-- [ ] Empty state when no notifications
+- [x] Bell icon in top bar with unread count badge
+- [x] Notification dropdown/panel with list of notifications
+- [x] Click-through navigation (notification → linkPath)
+- [x] Bulk actions: mark all read, dismiss all
+- [x] Empty state when no notifications
 
 ### 4c. Email Notifications
-- [ ] Email digest preference in user settings (OFF, DAILY, WEEKLY)
-- [ ] Email template for notification digest
-- [ ] Cron job / scheduled task to send digests
-- [ ] Unsubscribe link in emails
+- [x] Email digest preference in user settings (OFF, DAILY, WEEKLY)
+- [x] Email template for notification digest (HTML + text)
+- [x] Cron-ready digest send endpoint (`POST /api/notifications/digest`, CRON_SECRET-protected)
+  - [ ] Actual email send STUBBED (logged) — no email provider configured. Wire Resend/SES/Postmark when keys exist (same gap as existing email-verification stub)
+- [x] Unsubscribe link/endpoint (`GET /api/notifications/unsubscribe?token=`)
 
 ## Phase 5 — Hardening & Re-Release
 
