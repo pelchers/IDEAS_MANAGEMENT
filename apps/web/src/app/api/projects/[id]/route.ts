@@ -11,6 +11,7 @@ const PatchProjectSchema = z.object({
   description: z.string().max(2000).optional(),
   status: z.enum(["PLANNING", "ACTIVE", "PAUSED", "ARCHIVED"]).optional(),
   tags: z.array(z.string().max(50)).max(20).optional(),
+  visibility: z.enum(["PRIVATE", "PUBLIC"]).optional(),
 });
 
 type RouteParams = { params: Promise<{ id: string }> };
@@ -67,6 +68,7 @@ export async function GET(req: Request, { params }: RouteParams) {
       slug: project.slug,
       description: project.description,
       status: project.status,
+      visibility: project.visibility,
       tags: project.tags,
       members: project.members.map((m) => ({
         id: m.id,
@@ -121,6 +123,9 @@ export async function PATCH(req: Request, { params }: RouteParams) {
   }
   if (parsed.status !== undefined) {
     data.status = parsed.status;
+  }
+  if (parsed.visibility !== undefined) {
+    data.visibility = parsed.visibility;
   }
 
   if (Object.keys(data).length === 0) {

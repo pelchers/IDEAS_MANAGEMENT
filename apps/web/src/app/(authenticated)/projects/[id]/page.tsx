@@ -24,9 +24,11 @@ interface WorkspaceData {
 }
 
 interface ProjectDetail {
+  id?: string;
   name: string;
   description: string;
   status: string;
+  visibility?: string;
 }
 
 function selectProject(id: string, name: string) {
@@ -69,6 +71,19 @@ export default function ProjectWorkspacePage() {
   const [showAddNote, setShowAddNote] = useState(false);
   const [newNoteText, setNewNoteText] = useState("");
   const [hoverNote, setHoverNote] = useState<string | null>(null);
+
+  const toggleVisibility = async () => {
+    if (!project) return;
+    const next = project.visibility === "PUBLIC" ? "PRIVATE" : "PUBLIC";
+    setProject({ ...project, visibility: next });
+    try {
+      await fetch(`/api/projects/${projectId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ visibility: next }),
+      });
+    } catch { /* ignore */ }
+  };
 
   /* ── Load project ── */
   useEffect(() => {
@@ -214,6 +229,20 @@ export default function ProjectWorkspacePage() {
             <span className="font-mono text-xs uppercase text-gray-mid">
               {project ? project.status : `PROJECT #${projectId}`}
             </span>
+            {project && (
+              <button
+                onClick={toggleVisibility}
+                data-testid="visibility-toggle"
+                title="Toggle project visibility"
+                className="font-mono text-[0.65rem] uppercase font-bold px-2 py-1 border-2 border-signal-black cursor-pointer"
+                style={{
+                  backgroundColor: project.visibility === "PUBLIC" ? "#2ECC71" : "#FFF",
+                  color: project.visibility === "PUBLIC" ? "#FFF" : "#282828",
+                }}
+              >
+                {project.visibility === "PUBLIC" ? "● PUBLIC" : "○ PRIVATE"}
+              </button>
+            )}
             {saving && (
               <span style={{
                 fontFamily: "monospace", fontSize: "0.7rem", color: "#999",
