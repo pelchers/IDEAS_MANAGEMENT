@@ -29,6 +29,7 @@ interface ProjectDetail {
   description: string;
   status: string;
   visibility?: string;
+  userRole?: string;
 }
 
 function selectProject(id: string, name: string) {
@@ -229,7 +230,7 @@ export default function ProjectWorkspacePage() {
             <span className="font-mono text-xs uppercase text-gray-mid">
               {project ? project.status : `PROJECT #${projectId}`}
             </span>
-            {project && (
+            {project && (project.userRole === "OWNER" || project.userRole === "EDITOR") && (
               <button
                 onClick={toggleVisibility}
                 data-testid="visibility-toggle"
@@ -242,6 +243,14 @@ export default function ProjectWorkspacePage() {
               >
                 {project.visibility === "PUBLIC" ? "● PUBLIC" : "○ PRIVATE"}
               </button>
+            )}
+            {project && project.userRole && project.userRole !== "OWNER" && project.userRole !== "EDITOR" && (
+              <span
+                data-testid="visibility-readonly"
+                className="font-mono text-[0.65rem] uppercase font-bold px-2 py-1 border-2 border-signal-black/30 text-gray-mid"
+              >
+                {project.visibility === "PUBLIC" ? "● PUBLIC" : "○ PRIVATE"}
+              </span>
             )}
             {saving && (
               <span style={{
@@ -553,7 +562,7 @@ export default function ProjectWorkspacePage() {
 
       {/* Member management + Activity feed */}
       <div className="grid grid-cols-[repeat(auto-fill,minmax(380px,1fr))] gap-6 mt-8">
-        <MemberPanel projectId={projectId} isOwner={true} />
+        <MemberPanel projectId={projectId} isOwner={project?.userRole === "OWNER"} />
         <ActivityFeed projectId={projectId} />
       </div>
     </div>
