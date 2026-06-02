@@ -20,7 +20,12 @@ const PUBLIC_API_PREFIXES = [
   "/api/auth/verify-email",
   "/api/auth/password-reset",
   "/api/health",
-  "/api/billing/webhook"
+  "/api/billing/webhook",
+  // Cron-triggered digest send — self-protected by CRON_SECRET (fail-closed),
+  // must be reachable by an external scheduler without a user session.
+  "/api/notifications/digest",
+  // One-click unsubscribe from email links — token-gated.
+  "/api/notifications/unsubscribe"
 ];
 
 function isPublicPath(pathname: string): boolean {

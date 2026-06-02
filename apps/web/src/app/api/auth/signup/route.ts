@@ -7,6 +7,8 @@ import { setAuthCookies } from "@/server/auth/cookies";
 import { issueEmailVerificationToken } from "@/server/auth/email-verification";
 import { auditLog } from "@/server/audit";
 import { rateLimit, getClientIp, rateLimitResponse, PRESETS } from "@/server/rate-limit";
+import { sendEmail, appBaseUrl } from "@/server/email/send";
+import { verificationEmail } from "@/server/email/templates";
 
 function reqMeta(req: Request) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
@@ -47,8 +49,12 @@ export async function POST(req: Request) {
       select: { id: true, email: true, role: true, createdAt: true }
     });
 
-    // Issue email verification token (stub: would send email in production)
+    // Issue + send the email verification link. Sends via the configured
+    // provider (RESEND_API_KEY); logs as a no-op when none is set.
     const verification = await issueEmailVerificationToken(user.id);
+    const verifyUrl = `${appBaseUrl()}/api/auth/verify-email?token=${verification.token}`;
+    const vmsg = verificationEmail({ name: null, email: user.email, verifyUrl });
+    await sendEmail({ to: user.email, subject: vmsg.subject, html: vmsg.html, text: vmsg.text });
 
     const session = await issueSession(user.id);
 

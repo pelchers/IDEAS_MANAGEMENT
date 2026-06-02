@@ -1,5 +1,6 @@
 import { prisma } from "@/server/db";
 import { newToken } from "@/server/auth/tokens";
+import { sendEmail } from "@/server/email/send";
 
 /**
  * Render a notification digest email (HTML + text) for a user.
@@ -64,7 +65,7 @@ export async function runDigestCycle(frequency: "DAILY" | "WEEKLY", baseUrl: str
     select: { id: true, email: true, displayName: true },
   });
 
-  const sent: { userId: string; email: string; count: number }[] = [];
+  const sent: { userId: string; email: string; count: number; delivered: boolean }[] = [];
 
   for (const u of users) {
     const notifications = await prisma.notification.findMany({
@@ -79,11 +80,11 @@ export async function runDigestCycle(frequency: "DAILY" | "WEEKLY", baseUrl: str
     const unsubscribeUrl = `${baseUrl}/api/notifications/unsubscribe?token=${token}`;
     const email = renderDigestEmail({ displayName: u.displayName, email: u.email, notifications, unsubscribeUrl });
 
-    // Email provider not configured — log instead of send. Replace with real
-    // provider (Resend/SES/Postmark) once API keys are available.
-    console.log(`[digest] would send to ${u.email}: ${email.subject}`);
+    // Sends via the configured provider (RESEND_API_KEY); logs as a no-op
+    // fallback when no provider is set. Either way the cycle completes.
+    const result = await sendEmail({ to: u.email, subject: email.subject, html: email.html, text: email.text });
 
-    sent.push({ userId: u.id, email: u.email, count: notifications.length });
+    sent.push({ userId: u.id, email: u.email, count: notifications.length, delivered: result.delivered });
   }
 
   return sent;

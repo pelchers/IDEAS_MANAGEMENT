@@ -4,6 +4,8 @@ import { prisma } from "@/server/db";
 import { issuePasswordResetToken } from "@/server/auth/password-reset";
 import { auditLog } from "@/server/audit";
 import { rateLimit, getClientIp, rateLimitResponse, PRESETS } from "@/server/rate-limit";
+import { sendEmail, appBaseUrl } from "@/server/email/send";
+import { passwordResetEmail } from "@/server/email/templates";
 
 const RequestResetSchema = z.object({
   email: z.string().email().max(320)
@@ -26,7 +28,7 @@ export async function POST(req: Request) {
   }
 
   const email = parsed.data.email.toLowerCase();
-  const user = await prisma.user.findUnique({ where: { email }, select: { id: true } });
+  const user = await prisma.user.findUnique({ where: { email }, select: { id: true, displayName: true } });
 
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
   const userAgent = req.headers.get("user-agent") ?? null;
@@ -43,8 +45,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true }, { status: 200 });
   }
 
-  // Issue a reset token (in production, send via email)
+  // Issue a reset token + send the reset link. Sends via the configured
+  // provider (RESEND_API_KEY); logs as a no-op when none is set.
   const reset = await issuePasswordResetToken(user.id);
+  const resetUrl = `${appBaseUrl()}/reset-password?token=${reset.token}`;
+  const rmsg = passwordResetEmail({ name: user.displayName, email, resetUrl });
+  await sendEmail({ to: email, subject: rmsg.subject, html: rmsg.html, text: rmsg.text });
 
   await auditLog({
     actorUserId: user.id,
@@ -54,10 +60,8 @@ export async function POST(req: Request) {
     metadata: { emailFound: true }
   });
 
-  // In production the token would NOT be in the response body.
-  // Included here for dev/testing convenience.
-  return NextResponse.json(
-    { ok: true, _dev: { resetToken: reset.token } },
-    { status: 200 }
-  );
+  // Dev convenience: include the token only when no email provider is wired
+  // (so local testing still works). Never present once RESEND_API_KEY is set.
+  const devToken = process.env.RESEND_API_KEY ? {} : { _dev: { resetToken: reset.token } };
+  return NextResponse.json({ ok: true, ...devToken }, { status: 200 });
 }
