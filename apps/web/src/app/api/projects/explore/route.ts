@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/server/db";
+import { requireAuth, isErrorResponse } from "@/server/auth/admin";
 
 /**
  * GET /api/projects/explore?q=...&tags=...&status=...&sort=...&limit=...
  * Returns public projects with owner info and member counts.
+ * Auth required — the app is fully behind auth and this prevents anonymous
+ * scraping of the public-project directory.
  */
 export async function GET(req: Request) {
+  const authResult = await requireAuth(req);
+  if (isErrorResponse(authResult)) return authResult;
+
   const url = new URL(req.url);
   const q = url.searchParams.get("q")?.trim() || "";
   const tagsParam = url.searchParams.get("tags")?.trim() || "";

@@ -33,3 +33,8 @@ auth, missing ownership/role checks, privacy leaks).
 
 - `/api/projects/explore` and `/api/users` are now authenticated (app is fully behind auth). Profile/project privacy is enforced server-side regardless.
 - Rate limiting (Phase 5) added to friend requests, invites, group create/join, comments (20/min/user).
+
+## Follow-up (2026-06-01)
+
+- `/api/projects/explore` was still anonymous after the original audit (the note above was aspirational). Auth (`requireAuth`) added so it now matches `/api/users`. No remaining unauthenticated read endpoints except `/api/notifications/unsubscribe` (intentional, token-gated).
+- Two functional gaps found during multi-user-type validation and fixed: project visibility was not settable anywhere (added PATCH field + UI toggle), and the workspace member panel/visibility toggle were shown to all roles (now gated by real project role). Access control itself was already correct — these were a missing capability and a misleading-UI issue, not auth bypasses.
