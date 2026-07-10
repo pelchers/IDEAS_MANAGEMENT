@@ -71,3 +71,20 @@ Replace this section with project-specific goals, key paths, and active sessions
 - Go out of the way to perform additional testing, research, and validation to assure best practices are met and exceeded. Validation (build checks, Playwright tests, screenshots) is part of completing work, not a separate optional step.
 - This applies to agent-defined scopes of work as well — agents must finish what they start, not leave partial implementations.
 - Exception: If a dependency is missing (e.g., API keys not yet provided), or a blocking issue requires user input, document what's blocked and why — but complete everything that can be completed.
+
+
+<!-- BEGIN device-sync-and-handoff convention (managed; append idempotently — do not duplicate) -->
+## Device Sync & Handoff Convention (Required)
+- **Multi-device repo** (home-desktop ⇄ asus-laptop). BOTH devices commit to their own **working lane**
+  (`Home-Work` / `Asus-Work`, resolved from `device.local.md`). **`main` = handoff + savepoint + stable +
+  deployment/prod** — NOT a daily lane; it is synced to your working lane only at wind-down.
+- **START of work → `/pickup`** (skill `device-sync-protocol`): `git fetch` all lanes, determine the
+  most-forward-*appropriate* state (ADR/planning/`HANDOFF.md`-informed, not raw commit count), adopt it
+  into your working branch (`--ff-only` / `pull --rebase`; STOP + ask if lanes truly diverged — never
+  force-push, never discard a lane), then read the newest `HANDOFF.md` entry + status board before working.
+  The SessionStart banner flags when a device/`main` is ahead.
+- **END of work → `/winddown`**: commit to your lane → prepend a `HANDOFF.md` entry (append-only,
+  per-device) → update chat-history + status board → `git push origin <Device>-Work` then
+  `git push origin <Device>-Work:main` (fast-forward only) → optional `/savepoint` at a milestone.
+- Full protocol: `.docs/runbooks/development/device-sync-and-handoff-protocol.md`. Log: `HANDOFF.md`.
+<!-- END device-sync-and-handoff convention -->
