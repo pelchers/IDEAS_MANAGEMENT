@@ -628,3 +628,129 @@ Run Playwright E2E validation against live dev server at port 3000 for all 12 te
 
 ## AGENT REPORT
 12/12 tests PASS. 1 app bug found and fixed (sitemap/robots not public). Screenshots saved to .docs/validation/cycle-001/screenshots/.
+
+---
+TIMESTAMP: 2026-04-08T00:00:00Z
+RAW_MESSAGE: Record Playwright GIF/video demonstrations of specific bugs on the whiteboard and AI chat pages. App at C:\Ideas\IDEA-MANAGEMENT\apps\web, dev server port 3000. Sign in as admin (admin@ideamgmt.local / AdminPass123!). Bug 1: Whiteboard marquee resize is broken. Bug 2: AI chat messages disappear when switching sessions. Bug 3: New chat creation delay. Save screenshots to .docs/validation/bug-investigation/screenshots/ and findings to .docs/validation/bug-investigation/FINDINGS.md
+
+SESSION CONTEXT: Bug investigation session - recording Playwright demonstrations of 3 specific bugs on whiteboard and AI chat pages.
+
+USER INTENT: Reproduce and document 3 specific bugs with screenshots/video evidence: (1) whiteboard marquee resize handle/bbox moves separately from items, (2) AI chat messages disappear when switching sessions, (3) new chat creation delay. Sign in as admin. Save to .docs/validation/bug-investigation/.
+
+REFERENCE FILES: apps/web/src/app/(authenticated)/projects/[id]/whiteboard/page.tsx, apps/web/src/app/(authenticated)/ai page
+
+KEY DECISIONS: Use Playwright to reproduce bugs with screenshots at each step. Capture console errors. Write findings to FINDINGS.md.
+
+AGENT REPORT: Starting bug investigation - will use Playwright to reproduce and document each bug with screenshots and console error capture.
+
+=== SESSION: 2026-04-08 through 2026-04-11 ===
+TIMESTAMP: 2026-04-08T00:00:00Z through 2026-04-11T12:00:00Z
+ROLE: user (pelchers)
+
+--- SESSION CONTEXT ---
+Multi-day intensive development session covering Plans #4-6 + Audit Cycle 001 + bug fixes.
+
+--- USER INTENT ---
+User directed continuous feature expansion, audit remediation, and bug fixing across:
+1. Plan #4: AI Provider Switcher + Subscription Tiers (completed prior session)
+2. Plan #5: Schema Planner Interactive Upgrade (zoom/pan, crow's foot, toolbar, minimap)
+3. Plan #6: Canvas Tools + Whiteboard Upgrade (tools, zoom, colors, undo, context menus)
+4. Whiteboard rotation for shapes + media
+5. Marquee selection with group drag/scale/rotate (Excalidraw pattern)
+6. Audit Cycle 001: Security, API validation, SEO, accessibility, performance fixes
+7. AI chat reasoning persistence across session switches
+8. Multiple bug fix iterations: eraser tool, resize coordinate mismatch, session load failures,
+   disjointed selection boxes, group selection overlay positioning
+
+--- KEY DECISIONS ---
+- Completion Convention added to all CLAUDE.md files across all repos
+- Rough.js kept as toggle (Clean mode default, Rough mode optional)
+- Side panel coexists with modals on schema page
+- Snapshot-based transform pattern (Excalidraw/tldraw) for group operations
+- Relations panel converted to slide-out drawer (matching nav menu pattern)
+- In-memory rate limiting for auth endpoints (5/15min signin/signup, 3/hr password reset)
+- AI chat reasoning field added to DB schema for cross-session persistence
+
+--- REFERENCE FILES ---
+.docs/planning/plans/4-ai-provider-switcher-subscription-tiers.md
+.docs/planning/plans/5-schema-planner-interactive-upgrade.md
+.docs/planning/plans/6-canvas-tools-whiteboard-upgrade.md
+.adr/orchestration/14_audit-cycles/cycle-001/primary_task_list.md
+.docs/planning/audits/001.00-summary-2026-04-08.md
+.docs/validation/bug-investigation/FINDINGS.md
+
+--- AGENT REPORT ---
+Agents used: Explore (codebase analysis), Validation (Playwright testing), Audit System (10 audits),
+general-purpose (Zod validation, schema fixes, selection fixes), research (Basedash/Excalidraw/tldraw)
+Key commits: ~40+ commits across Plans 4-6, audit cycle, and bug fixes
+Current state: All plans complete, audit cycle complete, ongoing bug fixes for selection/chat
+
+=== SESSION: 2026-07-15 ===
+TIMESTAMP: 2026-07-15T20:00:00Z
+ROLE: user (pelchers)
+
+--- RAW MESSAGE ---
+lets pick up where we left off with the app - start it and let me know its current state (where we are in teh adr - note some adr items may not bne checked off even if done - but you need to validate all work)
+
+--- SESSION CONTEXT ---
+Resume/pickup session. Last real work ~2026-06-01 (V2 expansion). Device: VENGEANCE (device.local.md
+seeded from template, no device box checked). No remote device lanes exist; on main = origin/main.
+
+--- USER INTENT ---
+Start the app, report current ADR state, and VALIDATE all work (not just trust checkboxes — some ADR
+items may be done-but-unchecked).
+
+--- KEY DECISIONS / FINDINGS ---
+- Port 3000 is occupied by a DIFFERENT project (CarAggregator, pre-existing server) — must not kill it.
+  Started idea-management on port 3001 instead. Made playwright.config baseURL env-configurable (E2E_BASE_URL).
+- Stack reality (CLAUDE.md header is stale): Next.js 16 + React 19 + Prisma/PostgreSQL + custom argon2 auth
+  (NOT Convex/Clerk). Confirmed by DECISIONS LOG.
+- ADR state: V2 Expansion (.adr/orchestration/13_v2_expansion) Phases 1-5 complete. TODO.md is STALE
+  (still shows Phase B Tier 1 unstarted; app is far past that).
+- Deferred items in V2 task list were actually DONE in later commits (done-but-unchecked):
+  email send wired end-to-end (6d03ee7), permission-matrix + multi-user UAT (dafa7e3/fd9d407).
+- Validation performed (app confirmed working): health/DB/migrations OK, typecheck clean (exit 0),
+  auth login 200, route protection 401, rate-limit 429 (working), dashboard real audit-log+aggregates,
+  projects list 8 real projects, Kanban card CREATE + PERSIST across reload (March-audit #1 concern RESOLVED),
+  all feature backends 200 (dashboard/explore/users/friends/groups/notifications/activity), Explore + AI Chat render.
+- e2e subset (auth+V2+UAT) 1 passed / 11 failed / 5 skipped — ALL failures are test-env artifacts, not app bugs:
+  (a) auth rate-limit throttles the suite (shared signin:unknown bucket, 5/15min), (b) helpers waitForLoadState
+  'networkidle' never settles vs the always-on notification SSE, (c) stale assertions/selectors ("Create Account"
+  vs "Sign Up"; .auth-error class no longer used — errors render via inline styled <p>).
+
+--- REFERENCE FILES ---
+.adr/orchestration/13_v2_expansion/primary_task_list.md, .adr/agent_ingest/session_10a_accuracy_audit.md,
+TODO.md, apps/web/src/server/rate-limit.ts, apps/web/playwright.config.ts, apps/web/e2e/helpers.ts
+
+--- AGENT REPORT ---
+No subagents. Direct validation via Prisma queries, curl, Playwright MCP browser walk (authed via
+X-Forwarded-For fresh rate bucket), and e2e subset run. App left running on :3001.
+
+=== SESSION: 2026-07-15 (cont.) — DEVFLOW BUILD ===
+TIMESTAMP: 2026-07-15T20:30:00Z
+ROLE: user (pelchers)
+
+--- RAW MESSAGE ---
+do a full app audit and fix anything thats flaky, not good ui ux and also just autonomously in a long session go an add some features useful to a software developer with a busy schedule. should feel super snappy, clean and even expand to integrate with other services in the future (ex email/gmail, calendars, vs code, and more)
+
+--- USER INTENT ---
+Long autonomous build session. (1) Full app audit + fix flaky/bad UX. (2) Add developer-productivity
+features for a busy dev. (3) Super snappy + clean feel. (4) Architect for external-service integrations.
+
+--- KEY DECISIONS (from clarifying Qs) ---
+- SCOPE = all 4 workstreams, in order: [1] Audit & fix foundation, [2] Cmd-K palette + snappy UX,
+  [3] Today/My Work view, [4] Integrations spine + first integration.
+- INTEGRATIONS: wire them ALL at the code level (email FIRST, then Gmail/Calendar/VS Code/more).
+  User adds real creds AFTER the session; code must be prod-perfect and validated via tests (mocked providers),
+  gracefully degrading to "not configured" when creds absent.
+- TASK MODEL: add a FIRST-CLASS Task model (migration + refactor kanban from ProjectArtifact JSON to Task rows,
+  with data migration). Powers cross-project Today view + calendar/integration linking.
+
+--- CONTEXT (from prior validation) ---
+Stack: Next.js 16 + React 19 + Prisma/PostgreSQL + custom argon2 auth. App runs on :3001 (3000 = CarAggregator).
+No global command palette exists. Data model is artifact-based (ProjectArtifact JSON) — no Task model yet.
+No external-integration model yet (only AI provider keys on User, AES-256-GCM encrypted).
+
+--- AGENT REPORT ---
+Brainstorming skill invoked; scope + architecture forks resolved via AskUserQuestion. Proceeding to
+consolidated design + spec, then phased autonomous build with validation.

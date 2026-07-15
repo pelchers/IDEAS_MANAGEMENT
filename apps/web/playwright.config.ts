@@ -1,5 +1,9 @@
 import { defineConfig } from '@playwright/test';
 
+// Base URL is env-configurable so the suite can target a non-default port when
+// another dev server occupies :3000 (e.g. a sibling app). Defaults to :3000.
+const BASE_URL = process.env.E2E_BASE_URL ?? 'http://localhost:3000';
+
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: false,
@@ -10,7 +14,7 @@ export default defineConfig({
   timeout: 30_000,
 
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: BASE_URL,
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
     actionTimeout: 10_000,
@@ -25,7 +29,7 @@ export default defineConfig({
 
   webServer: {
     command: 'npx next dev',
-    url: 'http://localhost:3000',
+    url: BASE_URL,
     reuseExistingServer: true,
     timeout: 60_000,
   },
