@@ -180,7 +180,7 @@ export default function ProjectsPage() {
       {/* View header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="nb-view-title">PROJECTS</h1>
-        <button className="nb-btn nb-btn--primary" onClick={() => setShowCreateForm(!showCreateForm)}>+ NEW PROJECT</button>
+        <button data-testid="new-project-toggle" className="nb-btn nb-btn--primary" onClick={() => setShowCreateForm(!showCreateForm)}>+ NEW PROJECT</button>
       </div>
 
       {/* Create project form */}
@@ -189,14 +189,14 @@ export default function ProjectsPage() {
           {createError && <div className="p-3 border-2 border-signal-black bg-watermelon/20 text-watermelon font-mono text-[0.85rem]">{createError}</div>}
           <div>
             <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">PROJECT NAME</label>
-            <input type="text" className="nb-input w-full" placeholder="My New Project" value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)} required />
+            <input data-testid="create-project-name" type="text" className="nb-input w-full" placeholder="My New Project" value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)} required />
           </div>
           <div>
             <label className="font-bold text-[0.85rem] uppercase tracking-wider mb-1 block">DESCRIPTION</label>
             <textarea className="nb-input nb-textarea w-full" placeholder="What is this project about?" value={newProjectDesc} onChange={(e) => setNewProjectDesc(e.target.value)} />
           </div>
           <div className="flex gap-3">
-            <button type="submit" className="nb-btn nb-btn--primary" disabled={creating || !newProjectName.trim()}>{creating ? "CREATING..." : "CREATE PROJECT"}</button>
+            <button type="submit" data-testid="create-project-submit" className="nb-btn nb-btn--primary" disabled={creating || !newProjectName.trim()}>{creating ? "CREATING..." : "CREATE PROJECT"}</button>
             <button type="button" className="nb-btn" onClick={() => setShowCreateForm(false)}>CANCEL</button>
           </div>
         </form>

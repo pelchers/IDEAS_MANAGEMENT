@@ -71,6 +71,22 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const openDrawer = useCallback(() => setIsOpen(true), []);
   const closeDrawer = useCallback(() => setIsOpen(false), []);
 
+  const [signingOut, setSigningOut] = useState(false);
+  const handleSignOut = useCallback(async () => {
+    setSigningOut(true);
+    try {
+      await fetch("/api/auth/signout", { method: "POST" });
+    } catch {
+      /* ignore — redirect regardless */
+    }
+    try {
+      localStorage.removeItem("im_selected_project");
+    } catch {
+      /* ignore */
+    }
+    window.location.href = "/signin";
+  }, []);
+
   // Auto-detect project from URL
   useEffect(() => {
     const urlProjectId = extractProjectId(pathname);
@@ -380,40 +396,67 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           })}
         </ul>
 
-        {/* Drawer footer — user profile (clickable) */}
-        <Link
-          href="/profile"
-          style={{ display: "block", padding: "24px", borderTop: "4px solid #282828", cursor: "pointer", textDecoration: "none", color: "inherit", transition: "background-color 150ms" }}
-          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(40,40,40,0.05)")}
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <div
+        {/* Drawer footer — user profile (clickable) + sign out */}
+        <div style={{ borderTop: "4px solid #282828" }}>
+          <Link
+            href="/profile"
+            style={{ display: "block", padding: "20px 24px 12px", cursor: "pointer", textDecoration: "none", color: "inherit", transition: "background-color 150ms" }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(40,40,40,0.05)")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <div
+                style={{
+                  width: "44px",
+                  height: "44px",
+                  backgroundColor: "#FF5E54",
+                  color: "#FFFFFF",
+                  border: "3px solid #282828",
+                  boxShadow: "4px 4px 0px #282828",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: 700,
+                  fontSize: "1rem",
+                  flexShrink: 0,
+                }}
+              >
+                {userInitials}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+                <span style={{ fontWeight: 700, fontSize: "0.9rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const }}>{userDisplayName}</span>
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "#666666", textTransform: "uppercase" as const }}>
+                  {userRole}
+                </span>
+              </div>
+            </div>
+          </Link>
+          <div style={{ padding: "0 24px 20px" }}>
+            <button
+              type="button"
+              data-testid="signout-button"
+              onClick={handleSignOut}
+              disabled={signingOut}
               style={{
-                width: "44px",
-                height: "44px",
-                backgroundColor: "#FF5E54",
-                color: "#FFFFFF",
+                width: "100%",
+                padding: "10px 16px",
+                backgroundColor: "#FFFFFF",
+                color: "#282828",
                 border: "3px solid #282828",
-                boxShadow: "4px 4px 0px #282828",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                boxShadow: "3px 3px 0px #282828",
                 fontWeight: 700,
-                fontSize: "1rem",
-                flexShrink: 0,
+                fontSize: "0.8rem",
+                textTransform: "uppercase" as const,
+                letterSpacing: "0.05em",
+                cursor: signingOut ? "not-allowed" : "pointer",
+                opacity: signingOut ? 0.6 : 1,
+                fontFamily: "'Space Grotesk', system-ui, sans-serif",
               }}
             >
-              {userInitials}
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
-              <span style={{ fontWeight: 700, fontSize: "0.9rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const }}>{userDisplayName}</span>
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "#666666", textTransform: "uppercase" as const }}>
-                {userRole}
-              </span>
-            </div>
+              {signingOut ? "Signing out…" : "Sign Out"}
+            </button>
           </div>
-        </Link>
+        </div>
       </nav>
 
       {/* ============================================ */}

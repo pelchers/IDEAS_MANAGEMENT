@@ -141,6 +141,7 @@ export default function SignUpPage() {
             <label htmlFor="email" style={labelStyle}>Email</label>
             <input
               id="email"
+              data-testid="signup-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -155,6 +156,7 @@ export default function SignUpPage() {
             <label htmlFor="password" style={labelStyle}>Password</label>
             <input
               id="password"
+              data-testid="signup-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -169,6 +171,7 @@ export default function SignUpPage() {
             <label htmlFor="confirm-password" style={labelStyle}>Confirm Password</label>
             <input
               id="confirm-password"
+              data-testid="signup-confirm"
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -180,11 +183,12 @@ export default function SignUpPage() {
           </div>
 
           {errors.general && (
-            <p style={{ ...errorStyle, margin: 0 }}>{errors.general}</p>
+            <p data-testid="auth-error" role="alert" style={{ ...errorStyle, margin: 0 }}>{errors.general}</p>
           )}
 
           <button
             type="submit"
+            data-testid="signup-submit"
             disabled={loading}
             style={{
               width: "100%",

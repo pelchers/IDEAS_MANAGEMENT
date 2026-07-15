@@ -37,6 +37,12 @@ export interface RateLimitResult {
  * @param windowMs Window size in milliseconds
  */
 export function rateLimit(key: string, limit: number, windowMs: number): RateLimitResult {
+  // Escape hatch for load/dev/e2e environments. NEVER honored in production, so
+  // the limiter can't be accidentally disabled where it matters.
+  if (process.env.RATE_LIMIT_DISABLED === "1" && process.env.NODE_ENV !== "production") {
+    return { allowed: true, remaining: limit, resetAt: Date.now() + windowMs, retryAfter: 0 };
+  }
+
   const now = Date.now();
   cleanup(now, windowMs);
 

@@ -86,6 +86,7 @@ export default function SignInPage() {
             </label>
             <input
               id="email"
+              data-testid="signin-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -114,6 +115,7 @@ export default function SignInPage() {
             </label>
             <input
               id="password"
+              data-testid="signin-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -134,11 +136,12 @@ export default function SignInPage() {
           </div>
 
           {error && (
-            <p style={{ color: "#FF5E54", fontSize: "0.875rem", fontFamily: "'IBM Plex Mono', monospace", margin: 0 }}>{error}</p>
+            <p data-testid="auth-error" role="alert" style={{ color: "#FF5E54", fontSize: "0.875rem", fontFamily: "'IBM Plex Mono', monospace", margin: 0 }}>{error}</p>
           )}
 
           <button
             type="submit"
+            data-testid="signin-submit"
             disabled={loading}
             style={{
               width: "100%",
