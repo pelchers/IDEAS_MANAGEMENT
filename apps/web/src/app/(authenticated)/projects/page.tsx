@@ -278,6 +278,14 @@ export default function ProjectsPage() {
 
       {/* Projects grid */}
       <div className={`grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6 ${loading ? "animate-pulse" : ""}`}>
+        {loading && Array.from({ length: 6 }).map((_, i) => (
+          <div key={`sk-${i}`} className="bg-white border-4 border-signal-black shadow-nb p-6" aria-hidden>
+            <div style={{ height: 12, width: "30%", background: "#e5e0d8", marginBottom: 14 }} />
+            <div style={{ height: 22, width: "70%", background: "#e5e0d8", marginBottom: 18 }} />
+            <div style={{ height: 10, width: "92%", background: "#efece6", marginBottom: 8 }} />
+            <div style={{ height: 10, width: "60%", background: "#efece6" }} />
+          </div>
+        ))}
         {filteredProjects.map((project) => (
           <div
             key={project.id}
