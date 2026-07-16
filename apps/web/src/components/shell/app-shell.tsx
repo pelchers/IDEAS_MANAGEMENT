@@ -7,6 +7,7 @@ import { AiHelper } from "@/components/ai/ai-helper";
 import { SyncStatusIndicator } from "@/components/sync/sync-status-indicator";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { CommandPalette } from "@/components/command/command-palette";
+import { KeyboardShortcuts } from "@/components/shell/keyboard-shortcuts";
 import { openCommandPalette } from "@/components/command/command-registry";
 
 /* ── Title from pathname ── */
@@ -493,8 +494,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Floating AI Helper — available on all pages */}
       <AiHelper />
 
-      {/* Global Cmd-K command palette */}
+      {/* Global Cmd-K command palette + keyboard shortcuts */}
       <CommandPalette />
+      <KeyboardShortcuts />
     </>
   );
 }
