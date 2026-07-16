@@ -298,8 +298,9 @@ export default function AiPage() {
     { type: "function", function: { name: "manage_project", description: "Create or update a project", parameters: { type: "object", properties: { action: { type: "string", enum: ["create", "update"] }, projectId: { type: "string" }, name: { type: "string" }, description: { type: "string" }, status: { type: "string", enum: ["PLANNING", "ACTIVE", "PAUSED", "ARCHIVED"] }, tags: { type: "array", items: { type: "string" } } }, required: ["action"] } } },
   ];
 
-  /* ── Send via client-side Ollama ── */
-  const sendViaClientOllama = useCallback(async (userText: string, allMessages: ChatMessage[]) => {
+  /* ── Send via client-side Ollama. Returns false if it failed to produce a
+     response, so the caller can fall back to the server AI. ── */
+  const sendViaClientOllama = useCallback(async (userText: string, allMessages: ChatMessage[]): Promise<boolean> => {
     const systemPrompt = buildClientSystemPrompt();
     const ollamaMessages: OllamaChatMessage[] = [{ role: "system", content: systemPrompt }];
 
@@ -313,6 +314,7 @@ export default function AiPage() {
 
     let aiText = "";
     let aiReasoning = "";
+    let failed = false;
     const pendingToolCalls: ToolCall[] = [];
 
     const updateMsg = () => {
@@ -353,12 +355,15 @@ export default function AiPage() {
             return updated;
           });
         },
-        onError: (err) => {
-          aiReasoning += `\n❌ Error: ${err}`;
-          if (!aiText) aiText = `Error: ${err}`;
-          updateMsg();
-        },
+        onError: () => { failed = true; },
       });
+
+      // Local Ollama failed to produce anything → drop the placeholder and let
+      // the caller retry via the server AI (which is always available).
+      if (failed && !aiText) {
+        setMessages((prev) => prev.slice(0, -1));
+        return false;
+      }
 
       // Save to server DB
       await fetch("/api/ai/chat/save", {
@@ -374,16 +379,14 @@ export default function AiPage() {
       }).then((r) => r.json()).then((d) => {
         if (d.ok && d.sessionId && !sessionId) { setSessionId(d.sessionId); loadSessions(); }
       }).catch(() => {});
-
-    } catch (err) {
-      const errMsg = err instanceof Error ? err.message : "Local Ollama connection failed";
-      setMessages((prev) => {
-        const updated = [...prev];
-        updated[updated.length - 1] = { role: "ai", text: `Error: ${errMsg}. Try checking that Ollama is running.`, isStreaming: false };
-        return updated;
-      });
+      return true;
+    } catch {
+      // Connection/stream error → drop placeholder, fall back to the server.
+      setMessages((prev) => prev.slice(0, -1));
+      return false;
+    } finally {
+      setIsTyping(false);
     }
-    setIsTyping(false);
   }, [buildClientSystemPrompt, ollamaStatus, sessionId, loadSessions]);
 
   /* ── Send message ── */
@@ -399,10 +402,11 @@ export default function AiPage() {
     setMessages((prev) => [...prev, userMessage]);
     setIsTyping(true);
 
-    // ── Client-side Ollama path ──
+    // ── Client-side Ollama path (falls back to the server AI on failure) ──
     if (useClientOllama && ollamaStatus?.running) {
-      await sendViaClientOllama(trimmed, [...messages, userMessage]);
-      return;
+      const handled = await sendViaClientOllama(trimmed, [...messages, userMessage]);
+      if (handled) return;
+      // Local Ollama failed — continue to the server path below.
     }
 
     // ── Server-side path (Groq / BYOK / server Ollama) ──
@@ -652,8 +656,9 @@ export default function AiPage() {
         </div>
       )}
 
-      {/* Chat layout: sidebar + main */}
-      <div className="flex gap-4" style={{ maxHeight: "calc(100vh - 200px)" }}>
+      {/* Chat layout: sidebar + main. Definite height (not max-height) so the
+          messages pane can actually scroll instead of the column growing. */}
+      <div className="flex gap-4" style={{ height: "calc(100vh - 200px)" }}>
         {/* Session sidebar */}
         <div className="w-[240px] min-w-[240px] border-4 border-signal-black bg-white flex flex-col overflow-hidden">
           <div className="px-3 py-2 border-b-2 border-signal-black bg-signal-black text-creamy-milk font-bold text-[0.75rem] uppercase tracking-wider flex items-center justify-between">
@@ -711,9 +716,9 @@ export default function AiPage() {
         </div>
 
         {/* Chat container */}
-        <div className="flex-1 border-4 border-signal-black shadow-nb bg-white flex flex-col min-h-[400px]">
-          {/* Messages area */}
-          <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
+        <div className="flex-1 border-4 border-signal-black shadow-nb bg-white flex flex-col min-h-0">
+          {/* Messages area — min-h-0 lets this flex child shrink so it scrolls */}
+          <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4 min-h-0">
             {messages.length === 0 && (
               <div className="flex-1 flex items-center justify-center flex-col gap-3">
                 <p className="font-mono text-gray-mid text-[0.9rem]">Start a conversation...</p>
