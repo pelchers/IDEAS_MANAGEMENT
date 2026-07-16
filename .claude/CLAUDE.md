@@ -4,14 +4,17 @@
 Idea management application with dashboard, projects, kanban, whiteboard, schema planner, directory tree, ideas capture, AI chat, and settings views.
 
 ## Architecture
-- Frontend: Next.js (App Router) + TypeScript
-- Backend: Convex (database + backend + real-time)
-- Auth: Clerk
+> Verified 2026-07-15 against the actual codebase (the previous Convex/Clerk/shadcn/Zustand
+> description was template boilerplate and did not match reality).
+- Frontend: Next.js 16 (App Router) + React 19 + TypeScript
+- Backend: Prisma + PostgreSQL via Next.js API routes (NOT Convex)
+- Auth: Custom — argon2 password hashing + session cookies, `proxy.ts` route protection (NOT Clerk)
 - Payments: Stripe
-- UI: shadcn/ui + Tailwind CSS + Radix UI primitives
-- State: Zustand + React Query
+- AI: Vercel AI SDK — OpenRouter/Anthropic/Google/OpenAI/Ollama, BYOK + hosted (Groq)
+- UI: Tailwind CSS 4 + a custom neo-brutalist design system (`nb-*` classes; no shadcn/Radix)
+- State: React hooks + localStorage (no Zustand/React Query)
 - Validation: Zod
-- Testing: Playwright (E2E)
+- Testing: Playwright (E2E) + Vitest (unit)
 
 ## Frontend Concept Generation
 This repo uses a multi-style frontend concept ideation system.
