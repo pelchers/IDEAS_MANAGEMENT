@@ -70,6 +70,42 @@ function colUid(): string {
   return `col-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+/** Map a kanban column to a canonical Task status (for cross-project views). */
+function statusForColumn(colId: string, label: string): "BACKLOG" | "TODO" | "IN_PROGRESS" | "DONE" {
+  const s = `${colId} ${label}`.toLowerCase();
+  if (s.includes("done") || s.includes("complete") || s.includes("finished")) return "DONE";
+  if (s.includes("progress") || s.includes("doing") || s.includes("working")) return "IN_PROGRESS";
+  if (s.includes("backlog")) return "BACKLOG";
+  return "TODO";
+}
+
+interface TaskDTOLite {
+  id: string;
+  title: string;
+  description: string | null;
+  labels: string[];
+  columnId: string | null;
+  order: number;
+  externalRefs: Record<string, unknown> | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** A first-class Task → the board's card shape (styling lives in externalRefs). */
+function taskToCard(t: TaskDTOLite): KanbanCard {
+  const refs = t.externalRefs ?? {};
+  return {
+    id: t.id,
+    title: t.title,
+    description: t.description ?? "",
+    tags: t.labels ?? [],
+    links: Array.isArray(refs.links) ? (refs.links as string[]) : [],
+    bgColor: typeof refs.bgColor === "string" ? refs.bgColor : undefined,
+    createdAt: t.createdAt,
+    modifiedAt: t.updatedAt,
+  };
+}
+
 function nowISO(): string {
   return new Date().toISOString();
 }
@@ -144,84 +180,117 @@ export default function KanbanPage() {
   const [dropColTarget, setDropColTarget] = useState<number | null>(null);
 
   // Live reactivity: reload when AI modifies board via tool
-  useAnyArtifactRefresh(useCallback(() => window.location.reload(), []));
+  // Seed Task rows from a legacy inline board (only runs when no Tasks exist yet).
+  const migrateLegacyCards = useCallback(async (cols: ColumnDef[], cards: ColumnsMap) => {
+    for (const col of cols) {
+      const list = cards[col.id] ?? [];
+      for (let i = 0; i < list.length; i++) {
+        const card = list[i];
+        try {
+          const res = await fetch(`/api/tasks`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              title: card.title,
+              description: card.description || undefined,
+              projectId,
+              columnId: col.id,
+              status: statusForColumn(col.id, col.label),
+              labels: card.tags,
+              order: i,
+              externalRefs: { links: card.links ?? [], bgColor: card.bgColor },
+            }),
+          });
+          const data = await res.json();
+          if (data?.task?.id) card.id = data.task.id;
+        } catch {
+          /* ignore individual failures */
+        }
+      }
+    }
+  }, [projectId]);
 
-  // Load board
-  useEffect(() => {
-    fetch(`/api/projects/${projectId}/artifacts/kanban/board.json`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data) => {
-        if (data.ok && data.artifact?.content?.columns) {
-          const loadedCols: ColumnDef[] = [];
-          const loadedCards: ColumnsMap = {};
-
-          for (const col of data.artifact.content.columns) {
-            const id = col.id || colUid();
-            loadedCols.push({
-              id,
-              label: col.title || col.label || id.toUpperCase(),
-              headerBg: col.headerBg || "#F8F3EC",
-              headerColor: col.headerColor || "#282828",
-            });
-            loadedCards[id] = Array.isArray(col.cards)
-              ? col.cards.map((c: Record<string, unknown>, i: number) => ({
+  // Load board: column CONFIG comes from the artifact, CARDS from first-class Tasks.
+  const loadBoard = useCallback(async () => {
+    let cols: ColumnDef[] = DEFAULT_COLUMNS;
+    let loadedSettings: KanbanSettings | null = null;
+    let legacyCards: ColumnsMap | null = null;
+    try {
+      const res = await fetch(`/api/projects/${projectId}/artifacts/kanban/board.json`);
+      if (res.ok) {
+        const data = await res.json();
+        const content = data?.artifact?.content;
+        if (content?.columns?.length) {
+          cols = content.columns.map((col: Record<string, unknown>) => ({
+            id: (col.id as string) || colUid(),
+            label: (col.title as string) || (col.label as string) || String(col.id ?? "").toUpperCase(),
+            headerBg: (col.headerBg as string) || "#F8F3EC",
+            headerColor: (col.headerColor as string) || "#282828",
+          }));
+          legacyCards = {};
+          for (const col of content.columns) {
+            legacyCards[col.id as string] = Array.isArray(col.cards)
+              ? (col.cards as Record<string, unknown>[]).map((c, i) => ({
                   id: c.id ? String(c.id) : uid() + i,
                   title: (c.title as string) || "Untitled",
                   description: (c.description as string) || "",
                   tags: Array.isArray(c.tags) ? (c.tags as string[]) : [],
                   links: Array.isArray(c.links) ? (c.links as string[]) : [],
                   bgColor: (c.bgColor as string) || undefined,
-                  createdAt: (c.createdAt as string) || undefined,
-                  modifiedAt: (c.modifiedAt as string) || undefined,
                 }))
               : [];
           }
-
-          if (loadedCols.length > 0) {
-            setColumnDefs(loadedCols);
-            setColumns(loadedCards);
-          } else {
-            const defaultCards: ColumnsMap = {};
-            for (const col of DEFAULT_COLUMNS) defaultCards[col.id] = [];
-            setColumns(defaultCards);
-          }
-
-          // Load settings if present
-          if (data.artifact.content.settings) {
-            setSettings(data.artifact.content.settings);
-          }
-        } else {
-          const defaultCards: ColumnsMap = {};
-          for (const col of DEFAULT_COLUMNS) defaultCards[col.id] = [];
-          setColumns(defaultCards);
         }
-        setLoaded(true);
-      })
-      .catch((err) => {
-        setLoadError(err.message || "Failed to load board");
-        const defaultCards: ColumnsMap = {};
-        for (const col of DEFAULT_COLUMNS) defaultCards[col.id] = [];
-        setColumns(defaultCards);
-        setLoaded(true);
-      });
-  }, [projectId]);
+        if (content?.settings) loadedSettings = content.settings;
+      }
+    } catch {
+      setLoadError("Failed to load board columns");
+    }
 
-  // Save
-  const saveBoard = useCallback((newColumnDefs: ColumnDef[], newColumns: ColumnsMap, newSettings?: KanbanSettings) => {
+    const colIds = new Set(cols.map((c) => c.id));
+    const firstColId = cols[0]?.id ?? "todo";
+    const cardMap: ColumnsMap = {};
+    for (const c of cols) cardMap[c.id] = [];
+
+    try {
+      const res = await fetch(`/api/tasks?projectId=${projectId}&includeDone=1`);
+      if (res.ok) {
+        const data = await res.json();
+        const tasks: TaskDTOLite[] = Array.isArray(data.tasks) ? data.tasks : [];
+        if (tasks.length > 0) {
+          for (const t of [...tasks].sort((a, b) => a.order - b.order)) {
+            const col = t.columnId && colIds.has(t.columnId) ? t.columnId : firstColId;
+            (cardMap[col] ??= []).push(taskToCard(t));
+          }
+        } else if (legacyCards && Object.values(legacyCards).some((l) => l.length > 0)) {
+          await migrateLegacyCards(cols, legacyCards);
+          for (const c of cols) cardMap[c.id] = legacyCards[c.id] ?? [];
+        }
+      }
+    } catch {
+      /* leave board empty on task load failure */
+    }
+
+    setColumnDefs(cols);
+    setColumns(cardMap);
+    if (loadedSettings) setSettings(loadedSettings);
+    setLoaded(true);
+  }, [projectId, migrateLegacyCards]);
+
+  useEffect(() => { loadBoard(); }, [loadBoard]);
+
+  // Live reactivity: when AI modifies tasks/board, refetch in place (no full reload).
+  useAnyArtifactRefresh(loadBoard);
+
+  // Persist ONLY column config + settings to the artifact — cards are Tasks now.
+  const saveBoard = useCallback((newColumnDefs: ColumnDef[], newSettings?: KanbanSettings) => {
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
     setSaving(true);
     setSaveError(null);
     saveTimeoutRef.current = setTimeout(() => {
       const payload = {
         columns: newColumnDefs.map((col) => ({
-          id: col.id,
-          title: col.label,
-          headerBg: col.headerBg,
-          headerColor: col.headerColor,
-          cards: newColumns[col.id] || [],
+          id: col.id, title: col.label, headerBg: col.headerBg, headerColor: col.headerColor,
         })),
         settings: newSettings || settings,
       };
@@ -230,32 +299,26 @@ export default function KanbanPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: payload }),
       })
-        .then((res) => {
-          if (!res.ok) throw new Error("Save failed");
-          setSaving(false);
-        })
-        .catch(() => {
-          setSaveError("Failed to save — changes may be lost");
-          setSaving(false);
-        });
+        .then((res) => { if (!res.ok) throw new Error("Save failed"); setSaving(false); })
+        .catch(() => { setSaveError("Failed to save columns"); setSaving(false); });
     }, 500);
   }, [projectId, settings]);
 
   const updateAndSave = useCallback((nextDefs: ColumnDef[], nextCards: ColumnsMap) => {
     setColumnDefs(nextDefs);
     setColumns(nextCards);
-    saveBoard(nextDefs, nextCards);
+    saveBoard(nextDefs);
   }, [saveBoard]);
 
+  // Card-only state update; persistence is handled per-mutation via the Task API.
   const updateCardsOnly = useCallback((nextCards: ColumnsMap) => {
     setColumns(nextCards);
-    saveBoard(columnDefs, nextCards);
-  }, [saveBoard, columnDefs]);
+  }, []);
 
   const updateSettings = useCallback((next: KanbanSettings) => {
     setSettings(next);
-    saveBoard(columnDefs, columns, next);
-  }, [saveBoard, columnDefs, columns]);
+    saveBoard(columnDefs, next);
+  }, [saveBoard, columnDefs]);
 
   /* ── Column Management ── */
   const addColumn = () => {
@@ -288,8 +351,25 @@ export default function KanbanPage() {
 
   const deleteColumn = (colId: string) => {
     const nextDefs = columnDefs.filter((c) => c.id !== colId);
+    const orphaned = columns[colId] || [];
+    const target = nextDefs[0]; // reassign this column's tasks so they aren't lost
     const nextCards = { ...columns };
     delete nextCards[colId];
+    if (target && orphaned.length > 0) {
+      nextCards[target.id] = [...(nextCards[target.id] || []), ...orphaned];
+      const newStatus = statusForColumn(target.id, target.label);
+      const baseOrder = (columns[target.id] || []).length;
+      orphaned.forEach((card, i) => {
+        fetch(`/api/tasks/${card.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ columnId: target.id, status: newStatus, order: baseOrder + i }),
+        }).catch(() => {});
+      });
+    } else if (!target && orphaned.length > 0) {
+      // No columns left — delete the orphaned tasks.
+      orphaned.forEach((card) => fetch(`/api/tasks/${card.id}`, { method: "DELETE" }).catch(() => {}));
+    }
     updateAndSave(nextDefs, nextCards);
     setDeleteConfirm(null);
   };
@@ -372,15 +452,29 @@ export default function KanbanPage() {
     const [moved] = fromCards.splice(fromIdx, 1);
     if (!moved) return;
 
+    let finalIdx: number;
     if (fromCol === toCol) {
-      const adjustedIdx = toIdx > fromIdx ? toIdx - 1 : toIdx;
-      fromCards.splice(adjustedIdx, 0, moved);
+      finalIdx = toIdx > fromIdx ? toIdx - 1 : toIdx;
+      fromCards.splice(finalIdx, 0, moved);
       updateCardsOnly({ ...columns, [fromCol]: fromCards });
     } else {
       const toCards = [...(columns[toCol] || [])];
-      toCards.splice(toIdx, 0, moved);
+      finalIdx = Math.min(toIdx, toCards.length);
+      toCards.splice(finalIdx, 0, moved);
       updateCardsOnly({ ...columns, [fromCol]: fromCards, [toCol]: toCards });
     }
+
+    // Persist the move (column + order + derived status) to the Task.
+    const toColDef = columnDefs.find((c) => c.id === toCol);
+    fetch(`/api/tasks/${moved.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        columnId: toCol,
+        order: finalIdx,
+        status: statusForColumn(toCol, toColDef?.label ?? ""),
+      }),
+    }).catch(() => {});
 
     setDragCard(null);
     setDropTarget(null);
@@ -392,33 +486,55 @@ export default function KanbanPage() {
   };
 
   /* ── Card CRUD ── */
-  const addCard = (colId: string) => {
+  const addCard = async (colId: string) => {
     const trimmed = newTitle.trim();
     if (!trimmed) return;
-    const now = nowISO();
-    const card: KanbanCard = {
-      id: uid(), title: trimmed, description: "", tags: [], links: [],
-      createdAt: now, modifiedAt: now,
-    };
-    const next = { ...columns, [colId]: [...(columns[colId] || []), card] };
-    updateCardsOnly(next);
     setNewTitle("");
     setAddingTo(null);
-    setTimeout(() => openEditModal(colId, card), 50);
+    const col = columnDefs.find((c) => c.id === colId);
+    try {
+      const res = await fetch(`/api/tasks`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: trimmed,
+          projectId,
+          columnId: colId,
+          status: statusForColumn(colId, col?.label ?? ""),
+          order: (columns[colId] || []).length,
+          externalRefs: { links: [] },
+        }),
+      });
+      const data = await res.json();
+      if (data?.ok && data.task) {
+        const card = taskToCard(data.task);
+        setColumns((prev) => ({ ...prev, [colId]: [...(prev[colId] || []), card] }));
+        setTimeout(() => openEditModal(colId, card), 50);
+      }
+    } catch {
+      /* ignore create failure */
+    }
   };
 
   const deleteCard = (colId: string, cardId: string) => {
     updateCardsOnly({ ...columns, [colId]: (columns[colId] || []).filter((c) => c.id !== cardId) });
     if (settingsCardId === cardId) setSettingsCardId(null);
+    fetch(`/api/tasks/${cardId}`, { method: "DELETE" }).catch(() => {});
   };
 
   const updateCardColor = (colId: string, cardId: string, color: string) => {
+    const card = (columns[colId] || []).find((c) => c.id === cardId);
     updateCardsOnly({
       ...columns,
       [colId]: (columns[colId] || []).map((c) =>
         c.id === cardId ? { ...c, bgColor: color, modifiedAt: nowISO() } : c
       ),
     });
+    fetch(`/api/tasks/${cardId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ externalRefs: { links: card?.links ?? [], bgColor: color } }),
+    }).catch(() => {});
   };
 
   const openEditModal = (colId: string, card: KanbanCard) => {
@@ -435,15 +551,26 @@ export default function KanbanPage() {
     const { colId, card } = editCard;
     const parsedTags = editTags.split(",").map((t) => t.trim().toLowerCase()).filter(Boolean);
     const parsedLinks = editLinks.split("\n").map((l) => l.trim()).filter(Boolean);
+    const title = editTitle.trim() || card.title;
     updateCardsOnly({
       ...columns,
       [colId]: (columns[colId] || []).map((c) =>
         c.id === card.id
-          ? { ...c, title: editTitle.trim() || c.title, description: editDescription.trim(),
+          ? { ...c, title, description: editDescription.trim(),
               tags: parsedTags, links: parsedLinks, bgColor: editBgColor, modifiedAt: nowISO() }
           : c
       ),
     });
+    fetch(`/api/tasks/${card.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title,
+        description: editDescription.trim(),
+        labels: parsedTags,
+        externalRefs: { links: parsedLinks, bgColor: editBgColor },
+      }),
+    }).catch(() => {});
     setEditCard(null);
   };
 

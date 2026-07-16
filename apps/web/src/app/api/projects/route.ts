@@ -158,6 +158,7 @@ export async function GET(req: Request) {
     projects = await prisma.project.findMany({
       where: where as any,
       orderBy: orderBy as any,
+      take: 200, // bound the payload — client search/sort operates over this set
       include: {
         _count: { select: { members: true } },
         members: {

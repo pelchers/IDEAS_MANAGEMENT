@@ -44,6 +44,8 @@ const CreateTaskSchema = z.object({
   projectId: z.string().nullish(),
   columnId: z.string().nullish(),
   assigneeId: z.string().nullish(),
+  order: z.number().int().optional(),
+  externalRefs: z.record(z.string(), z.unknown()).nullish(),
 });
 
 /**

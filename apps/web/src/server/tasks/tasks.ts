@@ -15,6 +15,7 @@ export interface TaskDTO {
   order: number;
   columnId: string | null;
   source: string;
+  externalRefs: Record<string, unknown> | null;
   projectId: string | null;
   projectName: string | null;
   assigneeId: string | null;
@@ -38,6 +39,7 @@ export function toTaskDTO(t: TaskWithProject): TaskDTO {
     order: t.order,
     columnId: t.columnId,
     source: t.source,
+    externalRefs: (t.externalRefs ?? null) as Record<string, unknown> | null,
     projectId: t.projectId,
     projectName: t.project?.name ?? null,
     assigneeId: t.assigneeId,
@@ -91,6 +93,8 @@ export interface CreateTaskInput {
   columnId?: string | null;
   assigneeId?: string | null;
   source?: string;
+  order?: number;
+  externalRefs?: Record<string, unknown> | null;
 }
 
 export async function createTask(userId: string, input: CreateTaskInput): Promise<TaskDTO> {
@@ -108,6 +112,8 @@ export async function createTask(userId: string, input: CreateTaskInput): Promis
       assigneeId: input.assigneeId ?? null,
       createdById: userId,
       source: input.source ?? "manual",
+      order: input.order ?? 0,
+      externalRefs: (input.externalRefs ?? undefined) as never,
       completedAt: status === "DONE" ? new Date() : null,
     },
     include: INCLUDE_PROJECT,
@@ -125,6 +131,7 @@ export interface UpdateTaskInput {
   columnId?: string | null;
   order?: number;
   assigneeId?: string | null;
+  externalRefs?: Record<string, unknown> | null;
 }
 
 export async function updateTask(id: string, input: UpdateTaskInput): Promise<TaskDTO> {
@@ -136,6 +143,7 @@ export async function updateTask(id: string, input: UpdateTaskInput): Promise<Ta
   if (input.labels !== undefined) data.labels = input.labels;
   if (input.columnId !== undefined) data.columnId = input.columnId;
   if (input.order !== undefined) data.order = input.order;
+  if (input.externalRefs !== undefined) data.externalRefs = (input.externalRefs ?? undefined) as never;
   if (input.assigneeId !== undefined) {
     data.assignee = input.assigneeId ? { connect: { id: input.assigneeId } } : { disconnect: true };
   }

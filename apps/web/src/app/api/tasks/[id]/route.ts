@@ -36,6 +36,7 @@ const UpdateTaskSchema = z.object({
   columnId: z.string().nullish(),
   order: z.number().int().optional(),
   assigneeId: z.string().nullish(),
+  externalRefs: z.record(z.string(), z.unknown()).nullish(),
 });
 
 export async function PATCH(req: Request, { params }: RouteParams) {

@@ -19,15 +19,22 @@ const DEFAULT_MODELS: Record<string, string> = {
 };
 
 /**
- * Check if Ollama is running on localhost.
+ * Check if Ollama is running on localhost. Cached for 30s and with a short
+ * timeout so that on servers where Ollama isn't present, AI requests aren't
+ * blocked for seconds on a doomed probe (was a flat 2s per request).
  */
+let ollamaProbe: { at: number; running: boolean } | null = null;
 async function isOllamaRunning(): Promise<boolean> {
+  if (ollamaProbe && Date.now() - ollamaProbe.at < 30_000) return ollamaProbe.running;
+  let running = false;
   try {
-    const res = await fetch("http://localhost:11434/api/tags", { signal: AbortSignal.timeout(2000) });
-    return res.ok;
+    const res = await fetch("http://localhost:11434/api/tags", { signal: AbortSignal.timeout(500) });
+    running = res.ok;
   } catch {
-    return false;
+    running = false;
   }
+  ollamaProbe = { at: Date.now(), running };
+  return running;
 }
 
 /**

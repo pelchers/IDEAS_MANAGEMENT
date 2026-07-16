@@ -81,6 +81,7 @@ export default function ProjectsPage() {
   const [editStatus, setEditStatus] = useState("PLANNING");
   const [editTags, setEditTags] = useState("");
   const [editSaving, setEditSaving] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("im_selected_project");
@@ -127,6 +128,7 @@ export default function ProjectsPage() {
 
   // Settings modal handlers
   const openSettings = (p: ProjectData) => {
+    setEditError(null);
     setEditProject(p); setEditName(p.name); setEditDesc(p.desc === "No description" ? "" : p.desc);
     setEditStatus(p.rawStatus); setEditTags(p.tags.join(", "));
   };
@@ -134,16 +136,24 @@ export default function ProjectsPage() {
   const saveSettings = async () => {
     if (!editProject || !editName.trim()) return;
     setEditSaving(true);
+    setEditError(null);
     try {
-      await fetch(`/api/projects/${editProject.id}`, {
+      const res = await fetch(`/api/projects/${editProject.id}`, {
         method: "PATCH", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: editName.trim(), description: editDesc.trim(), status: editStatus,
           tags: editTags.split(",").map((t) => t.trim()).filter(Boolean),
         }),
       });
-      setEditProject(null); fetchProjects();
-    } catch { /* silent */ }
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setEditError(data?.error === "forbidden" ? "You don't have permission to edit this project." : "Failed to save changes.");
+      } else {
+        setEditProject(null); fetchProjects();
+      }
+    } catch {
+      setEditError("Network error — changes not saved.");
+    }
     setEditSaving(false);
   };
 
@@ -362,6 +372,9 @@ export default function ProjectsPage() {
                   <input className="nb-input w-full" value={editTags} onChange={(e) => setEditTags(e.target.value)} placeholder="web, mobile, ai" />
                 </div>
               </div>
+              {editError && (
+                <div className="p-3 border-2 border-watermelon bg-watermelon/10 text-watermelon font-mono text-[0.8rem] mt-2">{editError}</div>
+              )}
               <div className="flex gap-3 mt-2">
                 <button className="nb-btn nb-btn--primary" onClick={saveSettings} disabled={editSaving}>{editSaving ? "SAVING..." : "SAVE"}</button>
                 <button className="nb-btn" onClick={() => setEditProject(null)}>CANCEL</button>

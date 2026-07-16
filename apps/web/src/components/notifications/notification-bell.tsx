@@ -77,10 +77,16 @@ export function NotificationBell() {
     return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
+  const lastLoadRef = useRef(0);
   const toggle = () => {
     const next = !open;
     setOpen(next);
-    if (next) load();
+    // The SSE stream keeps the list live; only re-fetch on open if it's stale
+    // (>20s) rather than hitting the API every time the panel is opened.
+    if (next && Date.now() - lastLoadRef.current > 20_000) {
+      lastLoadRef.current = Date.now();
+      load();
+    }
   };
 
   const handleClick = async (n: Notification) => {
