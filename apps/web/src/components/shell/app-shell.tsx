@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { AiHelper } from "@/components/ai/ai-helper";
 import { SyncStatusIndicator } from "@/components/sync/sync-status-indicator";
 import { NotificationBell } from "@/components/notifications/notification-bell";
+import { CommandPalette } from "@/components/command/command-palette";
+import { openCommandPalette } from "@/components/command/command-registry";
 
 /* ── Title from pathname ── */
 function getTitleFromPathname(pathname: string): string {
@@ -264,23 +266,32 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         {/* Right — sync status + search + notification */}
         <div style={{ display: "flex", alignItems: "center", gap: "16px", flexShrink: 0 }}>
           <SyncStatusIndicator />
-          <input
-            type="text"
-            placeholder="SEARCH..."
-            aria-label="Search"
+          <button
+            type="button"
+            data-testid="command-search-trigger"
+            onClick={() => openCommandPalette()}
+            aria-label="Search and commands (Ctrl+K)"
             className="nb-input--mono"
             style={{
               fontFamily: "'IBM Plex Mono', monospace",
               fontSize: "0.85rem",
-              padding: "8px 16px",
+              padding: "8px 12px 8px 16px",
               border: "3px solid #282828",
               backgroundColor: "#F8F3EC",
-              color: "#282828",
+              color: "#999",
               width: "200px",
               boxSizing: "border-box",
               outline: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "8px",
             }}
-          />
+          >
+            <span>SEARCH…</span>
+            <kbd style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", color: "#666", border: "2px solid #ccc", padding: "1px 5px", backgroundColor: "#FFF" }}>⌘K</kbd>
+          </button>
           <NotificationBell />
         </div>
       </header>
@@ -479,6 +490,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Floating AI Helper — available on all pages */}
       <AiHelper />
+
+      {/* Global Cmd-K command palette */}
+      <CommandPalette />
     </>
   );
 }

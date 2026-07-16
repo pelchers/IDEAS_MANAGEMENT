@@ -97,6 +97,13 @@ export default function ProjectsPage() {
 
   useEffect(() => { fetchProjects(); }, []);
 
+  // Cmd-K "New project" (and deep links) open the create form via ?new=1.
+  useEffect(() => {
+    if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("new") === "1") {
+      setShowCreateForm(true);
+    }
+  }, []);
+
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newProjectName.trim()) return;
@@ -104,7 +111,13 @@ export default function ProjectsPage() {
     try {
       const res = await fetch("/api/projects", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: newProjectName.trim(), description: newProjectDesc.trim() }) });
       const data = await res.json();
-      if (data.ok) { setNewProjectName(""); setNewProjectDesc(""); setShowCreateForm(false); fetchProjects(); }
+      if (data.ok) {
+        setNewProjectName(""); setNewProjectDesc(""); setShowCreateForm(false);
+        // Prepend the created project from the response instead of refetching the
+        // whole list — the grid updates instantly with no full remount.
+        if (data.project) setProjects((prev) => [mapApiProject(data.project), ...prev]);
+        else fetchProjects();
+      }
       else setCreateError(data.error || "Failed to create project");
     } catch { setCreateError("Network error"); }
     setCreating(false);
