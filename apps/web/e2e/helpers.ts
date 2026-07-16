@@ -1,6 +1,7 @@
 import {
   test as base,
   expect,
+  request as pwRequest,
   type Page,
   type APIRequestContext,
   type Browser,
@@ -32,8 +33,10 @@ function ipForTest(testInfo: TestInfo): string {
   return `10.${(n >> 16) & 255}.${(n >> 8) & 255}.${n & 255}`;
 }
 
-export function uniqueIp(seed = 0): string {
-  const n = (Date.now() + seed * 7919) >>> 0;
+let ipSeq = 1000;
+export function uniqueIp(seed?: number): string {
+  const s = seed ?? ++ipSeq;
+  const n = (Date.now() + s * 7919) >>> 0;
   return `10.${(n >> 16) & 255}.${(n >> 8) & 255}.${(n & 255) || 1}`;
 }
 
@@ -48,17 +51,29 @@ export async function newUserContext(browser: Browser, seed = 0): Promise<Browse
 
 /**
  * An API request context with a unique client IP header (for API-only flows).
+ * Pass a distinct `seed` per simulated user so each gets its own rate bucket.
  */
-export async function newApiContext(
-  playwright: { request: { newContext: (opts: Record<string, unknown>) => Promise<APIRequestContext> } },
+export async function apiContextWithIp(
   baseURL: string | undefined,
   seed = 0
 ): Promise<APIRequestContext> {
-  return playwright.request.newContext({
+  return pwRequest.newContext({
     baseURL,
     extraHTTPHeaders: { 'X-Forwarded-For': uniqueIp(seed) },
   });
 }
+
+// Back-compat alias for specs that received the `playwright` fixture.
+export async function newApiContext(
+  _playwright: unknown,
+  baseURL: string | undefined,
+  seed = 0
+): Promise<APIRequestContext> {
+  return apiContextWithIp(baseURL, seed);
+}
+
+export { pwRequest as request };
+export type { Page, Browser, BrowserContext, APIRequestContext };
 
 /**
  * Extended `test` — every context/request fixture carries a unique client IP so

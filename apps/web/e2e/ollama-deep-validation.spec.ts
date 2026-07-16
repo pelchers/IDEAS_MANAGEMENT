@@ -32,7 +32,7 @@ async function signIn(request: APIRequestContext, page: Page): Promise<boolean> 
     return false;
   }
   // Navigate to trigger cookie propagation to the browser context
-  await page.goto(`${BASE_URL}/dashboard`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE_URL}/dashboard`, { waitUntil: "domcontentloaded" });
   return true;
 }
 
@@ -42,7 +42,7 @@ test.describe("Test Group 1: Detection System", () => {
 
   test("TC-D1: Ollama detection from browser - fetch /api/tags", async ({ request, page }) => {
     await signIn(request, page);
-    await page.goto(`${BASE_URL}/ai`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/ai`, { waitUntil: "domcontentloaded" });
 
     const result = await page.evaluate(async () => {
       try {
@@ -77,7 +77,7 @@ test.describe("Test Group 1: Detection System", () => {
 
   test("TC-D2: Model detection specifics - qwen3:32b and ideamanagement:latest", async ({ request, page }) => {
     await signIn(request, page);
-    await page.goto(`${BASE_URL}/ai`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/ai`, { waitUntil: "domcontentloaded" });
 
     const result = await page.evaluate(async () => {
       try {
@@ -108,7 +108,7 @@ test.describe("Test Group 1: Detection System", () => {
 
   test("TC-D3: Detection when Ollama is unreachable - graceful failure", async ({ request, page }) => {
     await signIn(request, page);
-    await page.goto(`${BASE_URL}/ai`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/ai`, { waitUntil: "domcontentloaded" });
 
     const result = await page.evaluate(async () => {
       try {
@@ -130,7 +130,7 @@ test.describe("Test Group 1: Detection System", () => {
 
   test("TC-D4: OllamaSetupModal behavior - Settings page ENABLE LOCAL AI", async ({ request, page }) => {
     await signIn(request, page);
-    await page.goto(`${BASE_URL}/settings`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/settings`, { waitUntil: "domcontentloaded" });
     await ss(page, "tc-d4-settings-page");
 
     // Look for AI settings section or "ENABLE LOCAL AI" button
@@ -195,7 +195,7 @@ test.describe("Test Group 2: Cross-Communication (Tool Calls)", () => {
     console.log("[TC-C1] Status:", res.status());
     console.log("[TC-C1] Response:", JSON.stringify(data, null, 2));
 
-    await page.goto(`${BASE_URL}/ai`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/ai`, { waitUntil: "domcontentloaded" });
     await ss(page, "tc-c1-tool-list-projects");
 
     expect(res.status()).toBe(200);
@@ -232,7 +232,7 @@ test.describe("Test Group 2: Cross-Communication (Tool Calls)", () => {
 
     if (!projectId) {
       console.log("[TC-C2] Could not get or create a project — skipping context API test");
-      await page.goto(`${BASE_URL}/ai`, { waitUntil: "networkidle" });
+      await page.goto(`${BASE_URL}/ai`, { waitUntil: "domcontentloaded" });
       await ss(page, "tc-c2-no-project");
       return;
     }
@@ -243,7 +243,7 @@ test.describe("Test Group 2: Cross-Communication (Tool Calls)", () => {
     console.log("[TC-C2] Context API status:", contextRes.status());
     console.log("[TC-C2] Context response:", JSON.stringify(contextData, null, 2));
 
-    await page.goto(`${BASE_URL}/ai`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/ai`, { waitUntil: "domcontentloaded" });
     await ss(page, "tc-c2-context-api");
 
     expect(contextRes.status()).toBe(200);
@@ -268,7 +268,7 @@ test.describe("Test Group 2: Cross-Communication (Tool Calls)", () => {
     console.log("[TC-C3] Status:", res.status());
     console.log("[TC-C3] Response:", JSON.stringify(data, null, 2));
 
-    await page.goto(`${BASE_URL}/ai`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/ai`, { waitUntil: "domcontentloaded" });
     await ss(page, "tc-c3-chat-save");
 
     expect(res.status()).toBe(200);
@@ -279,8 +279,8 @@ test.describe("Test Group 2: Cross-Communication (Tool Calls)", () => {
 
   test("TC-C4: Full round-trip via client-side Ollama path", async ({ request, page }) => {
     await signIn(request, page);
-    await page.goto(`${BASE_URL}/ai`, { waitUntil: "networkidle" });
-    await page.waitForLoadState("networkidle");
+    await page.goto(`${BASE_URL}/ai`, { waitUntil: "domcontentloaded" });
+    await page.waitForLoadState("domcontentloaded");
     await ss(page, "tc-c4-ai-page-initial");
 
     // Check what provider/status the page shows
@@ -349,7 +349,7 @@ test.describe("Test Group 2: Cross-Communication (Tool Calls)", () => {
 
   test("TC-C5: Tool call round-trip - list my projects", async ({ request, page }) => {
     await signIn(request, page);
-    await page.goto(`${BASE_URL}/ai`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/ai`, { waitUntil: "domcontentloaded" });
 
     const ollamaRunning = await page.evaluate(async () => {
       try {
@@ -413,7 +413,7 @@ test.describe("Test Group 2: Cross-Communication (Tool Calls)", () => {
       console.log("[TC-C6] Most recent session:", JSON.stringify(data.sessions[0], null, 2));
     }
 
-    await page.goto(`${BASE_URL}/ai`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/ai`, { waitUntil: "domcontentloaded" });
     await ss(page, "tc-c6-sessions");
 
     expect(res.status()).toBe(200);
@@ -464,7 +464,7 @@ test.describe("Test Group 3: Setup Script Validation", () => {
       console.log(`[TC-S1] OLLAMA_ORIGINS value: ${originsMatch[1]}`);
     }
 
-    await page.goto(`${BASE_URL}/settings`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/settings`, { waitUntil: "domcontentloaded" });
     await ss(page, "tc-s1-windows-script-check");
 
     expect(checks.hasOllamaSetupExe).toBe(true);
@@ -497,7 +497,7 @@ test.describe("Test Group 3: Setup Script Validation", () => {
 
     console.log("[TC-S2] Checks:", JSON.stringify(checks, null, 2));
 
-    await page.goto(`${BASE_URL}/settings`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/settings`, { waitUntil: "domcontentloaded" });
     await ss(page, "tc-s2-unix-script-check");
 
     expect(checks.hasBashShebang).toBe(true);
@@ -543,7 +543,7 @@ test.describe("Test Group 3: Setup Script Validation", () => {
     console.log(`[TC-S3] Windows has railway.app: ${windowsHasRailway}`);
     console.log(`[TC-S3] Linux has railway.app: ${linuxHasRailway}`);
 
-    await page.goto(`${BASE_URL}/settings`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/settings`, { waitUntil: "domcontentloaded" });
     await ss(page, "tc-s3-app-url-check");
 
     expect(windowsHasLocalhostOrigin).toBe(true);

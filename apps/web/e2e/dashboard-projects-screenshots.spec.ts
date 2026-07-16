@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { test } from './helpers';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -11,13 +11,13 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '2322';
 
 async function signInViaUI(page: import('@playwright/test').Page) {
   await page.goto('/signin');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.locator('input[type="email"]').fill(ADMIN_EMAIL);
   await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
   await page.locator('button[type="submit"]').click();
   // Wait for redirect to dashboard
   await page.waitForURL(/\/(dashboard|projects)/, { timeout: 15_000 });
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
 }
 
 test.describe('Dashboard & Projects screenshots', () => {
@@ -30,7 +30,7 @@ test.describe('Dashboard & Projects screenshots', () => {
     await page.setViewportSize(DESKTOP);
     await signInViaUI(page);
     await page.goto('/dashboard');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(500);
     await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'dashboard-desktop.png'), fullPage: true });
   });
@@ -39,7 +39,7 @@ test.describe('Dashboard & Projects screenshots', () => {
     await page.setViewportSize(MOBILE);
     await signInViaUI(page);
     await page.goto('/dashboard');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(500);
     await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'dashboard-mobile.png'), fullPage: true });
   });
@@ -49,7 +49,7 @@ test.describe('Dashboard & Projects screenshots', () => {
     await page.setViewportSize(DESKTOP);
     await signInViaUI(page);
     await page.goto('/projects');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(500);
     await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'projects-desktop.png'), fullPage: true });
   });
@@ -58,7 +58,7 @@ test.describe('Dashboard & Projects screenshots', () => {
     await page.setViewportSize(MOBILE);
     await signInViaUI(page);
     await page.goto('/projects');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(500);
     await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'projects-mobile.png'), fullPage: true });
   });
@@ -68,7 +68,7 @@ test.describe('Dashboard & Projects screenshots', () => {
     await page.setViewportSize(DESKTOP);
     await signInViaUI(page);
     await page.goto('/projects/1');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(500);
     await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'workspace-desktop.png'), fullPage: true });
   });
@@ -77,7 +77,7 @@ test.describe('Dashboard & Projects screenshots', () => {
     await page.setViewportSize(MOBILE);
     await signInViaUI(page);
     await page.goto('/projects/1');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(500);
     await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'workspace-mobile.png'), fullPage: true });
   });

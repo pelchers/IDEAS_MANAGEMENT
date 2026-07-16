@@ -1,9 +1,9 @@
-import { test, expect, type Page, request as pwRequest } from '@playwright/test';
+import { test, expect, type Page, apiContextWithIp } from './helpers';
 
 const SHOT_DIR = '../../.docs/validation/screenshots/phase4-2026-05-30';
 const ADMIN_EMAIL = 'admin@ideamgmt.local';
 const ADMIN_PASSWORD = 'AdminPass123!';
-const BASE = 'http://localhost:3000';
+const BASE = process.env.E2E_BASE_URL ?? 'http://localhost:3000';
 
 async function shot(page: Page, name: string) {
   await page.screenshot({ path: `${SHOT_DIR}/${name}.png`, fullPage: false });
@@ -27,7 +27,7 @@ test('Phase 4 — Notifications validation', async ({ page }) => {
   test.setTimeout(120_000);
 
   // ── Get admin's user id ──
-  const adminCtx = await pwRequest.newContext({ baseURL: BASE });
+  const adminCtx = await apiContextWithIp(BASE);
   const adminSignin = await adminCtx.post('/api/auth/signin', { data: { email: ADMIN_EMAIL, password: ADMIN_PASSWORD } });
   if (!adminSignin.ok()) { test.skip(); return; }
   const adminData = await adminSignin.json();
@@ -35,7 +35,7 @@ test('Phase 4 — Notifications validation', async ({ page }) => {
 
   // ── Create a second user and send a friend request to admin ──
   const userBEmail = `notif-test-${Date.now()}@test.local`;
-  const userBCtx = await pwRequest.newContext({ baseURL: BASE });
+  const userBCtx = await apiContextWithIp(BASE);
   const signup = await userBCtx.post('/api/auth/signup', { data: { email: userBEmail, password: 'TestPass123!' } });
   // Sign in userB (signup may or may not auto-auth)
   await userBCtx.post('/api/auth/signin', { data: { email: userBEmail, password: 'TestPass123!' } });

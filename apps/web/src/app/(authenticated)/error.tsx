@@ -7,6 +7,9 @@ export default function AuthenticatedError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  // Never surface raw error internals (table/field names, connection details) to
+  // end users in production — show a generic message + a support reference.
+  const isDev = process.env.NODE_ENV === "development";
   return (
     <div className="animate-[view-slam_0.3s_cubic-bezier(0.2,0,0,1)]">
       <div className="nb-card p-12 text-center max-w-lg mx-auto mt-12">
@@ -15,8 +18,13 @@ export default function AuthenticatedError({
           SOMETHING WENT WRONG
         </h2>
         <p className="font-mono text-[0.85rem] text-gray-mid mb-6 leading-relaxed">
-          {error.message || "An unexpected error occurred."}
+          {isDev
+            ? error.message || "An unexpected error occurred."
+            : "An unexpected error occurred. Please try again."}
         </p>
+        {error.digest && (
+          <p className="font-mono text-[0.7rem] text-gray-mid mb-6">Reference: {error.digest}</p>
+        )}
         <div className="flex gap-3 justify-center">
           <button onClick={reset} className="nb-btn nb-btn--primary">
             TRY AGAIN

@@ -1,4 +1,4 @@
-import { test, expect, request as pwRequest, type APIRequestContext } from '@playwright/test';
+import { test, expect, type APIRequestContext, apiContextWithIp } from './helpers';
 
 /**
  * Permission-Matrix UAT — proves access control ENFORCES at runtime across the
@@ -12,7 +12,7 @@ import { test, expect, request as pwRequest, type APIRequestContext } from '@pla
  * assertion checks the actual HTTP status the server returns.
  */
 
-const BASE = 'http://localhost:3000';
+const BASE = process.env.E2E_BASE_URL ?? 'http://localhost:3000';
 const PW = 'TestPass123!';
 const ADMIN_EMAIL = 'admin@ideamgmt.local';
 const ADMIN_PASSWORD = 'AdminPass123!';
@@ -21,7 +21,7 @@ const ts = `${Date.now()}`;
 type User = { email: string; ctx: APIRequestContext; id: string };
 
 async function makeUser(email: string): Promise<User> {
-  const ctx = await pwRequest.newContext({ baseURL: BASE });
+  const ctx = await apiContextWithIp(BASE);
   const signup = await ctx.post('/api/auth/signup', { data: { email, password: PW } });
   const body = await signup.json();
   let id: string = body?.user?.id ?? '';
@@ -45,7 +45,7 @@ test('Permission matrix — runtime access control across all user types', async
   expect(alice.id && bob.id && carol.id && dave.id).toBeTruthy();
 
   // Admin (seeded)
-  const adminCtx = await pwRequest.newContext({ baseURL: BASE });
+  const adminCtx = await apiContextWithIp(BASE);
   await adminCtx.post('/api/auth/signin', { data: { email: ADMIN_EMAIL, password: ADMIN_PASSWORD } });
 
   const results: { check: string; expected: number; got: number; pass: boolean }[] = [];

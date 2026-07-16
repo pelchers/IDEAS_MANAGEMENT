@@ -17,7 +17,7 @@
  * TC-12  POST /api/projects with empty body → HTTP 400 with error "validation_failed"
  */
 
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from './helpers';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -55,12 +55,12 @@ async function signIn(page: Page): Promise<void> {
   });
 
   await page.goto('/signin');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.locator('input[type="email"]').fill(ADMIN_EMAIL);
   await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
   await page.locator('button[type="submit"]').click();
   await page.waitForURL(/\/(dashboard|projects)/, { timeout: 15_000 });
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
 
   // Unroute after successful login
   await page.unroute('**/api/auth/signin');
@@ -68,7 +68,7 @@ async function signIn(page: Page): Promise<void> {
 
 async function goToWhiteboard(page: Page): Promise<string> {
   await page.goto('/projects');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1000);
 
   const projectLinks = page.locator('a[href*="/projects/"]');
@@ -78,13 +78,13 @@ async function goToWhiteboard(page: Page): Promise<string> {
     const href = await projectLinks.first().getAttribute('href');
     const projectId = href?.match(/\/projects\/([^/]+)/)?.[1] ?? '1';
     await page.goto(`/projects/${projectId}/whiteboard`);
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1500);
     return projectId;
   }
 
   await page.goto('/projects/1/whiteboard');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1500);
   return '1';
 }

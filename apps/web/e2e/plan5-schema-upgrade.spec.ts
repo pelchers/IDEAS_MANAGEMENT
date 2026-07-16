@@ -19,7 +19,7 @@
  * TC-15  POST /api/ai/tools with update_schema_artifact set_entity_color action.
  */
 
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from './helpers';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -36,19 +36,19 @@ async function ss(page: Page, name: string): Promise<void> {
 
 async function signIn(page: Page): Promise<void> {
   await page.goto('/signin');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.locator('input[type="email"]').fill(ADMIN_EMAIL);
   await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
   await page.locator('button[type="submit"]').click();
   await page.waitForURL(/\/(dashboard|projects)/, { timeout: 15_000 });
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
 }
 
 /** Navigate to a project schema page. Returns the project ID used. */
 async function goToSchema(page: Page): Promise<string> {
   // Go to projects page to find a real project
   await page.goto('/projects');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1000);
 
   // Try to click first project link
@@ -59,14 +59,14 @@ async function goToSchema(page: Page): Promise<string> {
     const href = await projectLinks.first().getAttribute('href');
     const projectId = href?.match(/\/projects\/([^/]+)/)?.[1] ?? '1';
     await page.goto(`/projects/${projectId}/schema`);
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1500);
     return projectId;
   }
 
   // Fallback: try project id 1
   await page.goto('/projects/1/schema');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1500);
   return '1';
 }
@@ -426,7 +426,7 @@ test.describe('Plan #5 — Schema Planner Interactive Upgrade', () => {
 
     // Get a project ID from the projects page
     await page.goto('/projects');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
 
     const projectLinks = page.locator('a[href*="/projects/"]');

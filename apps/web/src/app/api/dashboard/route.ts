@@ -18,22 +18,44 @@ export async function GET(req: Request) {
   });
   const projectIds = memberships.map((m) => m.projectId);
 
-  // Count projects by status
-  const projects = await prisma.project.findMany({
-    where: { id: { in: projectIds } },
-    select: { status: true },
-  });
+  // These four queries all depend only on projectIds and are independent of one
+  // another — run them in parallel instead of stacking their latencies.
+  const [projects, ideaArtifacts, kanbanArtifacts, recentActivity] = await Promise.all([
+    prisma.project.findMany({
+      where: { id: { in: projectIds } },
+      select: { status: true },
+    }),
+    prisma.projectArtifact.findMany({
+      where: { projectId: { in: projectIds }, artifactPath: "ideas/ideas.json" },
+      select: { content: true },
+    }),
+    prisma.projectArtifact.findMany({
+      where: { projectId: { in: projectIds }, artifactPath: "kanban/board.json" },
+      select: { content: true },
+    }),
+    prisma.auditLog.findMany({
+      where: {
+        OR: [
+          { actorUserId: user.id },
+          { targetId: { in: projectIds }, targetType: "Project" },
+        ],
+      },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+      select: {
+        action: true,
+        targetType: true,
+        metadata: true,
+        createdAt: true,
+        actor: { select: { email: true } },
+      },
+    }),
+  ]);
+
   const activeProjects = projects.filter((p) => p.status === "ACTIVE").length;
   const totalProjects = projects.length;
 
   // Count ideas (from artifacts)
-  const ideaArtifacts = await prisma.projectArtifact.findMany({
-    where: {
-      projectId: { in: projectIds },
-      artifactPath: "ideas/ideas.json",
-    },
-    select: { content: true },
-  });
   let totalIdeas = 0;
   for (const artifact of ideaArtifacts) {
     const content = artifact.content as { ideas?: unknown[] } | null;
@@ -42,14 +64,7 @@ export async function GET(req: Request) {
     }
   }
 
-  // Count kanban tasks in progress
-  const kanbanArtifacts = await prisma.projectArtifact.findMany({
-    where: {
-      projectId: { in: projectIds },
-      artifactPath: "kanban/board.json",
-    },
-    select: { content: true },
-  });
+  // Count kanban tasks in progress (kanbanArtifacts fetched in the batch above)
   let tasksInProgress = 0;
   let totalTasks = 0;
   let completedTasks = 0;
@@ -70,25 +85,6 @@ export async function GET(req: Request) {
     }
   }
   const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-
-  // Recent audit log entries for user's projects
-  const recentActivity = await prisma.auditLog.findMany({
-    where: {
-      OR: [
-        { actorUserId: user.id },
-        { targetId: { in: projectIds }, targetType: "Project" },
-      ],
-    },
-    orderBy: { createdAt: "desc" },
-    take: 10,
-    select: {
-      action: true,
-      targetType: true,
-      metadata: true,
-      createdAt: true,
-      actor: { select: { email: true } },
-    },
-  });
 
   return NextResponse.json({
     ok: true,

@@ -1,4 +1,4 @@
-import { test, expect, type Page, type BrowserContext } from '@playwright/test';
+import { test, expect, type Page, type BrowserContext, newUserContext } from './helpers';
 
 /**
  * User Acceptance Test — real multi-user UI interactions across all V2 features.
@@ -44,9 +44,9 @@ test('UAT — full multi-user journey across all V2 features', async ({ browser 
   test.setTimeout(240_000);
 
   // Separate browser contexts = 3 genuinely independent user sessions
-  const aliceCtx = await browser.newContext();
-  const bobCtx = await browser.newContext();
-  const carolCtx = await browser.newContext();
+  const aliceCtx = await newUserContext(browser);
+  const bobCtx = await newUserContext(browser);
+  const carolCtx = await newUserContext(browser);
   const aliceId = await provision(aliceCtx, alice.email);
   const bobId = await provision(bobCtx, bob.email);
   await provision(carolCtx, carol.email);

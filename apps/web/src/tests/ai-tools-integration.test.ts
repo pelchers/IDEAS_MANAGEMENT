@@ -18,8 +18,14 @@ import {
   executeUpdateDirectoryTree,
 } from "@/server/ai/tools/artifact-tools";
 
-// These need a DB connection, so we'll test them via HTTP instead
-const BASE = "http://localhost:3000";
+// This is a LIVE integration test — it exercises real HTTP endpoints and needs a
+// running server. It is skipped in the normal unit run and only executes when
+// INTEGRATION_BASE_URL is set, e.g.:
+//   INTEGRATION_BASE_URL=http://localhost:3001 pnpm exec vitest run src/tests/ai-tools-integration.test.ts
+const BASE = process.env.INTEGRATION_BASE_URL ?? "";
+const describeIntegration = BASE ? describe : describe.skip;
+// Unique client IP so repeated signin/signup don't share (and exhaust) a rate bucket.
+const CLIENT_IP = `10.90.${Math.floor(Math.random() * 254) + 1}.${Math.floor(Math.random() * 254) + 1}`;
 let sessionCookie = "";
 let projectId = "";
 
@@ -28,6 +34,7 @@ async function apiRequest(method: string, path: string, body?: unknown) {
     method,
     headers: {
       "Content-Type": "application/json",
+      "X-Forwarded-For": CLIENT_IP,
       Cookie: sessionCookie,
     },
     body: body ? JSON.stringify(body) : undefined,
@@ -35,7 +42,7 @@ async function apiRequest(method: string, path: string, body?: unknown) {
   return { status: res.status, data: await res.json(), headers: res.headers };
 }
 
-describe("AI Tools Integration", () => {
+describeIntegration("AI Tools Integration", () => {
   beforeAll(async () => {
     // Sign up / sign in test user
     const email = "aitoolstest@example.com";
@@ -43,13 +50,13 @@ describe("AI Tools Integration", () => {
 
     await fetch(`${BASE}/api/auth/signup`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-Forwarded-For": CLIENT_IP },
       body: JSON.stringify({ email, password }),
     });
 
     const loginRes = await fetch(`${BASE}/api/auth/signin`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-Forwarded-For": CLIENT_IP },
       body: JSON.stringify({ email, password }),
     });
 

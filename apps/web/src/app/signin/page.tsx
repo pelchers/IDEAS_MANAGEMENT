@@ -25,7 +25,10 @@ export default function SignInPage() {
 
       if (data.ok) {
         const params = new URLSearchParams(window.location.search);
-        const redirect = params.get("redirect") || "/dashboard";
+        const raw = params.get("redirect");
+        // Only allow same-origin relative paths — never an absolute/protocol URL
+        // (prevents open-redirect to e.g. ?redirect=https://phishing.example).
+        const redirect = raw && raw.startsWith("/") && !raw.startsWith("//") ? raw : "/dashboard";
         window.location.href = redirect;
       } else {
         setError(

@@ -36,10 +36,10 @@ export async function POST(req: Request) {
   if (isErrorResponse(authResult)) return authResult;
   const user = authResult;
 
-  // AI access: admin bypass, BYOK bypass, or entitlement + limit check
-  const userAiConfig = await prisma.user.findUnique({ where: { id: user.id }, select: { aiProvider: true } });
-  const isBYOK = userAiConfig?.aiProvider && !["NONE", "OLLAMA_LOCAL", "GROQ_BUILTIN"].includes(userAiConfig.aiProvider);
-  const isHostedAI = !isBYOK && userAiConfig?.aiProvider !== "OLLAMA_LOCAL";
+  // AI access: admin bypass, BYOK bypass, or entitlement + limit check.
+  // aiProvider now travels on the authenticated session user (no extra query).
+  const isBYOK = !!user.aiProvider && !["NONE", "OLLAMA_LOCAL", "GROQ_BUILTIN"].includes(user.aiProvider);
+  const isHostedAI = !isBYOK && user.aiProvider !== "OLLAMA_LOCAL";
 
   if (user.role !== "ADMIN") {
     if (!isBYOK) {

@@ -3,7 +3,7 @@
  * Tests the full local AI feature: settings modal, AI chat detection, and API endpoints.
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -18,7 +18,7 @@ if (!fs.existsSync(SCREENSHOT_DIR)) {
 
 async function signIn(page: import('@playwright/test').Page) {
   await page.goto('/signin');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.locator('input[type="email"]').fill(ADMIN_EMAIL);
   await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
   await page.locator('button[type="submit"]').click();
@@ -29,7 +29,7 @@ test.describe('Client-Side Ollama Validation', () => {
 
   test('TC-01: Sign-in page loads and authentication works', async ({ page }) => {
     await page.goto('/signin');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Screenshot the sign-in page
     await page.screenshot({
@@ -56,7 +56,7 @@ test.describe('Client-Side Ollama Validation', () => {
     await signIn(page);
 
     await page.goto('/settings');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
 
     // Screenshot the full settings page
@@ -99,7 +99,7 @@ test.describe('Client-Side Ollama Validation', () => {
     await signIn(page);
 
     await page.goto('/settings');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
 
     // Find and click "ENABLE LOCAL AI" button
@@ -168,7 +168,7 @@ test.describe('Client-Side Ollama Validation', () => {
     await signIn(page);
 
     await page.goto('/ai');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000); // Wait for Ollama detection on page
 
     await page.screenshot({
@@ -308,7 +308,7 @@ test.describe('Client-Side Ollama Validation', () => {
     await signIn(page);
 
     await page.goto('/ai');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
     await page.screenshot({
@@ -389,7 +389,7 @@ test.describe('Client-Side Ollama Validation', () => {
     // Set desktop viewport
     await page.setViewportSize({ width: 1536, height: 960 });
     await page.goto('/settings');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
 
     await page.screenshot({
@@ -400,7 +400,7 @@ test.describe('Client-Side Ollama Validation', () => {
     // Mobile viewport
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/settings');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
 
     await page.screenshot({
@@ -417,7 +417,7 @@ test.describe('Client-Side Ollama Validation', () => {
     // Desktop
     await page.setViewportSize({ width: 1536, height: 960 });
     await page.goto('/ai');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
     await page.screenshot({
@@ -428,7 +428,7 @@ test.describe('Client-Side Ollama Validation', () => {
     // Mobile
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/ai');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
     await page.screenshot({

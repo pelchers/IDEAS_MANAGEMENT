@@ -71,6 +71,9 @@ describe("checkProjectAccess", () => {
     avatarUrl: null,
     tags: [],
     preferences: null,
+    profileVisibility: null,
+    emailDigestFrequency: "OFF",
+    aiProvider: null,
   };
 
   const adminUser: AuthenticatedUser = {
@@ -83,6 +86,9 @@ describe("checkProjectAccess", () => {
     avatarUrl: null,
     tags: [],
     preferences: null,
+    profileVisibility: null,
+    emailDigestFrequency: "OFF",
+    aiProvider: null,
   };
 
   it("grants admin bypass", async () => {

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers';
 import {
   signInViaUI,
   createProjectViaAPI,
@@ -112,7 +112,7 @@ test.describe('Validation screenshots', () => {
     // 10. Sign In (while signed out)
     // Navigate to signin directly
     await page.goto('/signin');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await takeScreenshot(page, '10-signin', DESKTOP);
     await takeScreenshot(page, '10-signin', MOBILE);
 

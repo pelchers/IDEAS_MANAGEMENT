@@ -1,4 +1,4 @@
-import { test, expect, type Page, type BrowserContext } from '@playwright/test';
+import { test, expect, type Page, type BrowserContext } from './helpers';
 
 /**
  * Session 2026-04-15 Validation — Visual Screenshots
@@ -15,7 +15,7 @@ async function shot(page: Page, name: string) {
 
 async function signIn(page: Page): Promise<boolean> {
   await page.goto('/signin');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.locator('input[type="email"]').fill('admin@ideamgmt.local');
   await page.locator('input[type="password"]').fill('AdminPass123!');
   await page.locator('button[type="submit"]').click();
@@ -41,12 +41,12 @@ test('Session 2026-04-15 — full visual validation', async ({ page }) => {
     test.skip();
     return;
   }
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await shot(page, 'signed-in-dashboard');
 
   // ── US4: Profile page view mode ──
   await page.goto('/profile');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1000);
   await shot(page, 'us4-profile-view-mode');
   // nb-view-title has the text PROFILE
@@ -76,7 +76,7 @@ test('Session 2026-04-15 — full visual validation', async ({ page }) => {
 
   // ── US6: Sidebar profile link ──
   await page.goto('/dashboard');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(500);
   await shot(page, 'us6-dashboard');
   const profileLink = page.locator('a[href="/profile"]').first();
@@ -97,7 +97,7 @@ test('Session 2026-04-15 — full visual validation', async ({ page }) => {
 
   // ── Find a project for schema/whiteboard tests ──
   await page.goto('/projects');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(800);
   await shot(page, 'projects-list');
 
@@ -118,7 +118,7 @@ test('Session 2026-04-15 — full visual validation', async ({ page }) => {
 
   // ── US1: Schema planner — annotation tools ──
   await page.goto(`/projects/${projectId}/schema`);
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1500);
   await shot(page, 'us1-schema-initial');
 
@@ -186,7 +186,7 @@ test('Session 2026-04-15 — full visual validation', async ({ page }) => {
 
   // ── US3: Whiteboard page ──
   await page.goto(`/projects/${projectId}/whiteboard`);
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1500);
   await shot(page, 'us3-whiteboard-initial');
 

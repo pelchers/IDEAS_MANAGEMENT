@@ -1,4 +1,4 @@
-import { test, expect, request as pwRequest, type Page } from '@playwright/test';
+import { test, expect, type Page, apiContextWithIp, newUserContext } from './helpers';
 
 /**
  * Role-gated UI capture — proves the workspace renders DIFFERENTLY per project
@@ -6,7 +6,7 @@ import { test, expect, request as pwRequest, type Page } from '@playwright/test'
  * VIEWER sees a read-only visibility badge and NO invite form.
  */
 
-const BASE = 'http://localhost:3000';
+const BASE = process.env.E2E_BASE_URL ?? 'http://localhost:3000';
 const PW = 'TestPass123!';
 const SHOT = '../../.docs/validation/screenshots/uat-roles-2026-06-01';
 const ts = `${Date.now()}`;
@@ -26,8 +26,8 @@ test('Role-gated workspace UI — OWNER vs VIEWER', async ({ browser }) => {
   const ownerEmail = `ru-owner-${ts}@test.local`;
   const viewerEmail = `ru-viewer-${ts}@test.local`;
 
-  const ownerCtx = await pwRequest.newContext({ baseURL: BASE });
-  const viewerCtx = await pwRequest.newContext({ baseURL: BASE });
+  const ownerCtx = await apiContextWithIp(BASE);
+  const viewerCtx = await apiContextWithIp(BASE);
   const ownerSU = await (await ownerCtx.post('/api/auth/signup', { data: { email: ownerEmail, password: PW } })).json();
   const viewerSU = await (await viewerCtx.post('/api/auth/signup', { data: { email: viewerEmail, password: PW } })).json();
   await ownerCtx.post('/api/auth/signin', { data: { email: ownerEmail, password: PW } });
@@ -40,7 +40,7 @@ test('Role-gated workspace UI — OWNER vs VIEWER', async ({ browser }) => {
   await ownerCtx.post(`/api/projects/${pid}/members`, { data: { userId: viewerId, role: "VIEWER" } });
 
   // ── OWNER view ──
-  const ownerBrowser = await browser.newContext();
+  const ownerBrowser = await newUserContext(browser);
   const ownerPage = await ownerBrowser.newPage();
   await uiSignIn(ownerPage, ownerEmail);
   await ownerPage.goto(`/projects/${pid}`);
@@ -56,7 +56,7 @@ test('Role-gated workspace UI — OWNER vs VIEWER', async ({ browser }) => {
   await ownerPage.screenshot({ path: `${SHOT}/owner-sees-invite-form.png` });
 
   // ── VIEWER view ──
-  const viewerBrowser = await browser.newContext();
+  const viewerBrowser = await newUserContext(browser);
   const viewerPage = await viewerBrowser.newPage();
   await uiSignIn(viewerPage, viewerEmail);
   await viewerPage.goto(`/projects/${pid}`);

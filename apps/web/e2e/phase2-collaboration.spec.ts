@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from './helpers';
 
 const SHOT_DIR = '../../.docs/validation/screenshots/phase2-2026-04-22';
 

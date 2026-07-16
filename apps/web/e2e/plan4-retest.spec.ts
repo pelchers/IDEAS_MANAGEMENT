@@ -8,7 +8,7 @@
  * Screenshot dir: C:/Ideas/IDEA-MANAGEMENT/.docs/validation/plan4-provider-tiers/retest/screenshots/
  */
 
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from './helpers';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -36,7 +36,7 @@ async function ssFullPage(page: Page, name: string): Promise<void> {
 // Helper: sign in as admin
 async function signIn(page: Page): Promise<void> {
   await page.goto('/signin');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.locator('input[type="email"]').fill(ADMIN_EMAIL);
   await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
   await page.locator('button[type="submit"]').click();
@@ -46,7 +46,7 @@ async function signIn(page: Page): Promise<void> {
 // Helper: navigate to settings and scroll to AI Configuration card
 async function goToSettingsAiCard(page: Page): Promise<void> {
   await page.goto('/settings');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.locator('text=AI CONFIGURATION').first().waitFor({ timeout: 15_000 });
   await page.locator('text=AI CONFIGURATION').first().scrollIntoViewIfNeeded();
   await page.waitForTimeout(800);
@@ -159,7 +159,7 @@ test('TC-08/09: ADMIN SETTINGS card appears with purple border and free tier tog
   test.setTimeout(45_000);
   await signIn(page);
   await page.goto('/settings');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
 
   await page.locator('text=ADMIN SETTINGS').first().waitFor({ timeout: 15_000 });
   await page.locator('text=ADMIN SETTINGS').first().scrollIntoViewIfNeeded();
@@ -178,7 +178,7 @@ test('TC-10: free tier toggle button visible and clickable', async ({ page }) =>
   test.setTimeout(60_000);
   await signIn(page);
   await page.goto('/settings');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.locator('text=ADMIN SETTINGS').first().waitFor({ timeout: 15_000 });
   await page.locator('text=ADMIN SETTINGS').first().scrollIntoViewIfNeeded();
   await page.waitForTimeout(800);
@@ -213,7 +213,7 @@ test('TC-11/12: billing tier cards show $7 Pro and $17 Team pricing', async ({ p
   test.setTimeout(60_000);
   await signIn(page);
   await page.goto('/settings');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(3000);
 
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
@@ -320,7 +320,7 @@ test('TC-16/17: AI chat page loads and shows chat interface', async ({ page }) =
   test.setTimeout(90_000);
   await signIn(page);
   await page.goto('/ai');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(2000);
 
   await ss(page, 'tc-16-ai-page-initial');

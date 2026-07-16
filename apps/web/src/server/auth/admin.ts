@@ -15,6 +15,7 @@ export type AuthenticatedUser = {
   preferences: Record<string, unknown> | null;
   profileVisibility: Record<string, boolean> | null;
   emailDigestFrequency: string;
+  aiProvider: string | null;
 };
 
 /**

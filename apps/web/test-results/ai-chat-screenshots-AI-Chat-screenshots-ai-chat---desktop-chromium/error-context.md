@@ -1,0 +1,201 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - button "Open navigation menu" [ref=e6] [cursor=pointer]
+        - generic [ref=e10]: DASHBOARD
+      - generic [ref=e11]:
+        - generic "Offline" [ref=e12]: Offline
+        - textbox "Search" [ref=e14]:
+          - /placeholder: SEARCH...
+        - button "Notifications" [ref=e16] [cursor=pointer]: ⚐
+    - navigation "Main navigation" [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e20]: ◆
+          - generic [ref=e21]:
+            - text: IDEA
+            - text: MGMT
+        - button "Close navigation" [ref=e22] [cursor=pointer]: ✕
+      - list [ref=e23]:
+        - listitem [ref=e24]:
+          - link "01 Dashboard" [ref=e25] [cursor=pointer]:
+            - /url: /dashboard
+            - generic [ref=e26]: "01"
+            - text: Dashboard
+        - listitem [ref=e27]:
+          - link "02 Projects" [ref=e28] [cursor=pointer]:
+            - /url: /projects
+            - generic [ref=e29]: "02"
+            - text: Projects
+        - listitem [ref=e30]:
+          - link "03 Workspace select project" [disabled]:
+            - /url: /projects
+            - generic: "03"
+            - text: Workspace
+            - generic: select project
+        - listitem [ref=e31]:
+          - link "04 Kanban select project" [disabled]:
+            - /url: /projects
+            - generic: "04"
+            - text: Kanban
+            - generic: select project
+        - listitem [ref=e32]:
+          - link "05 Whiteboard select project" [disabled]:
+            - /url: /projects
+            - generic: "05"
+            - text: Whiteboard
+            - generic: select project
+        - listitem [ref=e33]:
+          - link "06 Schema select project" [disabled]:
+            - /url: /projects
+            - generic: "06"
+            - text: Schema
+            - generic: select project
+        - listitem [ref=e34]:
+          - link "07 Directory select project" [disabled]:
+            - /url: /projects
+            - generic: "07"
+            - text: Directory
+            - generic: select project
+        - listitem [ref=e35]:
+          - link "08 Ideas select project" [disabled]:
+            - /url: /projects
+            - generic: "08"
+            - text: Ideas
+            - generic: select project
+        - listitem [ref=e36]:
+          - link "09 Conflicts select project" [disabled]:
+            - /url: /projects
+            - generic: "09"
+            - text: Conflicts
+            - generic: select project
+        - listitem [ref=e37]:
+          - link "10 AI Chat" [ref=e38] [cursor=pointer]:
+            - /url: /ai
+            - generic [ref=e39]: "10"
+            - text: AI Chat
+        - listitem [ref=e40]:
+          - link "11 Explore" [ref=e41] [cursor=pointer]:
+            - /url: /explore
+            - generic [ref=e42]: "11"
+            - text: Explore
+        - listitem [ref=e43]:
+          - link "12 Friends" [ref=e44] [cursor=pointer]:
+            - /url: /friends
+            - generic [ref=e45]: "12"
+            - text: Friends
+        - listitem [ref=e46]:
+          - link "13 Groups" [ref=e47] [cursor=pointer]:
+            - /url: /groups
+            - generic [ref=e48]: "13"
+            - text: Groups
+        - listitem [ref=e49]:
+          - link "14 Settings" [ref=e50] [cursor=pointer]:
+            - /url: /settings
+            - generic [ref=e51]: "14"
+            - text: Settings
+      - generic [ref=e52]:
+        - link "AI admin@idea.management ADMIN" [ref=e53] [cursor=pointer]:
+          - /url: /profile
+          - generic [ref=e54]:
+            - generic [ref=e55]: AI
+            - generic [ref=e56]:
+              - generic [ref=e57]: admin@idea.management
+              - generic [ref=e58]: ADMIN
+        - button "Sign Out" [ref=e60] [cursor=pointer]
+    - main [ref=e61]:
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - heading "DASHBOARD" [level=1] [ref=e64]
+          - paragraph [ref=e65]: System overview and recent activity
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - generic [ref=e68]: Finish setting up your profile
+            - generic [ref=e69]: Add a display name and bio so others can find you in Explore, Friends, and Groups.
+          - generic [ref=e70]:
+            - link "SET UP PROFILE" [ref=e71] [cursor=pointer]:
+              - /url: /profile
+            - button "DISMISS" [ref=e72] [cursor=pointer]
+        - generic [ref=e73]:
+          - generic [ref=e74]:
+            - generic [ref=e75]: "0"
+            - generic [ref=e76]: TOTAL IDEAS
+          - generic [ref=e77]:
+            - generic [ref=e78]: "0"
+            - generic [ref=e79]: ACTIVE PROJECTS
+          - generic [ref=e80]:
+            - generic [ref=e81]: "0"
+            - generic [ref=e82]: TASKS IN PROGRESS
+          - generic [ref=e83]:
+            - generic [ref=e84]: 0%
+            - generic [ref=e85]: COMPLETION RATE
+        - generic [ref=e86]:
+          - generic [ref=e87]:
+            - heading "PROJECT SUMMARY" [level=2] [ref=e88]
+            - generic [ref=e89]:
+              - generic [ref=e90]: "[ ]"
+              - generic [ref=e91]: No projects yet. Create one to get started.
+          - generic [ref=e92]:
+            - heading "RECENT ACTIVITY" [level=2] [ref=e93]
+            - list [ref=e94]:
+              - listitem [ref=e95]:
+                - generic [ref=e96]: ">"
+                - generic [ref=e97]:
+                  - paragraph [ref=e98]: admin signed in
+                  - paragraph [ref=e99]: just now
+              - listitem [ref=e100]:
+                - generic [ref=e101]: ">"
+                - generic [ref=e102]:
+                  - paragraph [ref=e103]: admin signed in
+                  - paragraph [ref=e104]: 124 days ago
+              - listitem [ref=e105]:
+                - generic [ref=e106]: +
+                - generic [ref=e107]:
+                  - paragraph [ref=e108]: admin created project "My Test Project"
+                  - paragraph [ref=e109]: 124 days ago
+              - listitem [ref=e110]:
+                - generic [ref=e111]: ">"
+                - generic [ref=e112]:
+                  - paragraph [ref=e113]: admin signed in
+                  - paragraph [ref=e114]: 124 days ago
+              - listitem [ref=e115]:
+                - generic [ref=e116]: ">"
+                - generic [ref=e117]:
+                  - paragraph [ref=e118]: admin signed in
+                  - paragraph [ref=e119]: 124 days ago
+              - listitem [ref=e120]:
+                - generic [ref=e121]: ">"
+                - generic [ref=e122]:
+                  - paragraph [ref=e123]: admin performed artifact updated
+                  - paragraph [ref=e124]: 125 days ago
+              - listitem [ref=e125]:
+                - generic [ref=e126]: +
+                - generic [ref=e127]:
+                  - paragraph [ref=e128]: admin created project "Test Project"
+                  - paragraph [ref=e129]: 125 days ago
+              - listitem [ref=e130]:
+                - generic [ref=e131]: ">"
+                - generic [ref=e132]:
+                  - paragraph [ref=e133]: admin signed in
+                  - paragraph [ref=e134]: 125 days ago
+              - listitem [ref=e135]:
+                - generic [ref=e136]: ">"
+                - generic [ref=e137]:
+                  - paragraph [ref=e138]: admin signed in
+                  - paragraph [ref=e139]: 125 days ago
+              - listitem [ref=e140]:
+                - generic [ref=e141]: ">"
+                - generic [ref=e142]:
+                  - paragraph [ref=e143]: admin signed in
+                  - paragraph [ref=e144]: 126 days ago
+    - button "AI" [ref=e145] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e151] [cursor=pointer]:
+    - img [ref=e152]
+  - alert [ref=e155]
+```

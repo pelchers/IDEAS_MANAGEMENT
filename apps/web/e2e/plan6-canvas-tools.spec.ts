@@ -16,7 +16,7 @@
  * TC-13  Press 'P' key — verify draw tool activates.
  */
 
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from './helpers';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -33,18 +33,18 @@ async function ss(page: Page, name: string): Promise<void> {
 
 async function signIn(page: Page): Promise<void> {
   await page.goto('/signin');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.locator('input[type="email"]').fill(ADMIN_EMAIL);
   await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
   await page.locator('button[type="submit"]').click();
   await page.waitForURL(/\/(dashboard|projects)/, { timeout: 15_000 });
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
 }
 
 /** Navigate to the first available project's whiteboard. Returns the project ID. */
 async function goToWhiteboard(page: Page): Promise<string> {
   await page.goto('/projects');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1000);
 
   const projectLinks = page.locator('a[href*="/projects/"]');
@@ -54,13 +54,13 @@ async function goToWhiteboard(page: Page): Promise<string> {
     const href = await projectLinks.first().getAttribute('href');
     const projectId = href?.match(/\/projects\/([^/]+)/)?.[1] ?? '1';
     await page.goto(`/projects/${projectId}/whiteboard`);
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1500);
     return projectId;
   }
 
   await page.goto('/projects/1/whiteboard');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1500);
   return '1';
 }
@@ -68,7 +68,7 @@ async function goToWhiteboard(page: Page): Promise<string> {
 /** Navigate to the first available project's schema page. Returns the project ID. */
 async function goToSchema(page: Page): Promise<string> {
   await page.goto('/projects');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1000);
 
   const projectLinks = page.locator('a[href*="/projects/"]');
@@ -78,13 +78,13 @@ async function goToSchema(page: Page): Promise<string> {
     const href = await projectLinks.first().getAttribute('href');
     const projectId = href?.match(/\/projects\/([^/]+)/)?.[1] ?? '1';
     await page.goto(`/projects/${projectId}/schema`);
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1500);
     return projectId;
   }
 
   await page.goto('/projects/1/schema');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1500);
   return '1';
 }

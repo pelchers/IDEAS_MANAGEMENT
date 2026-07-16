@@ -19,19 +19,19 @@ async function ss(page: Page, name: string) {
 
 async function signIn(_request: APIRequestContext, page: Page) {
   // Use UI sign-in to ensure cookies are properly set in the browser context
-  await page.goto("/signin", { waitUntil: "networkidle" });
+  await page.goto("/signin", { waitUntil: "domcontentloaded" });
   await page.locator('input[type="email"]').fill(ADMIN_EMAIL);
   await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
   await page.locator('button[type="submit"]').click();
   await page.waitForURL(/\/(dashboard|projects|ai)/, { timeout: 15_000 });
-  await page.waitForLoadState("networkidle");
+  await page.waitForLoadState("domcontentloaded");
 }
 
 test("TC-C4: Full round-trip - AI page status and chat", async ({ request, page }) => {
   test.setTimeout(120_000);
   await signIn(request, page);
 
-  await page.goto("/ai", { waitUntil: "networkidle" });
+  await page.goto("/ai", { waitUntil: "domcontentloaded" });
 
   // Wait for React hydration and Ollama detection to complete
   // The page does: fetch /api/ai/config -> detectOllama -> setState
@@ -107,7 +107,7 @@ test("TC-C5: Tool call round-trip - list my projects", async ({ request, page })
   test.setTimeout(120_000);
   await signIn(request, page);
 
-  await page.goto("/ai", { waitUntil: "networkidle" });
+  await page.goto("/ai", { waitUntil: "domcontentloaded" });
   await page.waitForTimeout(3000);
 
   const ollamaRunning = await page.evaluate(async () => {
