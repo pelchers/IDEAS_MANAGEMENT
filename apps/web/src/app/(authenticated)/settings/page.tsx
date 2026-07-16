@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { OllamaSetupModal } from "@/components/ai/ollama-setup-modal";
 import { UsageMeter } from "@/components/ai/usage-meter";
+import { IntegrationsPanel } from "@/components/integrations/integrations-panel";
 import type { OllamaStatus } from "@/lib/ollama-client";
 
 /* ── Toggle state for preferences ── */
@@ -29,18 +30,6 @@ interface AiConfig {
   loading: boolean;
 }
 
-/* ── Integration data ── */
-interface Integration {
-  name: string;
-  icon: string;
-  connected: boolean;
-}
-
-const DEFAULT_INTEGRATIONS: Integration[] = [
-  { name: "GITHUB", icon: "\uD83D\uDC19", connected: false },
-  { name: "SLACK", icon: "\uD83D\uDCAC", connected: false },
-  { name: "STRIPE", icon: "\uD83D\uDCB3", connected: false },
-];
 
 function SettingsContent() {
   const searchParams = useSearchParams();
@@ -58,7 +47,6 @@ function SettingsContent() {
   });
   const [byokKey, setByokKey] = useState("");
   const [aiSaving, setAiSaving] = useState(false);
-  const [integrations, setIntegrations] = useState<Integration[]>(DEFAULT_INTEGRATIONS);
   const [isAdmin, setIsAdmin] = useState(false);
   const [hasAiEntitlement, setHasAiEntitlement] = useState(false);
   const [aiMessage, setAiMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -328,11 +316,6 @@ function SettingsContent() {
           if (data.user.preferences && typeof data.user.preferences === "object") {
             const prefs = data.user.preferences as Record<string, unknown>;
             setPreferences((prev) => ({ ...prev, ...prefs }));
-            // Load integration status
-            if (prefs.integrations && typeof prefs.integrations === "object") {
-              const intPrefs = prefs.integrations as Record<string, boolean>;
-              setIntegrations((prev) => prev.map((i) => ({ ...i, connected: !!intPrefs[i.name.toLowerCase()] })));
-            }
           }
         } else {
           setBilling((prev) => ({ ...prev, loading: false }));
@@ -489,77 +472,8 @@ function SettingsContent() {
           </div>
         </div>
 
-        {/* ── Integrations Card ── */}
-        <div className="nb-card p-8">
-          <h2 className="nb-card-title">INTEGRATIONS</h2>
-          <div className="flex flex-col gap-4">
-            {integrations.map((integration) => (
-              <div
-                key={integration.name}
-                className="flex items-center gap-4 p-4 border-2 border-dashed border-signal-black"
-              >
-                {/* Icon */}
-                <div className="text-[1.5rem] w-11 h-11 flex items-center justify-center bg-creamy-milk border-2 border-signal-black shrink-0">
-                  {integration.icon}
-                </div>
-                {/* Name + status */}
-                <div className="flex-1">
-                  <div className="font-bold text-[0.9rem] uppercase">
-                    {integration.name}
-                  </div>
-                  <div
-                    className={`font-mono text-[0.75rem] uppercase ${
-                      integration.connected
-                        ? "text-malachite"
-                        : "text-gray-mid"
-                    }`}
-                  >
-                    {integration.connected ? "Connected" : "Not connected"}
-                  </div>
-                </div>
-                {/* Action button */}
-                <button
-                  className={`nb-btn nb-btn--small ${
-                    integration.connected ? "" : "nb-btn--primary"
-                  }`}
-                  onClick={async () => {
-                    const name = integration.name.toLowerCase();
-                    const newConnected = !integration.connected;
-                    if (name === "github" && !integration.connected) {
-                      // For GitHub, prompt for personal access token
-                      const token = prompt("Enter your GitHub Personal Access Token (PAT):");
-                      if (!token) return;
-                    }
-                    if (name === "slack" && !integration.connected) {
-                      const webhook = prompt("Enter your Slack webhook URL:");
-                      if (!webhook) return;
-                    }
-                    if (name === "stripe" && !integration.connected) {
-                      // Stripe connect via billing portal
-                      try {
-                        const res = await fetch("/api/billing/portal", { method: "POST" });
-                        const data = await res.json();
-                        if (data.url) { window.open(data.url, "_blank"); }
-                      } catch { /* silent */ }
-                    }
-                    // Update local state
-                    setIntegrations((prev) => prev.map((i) => i.name === integration.name ? { ...i, connected: newConnected } : i));
-                    // Persist to preferences
-                    const intState: Record<string, boolean> = {};
-                    integrations.forEach((i) => { intState[i.name.toLowerCase()] = i.name === integration.name ? newConnected : i.connected; });
-                    fetch("/api/auth/me", {
-                      method: "PUT",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ preferences: { ...preferences, integrations: intState } }),
-                    }).catch(() => {});
-                  }}
-                >
-                  {integration.connected ? "DISCONNECT" : "CONNECT"}
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* ── Integrations (real, provider-registry driven) ── */}
+        <IntegrationsPanel />
 
         {/* ── AI Configuration Card (Redesigned) ── */}
         <div className="nb-card p-8">
