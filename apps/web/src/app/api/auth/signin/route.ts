@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { CredentialsSchema } from "@/server/auth/credentials";
+import { SigninCredentialsSchema } from "@/server/auth/credentials";
 import { prisma } from "@/server/db";
 import { verifyPassword } from "@/server/auth/password";
 import { issueSession } from "@/server/auth/session";
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     if (!limitResult.allowed) return rateLimitResponse(limitResult);
 
     const body = await req.json().catch(() => null);
-    const parsed = CredentialsSchema.safeParse(body);
+    const parsed = SigninCredentialsSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json({ ok: false, error: "invalid_request" }, { status: 400 });
     }
