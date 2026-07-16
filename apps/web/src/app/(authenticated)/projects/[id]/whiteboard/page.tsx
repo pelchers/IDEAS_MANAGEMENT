@@ -422,10 +422,11 @@ export default function WhiteboardPage() {
       const newH = Math.abs(pointer.y - snap.anchor.y);
       const origW = Math.max(1, snap.bbox.w);
       const origH = Math.max(1, snap.bbox.h);
-      // Uniform scale based on the larger dimension change (prevents drift)
-      const sx = Math.max(0.1, newW / origW);
-      const sy = Math.max(0.1, newH / origH);
-      const scale = Math.min(sx, sy); // Keep aspect ratio to prevent drift
+      // Free (non-uniform) resize: the dragged corner follows the cursor on both
+      // axes, so the item ends up exactly where you release. sx drives width/x,
+      // sy drives height/y (independently) instead of a single locked scale.
+      const sx = Math.max(0.05, newW / origW);
+      const sy = Math.max(0.05, newH / origH);
       const ax = snap.anchor.x;
       const ay = snap.anchor.y;
       // Paths: transform points to world space (+ offset), scale relative to anchor, zero offset
@@ -433,8 +434,8 @@ export default function WhiteboardPage() {
         const p = pathsRef.current.find((pp) => pp.id === id);
         if (p) {
           p.points = orig.points.map((pt) => ({
-            x: ax + (pt.x + orig.offsetX - ax) * scale,
-            y: ay + (pt.y + orig.offsetY - ay) * scale,
+            x: ax + (pt.x + orig.offsetX - ax) * sx,
+            y: ay + (pt.y + orig.offsetY - ay) * sy,
           }));
           p.offsetX = 0;
           p.offsetY = 0;
@@ -444,8 +445,8 @@ export default function WhiteboardPage() {
       for (const [id, orig] of snap.dots) {
         const d = dotsRef.current.find((dd) => dd.id === id);
         if (d) {
-          d.x = ax + (orig.x + orig.offsetX - ax) * scale;
-          d.y = ay + (orig.y + orig.offsetY - ay) * scale;
+          d.x = ax + (orig.x + orig.offsetX - ax) * sx;
+          d.y = ay + (orig.y + orig.offsetY - ay) * sy;
           d.offsetX = 0;
           d.offsetY = 0;
         }
@@ -454,12 +455,12 @@ export default function WhiteboardPage() {
       setStickies((prev) => prev.map((s) => {
         const orig = snap.stickies.get(s.id);
         if (!orig) return s;
-        return { ...s, x: ax + (orig.x - ax) * scale, y: ay + (orig.y - ay) * scale, width: Math.max(40, orig.width * scale), height: Math.max(20, orig.height * scale) };
+        return { ...s, x: ax + (orig.x - ax) * sx, y: ay + (orig.y - ay) * sy, width: Math.max(40, orig.width * sx), height: Math.max(20, orig.height * sy) };
       }));
       setMediaItems((prev) => prev.map((m) => {
         const orig = snap.media.get(m.id);
         if (!orig) return m;
-        return { ...m, x: ax + (orig.x - ax) * scale, y: ay + (orig.y - ay) * scale, width: Math.max(20, orig.width * scale), height: Math.max(20, orig.height * scale) };
+        return { ...m, x: ax + (orig.x - ax) * sx, y: ay + (orig.y - ay) * sy, width: Math.max(20, orig.width * sx), height: Math.max(20, orig.height * sy) };
       }));
     } else if (snap.mode === "rotate") {
       // Rotation: rotate each item's center around group center, set angle absolutely from snapshot
@@ -1700,8 +1701,11 @@ export default function WhiteboardPage() {
   useEffect(() => {
     if (!resizing) return;
     const handleMouseMove = (e: MouseEvent) => {
-      const dx = e.clientX - resizing.startX;
-      const dy = e.clientY - resizing.startY;
+      // Divide the screen-pixel delta by zoom so the handle tracks the cursor
+      // at any zoom level (world units, not screen pixels).
+      const z = zoomRef.current || 1;
+      const dx = (e.clientX - resizing.startX) / z;
+      const dy = (e.clientY - resizing.startY) / z;
       const newW = Math.max(80, resizing.startW + dx);
       const newH = Math.max(40, resizing.startH + dy);
 
@@ -1731,7 +1735,9 @@ export default function WhiteboardPage() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [resizing, mediaItems, saveWhiteboard]);
+    // Don't depend on mediaItems — it would re-bind the listeners every frame
+    // during a media resize. The handlers use setters/refs, not the live array.
+  }, [resizing, saveWhiteboard]);
 
   /* ── Rotation handling (stickies + media) ── */
   const [rotating, setRotating] = useState<{ id: string; kind: "sticky" | "media"; centerX: number; centerY: number; startAngle: number; startRotation: number } | null>(null);
