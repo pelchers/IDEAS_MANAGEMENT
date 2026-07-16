@@ -12,6 +12,7 @@ import { openCommandPalette } from "@/components/command/command-registry";
 /* ── Title from pathname ── */
 function getTitleFromPathname(pathname: string): string {
   if (pathname === "/dashboard") return "DASHBOARD";
+  if (pathname === "/today") return "TODAY / MY WORK";
   if (pathname === "/projects") return "PROJECTS";
   if (pathname === "/ai") return "AI CHAT";
   if (pathname === "/profile") return "PROFILE";
@@ -42,19 +43,20 @@ interface NavLink {
 
 const NAV_LINKS: NavLink[] = [
   { num: "01", label: "Dashboard", href: "/dashboard" },
-  { num: "02", label: "Projects", href: "/projects" },
-  { num: "03", label: "Workspace", href: "/projects", projectRoute: true },
-  { num: "04", label: "Kanban", href: "/projects", projectRoute: true, suffix: "/kanban" },
-  { num: "05", label: "Whiteboard", href: "/projects", projectRoute: true, suffix: "/whiteboard" },
-  { num: "06", label: "Schema", href: "/projects", projectRoute: true, suffix: "/schema" },
-  { num: "07", label: "Directory", href: "/projects", projectRoute: true, suffix: "/directory-tree" },
-  { num: "08", label: "Ideas", href: "/projects", projectRoute: true, suffix: "/ideas" },
-  { num: "09", label: "Conflicts", href: "/projects", projectRoute: true, suffix: "/conflicts" },
-  { num: "10", label: "AI Chat", href: "/ai" },
-  { num: "11", label: "Explore", href: "/explore" },
-  { num: "12", label: "Friends", href: "/friends" },
-  { num: "13", label: "Groups", href: "/groups" },
-  { num: "14", label: "Settings", href: "/settings" },
+  { num: "02", label: "Today", href: "/today" },
+  { num: "03", label: "Projects", href: "/projects" },
+  { num: "04", label: "Workspace", href: "/projects", projectRoute: true },
+  { num: "05", label: "Kanban", href: "/projects", projectRoute: true, suffix: "/kanban" },
+  { num: "06", label: "Whiteboard", href: "/projects", projectRoute: true, suffix: "/whiteboard" },
+  { num: "07", label: "Schema", href: "/projects", projectRoute: true, suffix: "/schema" },
+  { num: "08", label: "Directory", href: "/projects", projectRoute: true, suffix: "/directory-tree" },
+  { num: "09", label: "Ideas", href: "/projects", projectRoute: true, suffix: "/ideas" },
+  { num: "10", label: "Conflicts", href: "/projects", projectRoute: true, suffix: "/conflicts" },
+  { num: "11", label: "AI Chat", href: "/ai" },
+  { num: "12", label: "Explore", href: "/explore" },
+  { num: "13", label: "Friends", href: "/friends" },
+  { num: "14", label: "Groups", href: "/groups" },
+  { num: "15", label: "Settings", href: "/settings" },
 ];
 
 function extractProjectId(pathname: string): string | null {

@@ -74,6 +74,9 @@ model User {
   groupMemberships    GroupMember[]
   notifications       Notification[]
   syncOperations      SyncOperation[]
+  tasksCreated        Task[]                   @relation("taskCreator")
+  tasksAssigned       Task[]                   @relation("taskAssignee")
+  integrations        Integration[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -104,6 +107,8 @@ model Session {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model RefreshToken {
@@ -121,6 +126,8 @@ model RefreshToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model EmailVerificationToken {
@@ -133,6 +140,8 @@ model EmailVerificationToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model PasswordResetToken {
@@ -145,6 +154,8 @@ model PasswordResetToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model AuditLog {
@@ -160,6 +171,10 @@ model AuditLog {
   actor User? @relation("audit_actor", fields: [actorUserId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
+
+  @@index([actorUserId])
+  @@index([targetId, targetType])
+  @@index([createdAt])
 }
 
 // ─── Billing & Subscriptions ──────────────────────────────────────────
@@ -326,6 +341,7 @@ model Project {
   comments   Comment[]
   syncOps    SyncOperation[]
   snapshots  SyncSnapshot[]
+  tasks      Task[]
   group      Group?            @relation(fields: [groupId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
@@ -451,6 +467,96 @@ model ProjectArtifact {
 
   @@unique([projectId, artifactPath])
   @@index([projectId])
+}
+
+// ─── Tasks (first-class, cross-project) ──────────────────────────────
+
+enum TaskStatus {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+/// First-class task. Replaces the artifact-embedded kanban card as the source of
+/// truth for work items, enabling the cross-project "Today / My Work" view and
+/// external links (calendar events, emails) via externalRefs.
+model Task {
+  id           String       @id @default(cuid())
+  title        String
+  description  String?
+  status       TaskStatus   @default(TODO)
+  priority     TaskPriority @default(MEDIUM)
+  dueDate      DateTime?
+  labels       String[]     @default([])
+  order        Int          @default(0)
+  /// Kanban column id this task lives in (when shown on a board). Null = not boarded.
+  columnId     String?
+  /// Origin of the task: "manual" | "kanban" (backfilled) | "integration".
+  source       String       @default("manual")
+  /// Links to external objects, e.g. { calendarEventId, emailId, provider }.
+  externalRefs Json?
+  completedAt  DateTime?
+
+  /// Null projectId = a personal / inbox task not tied to a project.
+  projectId   String?
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assigneeId  String?
+  assignee    User?    @relation("taskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdById String
+  createdBy   User     @relation("taskCreator", fields: [createdById], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdById, status])
+  @@index([assigneeId, dueDate])
+  @@index([projectId, columnId])
+  @@index([dueDate])
+}
+
+// ─── External-service integrations (per user) ────────────────────────
+
+enum IntegrationProvider {
+  EMAIL
+  GMAIL
+  GOOGLE_CALENDAR
+  VSCODE
+}
+
+enum IntegrationStatus {
+  CONNECTED
+  DISCONNECTED
+  ERROR
+}
+
+/// A user's connection to an external service. Tokens/config are stored
+/// AES-256-GCM encrypted (see server/integrations). One row per (user, provider).
+model Integration {
+  id              String              @id @default(cuid())
+  userId          String
+  provider        IntegrationProvider
+  status          IntegrationStatus   @default(DISCONNECTED)
+  /// Encrypted JSON: { accessToken, refreshToken, ... } or provider config.
+  configEncrypted String?
+  scopes          String[]            @default([])
+  accountLabel    String? // e.g. the connected email address
+  connectedAt     DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, provider])
+  @@index([userId])
 }
 
 // ─── Invites ─────────────────────────────────────────────────────────

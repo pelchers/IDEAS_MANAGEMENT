@@ -341,6 +341,39 @@ exports.Prisma.ProjectArtifactScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TaskScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  priority: 'priority',
+  dueDate: 'dueDate',
+  labels: 'labels',
+  order: 'order',
+  columnId: 'columnId',
+  source: 'source',
+  externalRefs: 'externalRefs',
+  completedAt: 'completedAt',
+  projectId: 'projectId',
+  assigneeId: 'assigneeId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.IntegrationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  status: 'status',
+  configEncrypted: 'configEncrypted',
+  scopes: 'scopes',
+  accountLabel: 'accountLabel',
+  connectedAt: 'connectedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ProjectInviteScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
@@ -518,6 +551,33 @@ exports.MemberRole = exports.$Enums.MemberRole = {
   VIEWER: 'VIEWER'
 };
 
+exports.TaskStatus = exports.$Enums.TaskStatus = {
+  BACKLOG: 'BACKLOG',
+  TODO: 'TODO',
+  IN_PROGRESS: 'IN_PROGRESS',
+  DONE: 'DONE'
+};
+
+exports.TaskPriority = exports.$Enums.TaskPriority = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+exports.IntegrationProvider = exports.$Enums.IntegrationProvider = {
+  EMAIL: 'EMAIL',
+  GMAIL: 'GMAIL',
+  GOOGLE_CALENDAR: 'GOOGLE_CALENDAR',
+  VSCODE: 'VSCODE'
+};
+
+exports.IntegrationStatus = exports.$Enums.IntegrationStatus = {
+  CONNECTED: 'CONNECTED',
+  DISCONNECTED: 'DISCONNECTED',
+  ERROR: 'ERROR'
+};
+
 exports.InviteStatus = exports.$Enums.InviteStatus = {
   PENDING: 'PENDING',
   ACCEPTED: 'ACCEPTED',
@@ -546,6 +606,8 @@ exports.Prisma.ModelName = {
   Notification: 'Notification',
   ProjectMember: 'ProjectMember',
   ProjectArtifact: 'ProjectArtifact',
+  Task: 'Task',
+  Integration: 'Integration',
   ProjectInvite: 'ProjectInvite',
   ProjectActivity: 'ProjectActivity',
   Comment: 'Comment',

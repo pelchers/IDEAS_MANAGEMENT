@@ -114,6 +114,19 @@ export type ProjectMember = $Result.DefaultSelection<Prisma.$ProjectMemberPayloa
  */
 export type ProjectArtifact = $Result.DefaultSelection<Prisma.$ProjectArtifactPayload>
 /**
+ * Model Task
+ * First-class task. Replaces the artifact-embedded kanban card as the source of
+ * truth for work items, enabling the cross-project "Today / My Work" view and
+ * external links (calendar events, emails) via externalRefs.
+ */
+export type Task = $Result.DefaultSelection<Prisma.$TaskPayload>
+/**
+ * Model Integration
+ * A user's connection to an external service. Tokens/config are stored
+ * AES-256-GCM encrypted (see server/integrations). One row per (user, provider).
+ */
+export type Integration = $Result.DefaultSelection<Prisma.$IntegrationPayload>
+/**
  * Model ProjectInvite
  * 
  */
@@ -260,6 +273,45 @@ export const GroupRole: {
 export type GroupRole = (typeof GroupRole)[keyof typeof GroupRole]
 
 
+export const TaskStatus: {
+  BACKLOG: 'BACKLOG',
+  TODO: 'TODO',
+  IN_PROGRESS: 'IN_PROGRESS',
+  DONE: 'DONE'
+};
+
+export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
+
+
+export const TaskPriority: {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+export type TaskPriority = (typeof TaskPriority)[keyof typeof TaskPriority]
+
+
+export const IntegrationProvider: {
+  EMAIL: 'EMAIL',
+  GMAIL: 'GMAIL',
+  GOOGLE_CALENDAR: 'GOOGLE_CALENDAR',
+  VSCODE: 'VSCODE'
+};
+
+export type IntegrationProvider = (typeof IntegrationProvider)[keyof typeof IntegrationProvider]
+
+
+export const IntegrationStatus: {
+  CONNECTED: 'CONNECTED',
+  DISCONNECTED: 'DISCONNECTED',
+  ERROR: 'ERROR'
+};
+
+export type IntegrationStatus = (typeof IntegrationStatus)[keyof typeof IntegrationStatus]
+
+
 export const InviteStatus: {
   PENDING: 'PENDING',
   ACCEPTED: 'ACCEPTED',
@@ -314,6 +366,22 @@ export const FriendshipStatus: typeof $Enums.FriendshipStatus
 export type GroupRole = $Enums.GroupRole
 
 export const GroupRole: typeof $Enums.GroupRole
+
+export type TaskStatus = $Enums.TaskStatus
+
+export const TaskStatus: typeof $Enums.TaskStatus
+
+export type TaskPriority = $Enums.TaskPriority
+
+export const TaskPriority: typeof $Enums.TaskPriority
+
+export type IntegrationProvider = $Enums.IntegrationProvider
+
+export const IntegrationProvider: typeof $Enums.IntegrationProvider
+
+export type IntegrationStatus = $Enums.IntegrationStatus
+
+export const IntegrationStatus: typeof $Enums.IntegrationStatus
 
 export type InviteStatus = $Enums.InviteStatus
 
@@ -636,6 +704,26 @@ export class PrismaClient<
     * ```
     */
   get projectArtifact(): Prisma.ProjectArtifactDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.task`: Exposes CRUD operations for the **Task** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Tasks
+    * const tasks = await prisma.task.findMany()
+    * ```
+    */
+  get task(): Prisma.TaskDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.integration`: Exposes CRUD operations for the **Integration** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Integrations
+    * const integrations = await prisma.integration.findMany()
+    * ```
+    */
+  get integration(): Prisma.IntegrationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.projectInvite`: Exposes CRUD operations for the **ProjectInvite** model.
@@ -1167,6 +1255,8 @@ export namespace Prisma {
     Notification: 'Notification',
     ProjectMember: 'ProjectMember',
     ProjectArtifact: 'ProjectArtifact',
+    Task: 'Task',
+    Integration: 'Integration',
     ProjectInvite: 'ProjectInvite',
     ProjectActivity: 'ProjectActivity',
     Comment: 'Comment',
@@ -1192,7 +1282,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "credential" | "session" | "refreshToken" | "emailVerificationToken" | "passwordResetToken" | "auditLog" | "subscription" | "entitlement" | "billingEvent" | "aiChatSession" | "aiChatMessage" | "aiToolOutput" | "project" | "friendship" | "group" | "groupMember" | "notification" | "projectMember" | "projectArtifact" | "projectInvite" | "projectActivity" | "comment" | "syncOperation" | "syncSnapshot" | "aiTokenUsage" | "adminConfig"
+      modelProps: "user" | "credential" | "session" | "refreshToken" | "emailVerificationToken" | "passwordResetToken" | "auditLog" | "subscription" | "entitlement" | "billingEvent" | "aiChatSession" | "aiChatMessage" | "aiToolOutput" | "project" | "friendship" | "group" | "groupMember" | "notification" | "projectMember" | "projectArtifact" | "task" | "integration" | "projectInvite" | "projectActivity" | "comment" | "syncOperation" | "syncSnapshot" | "aiTokenUsage" | "adminConfig"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2676,6 +2766,154 @@ export namespace Prisma {
           }
         }
       }
+      Task: {
+        payload: Prisma.$TaskPayload<ExtArgs>
+        fields: Prisma.TaskFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TaskFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TaskFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          findFirst: {
+            args: Prisma.TaskFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TaskFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          findMany: {
+            args: Prisma.TaskFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>[]
+          }
+          create: {
+            args: Prisma.TaskCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          createMany: {
+            args: Prisma.TaskCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TaskCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>[]
+          }
+          delete: {
+            args: Prisma.TaskDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          update: {
+            args: Prisma.TaskUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          deleteMany: {
+            args: Prisma.TaskDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TaskUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TaskUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>[]
+          }
+          upsert: {
+            args: Prisma.TaskUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          aggregate: {
+            args: Prisma.TaskAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTask>
+          }
+          groupBy: {
+            args: Prisma.TaskGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TaskGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TaskCountArgs<ExtArgs>
+            result: $Utils.Optional<TaskCountAggregateOutputType> | number
+          }
+        }
+      }
+      Integration: {
+        payload: Prisma.$IntegrationPayload<ExtArgs>
+        fields: Prisma.IntegrationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IntegrationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IntegrationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
+          }
+          findFirst: {
+            args: Prisma.IntegrationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IntegrationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
+          }
+          findMany: {
+            args: Prisma.IntegrationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>[]
+          }
+          create: {
+            args: Prisma.IntegrationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
+          }
+          createMany: {
+            args: Prisma.IntegrationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.IntegrationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>[]
+          }
+          delete: {
+            args: Prisma.IntegrationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
+          }
+          update: {
+            args: Prisma.IntegrationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
+          }
+          deleteMany: {
+            args: Prisma.IntegrationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IntegrationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.IntegrationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>[]
+          }
+          upsert: {
+            args: Prisma.IntegrationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
+          }
+          aggregate: {
+            args: Prisma.IntegrationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIntegration>
+          }
+          groupBy: {
+            args: Prisma.IntegrationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IntegrationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IntegrationCountArgs<ExtArgs>
+            result: $Utils.Optional<IntegrationCountAggregateOutputType> | number
+          }
+        }
+      }
       ProjectInvite: {
         payload: Prisma.$ProjectInvitePayload<ExtArgs>
         fields: Prisma.ProjectInviteFieldRefs
@@ -3310,6 +3548,8 @@ export namespace Prisma {
     notification?: NotificationOmit
     projectMember?: ProjectMemberOmit
     projectArtifact?: ProjectArtifactOmit
+    task?: TaskOmit
+    integration?: IntegrationOmit
     projectInvite?: ProjectInviteOmit
     projectActivity?: ProjectActivityOmit
     comment?: CommentOmit
@@ -3417,6 +3657,9 @@ export namespace Prisma {
     groupMemberships: number
     notifications: number
     syncOperations: number
+    tasksCreated: number
+    tasksAssigned: number
+    integrations: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3440,6 +3683,9 @@ export namespace Prisma {
     groupMemberships?: boolean | UserCountOutputTypeCountGroupMembershipsArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
     syncOperations?: boolean | UserCountOutputTypeCountSyncOperationsArgs
+    tasksCreated?: boolean | UserCountOutputTypeCountTasksCreatedArgs
+    tasksAssigned?: boolean | UserCountOutputTypeCountTasksAssignedArgs
+    integrations?: boolean | UserCountOutputTypeCountIntegrationsArgs
   }
 
   // Custom InputTypes
@@ -3593,6 +3839,27 @@ export namespace Prisma {
     where?: SyncOperationWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTasksCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTasksAssignedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountIntegrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IntegrationWhereInput
+  }
+
 
   /**
    * Count Type AiChatSessionCountOutputType
@@ -3637,6 +3904,7 @@ export namespace Prisma {
     comments: number
     syncOps: number
     snapshots: number
+    tasks: number
   }
 
   export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3647,6 +3915,7 @@ export namespace Prisma {
     comments?: boolean | ProjectCountOutputTypeCountCommentsArgs
     syncOps?: boolean | ProjectCountOutputTypeCountSyncOpsArgs
     snapshots?: boolean | ProjectCountOutputTypeCountSnapshotsArgs
+    tasks?: boolean | ProjectCountOutputTypeCountTasksArgs
   }
 
   // Custom InputTypes
@@ -3707,6 +3976,13 @@ export namespace Prisma {
    */
   export type ProjectCountOutputTypeCountSnapshotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SyncSnapshotWhereInput
+  }
+
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
   }
 
 
@@ -4039,6 +4315,9 @@ export namespace Prisma {
     groupMemberships?: boolean | User$groupMembershipsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     syncOperations?: boolean | User$syncOperationsArgs<ExtArgs>
+    tasksCreated?: boolean | User$tasksCreatedArgs<ExtArgs>
+    tasksAssigned?: boolean | User$tasksAssignedArgs<ExtArgs>
+    integrations?: boolean | User$integrationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4131,6 +4410,9 @@ export namespace Prisma {
     groupMemberships?: boolean | User$groupMembershipsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     syncOperations?: boolean | User$syncOperationsArgs<ExtArgs>
+    tasksCreated?: boolean | User$tasksCreatedArgs<ExtArgs>
+    tasksAssigned?: boolean | User$tasksAssignedArgs<ExtArgs>
+    integrations?: boolean | User$integrationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4160,6 +4442,9 @@ export namespace Prisma {
       groupMemberships: Prisma.$GroupMemberPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
       syncOperations: Prisma.$SyncOperationPayload<ExtArgs>[]
+      tasksCreated: Prisma.$TaskPayload<ExtArgs>[]
+      tasksAssigned: Prisma.$TaskPayload<ExtArgs>[]
+      integrations: Prisma.$IntegrationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4596,6 +4881,9 @@ export namespace Prisma {
     groupMemberships<T extends User$groupMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$groupMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     syncOperations<T extends User$syncOperationsArgs<ExtArgs> = {}>(args?: Subset<T, User$syncOperationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyncOperationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tasksCreated<T extends User$tasksCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tasksAssigned<T extends User$tasksAssignedArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksAssignedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    integrations<T extends User$integrationsArgs<ExtArgs> = {}>(args?: Subset<T, User$integrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5528,6 +5816,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SyncOperationScalarFieldEnum | SyncOperationScalarFieldEnum[]
+  }
+
+  /**
+   * User.tasksCreated
+   */
+  export type User$tasksCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    cursor?: TaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * User.tasksAssigned
+   */
+  export type User$tasksAssignedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    cursor?: TaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * User.integrations
+   */
+  export type User$integrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationInclude<ExtArgs> | null
+    where?: IntegrationWhereInput
+    orderBy?: IntegrationOrderByWithRelationInput | IntegrationOrderByWithRelationInput[]
+    cursor?: IntegrationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IntegrationScalarFieldEnum | IntegrationScalarFieldEnum[]
   }
 
   /**
@@ -18841,6 +19201,7 @@ export namespace Prisma {
     comments?: boolean | Project$commentsArgs<ExtArgs>
     syncOps?: boolean | Project$syncOpsArgs<ExtArgs>
     snapshots?: boolean | Project$snapshotsArgs<ExtArgs>
+    tasks?: boolean | Project$tasksArgs<ExtArgs>
     group?: boolean | Project$groupArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
@@ -18895,6 +19256,7 @@ export namespace Prisma {
     comments?: boolean | Project$commentsArgs<ExtArgs>
     syncOps?: boolean | Project$syncOpsArgs<ExtArgs>
     snapshots?: boolean | Project$snapshotsArgs<ExtArgs>
+    tasks?: boolean | Project$tasksArgs<ExtArgs>
     group?: boolean | Project$groupArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -18915,6 +19277,7 @@ export namespace Prisma {
       comments: Prisma.$CommentPayload<ExtArgs>[]
       syncOps: Prisma.$SyncOperationPayload<ExtArgs>[]
       snapshots: Prisma.$SyncSnapshotPayload<ExtArgs>[]
+      tasks: Prisma.$TaskPayload<ExtArgs>[]
       group: Prisma.$GroupPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -19329,6 +19692,7 @@ export namespace Prisma {
     comments<T extends Project$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Project$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     syncOps<T extends Project$syncOpsArgs<ExtArgs> = {}>(args?: Subset<T, Project$syncOpsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyncOperationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     snapshots<T extends Project$snapshotsArgs<ExtArgs> = {}>(args?: Subset<T, Project$snapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyncSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tasks<T extends Project$tasksArgs<ExtArgs> = {}>(args?: Subset<T, Project$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     group<T extends Project$groupArgs<ExtArgs> = {}>(args?: Subset<T, Project$groupArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -19930,6 +20294,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SyncSnapshotScalarFieldEnum | SyncSnapshotScalarFieldEnum[]
+  }
+
+  /**
+   * Project.tasks
+   */
+  export type Project$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    cursor?: TaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
   }
 
   /**
@@ -26583,6 +26971,2434 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProjectArtifactInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Task
+   */
+
+  export type AggregateTask = {
+    _count: TaskCountAggregateOutputType | null
+    _avg: TaskAvgAggregateOutputType | null
+    _sum: TaskSumAggregateOutputType | null
+    _min: TaskMinAggregateOutputType | null
+    _max: TaskMaxAggregateOutputType | null
+  }
+
+  export type TaskAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type TaskSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type TaskMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    status: $Enums.TaskStatus | null
+    priority: $Enums.TaskPriority | null
+    dueDate: Date | null
+    order: number | null
+    columnId: string | null
+    source: string | null
+    completedAt: Date | null
+    projectId: string | null
+    assigneeId: string | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TaskMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    status: $Enums.TaskStatus | null
+    priority: $Enums.TaskPriority | null
+    dueDate: Date | null
+    order: number | null
+    columnId: string | null
+    source: string | null
+    completedAt: Date | null
+    projectId: string | null
+    assigneeId: string | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TaskCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    status: number
+    priority: number
+    dueDate: number
+    labels: number
+    order: number
+    columnId: number
+    source: number
+    externalRefs: number
+    completedAt: number
+    projectId: number
+    assigneeId: number
+    createdById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TaskAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type TaskSumAggregateInputType = {
+    order?: true
+  }
+
+  export type TaskMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
+    dueDate?: true
+    order?: true
+    columnId?: true
+    source?: true
+    completedAt?: true
+    projectId?: true
+    assigneeId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TaskMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
+    dueDate?: true
+    order?: true
+    columnId?: true
+    source?: true
+    completedAt?: true
+    projectId?: true
+    assigneeId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TaskCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
+    dueDate?: true
+    labels?: true
+    order?: true
+    columnId?: true
+    source?: true
+    externalRefs?: true
+    completedAt?: true
+    projectId?: true
+    assigneeId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TaskAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Task to aggregate.
+     */
+    where?: TaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tasks to fetch.
+     */
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Tasks
+    **/
+    _count?: true | TaskCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TaskAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TaskSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TaskMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TaskMaxAggregateInputType
+  }
+
+  export type GetTaskAggregateType<T extends TaskAggregateArgs> = {
+        [P in keyof T & keyof AggregateTask]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTask[P]>
+      : GetScalarType<T[P], AggregateTask[P]>
+  }
+
+
+
+
+  export type TaskGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithAggregationInput | TaskOrderByWithAggregationInput[]
+    by: TaskScalarFieldEnum[] | TaskScalarFieldEnum
+    having?: TaskScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TaskCountAggregateInputType | true
+    _avg?: TaskAvgAggregateInputType
+    _sum?: TaskSumAggregateInputType
+    _min?: TaskMinAggregateInputType
+    _max?: TaskMaxAggregateInputType
+  }
+
+  export type TaskGroupByOutputType = {
+    id: string
+    title: string
+    description: string | null
+    status: $Enums.TaskStatus
+    priority: $Enums.TaskPriority
+    dueDate: Date | null
+    labels: string[]
+    order: number
+    columnId: string | null
+    source: string
+    externalRefs: JsonValue | null
+    completedAt: Date | null
+    projectId: string | null
+    assigneeId: string | null
+    createdById: string
+    createdAt: Date
+    updatedAt: Date
+    _count: TaskCountAggregateOutputType | null
+    _avg: TaskAvgAggregateOutputType | null
+    _sum: TaskSumAggregateOutputType | null
+    _min: TaskMinAggregateOutputType | null
+    _max: TaskMaxAggregateOutputType | null
+  }
+
+  type GetTaskGroupByPayload<T extends TaskGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TaskGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TaskGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TaskGroupByOutputType[P]>
+            : GetScalarType<T[P], TaskGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    labels?: boolean
+    order?: boolean
+    columnId?: boolean
+    source?: boolean
+    externalRefs?: boolean
+    completedAt?: boolean
+    projectId?: boolean
+    assigneeId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | Task$projectArgs<ExtArgs>
+    assignee?: boolean | Task$assigneeArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["task"]>
+
+  export type TaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    labels?: boolean
+    order?: boolean
+    columnId?: boolean
+    source?: boolean
+    externalRefs?: boolean
+    completedAt?: boolean
+    projectId?: boolean
+    assigneeId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | Task$projectArgs<ExtArgs>
+    assignee?: boolean | Task$assigneeArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["task"]>
+
+  export type TaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    labels?: boolean
+    order?: boolean
+    columnId?: boolean
+    source?: boolean
+    externalRefs?: boolean
+    completedAt?: boolean
+    projectId?: boolean
+    assigneeId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | Task$projectArgs<ExtArgs>
+    assignee?: boolean | Task$assigneeArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["task"]>
+
+  export type TaskSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    labels?: boolean
+    order?: boolean
+    columnId?: boolean
+    source?: boolean
+    externalRefs?: boolean
+    completedAt?: boolean
+    projectId?: boolean
+    assigneeId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "status" | "priority" | "dueDate" | "labels" | "order" | "columnId" | "source" | "externalRefs" | "completedAt" | "projectId" | "assigneeId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
+  export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | Task$projectArgs<ExtArgs>
+    assignee?: boolean | Task$assigneeArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | Task$projectArgs<ExtArgs>
+    assignee?: boolean | Task$assigneeArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | Task$projectArgs<ExtArgs>
+    assignee?: boolean | Task$assigneeArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Task"
+    objects: {
+      project: Prisma.$ProjectPayload<ExtArgs> | null
+      assignee: Prisma.$UserPayload<ExtArgs> | null
+      createdBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string | null
+      status: $Enums.TaskStatus
+      priority: $Enums.TaskPriority
+      dueDate: Date | null
+      labels: string[]
+      order: number
+      /**
+       * Kanban column id this task lives in (when shown on a board). Null = not boarded.
+       */
+      columnId: string | null
+      /**
+       * Origin of the task: "manual" | "kanban" (backfilled) | "integration".
+       */
+      source: string
+      /**
+       * Links to external objects, e.g. { calendarEventId, emailId, provider }.
+       */
+      externalRefs: Prisma.JsonValue | null
+      completedAt: Date | null
+      /**
+       * Null projectId = a personal / inbox task not tied to a project.
+       */
+      projectId: string | null
+      assigneeId: string | null
+      createdById: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["task"]>
+    composites: {}
+  }
+
+  type TaskGetPayload<S extends boolean | null | undefined | TaskDefaultArgs> = $Result.GetResult<Prisma.$TaskPayload, S>
+
+  type TaskCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TaskFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TaskCountAggregateInputType | true
+    }
+
+  export interface TaskDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Task'], meta: { name: 'Task' } }
+    /**
+     * Find zero or one Task that matches the filter.
+     * @param {TaskFindUniqueArgs} args - Arguments to find a Task
+     * @example
+     * // Get one Task
+     * const task = await prisma.task.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TaskFindUniqueArgs>(args: SelectSubset<T, TaskFindUniqueArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Task that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TaskFindUniqueOrThrowArgs} args - Arguments to find a Task
+     * @example
+     * // Get one Task
+     * const task = await prisma.task.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TaskFindUniqueOrThrowArgs>(args: SelectSubset<T, TaskFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Task that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskFindFirstArgs} args - Arguments to find a Task
+     * @example
+     * // Get one Task
+     * const task = await prisma.task.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TaskFindFirstArgs>(args?: SelectSubset<T, TaskFindFirstArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Task that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskFindFirstOrThrowArgs} args - Arguments to find a Task
+     * @example
+     * // Get one Task
+     * const task = await prisma.task.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TaskFindFirstOrThrowArgs>(args?: SelectSubset<T, TaskFindFirstOrThrowArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Tasks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Tasks
+     * const tasks = await prisma.task.findMany()
+     * 
+     * // Get first 10 Tasks
+     * const tasks = await prisma.task.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const taskWithIdOnly = await prisma.task.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TaskFindManyArgs>(args?: SelectSubset<T, TaskFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Task.
+     * @param {TaskCreateArgs} args - Arguments to create a Task.
+     * @example
+     * // Create one Task
+     * const Task = await prisma.task.create({
+     *   data: {
+     *     // ... data to create a Task
+     *   }
+     * })
+     * 
+     */
+    create<T extends TaskCreateArgs>(args: SelectSubset<T, TaskCreateArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Tasks.
+     * @param {TaskCreateManyArgs} args - Arguments to create many Tasks.
+     * @example
+     * // Create many Tasks
+     * const task = await prisma.task.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TaskCreateManyArgs>(args?: SelectSubset<T, TaskCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Tasks and returns the data saved in the database.
+     * @param {TaskCreateManyAndReturnArgs} args - Arguments to create many Tasks.
+     * @example
+     * // Create many Tasks
+     * const task = await prisma.task.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Tasks and only return the `id`
+     * const taskWithIdOnly = await prisma.task.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TaskCreateManyAndReturnArgs>(args?: SelectSubset<T, TaskCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Task.
+     * @param {TaskDeleteArgs} args - Arguments to delete one Task.
+     * @example
+     * // Delete one Task
+     * const Task = await prisma.task.delete({
+     *   where: {
+     *     // ... filter to delete one Task
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TaskDeleteArgs>(args: SelectSubset<T, TaskDeleteArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Task.
+     * @param {TaskUpdateArgs} args - Arguments to update one Task.
+     * @example
+     * // Update one Task
+     * const task = await prisma.task.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TaskUpdateArgs>(args: SelectSubset<T, TaskUpdateArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Tasks.
+     * @param {TaskDeleteManyArgs} args - Arguments to filter Tasks to delete.
+     * @example
+     * // Delete a few Tasks
+     * const { count } = await prisma.task.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TaskDeleteManyArgs>(args?: SelectSubset<T, TaskDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Tasks
+     * const task = await prisma.task.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TaskUpdateManyArgs>(args: SelectSubset<T, TaskUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tasks and returns the data updated in the database.
+     * @param {TaskUpdateManyAndReturnArgs} args - Arguments to update many Tasks.
+     * @example
+     * // Update many Tasks
+     * const task = await prisma.task.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Tasks and only return the `id`
+     * const taskWithIdOnly = await prisma.task.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TaskUpdateManyAndReturnArgs>(args: SelectSubset<T, TaskUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Task.
+     * @param {TaskUpsertArgs} args - Arguments to update or create a Task.
+     * @example
+     * // Update or create a Task
+     * const task = await prisma.task.upsert({
+     *   create: {
+     *     // ... data to create a Task
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Task we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TaskUpsertArgs>(args: SelectSubset<T, TaskUpsertArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Tasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskCountArgs} args - Arguments to filter Tasks to count.
+     * @example
+     * // Count the number of Tasks
+     * const count = await prisma.task.count({
+     *   where: {
+     *     // ... the filter for the Tasks we want to count
+     *   }
+     * })
+    **/
+    count<T extends TaskCountArgs>(
+      args?: Subset<T, TaskCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TaskCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Task.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TaskAggregateArgs>(args: Subset<T, TaskAggregateArgs>): Prisma.PrismaPromise<GetTaskAggregateType<T>>
+
+    /**
+     * Group by Task.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TaskGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TaskGroupByArgs['orderBy'] }
+        : { orderBy?: TaskGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TaskGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTaskGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Task model
+   */
+  readonly fields: TaskFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Task.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    project<T extends Task$projectArgs<ExtArgs> = {}>(args?: Subset<T, Task$projectArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    assignee<T extends Task$assigneeArgs<ExtArgs> = {}>(args?: Subset<T, Task$assigneeArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Task model
+   */
+  interface TaskFieldRefs {
+    readonly id: FieldRef<"Task", 'String'>
+    readonly title: FieldRef<"Task", 'String'>
+    readonly description: FieldRef<"Task", 'String'>
+    readonly status: FieldRef<"Task", 'TaskStatus'>
+    readonly priority: FieldRef<"Task", 'TaskPriority'>
+    readonly dueDate: FieldRef<"Task", 'DateTime'>
+    readonly labels: FieldRef<"Task", 'String[]'>
+    readonly order: FieldRef<"Task", 'Int'>
+    readonly columnId: FieldRef<"Task", 'String'>
+    readonly source: FieldRef<"Task", 'String'>
+    readonly externalRefs: FieldRef<"Task", 'Json'>
+    readonly completedAt: FieldRef<"Task", 'DateTime'>
+    readonly projectId: FieldRef<"Task", 'String'>
+    readonly assigneeId: FieldRef<"Task", 'String'>
+    readonly createdById: FieldRef<"Task", 'String'>
+    readonly createdAt: FieldRef<"Task", 'DateTime'>
+    readonly updatedAt: FieldRef<"Task", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Task findUnique
+   */
+  export type TaskFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter, which Task to fetch.
+     */
+    where: TaskWhereUniqueInput
+  }
+
+  /**
+   * Task findUniqueOrThrow
+   */
+  export type TaskFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter, which Task to fetch.
+     */
+    where: TaskWhereUniqueInput
+  }
+
+  /**
+   * Task findFirst
+   */
+  export type TaskFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter, which Task to fetch.
+     */
+    where?: TaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tasks to fetch.
+     */
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tasks.
+     */
+    cursor?: TaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tasks.
+     */
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * Task findFirstOrThrow
+   */
+  export type TaskFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter, which Task to fetch.
+     */
+    where?: TaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tasks to fetch.
+     */
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tasks.
+     */
+    cursor?: TaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tasks.
+     */
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * Task findMany
+   */
+  export type TaskFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter, which Tasks to fetch.
+     */
+    where?: TaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tasks to fetch.
+     */
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Tasks.
+     */
+    cursor?: TaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tasks.
+     */
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * Task create
+   */
+  export type TaskCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Task.
+     */
+    data: XOR<TaskCreateInput, TaskUncheckedCreateInput>
+  }
+
+  /**
+   * Task createMany
+   */
+  export type TaskCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Tasks.
+     */
+    data: TaskCreateManyInput | TaskCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Task createManyAndReturn
+   */
+  export type TaskCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * The data used to create many Tasks.
+     */
+    data: TaskCreateManyInput | TaskCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Task update
+   */
+  export type TaskUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Task.
+     */
+    data: XOR<TaskUpdateInput, TaskUncheckedUpdateInput>
+    /**
+     * Choose, which Task to update.
+     */
+    where: TaskWhereUniqueInput
+  }
+
+  /**
+   * Task updateMany
+   */
+  export type TaskUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Tasks.
+     */
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyInput>
+    /**
+     * Filter which Tasks to update
+     */
+    where?: TaskWhereInput
+    /**
+     * Limit how many Tasks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Task updateManyAndReturn
+   */
+  export type TaskUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * The data used to update Tasks.
+     */
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyInput>
+    /**
+     * Filter which Tasks to update
+     */
+    where?: TaskWhereInput
+    /**
+     * Limit how many Tasks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Task upsert
+   */
+  export type TaskUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Task to update in case it exists.
+     */
+    where: TaskWhereUniqueInput
+    /**
+     * In case the Task found by the `where` argument doesn't exist, create a new Task with this data.
+     */
+    create: XOR<TaskCreateInput, TaskUncheckedCreateInput>
+    /**
+     * In case the Task was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TaskUpdateInput, TaskUncheckedUpdateInput>
+  }
+
+  /**
+   * Task delete
+   */
+  export type TaskDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter which Task to delete.
+     */
+    where: TaskWhereUniqueInput
+  }
+
+  /**
+   * Task deleteMany
+   */
+  export type TaskDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Tasks to delete
+     */
+    where?: TaskWhereInput
+    /**
+     * Limit how many Tasks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Task.project
+   */
+  export type Task$projectArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    where?: ProjectWhereInput
+  }
+
+  /**
+   * Task.assignee
+   */
+  export type Task$assigneeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Task without action
+   */
+  export type TaskDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Integration
+   */
+
+  export type AggregateIntegration = {
+    _count: IntegrationCountAggregateOutputType | null
+    _min: IntegrationMinAggregateOutputType | null
+    _max: IntegrationMaxAggregateOutputType | null
+  }
+
+  export type IntegrationMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    provider: $Enums.IntegrationProvider | null
+    status: $Enums.IntegrationStatus | null
+    configEncrypted: string | null
+    accountLabel: string | null
+    connectedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IntegrationMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    provider: $Enums.IntegrationProvider | null
+    status: $Enums.IntegrationStatus | null
+    configEncrypted: string | null
+    accountLabel: string | null
+    connectedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IntegrationCountAggregateOutputType = {
+    id: number
+    userId: number
+    provider: number
+    status: number
+    configEncrypted: number
+    scopes: number
+    accountLabel: number
+    connectedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type IntegrationMinAggregateInputType = {
+    id?: true
+    userId?: true
+    provider?: true
+    status?: true
+    configEncrypted?: true
+    accountLabel?: true
+    connectedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IntegrationMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    provider?: true
+    status?: true
+    configEncrypted?: true
+    accountLabel?: true
+    connectedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IntegrationCountAggregateInputType = {
+    id?: true
+    userId?: true
+    provider?: true
+    status?: true
+    configEncrypted?: true
+    scopes?: true
+    accountLabel?: true
+    connectedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type IntegrationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Integration to aggregate.
+     */
+    where?: IntegrationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Integrations to fetch.
+     */
+    orderBy?: IntegrationOrderByWithRelationInput | IntegrationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IntegrationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Integrations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Integrations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Integrations
+    **/
+    _count?: true | IntegrationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IntegrationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IntegrationMaxAggregateInputType
+  }
+
+  export type GetIntegrationAggregateType<T extends IntegrationAggregateArgs> = {
+        [P in keyof T & keyof AggregateIntegration]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIntegration[P]>
+      : GetScalarType<T[P], AggregateIntegration[P]>
+  }
+
+
+
+
+  export type IntegrationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IntegrationWhereInput
+    orderBy?: IntegrationOrderByWithAggregationInput | IntegrationOrderByWithAggregationInput[]
+    by: IntegrationScalarFieldEnum[] | IntegrationScalarFieldEnum
+    having?: IntegrationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IntegrationCountAggregateInputType | true
+    _min?: IntegrationMinAggregateInputType
+    _max?: IntegrationMaxAggregateInputType
+  }
+
+  export type IntegrationGroupByOutputType = {
+    id: string
+    userId: string
+    provider: $Enums.IntegrationProvider
+    status: $Enums.IntegrationStatus
+    configEncrypted: string | null
+    scopes: string[]
+    accountLabel: string | null
+    connectedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: IntegrationCountAggregateOutputType | null
+    _min: IntegrationMinAggregateOutputType | null
+    _max: IntegrationMaxAggregateOutputType | null
+  }
+
+  type GetIntegrationGroupByPayload<T extends IntegrationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IntegrationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IntegrationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IntegrationGroupByOutputType[P]>
+            : GetScalarType<T[P], IntegrationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IntegrationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    provider?: boolean
+    status?: boolean
+    configEncrypted?: boolean
+    scopes?: boolean
+    accountLabel?: boolean
+    connectedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["integration"]>
+
+  export type IntegrationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    provider?: boolean
+    status?: boolean
+    configEncrypted?: boolean
+    scopes?: boolean
+    accountLabel?: boolean
+    connectedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["integration"]>
+
+  export type IntegrationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    provider?: boolean
+    status?: boolean
+    configEncrypted?: boolean
+    scopes?: boolean
+    accountLabel?: boolean
+    connectedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["integration"]>
+
+  export type IntegrationSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    provider?: boolean
+    status?: boolean
+    configEncrypted?: boolean
+    scopes?: boolean
+    accountLabel?: boolean
+    connectedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type IntegrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "provider" | "status" | "configEncrypted" | "scopes" | "accountLabel" | "connectedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["integration"]>
+  export type IntegrationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type IntegrationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type IntegrationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $IntegrationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Integration"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      provider: $Enums.IntegrationProvider
+      status: $Enums.IntegrationStatus
+      /**
+       * Encrypted JSON: { accessToken, refreshToken, ... } or provider config.
+       */
+      configEncrypted: string | null
+      scopes: string[]
+      accountLabel: string | null
+      connectedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["integration"]>
+    composites: {}
+  }
+
+  type IntegrationGetPayload<S extends boolean | null | undefined | IntegrationDefaultArgs> = $Result.GetResult<Prisma.$IntegrationPayload, S>
+
+  type IntegrationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IntegrationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IntegrationCountAggregateInputType | true
+    }
+
+  export interface IntegrationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Integration'], meta: { name: 'Integration' } }
+    /**
+     * Find zero or one Integration that matches the filter.
+     * @param {IntegrationFindUniqueArgs} args - Arguments to find a Integration
+     * @example
+     * // Get one Integration
+     * const integration = await prisma.integration.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IntegrationFindUniqueArgs>(args: SelectSubset<T, IntegrationFindUniqueArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Integration that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IntegrationFindUniqueOrThrowArgs} args - Arguments to find a Integration
+     * @example
+     * // Get one Integration
+     * const integration = await prisma.integration.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IntegrationFindUniqueOrThrowArgs>(args: SelectSubset<T, IntegrationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Integration that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IntegrationFindFirstArgs} args - Arguments to find a Integration
+     * @example
+     * // Get one Integration
+     * const integration = await prisma.integration.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IntegrationFindFirstArgs>(args?: SelectSubset<T, IntegrationFindFirstArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Integration that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IntegrationFindFirstOrThrowArgs} args - Arguments to find a Integration
+     * @example
+     * // Get one Integration
+     * const integration = await prisma.integration.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IntegrationFindFirstOrThrowArgs>(args?: SelectSubset<T, IntegrationFindFirstOrThrowArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Integrations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IntegrationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Integrations
+     * const integrations = await prisma.integration.findMany()
+     * 
+     * // Get first 10 Integrations
+     * const integrations = await prisma.integration.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const integrationWithIdOnly = await prisma.integration.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IntegrationFindManyArgs>(args?: SelectSubset<T, IntegrationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Integration.
+     * @param {IntegrationCreateArgs} args - Arguments to create a Integration.
+     * @example
+     * // Create one Integration
+     * const Integration = await prisma.integration.create({
+     *   data: {
+     *     // ... data to create a Integration
+     *   }
+     * })
+     * 
+     */
+    create<T extends IntegrationCreateArgs>(args: SelectSubset<T, IntegrationCreateArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Integrations.
+     * @param {IntegrationCreateManyArgs} args - Arguments to create many Integrations.
+     * @example
+     * // Create many Integrations
+     * const integration = await prisma.integration.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IntegrationCreateManyArgs>(args?: SelectSubset<T, IntegrationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Integrations and returns the data saved in the database.
+     * @param {IntegrationCreateManyAndReturnArgs} args - Arguments to create many Integrations.
+     * @example
+     * // Create many Integrations
+     * const integration = await prisma.integration.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Integrations and only return the `id`
+     * const integrationWithIdOnly = await prisma.integration.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends IntegrationCreateManyAndReturnArgs>(args?: SelectSubset<T, IntegrationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Integration.
+     * @param {IntegrationDeleteArgs} args - Arguments to delete one Integration.
+     * @example
+     * // Delete one Integration
+     * const Integration = await prisma.integration.delete({
+     *   where: {
+     *     // ... filter to delete one Integration
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IntegrationDeleteArgs>(args: SelectSubset<T, IntegrationDeleteArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Integration.
+     * @param {IntegrationUpdateArgs} args - Arguments to update one Integration.
+     * @example
+     * // Update one Integration
+     * const integration = await prisma.integration.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IntegrationUpdateArgs>(args: SelectSubset<T, IntegrationUpdateArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Integrations.
+     * @param {IntegrationDeleteManyArgs} args - Arguments to filter Integrations to delete.
+     * @example
+     * // Delete a few Integrations
+     * const { count } = await prisma.integration.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IntegrationDeleteManyArgs>(args?: SelectSubset<T, IntegrationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Integrations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IntegrationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Integrations
+     * const integration = await prisma.integration.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IntegrationUpdateManyArgs>(args: SelectSubset<T, IntegrationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Integrations and returns the data updated in the database.
+     * @param {IntegrationUpdateManyAndReturnArgs} args - Arguments to update many Integrations.
+     * @example
+     * // Update many Integrations
+     * const integration = await prisma.integration.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Integrations and only return the `id`
+     * const integrationWithIdOnly = await prisma.integration.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends IntegrationUpdateManyAndReturnArgs>(args: SelectSubset<T, IntegrationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Integration.
+     * @param {IntegrationUpsertArgs} args - Arguments to update or create a Integration.
+     * @example
+     * // Update or create a Integration
+     * const integration = await prisma.integration.upsert({
+     *   create: {
+     *     // ... data to create a Integration
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Integration we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IntegrationUpsertArgs>(args: SelectSubset<T, IntegrationUpsertArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Integrations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IntegrationCountArgs} args - Arguments to filter Integrations to count.
+     * @example
+     * // Count the number of Integrations
+     * const count = await prisma.integration.count({
+     *   where: {
+     *     // ... the filter for the Integrations we want to count
+     *   }
+     * })
+    **/
+    count<T extends IntegrationCountArgs>(
+      args?: Subset<T, IntegrationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IntegrationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Integration.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IntegrationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IntegrationAggregateArgs>(args: Subset<T, IntegrationAggregateArgs>): Prisma.PrismaPromise<GetIntegrationAggregateType<T>>
+
+    /**
+     * Group by Integration.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IntegrationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IntegrationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IntegrationGroupByArgs['orderBy'] }
+        : { orderBy?: IntegrationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IntegrationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIntegrationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Integration model
+   */
+  readonly fields: IntegrationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Integration.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IntegrationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Integration model
+   */
+  interface IntegrationFieldRefs {
+    readonly id: FieldRef<"Integration", 'String'>
+    readonly userId: FieldRef<"Integration", 'String'>
+    readonly provider: FieldRef<"Integration", 'IntegrationProvider'>
+    readonly status: FieldRef<"Integration", 'IntegrationStatus'>
+    readonly configEncrypted: FieldRef<"Integration", 'String'>
+    readonly scopes: FieldRef<"Integration", 'String[]'>
+    readonly accountLabel: FieldRef<"Integration", 'String'>
+    readonly connectedAt: FieldRef<"Integration", 'DateTime'>
+    readonly createdAt: FieldRef<"Integration", 'DateTime'>
+    readonly updatedAt: FieldRef<"Integration", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Integration findUnique
+   */
+  export type IntegrationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationInclude<ExtArgs> | null
+    /**
+     * Filter, which Integration to fetch.
+     */
+    where: IntegrationWhereUniqueInput
+  }
+
+  /**
+   * Integration findUniqueOrThrow
+   */
+  export type IntegrationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationInclude<ExtArgs> | null
+    /**
+     * Filter, which Integration to fetch.
+     */
+    where: IntegrationWhereUniqueInput
+  }
+
+  /**
+   * Integration findFirst
+   */
+  export type IntegrationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationInclude<ExtArgs> | null
+    /**
+     * Filter, which Integration to fetch.
+     */
+    where?: IntegrationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Integrations to fetch.
+     */
+    orderBy?: IntegrationOrderByWithRelationInput | IntegrationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Integrations.
+     */
+    cursor?: IntegrationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Integrations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Integrations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Integrations.
+     */
+    distinct?: IntegrationScalarFieldEnum | IntegrationScalarFieldEnum[]
+  }
+
+  /**
+   * Integration findFirstOrThrow
+   */
+  export type IntegrationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationInclude<ExtArgs> | null
+    /**
+     * Filter, which Integration to fetch.
+     */
+    where?: IntegrationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Integrations to fetch.
+     */
+    orderBy?: IntegrationOrderByWithRelationInput | IntegrationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Integrations.
+     */
+    cursor?: IntegrationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Integrations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Integrations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Integrations.
+     */
+    distinct?: IntegrationScalarFieldEnum | IntegrationScalarFieldEnum[]
+  }
+
+  /**
+   * Integration findMany
+   */
+  export type IntegrationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationInclude<ExtArgs> | null
+    /**
+     * Filter, which Integrations to fetch.
+     */
+    where?: IntegrationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Integrations to fetch.
+     */
+    orderBy?: IntegrationOrderByWithRelationInput | IntegrationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Integrations.
+     */
+    cursor?: IntegrationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Integrations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Integrations.
+     */
+    skip?: number
+    distinct?: IntegrationScalarFieldEnum | IntegrationScalarFieldEnum[]
+  }
+
+  /**
+   * Integration create
+   */
+  export type IntegrationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Integration.
+     */
+    data: XOR<IntegrationCreateInput, IntegrationUncheckedCreateInput>
+  }
+
+  /**
+   * Integration createMany
+   */
+  export type IntegrationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Integrations.
+     */
+    data: IntegrationCreateManyInput | IntegrationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Integration createManyAndReturn
+   */
+  export type IntegrationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Integrations.
+     */
+    data: IntegrationCreateManyInput | IntegrationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Integration update
+   */
+  export type IntegrationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Integration.
+     */
+    data: XOR<IntegrationUpdateInput, IntegrationUncheckedUpdateInput>
+    /**
+     * Choose, which Integration to update.
+     */
+    where: IntegrationWhereUniqueInput
+  }
+
+  /**
+   * Integration updateMany
+   */
+  export type IntegrationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Integrations.
+     */
+    data: XOR<IntegrationUpdateManyMutationInput, IntegrationUncheckedUpdateManyInput>
+    /**
+     * Filter which Integrations to update
+     */
+    where?: IntegrationWhereInput
+    /**
+     * Limit how many Integrations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Integration updateManyAndReturn
+   */
+  export type IntegrationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * The data used to update Integrations.
+     */
+    data: XOR<IntegrationUpdateManyMutationInput, IntegrationUncheckedUpdateManyInput>
+    /**
+     * Filter which Integrations to update
+     */
+    where?: IntegrationWhereInput
+    /**
+     * Limit how many Integrations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Integration upsert
+   */
+  export type IntegrationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Integration to update in case it exists.
+     */
+    where: IntegrationWhereUniqueInput
+    /**
+     * In case the Integration found by the `where` argument doesn't exist, create a new Integration with this data.
+     */
+    create: XOR<IntegrationCreateInput, IntegrationUncheckedCreateInput>
+    /**
+     * In case the Integration was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IntegrationUpdateInput, IntegrationUncheckedUpdateInput>
+  }
+
+  /**
+   * Integration delete
+   */
+  export type IntegrationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationInclude<ExtArgs> | null
+    /**
+     * Filter which Integration to delete.
+     */
+    where: IntegrationWhereUniqueInput
+  }
+
+  /**
+   * Integration deleteMany
+   */
+  export type IntegrationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Integrations to delete
+     */
+    where?: IntegrationWhereInput
+    /**
+     * Limit how many Integrations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Integration without action
+   */
+  export type IntegrationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Integration
+     */
+    select?: IntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Integration
+     */
+    omit?: IntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IntegrationInclude<ExtArgs> | null
   }
 
 
@@ -34587,6 +37403,45 @@ export namespace Prisma {
   export type ProjectArtifactScalarFieldEnum = (typeof ProjectArtifactScalarFieldEnum)[keyof typeof ProjectArtifactScalarFieldEnum]
 
 
+  export const TaskScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    status: 'status',
+    priority: 'priority',
+    dueDate: 'dueDate',
+    labels: 'labels',
+    order: 'order',
+    columnId: 'columnId',
+    source: 'source',
+    externalRefs: 'externalRefs',
+    completedAt: 'completedAt',
+    projectId: 'projectId',
+    assigneeId: 'assigneeId',
+    createdById: 'createdById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
+
+
+  export const IntegrationScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    provider: 'provider',
+    status: 'status',
+    configEncrypted: 'configEncrypted',
+    scopes: 'scopes',
+    accountLabel: 'accountLabel',
+    connectedAt: 'connectedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type IntegrationScalarFieldEnum = (typeof IntegrationScalarFieldEnum)[keyof typeof IntegrationScalarFieldEnum]
+
+
   export const ProjectInviteScalarFieldEnum: {
     id: 'id',
     projectId: 'projectId',
@@ -34953,6 +37808,62 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'TaskStatus'
+   */
+  export type EnumTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'TaskStatus[]'
+   */
+  export type ListEnumTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TaskPriority'
+   */
+  export type EnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskPriority'>
+    
+
+
+  /**
+   * Reference to a field of type 'TaskPriority[]'
+   */
+  export type ListEnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskPriority[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'IntegrationProvider'
+   */
+  export type EnumIntegrationProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationProvider'>
+    
+
+
+  /**
+   * Reference to a field of type 'IntegrationProvider[]'
+   */
+  export type ListEnumIntegrationProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationProvider[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'IntegrationStatus'
+   */
+  export type EnumIntegrationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'IntegrationStatus[]'
+   */
+  export type ListEnumIntegrationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'InviteStatus'
    */
   export type EnumInviteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InviteStatus'>
@@ -35027,6 +37938,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberListRelationFilter
     notifications?: NotificationListRelationFilter
     syncOperations?: SyncOperationListRelationFilter
+    tasksCreated?: TaskListRelationFilter
+    tasksAssigned?: TaskListRelationFilter
+    integrations?: IntegrationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -35070,6 +37984,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
     syncOperations?: SyncOperationOrderByRelationAggregateInput
+    tasksCreated?: TaskOrderByRelationAggregateInput
+    tasksAssigned?: TaskOrderByRelationAggregateInput
+    integrations?: IntegrationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -35116,6 +38033,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberListRelationFilter
     notifications?: NotificationListRelationFilter
     syncOperations?: SyncOperationListRelationFilter
+    tasksCreated?: TaskListRelationFilter
+    tasksAssigned?: TaskListRelationFilter
+    integrations?: IntegrationListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -36001,6 +38921,7 @@ export namespace Prisma {
     comments?: CommentListRelationFilter
     syncOps?: SyncOperationListRelationFilter
     snapshots?: SyncSnapshotListRelationFilter
+    tasks?: TaskListRelationFilter
     group?: XOR<GroupNullableScalarRelationFilter, GroupWhereInput> | null
   }
 
@@ -36022,6 +38943,7 @@ export namespace Prisma {
     comments?: CommentOrderByRelationAggregateInput
     syncOps?: SyncOperationOrderByRelationAggregateInput
     snapshots?: SyncSnapshotOrderByRelationAggregateInput
+    tasks?: TaskOrderByRelationAggregateInput
     group?: GroupOrderByWithRelationInput
   }
 
@@ -36046,6 +38968,7 @@ export namespace Prisma {
     comments?: CommentListRelationFilter
     syncOps?: SyncOperationListRelationFilter
     snapshots?: SyncSnapshotListRelationFilter
+    tasks?: TaskListRelationFilter
     group?: XOR<GroupNullableScalarRelationFilter, GroupWhereInput> | null
   }, "id">
 
@@ -36490,6 +39413,210 @@ export namespace Prisma {
     revision?: IntWithAggregatesFilter<"ProjectArtifact"> | number
     createdAt?: DateTimeWithAggregatesFilter<"ProjectArtifact"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProjectArtifact"> | Date | string
+  }
+
+  export type TaskWhereInput = {
+    AND?: TaskWhereInput | TaskWhereInput[]
+    OR?: TaskWhereInput[]
+    NOT?: TaskWhereInput | TaskWhereInput[]
+    id?: StringFilter<"Task"> | string
+    title?: StringFilter<"Task"> | string
+    description?: StringNullableFilter<"Task"> | string | null
+    status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+    dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    labels?: StringNullableListFilter<"Task">
+    order?: IntFilter<"Task"> | number
+    columnId?: StringNullableFilter<"Task"> | string | null
+    source?: StringFilter<"Task"> | string
+    externalRefs?: JsonNullableFilter<"Task">
+    completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
+    projectId?: StringNullableFilter<"Task"> | string | null
+    assigneeId?: StringNullableFilter<"Task"> | string | null
+    createdById?: StringFilter<"Task"> | string
+    createdAt?: DateTimeFilter<"Task"> | Date | string
+    updatedAt?: DateTimeFilter<"Task"> | Date | string
+    project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
+    assignee?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type TaskOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    labels?: SortOrder
+    order?: SortOrder
+    columnId?: SortOrderInput | SortOrder
+    source?: SortOrder
+    externalRefs?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    projectId?: SortOrderInput | SortOrder
+    assigneeId?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    project?: ProjectOrderByWithRelationInput
+    assignee?: UserOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+  }
+
+  export type TaskWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TaskWhereInput | TaskWhereInput[]
+    OR?: TaskWhereInput[]
+    NOT?: TaskWhereInput | TaskWhereInput[]
+    title?: StringFilter<"Task"> | string
+    description?: StringNullableFilter<"Task"> | string | null
+    status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+    dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    labels?: StringNullableListFilter<"Task">
+    order?: IntFilter<"Task"> | number
+    columnId?: StringNullableFilter<"Task"> | string | null
+    source?: StringFilter<"Task"> | string
+    externalRefs?: JsonNullableFilter<"Task">
+    completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
+    projectId?: StringNullableFilter<"Task"> | string | null
+    assigneeId?: StringNullableFilter<"Task"> | string | null
+    createdById?: StringFilter<"Task"> | string
+    createdAt?: DateTimeFilter<"Task"> | Date | string
+    updatedAt?: DateTimeFilter<"Task"> | Date | string
+    project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
+    assignee?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type TaskOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    labels?: SortOrder
+    order?: SortOrder
+    columnId?: SortOrderInput | SortOrder
+    source?: SortOrder
+    externalRefs?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    projectId?: SortOrderInput | SortOrder
+    assigneeId?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TaskCountOrderByAggregateInput
+    _avg?: TaskAvgOrderByAggregateInput
+    _max?: TaskMaxOrderByAggregateInput
+    _min?: TaskMinOrderByAggregateInput
+    _sum?: TaskSumOrderByAggregateInput
+  }
+
+  export type TaskScalarWhereWithAggregatesInput = {
+    AND?: TaskScalarWhereWithAggregatesInput | TaskScalarWhereWithAggregatesInput[]
+    OR?: TaskScalarWhereWithAggregatesInput[]
+    NOT?: TaskScalarWhereWithAggregatesInput | TaskScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Task"> | string
+    title?: StringWithAggregatesFilter<"Task"> | string
+    description?: StringNullableWithAggregatesFilter<"Task"> | string | null
+    status?: EnumTaskStatusWithAggregatesFilter<"Task"> | $Enums.TaskStatus
+    priority?: EnumTaskPriorityWithAggregatesFilter<"Task"> | $Enums.TaskPriority
+    dueDate?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
+    labels?: StringNullableListFilter<"Task">
+    order?: IntWithAggregatesFilter<"Task"> | number
+    columnId?: StringNullableWithAggregatesFilter<"Task"> | string | null
+    source?: StringWithAggregatesFilter<"Task"> | string
+    externalRefs?: JsonNullableWithAggregatesFilter<"Task">
+    completedAt?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
+    projectId?: StringNullableWithAggregatesFilter<"Task"> | string | null
+    assigneeId?: StringNullableWithAggregatesFilter<"Task"> | string | null
+    createdById?: StringWithAggregatesFilter<"Task"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Task"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Task"> | Date | string
+  }
+
+  export type IntegrationWhereInput = {
+    AND?: IntegrationWhereInput | IntegrationWhereInput[]
+    OR?: IntegrationWhereInput[]
+    NOT?: IntegrationWhereInput | IntegrationWhereInput[]
+    id?: StringFilter<"Integration"> | string
+    userId?: StringFilter<"Integration"> | string
+    provider?: EnumIntegrationProviderFilter<"Integration"> | $Enums.IntegrationProvider
+    status?: EnumIntegrationStatusFilter<"Integration"> | $Enums.IntegrationStatus
+    configEncrypted?: StringNullableFilter<"Integration"> | string | null
+    scopes?: StringNullableListFilter<"Integration">
+    accountLabel?: StringNullableFilter<"Integration"> | string | null
+    connectedAt?: DateTimeNullableFilter<"Integration"> | Date | string | null
+    createdAt?: DateTimeFilter<"Integration"> | Date | string
+    updatedAt?: DateTimeFilter<"Integration"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type IntegrationOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    provider?: SortOrder
+    status?: SortOrder
+    configEncrypted?: SortOrderInput | SortOrder
+    scopes?: SortOrder
+    accountLabel?: SortOrderInput | SortOrder
+    connectedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type IntegrationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_provider?: IntegrationUserIdProviderCompoundUniqueInput
+    AND?: IntegrationWhereInput | IntegrationWhereInput[]
+    OR?: IntegrationWhereInput[]
+    NOT?: IntegrationWhereInput | IntegrationWhereInput[]
+    userId?: StringFilter<"Integration"> | string
+    provider?: EnumIntegrationProviderFilter<"Integration"> | $Enums.IntegrationProvider
+    status?: EnumIntegrationStatusFilter<"Integration"> | $Enums.IntegrationStatus
+    configEncrypted?: StringNullableFilter<"Integration"> | string | null
+    scopes?: StringNullableListFilter<"Integration">
+    accountLabel?: StringNullableFilter<"Integration"> | string | null
+    connectedAt?: DateTimeNullableFilter<"Integration"> | Date | string | null
+    createdAt?: DateTimeFilter<"Integration"> | Date | string
+    updatedAt?: DateTimeFilter<"Integration"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_provider">
+
+  export type IntegrationOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    provider?: SortOrder
+    status?: SortOrder
+    configEncrypted?: SortOrderInput | SortOrder
+    scopes?: SortOrder
+    accountLabel?: SortOrderInput | SortOrder
+    connectedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: IntegrationCountOrderByAggregateInput
+    _max?: IntegrationMaxOrderByAggregateInput
+    _min?: IntegrationMinOrderByAggregateInput
+  }
+
+  export type IntegrationScalarWhereWithAggregatesInput = {
+    AND?: IntegrationScalarWhereWithAggregatesInput | IntegrationScalarWhereWithAggregatesInput[]
+    OR?: IntegrationScalarWhereWithAggregatesInput[]
+    NOT?: IntegrationScalarWhereWithAggregatesInput | IntegrationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Integration"> | string
+    userId?: StringWithAggregatesFilter<"Integration"> | string
+    provider?: EnumIntegrationProviderWithAggregatesFilter<"Integration"> | $Enums.IntegrationProvider
+    status?: EnumIntegrationStatusWithAggregatesFilter<"Integration"> | $Enums.IntegrationStatus
+    configEncrypted?: StringNullableWithAggregatesFilter<"Integration"> | string | null
+    scopes?: StringNullableListFilter<"Integration">
+    accountLabel?: StringNullableWithAggregatesFilter<"Integration"> | string | null
+    connectedAt?: DateTimeNullableWithAggregatesFilter<"Integration"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Integration"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Integration"> | Date | string
   }
 
   export type ProjectInviteWhereInput = {
@@ -37024,6 +40151,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -37067,6 +40197,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -37110,6 +40243,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -37153,6 +40289,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -38109,6 +41248,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
     group?: GroupCreateNestedOneWithoutProjectsInput
   }
 
@@ -38130,6 +41270,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationUncheckedCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUpdateInput = {
@@ -38149,6 +41290,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
     group?: GroupUpdateOneWithoutProjectsNestedInput
   }
 
@@ -38170,6 +41312,7 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUncheckedUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateManyInput = {
@@ -38625,6 +41768,233 @@ export namespace Prisma {
     artifactPath?: StringFieldUpdateOperationsInput | string
     content?: JsonNullValueInput | InputJsonValue
     revision?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project?: ProjectCreateNestedOneWithoutTasksInput
+    assignee?: UserCreateNestedOneWithoutTasksAssignedInput
+    createdBy: UserCreateNestedOneWithoutTasksCreatedInput
+  }
+
+  export type TaskUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    projectId?: string | null
+    assigneeId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneWithoutTasksNestedInput
+    assignee?: UserUpdateOneWithoutTasksAssignedNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutTasksCreatedNestedInput
+  }
+
+  export type TaskUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskCreateManyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    projectId?: string | null
+    assigneeId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IntegrationCreateInput = {
+    id?: string
+    provider: $Enums.IntegrationProvider
+    status?: $Enums.IntegrationStatus
+    configEncrypted?: string | null
+    scopes?: IntegrationCreatescopesInput | string[]
+    accountLabel?: string | null
+    connectedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutIntegrationsInput
+  }
+
+  export type IntegrationUncheckedCreateInput = {
+    id?: string
+    userId: string
+    provider: $Enums.IntegrationProvider
+    status?: $Enums.IntegrationStatus
+    configEncrypted?: string | null
+    scopes?: IntegrationCreatescopesInput | string[]
+    accountLabel?: string | null
+    connectedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IntegrationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    configEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: IntegrationUpdatescopesInput | string[]
+    accountLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutIntegrationsNestedInput
+  }
+
+  export type IntegrationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    configEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: IntegrationUpdatescopesInput | string[]
+    accountLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IntegrationCreateManyInput = {
+    id?: string
+    userId: string
+    provider: $Enums.IntegrationProvider
+    status?: $Enums.IntegrationStatus
+    configEncrypted?: string | null
+    scopes?: IntegrationCreatescopesInput | string[]
+    accountLabel?: string | null
+    connectedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IntegrationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    configEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: IntegrationUpdatescopesInput | string[]
+    accountLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IntegrationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    configEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: IntegrationUpdatescopesInput | string[]
+    accountLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -39353,6 +42723,18 @@ export namespace Prisma {
     none?: SyncOperationWhereInput
   }
 
+  export type TaskListRelationFilter = {
+    every?: TaskWhereInput
+    some?: TaskWhereInput
+    none?: TaskWhereInput
+  }
+
+  export type IntegrationListRelationFilter = {
+    every?: IntegrationWhereInput
+    some?: IntegrationWhereInput
+    none?: IntegrationWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -39431,6 +42813,14 @@ export namespace Prisma {
   }
 
   export type SyncOperationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TaskOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type IntegrationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -40532,6 +43922,185 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type EnumTaskStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskStatus | EnumTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus
+  }
+
+  export type EnumTaskPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskPriority | EnumTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskPriorityFilter<$PrismaModel> | $Enums.TaskPriority
+  }
+
+  export type ProjectNullableScalarRelationFilter = {
+    is?: ProjectWhereInput | null
+    isNot?: ProjectWhereInput | null
+  }
+
+  export type TaskCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    labels?: SortOrder
+    order?: SortOrder
+    columnId?: SortOrder
+    source?: SortOrder
+    externalRefs?: SortOrder
+    completedAt?: SortOrder
+    projectId?: SortOrder
+    assigneeId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TaskAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type TaskMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    order?: SortOrder
+    columnId?: SortOrder
+    source?: SortOrder
+    completedAt?: SortOrder
+    projectId?: SortOrder
+    assigneeId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TaskMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    order?: SortOrder
+    columnId?: SortOrder
+    source?: SortOrder
+    completedAt?: SortOrder
+    projectId?: SortOrder
+    assigneeId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TaskSumOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type EnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskStatus | EnumTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskStatusWithAggregatesFilter<$PrismaModel> | $Enums.TaskStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaskStatusFilter<$PrismaModel>
+    _max?: NestedEnumTaskStatusFilter<$PrismaModel>
+  }
+
+  export type EnumTaskPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskPriority | EnumTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskPriorityWithAggregatesFilter<$PrismaModel> | $Enums.TaskPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaskPriorityFilter<$PrismaModel>
+    _max?: NestedEnumTaskPriorityFilter<$PrismaModel>
+  }
+
+  export type EnumIntegrationProviderFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationProvider | EnumIntegrationProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationProviderFilter<$PrismaModel> | $Enums.IntegrationProvider
+  }
+
+  export type EnumIntegrationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationStatus | EnumIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationStatusFilter<$PrismaModel> | $Enums.IntegrationStatus
+  }
+
+  export type IntegrationUserIdProviderCompoundUniqueInput = {
+    userId: string
+    provider: $Enums.IntegrationProvider
+  }
+
+  export type IntegrationCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    provider?: SortOrder
+    status?: SortOrder
+    configEncrypted?: SortOrder
+    scopes?: SortOrder
+    accountLabel?: SortOrder
+    connectedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IntegrationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    provider?: SortOrder
+    status?: SortOrder
+    configEncrypted?: SortOrder
+    accountLabel?: SortOrder
+    connectedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IntegrationMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    provider?: SortOrder
+    status?: SortOrder
+    configEncrypted?: SortOrder
+    accountLabel?: SortOrder
+    connectedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumIntegrationProviderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationProvider | EnumIntegrationProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationProviderWithAggregatesFilter<$PrismaModel> | $Enums.IntegrationProvider
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIntegrationProviderFilter<$PrismaModel>
+    _max?: NestedEnumIntegrationProviderFilter<$PrismaModel>
+  }
+
+  export type EnumIntegrationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationStatus | EnumIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationStatusWithAggregatesFilter<$PrismaModel> | $Enums.IntegrationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIntegrationStatusFilter<$PrismaModel>
+    _max?: NestedEnumIntegrationStatusFilter<$PrismaModel>
+  }
+
   export type EnumInviteStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.InviteStatus | EnumInviteStatusFieldRefInput<$PrismaModel>
     in?: $Enums.InviteStatus[] | ListEnumInviteStatusFieldRefInput<$PrismaModel>
@@ -40948,6 +44517,27 @@ export namespace Prisma {
     connect?: SyncOperationWhereUniqueInput | SyncOperationWhereUniqueInput[]
   }
 
+  export type TaskCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput> | TaskCreateWithoutCreatedByInput[] | TaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutCreatedByInput | TaskCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TaskCreateManyCreatedByInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type TaskCreateNestedManyWithoutAssigneeInput = {
+    create?: XOR<TaskCreateWithoutAssigneeInput, TaskUncheckedCreateWithoutAssigneeInput> | TaskCreateWithoutAssigneeInput[] | TaskUncheckedCreateWithoutAssigneeInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssigneeInput | TaskCreateOrConnectWithoutAssigneeInput[]
+    createMany?: TaskCreateManyAssigneeInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type IntegrationCreateNestedManyWithoutUserInput = {
+    create?: XOR<IntegrationCreateWithoutUserInput, IntegrationUncheckedCreateWithoutUserInput> | IntegrationCreateWithoutUserInput[] | IntegrationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IntegrationCreateOrConnectWithoutUserInput | IntegrationCreateOrConnectWithoutUserInput[]
+    createMany?: IntegrationCreateManyUserInputEnvelope
+    connect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+  }
+
   export type CredentialUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput>
     connectOrCreate?: CredentialCreateOrConnectWithoutUserInput
@@ -41092,6 +44682,27 @@ export namespace Prisma {
     connectOrCreate?: SyncOperationCreateOrConnectWithoutUserInput | SyncOperationCreateOrConnectWithoutUserInput[]
     createMany?: SyncOperationCreateManyUserInputEnvelope
     connect?: SyncOperationWhereUniqueInput | SyncOperationWhereUniqueInput[]
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput> | TaskCreateWithoutCreatedByInput[] | TaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutCreatedByInput | TaskCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TaskCreateManyCreatedByInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutAssigneeInput = {
+    create?: XOR<TaskCreateWithoutAssigneeInput, TaskUncheckedCreateWithoutAssigneeInput> | TaskCreateWithoutAssigneeInput[] | TaskUncheckedCreateWithoutAssigneeInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssigneeInput | TaskCreateOrConnectWithoutAssigneeInput[]
+    createMany?: TaskCreateManyAssigneeInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type IntegrationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<IntegrationCreateWithoutUserInput, IntegrationUncheckedCreateWithoutUserInput> | IntegrationCreateWithoutUserInput[] | IntegrationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IntegrationCreateOrConnectWithoutUserInput | IntegrationCreateOrConnectWithoutUserInput[]
+    createMany?: IntegrationCreateManyUserInputEnvelope
+    connect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -41413,6 +45024,48 @@ export namespace Prisma {
     deleteMany?: SyncOperationScalarWhereInput | SyncOperationScalarWhereInput[]
   }
 
+  export type TaskUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput> | TaskCreateWithoutCreatedByInput[] | TaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutCreatedByInput | TaskCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutCreatedByInput | TaskUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TaskCreateManyCreatedByInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutCreatedByInput | TaskUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutCreatedByInput | TaskUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type TaskUpdateManyWithoutAssigneeNestedInput = {
+    create?: XOR<TaskCreateWithoutAssigneeInput, TaskUncheckedCreateWithoutAssigneeInput> | TaskCreateWithoutAssigneeInput[] | TaskUncheckedCreateWithoutAssigneeInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssigneeInput | TaskCreateOrConnectWithoutAssigneeInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutAssigneeInput | TaskUpsertWithWhereUniqueWithoutAssigneeInput[]
+    createMany?: TaskCreateManyAssigneeInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutAssigneeInput | TaskUpdateWithWhereUniqueWithoutAssigneeInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutAssigneeInput | TaskUpdateManyWithWhereWithoutAssigneeInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type IntegrationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<IntegrationCreateWithoutUserInput, IntegrationUncheckedCreateWithoutUserInput> | IntegrationCreateWithoutUserInput[] | IntegrationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IntegrationCreateOrConnectWithoutUserInput | IntegrationCreateOrConnectWithoutUserInput[]
+    upsert?: IntegrationUpsertWithWhereUniqueWithoutUserInput | IntegrationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: IntegrationCreateManyUserInputEnvelope
+    set?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    disconnect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    delete?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    connect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    update?: IntegrationUpdateWithWhereUniqueWithoutUserInput | IntegrationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: IntegrationUpdateManyWithWhereWithoutUserInput | IntegrationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: IntegrationScalarWhereInput | IntegrationScalarWhereInput[]
+  }
+
   export type CredentialUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput>
     connectOrCreate?: CredentialCreateOrConnectWithoutUserInput
@@ -41701,6 +45354,48 @@ export namespace Prisma {
     update?: SyncOperationUpdateWithWhereUniqueWithoutUserInput | SyncOperationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: SyncOperationUpdateManyWithWhereWithoutUserInput | SyncOperationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: SyncOperationScalarWhereInput | SyncOperationScalarWhereInput[]
+  }
+
+  export type TaskUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput> | TaskCreateWithoutCreatedByInput[] | TaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutCreatedByInput | TaskCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutCreatedByInput | TaskUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TaskCreateManyCreatedByInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutCreatedByInput | TaskUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutCreatedByInput | TaskUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type TaskUncheckedUpdateManyWithoutAssigneeNestedInput = {
+    create?: XOR<TaskCreateWithoutAssigneeInput, TaskUncheckedCreateWithoutAssigneeInput> | TaskCreateWithoutAssigneeInput[] | TaskUncheckedCreateWithoutAssigneeInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssigneeInput | TaskCreateOrConnectWithoutAssigneeInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutAssigneeInput | TaskUpsertWithWhereUniqueWithoutAssigneeInput[]
+    createMany?: TaskCreateManyAssigneeInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutAssigneeInput | TaskUpdateWithWhereUniqueWithoutAssigneeInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutAssigneeInput | TaskUpdateManyWithWhereWithoutAssigneeInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type IntegrationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<IntegrationCreateWithoutUserInput, IntegrationUncheckedCreateWithoutUserInput> | IntegrationCreateWithoutUserInput[] | IntegrationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IntegrationCreateOrConnectWithoutUserInput | IntegrationCreateOrConnectWithoutUserInput[]
+    upsert?: IntegrationUpsertWithWhereUniqueWithoutUserInput | IntegrationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: IntegrationCreateManyUserInputEnvelope
+    set?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    disconnect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    delete?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    connect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    update?: IntegrationUpdateWithWhereUniqueWithoutUserInput | IntegrationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: IntegrationUpdateManyWithWhereWithoutUserInput | IntegrationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: IntegrationScalarWhereInput | IntegrationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutCredentialInput = {
@@ -42022,6 +45717,13 @@ export namespace Prisma {
     connect?: SyncSnapshotWhereUniqueInput | SyncSnapshotWhereUniqueInput[]
   }
 
+  export type TaskCreateNestedManyWithoutProjectInput = {
+    create?: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput> | TaskCreateWithoutProjectInput[] | TaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutProjectInput | TaskCreateOrConnectWithoutProjectInput[]
+    createMany?: TaskCreateManyProjectInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
   export type GroupCreateNestedOneWithoutProjectsInput = {
     create?: XOR<GroupCreateWithoutProjectsInput, GroupUncheckedCreateWithoutProjectsInput>
     connectOrCreate?: GroupCreateOrConnectWithoutProjectsInput
@@ -42075,6 +45777,13 @@ export namespace Prisma {
     connectOrCreate?: SyncSnapshotCreateOrConnectWithoutProjectInput | SyncSnapshotCreateOrConnectWithoutProjectInput[]
     createMany?: SyncSnapshotCreateManyProjectInputEnvelope
     connect?: SyncSnapshotWhereUniqueInput | SyncSnapshotWhereUniqueInput[]
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput> | TaskCreateWithoutProjectInput[] | TaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutProjectInput | TaskCreateOrConnectWithoutProjectInput[]
+    createMany?: TaskCreateManyProjectInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
   export type EnumProjectStatusFieldUpdateOperationsInput = {
@@ -42188,6 +45897,20 @@ export namespace Prisma {
     deleteMany?: SyncSnapshotScalarWhereInput | SyncSnapshotScalarWhereInput[]
   }
 
+  export type TaskUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput> | TaskCreateWithoutProjectInput[] | TaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutProjectInput | TaskCreateOrConnectWithoutProjectInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutProjectInput | TaskUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: TaskCreateManyProjectInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutProjectInput | TaskUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutProjectInput | TaskUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
   export type GroupUpdateOneWithoutProjectsNestedInput = {
     create?: XOR<GroupCreateWithoutProjectsInput, GroupUncheckedCreateWithoutProjectsInput>
     connectOrCreate?: GroupCreateOrConnectWithoutProjectsInput
@@ -42294,6 +46017,20 @@ export namespace Prisma {
     update?: SyncSnapshotUpdateWithWhereUniqueWithoutProjectInput | SyncSnapshotUpdateWithWhereUniqueWithoutProjectInput[]
     updateMany?: SyncSnapshotUpdateManyWithWhereWithoutProjectInput | SyncSnapshotUpdateManyWithWhereWithoutProjectInput[]
     deleteMany?: SyncSnapshotScalarWhereInput | SyncSnapshotScalarWhereInput[]
+  }
+
+  export type TaskUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput> | TaskCreateWithoutProjectInput[] | TaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutProjectInput | TaskCreateOrConnectWithoutProjectInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutProjectInput | TaskUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: TaskCreateManyProjectInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutProjectInput | TaskUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutProjectInput | TaskUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutFriendshipsSentInput = {
@@ -42524,6 +46261,100 @@ export namespace Prisma {
     upsert?: ProjectUpsertWithoutArtifactsInput
     connect?: ProjectWhereUniqueInput
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutArtifactsInput, ProjectUpdateWithoutArtifactsInput>, ProjectUncheckedUpdateWithoutArtifactsInput>
+  }
+
+  export type TaskCreatelabelsInput = {
+    set: string[]
+  }
+
+  export type ProjectCreateNestedOneWithoutTasksInput = {
+    create?: XOR<ProjectCreateWithoutTasksInput, ProjectUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutTasksInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutTasksAssignedInput = {
+    create?: XOR<UserCreateWithoutTasksAssignedInput, UserUncheckedCreateWithoutTasksAssignedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTasksAssignedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutTasksCreatedInput = {
+    create?: XOR<UserCreateWithoutTasksCreatedInput, UserUncheckedCreateWithoutTasksCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTasksCreatedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumTaskStatusFieldUpdateOperationsInput = {
+    set?: $Enums.TaskStatus
+  }
+
+  export type EnumTaskPriorityFieldUpdateOperationsInput = {
+    set?: $Enums.TaskPriority
+  }
+
+  export type TaskUpdatelabelsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type ProjectUpdateOneWithoutTasksNestedInput = {
+    create?: XOR<ProjectCreateWithoutTasksInput, ProjectUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutTasksInput
+    upsert?: ProjectUpsertWithoutTasksInput
+    disconnect?: ProjectWhereInput | boolean
+    delete?: ProjectWhereInput | boolean
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutTasksInput, ProjectUpdateWithoutTasksInput>, ProjectUncheckedUpdateWithoutTasksInput>
+  }
+
+  export type UserUpdateOneWithoutTasksAssignedNestedInput = {
+    create?: XOR<UserCreateWithoutTasksAssignedInput, UserUncheckedCreateWithoutTasksAssignedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTasksAssignedInput
+    upsert?: UserUpsertWithoutTasksAssignedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTasksAssignedInput, UserUpdateWithoutTasksAssignedInput>, UserUncheckedUpdateWithoutTasksAssignedInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutTasksCreatedNestedInput = {
+    create?: XOR<UserCreateWithoutTasksCreatedInput, UserUncheckedCreateWithoutTasksCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTasksCreatedInput
+    upsert?: UserUpsertWithoutTasksCreatedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTasksCreatedInput, UserUpdateWithoutTasksCreatedInput>, UserUncheckedUpdateWithoutTasksCreatedInput>
+  }
+
+  export type IntegrationCreatescopesInput = {
+    set: string[]
+  }
+
+  export type UserCreateNestedOneWithoutIntegrationsInput = {
+    create?: XOR<UserCreateWithoutIntegrationsInput, UserUncheckedCreateWithoutIntegrationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutIntegrationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumIntegrationProviderFieldUpdateOperationsInput = {
+    set?: $Enums.IntegrationProvider
+  }
+
+  export type EnumIntegrationStatusFieldUpdateOperationsInput = {
+    set?: $Enums.IntegrationStatus
+  }
+
+  export type IntegrationUpdatescopesInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type UserUpdateOneRequiredWithoutIntegrationsNestedInput = {
+    create?: XOR<UserCreateWithoutIntegrationsInput, UserUncheckedCreateWithoutIntegrationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutIntegrationsInput
+    upsert?: UserUpsertWithoutIntegrationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutIntegrationsInput, UserUpdateWithoutIntegrationsInput>, UserUncheckedUpdateWithoutIntegrationsInput>
   }
 
   export type ProjectCreateNestedOneWithoutInvitesInput = {
@@ -43084,6 +46915,74 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumTaskStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskStatus | EnumTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus
+  }
+
+  export type NestedEnumTaskPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskPriority | EnumTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskPriorityFilter<$PrismaModel> | $Enums.TaskPriority
+  }
+
+  export type NestedEnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskStatus | EnumTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskStatusWithAggregatesFilter<$PrismaModel> | $Enums.TaskStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaskStatusFilter<$PrismaModel>
+    _max?: NestedEnumTaskStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTaskPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskPriority | EnumTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskPriorityWithAggregatesFilter<$PrismaModel> | $Enums.TaskPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaskPriorityFilter<$PrismaModel>
+    _max?: NestedEnumTaskPriorityFilter<$PrismaModel>
+  }
+
+  export type NestedEnumIntegrationProviderFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationProvider | EnumIntegrationProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationProviderFilter<$PrismaModel> | $Enums.IntegrationProvider
+  }
+
+  export type NestedEnumIntegrationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationStatus | EnumIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationStatusFilter<$PrismaModel> | $Enums.IntegrationStatus
+  }
+
+  export type NestedEnumIntegrationProviderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationProvider | EnumIntegrationProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationProviderWithAggregatesFilter<$PrismaModel> | $Enums.IntegrationProvider
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIntegrationProviderFilter<$PrismaModel>
+    _max?: NestedEnumIntegrationProviderFilter<$PrismaModel>
+  }
+
+  export type NestedEnumIntegrationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationStatus | EnumIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationStatusWithAggregatesFilter<$PrismaModel> | $Enums.IntegrationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIntegrationStatusFilter<$PrismaModel>
+    _max?: NestedEnumIntegrationStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumInviteStatusFilter<$PrismaModel = never> = {
@@ -43716,6 +47615,136 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TaskCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project?: ProjectCreateNestedOneWithoutTasksInput
+    assignee?: UserCreateNestedOneWithoutTasksAssignedInput
+  }
+
+  export type TaskUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    projectId?: string | null
+    assigneeId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskCreateOrConnectWithoutCreatedByInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TaskCreateManyCreatedByInputEnvelope = {
+    data: TaskCreateManyCreatedByInput | TaskCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TaskCreateWithoutAssigneeInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project?: ProjectCreateNestedOneWithoutTasksInput
+    createdBy: UserCreateNestedOneWithoutTasksCreatedInput
+  }
+
+  export type TaskUncheckedCreateWithoutAssigneeInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    projectId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskCreateOrConnectWithoutAssigneeInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutAssigneeInput, TaskUncheckedCreateWithoutAssigneeInput>
+  }
+
+  export type TaskCreateManyAssigneeInputEnvelope = {
+    data: TaskCreateManyAssigneeInput | TaskCreateManyAssigneeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type IntegrationCreateWithoutUserInput = {
+    id?: string
+    provider: $Enums.IntegrationProvider
+    status?: $Enums.IntegrationStatus
+    configEncrypted?: string | null
+    scopes?: IntegrationCreatescopesInput | string[]
+    accountLabel?: string | null
+    connectedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IntegrationUncheckedCreateWithoutUserInput = {
+    id?: string
+    provider: $Enums.IntegrationProvider
+    status?: $Enums.IntegrationStatus
+    configEncrypted?: string | null
+    scopes?: IntegrationCreatescopesInput | string[]
+    accountLabel?: string | null
+    connectedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IntegrationCreateOrConnectWithoutUserInput = {
+    where: IntegrationWhereUniqueInput
+    create: XOR<IntegrationCreateWithoutUserInput, IntegrationUncheckedCreateWithoutUserInput>
+  }
+
+  export type IntegrationCreateManyUserInputEnvelope = {
+    data: IntegrationCreateManyUserInput | IntegrationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CredentialUpsertWithoutUserInput = {
     update: XOR<CredentialUpdateWithoutUserInput, CredentialUncheckedUpdateWithoutUserInput>
     create: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput>
@@ -44323,6 +48352,93 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"SyncOperation"> | Date | string
   }
 
+  export type TaskUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: TaskWhereUniqueInput
+    update: XOR<TaskUpdateWithoutCreatedByInput, TaskUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TaskUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: TaskWhereUniqueInput
+    data: XOR<TaskUpdateWithoutCreatedByInput, TaskUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type TaskUpdateManyWithWhereWithoutCreatedByInput = {
+    where: TaskScalarWhereInput
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type TaskScalarWhereInput = {
+    AND?: TaskScalarWhereInput | TaskScalarWhereInput[]
+    OR?: TaskScalarWhereInput[]
+    NOT?: TaskScalarWhereInput | TaskScalarWhereInput[]
+    id?: StringFilter<"Task"> | string
+    title?: StringFilter<"Task"> | string
+    description?: StringNullableFilter<"Task"> | string | null
+    status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+    dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    labels?: StringNullableListFilter<"Task">
+    order?: IntFilter<"Task"> | number
+    columnId?: StringNullableFilter<"Task"> | string | null
+    source?: StringFilter<"Task"> | string
+    externalRefs?: JsonNullableFilter<"Task">
+    completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
+    projectId?: StringNullableFilter<"Task"> | string | null
+    assigneeId?: StringNullableFilter<"Task"> | string | null
+    createdById?: StringFilter<"Task"> | string
+    createdAt?: DateTimeFilter<"Task"> | Date | string
+    updatedAt?: DateTimeFilter<"Task"> | Date | string
+  }
+
+  export type TaskUpsertWithWhereUniqueWithoutAssigneeInput = {
+    where: TaskWhereUniqueInput
+    update: XOR<TaskUpdateWithoutAssigneeInput, TaskUncheckedUpdateWithoutAssigneeInput>
+    create: XOR<TaskCreateWithoutAssigneeInput, TaskUncheckedCreateWithoutAssigneeInput>
+  }
+
+  export type TaskUpdateWithWhereUniqueWithoutAssigneeInput = {
+    where: TaskWhereUniqueInput
+    data: XOR<TaskUpdateWithoutAssigneeInput, TaskUncheckedUpdateWithoutAssigneeInput>
+  }
+
+  export type TaskUpdateManyWithWhereWithoutAssigneeInput = {
+    where: TaskScalarWhereInput
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutAssigneeInput>
+  }
+
+  export type IntegrationUpsertWithWhereUniqueWithoutUserInput = {
+    where: IntegrationWhereUniqueInput
+    update: XOR<IntegrationUpdateWithoutUserInput, IntegrationUncheckedUpdateWithoutUserInput>
+    create: XOR<IntegrationCreateWithoutUserInput, IntegrationUncheckedCreateWithoutUserInput>
+  }
+
+  export type IntegrationUpdateWithWhereUniqueWithoutUserInput = {
+    where: IntegrationWhereUniqueInput
+    data: XOR<IntegrationUpdateWithoutUserInput, IntegrationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type IntegrationUpdateManyWithWhereWithoutUserInput = {
+    where: IntegrationScalarWhereInput
+    data: XOR<IntegrationUpdateManyMutationInput, IntegrationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type IntegrationScalarWhereInput = {
+    AND?: IntegrationScalarWhereInput | IntegrationScalarWhereInput[]
+    OR?: IntegrationScalarWhereInput[]
+    NOT?: IntegrationScalarWhereInput | IntegrationScalarWhereInput[]
+    id?: StringFilter<"Integration"> | string
+    userId?: StringFilter<"Integration"> | string
+    provider?: EnumIntegrationProviderFilter<"Integration"> | $Enums.IntegrationProvider
+    status?: EnumIntegrationStatusFilter<"Integration"> | $Enums.IntegrationStatus
+    configEncrypted?: StringNullableFilter<"Integration"> | string | null
+    scopes?: StringNullableListFilter<"Integration">
+    accountLabel?: StringNullableFilter<"Integration"> | string | null
+    connectedAt?: DateTimeNullableFilter<"Integration"> | Date | string | null
+    createdAt?: DateTimeFilter<"Integration"> | Date | string
+    updatedAt?: DateTimeFilter<"Integration"> | Date | string
+  }
+
   export type UserCreateWithoutCredentialInput = {
     id?: string
     email: string
@@ -44363,6 +48479,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCredentialInput = {
@@ -44405,6 +48524,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCredentialInput = {
@@ -44463,6 +48585,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCredentialInput = {
@@ -44505,6 +48630,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -44547,6 +48675,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -44589,6 +48720,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -44647,6 +48781,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -44689,6 +48826,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RefreshTokenCreateWithoutReplacesInput = {
@@ -44781,6 +48921,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRefreshesInput = {
@@ -44823,6 +48966,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRefreshesInput = {
@@ -44943,6 +49089,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshesInput = {
@@ -44985,6 +49134,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutEmailVerificationsInput = {
@@ -45027,6 +49179,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEmailVerificationsInput = {
@@ -45069,6 +49224,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEmailVerificationsInput = {
@@ -45127,6 +49285,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEmailVerificationsInput = {
@@ -45169,6 +49330,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPasswordResetsInput = {
@@ -45211,6 +49375,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -45253,6 +49420,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -45311,6 +49481,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -45353,6 +49526,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -45395,6 +49571,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -45437,6 +49616,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -45495,6 +49677,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -45537,6 +49722,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSubscriptionsInput = {
@@ -45579,6 +49767,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -45621,6 +49812,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -45679,6 +49873,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -45721,6 +49918,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutEntitlementsInput = {
@@ -45763,6 +49963,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEntitlementsInput = {
@@ -45805,6 +50008,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEntitlementsInput = {
@@ -45863,6 +50069,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEntitlementsInput = {
@@ -45905,6 +50114,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAiChatSessionsInput = {
@@ -45947,6 +50159,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAiChatSessionsInput = {
@@ -45989,6 +50204,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAiChatSessionsInput = {
@@ -46077,6 +50295,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAiChatSessionsInput = {
@@ -46119,6 +50340,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AiChatMessageUpsertWithWhereUniqueWithoutSessionInput = {
@@ -46243,6 +50467,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAiToolOutputsInput = {
@@ -46285,6 +50512,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAiToolOutputsInput = {
@@ -46343,6 +50573,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAiToolOutputsInput = {
@@ -46385,6 +50618,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectMemberCreateWithoutProjectInput = {
@@ -46593,6 +50829,54 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TaskCreateWithoutProjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignee?: UserCreateNestedOneWithoutTasksAssignedInput
+    createdBy: UserCreateNestedOneWithoutTasksCreatedInput
+  }
+
+  export type TaskUncheckedCreateWithoutProjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    assigneeId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskCreateOrConnectWithoutProjectInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput>
+  }
+
+  export type TaskCreateManyProjectInputEnvelope = {
+    data: TaskCreateManyProjectInput | TaskCreateManyProjectInput[]
+    skipDuplicates?: boolean
+  }
+
   export type GroupCreateWithoutProjectsInput = {
     id?: string
     name: string
@@ -46760,6 +51044,22 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"SyncSnapshot"> | Date | string
   }
 
+  export type TaskUpsertWithWhereUniqueWithoutProjectInput = {
+    where: TaskWhereUniqueInput
+    update: XOR<TaskUpdateWithoutProjectInput, TaskUncheckedUpdateWithoutProjectInput>
+    create: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput>
+  }
+
+  export type TaskUpdateWithWhereUniqueWithoutProjectInput = {
+    where: TaskWhereUniqueInput
+    data: XOR<TaskUpdateWithoutProjectInput, TaskUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type TaskUpdateManyWithWhereWithoutProjectInput = {
+    where: TaskScalarWhereInput
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutProjectInput>
+  }
+
   export type GroupUpsertWithoutProjectsInput = {
     update: XOR<GroupUpdateWithoutProjectsInput, GroupUncheckedUpdateWithoutProjectsInput>
     create: XOR<GroupCreateWithoutProjectsInput, GroupUncheckedCreateWithoutProjectsInput>
@@ -46835,6 +51135,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFriendshipsSentInput = {
@@ -46877,6 +51180,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFriendshipsSentInput = {
@@ -46924,6 +51230,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFriendshipsReceivedInput = {
@@ -46966,6 +51275,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFriendshipsReceivedInput = {
@@ -47024,6 +51336,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFriendshipsSentInput = {
@@ -47066,6 +51381,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutFriendshipsReceivedInput = {
@@ -47119,6 +51437,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFriendshipsReceivedInput = {
@@ -47161,6 +51482,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutGroupsCreatedInput = {
@@ -47203,6 +51527,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGroupsCreatedInput = {
@@ -47245,6 +51572,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGroupsCreatedInput = {
@@ -47295,6 +51625,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutGroupInput = {
@@ -47314,6 +51645,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationUncheckedCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutGroupInput = {
@@ -47377,6 +51709,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGroupsCreatedInput = {
@@ -47419,6 +51754,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type GroupMemberUpsertWithWhereUniqueWithoutGroupInput = {
@@ -47538,6 +51876,9 @@ export namespace Prisma {
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGroupMembershipsInput = {
@@ -47580,6 +51921,9 @@ export namespace Prisma {
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGroupMembershipsInput = {
@@ -47673,6 +52017,9 @@ export namespace Prisma {
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
@@ -47715,6 +52062,9 @@ export namespace Prisma {
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -47757,6 +52107,9 @@ export namespace Prisma {
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -47799,6 +52152,9 @@ export namespace Prisma {
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -47857,6 +52213,9 @@ export namespace Prisma {
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -47899,6 +52258,9 @@ export namespace Prisma {
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutMembersInput = {
@@ -47917,6 +52279,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
     group?: GroupCreateNestedOneWithoutProjectsInput
   }
 
@@ -47937,6 +52300,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationUncheckedCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutMembersInput = {
@@ -47984,6 +52348,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProjectMembersInput = {
@@ -48026,6 +52393,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProjectMembersInput = {
@@ -48060,6 +52430,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
     group?: GroupUpdateOneWithoutProjectsNestedInput
   }
 
@@ -48080,6 +52451,7 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUncheckedUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type UserUpsertWithoutProjectMembersInput = {
@@ -48133,6 +52505,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProjectMembersInput = {
@@ -48175,6 +52550,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutArtifactsInput = {
@@ -48193,6 +52571,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
     group?: GroupCreateNestedOneWithoutProjectsInput
   }
 
@@ -48213,6 +52592,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationUncheckedCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutArtifactsInput = {
@@ -48247,6 +52627,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
     group?: GroupUpdateOneWithoutProjectsNestedInput
   }
 
@@ -48267,6 +52648,691 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUncheckedUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectCreateWithoutTasksInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string
+    status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
+    tags?: ProjectCreatetagsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: ProjectMemberCreateNestedManyWithoutProjectInput
+    artifacts?: ProjectArtifactCreateNestedManyWithoutProjectInput
+    invites?: ProjectInviteCreateNestedManyWithoutProjectInput
+    activities?: ProjectActivityCreateNestedManyWithoutProjectInput
+    comments?: CommentCreateNestedManyWithoutProjectInput
+    syncOps?: SyncOperationCreateNestedManyWithoutProjectInput
+    snapshots?: SyncSnapshotCreateNestedManyWithoutProjectInput
+    group?: GroupCreateNestedOneWithoutProjectsInput
+  }
+
+  export type ProjectUncheckedCreateWithoutTasksInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string
+    status?: $Enums.ProjectStatus
+    visibility?: $Enums.ProjectVisibility
+    tags?: ProjectCreatetagsInput | string[]
+    groupId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+    artifacts?: ProjectArtifactUncheckedCreateNestedManyWithoutProjectInput
+    invites?: ProjectInviteUncheckedCreateNestedManyWithoutProjectInput
+    activities?: ProjectActivityUncheckedCreateNestedManyWithoutProjectInput
+    comments?: CommentUncheckedCreateNestedManyWithoutProjectInput
+    syncOps?: SyncOperationUncheckedCreateNestedManyWithoutProjectInput
+    snapshots?: SyncSnapshotUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutTasksInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutTasksInput, ProjectUncheckedCreateWithoutTasksInput>
+  }
+
+  export type UserCreateWithoutTasksAssignedInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityCreateNestedManyWithoutActorInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTasksAssignedInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementUncheckedCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageUncheckedCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputUncheckedCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteUncheckedCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityUncheckedCreateNestedManyWithoutActorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTasksAssignedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTasksAssignedInput, UserUncheckedCreateWithoutTasksAssignedInput>
+  }
+
+  export type UserCreateWithoutTasksCreatedInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityCreateNestedManyWithoutActorInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTasksCreatedInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementUncheckedCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageUncheckedCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputUncheckedCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteUncheckedCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityUncheckedCreateNestedManyWithoutActorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTasksCreatedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTasksCreatedInput, UserUncheckedCreateWithoutTasksCreatedInput>
+  }
+
+  export type ProjectUpsertWithoutTasksInput = {
+    update: XOR<ProjectUpdateWithoutTasksInput, ProjectUncheckedUpdateWithoutTasksInput>
+    create: XOR<ProjectCreateWithoutTasksInput, ProjectUncheckedCreateWithoutTasksInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutTasksInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutTasksInput, ProjectUncheckedUpdateWithoutTasksInput>
+  }
+
+  export type ProjectUpdateWithoutTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
+    tags?: ProjectUpdatetagsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: ProjectMemberUpdateManyWithoutProjectNestedInput
+    artifacts?: ProjectArtifactUpdateManyWithoutProjectNestedInput
+    invites?: ProjectInviteUpdateManyWithoutProjectNestedInput
+    activities?: ProjectActivityUpdateManyWithoutProjectNestedInput
+    comments?: CommentUpdateManyWithoutProjectNestedInput
+    syncOps?: SyncOperationUpdateManyWithoutProjectNestedInput
+    snapshots?: SyncSnapshotUpdateManyWithoutProjectNestedInput
+    group?: GroupUpdateOneWithoutProjectsNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    visibility?: EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility
+    tags?: ProjectUpdatetagsInput | string[]
+    groupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+    artifacts?: ProjectArtifactUncheckedUpdateManyWithoutProjectNestedInput
+    invites?: ProjectInviteUncheckedUpdateManyWithoutProjectNestedInput
+    activities?: ProjectActivityUncheckedUpdateManyWithoutProjectNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutProjectNestedInput
+    syncOps?: SyncOperationUncheckedUpdateManyWithoutProjectNestedInput
+    snapshots?: SyncSnapshotUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type UserUpsertWithoutTasksAssignedInput = {
+    update: XOR<UserUpdateWithoutTasksAssignedInput, UserUncheckedUpdateWithoutTasksAssignedInput>
+    create: XOR<UserCreateWithoutTasksAssignedInput, UserUncheckedCreateWithoutTasksAssignedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTasksAssignedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTasksAssignedInput, UserUncheckedUpdateWithoutTasksAssignedInput>
+  }
+
+  export type UserUpdateWithoutTasksAssignedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUpdateManyWithoutActorNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTasksAssignedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUncheckedUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUncheckedUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUncheckedUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUncheckedUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUncheckedUpdateManyWithoutActorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutTasksCreatedInput = {
+    update: XOR<UserUpdateWithoutTasksCreatedInput, UserUncheckedUpdateWithoutTasksCreatedInput>
+    create: XOR<UserCreateWithoutTasksCreatedInput, UserUncheckedCreateWithoutTasksCreatedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTasksCreatedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTasksCreatedInput, UserUncheckedUpdateWithoutTasksCreatedInput>
+  }
+
+  export type UserUpdateWithoutTasksCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUpdateManyWithoutActorNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTasksCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUncheckedUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUncheckedUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUncheckedUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUncheckedUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUncheckedUpdateManyWithoutActorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutIntegrationsInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityCreateNestedManyWithoutActorInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+  }
+
+  export type UserUncheckedCreateWithoutIntegrationsInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementUncheckedCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageUncheckedCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputUncheckedCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteUncheckedCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityUncheckedCreateNestedManyWithoutActorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  }
+
+  export type UserCreateOrConnectWithoutIntegrationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutIntegrationsInput, UserUncheckedCreateWithoutIntegrationsInput>
+  }
+
+  export type UserUpsertWithoutIntegrationsInput = {
+    update: XOR<UserUpdateWithoutIntegrationsInput, UserUncheckedUpdateWithoutIntegrationsInput>
+    create: XOR<UserCreateWithoutIntegrationsInput, UserUncheckedCreateWithoutIntegrationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutIntegrationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutIntegrationsInput, UserUncheckedUpdateWithoutIntegrationsInput>
+  }
+
+  export type UserUpdateWithoutIntegrationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUpdateManyWithoutActorNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutIntegrationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUncheckedUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUncheckedUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUncheckedUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUncheckedUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUncheckedUpdateManyWithoutActorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
   }
 
   export type ProjectCreateWithoutInvitesInput = {
@@ -48285,6 +53351,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
     group?: GroupCreateNestedOneWithoutProjectsInput
   }
 
@@ -48305,6 +53372,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationUncheckedCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutInvitesInput = {
@@ -48352,6 +53420,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInvitesSentInput = {
@@ -48394,6 +53465,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInvitesSentInput = {
@@ -48428,6 +53502,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
     group?: GroupUpdateOneWithoutProjectsNestedInput
   }
 
@@ -48448,6 +53523,7 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUncheckedUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type UserUpsertWithoutInvitesSentInput = {
@@ -48501,6 +53577,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvitesSentInput = {
@@ -48543,6 +53622,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutActivitiesInput = {
@@ -48561,6 +53643,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
     group?: GroupCreateNestedOneWithoutProjectsInput
   }
 
@@ -48581,6 +53664,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationUncheckedCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutActivitiesInput = {
@@ -48628,6 +53712,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActivitiesInput = {
@@ -48670,6 +53757,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActivitiesInput = {
@@ -48704,6 +53794,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
     group?: GroupUpdateOneWithoutProjectsNestedInput
   }
 
@@ -48724,6 +53815,7 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUncheckedUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type UserUpsertWithoutActivitiesInput = {
@@ -48777,6 +53869,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivitiesInput = {
@@ -48819,6 +53914,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutCommentsInput = {
@@ -48837,6 +53935,7 @@ export namespace Prisma {
     activities?: ProjectActivityCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
     group?: GroupCreateNestedOneWithoutProjectsInput
   }
 
@@ -48857,6 +53956,7 @@ export namespace Prisma {
     activities?: ProjectActivityUncheckedCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationUncheckedCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutCommentsInput = {
@@ -48904,6 +54004,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
@@ -48946,6 +54049,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentsInput = {
@@ -48980,6 +54086,7 @@ export namespace Prisma {
     activities?: ProjectActivityUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
     group?: GroupUpdateOneWithoutProjectsNestedInput
   }
 
@@ -49000,6 +54107,7 @@ export namespace Prisma {
     activities?: ProjectActivityUncheckedUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUncheckedUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type UserUpsertWithoutCommentsInput = {
@@ -49053,6 +54161,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -49095,6 +54206,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutSyncOpsInput = {
@@ -49113,6 +54227,7 @@ export namespace Prisma {
     activities?: ProjectActivityCreateNestedManyWithoutProjectInput
     comments?: CommentCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
     group?: GroupCreateNestedOneWithoutProjectsInput
   }
 
@@ -49133,6 +54248,7 @@ export namespace Prisma {
     activities?: ProjectActivityUncheckedCreateNestedManyWithoutProjectInput
     comments?: CommentUncheckedCreateNestedManyWithoutProjectInput
     snapshots?: SyncSnapshotUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutSyncOpsInput = {
@@ -49180,6 +54296,9 @@ export namespace Prisma {
     groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSyncOperationsInput = {
@@ -49222,6 +54341,9 @@ export namespace Prisma {
     groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSyncOperationsInput = {
@@ -49256,6 +54378,7 @@ export namespace Prisma {
     activities?: ProjectActivityUpdateManyWithoutProjectNestedInput
     comments?: CommentUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
     group?: GroupUpdateOneWithoutProjectsNestedInput
   }
 
@@ -49276,6 +54399,7 @@ export namespace Prisma {
     activities?: ProjectActivityUncheckedUpdateManyWithoutProjectNestedInput
     comments?: CommentUncheckedUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type UserUpsertWithoutSyncOperationsInput = {
@@ -49329,6 +54453,9 @@ export namespace Prisma {
     groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSyncOperationsInput = {
@@ -49371,6 +54498,9 @@ export namespace Prisma {
     groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutSnapshotsInput = {
@@ -49389,6 +54519,7 @@ export namespace Prisma {
     activities?: ProjectActivityCreateNestedManyWithoutProjectInput
     comments?: CommentCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
     group?: GroupCreateNestedOneWithoutProjectsInput
   }
 
@@ -49409,6 +54540,7 @@ export namespace Prisma {
     activities?: ProjectActivityUncheckedCreateNestedManyWithoutProjectInput
     comments?: CommentUncheckedCreateNestedManyWithoutProjectInput
     syncOps?: SyncOperationUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutSnapshotsInput = {
@@ -49443,6 +54575,7 @@ export namespace Prisma {
     activities?: ProjectActivityUpdateManyWithoutProjectNestedInput
     comments?: CommentUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
     group?: GroupUpdateOneWithoutProjectsNestedInput
   }
 
@@ -49463,6 +54596,7 @@ export namespace Prisma {
     activities?: ProjectActivityUncheckedUpdateManyWithoutProjectNestedInput
     comments?: CommentUncheckedUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type UserCreateWithoutAiTokenUsageInput = {
@@ -49505,6 +54639,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAiTokenUsageInput = {
@@ -49547,6 +54684,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAiTokenUsageInput = {
@@ -49605,6 +54745,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAiTokenUsageInput = {
@@ -49647,6 +54790,9 @@ export namespace Prisma {
     groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -49839,6 +54985,56 @@ export namespace Prisma {
     payload: JsonNullValueInput | InputJsonValue
     status?: string
     createdAt?: Date | string
+  }
+
+  export type TaskCreateManyCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    projectId?: string | null
+    assigneeId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskCreateManyAssigneeInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    projectId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IntegrationCreateManyUserInput = {
+    id?: string
+    provider: $Enums.IntegrationProvider
+    status?: $Enums.IntegrationStatus
+    configEncrypted?: string | null
+    scopes?: IntegrationCreatescopesInput | string[]
+    accountLabel?: string | null
+    connectedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -50425,6 +55621,156 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TaskUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneWithoutTasksNestedInput
+    assignee?: UserUpdateOneWithoutTasksAssignedNestedInput
+  }
+
+  export type TaskUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
+    assigneeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUpdateWithoutAssigneeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneWithoutTasksNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutTasksCreatedNestedInput
+  }
+
+  export type TaskUncheckedUpdateWithoutAssigneeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUncheckedUpdateManyWithoutAssigneeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IntegrationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    configEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: IntegrationUpdatescopesInput | string[]
+    accountLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IntegrationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    configEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: IntegrationUpdatescopesInput | string[]
+    accountLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IntegrationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    configEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: IntegrationUpdatescopesInput | string[]
+    accountLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AiChatMessageCreateManySessionInput = {
     id?: string
     role: $Enums.AiMessageRole
@@ -50531,6 +55877,25 @@ export namespace Prisma {
     revision: number
     reason?: string
     createdAt?: Date | string
+  }
+
+  export type TaskCreateManyProjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    labels?: TaskCreatelabelsInput | string[]
+    order?: number
+    columnId?: string | null
+    source?: string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: Date | string | null
+    assigneeId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ProjectMemberUpdateWithoutProjectInput = {
@@ -50737,6 +56102,63 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TaskUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignee?: UserUpdateOneWithoutTasksAssignedNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutTasksCreatedNestedInput
+  }
+
+  export type TaskUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assigneeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: TaskUpdatelabelsInput | string[]
+    order?: IntFieldUpdateOperationsInput | number
+    columnId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    externalRefs?: NullableJsonNullValueInput | InputJsonValue
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assigneeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GroupMemberCreateManyGroupInput = {
     id?: string
     userId: string
@@ -50798,6 +56220,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutGroupInput = {
@@ -50817,6 +56240,7 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutProjectNestedInput
     syncOps?: SyncOperationUncheckedUpdateManyWithoutProjectNestedInput
     snapshots?: SyncSnapshotUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateManyWithoutGroupInput = {
