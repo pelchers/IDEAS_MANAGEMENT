@@ -5,6 +5,20 @@
 
 ---
 
+## DEVFLOW (2026-07-15/16) — branch `devflow`, all phases ✅ (committed, not yet pushed)
+
+> Note: the sections below this are older and partly stale. Git history + `HANDOFF.md` are the source of truth.
+
+- [x] **Audit & de-flake** — whole e2e suite de-flaked (unique-IP fixture, no `networkidle`, stable testids); audit HIGH/MED fixes (open-redirect, parallel dashboard queries, redundant AI query, error-boundary leak); real **Sign Out** added; AI tests repaired; CLAUDE.md stack header corrected; hot-path DB indexes.
+- [x] **Cmd-K command palette** — global, registry-extensible; wired the dead top-bar search; optimistic project create.
+- [x] **First-class Task model + Today / My Work** — `/api/tasks`, quick-capture, due-date buckets, optimistic complete/reschedule; `pnpm tasks:backfill` (kanban→tasks).
+- [x] **Integrations spine** — provider registry + encrypted store + Settings→Integrations UI; Email/Gmail/Calendar/VS Code wired, cred-gated, mock-tested.
+- [ ] Follow-ups: full kanban UI refactor onto Tasks; add live creds (`RESEND_API_KEY`, `GOOGLE_CLIENT_ID/SECRET`); Phase-2 polish (g-key shortcuts, `?` help, skeletons, no full reload on AI actions).
+
+Validation: typecheck 0 · vitest 198 pass · e2e core+new 23 specs green. App on `:3001` (`:3000` = a different project).
+
+---
+
 ## IN PROGRESS
 
 ### Phase A — Orchestration Accuracy Update ✅
