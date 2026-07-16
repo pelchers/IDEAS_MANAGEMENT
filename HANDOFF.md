@@ -18,6 +18,17 @@
 
 ---
 
+## 2026-07-16 01:50 UTC · home-desktop (VENGEANCE) · Claude / DevFlow wind-down · lane `Home-Work` (← devflow)
+**Synced from:** continued the same session; no other device active.
+**What changed (since the entry below):** completed every no-creds follow-up:
+- **Kanban → Tasks refactor (p3b):** the board now reads/writes first-class Tasks (column config stays in the artifact); add/edit/delete/drag persist via `/api/tasks`; legacy inline boards migrate on load; column-delete reassigns tasks; card styling preserved via `Task.externalRefs`. Kanban cards, Today, and cross-project views are now ONE coherent surface. New e2e proves add-on-board → shows-in-Today.
+- **Perf pass:** Ollama probe cached (was 2s/AI-request), projects list bounded (take:200), notification panel re-fetches only when stale, AI-refresh no longer full-reloads the kanban (H4), project-settings save surfaces errors (H3).
+- **Keyboard-driven UX:** `g`-nav (d/t/p/a/e/f/r/s), `c` capture, `/` palette, `?` help overlay. Projects list skeletons.
+**Where I stopped / state:** device.local.md set to **home-desktop** (VENGEANCE) — flip the box if this is actually the asus-laptop. All work squashed onto lane `Home-Work` and **pushed to `origin/Home-Work` + fast-forwarded `origin/main`**. App runs on **:3001**. typecheck 0 · vitest 198 pass (+8 skipped live) · e2e 24 core+new specs green.
+**Next actions:** add creds to go live (`RESEND_API_KEY`, `GOOGLE_CLIENT_ID/SECRET` + register OAuth redirect). Remaining minor polish: H4 on whiteboard/schema/directory (still `window.location.reload` on AI edits — kanban is done); broader skeletons.
+**Blocked on (needs user):** external creds for live OAuth/email.
+**Gotchas:** e2e needs `E2E_BASE_URL=http://localhost:3001`. Prisma client output is `src/generated/prisma`; regenerating requires the dev server stopped (Windows DLL lock).
+
 ## 2026-07-16 00:45 UTC · (device unset) (VENGEANCE) · Claude / DevFlow · branch `devflow` @ 40a4c33
 **Synced from:** started on `main` (= origin/main); no device lanes exist yet.
 **What changed:** Full audit + de-flake + 3 feature phases, all on branch `devflow` (NOT pushed — device routing unresolved):
