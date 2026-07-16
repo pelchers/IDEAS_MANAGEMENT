@@ -754,3 +754,32 @@ No external-integration model yet (only AI provider keys on User, AES-256-GCM en
 --- AGENT REPORT ---
 Brainstorming skill invoked; scope + architecture forks resolved via AskUserQuestion. Proceeding to
 consolidated design + spec, then phased autonomous build with validation.
+
+=== SESSION: 2026-07-16 — DEVFLOW FINISH + WINDDOWN ===
+TIMESTAMP: 2026-07-16T01:50:00Z
+ROLE: user (pelchers)
+
+--- RAW MESSAGE ---
+do both - everything thats still pending in the session prior to my creds and such supply - you should optimize it fully to be a truly performance user work oriented app
+
+--- USER INTENT ---
+Complete ALL remaining no-creds follow-ups + set up device routing + wind down. Optimize for
+performance and user-work orientation.
+
+--- WHAT WAS DONE ---
+- Kanban → Tasks refactor (p3b): board reads/writes first-class Tasks; column config stays in artifact;
+  add/edit/delete/drag persist via /api/tasks; legacy boards migrate on load; column-delete reassigns
+  tasks; styling preserved via Task.externalRefs. Kanban == Today == cross-project (one coherent surface).
+- Perf pass: Ollama probe cached (was 2s/req), projects list bounded (take:200), notification refetch
+  only-when-stale, kanban AI-refresh no longer full-reloads (H4), project-settings save surfaces errors (H3).
+- Keyboard UX: g-nav / c capture / / palette / ? help overlay; projects list skeletons.
+- Device routing: device.local.md = home-desktop (VENGEANCE). Winddown: all work on lane Home-Work,
+  pushed origin/Home-Work + fast-forwarded origin/main (d3d4a82 → ee53843).
+
+--- VALIDATION ---
+typecheck 0 · vitest 198 pass (+8 skipped live) · e2e 24 core+new specs green (incl. new kanban→Today
+coherence + keyboard-shortcuts specs). App on :3001.
+
+--- DEFERRED (needs user) ---
+Live creds: RESEND_API_KEY, GOOGLE_CLIENT_ID/SECRET (+ OAuth redirect). Minor polish: H4 on
+whiteboard/schema/directory; broader skeletons.
