@@ -52,7 +52,7 @@ test('Phase 1 — Explore page + Public profiles validation', async ({ page }) =
 
   // Search for admin user
   await page.locator('input[placeholder*="Search"]').fill('admin');
-  await page.locator('button').filter({ hasText: 'SEARCH' }).click();
+  await page.locator('button').filter({ hasText: /^SEARCH$/ }).click();
   await page.waitForTimeout(800);
   await shot(page, 'explore-user-search');
 
