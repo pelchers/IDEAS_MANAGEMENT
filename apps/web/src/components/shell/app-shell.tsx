@@ -16,6 +16,10 @@ function getTitleFromPathname(pathname: string): string {
   if (pathname === "/today") return "TODAY / MY WORK";
   if (pathname === "/projects") return "PROJECTS";
   if (pathname === "/ai") return "AI CHAT";
+  if (pathname === "/orchestrator") return "ORCHESTRATOR";
+  if (pathname === "/snippets") return "COMMAND SNIPPETS";
+  if (pathname === "/automations") return "AUTOMATIONS";
+  if (pathname === "/activity") return "ACTIVITY";
   if (pathname === "/profile") return "PROFILE";
   if (pathname === "/settings") return "SETTINGS";
   if (pathname === "/explore") return "EXPLORE";
@@ -54,10 +58,14 @@ const NAV_LINKS: NavLink[] = [
   { num: "09", label: "Ideas", href: "/projects", projectRoute: true, suffix: "/ideas" },
   { num: "10", label: "Conflicts", href: "/projects", projectRoute: true, suffix: "/conflicts" },
   { num: "11", label: "AI Chat", href: "/ai" },
-  { num: "12", label: "Explore", href: "/explore" },
-  { num: "13", label: "Friends", href: "/friends" },
-  { num: "14", label: "Groups", href: "/groups" },
-  { num: "15", label: "Settings", href: "/settings" },
+  { num: "12", label: "Orchestrator", href: "/orchestrator" },
+  { num: "13", label: "Snippets", href: "/snippets" },
+  { num: "14", label: "Automations", href: "/automations" },
+  { num: "15", label: "Activity", href: "/activity" },
+  { num: "16", label: "Explore", href: "/explore" },
+  { num: "17", label: "Friends", href: "/friends" },
+  { num: "18", label: "Groups", href: "/groups" },
+  { num: "19", label: "Settings", href: "/settings" },
 ];
 
 function extractProjectId(pathname: string): string | null {

@@ -5,6 +5,7 @@ import { validateBody, isValidationError } from "@/server/api-validation";
 import { checkProjectAccess } from "@/server/projects/helpers";
 import { prisma } from "@/server/db";
 import { updateTask, TASK_STATUSES, TASK_PRIORITIES } from "@/server/tasks/tasks";
+import { runAutomations } from "@/server/runners/automations";
 import type { AuthenticatedUser } from "@/server/auth/admin";
 import type { TaskStatus } from "@/generated/prisma";
 
@@ -52,6 +53,12 @@ export async function PATCH(req: Request, { params }: RouteParams) {
   if (isValidationError(parsed)) return parsed;
 
   const task = await updateTask(id, { ...parsed, priority: parsed.priority as never });
+
+  // Fire automation rules on a status change (queues commands to runners).
+  if (parsed.status) {
+    await runAutomations(auth.id, "TASK_STATUS_CHANGED", { taskId: id, status: parsed.status, projectId: task.projectId });
+  }
+
   return NextResponse.json({ ok: true, task });
 }
 
