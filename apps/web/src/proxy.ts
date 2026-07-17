@@ -25,7 +25,9 @@ const PUBLIC_API_PREFIXES = [
   // must be reachable by an external scheduler without a user session.
   "/api/notifications/digest",
   // One-click unsubscribe from email links — token-gated.
-  "/api/notifications/unsubscribe"
+  "/api/notifications/unsubscribe",
+  // Terminal runner agent endpoints — authenticated by a per-runner token, not a session.
+  "/api/runner-agent"
 ];
 
 function isPublicPath(pathname: string): boolean {
