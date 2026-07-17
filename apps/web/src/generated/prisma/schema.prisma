@@ -77,6 +77,10 @@ model User {
   tasksCreated        Task[]                   @relation("taskCreator")
   tasksAssigned       Task[]                   @relation("taskAssignee")
   integrations        Integration[]
+  runners             Runner[]
+  runnerCommands      RunnerCommand[]
+  commandSnippets     CommandSnippet[]
+  automationRules     AutomationRule[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -556,6 +560,110 @@ model Integration {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, provider])
+  @@index([userId])
+}
+
+// ─── Terminal task orchestration ─────────────────────────────────────
+
+enum RunnerStatus {
+  ONLINE
+  OFFLINE
+  ERROR
+}
+
+/// A user's terminal runner (a bridge process the user launches in their env).
+/// Authenticated by a per-runner token (hashed at rest). It's the user's own
+/// agent running the user's own commands on the user's own machine.
+model Runner {
+  id         String       @id @default(cuid())
+  userId     String
+  name       String
+  tokenHash  String       @unique
+  status     RunnerStatus @default(OFFLINE)
+  workingDir String?
+  lastSeenAt DateTime?
+  meta       Json?
+
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  commands RunnerCommand[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+enum CommandStatus {
+  QUEUED
+  RUNNING
+  DONE
+  FAILED
+  CANCELED
+}
+
+/// A command dispatched to a runner. Output accumulates as the runner streams it.
+model RunnerCommand {
+  id         String        @id @default(cuid())
+  runnerId   String
+  userId     String
+  taskId     String? // loose link to a Task (no FK — keep command history if task is deleted)
+  command    String
+  cwd        String?
+  status     CommandStatus @default(QUEUED)
+  exitCode   Int?
+  output     String        @default("")
+  source     String        @default("manual") // manual | automation | snippet
+  startedAt  DateTime?
+  finishedAt DateTime?
+
+  runner Runner @relation(fields: [runnerId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([runnerId, status])
+  @@index([userId])
+  @@index([taskId])
+}
+
+/// A saved, reusable command the user can dispatch to any runner.
+model CommandSnippet {
+  id          String  @id @default(cuid())
+  userId      String
+  name        String
+  command     String
+  description String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+enum AutomationTrigger {
+  TASK_STATUS_CHANGED
+  TASK_CREATED
+}
+
+/// A task→command rule: when the trigger fires and the condition matches, the
+/// rule dispatches its command to the chosen runner.
+model AutomationRule {
+  id            String            @id @default(cuid())
+  userId        String
+  name          String
+  enabled       Boolean           @default(true)
+  trigger       AutomationTrigger
+  conditionJson Json // e.g. { status: "IN_PROGRESS", projectId?: "..." }
+  runnerId      String?
+  command       String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([userId])
 }
 

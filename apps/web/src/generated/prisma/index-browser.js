@@ -374,6 +374,58 @@ exports.Prisma.IntegrationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.RunnerScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  tokenHash: 'tokenHash',
+  status: 'status',
+  workingDir: 'workingDir',
+  lastSeenAt: 'lastSeenAt',
+  meta: 'meta',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RunnerCommandScalarFieldEnum = {
+  id: 'id',
+  runnerId: 'runnerId',
+  userId: 'userId',
+  taskId: 'taskId',
+  command: 'command',
+  cwd: 'cwd',
+  status: 'status',
+  exitCode: 'exitCode',
+  output: 'output',
+  source: 'source',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.CommandSnippetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  command: 'command',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AutomationRuleScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  enabled: 'enabled',
+  trigger: 'trigger',
+  conditionJson: 'conditionJson',
+  runnerId: 'runnerId',
+  command: 'command',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ProjectInviteScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
@@ -578,6 +630,25 @@ exports.IntegrationStatus = exports.$Enums.IntegrationStatus = {
   ERROR: 'ERROR'
 };
 
+exports.RunnerStatus = exports.$Enums.RunnerStatus = {
+  ONLINE: 'ONLINE',
+  OFFLINE: 'OFFLINE',
+  ERROR: 'ERROR'
+};
+
+exports.CommandStatus = exports.$Enums.CommandStatus = {
+  QUEUED: 'QUEUED',
+  RUNNING: 'RUNNING',
+  DONE: 'DONE',
+  FAILED: 'FAILED',
+  CANCELED: 'CANCELED'
+};
+
+exports.AutomationTrigger = exports.$Enums.AutomationTrigger = {
+  TASK_STATUS_CHANGED: 'TASK_STATUS_CHANGED',
+  TASK_CREATED: 'TASK_CREATED'
+};
+
 exports.InviteStatus = exports.$Enums.InviteStatus = {
   PENDING: 'PENDING',
   ACCEPTED: 'ACCEPTED',
@@ -608,6 +679,10 @@ exports.Prisma.ModelName = {
   ProjectArtifact: 'ProjectArtifact',
   Task: 'Task',
   Integration: 'Integration',
+  Runner: 'Runner',
+  RunnerCommand: 'RunnerCommand',
+  CommandSnippet: 'CommandSnippet',
+  AutomationRule: 'AutomationRule',
   ProjectInvite: 'ProjectInvite',
   ProjectActivity: 'ProjectActivity',
   Comment: 'Comment',

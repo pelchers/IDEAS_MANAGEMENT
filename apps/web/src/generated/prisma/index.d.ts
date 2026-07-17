@@ -127,6 +127,29 @@ export type Task = $Result.DefaultSelection<Prisma.$TaskPayload>
  */
 export type Integration = $Result.DefaultSelection<Prisma.$IntegrationPayload>
 /**
+ * Model Runner
+ * A user's terminal runner (a bridge process the user launches in their env).
+ * Authenticated by a per-runner token (hashed at rest). It's the user's own
+ * agent running the user's own commands on the user's own machine.
+ */
+export type Runner = $Result.DefaultSelection<Prisma.$RunnerPayload>
+/**
+ * Model RunnerCommand
+ * A command dispatched to a runner. Output accumulates as the runner streams it.
+ */
+export type RunnerCommand = $Result.DefaultSelection<Prisma.$RunnerCommandPayload>
+/**
+ * Model CommandSnippet
+ * A saved, reusable command the user can dispatch to any runner.
+ */
+export type CommandSnippet = $Result.DefaultSelection<Prisma.$CommandSnippetPayload>
+/**
+ * Model AutomationRule
+ * A task→command rule: when the trigger fires and the condition matches, the
+ * rule dispatches its command to the chosen runner.
+ */
+export type AutomationRule = $Result.DefaultSelection<Prisma.$AutomationRulePayload>
+/**
  * Model ProjectInvite
  * 
  */
@@ -312,6 +335,34 @@ export const IntegrationStatus: {
 export type IntegrationStatus = (typeof IntegrationStatus)[keyof typeof IntegrationStatus]
 
 
+export const RunnerStatus: {
+  ONLINE: 'ONLINE',
+  OFFLINE: 'OFFLINE',
+  ERROR: 'ERROR'
+};
+
+export type RunnerStatus = (typeof RunnerStatus)[keyof typeof RunnerStatus]
+
+
+export const CommandStatus: {
+  QUEUED: 'QUEUED',
+  RUNNING: 'RUNNING',
+  DONE: 'DONE',
+  FAILED: 'FAILED',
+  CANCELED: 'CANCELED'
+};
+
+export type CommandStatus = (typeof CommandStatus)[keyof typeof CommandStatus]
+
+
+export const AutomationTrigger: {
+  TASK_STATUS_CHANGED: 'TASK_STATUS_CHANGED',
+  TASK_CREATED: 'TASK_CREATED'
+};
+
+export type AutomationTrigger = (typeof AutomationTrigger)[keyof typeof AutomationTrigger]
+
+
 export const InviteStatus: {
   PENDING: 'PENDING',
   ACCEPTED: 'ACCEPTED',
@@ -382,6 +433,18 @@ export const IntegrationProvider: typeof $Enums.IntegrationProvider
 export type IntegrationStatus = $Enums.IntegrationStatus
 
 export const IntegrationStatus: typeof $Enums.IntegrationStatus
+
+export type RunnerStatus = $Enums.RunnerStatus
+
+export const RunnerStatus: typeof $Enums.RunnerStatus
+
+export type CommandStatus = $Enums.CommandStatus
+
+export const CommandStatus: typeof $Enums.CommandStatus
+
+export type AutomationTrigger = $Enums.AutomationTrigger
+
+export const AutomationTrigger: typeof $Enums.AutomationTrigger
 
 export type InviteStatus = $Enums.InviteStatus
 
@@ -724,6 +787,46 @@ export class PrismaClient<
     * ```
     */
   get integration(): Prisma.IntegrationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.runner`: Exposes CRUD operations for the **Runner** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Runners
+    * const runners = await prisma.runner.findMany()
+    * ```
+    */
+  get runner(): Prisma.RunnerDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.runnerCommand`: Exposes CRUD operations for the **RunnerCommand** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RunnerCommands
+    * const runnerCommands = await prisma.runnerCommand.findMany()
+    * ```
+    */
+  get runnerCommand(): Prisma.RunnerCommandDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.commandSnippet`: Exposes CRUD operations for the **CommandSnippet** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CommandSnippets
+    * const commandSnippets = await prisma.commandSnippet.findMany()
+    * ```
+    */
+  get commandSnippet(): Prisma.CommandSnippetDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.automationRule`: Exposes CRUD operations for the **AutomationRule** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AutomationRules
+    * const automationRules = await prisma.automationRule.findMany()
+    * ```
+    */
+  get automationRule(): Prisma.AutomationRuleDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.projectInvite`: Exposes CRUD operations for the **ProjectInvite** model.
@@ -1257,6 +1360,10 @@ export namespace Prisma {
     ProjectArtifact: 'ProjectArtifact',
     Task: 'Task',
     Integration: 'Integration',
+    Runner: 'Runner',
+    RunnerCommand: 'RunnerCommand',
+    CommandSnippet: 'CommandSnippet',
+    AutomationRule: 'AutomationRule',
     ProjectInvite: 'ProjectInvite',
     ProjectActivity: 'ProjectActivity',
     Comment: 'Comment',
@@ -1282,7 +1389,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "credential" | "session" | "refreshToken" | "emailVerificationToken" | "passwordResetToken" | "auditLog" | "subscription" | "entitlement" | "billingEvent" | "aiChatSession" | "aiChatMessage" | "aiToolOutput" | "project" | "friendship" | "group" | "groupMember" | "notification" | "projectMember" | "projectArtifact" | "task" | "integration" | "projectInvite" | "projectActivity" | "comment" | "syncOperation" | "syncSnapshot" | "aiTokenUsage" | "adminConfig"
+      modelProps: "user" | "credential" | "session" | "refreshToken" | "emailVerificationToken" | "passwordResetToken" | "auditLog" | "subscription" | "entitlement" | "billingEvent" | "aiChatSession" | "aiChatMessage" | "aiToolOutput" | "project" | "friendship" | "group" | "groupMember" | "notification" | "projectMember" | "projectArtifact" | "task" | "integration" | "runner" | "runnerCommand" | "commandSnippet" | "automationRule" | "projectInvite" | "projectActivity" | "comment" | "syncOperation" | "syncSnapshot" | "aiTokenUsage" | "adminConfig"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2914,6 +3021,302 @@ export namespace Prisma {
           }
         }
       }
+      Runner: {
+        payload: Prisma.$RunnerPayload<ExtArgs>
+        fields: Prisma.RunnerFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RunnerFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RunnerFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerPayload>
+          }
+          findFirst: {
+            args: Prisma.RunnerFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RunnerFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerPayload>
+          }
+          findMany: {
+            args: Prisma.RunnerFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerPayload>[]
+          }
+          create: {
+            args: Prisma.RunnerCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerPayload>
+          }
+          createMany: {
+            args: Prisma.RunnerCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RunnerCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerPayload>[]
+          }
+          delete: {
+            args: Prisma.RunnerDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerPayload>
+          }
+          update: {
+            args: Prisma.RunnerUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerPayload>
+          }
+          deleteMany: {
+            args: Prisma.RunnerDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RunnerUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RunnerUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerPayload>[]
+          }
+          upsert: {
+            args: Prisma.RunnerUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerPayload>
+          }
+          aggregate: {
+            args: Prisma.RunnerAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRunner>
+          }
+          groupBy: {
+            args: Prisma.RunnerGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RunnerGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RunnerCountArgs<ExtArgs>
+            result: $Utils.Optional<RunnerCountAggregateOutputType> | number
+          }
+        }
+      }
+      RunnerCommand: {
+        payload: Prisma.$RunnerCommandPayload<ExtArgs>
+        fields: Prisma.RunnerCommandFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RunnerCommandFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerCommandPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RunnerCommandFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerCommandPayload>
+          }
+          findFirst: {
+            args: Prisma.RunnerCommandFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerCommandPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RunnerCommandFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerCommandPayload>
+          }
+          findMany: {
+            args: Prisma.RunnerCommandFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerCommandPayload>[]
+          }
+          create: {
+            args: Prisma.RunnerCommandCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerCommandPayload>
+          }
+          createMany: {
+            args: Prisma.RunnerCommandCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RunnerCommandCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerCommandPayload>[]
+          }
+          delete: {
+            args: Prisma.RunnerCommandDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerCommandPayload>
+          }
+          update: {
+            args: Prisma.RunnerCommandUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerCommandPayload>
+          }
+          deleteMany: {
+            args: Prisma.RunnerCommandDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RunnerCommandUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RunnerCommandUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerCommandPayload>[]
+          }
+          upsert: {
+            args: Prisma.RunnerCommandUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerCommandPayload>
+          }
+          aggregate: {
+            args: Prisma.RunnerCommandAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRunnerCommand>
+          }
+          groupBy: {
+            args: Prisma.RunnerCommandGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RunnerCommandGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RunnerCommandCountArgs<ExtArgs>
+            result: $Utils.Optional<RunnerCommandCountAggregateOutputType> | number
+          }
+        }
+      }
+      CommandSnippet: {
+        payload: Prisma.$CommandSnippetPayload<ExtArgs>
+        fields: Prisma.CommandSnippetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CommandSnippetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommandSnippetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CommandSnippetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommandSnippetPayload>
+          }
+          findFirst: {
+            args: Prisma.CommandSnippetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommandSnippetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CommandSnippetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommandSnippetPayload>
+          }
+          findMany: {
+            args: Prisma.CommandSnippetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommandSnippetPayload>[]
+          }
+          create: {
+            args: Prisma.CommandSnippetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommandSnippetPayload>
+          }
+          createMany: {
+            args: Prisma.CommandSnippetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CommandSnippetCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommandSnippetPayload>[]
+          }
+          delete: {
+            args: Prisma.CommandSnippetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommandSnippetPayload>
+          }
+          update: {
+            args: Prisma.CommandSnippetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommandSnippetPayload>
+          }
+          deleteMany: {
+            args: Prisma.CommandSnippetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CommandSnippetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CommandSnippetUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommandSnippetPayload>[]
+          }
+          upsert: {
+            args: Prisma.CommandSnippetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommandSnippetPayload>
+          }
+          aggregate: {
+            args: Prisma.CommandSnippetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCommandSnippet>
+          }
+          groupBy: {
+            args: Prisma.CommandSnippetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CommandSnippetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CommandSnippetCountArgs<ExtArgs>
+            result: $Utils.Optional<CommandSnippetCountAggregateOutputType> | number
+          }
+        }
+      }
+      AutomationRule: {
+        payload: Prisma.$AutomationRulePayload<ExtArgs>
+        fields: Prisma.AutomationRuleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AutomationRuleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AutomationRuleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          findFirst: {
+            args: Prisma.AutomationRuleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AutomationRuleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          findMany: {
+            args: Prisma.AutomationRuleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>[]
+          }
+          create: {
+            args: Prisma.AutomationRuleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          createMany: {
+            args: Prisma.AutomationRuleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AutomationRuleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>[]
+          }
+          delete: {
+            args: Prisma.AutomationRuleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          update: {
+            args: Prisma.AutomationRuleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          deleteMany: {
+            args: Prisma.AutomationRuleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AutomationRuleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AutomationRuleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>[]
+          }
+          upsert: {
+            args: Prisma.AutomationRuleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          aggregate: {
+            args: Prisma.AutomationRuleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAutomationRule>
+          }
+          groupBy: {
+            args: Prisma.AutomationRuleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AutomationRuleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AutomationRuleCountArgs<ExtArgs>
+            result: $Utils.Optional<AutomationRuleCountAggregateOutputType> | number
+          }
+        }
+      }
       ProjectInvite: {
         payload: Prisma.$ProjectInvitePayload<ExtArgs>
         fields: Prisma.ProjectInviteFieldRefs
@@ -3550,6 +3953,10 @@ export namespace Prisma {
     projectArtifact?: ProjectArtifactOmit
     task?: TaskOmit
     integration?: IntegrationOmit
+    runner?: RunnerOmit
+    runnerCommand?: RunnerCommandOmit
+    commandSnippet?: CommandSnippetOmit
+    automationRule?: AutomationRuleOmit
     projectInvite?: ProjectInviteOmit
     projectActivity?: ProjectActivityOmit
     comment?: CommentOmit
@@ -3660,6 +4067,10 @@ export namespace Prisma {
     tasksCreated: number
     tasksAssigned: number
     integrations: number
+    runners: number
+    runnerCommands: number
+    commandSnippets: number
+    automationRules: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3686,6 +4097,10 @@ export namespace Prisma {
     tasksCreated?: boolean | UserCountOutputTypeCountTasksCreatedArgs
     tasksAssigned?: boolean | UserCountOutputTypeCountTasksAssignedArgs
     integrations?: boolean | UserCountOutputTypeCountIntegrationsArgs
+    runners?: boolean | UserCountOutputTypeCountRunnersArgs
+    runnerCommands?: boolean | UserCountOutputTypeCountRunnerCommandsArgs
+    commandSnippets?: boolean | UserCountOutputTypeCountCommandSnippetsArgs
+    automationRules?: boolean | UserCountOutputTypeCountAutomationRulesArgs
   }
 
   // Custom InputTypes
@@ -3860,6 +4275,34 @@ export namespace Prisma {
     where?: IntegrationWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRunnersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RunnerWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRunnerCommandsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RunnerCommandWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCommandSnippetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CommandSnippetWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAutomationRulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AutomationRuleWhereInput
+  }
+
 
   /**
    * Count Type AiChatSessionCountOutputType
@@ -4023,6 +4466,37 @@ export namespace Prisma {
    */
   export type GroupCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProjectWhereInput
+  }
+
+
+  /**
+   * Count Type RunnerCountOutputType
+   */
+
+  export type RunnerCountOutputType = {
+    commands: number
+  }
+
+  export type RunnerCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    commands?: boolean | RunnerCountOutputTypeCountCommandsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RunnerCountOutputType without action
+   */
+  export type RunnerCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCountOutputType
+     */
+    select?: RunnerCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RunnerCountOutputType without action
+   */
+  export type RunnerCountOutputTypeCountCommandsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RunnerCommandWhereInput
   }
 
 
@@ -4318,6 +4792,10 @@ export namespace Prisma {
     tasksCreated?: boolean | User$tasksCreatedArgs<ExtArgs>
     tasksAssigned?: boolean | User$tasksAssignedArgs<ExtArgs>
     integrations?: boolean | User$integrationsArgs<ExtArgs>
+    runners?: boolean | User$runnersArgs<ExtArgs>
+    runnerCommands?: boolean | User$runnerCommandsArgs<ExtArgs>
+    commandSnippets?: boolean | User$commandSnippetsArgs<ExtArgs>
+    automationRules?: boolean | User$automationRulesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4413,6 +4891,10 @@ export namespace Prisma {
     tasksCreated?: boolean | User$tasksCreatedArgs<ExtArgs>
     tasksAssigned?: boolean | User$tasksAssignedArgs<ExtArgs>
     integrations?: boolean | User$integrationsArgs<ExtArgs>
+    runners?: boolean | User$runnersArgs<ExtArgs>
+    runnerCommands?: boolean | User$runnerCommandsArgs<ExtArgs>
+    commandSnippets?: boolean | User$commandSnippetsArgs<ExtArgs>
+    automationRules?: boolean | User$automationRulesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4445,6 +4927,10 @@ export namespace Prisma {
       tasksCreated: Prisma.$TaskPayload<ExtArgs>[]
       tasksAssigned: Prisma.$TaskPayload<ExtArgs>[]
       integrations: Prisma.$IntegrationPayload<ExtArgs>[]
+      runners: Prisma.$RunnerPayload<ExtArgs>[]
+      runnerCommands: Prisma.$RunnerCommandPayload<ExtArgs>[]
+      commandSnippets: Prisma.$CommandSnippetPayload<ExtArgs>[]
+      automationRules: Prisma.$AutomationRulePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4884,6 +5370,10 @@ export namespace Prisma {
     tasksCreated<T extends User$tasksCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tasksAssigned<T extends User$tasksAssignedArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksAssignedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     integrations<T extends User$integrationsArgs<ExtArgs> = {}>(args?: Subset<T, User$integrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    runners<T extends User$runnersArgs<ExtArgs> = {}>(args?: Subset<T, User$runnersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    runnerCommands<T extends User$runnerCommandsArgs<ExtArgs> = {}>(args?: Subset<T, User$runnerCommandsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    commandSnippets<T extends User$commandSnippetsArgs<ExtArgs> = {}>(args?: Subset<T, User$commandSnippetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    automationRules<T extends User$automationRulesArgs<ExtArgs> = {}>(args?: Subset<T, User$automationRulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5888,6 +6378,102 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: IntegrationScalarFieldEnum | IntegrationScalarFieldEnum[]
+  }
+
+  /**
+   * User.runners
+   */
+  export type User$runnersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerInclude<ExtArgs> | null
+    where?: RunnerWhereInput
+    orderBy?: RunnerOrderByWithRelationInput | RunnerOrderByWithRelationInput[]
+    cursor?: RunnerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RunnerScalarFieldEnum | RunnerScalarFieldEnum[]
+  }
+
+  /**
+   * User.runnerCommands
+   */
+  export type User$runnerCommandsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+    where?: RunnerCommandWhereInput
+    orderBy?: RunnerCommandOrderByWithRelationInput | RunnerCommandOrderByWithRelationInput[]
+    cursor?: RunnerCommandWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RunnerCommandScalarFieldEnum | RunnerCommandScalarFieldEnum[]
+  }
+
+  /**
+   * User.commandSnippets
+   */
+  export type User$commandSnippetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetInclude<ExtArgs> | null
+    where?: CommandSnippetWhereInput
+    orderBy?: CommandSnippetOrderByWithRelationInput | CommandSnippetOrderByWithRelationInput[]
+    cursor?: CommandSnippetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CommandSnippetScalarFieldEnum | CommandSnippetScalarFieldEnum[]
+  }
+
+  /**
+   * User.automationRules
+   */
+  export type User$automationRulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    where?: AutomationRuleWhereInput
+    orderBy?: AutomationRuleOrderByWithRelationInput | AutomationRuleOrderByWithRelationInput[]
+    cursor?: AutomationRuleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AutomationRuleScalarFieldEnum | AutomationRuleScalarFieldEnum[]
   }
 
   /**
@@ -29403,6 +29989,4562 @@ export namespace Prisma {
 
 
   /**
+   * Model Runner
+   */
+
+  export type AggregateRunner = {
+    _count: RunnerCountAggregateOutputType | null
+    _min: RunnerMinAggregateOutputType | null
+    _max: RunnerMaxAggregateOutputType | null
+  }
+
+  export type RunnerMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    tokenHash: string | null
+    status: $Enums.RunnerStatus | null
+    workingDir: string | null
+    lastSeenAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RunnerMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    tokenHash: string | null
+    status: $Enums.RunnerStatus | null
+    workingDir: string | null
+    lastSeenAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RunnerCountAggregateOutputType = {
+    id: number
+    userId: number
+    name: number
+    tokenHash: number
+    status: number
+    workingDir: number
+    lastSeenAt: number
+    meta: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RunnerMinAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    tokenHash?: true
+    status?: true
+    workingDir?: true
+    lastSeenAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RunnerMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    tokenHash?: true
+    status?: true
+    workingDir?: true
+    lastSeenAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RunnerCountAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    tokenHash?: true
+    status?: true
+    workingDir?: true
+    lastSeenAt?: true
+    meta?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RunnerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Runner to aggregate.
+     */
+    where?: RunnerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Runners to fetch.
+     */
+    orderBy?: RunnerOrderByWithRelationInput | RunnerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RunnerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Runners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Runners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Runners
+    **/
+    _count?: true | RunnerCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RunnerMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RunnerMaxAggregateInputType
+  }
+
+  export type GetRunnerAggregateType<T extends RunnerAggregateArgs> = {
+        [P in keyof T & keyof AggregateRunner]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRunner[P]>
+      : GetScalarType<T[P], AggregateRunner[P]>
+  }
+
+
+
+
+  export type RunnerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RunnerWhereInput
+    orderBy?: RunnerOrderByWithAggregationInput | RunnerOrderByWithAggregationInput[]
+    by: RunnerScalarFieldEnum[] | RunnerScalarFieldEnum
+    having?: RunnerScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RunnerCountAggregateInputType | true
+    _min?: RunnerMinAggregateInputType
+    _max?: RunnerMaxAggregateInputType
+  }
+
+  export type RunnerGroupByOutputType = {
+    id: string
+    userId: string
+    name: string
+    tokenHash: string
+    status: $Enums.RunnerStatus
+    workingDir: string | null
+    lastSeenAt: Date | null
+    meta: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    _count: RunnerCountAggregateOutputType | null
+    _min: RunnerMinAggregateOutputType | null
+    _max: RunnerMaxAggregateOutputType | null
+  }
+
+  type GetRunnerGroupByPayload<T extends RunnerGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RunnerGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RunnerGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RunnerGroupByOutputType[P]>
+            : GetScalarType<T[P], RunnerGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RunnerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    tokenHash?: boolean
+    status?: boolean
+    workingDir?: boolean
+    lastSeenAt?: boolean
+    meta?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    commands?: boolean | Runner$commandsArgs<ExtArgs>
+    _count?: boolean | RunnerCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["runner"]>
+
+  export type RunnerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    tokenHash?: boolean
+    status?: boolean
+    workingDir?: boolean
+    lastSeenAt?: boolean
+    meta?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["runner"]>
+
+  export type RunnerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    tokenHash?: boolean
+    status?: boolean
+    workingDir?: boolean
+    lastSeenAt?: boolean
+    meta?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["runner"]>
+
+  export type RunnerSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    tokenHash?: boolean
+    status?: boolean
+    workingDir?: boolean
+    lastSeenAt?: boolean
+    meta?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RunnerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "tokenHash" | "status" | "workingDir" | "lastSeenAt" | "meta" | "createdAt" | "updatedAt", ExtArgs["result"]["runner"]>
+  export type RunnerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    commands?: boolean | Runner$commandsArgs<ExtArgs>
+    _count?: boolean | RunnerCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RunnerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RunnerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $RunnerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Runner"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      commands: Prisma.$RunnerCommandPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      name: string
+      tokenHash: string
+      status: $Enums.RunnerStatus
+      workingDir: string | null
+      lastSeenAt: Date | null
+      meta: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["runner"]>
+    composites: {}
+  }
+
+  type RunnerGetPayload<S extends boolean | null | undefined | RunnerDefaultArgs> = $Result.GetResult<Prisma.$RunnerPayload, S>
+
+  type RunnerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RunnerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RunnerCountAggregateInputType | true
+    }
+
+  export interface RunnerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Runner'], meta: { name: 'Runner' } }
+    /**
+     * Find zero or one Runner that matches the filter.
+     * @param {RunnerFindUniqueArgs} args - Arguments to find a Runner
+     * @example
+     * // Get one Runner
+     * const runner = await prisma.runner.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RunnerFindUniqueArgs>(args: SelectSubset<T, RunnerFindUniqueArgs<ExtArgs>>): Prisma__RunnerClient<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Runner that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RunnerFindUniqueOrThrowArgs} args - Arguments to find a Runner
+     * @example
+     * // Get one Runner
+     * const runner = await prisma.runner.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RunnerFindUniqueOrThrowArgs>(args: SelectSubset<T, RunnerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RunnerClient<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Runner that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerFindFirstArgs} args - Arguments to find a Runner
+     * @example
+     * // Get one Runner
+     * const runner = await prisma.runner.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RunnerFindFirstArgs>(args?: SelectSubset<T, RunnerFindFirstArgs<ExtArgs>>): Prisma__RunnerClient<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Runner that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerFindFirstOrThrowArgs} args - Arguments to find a Runner
+     * @example
+     * // Get one Runner
+     * const runner = await prisma.runner.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RunnerFindFirstOrThrowArgs>(args?: SelectSubset<T, RunnerFindFirstOrThrowArgs<ExtArgs>>): Prisma__RunnerClient<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Runners that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Runners
+     * const runners = await prisma.runner.findMany()
+     * 
+     * // Get first 10 Runners
+     * const runners = await prisma.runner.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const runnerWithIdOnly = await prisma.runner.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RunnerFindManyArgs>(args?: SelectSubset<T, RunnerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Runner.
+     * @param {RunnerCreateArgs} args - Arguments to create a Runner.
+     * @example
+     * // Create one Runner
+     * const Runner = await prisma.runner.create({
+     *   data: {
+     *     // ... data to create a Runner
+     *   }
+     * })
+     * 
+     */
+    create<T extends RunnerCreateArgs>(args: SelectSubset<T, RunnerCreateArgs<ExtArgs>>): Prisma__RunnerClient<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Runners.
+     * @param {RunnerCreateManyArgs} args - Arguments to create many Runners.
+     * @example
+     * // Create many Runners
+     * const runner = await prisma.runner.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RunnerCreateManyArgs>(args?: SelectSubset<T, RunnerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Runners and returns the data saved in the database.
+     * @param {RunnerCreateManyAndReturnArgs} args - Arguments to create many Runners.
+     * @example
+     * // Create many Runners
+     * const runner = await prisma.runner.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Runners and only return the `id`
+     * const runnerWithIdOnly = await prisma.runner.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RunnerCreateManyAndReturnArgs>(args?: SelectSubset<T, RunnerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Runner.
+     * @param {RunnerDeleteArgs} args - Arguments to delete one Runner.
+     * @example
+     * // Delete one Runner
+     * const Runner = await prisma.runner.delete({
+     *   where: {
+     *     // ... filter to delete one Runner
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RunnerDeleteArgs>(args: SelectSubset<T, RunnerDeleteArgs<ExtArgs>>): Prisma__RunnerClient<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Runner.
+     * @param {RunnerUpdateArgs} args - Arguments to update one Runner.
+     * @example
+     * // Update one Runner
+     * const runner = await prisma.runner.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RunnerUpdateArgs>(args: SelectSubset<T, RunnerUpdateArgs<ExtArgs>>): Prisma__RunnerClient<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Runners.
+     * @param {RunnerDeleteManyArgs} args - Arguments to filter Runners to delete.
+     * @example
+     * // Delete a few Runners
+     * const { count } = await prisma.runner.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RunnerDeleteManyArgs>(args?: SelectSubset<T, RunnerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Runners.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Runners
+     * const runner = await prisma.runner.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RunnerUpdateManyArgs>(args: SelectSubset<T, RunnerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Runners and returns the data updated in the database.
+     * @param {RunnerUpdateManyAndReturnArgs} args - Arguments to update many Runners.
+     * @example
+     * // Update many Runners
+     * const runner = await prisma.runner.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Runners and only return the `id`
+     * const runnerWithIdOnly = await prisma.runner.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RunnerUpdateManyAndReturnArgs>(args: SelectSubset<T, RunnerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Runner.
+     * @param {RunnerUpsertArgs} args - Arguments to update or create a Runner.
+     * @example
+     * // Update or create a Runner
+     * const runner = await prisma.runner.upsert({
+     *   create: {
+     *     // ... data to create a Runner
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Runner we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RunnerUpsertArgs>(args: SelectSubset<T, RunnerUpsertArgs<ExtArgs>>): Prisma__RunnerClient<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Runners.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerCountArgs} args - Arguments to filter Runners to count.
+     * @example
+     * // Count the number of Runners
+     * const count = await prisma.runner.count({
+     *   where: {
+     *     // ... the filter for the Runners we want to count
+     *   }
+     * })
+    **/
+    count<T extends RunnerCountArgs>(
+      args?: Subset<T, RunnerCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RunnerCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Runner.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RunnerAggregateArgs>(args: Subset<T, RunnerAggregateArgs>): Prisma.PrismaPromise<GetRunnerAggregateType<T>>
+
+    /**
+     * Group by Runner.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RunnerGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RunnerGroupByArgs['orderBy'] }
+        : { orderBy?: RunnerGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RunnerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRunnerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Runner model
+   */
+  readonly fields: RunnerFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Runner.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RunnerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    commands<T extends Runner$commandsArgs<ExtArgs> = {}>(args?: Subset<T, Runner$commandsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Runner model
+   */
+  interface RunnerFieldRefs {
+    readonly id: FieldRef<"Runner", 'String'>
+    readonly userId: FieldRef<"Runner", 'String'>
+    readonly name: FieldRef<"Runner", 'String'>
+    readonly tokenHash: FieldRef<"Runner", 'String'>
+    readonly status: FieldRef<"Runner", 'RunnerStatus'>
+    readonly workingDir: FieldRef<"Runner", 'String'>
+    readonly lastSeenAt: FieldRef<"Runner", 'DateTime'>
+    readonly meta: FieldRef<"Runner", 'Json'>
+    readonly createdAt: FieldRef<"Runner", 'DateTime'>
+    readonly updatedAt: FieldRef<"Runner", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Runner findUnique
+   */
+  export type RunnerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerInclude<ExtArgs> | null
+    /**
+     * Filter, which Runner to fetch.
+     */
+    where: RunnerWhereUniqueInput
+  }
+
+  /**
+   * Runner findUniqueOrThrow
+   */
+  export type RunnerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerInclude<ExtArgs> | null
+    /**
+     * Filter, which Runner to fetch.
+     */
+    where: RunnerWhereUniqueInput
+  }
+
+  /**
+   * Runner findFirst
+   */
+  export type RunnerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerInclude<ExtArgs> | null
+    /**
+     * Filter, which Runner to fetch.
+     */
+    where?: RunnerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Runners to fetch.
+     */
+    orderBy?: RunnerOrderByWithRelationInput | RunnerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Runners.
+     */
+    cursor?: RunnerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Runners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Runners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Runners.
+     */
+    distinct?: RunnerScalarFieldEnum | RunnerScalarFieldEnum[]
+  }
+
+  /**
+   * Runner findFirstOrThrow
+   */
+  export type RunnerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerInclude<ExtArgs> | null
+    /**
+     * Filter, which Runner to fetch.
+     */
+    where?: RunnerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Runners to fetch.
+     */
+    orderBy?: RunnerOrderByWithRelationInput | RunnerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Runners.
+     */
+    cursor?: RunnerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Runners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Runners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Runners.
+     */
+    distinct?: RunnerScalarFieldEnum | RunnerScalarFieldEnum[]
+  }
+
+  /**
+   * Runner findMany
+   */
+  export type RunnerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerInclude<ExtArgs> | null
+    /**
+     * Filter, which Runners to fetch.
+     */
+    where?: RunnerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Runners to fetch.
+     */
+    orderBy?: RunnerOrderByWithRelationInput | RunnerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Runners.
+     */
+    cursor?: RunnerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Runners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Runners.
+     */
+    skip?: number
+    distinct?: RunnerScalarFieldEnum | RunnerScalarFieldEnum[]
+  }
+
+  /**
+   * Runner create
+   */
+  export type RunnerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Runner.
+     */
+    data: XOR<RunnerCreateInput, RunnerUncheckedCreateInput>
+  }
+
+  /**
+   * Runner createMany
+   */
+  export type RunnerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Runners.
+     */
+    data: RunnerCreateManyInput | RunnerCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Runner createManyAndReturn
+   */
+  export type RunnerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * The data used to create many Runners.
+     */
+    data: RunnerCreateManyInput | RunnerCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Runner update
+   */
+  export type RunnerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Runner.
+     */
+    data: XOR<RunnerUpdateInput, RunnerUncheckedUpdateInput>
+    /**
+     * Choose, which Runner to update.
+     */
+    where: RunnerWhereUniqueInput
+  }
+
+  /**
+   * Runner updateMany
+   */
+  export type RunnerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Runners.
+     */
+    data: XOR<RunnerUpdateManyMutationInput, RunnerUncheckedUpdateManyInput>
+    /**
+     * Filter which Runners to update
+     */
+    where?: RunnerWhereInput
+    /**
+     * Limit how many Runners to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Runner updateManyAndReturn
+   */
+  export type RunnerUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * The data used to update Runners.
+     */
+    data: XOR<RunnerUpdateManyMutationInput, RunnerUncheckedUpdateManyInput>
+    /**
+     * Filter which Runners to update
+     */
+    where?: RunnerWhereInput
+    /**
+     * Limit how many Runners to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Runner upsert
+   */
+  export type RunnerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Runner to update in case it exists.
+     */
+    where: RunnerWhereUniqueInput
+    /**
+     * In case the Runner found by the `where` argument doesn't exist, create a new Runner with this data.
+     */
+    create: XOR<RunnerCreateInput, RunnerUncheckedCreateInput>
+    /**
+     * In case the Runner was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RunnerUpdateInput, RunnerUncheckedUpdateInput>
+  }
+
+  /**
+   * Runner delete
+   */
+  export type RunnerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerInclude<ExtArgs> | null
+    /**
+     * Filter which Runner to delete.
+     */
+    where: RunnerWhereUniqueInput
+  }
+
+  /**
+   * Runner deleteMany
+   */
+  export type RunnerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Runners to delete
+     */
+    where?: RunnerWhereInput
+    /**
+     * Limit how many Runners to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Runner.commands
+   */
+  export type Runner$commandsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+    where?: RunnerCommandWhereInput
+    orderBy?: RunnerCommandOrderByWithRelationInput | RunnerCommandOrderByWithRelationInput[]
+    cursor?: RunnerCommandWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RunnerCommandScalarFieldEnum | RunnerCommandScalarFieldEnum[]
+  }
+
+  /**
+   * Runner without action
+   */
+  export type RunnerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Runner
+     */
+    select?: RunnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Runner
+     */
+    omit?: RunnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RunnerCommand
+   */
+
+  export type AggregateRunnerCommand = {
+    _count: RunnerCommandCountAggregateOutputType | null
+    _avg: RunnerCommandAvgAggregateOutputType | null
+    _sum: RunnerCommandSumAggregateOutputType | null
+    _min: RunnerCommandMinAggregateOutputType | null
+    _max: RunnerCommandMaxAggregateOutputType | null
+  }
+
+  export type RunnerCommandAvgAggregateOutputType = {
+    exitCode: number | null
+  }
+
+  export type RunnerCommandSumAggregateOutputType = {
+    exitCode: number | null
+  }
+
+  export type RunnerCommandMinAggregateOutputType = {
+    id: string | null
+    runnerId: string | null
+    userId: string | null
+    taskId: string | null
+    command: string | null
+    cwd: string | null
+    status: $Enums.CommandStatus | null
+    exitCode: number | null
+    output: string | null
+    source: string | null
+    startedAt: Date | null
+    finishedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type RunnerCommandMaxAggregateOutputType = {
+    id: string | null
+    runnerId: string | null
+    userId: string | null
+    taskId: string | null
+    command: string | null
+    cwd: string | null
+    status: $Enums.CommandStatus | null
+    exitCode: number | null
+    output: string | null
+    source: string | null
+    startedAt: Date | null
+    finishedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type RunnerCommandCountAggregateOutputType = {
+    id: number
+    runnerId: number
+    userId: number
+    taskId: number
+    command: number
+    cwd: number
+    status: number
+    exitCode: number
+    output: number
+    source: number
+    startedAt: number
+    finishedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type RunnerCommandAvgAggregateInputType = {
+    exitCode?: true
+  }
+
+  export type RunnerCommandSumAggregateInputType = {
+    exitCode?: true
+  }
+
+  export type RunnerCommandMinAggregateInputType = {
+    id?: true
+    runnerId?: true
+    userId?: true
+    taskId?: true
+    command?: true
+    cwd?: true
+    status?: true
+    exitCode?: true
+    output?: true
+    source?: true
+    startedAt?: true
+    finishedAt?: true
+    createdAt?: true
+  }
+
+  export type RunnerCommandMaxAggregateInputType = {
+    id?: true
+    runnerId?: true
+    userId?: true
+    taskId?: true
+    command?: true
+    cwd?: true
+    status?: true
+    exitCode?: true
+    output?: true
+    source?: true
+    startedAt?: true
+    finishedAt?: true
+    createdAt?: true
+  }
+
+  export type RunnerCommandCountAggregateInputType = {
+    id?: true
+    runnerId?: true
+    userId?: true
+    taskId?: true
+    command?: true
+    cwd?: true
+    status?: true
+    exitCode?: true
+    output?: true
+    source?: true
+    startedAt?: true
+    finishedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type RunnerCommandAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RunnerCommand to aggregate.
+     */
+    where?: RunnerCommandWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RunnerCommands to fetch.
+     */
+    orderBy?: RunnerCommandOrderByWithRelationInput | RunnerCommandOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RunnerCommandWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RunnerCommands from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RunnerCommands.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RunnerCommands
+    **/
+    _count?: true | RunnerCommandCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RunnerCommandAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RunnerCommandSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RunnerCommandMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RunnerCommandMaxAggregateInputType
+  }
+
+  export type GetRunnerCommandAggregateType<T extends RunnerCommandAggregateArgs> = {
+        [P in keyof T & keyof AggregateRunnerCommand]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRunnerCommand[P]>
+      : GetScalarType<T[P], AggregateRunnerCommand[P]>
+  }
+
+
+
+
+  export type RunnerCommandGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RunnerCommandWhereInput
+    orderBy?: RunnerCommandOrderByWithAggregationInput | RunnerCommandOrderByWithAggregationInput[]
+    by: RunnerCommandScalarFieldEnum[] | RunnerCommandScalarFieldEnum
+    having?: RunnerCommandScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RunnerCommandCountAggregateInputType | true
+    _avg?: RunnerCommandAvgAggregateInputType
+    _sum?: RunnerCommandSumAggregateInputType
+    _min?: RunnerCommandMinAggregateInputType
+    _max?: RunnerCommandMaxAggregateInputType
+  }
+
+  export type RunnerCommandGroupByOutputType = {
+    id: string
+    runnerId: string
+    userId: string
+    taskId: string | null
+    command: string
+    cwd: string | null
+    status: $Enums.CommandStatus
+    exitCode: number | null
+    output: string
+    source: string
+    startedAt: Date | null
+    finishedAt: Date | null
+    createdAt: Date
+    _count: RunnerCommandCountAggregateOutputType | null
+    _avg: RunnerCommandAvgAggregateOutputType | null
+    _sum: RunnerCommandSumAggregateOutputType | null
+    _min: RunnerCommandMinAggregateOutputType | null
+    _max: RunnerCommandMaxAggregateOutputType | null
+  }
+
+  type GetRunnerCommandGroupByPayload<T extends RunnerCommandGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RunnerCommandGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RunnerCommandGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RunnerCommandGroupByOutputType[P]>
+            : GetScalarType<T[P], RunnerCommandGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RunnerCommandSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    runnerId?: boolean
+    userId?: boolean
+    taskId?: boolean
+    command?: boolean
+    cwd?: boolean
+    status?: boolean
+    exitCode?: boolean
+    output?: boolean
+    source?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    createdAt?: boolean
+    runner?: boolean | RunnerDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["runnerCommand"]>
+
+  export type RunnerCommandSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    runnerId?: boolean
+    userId?: boolean
+    taskId?: boolean
+    command?: boolean
+    cwd?: boolean
+    status?: boolean
+    exitCode?: boolean
+    output?: boolean
+    source?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    createdAt?: boolean
+    runner?: boolean | RunnerDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["runnerCommand"]>
+
+  export type RunnerCommandSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    runnerId?: boolean
+    userId?: boolean
+    taskId?: boolean
+    command?: boolean
+    cwd?: boolean
+    status?: boolean
+    exitCode?: boolean
+    output?: boolean
+    source?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    createdAt?: boolean
+    runner?: boolean | RunnerDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["runnerCommand"]>
+
+  export type RunnerCommandSelectScalar = {
+    id?: boolean
+    runnerId?: boolean
+    userId?: boolean
+    taskId?: boolean
+    command?: boolean
+    cwd?: boolean
+    status?: boolean
+    exitCode?: boolean
+    output?: boolean
+    source?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type RunnerCommandOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "runnerId" | "userId" | "taskId" | "command" | "cwd" | "status" | "exitCode" | "output" | "source" | "startedAt" | "finishedAt" | "createdAt", ExtArgs["result"]["runnerCommand"]>
+  export type RunnerCommandInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    runner?: boolean | RunnerDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RunnerCommandIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    runner?: boolean | RunnerDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RunnerCommandIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    runner?: boolean | RunnerDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $RunnerCommandPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RunnerCommand"
+    objects: {
+      runner: Prisma.$RunnerPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      runnerId: string
+      userId: string
+      taskId: string | null
+      command: string
+      cwd: string | null
+      status: $Enums.CommandStatus
+      exitCode: number | null
+      output: string
+      source: string
+      startedAt: Date | null
+      finishedAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["runnerCommand"]>
+    composites: {}
+  }
+
+  type RunnerCommandGetPayload<S extends boolean | null | undefined | RunnerCommandDefaultArgs> = $Result.GetResult<Prisma.$RunnerCommandPayload, S>
+
+  type RunnerCommandCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RunnerCommandFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RunnerCommandCountAggregateInputType | true
+    }
+
+  export interface RunnerCommandDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RunnerCommand'], meta: { name: 'RunnerCommand' } }
+    /**
+     * Find zero or one RunnerCommand that matches the filter.
+     * @param {RunnerCommandFindUniqueArgs} args - Arguments to find a RunnerCommand
+     * @example
+     * // Get one RunnerCommand
+     * const runnerCommand = await prisma.runnerCommand.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RunnerCommandFindUniqueArgs>(args: SelectSubset<T, RunnerCommandFindUniqueArgs<ExtArgs>>): Prisma__RunnerCommandClient<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RunnerCommand that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RunnerCommandFindUniqueOrThrowArgs} args - Arguments to find a RunnerCommand
+     * @example
+     * // Get one RunnerCommand
+     * const runnerCommand = await prisma.runnerCommand.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RunnerCommandFindUniqueOrThrowArgs>(args: SelectSubset<T, RunnerCommandFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RunnerCommandClient<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RunnerCommand that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerCommandFindFirstArgs} args - Arguments to find a RunnerCommand
+     * @example
+     * // Get one RunnerCommand
+     * const runnerCommand = await prisma.runnerCommand.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RunnerCommandFindFirstArgs>(args?: SelectSubset<T, RunnerCommandFindFirstArgs<ExtArgs>>): Prisma__RunnerCommandClient<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RunnerCommand that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerCommandFindFirstOrThrowArgs} args - Arguments to find a RunnerCommand
+     * @example
+     * // Get one RunnerCommand
+     * const runnerCommand = await prisma.runnerCommand.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RunnerCommandFindFirstOrThrowArgs>(args?: SelectSubset<T, RunnerCommandFindFirstOrThrowArgs<ExtArgs>>): Prisma__RunnerCommandClient<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RunnerCommands that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerCommandFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RunnerCommands
+     * const runnerCommands = await prisma.runnerCommand.findMany()
+     * 
+     * // Get first 10 RunnerCommands
+     * const runnerCommands = await prisma.runnerCommand.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const runnerCommandWithIdOnly = await prisma.runnerCommand.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RunnerCommandFindManyArgs>(args?: SelectSubset<T, RunnerCommandFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RunnerCommand.
+     * @param {RunnerCommandCreateArgs} args - Arguments to create a RunnerCommand.
+     * @example
+     * // Create one RunnerCommand
+     * const RunnerCommand = await prisma.runnerCommand.create({
+     *   data: {
+     *     // ... data to create a RunnerCommand
+     *   }
+     * })
+     * 
+     */
+    create<T extends RunnerCommandCreateArgs>(args: SelectSubset<T, RunnerCommandCreateArgs<ExtArgs>>): Prisma__RunnerCommandClient<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RunnerCommands.
+     * @param {RunnerCommandCreateManyArgs} args - Arguments to create many RunnerCommands.
+     * @example
+     * // Create many RunnerCommands
+     * const runnerCommand = await prisma.runnerCommand.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RunnerCommandCreateManyArgs>(args?: SelectSubset<T, RunnerCommandCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RunnerCommands and returns the data saved in the database.
+     * @param {RunnerCommandCreateManyAndReturnArgs} args - Arguments to create many RunnerCommands.
+     * @example
+     * // Create many RunnerCommands
+     * const runnerCommand = await prisma.runnerCommand.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RunnerCommands and only return the `id`
+     * const runnerCommandWithIdOnly = await prisma.runnerCommand.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RunnerCommandCreateManyAndReturnArgs>(args?: SelectSubset<T, RunnerCommandCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RunnerCommand.
+     * @param {RunnerCommandDeleteArgs} args - Arguments to delete one RunnerCommand.
+     * @example
+     * // Delete one RunnerCommand
+     * const RunnerCommand = await prisma.runnerCommand.delete({
+     *   where: {
+     *     // ... filter to delete one RunnerCommand
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RunnerCommandDeleteArgs>(args: SelectSubset<T, RunnerCommandDeleteArgs<ExtArgs>>): Prisma__RunnerCommandClient<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RunnerCommand.
+     * @param {RunnerCommandUpdateArgs} args - Arguments to update one RunnerCommand.
+     * @example
+     * // Update one RunnerCommand
+     * const runnerCommand = await prisma.runnerCommand.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RunnerCommandUpdateArgs>(args: SelectSubset<T, RunnerCommandUpdateArgs<ExtArgs>>): Prisma__RunnerCommandClient<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RunnerCommands.
+     * @param {RunnerCommandDeleteManyArgs} args - Arguments to filter RunnerCommands to delete.
+     * @example
+     * // Delete a few RunnerCommands
+     * const { count } = await prisma.runnerCommand.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RunnerCommandDeleteManyArgs>(args?: SelectSubset<T, RunnerCommandDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RunnerCommands.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerCommandUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RunnerCommands
+     * const runnerCommand = await prisma.runnerCommand.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RunnerCommandUpdateManyArgs>(args: SelectSubset<T, RunnerCommandUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RunnerCommands and returns the data updated in the database.
+     * @param {RunnerCommandUpdateManyAndReturnArgs} args - Arguments to update many RunnerCommands.
+     * @example
+     * // Update many RunnerCommands
+     * const runnerCommand = await prisma.runnerCommand.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RunnerCommands and only return the `id`
+     * const runnerCommandWithIdOnly = await prisma.runnerCommand.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RunnerCommandUpdateManyAndReturnArgs>(args: SelectSubset<T, RunnerCommandUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RunnerCommand.
+     * @param {RunnerCommandUpsertArgs} args - Arguments to update or create a RunnerCommand.
+     * @example
+     * // Update or create a RunnerCommand
+     * const runnerCommand = await prisma.runnerCommand.upsert({
+     *   create: {
+     *     // ... data to create a RunnerCommand
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RunnerCommand we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RunnerCommandUpsertArgs>(args: SelectSubset<T, RunnerCommandUpsertArgs<ExtArgs>>): Prisma__RunnerCommandClient<$Result.GetResult<Prisma.$RunnerCommandPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RunnerCommands.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerCommandCountArgs} args - Arguments to filter RunnerCommands to count.
+     * @example
+     * // Count the number of RunnerCommands
+     * const count = await prisma.runnerCommand.count({
+     *   where: {
+     *     // ... the filter for the RunnerCommands we want to count
+     *   }
+     * })
+    **/
+    count<T extends RunnerCommandCountArgs>(
+      args?: Subset<T, RunnerCommandCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RunnerCommandCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RunnerCommand.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerCommandAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RunnerCommandAggregateArgs>(args: Subset<T, RunnerCommandAggregateArgs>): Prisma.PrismaPromise<GetRunnerCommandAggregateType<T>>
+
+    /**
+     * Group by RunnerCommand.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerCommandGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RunnerCommandGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RunnerCommandGroupByArgs['orderBy'] }
+        : { orderBy?: RunnerCommandGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RunnerCommandGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRunnerCommandGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RunnerCommand model
+   */
+  readonly fields: RunnerCommandFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RunnerCommand.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RunnerCommandClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    runner<T extends RunnerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RunnerDefaultArgs<ExtArgs>>): Prisma__RunnerClient<$Result.GetResult<Prisma.$RunnerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RunnerCommand model
+   */
+  interface RunnerCommandFieldRefs {
+    readonly id: FieldRef<"RunnerCommand", 'String'>
+    readonly runnerId: FieldRef<"RunnerCommand", 'String'>
+    readonly userId: FieldRef<"RunnerCommand", 'String'>
+    readonly taskId: FieldRef<"RunnerCommand", 'String'>
+    readonly command: FieldRef<"RunnerCommand", 'String'>
+    readonly cwd: FieldRef<"RunnerCommand", 'String'>
+    readonly status: FieldRef<"RunnerCommand", 'CommandStatus'>
+    readonly exitCode: FieldRef<"RunnerCommand", 'Int'>
+    readonly output: FieldRef<"RunnerCommand", 'String'>
+    readonly source: FieldRef<"RunnerCommand", 'String'>
+    readonly startedAt: FieldRef<"RunnerCommand", 'DateTime'>
+    readonly finishedAt: FieldRef<"RunnerCommand", 'DateTime'>
+    readonly createdAt: FieldRef<"RunnerCommand", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RunnerCommand findUnique
+   */
+  export type RunnerCommandFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+    /**
+     * Filter, which RunnerCommand to fetch.
+     */
+    where: RunnerCommandWhereUniqueInput
+  }
+
+  /**
+   * RunnerCommand findUniqueOrThrow
+   */
+  export type RunnerCommandFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+    /**
+     * Filter, which RunnerCommand to fetch.
+     */
+    where: RunnerCommandWhereUniqueInput
+  }
+
+  /**
+   * RunnerCommand findFirst
+   */
+  export type RunnerCommandFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+    /**
+     * Filter, which RunnerCommand to fetch.
+     */
+    where?: RunnerCommandWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RunnerCommands to fetch.
+     */
+    orderBy?: RunnerCommandOrderByWithRelationInput | RunnerCommandOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RunnerCommands.
+     */
+    cursor?: RunnerCommandWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RunnerCommands from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RunnerCommands.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RunnerCommands.
+     */
+    distinct?: RunnerCommandScalarFieldEnum | RunnerCommandScalarFieldEnum[]
+  }
+
+  /**
+   * RunnerCommand findFirstOrThrow
+   */
+  export type RunnerCommandFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+    /**
+     * Filter, which RunnerCommand to fetch.
+     */
+    where?: RunnerCommandWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RunnerCommands to fetch.
+     */
+    orderBy?: RunnerCommandOrderByWithRelationInput | RunnerCommandOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RunnerCommands.
+     */
+    cursor?: RunnerCommandWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RunnerCommands from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RunnerCommands.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RunnerCommands.
+     */
+    distinct?: RunnerCommandScalarFieldEnum | RunnerCommandScalarFieldEnum[]
+  }
+
+  /**
+   * RunnerCommand findMany
+   */
+  export type RunnerCommandFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+    /**
+     * Filter, which RunnerCommands to fetch.
+     */
+    where?: RunnerCommandWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RunnerCommands to fetch.
+     */
+    orderBy?: RunnerCommandOrderByWithRelationInput | RunnerCommandOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RunnerCommands.
+     */
+    cursor?: RunnerCommandWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RunnerCommands from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RunnerCommands.
+     */
+    skip?: number
+    distinct?: RunnerCommandScalarFieldEnum | RunnerCommandScalarFieldEnum[]
+  }
+
+  /**
+   * RunnerCommand create
+   */
+  export type RunnerCommandCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RunnerCommand.
+     */
+    data: XOR<RunnerCommandCreateInput, RunnerCommandUncheckedCreateInput>
+  }
+
+  /**
+   * RunnerCommand createMany
+   */
+  export type RunnerCommandCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RunnerCommands.
+     */
+    data: RunnerCommandCreateManyInput | RunnerCommandCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RunnerCommand createManyAndReturn
+   */
+  export type RunnerCommandCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * The data used to create many RunnerCommands.
+     */
+    data: RunnerCommandCreateManyInput | RunnerCommandCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RunnerCommand update
+   */
+  export type RunnerCommandUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RunnerCommand.
+     */
+    data: XOR<RunnerCommandUpdateInput, RunnerCommandUncheckedUpdateInput>
+    /**
+     * Choose, which RunnerCommand to update.
+     */
+    where: RunnerCommandWhereUniqueInput
+  }
+
+  /**
+   * RunnerCommand updateMany
+   */
+  export type RunnerCommandUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RunnerCommands.
+     */
+    data: XOR<RunnerCommandUpdateManyMutationInput, RunnerCommandUncheckedUpdateManyInput>
+    /**
+     * Filter which RunnerCommands to update
+     */
+    where?: RunnerCommandWhereInput
+    /**
+     * Limit how many RunnerCommands to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RunnerCommand updateManyAndReturn
+   */
+  export type RunnerCommandUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * The data used to update RunnerCommands.
+     */
+    data: XOR<RunnerCommandUpdateManyMutationInput, RunnerCommandUncheckedUpdateManyInput>
+    /**
+     * Filter which RunnerCommands to update
+     */
+    where?: RunnerCommandWhereInput
+    /**
+     * Limit how many RunnerCommands to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RunnerCommand upsert
+   */
+  export type RunnerCommandUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RunnerCommand to update in case it exists.
+     */
+    where: RunnerCommandWhereUniqueInput
+    /**
+     * In case the RunnerCommand found by the `where` argument doesn't exist, create a new RunnerCommand with this data.
+     */
+    create: XOR<RunnerCommandCreateInput, RunnerCommandUncheckedCreateInput>
+    /**
+     * In case the RunnerCommand was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RunnerCommandUpdateInput, RunnerCommandUncheckedUpdateInput>
+  }
+
+  /**
+   * RunnerCommand delete
+   */
+  export type RunnerCommandDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+    /**
+     * Filter which RunnerCommand to delete.
+     */
+    where: RunnerCommandWhereUniqueInput
+  }
+
+  /**
+   * RunnerCommand deleteMany
+   */
+  export type RunnerCommandDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RunnerCommands to delete
+     */
+    where?: RunnerCommandWhereInput
+    /**
+     * Limit how many RunnerCommands to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RunnerCommand without action
+   */
+  export type RunnerCommandDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerCommand
+     */
+    select?: RunnerCommandSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerCommand
+     */
+    omit?: RunnerCommandOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerCommandInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CommandSnippet
+   */
+
+  export type AggregateCommandSnippet = {
+    _count: CommandSnippetCountAggregateOutputType | null
+    _min: CommandSnippetMinAggregateOutputType | null
+    _max: CommandSnippetMaxAggregateOutputType | null
+  }
+
+  export type CommandSnippetMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    command: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CommandSnippetMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    command: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CommandSnippetCountAggregateOutputType = {
+    id: number
+    userId: number
+    name: number
+    command: number
+    description: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CommandSnippetMinAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    command?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CommandSnippetMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    command?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CommandSnippetCountAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    command?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CommandSnippetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CommandSnippet to aggregate.
+     */
+    where?: CommandSnippetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CommandSnippets to fetch.
+     */
+    orderBy?: CommandSnippetOrderByWithRelationInput | CommandSnippetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CommandSnippetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CommandSnippets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CommandSnippets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CommandSnippets
+    **/
+    _count?: true | CommandSnippetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CommandSnippetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CommandSnippetMaxAggregateInputType
+  }
+
+  export type GetCommandSnippetAggregateType<T extends CommandSnippetAggregateArgs> = {
+        [P in keyof T & keyof AggregateCommandSnippet]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCommandSnippet[P]>
+      : GetScalarType<T[P], AggregateCommandSnippet[P]>
+  }
+
+
+
+
+  export type CommandSnippetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CommandSnippetWhereInput
+    orderBy?: CommandSnippetOrderByWithAggregationInput | CommandSnippetOrderByWithAggregationInput[]
+    by: CommandSnippetScalarFieldEnum[] | CommandSnippetScalarFieldEnum
+    having?: CommandSnippetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CommandSnippetCountAggregateInputType | true
+    _min?: CommandSnippetMinAggregateInputType
+    _max?: CommandSnippetMaxAggregateInputType
+  }
+
+  export type CommandSnippetGroupByOutputType = {
+    id: string
+    userId: string
+    name: string
+    command: string
+    description: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CommandSnippetCountAggregateOutputType | null
+    _min: CommandSnippetMinAggregateOutputType | null
+    _max: CommandSnippetMaxAggregateOutputType | null
+  }
+
+  type GetCommandSnippetGroupByPayload<T extends CommandSnippetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CommandSnippetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CommandSnippetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CommandSnippetGroupByOutputType[P]>
+            : GetScalarType<T[P], CommandSnippetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CommandSnippetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    command?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["commandSnippet"]>
+
+  export type CommandSnippetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    command?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["commandSnippet"]>
+
+  export type CommandSnippetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    command?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["commandSnippet"]>
+
+  export type CommandSnippetSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    command?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CommandSnippetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "command" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["commandSnippet"]>
+  export type CommandSnippetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CommandSnippetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CommandSnippetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CommandSnippetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CommandSnippet"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      name: string
+      command: string
+      description: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["commandSnippet"]>
+    composites: {}
+  }
+
+  type CommandSnippetGetPayload<S extends boolean | null | undefined | CommandSnippetDefaultArgs> = $Result.GetResult<Prisma.$CommandSnippetPayload, S>
+
+  type CommandSnippetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CommandSnippetFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CommandSnippetCountAggregateInputType | true
+    }
+
+  export interface CommandSnippetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CommandSnippet'], meta: { name: 'CommandSnippet' } }
+    /**
+     * Find zero or one CommandSnippet that matches the filter.
+     * @param {CommandSnippetFindUniqueArgs} args - Arguments to find a CommandSnippet
+     * @example
+     * // Get one CommandSnippet
+     * const commandSnippet = await prisma.commandSnippet.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CommandSnippetFindUniqueArgs>(args: SelectSubset<T, CommandSnippetFindUniqueArgs<ExtArgs>>): Prisma__CommandSnippetClient<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CommandSnippet that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CommandSnippetFindUniqueOrThrowArgs} args - Arguments to find a CommandSnippet
+     * @example
+     * // Get one CommandSnippet
+     * const commandSnippet = await prisma.commandSnippet.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CommandSnippetFindUniqueOrThrowArgs>(args: SelectSubset<T, CommandSnippetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CommandSnippetClient<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CommandSnippet that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommandSnippetFindFirstArgs} args - Arguments to find a CommandSnippet
+     * @example
+     * // Get one CommandSnippet
+     * const commandSnippet = await prisma.commandSnippet.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CommandSnippetFindFirstArgs>(args?: SelectSubset<T, CommandSnippetFindFirstArgs<ExtArgs>>): Prisma__CommandSnippetClient<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CommandSnippet that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommandSnippetFindFirstOrThrowArgs} args - Arguments to find a CommandSnippet
+     * @example
+     * // Get one CommandSnippet
+     * const commandSnippet = await prisma.commandSnippet.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CommandSnippetFindFirstOrThrowArgs>(args?: SelectSubset<T, CommandSnippetFindFirstOrThrowArgs<ExtArgs>>): Prisma__CommandSnippetClient<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CommandSnippets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommandSnippetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CommandSnippets
+     * const commandSnippets = await prisma.commandSnippet.findMany()
+     * 
+     * // Get first 10 CommandSnippets
+     * const commandSnippets = await prisma.commandSnippet.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const commandSnippetWithIdOnly = await prisma.commandSnippet.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CommandSnippetFindManyArgs>(args?: SelectSubset<T, CommandSnippetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CommandSnippet.
+     * @param {CommandSnippetCreateArgs} args - Arguments to create a CommandSnippet.
+     * @example
+     * // Create one CommandSnippet
+     * const CommandSnippet = await prisma.commandSnippet.create({
+     *   data: {
+     *     // ... data to create a CommandSnippet
+     *   }
+     * })
+     * 
+     */
+    create<T extends CommandSnippetCreateArgs>(args: SelectSubset<T, CommandSnippetCreateArgs<ExtArgs>>): Prisma__CommandSnippetClient<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CommandSnippets.
+     * @param {CommandSnippetCreateManyArgs} args - Arguments to create many CommandSnippets.
+     * @example
+     * // Create many CommandSnippets
+     * const commandSnippet = await prisma.commandSnippet.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CommandSnippetCreateManyArgs>(args?: SelectSubset<T, CommandSnippetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CommandSnippets and returns the data saved in the database.
+     * @param {CommandSnippetCreateManyAndReturnArgs} args - Arguments to create many CommandSnippets.
+     * @example
+     * // Create many CommandSnippets
+     * const commandSnippet = await prisma.commandSnippet.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CommandSnippets and only return the `id`
+     * const commandSnippetWithIdOnly = await prisma.commandSnippet.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CommandSnippetCreateManyAndReturnArgs>(args?: SelectSubset<T, CommandSnippetCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CommandSnippet.
+     * @param {CommandSnippetDeleteArgs} args - Arguments to delete one CommandSnippet.
+     * @example
+     * // Delete one CommandSnippet
+     * const CommandSnippet = await prisma.commandSnippet.delete({
+     *   where: {
+     *     // ... filter to delete one CommandSnippet
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CommandSnippetDeleteArgs>(args: SelectSubset<T, CommandSnippetDeleteArgs<ExtArgs>>): Prisma__CommandSnippetClient<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CommandSnippet.
+     * @param {CommandSnippetUpdateArgs} args - Arguments to update one CommandSnippet.
+     * @example
+     * // Update one CommandSnippet
+     * const commandSnippet = await prisma.commandSnippet.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CommandSnippetUpdateArgs>(args: SelectSubset<T, CommandSnippetUpdateArgs<ExtArgs>>): Prisma__CommandSnippetClient<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CommandSnippets.
+     * @param {CommandSnippetDeleteManyArgs} args - Arguments to filter CommandSnippets to delete.
+     * @example
+     * // Delete a few CommandSnippets
+     * const { count } = await prisma.commandSnippet.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CommandSnippetDeleteManyArgs>(args?: SelectSubset<T, CommandSnippetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CommandSnippets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommandSnippetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CommandSnippets
+     * const commandSnippet = await prisma.commandSnippet.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CommandSnippetUpdateManyArgs>(args: SelectSubset<T, CommandSnippetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CommandSnippets and returns the data updated in the database.
+     * @param {CommandSnippetUpdateManyAndReturnArgs} args - Arguments to update many CommandSnippets.
+     * @example
+     * // Update many CommandSnippets
+     * const commandSnippet = await prisma.commandSnippet.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CommandSnippets and only return the `id`
+     * const commandSnippetWithIdOnly = await prisma.commandSnippet.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CommandSnippetUpdateManyAndReturnArgs>(args: SelectSubset<T, CommandSnippetUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CommandSnippet.
+     * @param {CommandSnippetUpsertArgs} args - Arguments to update or create a CommandSnippet.
+     * @example
+     * // Update or create a CommandSnippet
+     * const commandSnippet = await prisma.commandSnippet.upsert({
+     *   create: {
+     *     // ... data to create a CommandSnippet
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CommandSnippet we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CommandSnippetUpsertArgs>(args: SelectSubset<T, CommandSnippetUpsertArgs<ExtArgs>>): Prisma__CommandSnippetClient<$Result.GetResult<Prisma.$CommandSnippetPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CommandSnippets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommandSnippetCountArgs} args - Arguments to filter CommandSnippets to count.
+     * @example
+     * // Count the number of CommandSnippets
+     * const count = await prisma.commandSnippet.count({
+     *   where: {
+     *     // ... the filter for the CommandSnippets we want to count
+     *   }
+     * })
+    **/
+    count<T extends CommandSnippetCountArgs>(
+      args?: Subset<T, CommandSnippetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CommandSnippetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CommandSnippet.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommandSnippetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CommandSnippetAggregateArgs>(args: Subset<T, CommandSnippetAggregateArgs>): Prisma.PrismaPromise<GetCommandSnippetAggregateType<T>>
+
+    /**
+     * Group by CommandSnippet.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommandSnippetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CommandSnippetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CommandSnippetGroupByArgs['orderBy'] }
+        : { orderBy?: CommandSnippetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CommandSnippetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCommandSnippetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CommandSnippet model
+   */
+  readonly fields: CommandSnippetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CommandSnippet.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CommandSnippetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CommandSnippet model
+   */
+  interface CommandSnippetFieldRefs {
+    readonly id: FieldRef<"CommandSnippet", 'String'>
+    readonly userId: FieldRef<"CommandSnippet", 'String'>
+    readonly name: FieldRef<"CommandSnippet", 'String'>
+    readonly command: FieldRef<"CommandSnippet", 'String'>
+    readonly description: FieldRef<"CommandSnippet", 'String'>
+    readonly createdAt: FieldRef<"CommandSnippet", 'DateTime'>
+    readonly updatedAt: FieldRef<"CommandSnippet", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CommandSnippet findUnique
+   */
+  export type CommandSnippetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetInclude<ExtArgs> | null
+    /**
+     * Filter, which CommandSnippet to fetch.
+     */
+    where: CommandSnippetWhereUniqueInput
+  }
+
+  /**
+   * CommandSnippet findUniqueOrThrow
+   */
+  export type CommandSnippetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetInclude<ExtArgs> | null
+    /**
+     * Filter, which CommandSnippet to fetch.
+     */
+    where: CommandSnippetWhereUniqueInput
+  }
+
+  /**
+   * CommandSnippet findFirst
+   */
+  export type CommandSnippetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetInclude<ExtArgs> | null
+    /**
+     * Filter, which CommandSnippet to fetch.
+     */
+    where?: CommandSnippetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CommandSnippets to fetch.
+     */
+    orderBy?: CommandSnippetOrderByWithRelationInput | CommandSnippetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CommandSnippets.
+     */
+    cursor?: CommandSnippetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CommandSnippets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CommandSnippets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CommandSnippets.
+     */
+    distinct?: CommandSnippetScalarFieldEnum | CommandSnippetScalarFieldEnum[]
+  }
+
+  /**
+   * CommandSnippet findFirstOrThrow
+   */
+  export type CommandSnippetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetInclude<ExtArgs> | null
+    /**
+     * Filter, which CommandSnippet to fetch.
+     */
+    where?: CommandSnippetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CommandSnippets to fetch.
+     */
+    orderBy?: CommandSnippetOrderByWithRelationInput | CommandSnippetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CommandSnippets.
+     */
+    cursor?: CommandSnippetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CommandSnippets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CommandSnippets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CommandSnippets.
+     */
+    distinct?: CommandSnippetScalarFieldEnum | CommandSnippetScalarFieldEnum[]
+  }
+
+  /**
+   * CommandSnippet findMany
+   */
+  export type CommandSnippetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetInclude<ExtArgs> | null
+    /**
+     * Filter, which CommandSnippets to fetch.
+     */
+    where?: CommandSnippetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CommandSnippets to fetch.
+     */
+    orderBy?: CommandSnippetOrderByWithRelationInput | CommandSnippetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CommandSnippets.
+     */
+    cursor?: CommandSnippetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CommandSnippets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CommandSnippets.
+     */
+    skip?: number
+    distinct?: CommandSnippetScalarFieldEnum | CommandSnippetScalarFieldEnum[]
+  }
+
+  /**
+   * CommandSnippet create
+   */
+  export type CommandSnippetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CommandSnippet.
+     */
+    data: XOR<CommandSnippetCreateInput, CommandSnippetUncheckedCreateInput>
+  }
+
+  /**
+   * CommandSnippet createMany
+   */
+  export type CommandSnippetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CommandSnippets.
+     */
+    data: CommandSnippetCreateManyInput | CommandSnippetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CommandSnippet createManyAndReturn
+   */
+  export type CommandSnippetCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * The data used to create many CommandSnippets.
+     */
+    data: CommandSnippetCreateManyInput | CommandSnippetCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CommandSnippet update
+   */
+  export type CommandSnippetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CommandSnippet.
+     */
+    data: XOR<CommandSnippetUpdateInput, CommandSnippetUncheckedUpdateInput>
+    /**
+     * Choose, which CommandSnippet to update.
+     */
+    where: CommandSnippetWhereUniqueInput
+  }
+
+  /**
+   * CommandSnippet updateMany
+   */
+  export type CommandSnippetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CommandSnippets.
+     */
+    data: XOR<CommandSnippetUpdateManyMutationInput, CommandSnippetUncheckedUpdateManyInput>
+    /**
+     * Filter which CommandSnippets to update
+     */
+    where?: CommandSnippetWhereInput
+    /**
+     * Limit how many CommandSnippets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CommandSnippet updateManyAndReturn
+   */
+  export type CommandSnippetUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * The data used to update CommandSnippets.
+     */
+    data: XOR<CommandSnippetUpdateManyMutationInput, CommandSnippetUncheckedUpdateManyInput>
+    /**
+     * Filter which CommandSnippets to update
+     */
+    where?: CommandSnippetWhereInput
+    /**
+     * Limit how many CommandSnippets to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CommandSnippet upsert
+   */
+  export type CommandSnippetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CommandSnippet to update in case it exists.
+     */
+    where: CommandSnippetWhereUniqueInput
+    /**
+     * In case the CommandSnippet found by the `where` argument doesn't exist, create a new CommandSnippet with this data.
+     */
+    create: XOR<CommandSnippetCreateInput, CommandSnippetUncheckedCreateInput>
+    /**
+     * In case the CommandSnippet was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CommandSnippetUpdateInput, CommandSnippetUncheckedUpdateInput>
+  }
+
+  /**
+   * CommandSnippet delete
+   */
+  export type CommandSnippetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetInclude<ExtArgs> | null
+    /**
+     * Filter which CommandSnippet to delete.
+     */
+    where: CommandSnippetWhereUniqueInput
+  }
+
+  /**
+   * CommandSnippet deleteMany
+   */
+  export type CommandSnippetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CommandSnippets to delete
+     */
+    where?: CommandSnippetWhereInput
+    /**
+     * Limit how many CommandSnippets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CommandSnippet without action
+   */
+  export type CommandSnippetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CommandSnippet
+     */
+    select?: CommandSnippetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CommandSnippet
+     */
+    omit?: CommandSnippetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommandSnippetInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AutomationRule
+   */
+
+  export type AggregateAutomationRule = {
+    _count: AutomationRuleCountAggregateOutputType | null
+    _min: AutomationRuleMinAggregateOutputType | null
+    _max: AutomationRuleMaxAggregateOutputType | null
+  }
+
+  export type AutomationRuleMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    enabled: boolean | null
+    trigger: $Enums.AutomationTrigger | null
+    runnerId: string | null
+    command: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AutomationRuleMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    enabled: boolean | null
+    trigger: $Enums.AutomationTrigger | null
+    runnerId: string | null
+    command: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AutomationRuleCountAggregateOutputType = {
+    id: number
+    userId: number
+    name: number
+    enabled: number
+    trigger: number
+    conditionJson: number
+    runnerId: number
+    command: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AutomationRuleMinAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    enabled?: true
+    trigger?: true
+    runnerId?: true
+    command?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AutomationRuleMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    enabled?: true
+    trigger?: true
+    runnerId?: true
+    command?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AutomationRuleCountAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    enabled?: true
+    trigger?: true
+    conditionJson?: true
+    runnerId?: true
+    command?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AutomationRuleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AutomationRule to aggregate.
+     */
+    where?: AutomationRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AutomationRules to fetch.
+     */
+    orderBy?: AutomationRuleOrderByWithRelationInput | AutomationRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AutomationRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AutomationRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AutomationRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AutomationRules
+    **/
+    _count?: true | AutomationRuleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AutomationRuleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AutomationRuleMaxAggregateInputType
+  }
+
+  export type GetAutomationRuleAggregateType<T extends AutomationRuleAggregateArgs> = {
+        [P in keyof T & keyof AggregateAutomationRule]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAutomationRule[P]>
+      : GetScalarType<T[P], AggregateAutomationRule[P]>
+  }
+
+
+
+
+  export type AutomationRuleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AutomationRuleWhereInput
+    orderBy?: AutomationRuleOrderByWithAggregationInput | AutomationRuleOrderByWithAggregationInput[]
+    by: AutomationRuleScalarFieldEnum[] | AutomationRuleScalarFieldEnum
+    having?: AutomationRuleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AutomationRuleCountAggregateInputType | true
+    _min?: AutomationRuleMinAggregateInputType
+    _max?: AutomationRuleMaxAggregateInputType
+  }
+
+  export type AutomationRuleGroupByOutputType = {
+    id: string
+    userId: string
+    name: string
+    enabled: boolean
+    trigger: $Enums.AutomationTrigger
+    conditionJson: JsonValue
+    runnerId: string | null
+    command: string
+    createdAt: Date
+    updatedAt: Date
+    _count: AutomationRuleCountAggregateOutputType | null
+    _min: AutomationRuleMinAggregateOutputType | null
+    _max: AutomationRuleMaxAggregateOutputType | null
+  }
+
+  type GetAutomationRuleGroupByPayload<T extends AutomationRuleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AutomationRuleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AutomationRuleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AutomationRuleGroupByOutputType[P]>
+            : GetScalarType<T[P], AutomationRuleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AutomationRuleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    enabled?: boolean
+    trigger?: boolean
+    conditionJson?: boolean
+    runnerId?: boolean
+    command?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["automationRule"]>
+
+  export type AutomationRuleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    enabled?: boolean
+    trigger?: boolean
+    conditionJson?: boolean
+    runnerId?: boolean
+    command?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["automationRule"]>
+
+  export type AutomationRuleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    enabled?: boolean
+    trigger?: boolean
+    conditionJson?: boolean
+    runnerId?: boolean
+    command?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["automationRule"]>
+
+  export type AutomationRuleSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    enabled?: boolean
+    trigger?: boolean
+    conditionJson?: boolean
+    runnerId?: boolean
+    command?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AutomationRuleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "enabled" | "trigger" | "conditionJson" | "runnerId" | "command" | "createdAt" | "updatedAt", ExtArgs["result"]["automationRule"]>
+  export type AutomationRuleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AutomationRuleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AutomationRuleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AutomationRulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AutomationRule"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      name: string
+      enabled: boolean
+      trigger: $Enums.AutomationTrigger
+      conditionJson: Prisma.JsonValue
+      runnerId: string | null
+      command: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["automationRule"]>
+    composites: {}
+  }
+
+  type AutomationRuleGetPayload<S extends boolean | null | undefined | AutomationRuleDefaultArgs> = $Result.GetResult<Prisma.$AutomationRulePayload, S>
+
+  type AutomationRuleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AutomationRuleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AutomationRuleCountAggregateInputType | true
+    }
+
+  export interface AutomationRuleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AutomationRule'], meta: { name: 'AutomationRule' } }
+    /**
+     * Find zero or one AutomationRule that matches the filter.
+     * @param {AutomationRuleFindUniqueArgs} args - Arguments to find a AutomationRule
+     * @example
+     * // Get one AutomationRule
+     * const automationRule = await prisma.automationRule.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AutomationRuleFindUniqueArgs>(args: SelectSubset<T, AutomationRuleFindUniqueArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AutomationRule that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AutomationRuleFindUniqueOrThrowArgs} args - Arguments to find a AutomationRule
+     * @example
+     * // Get one AutomationRule
+     * const automationRule = await prisma.automationRule.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AutomationRuleFindUniqueOrThrowArgs>(args: SelectSubset<T, AutomationRuleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AutomationRule that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleFindFirstArgs} args - Arguments to find a AutomationRule
+     * @example
+     * // Get one AutomationRule
+     * const automationRule = await prisma.automationRule.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AutomationRuleFindFirstArgs>(args?: SelectSubset<T, AutomationRuleFindFirstArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AutomationRule that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleFindFirstOrThrowArgs} args - Arguments to find a AutomationRule
+     * @example
+     * // Get one AutomationRule
+     * const automationRule = await prisma.automationRule.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AutomationRuleFindFirstOrThrowArgs>(args?: SelectSubset<T, AutomationRuleFindFirstOrThrowArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AutomationRules that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AutomationRules
+     * const automationRules = await prisma.automationRule.findMany()
+     * 
+     * // Get first 10 AutomationRules
+     * const automationRules = await prisma.automationRule.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const automationRuleWithIdOnly = await prisma.automationRule.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AutomationRuleFindManyArgs>(args?: SelectSubset<T, AutomationRuleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AutomationRule.
+     * @param {AutomationRuleCreateArgs} args - Arguments to create a AutomationRule.
+     * @example
+     * // Create one AutomationRule
+     * const AutomationRule = await prisma.automationRule.create({
+     *   data: {
+     *     // ... data to create a AutomationRule
+     *   }
+     * })
+     * 
+     */
+    create<T extends AutomationRuleCreateArgs>(args: SelectSubset<T, AutomationRuleCreateArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AutomationRules.
+     * @param {AutomationRuleCreateManyArgs} args - Arguments to create many AutomationRules.
+     * @example
+     * // Create many AutomationRules
+     * const automationRule = await prisma.automationRule.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AutomationRuleCreateManyArgs>(args?: SelectSubset<T, AutomationRuleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AutomationRules and returns the data saved in the database.
+     * @param {AutomationRuleCreateManyAndReturnArgs} args - Arguments to create many AutomationRules.
+     * @example
+     * // Create many AutomationRules
+     * const automationRule = await prisma.automationRule.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AutomationRules and only return the `id`
+     * const automationRuleWithIdOnly = await prisma.automationRule.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AutomationRuleCreateManyAndReturnArgs>(args?: SelectSubset<T, AutomationRuleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AutomationRule.
+     * @param {AutomationRuleDeleteArgs} args - Arguments to delete one AutomationRule.
+     * @example
+     * // Delete one AutomationRule
+     * const AutomationRule = await prisma.automationRule.delete({
+     *   where: {
+     *     // ... filter to delete one AutomationRule
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AutomationRuleDeleteArgs>(args: SelectSubset<T, AutomationRuleDeleteArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AutomationRule.
+     * @param {AutomationRuleUpdateArgs} args - Arguments to update one AutomationRule.
+     * @example
+     * // Update one AutomationRule
+     * const automationRule = await prisma.automationRule.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AutomationRuleUpdateArgs>(args: SelectSubset<T, AutomationRuleUpdateArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AutomationRules.
+     * @param {AutomationRuleDeleteManyArgs} args - Arguments to filter AutomationRules to delete.
+     * @example
+     * // Delete a few AutomationRules
+     * const { count } = await prisma.automationRule.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AutomationRuleDeleteManyArgs>(args?: SelectSubset<T, AutomationRuleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AutomationRules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AutomationRules
+     * const automationRule = await prisma.automationRule.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AutomationRuleUpdateManyArgs>(args: SelectSubset<T, AutomationRuleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AutomationRules and returns the data updated in the database.
+     * @param {AutomationRuleUpdateManyAndReturnArgs} args - Arguments to update many AutomationRules.
+     * @example
+     * // Update many AutomationRules
+     * const automationRule = await prisma.automationRule.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AutomationRules and only return the `id`
+     * const automationRuleWithIdOnly = await prisma.automationRule.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AutomationRuleUpdateManyAndReturnArgs>(args: SelectSubset<T, AutomationRuleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AutomationRule.
+     * @param {AutomationRuleUpsertArgs} args - Arguments to update or create a AutomationRule.
+     * @example
+     * // Update or create a AutomationRule
+     * const automationRule = await prisma.automationRule.upsert({
+     *   create: {
+     *     // ... data to create a AutomationRule
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AutomationRule we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AutomationRuleUpsertArgs>(args: SelectSubset<T, AutomationRuleUpsertArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AutomationRules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleCountArgs} args - Arguments to filter AutomationRules to count.
+     * @example
+     * // Count the number of AutomationRules
+     * const count = await prisma.automationRule.count({
+     *   where: {
+     *     // ... the filter for the AutomationRules we want to count
+     *   }
+     * })
+    **/
+    count<T extends AutomationRuleCountArgs>(
+      args?: Subset<T, AutomationRuleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AutomationRuleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AutomationRule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AutomationRuleAggregateArgs>(args: Subset<T, AutomationRuleAggregateArgs>): Prisma.PrismaPromise<GetAutomationRuleAggregateType<T>>
+
+    /**
+     * Group by AutomationRule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AutomationRuleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AutomationRuleGroupByArgs['orderBy'] }
+        : { orderBy?: AutomationRuleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AutomationRuleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAutomationRuleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AutomationRule model
+   */
+  readonly fields: AutomationRuleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AutomationRule.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AutomationRuleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AutomationRule model
+   */
+  interface AutomationRuleFieldRefs {
+    readonly id: FieldRef<"AutomationRule", 'String'>
+    readonly userId: FieldRef<"AutomationRule", 'String'>
+    readonly name: FieldRef<"AutomationRule", 'String'>
+    readonly enabled: FieldRef<"AutomationRule", 'Boolean'>
+    readonly trigger: FieldRef<"AutomationRule", 'AutomationTrigger'>
+    readonly conditionJson: FieldRef<"AutomationRule", 'Json'>
+    readonly runnerId: FieldRef<"AutomationRule", 'String'>
+    readonly command: FieldRef<"AutomationRule", 'String'>
+    readonly createdAt: FieldRef<"AutomationRule", 'DateTime'>
+    readonly updatedAt: FieldRef<"AutomationRule", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AutomationRule findUnique
+   */
+  export type AutomationRuleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which AutomationRule to fetch.
+     */
+    where: AutomationRuleWhereUniqueInput
+  }
+
+  /**
+   * AutomationRule findUniqueOrThrow
+   */
+  export type AutomationRuleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which AutomationRule to fetch.
+     */
+    where: AutomationRuleWhereUniqueInput
+  }
+
+  /**
+   * AutomationRule findFirst
+   */
+  export type AutomationRuleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which AutomationRule to fetch.
+     */
+    where?: AutomationRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AutomationRules to fetch.
+     */
+    orderBy?: AutomationRuleOrderByWithRelationInput | AutomationRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AutomationRules.
+     */
+    cursor?: AutomationRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AutomationRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AutomationRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AutomationRules.
+     */
+    distinct?: AutomationRuleScalarFieldEnum | AutomationRuleScalarFieldEnum[]
+  }
+
+  /**
+   * AutomationRule findFirstOrThrow
+   */
+  export type AutomationRuleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which AutomationRule to fetch.
+     */
+    where?: AutomationRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AutomationRules to fetch.
+     */
+    orderBy?: AutomationRuleOrderByWithRelationInput | AutomationRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AutomationRules.
+     */
+    cursor?: AutomationRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AutomationRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AutomationRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AutomationRules.
+     */
+    distinct?: AutomationRuleScalarFieldEnum | AutomationRuleScalarFieldEnum[]
+  }
+
+  /**
+   * AutomationRule findMany
+   */
+  export type AutomationRuleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which AutomationRules to fetch.
+     */
+    where?: AutomationRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AutomationRules to fetch.
+     */
+    orderBy?: AutomationRuleOrderByWithRelationInput | AutomationRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AutomationRules.
+     */
+    cursor?: AutomationRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AutomationRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AutomationRules.
+     */
+    skip?: number
+    distinct?: AutomationRuleScalarFieldEnum | AutomationRuleScalarFieldEnum[]
+  }
+
+  /**
+   * AutomationRule create
+   */
+  export type AutomationRuleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AutomationRule.
+     */
+    data: XOR<AutomationRuleCreateInput, AutomationRuleUncheckedCreateInput>
+  }
+
+  /**
+   * AutomationRule createMany
+   */
+  export type AutomationRuleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AutomationRules.
+     */
+    data: AutomationRuleCreateManyInput | AutomationRuleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AutomationRule createManyAndReturn
+   */
+  export type AutomationRuleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * The data used to create many AutomationRules.
+     */
+    data: AutomationRuleCreateManyInput | AutomationRuleCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AutomationRule update
+   */
+  export type AutomationRuleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AutomationRule.
+     */
+    data: XOR<AutomationRuleUpdateInput, AutomationRuleUncheckedUpdateInput>
+    /**
+     * Choose, which AutomationRule to update.
+     */
+    where: AutomationRuleWhereUniqueInput
+  }
+
+  /**
+   * AutomationRule updateMany
+   */
+  export type AutomationRuleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AutomationRules.
+     */
+    data: XOR<AutomationRuleUpdateManyMutationInput, AutomationRuleUncheckedUpdateManyInput>
+    /**
+     * Filter which AutomationRules to update
+     */
+    where?: AutomationRuleWhereInput
+    /**
+     * Limit how many AutomationRules to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AutomationRule updateManyAndReturn
+   */
+  export type AutomationRuleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * The data used to update AutomationRules.
+     */
+    data: XOR<AutomationRuleUpdateManyMutationInput, AutomationRuleUncheckedUpdateManyInput>
+    /**
+     * Filter which AutomationRules to update
+     */
+    where?: AutomationRuleWhereInput
+    /**
+     * Limit how many AutomationRules to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AutomationRule upsert
+   */
+  export type AutomationRuleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AutomationRule to update in case it exists.
+     */
+    where: AutomationRuleWhereUniqueInput
+    /**
+     * In case the AutomationRule found by the `where` argument doesn't exist, create a new AutomationRule with this data.
+     */
+    create: XOR<AutomationRuleCreateInput, AutomationRuleUncheckedCreateInput>
+    /**
+     * In case the AutomationRule was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AutomationRuleUpdateInput, AutomationRuleUncheckedUpdateInput>
+  }
+
+  /**
+   * AutomationRule delete
+   */
+  export type AutomationRuleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter which AutomationRule to delete.
+     */
+    where: AutomationRuleWhereUniqueInput
+  }
+
+  /**
+   * AutomationRule deleteMany
+   */
+  export type AutomationRuleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AutomationRules to delete
+     */
+    where?: AutomationRuleWhereInput
+    /**
+     * Limit how many AutomationRules to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AutomationRule without action
+   */
+  export type AutomationRuleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutomationRule
+     */
+    omit?: AutomationRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model ProjectInvite
    */
 
@@ -37442,6 +42584,70 @@ export namespace Prisma {
   export type IntegrationScalarFieldEnum = (typeof IntegrationScalarFieldEnum)[keyof typeof IntegrationScalarFieldEnum]
 
 
+  export const RunnerScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    tokenHash: 'tokenHash',
+    status: 'status',
+    workingDir: 'workingDir',
+    lastSeenAt: 'lastSeenAt',
+    meta: 'meta',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RunnerScalarFieldEnum = (typeof RunnerScalarFieldEnum)[keyof typeof RunnerScalarFieldEnum]
+
+
+  export const RunnerCommandScalarFieldEnum: {
+    id: 'id',
+    runnerId: 'runnerId',
+    userId: 'userId',
+    taskId: 'taskId',
+    command: 'command',
+    cwd: 'cwd',
+    status: 'status',
+    exitCode: 'exitCode',
+    output: 'output',
+    source: 'source',
+    startedAt: 'startedAt',
+    finishedAt: 'finishedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type RunnerCommandScalarFieldEnum = (typeof RunnerCommandScalarFieldEnum)[keyof typeof RunnerCommandScalarFieldEnum]
+
+
+  export const CommandSnippetScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    command: 'command',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CommandSnippetScalarFieldEnum = (typeof CommandSnippetScalarFieldEnum)[keyof typeof CommandSnippetScalarFieldEnum]
+
+
+  export const AutomationRuleScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    enabled: 'enabled',
+    trigger: 'trigger',
+    conditionJson: 'conditionJson',
+    runnerId: 'runnerId',
+    command: 'command',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AutomationRuleScalarFieldEnum = (typeof AutomationRuleScalarFieldEnum)[keyof typeof AutomationRuleScalarFieldEnum]
+
+
   export const ProjectInviteScalarFieldEnum: {
     id: 'id',
     projectId: 'projectId',
@@ -37864,6 +43070,48 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'RunnerStatus'
+   */
+  export type EnumRunnerStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RunnerStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'RunnerStatus[]'
+   */
+  export type ListEnumRunnerStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RunnerStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CommandStatus'
+   */
+  export type EnumCommandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommandStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'CommandStatus[]'
+   */
+  export type ListEnumCommandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommandStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AutomationTrigger'
+   */
+  export type EnumAutomationTriggerFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationTrigger'>
+    
+
+
+  /**
+   * Reference to a field of type 'AutomationTrigger[]'
+   */
+  export type ListEnumAutomationTriggerFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationTrigger[]'>
+    
+
+
+  /**
    * Reference to a field of type 'InviteStatus'
    */
   export type EnumInviteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InviteStatus'>
@@ -37941,6 +43189,10 @@ export namespace Prisma {
     tasksCreated?: TaskListRelationFilter
     tasksAssigned?: TaskListRelationFilter
     integrations?: IntegrationListRelationFilter
+    runners?: RunnerListRelationFilter
+    runnerCommands?: RunnerCommandListRelationFilter
+    commandSnippets?: CommandSnippetListRelationFilter
+    automationRules?: AutomationRuleListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -37987,6 +43239,10 @@ export namespace Prisma {
     tasksCreated?: TaskOrderByRelationAggregateInput
     tasksAssigned?: TaskOrderByRelationAggregateInput
     integrations?: IntegrationOrderByRelationAggregateInput
+    runners?: RunnerOrderByRelationAggregateInput
+    runnerCommands?: RunnerCommandOrderByRelationAggregateInput
+    commandSnippets?: CommandSnippetOrderByRelationAggregateInput
+    automationRules?: AutomationRuleOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -38036,6 +43292,10 @@ export namespace Prisma {
     tasksCreated?: TaskListRelationFilter
     tasksAssigned?: TaskListRelationFilter
     integrations?: IntegrationListRelationFilter
+    runners?: RunnerListRelationFilter
+    runnerCommands?: RunnerCommandListRelationFilter
+    commandSnippets?: CommandSnippetListRelationFilter
+    automationRules?: AutomationRuleListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -39619,6 +44879,334 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Integration"> | Date | string
   }
 
+  export type RunnerWhereInput = {
+    AND?: RunnerWhereInput | RunnerWhereInput[]
+    OR?: RunnerWhereInput[]
+    NOT?: RunnerWhereInput | RunnerWhereInput[]
+    id?: StringFilter<"Runner"> | string
+    userId?: StringFilter<"Runner"> | string
+    name?: StringFilter<"Runner"> | string
+    tokenHash?: StringFilter<"Runner"> | string
+    status?: EnumRunnerStatusFilter<"Runner"> | $Enums.RunnerStatus
+    workingDir?: StringNullableFilter<"Runner"> | string | null
+    lastSeenAt?: DateTimeNullableFilter<"Runner"> | Date | string | null
+    meta?: JsonNullableFilter<"Runner">
+    createdAt?: DateTimeFilter<"Runner"> | Date | string
+    updatedAt?: DateTimeFilter<"Runner"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    commands?: RunnerCommandListRelationFilter
+  }
+
+  export type RunnerOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    tokenHash?: SortOrder
+    status?: SortOrder
+    workingDir?: SortOrderInput | SortOrder
+    lastSeenAt?: SortOrderInput | SortOrder
+    meta?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    commands?: RunnerCommandOrderByRelationAggregateInput
+  }
+
+  export type RunnerWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tokenHash?: string
+    AND?: RunnerWhereInput | RunnerWhereInput[]
+    OR?: RunnerWhereInput[]
+    NOT?: RunnerWhereInput | RunnerWhereInput[]
+    userId?: StringFilter<"Runner"> | string
+    name?: StringFilter<"Runner"> | string
+    status?: EnumRunnerStatusFilter<"Runner"> | $Enums.RunnerStatus
+    workingDir?: StringNullableFilter<"Runner"> | string | null
+    lastSeenAt?: DateTimeNullableFilter<"Runner"> | Date | string | null
+    meta?: JsonNullableFilter<"Runner">
+    createdAt?: DateTimeFilter<"Runner"> | Date | string
+    updatedAt?: DateTimeFilter<"Runner"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    commands?: RunnerCommandListRelationFilter
+  }, "id" | "tokenHash">
+
+  export type RunnerOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    tokenHash?: SortOrder
+    status?: SortOrder
+    workingDir?: SortOrderInput | SortOrder
+    lastSeenAt?: SortOrderInput | SortOrder
+    meta?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RunnerCountOrderByAggregateInput
+    _max?: RunnerMaxOrderByAggregateInput
+    _min?: RunnerMinOrderByAggregateInput
+  }
+
+  export type RunnerScalarWhereWithAggregatesInput = {
+    AND?: RunnerScalarWhereWithAggregatesInput | RunnerScalarWhereWithAggregatesInput[]
+    OR?: RunnerScalarWhereWithAggregatesInput[]
+    NOT?: RunnerScalarWhereWithAggregatesInput | RunnerScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Runner"> | string
+    userId?: StringWithAggregatesFilter<"Runner"> | string
+    name?: StringWithAggregatesFilter<"Runner"> | string
+    tokenHash?: StringWithAggregatesFilter<"Runner"> | string
+    status?: EnumRunnerStatusWithAggregatesFilter<"Runner"> | $Enums.RunnerStatus
+    workingDir?: StringNullableWithAggregatesFilter<"Runner"> | string | null
+    lastSeenAt?: DateTimeNullableWithAggregatesFilter<"Runner"> | Date | string | null
+    meta?: JsonNullableWithAggregatesFilter<"Runner">
+    createdAt?: DateTimeWithAggregatesFilter<"Runner"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Runner"> | Date | string
+  }
+
+  export type RunnerCommandWhereInput = {
+    AND?: RunnerCommandWhereInput | RunnerCommandWhereInput[]
+    OR?: RunnerCommandWhereInput[]
+    NOT?: RunnerCommandWhereInput | RunnerCommandWhereInput[]
+    id?: StringFilter<"RunnerCommand"> | string
+    runnerId?: StringFilter<"RunnerCommand"> | string
+    userId?: StringFilter<"RunnerCommand"> | string
+    taskId?: StringNullableFilter<"RunnerCommand"> | string | null
+    command?: StringFilter<"RunnerCommand"> | string
+    cwd?: StringNullableFilter<"RunnerCommand"> | string | null
+    status?: EnumCommandStatusFilter<"RunnerCommand"> | $Enums.CommandStatus
+    exitCode?: IntNullableFilter<"RunnerCommand"> | number | null
+    output?: StringFilter<"RunnerCommand"> | string
+    source?: StringFilter<"RunnerCommand"> | string
+    startedAt?: DateTimeNullableFilter<"RunnerCommand"> | Date | string | null
+    finishedAt?: DateTimeNullableFilter<"RunnerCommand"> | Date | string | null
+    createdAt?: DateTimeFilter<"RunnerCommand"> | Date | string
+    runner?: XOR<RunnerScalarRelationFilter, RunnerWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type RunnerCommandOrderByWithRelationInput = {
+    id?: SortOrder
+    runnerId?: SortOrder
+    userId?: SortOrder
+    taskId?: SortOrderInput | SortOrder
+    command?: SortOrder
+    cwd?: SortOrderInput | SortOrder
+    status?: SortOrder
+    exitCode?: SortOrderInput | SortOrder
+    output?: SortOrder
+    source?: SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    finishedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    runner?: RunnerOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type RunnerCommandWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RunnerCommandWhereInput | RunnerCommandWhereInput[]
+    OR?: RunnerCommandWhereInput[]
+    NOT?: RunnerCommandWhereInput | RunnerCommandWhereInput[]
+    runnerId?: StringFilter<"RunnerCommand"> | string
+    userId?: StringFilter<"RunnerCommand"> | string
+    taskId?: StringNullableFilter<"RunnerCommand"> | string | null
+    command?: StringFilter<"RunnerCommand"> | string
+    cwd?: StringNullableFilter<"RunnerCommand"> | string | null
+    status?: EnumCommandStatusFilter<"RunnerCommand"> | $Enums.CommandStatus
+    exitCode?: IntNullableFilter<"RunnerCommand"> | number | null
+    output?: StringFilter<"RunnerCommand"> | string
+    source?: StringFilter<"RunnerCommand"> | string
+    startedAt?: DateTimeNullableFilter<"RunnerCommand"> | Date | string | null
+    finishedAt?: DateTimeNullableFilter<"RunnerCommand"> | Date | string | null
+    createdAt?: DateTimeFilter<"RunnerCommand"> | Date | string
+    runner?: XOR<RunnerScalarRelationFilter, RunnerWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type RunnerCommandOrderByWithAggregationInput = {
+    id?: SortOrder
+    runnerId?: SortOrder
+    userId?: SortOrder
+    taskId?: SortOrderInput | SortOrder
+    command?: SortOrder
+    cwd?: SortOrderInput | SortOrder
+    status?: SortOrder
+    exitCode?: SortOrderInput | SortOrder
+    output?: SortOrder
+    source?: SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    finishedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: RunnerCommandCountOrderByAggregateInput
+    _avg?: RunnerCommandAvgOrderByAggregateInput
+    _max?: RunnerCommandMaxOrderByAggregateInput
+    _min?: RunnerCommandMinOrderByAggregateInput
+    _sum?: RunnerCommandSumOrderByAggregateInput
+  }
+
+  export type RunnerCommandScalarWhereWithAggregatesInput = {
+    AND?: RunnerCommandScalarWhereWithAggregatesInput | RunnerCommandScalarWhereWithAggregatesInput[]
+    OR?: RunnerCommandScalarWhereWithAggregatesInput[]
+    NOT?: RunnerCommandScalarWhereWithAggregatesInput | RunnerCommandScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RunnerCommand"> | string
+    runnerId?: StringWithAggregatesFilter<"RunnerCommand"> | string
+    userId?: StringWithAggregatesFilter<"RunnerCommand"> | string
+    taskId?: StringNullableWithAggregatesFilter<"RunnerCommand"> | string | null
+    command?: StringWithAggregatesFilter<"RunnerCommand"> | string
+    cwd?: StringNullableWithAggregatesFilter<"RunnerCommand"> | string | null
+    status?: EnumCommandStatusWithAggregatesFilter<"RunnerCommand"> | $Enums.CommandStatus
+    exitCode?: IntNullableWithAggregatesFilter<"RunnerCommand"> | number | null
+    output?: StringWithAggregatesFilter<"RunnerCommand"> | string
+    source?: StringWithAggregatesFilter<"RunnerCommand"> | string
+    startedAt?: DateTimeNullableWithAggregatesFilter<"RunnerCommand"> | Date | string | null
+    finishedAt?: DateTimeNullableWithAggregatesFilter<"RunnerCommand"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"RunnerCommand"> | Date | string
+  }
+
+  export type CommandSnippetWhereInput = {
+    AND?: CommandSnippetWhereInput | CommandSnippetWhereInput[]
+    OR?: CommandSnippetWhereInput[]
+    NOT?: CommandSnippetWhereInput | CommandSnippetWhereInput[]
+    id?: StringFilter<"CommandSnippet"> | string
+    userId?: StringFilter<"CommandSnippet"> | string
+    name?: StringFilter<"CommandSnippet"> | string
+    command?: StringFilter<"CommandSnippet"> | string
+    description?: StringNullableFilter<"CommandSnippet"> | string | null
+    createdAt?: DateTimeFilter<"CommandSnippet"> | Date | string
+    updatedAt?: DateTimeFilter<"CommandSnippet"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type CommandSnippetOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    command?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type CommandSnippetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CommandSnippetWhereInput | CommandSnippetWhereInput[]
+    OR?: CommandSnippetWhereInput[]
+    NOT?: CommandSnippetWhereInput | CommandSnippetWhereInput[]
+    userId?: StringFilter<"CommandSnippet"> | string
+    name?: StringFilter<"CommandSnippet"> | string
+    command?: StringFilter<"CommandSnippet"> | string
+    description?: StringNullableFilter<"CommandSnippet"> | string | null
+    createdAt?: DateTimeFilter<"CommandSnippet"> | Date | string
+    updatedAt?: DateTimeFilter<"CommandSnippet"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type CommandSnippetOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    command?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CommandSnippetCountOrderByAggregateInput
+    _max?: CommandSnippetMaxOrderByAggregateInput
+    _min?: CommandSnippetMinOrderByAggregateInput
+  }
+
+  export type CommandSnippetScalarWhereWithAggregatesInput = {
+    AND?: CommandSnippetScalarWhereWithAggregatesInput | CommandSnippetScalarWhereWithAggregatesInput[]
+    OR?: CommandSnippetScalarWhereWithAggregatesInput[]
+    NOT?: CommandSnippetScalarWhereWithAggregatesInput | CommandSnippetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CommandSnippet"> | string
+    userId?: StringWithAggregatesFilter<"CommandSnippet"> | string
+    name?: StringWithAggregatesFilter<"CommandSnippet"> | string
+    command?: StringWithAggregatesFilter<"CommandSnippet"> | string
+    description?: StringNullableWithAggregatesFilter<"CommandSnippet"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"CommandSnippet"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CommandSnippet"> | Date | string
+  }
+
+  export type AutomationRuleWhereInput = {
+    AND?: AutomationRuleWhereInput | AutomationRuleWhereInput[]
+    OR?: AutomationRuleWhereInput[]
+    NOT?: AutomationRuleWhereInput | AutomationRuleWhereInput[]
+    id?: StringFilter<"AutomationRule"> | string
+    userId?: StringFilter<"AutomationRule"> | string
+    name?: StringFilter<"AutomationRule"> | string
+    enabled?: BoolFilter<"AutomationRule"> | boolean
+    trigger?: EnumAutomationTriggerFilter<"AutomationRule"> | $Enums.AutomationTrigger
+    conditionJson?: JsonFilter<"AutomationRule">
+    runnerId?: StringNullableFilter<"AutomationRule"> | string | null
+    command?: StringFilter<"AutomationRule"> | string
+    createdAt?: DateTimeFilter<"AutomationRule"> | Date | string
+    updatedAt?: DateTimeFilter<"AutomationRule"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type AutomationRuleOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    enabled?: SortOrder
+    trigger?: SortOrder
+    conditionJson?: SortOrder
+    runnerId?: SortOrderInput | SortOrder
+    command?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AutomationRuleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AutomationRuleWhereInput | AutomationRuleWhereInput[]
+    OR?: AutomationRuleWhereInput[]
+    NOT?: AutomationRuleWhereInput | AutomationRuleWhereInput[]
+    userId?: StringFilter<"AutomationRule"> | string
+    name?: StringFilter<"AutomationRule"> | string
+    enabled?: BoolFilter<"AutomationRule"> | boolean
+    trigger?: EnumAutomationTriggerFilter<"AutomationRule"> | $Enums.AutomationTrigger
+    conditionJson?: JsonFilter<"AutomationRule">
+    runnerId?: StringNullableFilter<"AutomationRule"> | string | null
+    command?: StringFilter<"AutomationRule"> | string
+    createdAt?: DateTimeFilter<"AutomationRule"> | Date | string
+    updatedAt?: DateTimeFilter<"AutomationRule"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type AutomationRuleOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    enabled?: SortOrder
+    trigger?: SortOrder
+    conditionJson?: SortOrder
+    runnerId?: SortOrderInput | SortOrder
+    command?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AutomationRuleCountOrderByAggregateInput
+    _max?: AutomationRuleMaxOrderByAggregateInput
+    _min?: AutomationRuleMinOrderByAggregateInput
+  }
+
+  export type AutomationRuleScalarWhereWithAggregatesInput = {
+    AND?: AutomationRuleScalarWhereWithAggregatesInput | AutomationRuleScalarWhereWithAggregatesInput[]
+    OR?: AutomationRuleScalarWhereWithAggregatesInput[]
+    NOT?: AutomationRuleScalarWhereWithAggregatesInput | AutomationRuleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AutomationRule"> | string
+    userId?: StringWithAggregatesFilter<"AutomationRule"> | string
+    name?: StringWithAggregatesFilter<"AutomationRule"> | string
+    enabled?: BoolWithAggregatesFilter<"AutomationRule"> | boolean
+    trigger?: EnumAutomationTriggerWithAggregatesFilter<"AutomationRule"> | $Enums.AutomationTrigger
+    conditionJson?: JsonWithAggregatesFilter<"AutomationRule">
+    runnerId?: StringNullableWithAggregatesFilter<"AutomationRule"> | string | null
+    command?: StringWithAggregatesFilter<"AutomationRule"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"AutomationRule"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AutomationRule"> | Date | string
+  }
+
   export type ProjectInviteWhereInput = {
     AND?: ProjectInviteWhereInput | ProjectInviteWhereInput[]
     OR?: ProjectInviteWhereInput[]
@@ -40154,6 +45742,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -40200,6 +45792,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -40246,6 +45842,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -40292,6 +45892,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -41999,6 +47603,369 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RunnerCreateInput = {
+    id?: string
+    name: string
+    tokenHash: string
+    status?: $Enums.RunnerStatus
+    workingDir?: string | null
+    lastSeenAt?: Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutRunnersInput
+    commands?: RunnerCommandCreateNestedManyWithoutRunnerInput
+  }
+
+  export type RunnerUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name: string
+    tokenHash: string
+    status?: $Enums.RunnerStatus
+    workingDir?: string | null
+    lastSeenAt?: Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    commands?: RunnerCommandUncheckedCreateNestedManyWithoutRunnerInput
+  }
+
+  export type RunnerUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    status?: EnumRunnerStatusFieldUpdateOperationsInput | $Enums.RunnerStatus
+    workingDir?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutRunnersNestedInput
+    commands?: RunnerCommandUpdateManyWithoutRunnerNestedInput
+  }
+
+  export type RunnerUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    status?: EnumRunnerStatusFieldUpdateOperationsInput | $Enums.RunnerStatus
+    workingDir?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    commands?: RunnerCommandUncheckedUpdateManyWithoutRunnerNestedInput
+  }
+
+  export type RunnerCreateManyInput = {
+    id?: string
+    userId: string
+    name: string
+    tokenHash: string
+    status?: $Enums.RunnerStatus
+    workingDir?: string | null
+    lastSeenAt?: Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RunnerUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    status?: EnumRunnerStatusFieldUpdateOperationsInput | $Enums.RunnerStatus
+    workingDir?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    status?: EnumRunnerStatusFieldUpdateOperationsInput | $Enums.RunnerStatus
+    workingDir?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerCommandCreateInput = {
+    id?: string
+    taskId?: string | null
+    command: string
+    cwd?: string | null
+    status?: $Enums.CommandStatus
+    exitCode?: number | null
+    output?: string
+    source?: string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    createdAt?: Date | string
+    runner: RunnerCreateNestedOneWithoutCommandsInput
+    user: UserCreateNestedOneWithoutRunnerCommandsInput
+  }
+
+  export type RunnerCommandUncheckedCreateInput = {
+    id?: string
+    runnerId: string
+    userId: string
+    taskId?: string | null
+    command: string
+    cwd?: string | null
+    status?: $Enums.CommandStatus
+    exitCode?: number | null
+    output?: string
+    source?: string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type RunnerCommandUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    cwd?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+    exitCode?: NullableIntFieldUpdateOperationsInput | number | null
+    output?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runner?: RunnerUpdateOneRequiredWithoutCommandsNestedInput
+    user?: UserUpdateOneRequiredWithoutRunnerCommandsNestedInput
+  }
+
+  export type RunnerCommandUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    runnerId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    cwd?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+    exitCode?: NullableIntFieldUpdateOperationsInput | number | null
+    output?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerCommandCreateManyInput = {
+    id?: string
+    runnerId: string
+    userId: string
+    taskId?: string | null
+    command: string
+    cwd?: string | null
+    status?: $Enums.CommandStatus
+    exitCode?: number | null
+    output?: string
+    source?: string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type RunnerCommandUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    cwd?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+    exitCode?: NullableIntFieldUpdateOperationsInput | number | null
+    output?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerCommandUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    runnerId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    cwd?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+    exitCode?: NullableIntFieldUpdateOperationsInput | number | null
+    output?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommandSnippetCreateInput = {
+    id?: string
+    name: string
+    command: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutCommandSnippetsInput
+  }
+
+  export type CommandSnippetUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name: string
+    command: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CommandSnippetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    command?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCommandSnippetsNestedInput
+  }
+
+  export type CommandSnippetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    command?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommandSnippetCreateManyInput = {
+    id?: string
+    userId: string
+    name: string
+    command: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CommandSnippetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    command?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommandSnippetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    command?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleCreateInput = {
+    id?: string
+    name: string
+    enabled?: boolean
+    trigger: $Enums.AutomationTrigger
+    conditionJson: JsonNullValueInput | InputJsonValue
+    runnerId?: string | null
+    command: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutAutomationRulesInput
+  }
+
+  export type AutomationRuleUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name: string
+    enabled?: boolean
+    trigger: $Enums.AutomationTrigger
+    conditionJson: JsonNullValueInput | InputJsonValue
+    runnerId?: string | null
+    command: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutomationRuleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    trigger?: EnumAutomationTriggerFieldUpdateOperationsInput | $Enums.AutomationTrigger
+    conditionJson?: JsonNullValueInput | InputJsonValue
+    runnerId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAutomationRulesNestedInput
+  }
+
+  export type AutomationRuleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    trigger?: EnumAutomationTriggerFieldUpdateOperationsInput | $Enums.AutomationTrigger
+    conditionJson?: JsonNullValueInput | InputJsonValue
+    runnerId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleCreateManyInput = {
+    id?: string
+    userId: string
+    name: string
+    enabled?: boolean
+    trigger: $Enums.AutomationTrigger
+    conditionJson: JsonNullValueInput | InputJsonValue
+    runnerId?: string | null
+    command: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutomationRuleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    trigger?: EnumAutomationTriggerFieldUpdateOperationsInput | $Enums.AutomationTrigger
+    conditionJson?: JsonNullValueInput | InputJsonValue
+    runnerId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    trigger?: EnumAutomationTriggerFieldUpdateOperationsInput | $Enums.AutomationTrigger
+    conditionJson?: JsonNullValueInput | InputJsonValue
+    runnerId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProjectInviteCreateInput = {
     id?: string
     email: string
@@ -42735,6 +48702,30 @@ export namespace Prisma {
     none?: IntegrationWhereInput
   }
 
+  export type RunnerListRelationFilter = {
+    every?: RunnerWhereInput
+    some?: RunnerWhereInput
+    none?: RunnerWhereInput
+  }
+
+  export type RunnerCommandListRelationFilter = {
+    every?: RunnerCommandWhereInput
+    some?: RunnerCommandWhereInput
+    none?: RunnerCommandWhereInput
+  }
+
+  export type CommandSnippetListRelationFilter = {
+    every?: CommandSnippetWhereInput
+    some?: CommandSnippetWhereInput
+    none?: CommandSnippetWhereInput
+  }
+
+  export type AutomationRuleListRelationFilter = {
+    every?: AutomationRuleWhereInput
+    some?: AutomationRuleWhereInput
+    none?: AutomationRuleWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -42821,6 +48812,22 @@ export namespace Prisma {
   }
 
   export type IntegrationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RunnerOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RunnerCommandOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CommandSnippetOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AutomationRuleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -44101,6 +50108,249 @@ export namespace Prisma {
     _max?: NestedEnumIntegrationStatusFilter<$PrismaModel>
   }
 
+  export type EnumRunnerStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.RunnerStatus | EnumRunnerStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RunnerStatus[] | ListEnumRunnerStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RunnerStatus[] | ListEnumRunnerStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRunnerStatusFilter<$PrismaModel> | $Enums.RunnerStatus
+  }
+
+  export type RunnerCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    tokenHash?: SortOrder
+    status?: SortOrder
+    workingDir?: SortOrder
+    lastSeenAt?: SortOrder
+    meta?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RunnerMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    tokenHash?: SortOrder
+    status?: SortOrder
+    workingDir?: SortOrder
+    lastSeenAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RunnerMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    tokenHash?: SortOrder
+    status?: SortOrder
+    workingDir?: SortOrder
+    lastSeenAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumRunnerStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RunnerStatus | EnumRunnerStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RunnerStatus[] | ListEnumRunnerStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RunnerStatus[] | ListEnumRunnerStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRunnerStatusWithAggregatesFilter<$PrismaModel> | $Enums.RunnerStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRunnerStatusFilter<$PrismaModel>
+    _max?: NestedEnumRunnerStatusFilter<$PrismaModel>
+  }
+
+  export type EnumCommandStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CommandStatus | EnumCommandStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CommandStatus[] | ListEnumCommandStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CommandStatus[] | ListEnumCommandStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCommandStatusFilter<$PrismaModel> | $Enums.CommandStatus
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type RunnerScalarRelationFilter = {
+    is?: RunnerWhereInput
+    isNot?: RunnerWhereInput
+  }
+
+  export type RunnerCommandCountOrderByAggregateInput = {
+    id?: SortOrder
+    runnerId?: SortOrder
+    userId?: SortOrder
+    taskId?: SortOrder
+    command?: SortOrder
+    cwd?: SortOrder
+    status?: SortOrder
+    exitCode?: SortOrder
+    output?: SortOrder
+    source?: SortOrder
+    startedAt?: SortOrder
+    finishedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RunnerCommandAvgOrderByAggregateInput = {
+    exitCode?: SortOrder
+  }
+
+  export type RunnerCommandMaxOrderByAggregateInput = {
+    id?: SortOrder
+    runnerId?: SortOrder
+    userId?: SortOrder
+    taskId?: SortOrder
+    command?: SortOrder
+    cwd?: SortOrder
+    status?: SortOrder
+    exitCode?: SortOrder
+    output?: SortOrder
+    source?: SortOrder
+    startedAt?: SortOrder
+    finishedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RunnerCommandMinOrderByAggregateInput = {
+    id?: SortOrder
+    runnerId?: SortOrder
+    userId?: SortOrder
+    taskId?: SortOrder
+    command?: SortOrder
+    cwd?: SortOrder
+    status?: SortOrder
+    exitCode?: SortOrder
+    output?: SortOrder
+    source?: SortOrder
+    startedAt?: SortOrder
+    finishedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RunnerCommandSumOrderByAggregateInput = {
+    exitCode?: SortOrder
+  }
+
+  export type EnumCommandStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CommandStatus | EnumCommandStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CommandStatus[] | ListEnumCommandStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CommandStatus[] | ListEnumCommandStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCommandStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommandStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCommandStatusFilter<$PrismaModel>
+    _max?: NestedEnumCommandStatusFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type CommandSnippetCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    command?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CommandSnippetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    command?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CommandSnippetMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    command?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumAutomationTriggerFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationTrigger | EnumAutomationTriggerFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationTrigger[] | ListEnumAutomationTriggerFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationTrigger[] | ListEnumAutomationTriggerFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationTriggerFilter<$PrismaModel> | $Enums.AutomationTrigger
+  }
+
+  export type AutomationRuleCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    enabled?: SortOrder
+    trigger?: SortOrder
+    conditionJson?: SortOrder
+    runnerId?: SortOrder
+    command?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutomationRuleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    enabled?: SortOrder
+    trigger?: SortOrder
+    runnerId?: SortOrder
+    command?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutomationRuleMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    enabled?: SortOrder
+    trigger?: SortOrder
+    runnerId?: SortOrder
+    command?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumAutomationTriggerWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationTrigger | EnumAutomationTriggerFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationTrigger[] | ListEnumAutomationTriggerFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationTrigger[] | ListEnumAutomationTriggerFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationTriggerWithAggregatesFilter<$PrismaModel> | $Enums.AutomationTrigger
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAutomationTriggerFilter<$PrismaModel>
+    _max?: NestedEnumAutomationTriggerFilter<$PrismaModel>
+  }
+
   export type EnumInviteStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.InviteStatus | EnumInviteStatusFieldRefInput<$PrismaModel>
     in?: $Enums.InviteStatus[] | ListEnumInviteStatusFieldRefInput<$PrismaModel>
@@ -44538,6 +50788,34 @@ export namespace Prisma {
     connect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
   }
 
+  export type RunnerCreateNestedManyWithoutUserInput = {
+    create?: XOR<RunnerCreateWithoutUserInput, RunnerUncheckedCreateWithoutUserInput> | RunnerCreateWithoutUserInput[] | RunnerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RunnerCreateOrConnectWithoutUserInput | RunnerCreateOrConnectWithoutUserInput[]
+    createMany?: RunnerCreateManyUserInputEnvelope
+    connect?: RunnerWhereUniqueInput | RunnerWhereUniqueInput[]
+  }
+
+  export type RunnerCommandCreateNestedManyWithoutUserInput = {
+    create?: XOR<RunnerCommandCreateWithoutUserInput, RunnerCommandUncheckedCreateWithoutUserInput> | RunnerCommandCreateWithoutUserInput[] | RunnerCommandUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RunnerCommandCreateOrConnectWithoutUserInput | RunnerCommandCreateOrConnectWithoutUserInput[]
+    createMany?: RunnerCommandCreateManyUserInputEnvelope
+    connect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+  }
+
+  export type CommandSnippetCreateNestedManyWithoutUserInput = {
+    create?: XOR<CommandSnippetCreateWithoutUserInput, CommandSnippetUncheckedCreateWithoutUserInput> | CommandSnippetCreateWithoutUserInput[] | CommandSnippetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CommandSnippetCreateOrConnectWithoutUserInput | CommandSnippetCreateOrConnectWithoutUserInput[]
+    createMany?: CommandSnippetCreateManyUserInputEnvelope
+    connect?: CommandSnippetWhereUniqueInput | CommandSnippetWhereUniqueInput[]
+  }
+
+  export type AutomationRuleCreateNestedManyWithoutUserInput = {
+    create?: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput> | AutomationRuleCreateWithoutUserInput[] | AutomationRuleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AutomationRuleCreateOrConnectWithoutUserInput | AutomationRuleCreateOrConnectWithoutUserInput[]
+    createMany?: AutomationRuleCreateManyUserInputEnvelope
+    connect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+  }
+
   export type CredentialUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput>
     connectOrCreate?: CredentialCreateOrConnectWithoutUserInput
@@ -44703,6 +50981,34 @@ export namespace Prisma {
     connectOrCreate?: IntegrationCreateOrConnectWithoutUserInput | IntegrationCreateOrConnectWithoutUserInput[]
     createMany?: IntegrationCreateManyUserInputEnvelope
     connect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+  }
+
+  export type RunnerUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<RunnerCreateWithoutUserInput, RunnerUncheckedCreateWithoutUserInput> | RunnerCreateWithoutUserInput[] | RunnerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RunnerCreateOrConnectWithoutUserInput | RunnerCreateOrConnectWithoutUserInput[]
+    createMany?: RunnerCreateManyUserInputEnvelope
+    connect?: RunnerWhereUniqueInput | RunnerWhereUniqueInput[]
+  }
+
+  export type RunnerCommandUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<RunnerCommandCreateWithoutUserInput, RunnerCommandUncheckedCreateWithoutUserInput> | RunnerCommandCreateWithoutUserInput[] | RunnerCommandUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RunnerCommandCreateOrConnectWithoutUserInput | RunnerCommandCreateOrConnectWithoutUserInput[]
+    createMany?: RunnerCommandCreateManyUserInputEnvelope
+    connect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+  }
+
+  export type CommandSnippetUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CommandSnippetCreateWithoutUserInput, CommandSnippetUncheckedCreateWithoutUserInput> | CommandSnippetCreateWithoutUserInput[] | CommandSnippetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CommandSnippetCreateOrConnectWithoutUserInput | CommandSnippetCreateOrConnectWithoutUserInput[]
+    createMany?: CommandSnippetCreateManyUserInputEnvelope
+    connect?: CommandSnippetWhereUniqueInput | CommandSnippetWhereUniqueInput[]
+  }
+
+  export type AutomationRuleUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput> | AutomationRuleCreateWithoutUserInput[] | AutomationRuleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AutomationRuleCreateOrConnectWithoutUserInput | AutomationRuleCreateOrConnectWithoutUserInput[]
+    createMany?: AutomationRuleCreateManyUserInputEnvelope
+    connect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -45066,6 +51372,62 @@ export namespace Prisma {
     deleteMany?: IntegrationScalarWhereInput | IntegrationScalarWhereInput[]
   }
 
+  export type RunnerUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RunnerCreateWithoutUserInput, RunnerUncheckedCreateWithoutUserInput> | RunnerCreateWithoutUserInput[] | RunnerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RunnerCreateOrConnectWithoutUserInput | RunnerCreateOrConnectWithoutUserInput[]
+    upsert?: RunnerUpsertWithWhereUniqueWithoutUserInput | RunnerUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RunnerCreateManyUserInputEnvelope
+    set?: RunnerWhereUniqueInput | RunnerWhereUniqueInput[]
+    disconnect?: RunnerWhereUniqueInput | RunnerWhereUniqueInput[]
+    delete?: RunnerWhereUniqueInput | RunnerWhereUniqueInput[]
+    connect?: RunnerWhereUniqueInput | RunnerWhereUniqueInput[]
+    update?: RunnerUpdateWithWhereUniqueWithoutUserInput | RunnerUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RunnerUpdateManyWithWhereWithoutUserInput | RunnerUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RunnerScalarWhereInput | RunnerScalarWhereInput[]
+  }
+
+  export type RunnerCommandUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RunnerCommandCreateWithoutUserInput, RunnerCommandUncheckedCreateWithoutUserInput> | RunnerCommandCreateWithoutUserInput[] | RunnerCommandUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RunnerCommandCreateOrConnectWithoutUserInput | RunnerCommandCreateOrConnectWithoutUserInput[]
+    upsert?: RunnerCommandUpsertWithWhereUniqueWithoutUserInput | RunnerCommandUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RunnerCommandCreateManyUserInputEnvelope
+    set?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    disconnect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    delete?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    connect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    update?: RunnerCommandUpdateWithWhereUniqueWithoutUserInput | RunnerCommandUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RunnerCommandUpdateManyWithWhereWithoutUserInput | RunnerCommandUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RunnerCommandScalarWhereInput | RunnerCommandScalarWhereInput[]
+  }
+
+  export type CommandSnippetUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CommandSnippetCreateWithoutUserInput, CommandSnippetUncheckedCreateWithoutUserInput> | CommandSnippetCreateWithoutUserInput[] | CommandSnippetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CommandSnippetCreateOrConnectWithoutUserInput | CommandSnippetCreateOrConnectWithoutUserInput[]
+    upsert?: CommandSnippetUpsertWithWhereUniqueWithoutUserInput | CommandSnippetUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CommandSnippetCreateManyUserInputEnvelope
+    set?: CommandSnippetWhereUniqueInput | CommandSnippetWhereUniqueInput[]
+    disconnect?: CommandSnippetWhereUniqueInput | CommandSnippetWhereUniqueInput[]
+    delete?: CommandSnippetWhereUniqueInput | CommandSnippetWhereUniqueInput[]
+    connect?: CommandSnippetWhereUniqueInput | CommandSnippetWhereUniqueInput[]
+    update?: CommandSnippetUpdateWithWhereUniqueWithoutUserInput | CommandSnippetUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CommandSnippetUpdateManyWithWhereWithoutUserInput | CommandSnippetUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CommandSnippetScalarWhereInput | CommandSnippetScalarWhereInput[]
+  }
+
+  export type AutomationRuleUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput> | AutomationRuleCreateWithoutUserInput[] | AutomationRuleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AutomationRuleCreateOrConnectWithoutUserInput | AutomationRuleCreateOrConnectWithoutUserInput[]
+    upsert?: AutomationRuleUpsertWithWhereUniqueWithoutUserInput | AutomationRuleUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AutomationRuleCreateManyUserInputEnvelope
+    set?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    disconnect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    delete?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    connect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    update?: AutomationRuleUpdateWithWhereUniqueWithoutUserInput | AutomationRuleUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AutomationRuleUpdateManyWithWhereWithoutUserInput | AutomationRuleUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AutomationRuleScalarWhereInput | AutomationRuleScalarWhereInput[]
+  }
+
   export type CredentialUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput>
     connectOrCreate?: CredentialCreateOrConnectWithoutUserInput
@@ -45396,6 +51758,62 @@ export namespace Prisma {
     update?: IntegrationUpdateWithWhereUniqueWithoutUserInput | IntegrationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: IntegrationUpdateManyWithWhereWithoutUserInput | IntegrationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: IntegrationScalarWhereInput | IntegrationScalarWhereInput[]
+  }
+
+  export type RunnerUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RunnerCreateWithoutUserInput, RunnerUncheckedCreateWithoutUserInput> | RunnerCreateWithoutUserInput[] | RunnerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RunnerCreateOrConnectWithoutUserInput | RunnerCreateOrConnectWithoutUserInput[]
+    upsert?: RunnerUpsertWithWhereUniqueWithoutUserInput | RunnerUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RunnerCreateManyUserInputEnvelope
+    set?: RunnerWhereUniqueInput | RunnerWhereUniqueInput[]
+    disconnect?: RunnerWhereUniqueInput | RunnerWhereUniqueInput[]
+    delete?: RunnerWhereUniqueInput | RunnerWhereUniqueInput[]
+    connect?: RunnerWhereUniqueInput | RunnerWhereUniqueInput[]
+    update?: RunnerUpdateWithWhereUniqueWithoutUserInput | RunnerUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RunnerUpdateManyWithWhereWithoutUserInput | RunnerUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RunnerScalarWhereInput | RunnerScalarWhereInput[]
+  }
+
+  export type RunnerCommandUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RunnerCommandCreateWithoutUserInput, RunnerCommandUncheckedCreateWithoutUserInput> | RunnerCommandCreateWithoutUserInput[] | RunnerCommandUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RunnerCommandCreateOrConnectWithoutUserInput | RunnerCommandCreateOrConnectWithoutUserInput[]
+    upsert?: RunnerCommandUpsertWithWhereUniqueWithoutUserInput | RunnerCommandUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RunnerCommandCreateManyUserInputEnvelope
+    set?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    disconnect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    delete?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    connect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    update?: RunnerCommandUpdateWithWhereUniqueWithoutUserInput | RunnerCommandUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RunnerCommandUpdateManyWithWhereWithoutUserInput | RunnerCommandUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RunnerCommandScalarWhereInput | RunnerCommandScalarWhereInput[]
+  }
+
+  export type CommandSnippetUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CommandSnippetCreateWithoutUserInput, CommandSnippetUncheckedCreateWithoutUserInput> | CommandSnippetCreateWithoutUserInput[] | CommandSnippetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CommandSnippetCreateOrConnectWithoutUserInput | CommandSnippetCreateOrConnectWithoutUserInput[]
+    upsert?: CommandSnippetUpsertWithWhereUniqueWithoutUserInput | CommandSnippetUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CommandSnippetCreateManyUserInputEnvelope
+    set?: CommandSnippetWhereUniqueInput | CommandSnippetWhereUniqueInput[]
+    disconnect?: CommandSnippetWhereUniqueInput | CommandSnippetWhereUniqueInput[]
+    delete?: CommandSnippetWhereUniqueInput | CommandSnippetWhereUniqueInput[]
+    connect?: CommandSnippetWhereUniqueInput | CommandSnippetWhereUniqueInput[]
+    update?: CommandSnippetUpdateWithWhereUniqueWithoutUserInput | CommandSnippetUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CommandSnippetUpdateManyWithWhereWithoutUserInput | CommandSnippetUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CommandSnippetScalarWhereInput | CommandSnippetScalarWhereInput[]
+  }
+
+  export type AutomationRuleUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput> | AutomationRuleCreateWithoutUserInput[] | AutomationRuleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AutomationRuleCreateOrConnectWithoutUserInput | AutomationRuleCreateOrConnectWithoutUserInput[]
+    upsert?: AutomationRuleUpsertWithWhereUniqueWithoutUserInput | AutomationRuleUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AutomationRuleCreateManyUserInputEnvelope
+    set?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    disconnect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    delete?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    connect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    update?: AutomationRuleUpdateWithWhereUniqueWithoutUserInput | AutomationRuleUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AutomationRuleUpdateManyWithWhereWithoutUserInput | AutomationRuleUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AutomationRuleScalarWhereInput | AutomationRuleScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutCredentialInput = {
@@ -46357,6 +52775,138 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutIntegrationsInput, UserUpdateWithoutIntegrationsInput>, UserUncheckedUpdateWithoutIntegrationsInput>
   }
 
+  export type UserCreateNestedOneWithoutRunnersInput = {
+    create?: XOR<UserCreateWithoutRunnersInput, UserUncheckedCreateWithoutRunnersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRunnersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RunnerCommandCreateNestedManyWithoutRunnerInput = {
+    create?: XOR<RunnerCommandCreateWithoutRunnerInput, RunnerCommandUncheckedCreateWithoutRunnerInput> | RunnerCommandCreateWithoutRunnerInput[] | RunnerCommandUncheckedCreateWithoutRunnerInput[]
+    connectOrCreate?: RunnerCommandCreateOrConnectWithoutRunnerInput | RunnerCommandCreateOrConnectWithoutRunnerInput[]
+    createMany?: RunnerCommandCreateManyRunnerInputEnvelope
+    connect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+  }
+
+  export type RunnerCommandUncheckedCreateNestedManyWithoutRunnerInput = {
+    create?: XOR<RunnerCommandCreateWithoutRunnerInput, RunnerCommandUncheckedCreateWithoutRunnerInput> | RunnerCommandCreateWithoutRunnerInput[] | RunnerCommandUncheckedCreateWithoutRunnerInput[]
+    connectOrCreate?: RunnerCommandCreateOrConnectWithoutRunnerInput | RunnerCommandCreateOrConnectWithoutRunnerInput[]
+    createMany?: RunnerCommandCreateManyRunnerInputEnvelope
+    connect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+  }
+
+  export type EnumRunnerStatusFieldUpdateOperationsInput = {
+    set?: $Enums.RunnerStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutRunnersNestedInput = {
+    create?: XOR<UserCreateWithoutRunnersInput, UserUncheckedCreateWithoutRunnersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRunnersInput
+    upsert?: UserUpsertWithoutRunnersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRunnersInput, UserUpdateWithoutRunnersInput>, UserUncheckedUpdateWithoutRunnersInput>
+  }
+
+  export type RunnerCommandUpdateManyWithoutRunnerNestedInput = {
+    create?: XOR<RunnerCommandCreateWithoutRunnerInput, RunnerCommandUncheckedCreateWithoutRunnerInput> | RunnerCommandCreateWithoutRunnerInput[] | RunnerCommandUncheckedCreateWithoutRunnerInput[]
+    connectOrCreate?: RunnerCommandCreateOrConnectWithoutRunnerInput | RunnerCommandCreateOrConnectWithoutRunnerInput[]
+    upsert?: RunnerCommandUpsertWithWhereUniqueWithoutRunnerInput | RunnerCommandUpsertWithWhereUniqueWithoutRunnerInput[]
+    createMany?: RunnerCommandCreateManyRunnerInputEnvelope
+    set?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    disconnect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    delete?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    connect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    update?: RunnerCommandUpdateWithWhereUniqueWithoutRunnerInput | RunnerCommandUpdateWithWhereUniqueWithoutRunnerInput[]
+    updateMany?: RunnerCommandUpdateManyWithWhereWithoutRunnerInput | RunnerCommandUpdateManyWithWhereWithoutRunnerInput[]
+    deleteMany?: RunnerCommandScalarWhereInput | RunnerCommandScalarWhereInput[]
+  }
+
+  export type RunnerCommandUncheckedUpdateManyWithoutRunnerNestedInput = {
+    create?: XOR<RunnerCommandCreateWithoutRunnerInput, RunnerCommandUncheckedCreateWithoutRunnerInput> | RunnerCommandCreateWithoutRunnerInput[] | RunnerCommandUncheckedCreateWithoutRunnerInput[]
+    connectOrCreate?: RunnerCommandCreateOrConnectWithoutRunnerInput | RunnerCommandCreateOrConnectWithoutRunnerInput[]
+    upsert?: RunnerCommandUpsertWithWhereUniqueWithoutRunnerInput | RunnerCommandUpsertWithWhereUniqueWithoutRunnerInput[]
+    createMany?: RunnerCommandCreateManyRunnerInputEnvelope
+    set?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    disconnect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    delete?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    connect?: RunnerCommandWhereUniqueInput | RunnerCommandWhereUniqueInput[]
+    update?: RunnerCommandUpdateWithWhereUniqueWithoutRunnerInput | RunnerCommandUpdateWithWhereUniqueWithoutRunnerInput[]
+    updateMany?: RunnerCommandUpdateManyWithWhereWithoutRunnerInput | RunnerCommandUpdateManyWithWhereWithoutRunnerInput[]
+    deleteMany?: RunnerCommandScalarWhereInput | RunnerCommandScalarWhereInput[]
+  }
+
+  export type RunnerCreateNestedOneWithoutCommandsInput = {
+    create?: XOR<RunnerCreateWithoutCommandsInput, RunnerUncheckedCreateWithoutCommandsInput>
+    connectOrCreate?: RunnerCreateOrConnectWithoutCommandsInput
+    connect?: RunnerWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutRunnerCommandsInput = {
+    create?: XOR<UserCreateWithoutRunnerCommandsInput, UserUncheckedCreateWithoutRunnerCommandsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRunnerCommandsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumCommandStatusFieldUpdateOperationsInput = {
+    set?: $Enums.CommandStatus
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type RunnerUpdateOneRequiredWithoutCommandsNestedInput = {
+    create?: XOR<RunnerCreateWithoutCommandsInput, RunnerUncheckedCreateWithoutCommandsInput>
+    connectOrCreate?: RunnerCreateOrConnectWithoutCommandsInput
+    upsert?: RunnerUpsertWithoutCommandsInput
+    connect?: RunnerWhereUniqueInput
+    update?: XOR<XOR<RunnerUpdateToOneWithWhereWithoutCommandsInput, RunnerUpdateWithoutCommandsInput>, RunnerUncheckedUpdateWithoutCommandsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutRunnerCommandsNestedInput = {
+    create?: XOR<UserCreateWithoutRunnerCommandsInput, UserUncheckedCreateWithoutRunnerCommandsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRunnerCommandsInput
+    upsert?: UserUpsertWithoutRunnerCommandsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRunnerCommandsInput, UserUpdateWithoutRunnerCommandsInput>, UserUncheckedUpdateWithoutRunnerCommandsInput>
+  }
+
+  export type UserCreateNestedOneWithoutCommandSnippetsInput = {
+    create?: XOR<UserCreateWithoutCommandSnippetsInput, UserUncheckedCreateWithoutCommandSnippetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCommandSnippetsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutCommandSnippetsNestedInput = {
+    create?: XOR<UserCreateWithoutCommandSnippetsInput, UserUncheckedCreateWithoutCommandSnippetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCommandSnippetsInput
+    upsert?: UserUpsertWithoutCommandSnippetsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCommandSnippetsInput, UserUpdateWithoutCommandSnippetsInput>, UserUncheckedUpdateWithoutCommandSnippetsInput>
+  }
+
+  export type UserCreateNestedOneWithoutAutomationRulesInput = {
+    create?: XOR<UserCreateWithoutAutomationRulesInput, UserUncheckedCreateWithoutAutomationRulesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAutomationRulesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumAutomationTriggerFieldUpdateOperationsInput = {
+    set?: $Enums.AutomationTrigger
+  }
+
+  export type UserUpdateOneRequiredWithoutAutomationRulesNestedInput = {
+    create?: XOR<UserCreateWithoutAutomationRulesInput, UserUncheckedCreateWithoutAutomationRulesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAutomationRulesInput
+    upsert?: UserUpsertWithoutAutomationRulesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAutomationRulesInput, UserUpdateWithoutAutomationRulesInput>, UserUncheckedUpdateWithoutAutomationRulesInput>
+  }
+
   export type ProjectCreateNestedOneWithoutInvitesInput = {
     create?: XOR<ProjectCreateWithoutInvitesInput, ProjectUncheckedCreateWithoutInvitesInput>
     connectOrCreate?: ProjectCreateOrConnectWithoutInvitesInput
@@ -46983,6 +53533,84 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumIntegrationStatusFilter<$PrismaModel>
     _max?: NestedEnumIntegrationStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRunnerStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.RunnerStatus | EnumRunnerStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RunnerStatus[] | ListEnumRunnerStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RunnerStatus[] | ListEnumRunnerStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRunnerStatusFilter<$PrismaModel> | $Enums.RunnerStatus
+  }
+
+  export type NestedEnumRunnerStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RunnerStatus | EnumRunnerStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RunnerStatus[] | ListEnumRunnerStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RunnerStatus[] | ListEnumRunnerStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRunnerStatusWithAggregatesFilter<$PrismaModel> | $Enums.RunnerStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRunnerStatusFilter<$PrismaModel>
+    _max?: NestedEnumRunnerStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCommandStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CommandStatus | EnumCommandStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CommandStatus[] | ListEnumCommandStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CommandStatus[] | ListEnumCommandStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCommandStatusFilter<$PrismaModel> | $Enums.CommandStatus
+  }
+
+  export type NestedEnumCommandStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CommandStatus | EnumCommandStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CommandStatus[] | ListEnumCommandStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CommandStatus[] | ListEnumCommandStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCommandStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommandStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCommandStatusFilter<$PrismaModel>
+    _max?: NestedEnumCommandStatusFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumAutomationTriggerFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationTrigger | EnumAutomationTriggerFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationTrigger[] | ListEnumAutomationTriggerFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationTrigger[] | ListEnumAutomationTriggerFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationTriggerFilter<$PrismaModel> | $Enums.AutomationTrigger
+  }
+
+  export type NestedEnumAutomationTriggerWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationTrigger | EnumAutomationTriggerFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationTrigger[] | ListEnumAutomationTriggerFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationTrigger[] | ListEnumAutomationTriggerFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationTriggerWithAggregatesFilter<$PrismaModel> | $Enums.AutomationTrigger
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAutomationTriggerFilter<$PrismaModel>
+    _max?: NestedEnumAutomationTriggerFilter<$PrismaModel>
   }
 
   export type NestedEnumInviteStatusFilter<$PrismaModel = never> = {
@@ -47745,6 +54373,144 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type RunnerCreateWithoutUserInput = {
+    id?: string
+    name: string
+    tokenHash: string
+    status?: $Enums.RunnerStatus
+    workingDir?: string | null
+    lastSeenAt?: Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    commands?: RunnerCommandCreateNestedManyWithoutRunnerInput
+  }
+
+  export type RunnerUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    tokenHash: string
+    status?: $Enums.RunnerStatus
+    workingDir?: string | null
+    lastSeenAt?: Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    commands?: RunnerCommandUncheckedCreateNestedManyWithoutRunnerInput
+  }
+
+  export type RunnerCreateOrConnectWithoutUserInput = {
+    where: RunnerWhereUniqueInput
+    create: XOR<RunnerCreateWithoutUserInput, RunnerUncheckedCreateWithoutUserInput>
+  }
+
+  export type RunnerCreateManyUserInputEnvelope = {
+    data: RunnerCreateManyUserInput | RunnerCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RunnerCommandCreateWithoutUserInput = {
+    id?: string
+    taskId?: string | null
+    command: string
+    cwd?: string | null
+    status?: $Enums.CommandStatus
+    exitCode?: number | null
+    output?: string
+    source?: string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    createdAt?: Date | string
+    runner: RunnerCreateNestedOneWithoutCommandsInput
+  }
+
+  export type RunnerCommandUncheckedCreateWithoutUserInput = {
+    id?: string
+    runnerId: string
+    taskId?: string | null
+    command: string
+    cwd?: string | null
+    status?: $Enums.CommandStatus
+    exitCode?: number | null
+    output?: string
+    source?: string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type RunnerCommandCreateOrConnectWithoutUserInput = {
+    where: RunnerCommandWhereUniqueInput
+    create: XOR<RunnerCommandCreateWithoutUserInput, RunnerCommandUncheckedCreateWithoutUserInput>
+  }
+
+  export type RunnerCommandCreateManyUserInputEnvelope = {
+    data: RunnerCommandCreateManyUserInput | RunnerCommandCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CommandSnippetCreateWithoutUserInput = {
+    id?: string
+    name: string
+    command: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CommandSnippetUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    command: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CommandSnippetCreateOrConnectWithoutUserInput = {
+    where: CommandSnippetWhereUniqueInput
+    create: XOR<CommandSnippetCreateWithoutUserInput, CommandSnippetUncheckedCreateWithoutUserInput>
+  }
+
+  export type CommandSnippetCreateManyUserInputEnvelope = {
+    data: CommandSnippetCreateManyUserInput | CommandSnippetCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AutomationRuleCreateWithoutUserInput = {
+    id?: string
+    name: string
+    enabled?: boolean
+    trigger: $Enums.AutomationTrigger
+    conditionJson: JsonNullValueInput | InputJsonValue
+    runnerId?: string | null
+    command: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutomationRuleUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    enabled?: boolean
+    trigger: $Enums.AutomationTrigger
+    conditionJson: JsonNullValueInput | InputJsonValue
+    runnerId?: string | null
+    command: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutomationRuleCreateOrConnectWithoutUserInput = {
+    where: AutomationRuleWhereUniqueInput
+    create: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput>
+  }
+
+  export type AutomationRuleCreateManyUserInputEnvelope = {
+    data: AutomationRuleCreateManyUserInput | AutomationRuleCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CredentialUpsertWithoutUserInput = {
     update: XOR<CredentialUpdateWithoutUserInput, CredentialUncheckedUpdateWithoutUserInput>
     create: XOR<CredentialCreateWithoutUserInput, CredentialUncheckedCreateWithoutUserInput>
@@ -48439,6 +55205,134 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Integration"> | Date | string
   }
 
+  export type RunnerUpsertWithWhereUniqueWithoutUserInput = {
+    where: RunnerWhereUniqueInput
+    update: XOR<RunnerUpdateWithoutUserInput, RunnerUncheckedUpdateWithoutUserInput>
+    create: XOR<RunnerCreateWithoutUserInput, RunnerUncheckedCreateWithoutUserInput>
+  }
+
+  export type RunnerUpdateWithWhereUniqueWithoutUserInput = {
+    where: RunnerWhereUniqueInput
+    data: XOR<RunnerUpdateWithoutUserInput, RunnerUncheckedUpdateWithoutUserInput>
+  }
+
+  export type RunnerUpdateManyWithWhereWithoutUserInput = {
+    where: RunnerScalarWhereInput
+    data: XOR<RunnerUpdateManyMutationInput, RunnerUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type RunnerScalarWhereInput = {
+    AND?: RunnerScalarWhereInput | RunnerScalarWhereInput[]
+    OR?: RunnerScalarWhereInput[]
+    NOT?: RunnerScalarWhereInput | RunnerScalarWhereInput[]
+    id?: StringFilter<"Runner"> | string
+    userId?: StringFilter<"Runner"> | string
+    name?: StringFilter<"Runner"> | string
+    tokenHash?: StringFilter<"Runner"> | string
+    status?: EnumRunnerStatusFilter<"Runner"> | $Enums.RunnerStatus
+    workingDir?: StringNullableFilter<"Runner"> | string | null
+    lastSeenAt?: DateTimeNullableFilter<"Runner"> | Date | string | null
+    meta?: JsonNullableFilter<"Runner">
+    createdAt?: DateTimeFilter<"Runner"> | Date | string
+    updatedAt?: DateTimeFilter<"Runner"> | Date | string
+  }
+
+  export type RunnerCommandUpsertWithWhereUniqueWithoutUserInput = {
+    where: RunnerCommandWhereUniqueInput
+    update: XOR<RunnerCommandUpdateWithoutUserInput, RunnerCommandUncheckedUpdateWithoutUserInput>
+    create: XOR<RunnerCommandCreateWithoutUserInput, RunnerCommandUncheckedCreateWithoutUserInput>
+  }
+
+  export type RunnerCommandUpdateWithWhereUniqueWithoutUserInput = {
+    where: RunnerCommandWhereUniqueInput
+    data: XOR<RunnerCommandUpdateWithoutUserInput, RunnerCommandUncheckedUpdateWithoutUserInput>
+  }
+
+  export type RunnerCommandUpdateManyWithWhereWithoutUserInput = {
+    where: RunnerCommandScalarWhereInput
+    data: XOR<RunnerCommandUpdateManyMutationInput, RunnerCommandUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type RunnerCommandScalarWhereInput = {
+    AND?: RunnerCommandScalarWhereInput | RunnerCommandScalarWhereInput[]
+    OR?: RunnerCommandScalarWhereInput[]
+    NOT?: RunnerCommandScalarWhereInput | RunnerCommandScalarWhereInput[]
+    id?: StringFilter<"RunnerCommand"> | string
+    runnerId?: StringFilter<"RunnerCommand"> | string
+    userId?: StringFilter<"RunnerCommand"> | string
+    taskId?: StringNullableFilter<"RunnerCommand"> | string | null
+    command?: StringFilter<"RunnerCommand"> | string
+    cwd?: StringNullableFilter<"RunnerCommand"> | string | null
+    status?: EnumCommandStatusFilter<"RunnerCommand"> | $Enums.CommandStatus
+    exitCode?: IntNullableFilter<"RunnerCommand"> | number | null
+    output?: StringFilter<"RunnerCommand"> | string
+    source?: StringFilter<"RunnerCommand"> | string
+    startedAt?: DateTimeNullableFilter<"RunnerCommand"> | Date | string | null
+    finishedAt?: DateTimeNullableFilter<"RunnerCommand"> | Date | string | null
+    createdAt?: DateTimeFilter<"RunnerCommand"> | Date | string
+  }
+
+  export type CommandSnippetUpsertWithWhereUniqueWithoutUserInput = {
+    where: CommandSnippetWhereUniqueInput
+    update: XOR<CommandSnippetUpdateWithoutUserInput, CommandSnippetUncheckedUpdateWithoutUserInput>
+    create: XOR<CommandSnippetCreateWithoutUserInput, CommandSnippetUncheckedCreateWithoutUserInput>
+  }
+
+  export type CommandSnippetUpdateWithWhereUniqueWithoutUserInput = {
+    where: CommandSnippetWhereUniqueInput
+    data: XOR<CommandSnippetUpdateWithoutUserInput, CommandSnippetUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CommandSnippetUpdateManyWithWhereWithoutUserInput = {
+    where: CommandSnippetScalarWhereInput
+    data: XOR<CommandSnippetUpdateManyMutationInput, CommandSnippetUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type CommandSnippetScalarWhereInput = {
+    AND?: CommandSnippetScalarWhereInput | CommandSnippetScalarWhereInput[]
+    OR?: CommandSnippetScalarWhereInput[]
+    NOT?: CommandSnippetScalarWhereInput | CommandSnippetScalarWhereInput[]
+    id?: StringFilter<"CommandSnippet"> | string
+    userId?: StringFilter<"CommandSnippet"> | string
+    name?: StringFilter<"CommandSnippet"> | string
+    command?: StringFilter<"CommandSnippet"> | string
+    description?: StringNullableFilter<"CommandSnippet"> | string | null
+    createdAt?: DateTimeFilter<"CommandSnippet"> | Date | string
+    updatedAt?: DateTimeFilter<"CommandSnippet"> | Date | string
+  }
+
+  export type AutomationRuleUpsertWithWhereUniqueWithoutUserInput = {
+    where: AutomationRuleWhereUniqueInput
+    update: XOR<AutomationRuleUpdateWithoutUserInput, AutomationRuleUncheckedUpdateWithoutUserInput>
+    create: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput>
+  }
+
+  export type AutomationRuleUpdateWithWhereUniqueWithoutUserInput = {
+    where: AutomationRuleWhereUniqueInput
+    data: XOR<AutomationRuleUpdateWithoutUserInput, AutomationRuleUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AutomationRuleUpdateManyWithWhereWithoutUserInput = {
+    where: AutomationRuleScalarWhereInput
+    data: XOR<AutomationRuleUpdateManyMutationInput, AutomationRuleUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AutomationRuleScalarWhereInput = {
+    AND?: AutomationRuleScalarWhereInput | AutomationRuleScalarWhereInput[]
+    OR?: AutomationRuleScalarWhereInput[]
+    NOT?: AutomationRuleScalarWhereInput | AutomationRuleScalarWhereInput[]
+    id?: StringFilter<"AutomationRule"> | string
+    userId?: StringFilter<"AutomationRule"> | string
+    name?: StringFilter<"AutomationRule"> | string
+    enabled?: BoolFilter<"AutomationRule"> | boolean
+    trigger?: EnumAutomationTriggerFilter<"AutomationRule"> | $Enums.AutomationTrigger
+    conditionJson?: JsonFilter<"AutomationRule">
+    runnerId?: StringNullableFilter<"AutomationRule"> | string | null
+    command?: StringFilter<"AutomationRule"> | string
+    createdAt?: DateTimeFilter<"AutomationRule"> | Date | string
+    updatedAt?: DateTimeFilter<"AutomationRule"> | Date | string
+  }
+
   export type UserCreateWithoutCredentialInput = {
     id?: string
     email: string
@@ -48482,6 +55376,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCredentialInput = {
@@ -48527,6 +55425,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCredentialInput = {
@@ -48588,6 +55490,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCredentialInput = {
@@ -48633,6 +55539,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -48678,6 +55588,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -48723,6 +55637,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -48784,6 +55702,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -48829,6 +55751,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RefreshTokenCreateWithoutReplacesInput = {
@@ -48924,6 +55850,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRefreshesInput = {
@@ -48969,6 +55899,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRefreshesInput = {
@@ -49092,6 +56026,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshesInput = {
@@ -49137,6 +56075,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutEmailVerificationsInput = {
@@ -49182,6 +56124,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEmailVerificationsInput = {
@@ -49227,6 +56173,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEmailVerificationsInput = {
@@ -49288,6 +56238,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEmailVerificationsInput = {
@@ -49333,6 +56287,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPasswordResetsInput = {
@@ -49378,6 +56336,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -49423,6 +56385,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -49484,6 +56450,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -49529,6 +56499,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -49574,6 +56548,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -49619,6 +56597,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -49680,6 +56662,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -49725,6 +56711,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSubscriptionsInput = {
@@ -49770,6 +56760,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -49815,6 +56809,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -49876,6 +56874,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -49921,6 +56923,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutEntitlementsInput = {
@@ -49966,6 +56972,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEntitlementsInput = {
@@ -50011,6 +57021,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEntitlementsInput = {
@@ -50072,6 +57086,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEntitlementsInput = {
@@ -50117,6 +57135,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAiChatSessionsInput = {
@@ -50162,6 +57184,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAiChatSessionsInput = {
@@ -50207,6 +57233,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAiChatSessionsInput = {
@@ -50298,6 +57328,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAiChatSessionsInput = {
@@ -50343,6 +57377,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AiChatMessageUpsertWithWhereUniqueWithoutSessionInput = {
@@ -50470,6 +57508,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAiToolOutputsInput = {
@@ -50515,6 +57557,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAiToolOutputsInput = {
@@ -50576,6 +57622,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAiToolOutputsInput = {
@@ -50621,6 +57671,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectMemberCreateWithoutProjectInput = {
@@ -51138,6 +58192,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFriendshipsSentInput = {
@@ -51183,6 +58241,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFriendshipsSentInput = {
@@ -51233,6 +58295,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFriendshipsReceivedInput = {
@@ -51278,6 +58344,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFriendshipsReceivedInput = {
@@ -51339,6 +58409,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFriendshipsSentInput = {
@@ -51384,6 +58458,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutFriendshipsReceivedInput = {
@@ -51440,6 +58518,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFriendshipsReceivedInput = {
@@ -51485,6 +58567,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutGroupsCreatedInput = {
@@ -51530,6 +58616,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGroupsCreatedInput = {
@@ -51575,6 +58665,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGroupsCreatedInput = {
@@ -51712,6 +58806,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGroupsCreatedInput = {
@@ -51757,6 +58855,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type GroupMemberUpsertWithWhereUniqueWithoutGroupInput = {
@@ -51879,6 +58981,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGroupMembershipsInput = {
@@ -51924,6 +59030,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGroupMembershipsInput = {
@@ -52020,6 +59130,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
@@ -52065,6 +59179,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -52110,6 +59228,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -52155,6 +59277,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -52216,6 +59342,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -52261,6 +59391,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutMembersInput = {
@@ -52351,6 +59485,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProjectMembersInput = {
@@ -52396,6 +59534,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProjectMembersInput = {
@@ -52508,6 +59650,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProjectMembersInput = {
@@ -52553,6 +59699,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutArtifactsInput = {
@@ -52739,6 +59889,10 @@ export namespace Prisma {
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksAssignedInput = {
@@ -52784,6 +59938,10 @@ export namespace Prisma {
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksAssignedInput = {
@@ -52834,6 +59992,10 @@ export namespace Prisma {
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksCreatedInput = {
@@ -52879,6 +60041,10 @@ export namespace Prisma {
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksCreatedInput = {
@@ -52991,6 +60157,10 @@ export namespace Prisma {
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksAssignedInput = {
@@ -53036,6 +60206,10 @@ export namespace Prisma {
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutTasksCreatedInput = {
@@ -53092,6 +60266,10 @@ export namespace Prisma {
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksCreatedInput = {
@@ -53137,6 +60315,10 @@ export namespace Prisma {
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutIntegrationsInput = {
@@ -53182,6 +60364,10 @@ export namespace Prisma {
     syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutIntegrationsInput = {
@@ -53227,6 +60413,10 @@ export namespace Prisma {
     syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutIntegrationsInput = {
@@ -53288,6 +60478,10 @@ export namespace Prisma {
     syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutIntegrationsInput = {
@@ -53333,6 +60527,982 @@ export namespace Prisma {
     syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutRunnersInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityCreateNestedManyWithoutActorInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRunnersInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementUncheckedCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageUncheckedCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputUncheckedCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteUncheckedCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityUncheckedCreateNestedManyWithoutActorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRunnersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRunnersInput, UserUncheckedCreateWithoutRunnersInput>
+  }
+
+  export type RunnerCommandCreateWithoutRunnerInput = {
+    id?: string
+    taskId?: string | null
+    command: string
+    cwd?: string | null
+    status?: $Enums.CommandStatus
+    exitCode?: number | null
+    output?: string
+    source?: string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutRunnerCommandsInput
+  }
+
+  export type RunnerCommandUncheckedCreateWithoutRunnerInput = {
+    id?: string
+    userId: string
+    taskId?: string | null
+    command: string
+    cwd?: string | null
+    status?: $Enums.CommandStatus
+    exitCode?: number | null
+    output?: string
+    source?: string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type RunnerCommandCreateOrConnectWithoutRunnerInput = {
+    where: RunnerCommandWhereUniqueInput
+    create: XOR<RunnerCommandCreateWithoutRunnerInput, RunnerCommandUncheckedCreateWithoutRunnerInput>
+  }
+
+  export type RunnerCommandCreateManyRunnerInputEnvelope = {
+    data: RunnerCommandCreateManyRunnerInput | RunnerCommandCreateManyRunnerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutRunnersInput = {
+    update: XOR<UserUpdateWithoutRunnersInput, UserUncheckedUpdateWithoutRunnersInput>
+    create: XOR<UserCreateWithoutRunnersInput, UserUncheckedCreateWithoutRunnersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRunnersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRunnersInput, UserUncheckedUpdateWithoutRunnersInput>
+  }
+
+  export type UserUpdateWithoutRunnersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUpdateManyWithoutActorNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRunnersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUncheckedUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUncheckedUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUncheckedUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUncheckedUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUncheckedUpdateManyWithoutActorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type RunnerCommandUpsertWithWhereUniqueWithoutRunnerInput = {
+    where: RunnerCommandWhereUniqueInput
+    update: XOR<RunnerCommandUpdateWithoutRunnerInput, RunnerCommandUncheckedUpdateWithoutRunnerInput>
+    create: XOR<RunnerCommandCreateWithoutRunnerInput, RunnerCommandUncheckedCreateWithoutRunnerInput>
+  }
+
+  export type RunnerCommandUpdateWithWhereUniqueWithoutRunnerInput = {
+    where: RunnerCommandWhereUniqueInput
+    data: XOR<RunnerCommandUpdateWithoutRunnerInput, RunnerCommandUncheckedUpdateWithoutRunnerInput>
+  }
+
+  export type RunnerCommandUpdateManyWithWhereWithoutRunnerInput = {
+    where: RunnerCommandScalarWhereInput
+    data: XOR<RunnerCommandUpdateManyMutationInput, RunnerCommandUncheckedUpdateManyWithoutRunnerInput>
+  }
+
+  export type RunnerCreateWithoutCommandsInput = {
+    id?: string
+    name: string
+    tokenHash: string
+    status?: $Enums.RunnerStatus
+    workingDir?: string | null
+    lastSeenAt?: Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutRunnersInput
+  }
+
+  export type RunnerUncheckedCreateWithoutCommandsInput = {
+    id?: string
+    userId: string
+    name: string
+    tokenHash: string
+    status?: $Enums.RunnerStatus
+    workingDir?: string | null
+    lastSeenAt?: Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RunnerCreateOrConnectWithoutCommandsInput = {
+    where: RunnerWhereUniqueInput
+    create: XOR<RunnerCreateWithoutCommandsInput, RunnerUncheckedCreateWithoutCommandsInput>
+  }
+
+  export type UserCreateWithoutRunnerCommandsInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityCreateNestedManyWithoutActorInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRunnerCommandsInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementUncheckedCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageUncheckedCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputUncheckedCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteUncheckedCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityUncheckedCreateNestedManyWithoutActorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRunnerCommandsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRunnerCommandsInput, UserUncheckedCreateWithoutRunnerCommandsInput>
+  }
+
+  export type RunnerUpsertWithoutCommandsInput = {
+    update: XOR<RunnerUpdateWithoutCommandsInput, RunnerUncheckedUpdateWithoutCommandsInput>
+    create: XOR<RunnerCreateWithoutCommandsInput, RunnerUncheckedCreateWithoutCommandsInput>
+    where?: RunnerWhereInput
+  }
+
+  export type RunnerUpdateToOneWithWhereWithoutCommandsInput = {
+    where?: RunnerWhereInput
+    data: XOR<RunnerUpdateWithoutCommandsInput, RunnerUncheckedUpdateWithoutCommandsInput>
+  }
+
+  export type RunnerUpdateWithoutCommandsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    status?: EnumRunnerStatusFieldUpdateOperationsInput | $Enums.RunnerStatus
+    workingDir?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutRunnersNestedInput
+  }
+
+  export type RunnerUncheckedUpdateWithoutCommandsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    status?: EnumRunnerStatusFieldUpdateOperationsInput | $Enums.RunnerStatus
+    workingDir?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutRunnerCommandsInput = {
+    update: XOR<UserUpdateWithoutRunnerCommandsInput, UserUncheckedUpdateWithoutRunnerCommandsInput>
+    create: XOR<UserCreateWithoutRunnerCommandsInput, UserUncheckedCreateWithoutRunnerCommandsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRunnerCommandsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRunnerCommandsInput, UserUncheckedUpdateWithoutRunnerCommandsInput>
+  }
+
+  export type UserUpdateWithoutRunnerCommandsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUpdateManyWithoutActorNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRunnerCommandsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUncheckedUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUncheckedUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUncheckedUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUncheckedUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUncheckedUpdateManyWithoutActorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutCommandSnippetsInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityCreateNestedManyWithoutActorInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCommandSnippetsInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementUncheckedCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageUncheckedCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputUncheckedCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteUncheckedCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityUncheckedCreateNestedManyWithoutActorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCommandSnippetsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCommandSnippetsInput, UserUncheckedCreateWithoutCommandSnippetsInput>
+  }
+
+  export type UserUpsertWithoutCommandSnippetsInput = {
+    update: XOR<UserUpdateWithoutCommandSnippetsInput, UserUncheckedUpdateWithoutCommandSnippetsInput>
+    create: XOR<UserCreateWithoutCommandSnippetsInput, UserUncheckedCreateWithoutCommandSnippetsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCommandSnippetsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCommandSnippetsInput, UserUncheckedUpdateWithoutCommandSnippetsInput>
+  }
+
+  export type UserUpdateWithoutCommandSnippetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUpdateManyWithoutActorNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCommandSnippetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUncheckedUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUncheckedUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUncheckedUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUncheckedUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUncheckedUpdateManyWithoutActorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutAutomationRulesInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialCreateNestedOneWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityCreateNestedManyWithoutActorInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAutomationRulesInput = {
+    id?: string
+    email: string
+    role?: $Enums.UserRole
+    emailVerifiedAt?: Date | string | null
+    displayName?: string | null
+    bio?: string | null
+    avatarUrl?: string | null
+    tags?: UserCreatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: string
+    unsubscribeToken?: string | null
+    aiProvider?: $Enums.AiProvider
+    aiApiKeyEncrypted?: string | null
+    openrouterRefreshToken?: string | null
+    preferredAiProvider?: string
+    aiFallbackSetting?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    credential?: CredentialUncheckedCreateNestedOneWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    refreshes?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    emailVerifications?: EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    entitlements?: EntitlementUncheckedCreateNestedManyWithoutUserInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
+    aiTokenUsage?: AiTokenUsageUncheckedCreateNestedManyWithoutUserInput
+    aiToolOutputs?: AiToolOutputUncheckedCreateNestedManyWithoutUserInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    invitesSent?: ProjectInviteUncheckedCreateNestedManyWithoutInvitedByInput
+    activities?: ProjectActivityUncheckedCreateNestedManyWithoutActorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    friendshipsSent?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
+    friendshipsReceived?: FriendshipUncheckedCreateNestedManyWithoutAddresseeInput
+    groupsCreated?: GroupUncheckedCreateNestedManyWithoutCreatedByInput
+    groupMemberships?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    syncOperations?: SyncOperationUncheckedCreateNestedManyWithoutUserInput
+    tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAutomationRulesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAutomationRulesInput, UserUncheckedCreateWithoutAutomationRulesInput>
+  }
+
+  export type UserUpsertWithoutAutomationRulesInput = {
+    update: XOR<UserUpdateWithoutAutomationRulesInput, UserUncheckedUpdateWithoutAutomationRulesInput>
+    create: XOR<UserCreateWithoutAutomationRulesInput, UserUncheckedCreateWithoutAutomationRulesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAutomationRulesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAutomationRulesInput, UserUncheckedUpdateWithoutAutomationRulesInput>
+  }
+
+  export type UserUpdateWithoutAutomationRulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUpdateOneWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUpdateManyWithoutActorNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAutomationRulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: UserUpdatetagsInput | string[]
+    profileVisibility?: NullableJsonNullValueInput | InputJsonValue
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    emailDigestFrequency?: StringFieldUpdateOperationsInput | string
+    unsubscribeToken?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: EnumAiProviderFieldUpdateOperationsInput | $Enums.AiProvider
+    aiApiKeyEncrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    openrouterRefreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredAiProvider?: StringFieldUpdateOperationsInput | string
+    aiFallbackSetting?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    credential?: CredentialUncheckedUpdateOneWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    refreshes?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    emailVerifications?: EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    entitlements?: EntitlementUncheckedUpdateManyWithoutUserNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
+    aiTokenUsage?: AiTokenUsageUncheckedUpdateManyWithoutUserNestedInput
+    aiToolOutputs?: AiToolOutputUncheckedUpdateManyWithoutUserNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    invitesSent?: ProjectInviteUncheckedUpdateManyWithoutInvitedByNestedInput
+    activities?: ProjectActivityUncheckedUpdateManyWithoutActorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    friendshipsSent?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
+    friendshipsReceived?: FriendshipUncheckedUpdateManyWithoutAddresseeNestedInput
+    groupsCreated?: GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+    groupMemberships?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    syncOperations?: SyncOperationUncheckedUpdateManyWithoutUserNestedInput
+    tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutInvitesInput = {
@@ -53423,6 +61593,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInvitesSentInput = {
@@ -53468,6 +61642,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInvitesSentInput = {
@@ -53580,6 +61758,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvitesSentInput = {
@@ -53625,6 +61807,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutActivitiesInput = {
@@ -53715,6 +61901,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActivitiesInput = {
@@ -53760,6 +61950,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActivitiesInput = {
@@ -53872,6 +62066,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivitiesInput = {
@@ -53917,6 +62115,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutCommentsInput = {
@@ -54007,6 +62209,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
@@ -54052,6 +62258,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentsInput = {
@@ -54164,6 +62374,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -54209,6 +62423,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutSyncOpsInput = {
@@ -54299,6 +62517,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSyncOperationsInput = {
@@ -54344,6 +62566,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSyncOperationsInput = {
@@ -54456,6 +62682,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSyncOperationsInput = {
@@ -54501,6 +62731,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutSnapshotsInput = {
@@ -54642,6 +62876,10 @@ export namespace Prisma {
     tasksCreated?: TaskCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationCreateNestedManyWithoutUserInput
+    runners?: RunnerCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAiTokenUsageInput = {
@@ -54687,6 +62925,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     tasksAssigned?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
     integrations?: IntegrationUncheckedCreateNestedManyWithoutUserInput
+    runners?: RunnerUncheckedCreateNestedManyWithoutUserInput
+    runnerCommands?: RunnerCommandUncheckedCreateNestedManyWithoutUserInput
+    commandSnippets?: CommandSnippetUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAiTokenUsageInput = {
@@ -54748,6 +62990,10 @@ export namespace Prisma {
     tasksCreated?: TaskUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUpdateManyWithoutUserNestedInput
+    runners?: RunnerUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAiTokenUsageInput = {
@@ -54793,6 +63039,10 @@ export namespace Prisma {
     tasksCreated?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     tasksAssigned?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
     integrations?: IntegrationUncheckedUpdateManyWithoutUserNestedInput
+    runners?: RunnerUncheckedUpdateManyWithoutUserNestedInput
+    runnerCommands?: RunnerCommandUncheckedUpdateManyWithoutUserNestedInput
+    commandSnippets?: CommandSnippetUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -55033,6 +63283,54 @@ export namespace Prisma {
     scopes?: IntegrationCreatescopesInput | string[]
     accountLabel?: string | null
     connectedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RunnerCreateManyUserInput = {
+    id?: string
+    name: string
+    tokenHash: string
+    status?: $Enums.RunnerStatus
+    workingDir?: string | null
+    lastSeenAt?: Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RunnerCommandCreateManyUserInput = {
+    id?: string
+    runnerId: string
+    taskId?: string | null
+    command: string
+    cwd?: string | null
+    status?: $Enums.CommandStatus
+    exitCode?: number | null
+    output?: string
+    source?: string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type CommandSnippetCreateManyUserInput = {
+    id?: string
+    name: string
+    command: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutomationRuleCreateManyUserInput = {
+    id?: string
+    name: string
+    enabled?: boolean
+    trigger: $Enums.AutomationTrigger
+    conditionJson: JsonNullValueInput | InputJsonValue
+    runnerId?: string | null
+    command: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55771,6 +64069,152 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RunnerUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    status?: EnumRunnerStatusFieldUpdateOperationsInput | $Enums.RunnerStatus
+    workingDir?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    commands?: RunnerCommandUpdateManyWithoutRunnerNestedInput
+  }
+
+  export type RunnerUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    status?: EnumRunnerStatusFieldUpdateOperationsInput | $Enums.RunnerStatus
+    workingDir?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    commands?: RunnerCommandUncheckedUpdateManyWithoutRunnerNestedInput
+  }
+
+  export type RunnerUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    status?: EnumRunnerStatusFieldUpdateOperationsInput | $Enums.RunnerStatus
+    workingDir?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerCommandUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    cwd?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+    exitCode?: NullableIntFieldUpdateOperationsInput | number | null
+    output?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runner?: RunnerUpdateOneRequiredWithoutCommandsNestedInput
+  }
+
+  export type RunnerCommandUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    runnerId?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    cwd?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+    exitCode?: NullableIntFieldUpdateOperationsInput | number | null
+    output?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerCommandUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    runnerId?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    cwd?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+    exitCode?: NullableIntFieldUpdateOperationsInput | number | null
+    output?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommandSnippetUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    command?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommandSnippetUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    command?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommandSnippetUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    command?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    trigger?: EnumAutomationTriggerFieldUpdateOperationsInput | $Enums.AutomationTrigger
+    conditionJson?: JsonNullValueInput | InputJsonValue
+    runnerId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    trigger?: EnumAutomationTriggerFieldUpdateOperationsInput | $Enums.AutomationTrigger
+    conditionJson?: JsonNullValueInput | InputJsonValue
+    runnerId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    trigger?: EnumAutomationTriggerFieldUpdateOperationsInput | $Enums.AutomationTrigger
+    conditionJson?: JsonNullValueInput | InputJsonValue
+    runnerId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AiChatMessageCreateManySessionInput = {
     id?: string
     role: $Enums.AiMessageRole
@@ -56253,6 +64697,66 @@ export namespace Prisma {
     tags?: ProjectUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerCommandCreateManyRunnerInput = {
+    id?: string
+    userId: string
+    taskId?: string | null
+    command: string
+    cwd?: string | null
+    status?: $Enums.CommandStatus
+    exitCode?: number | null
+    output?: string
+    source?: string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type RunnerCommandUpdateWithoutRunnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    cwd?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+    exitCode?: NullableIntFieldUpdateOperationsInput | number | null
+    output?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutRunnerCommandsNestedInput
+  }
+
+  export type RunnerCommandUncheckedUpdateWithoutRunnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    cwd?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+    exitCode?: NullableIntFieldUpdateOperationsInput | number | null
+    output?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerCommandUncheckedUpdateManyWithoutRunnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    command?: StringFieldUpdateOperationsInput | string
+    cwd?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+    exitCode?: NullableIntFieldUpdateOperationsInput | number | null
+    output?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
