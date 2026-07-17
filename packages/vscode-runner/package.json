@@ -1,0 +1,55 @@
+{
+  "name": "idea-management-vscode-runner",
+  "displayName": "IDEA Management — Terminal Runner",
+  "description": "Connects VS Code to your IDEA Management app as a terminal runner: dispatched commands are 'poked' into a VS Code terminal via terminal.sendText.",
+  "version": "0.1.0",
+  "publisher": "idea-management",
+  "private": true,
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "imRunner.connect", "title": "IM Runner: Connect" },
+      { "command": "imRunner.disconnect", "title": "IM Runner: Disconnect" },
+      { "command": "imRunner.status", "title": "IM Runner: Show Status" }
+    ],
+    "configuration": {
+      "title": "IDEA Management Runner",
+      "properties": {
+        "imRunner.url": {
+          "type": "string",
+          "default": "http://localhost:3001",
+          "description": "Base URL of your IDEA Management app."
+        },
+        "imRunner.token": {
+          "type": "string",
+          "default": "",
+          "description": "Per-runner token (create a runner in the app's Orchestrator page). Keep secret."
+        },
+        "imRunner.autoConnect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Connect automatically on startup when a token is set."
+        },
+        "imRunner.terminalName": {
+          "type": "string",
+          "default": "IM Runner",
+          "description": "Name of the VS Code terminal commands are sent to."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.90.0",
+    "@types/node": "^20",
+    "typescript": "^5"
+  }
+}
