@@ -85,10 +85,10 @@ This repo also includes a visual/creative concept system for data visualization,
 - Use HTTPS remotes only
 - Create savepoint branches after major work is completed (e.g., full feature, tier of work, phase completion). Name them descriptively so they serve as rollback points (e.g., `savepoint/tier1-kanban-crud`, `savepoint/phase-a-accuracy-audit`). Include the main branch commit hash in the savepoint commit message so you know what it synced with. Savepoint branches can also be created on user request at any time
 
-## Dev Server Cleanup
-- When done working, stop any dev servers that were started during the session (only the specific server used for testing, not all running servers)
-- Do not stop servers the user was already running before the session began
-- Exception: if the user explicitly asks to leave the server running, leave it
+## Dev Servers
+- Leave dev servers running by default. Do NOT stop a dev server at the end of a session.
+- Stop a server ONLY when the user explicitly asks you to.
+- Never stop a server the user was already running before the session began.
 
 ## Confirm Before Acting Convention
 - When the user says "confirm request", "confirm reasoning", "confirm before proceeding", or similar phrasing, it means: **present your understanding of the request in chat and wait for explicit approval before taking any action.**
