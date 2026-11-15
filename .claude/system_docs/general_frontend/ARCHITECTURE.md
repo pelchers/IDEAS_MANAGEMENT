@@ -85,3 +85,6 @@ Subagent does not mark complete until Playwright screenshots confirm visual outp
 | Pass convergence detected | Two passes share layout archetype | Reassign orchestrator flags before dispatch |
 | Missing required files | Pass has <20 files at completion | Orchestrator flags pass as incomplete |
 | Subagent exceeds context | Very large pass with many files | Split into two subagent calls |
+| Mode switcher covers a control | Fixed button sits on a fixed bar or the last control | Reserve bottom padding, move it above the bar, or tuck it to an edge tab |
+| A mode or role does not open | `?mode=`/`&role=` not read, or the id differs from handoff.json | Reuse the state logic in references/mode-switcher.md; match ids |
+| Sign-in or sign-out check fails | Form lacks `data-mock-signin`, or no `data-mock-signout` control | Add the hooks from references/mode-switcher.md |

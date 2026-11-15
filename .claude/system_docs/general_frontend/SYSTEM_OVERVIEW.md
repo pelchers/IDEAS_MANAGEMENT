@@ -78,3 +78,8 @@ Subagents with specific URLs converge on the same references. Thematic search hi
 - Plain HTML/CSS/JS only — no frameworks, no build tools required to view
 - Each pass covers all app views defined in the config (default: 10)
 - Subagent cannot mark complete until Playwright screenshots are captured
+- Every pass includes a review Mode switcher with a role picker per signed-in mode and mock sign-in
+  and sign-out; passes open signed out and `?mode=<id>&role=<id>` starts any view in any state
+  (skipped only for a single-mode product)
+- Validation fails a pass whose switcher covers a control, whose modes or roles do not open from the
+  URL, or whose sign-in or sign-out does not work (`modeChecks`, run with `--strict`)

@@ -69,3 +69,23 @@ Each subagent produces:
 | Subagent Skill | `.claude/skills/general-frontend-design-subagent/` | Single pass generation with Playwright validation |
 | Style Config | `.claude/skills/planning-frontend-design-orchestrator/references/style-config.json` | Style definitions and view list |
 | Output | `.docs/planning/concepts/<style>/pass-<n>/` | Generated concept files |
+
+## Review a Pass as Each Kind of User
+
+Every pass has a "Mode" control (bottom-right by default) with the product's modes and, for each
+signed-in mode, a role select. Passes open signed out, so you can also sign up or sign in through the
+pass's own forms (any details work) and sign out again.
+
+Start a view in a given state with URL parameters:
+```
+index.html?mode=prospect                         first visit, signed out
+app-board.html?mode=dealer&role=detailer         signed in as a detailer
+dealer-account.html?mode=shopper                 a signed-in shopper
+```
+Scripts can use `window.mockAuth.state()`, `signIn(mode, role)`, `signOut()` and `reset()`.
+
+Run the validation script with `--strict` to fail on any switcher, role or sign-in problem:
+```
+node validate-visuals-playwright.mjs --pass-dir <pass dir> --surface website --strict
+```
+Results: `validation/report.playwright.json` (`modeChecks`) and `validation/modes/*.png`.
