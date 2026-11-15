@@ -66,5 +66,13 @@ Claude: Let me check the current git status...
 - Follow atomic commit principles (one logical change per commit)
 - Update logs/development-progress.md if significant work was done
 
+## Remote Push Safety — Collectible Classics (Required)
+
+- **Default push target is our working repo `https://github.com/pelchers/CC-Local.git`.**
+- **NEVER push to the upstream `fmchisti/collectibleclassics` remote** — not `CC/`'s `origin`, not any
+  branch — **unless the user explicitly directs it in that same message.** If a push would target
+  `fmchisti/collectibleclassics`, STOP and confirm first. The app clone under `CC/` is pull-only from
+  upstream. See the `remote-push-safety` convention block in `CLAUDE.md` / `.codex/CODEX.md`.
+
 
 $ARGUMENTS

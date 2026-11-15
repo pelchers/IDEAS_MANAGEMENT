@@ -13,6 +13,9 @@ When adding new agents, skills, or system docs to `.claude/` and `.codex/`, and 
 | IDEA-MANAGEMENT | `C:\Ideas\IDEA-MANAGEMENT` | Idea management app |
 | Markdown Mermaid Editor | `C:\Extensions\Markdown Mermaid Editor` | VS Code extension |
 | Campus | `C:\coding\apps\campus` | Campus app |
+| Dispatch Template | `C:\Dispatch\Template\All` | Dispatch template — all agents/skills/system_docs |
+| Brand-MarTech | `C:\App\Portfolios\Brand-MarTech` | Umbrella marketing portfolio (core site) |
+| CDP | `C:\App\CDP` | Car dealership platform (private, single owner) |
 
 ## What to sync
 
